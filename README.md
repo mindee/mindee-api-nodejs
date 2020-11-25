@@ -3,7 +3,7 @@
 # Installation
 ## From source code
 
-Download and decompress the source code from github and then do in your node project :
+Download and decompress or clone the source code from github and then do in your node project :
 
 ```sh
 npm install path\to\mindee-api-node
