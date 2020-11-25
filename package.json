@@ -1,0 +1,19 @@
+{
+  "name": "mindee",
+  "version": "0.0.1",
+  "description": "Mindee SDK API for node",
+  "main": "mindee/index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derniercri/mindee-api-node.git"
+  },
+  "author": "mindee",
+  "license": "GPL-3.0-only",
+  "bugs": {
+    "url": "https://github.com/derniercri/mindee-api-node/issues"
+  },
+  "homepage": "https://github.com/derniercri/mindee-api-node#readme"
+}
