@@ -1,3 +1,3 @@
-const mindee = require('mindee');
+const mindee = require("mindee");
 
-mindee.printHello()
+mindee.printHello();
