@@ -4,7 +4,8 @@
   "description": "Mindee SDK API for node",
   "main": "mindee/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint '**/**/*.js' --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'"
   },
   "repository": {
     "type": "git",
@@ -15,5 +16,11 @@
   "bugs": {
     "url": "https://github.com/derniercri/mindee-api-node/issues"
   },
-  "homepage": "https://github.com/derniercri/mindee-api-node#readme"
+  "homepage": "https://github.com/derniercri/mindee-api-node#readme",
+  "devDependencies": {
+    "eslint": "^7.14.0",
+    "eslint-config-prettier": "^6.15.0",
+    "eslint-plugin-prettier": "^3.1.4",
+    "prettier": "^2.2.0"
+  }
 }

@@ -1,0 +1,24 @@
+{
+    "env": {
+        "node": true,
+        "es6": true
+        },
+    
+    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+
+    "globals": {
+        "Promise": true
+    },
+    "rules": {
+        "quotes": [
+            "error",
+            "double",
+            {
+                "avoidEscape": true,
+                "allowTemplateLiterals": false
+            }
+        ],
+        "comma-dangle": [2, "always-multiline"],
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }]
+    }
+}
