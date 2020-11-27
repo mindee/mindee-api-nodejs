@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "build": "babel mindee -d lib",
-    "test": "mocha tests/**/*.js",
+    "test": "npm run build && mocha tests/**/*.js",
     "lint": "eslint '**/**/*.js' --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'"
   },
   "repository": {
