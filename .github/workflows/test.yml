@@ -1,4 +1,4 @@
-name: Lint
+name: Test
 
 on:
   pull_request:
@@ -7,8 +7,8 @@ on:
       - develop
 
 jobs:
-  run-linters:
-    name: Run linters
+  run-tests:
+    name: Run Tests
     runs-on: ubuntu-latest
 
     steps:
@@ -20,10 +20,12 @@ jobs:
         with:
           node-version: 12
 
-      # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies
         run: npm install
 
-      - name: Test lint
-        run: npm run lint
+      - name: Link mindee to tests
+        run: (cd tests && npm link ../.)
+
+      - name: Test code
+        run: npm run test
 
