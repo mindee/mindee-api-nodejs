@@ -106,3 +106,5 @@ dist
 *.code-workspace
 
 .vscode/
+
+lib/
