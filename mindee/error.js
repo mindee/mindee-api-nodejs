@@ -1,10 +1,10 @@
 class ErrorHandler {
-  constructor(throw_on_error) {
-    this.throw_on_error = throw_on_error;
+  constructor(throwOnError) {
+    this.throwOnError = throwOnError;
   }
 
   throw(error) {
-    if (this.throw_on_error) throw error;
+    if (this.throwOnError) throw error;
   }
 }
 
