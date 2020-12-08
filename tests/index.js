@@ -1,9 +1,9 @@
-const expect = require("chai").expect;
-
+const { should } = require("chai");
 const mindee = require("mindee");
 
-describe("Simple unit test", () => {
-  it('should be equal to "Hello world"', () => {
-    expect(mindee.hello()).to.equal("Hello world");
+describe("Test client initialization", () => {
+  it("should create a client", () => {
+    const client = new mindee.Client();
+    should.exist(client);
   });
 });
