@@ -6,7 +6,7 @@ const LOGGER_LEVELS = {
 };
 
 class Logger {
-  constructor(level) {
+  constructor(level = "debug") {
     if (!(level in LOGGER_LEVELS)) level = "debug";
     this.level = LOGGER_LEVELS[level];
   }
@@ -28,4 +28,6 @@ class Logger {
   }
 }
 
-module.exports = Logger;
+const logger = new Logger();
+
+module.exports = logger;
