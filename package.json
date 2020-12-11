@@ -6,7 +6,7 @@
   "scripts": {
     "build": "babel mindee -d lib",
     "test": "npm run build && mocha tests/**/*.js",
-    "lint": "eslint '**/**/*.js' --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'"
+    "lint": "eslint 'mindee/**/*.js' 'tests/*.js' --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'"
   },
   "repository": {
     "type": "git",
@@ -23,6 +23,7 @@
     "@babel/core": "^7.12.9",
     "@babel/preset-env": "^7.12.7",
     "@babel/register": "^7.12.1",
+    "babel-eslint": "^10.1.0",
     "chai": "^4.2.0",
     "eslint": "^7.14.0",
     "eslint-config-prettier": "^6.15.0",
