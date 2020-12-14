@@ -1,5 +1,5 @@
-const ErrorHandler = require("./error");
-const Logger = require("./logger");
+const errorHandler = require("./errors/handler");
+const logger = require("./logger");
 
 class Client {
   constructor(
@@ -10,10 +10,8 @@ class Client {
   ) {
     this.receiptToken = receiptToken || process.env.MINDEE_RECEIPT_TOKEN;
     this.invoiceToken = invoiceToken || process.env.MINDEE_INVOICE_TOKEN;
-    this.errorHandler = new ErrorHandler(throwOnError);
-    this.logger = new Logger(
-      debug ?? process.env.MINDEE_DEBUG ? "debug" : "warn"
-    );
+    errorHandler.throwOnError = throwOnError;
+    logger.level = debug ?? process.env.MINDEE_DEBUG ? "debug" : "warn";
   }
 }
 
