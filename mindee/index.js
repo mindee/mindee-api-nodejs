@@ -15,4 +15,5 @@ class Client {
   }
 }
 
-module.exports = { Client: Client };
+exports.Client = Client;
+exports.inputs = require("./inputs");
