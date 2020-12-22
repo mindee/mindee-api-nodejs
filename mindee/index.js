@@ -17,3 +17,4 @@ class Client {
 
 exports.Client = Client;
 exports.inputs = require("./inputs");
+exports.documents = require("./documents");
