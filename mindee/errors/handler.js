@@ -5,8 +5,8 @@ class ErrorHandler {
     this.throwOnError = throwOnError;
   }
 
-  throw(error) {
-    if (this.throwOnError) throw error;
+  throw(error, force = true) {
+    if (this.throwOnError || force) throw error;
     else logger.error(error.message);
   }
 }
