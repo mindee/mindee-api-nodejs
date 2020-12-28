@@ -34,13 +34,17 @@ class APIObject {
     @returns {Response}
   */
   async _request(url, inputFile, includeWords = false) {
-    const files = { file: inputFile.file_object.read() }; // TODO read object here
     const headers = {
       "X-Inferuser-Token": this.apiToken,
     };
     const params = {};
     if (includeWords) params["include_mvision"] = "true";
-    const response = await request(url, "post", headers, files);
+    const response = await request(
+      `${this.baseUrl}${url}`,
+      "POST",
+      headers,
+      inputFile
+    );
     return this.wrapResponse(inputFile, response, this.apiName);
   }
 
@@ -51,13 +55,11 @@ class APIObject {
     @returns {Response}
   */
   wrapResponse(inputFile, response, documentType) {
-    console.debug(response.statusCode);
     if (response.statusCode != 200) {
-      // TODO Change Error to a Specific HTTPError
+      const errorMessage = JSON.stringify(response.data, null, 4);
       errorHandler.throw(
         new Error(
-          "Receipt API %s HTTP error: %s" %
-            (response.statusCode, JSON.stringify(response.data))
+          `Receipt API ${response.statusCode} HTTP error: ${errorMessage}`
         ),
         false
       );

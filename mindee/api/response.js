@@ -1,21 +1,33 @@
 const Document = require("../documents").document;
 const Receipt = require("../documents").receipt;
+const fs = require("fs").promises;
 
 class Response {
-  constructor({ httpResponse, documentType, input }) {
+  constructor({
+    httpResponse,
+    documentType,
+    input,
+    error,
+    reconsctruted = false,
+    ...args
+  }) {
     this.httpResponse = httpResponse;
     this.documentType = documentType;
     this.input = input;
-    this.formatResponse();
+    if (!error && !reconsctruted) this.formatResponse();
+    if (reconsctruted === true) {
+      Object.assign(this, args);
+    }
   }
 
-  dump(_path) {
-    //TODO dump as json object
+  async dump(path) {
+    return await fs.writeFile(path, JSON.stringify(Object.entries(this)));
   }
 
-  static load(_path) {
-    //TODO load from json object
-    // pages, document,
+  static async load(path) {
+    const file = fs.readFile(path);
+    const args = JSON.parse(file);
+    return new Response({ reconsctruted: true, ...args });
   }
 
   formatResponse() {
@@ -26,7 +38,6 @@ class Response {
     };
     const predictions = this.httpResponse.data.predictions.entries();
     this[`${this.documentType}s`] = [];
-    console.log(this.documentType);
 
     // Create a list of Document (Receipt, Invoice...) for each page of the input document
     for (const [pageNumber, prediction] of predictions) {

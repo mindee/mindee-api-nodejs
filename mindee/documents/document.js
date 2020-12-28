@@ -1,13 +1,15 @@
+const fs = require("fs").promises;
+
 class Document {
   constructor(inputFile = undefined) {
     this.filepath = undefined;
     this.filename = undefined;
-    this.file_extension = undefined;
+    this.fileExtension = undefined;
 
     if (inputFile != undefined) {
       this.filepath = inputFile.filepath;
       this.filename = inputFile.filename;
-      this.file_extension = inputFile.file_extension;
+      this.fileExtension = inputFile.fileExtension;
     }
     this.checklist = {};
   }
@@ -18,6 +20,16 @@ class Document {
 
   checkAll() {
     return this.checklist.every((item) => item == true);
+  }
+
+  async dump(path) {
+    return await fs.writeFile(path, JSON.stringify(Object.entries(this)));
+  }
+
+  static async load(path) {
+    const file = fs.readFile(path);
+    const args = JSON.parse(file);
+    return new Document({ reconsctruted: true, ...args });
   }
 
   /**

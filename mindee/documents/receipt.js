@@ -5,8 +5,7 @@ const Amount = require("./fields").amount;
 const Locale = require("./fields").locale;
 const Orientation = require("./fields").orientation;
 const Tax = require("./fields").tax;
-
-console.log(Document.mergePages);
+const fs = require("fs").promises;
 
 class Receipt extends Document {
   /**
@@ -41,7 +40,7 @@ class Receipt extends Document {
   }) {
     super(inputFile);
     if (apiPrediction === undefined) {
-      this.initFromScratch({
+      this.#initFromScratch({
         locale,
         totalExcl,
         totalIncl,
@@ -55,11 +54,13 @@ class Receipt extends Document {
         pageNumber,
       });
     } else {
-      this.initFromApiPrediction(apiPrediction);
+      this.#initFromApiPrediction(apiPrediction);
     }
+    this.#checklist();
+    this.#reconstruct();
   }
 
-  initFromScratch({
+  #initFromScratch({
     locale,
     totalExcl,
     totalIncl,
@@ -85,8 +86,8 @@ class Receipt extends Document {
     this.time = new Field(constructPrediction(time));
     if (taxes !== undefined) {
       this.taxes = [];
-      for (const t in taxes) {
-        taxes.push(
+      for (const t of taxes) {
+        this.taxes.push(
           new Tax({
             prediction: { value: t[0], rate: t[1] },
             pageNumber,
@@ -106,7 +107,7 @@ class Receipt extends Document {
     @param apiPrediction: Raw prediction from HTTP response
     @param pageNumber: Page number for multi pages pdf input
    */
-  initFromApiPrediction(apiPrediction, pageNumber) {
+  #initFromApiPrediction(apiPrediction, pageNumber) {
     this.locale = new Locale({ prediction: apiPrediction.locale, pageNumber });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
@@ -156,6 +157,115 @@ class Receipt extends Document {
       valueKey: "value",
       pageNumber,
     });
+  }
+
+  toString() {
+    return `
+    -----Receipt data-----
+    Filename: ${this.filename}
+    Total amount: ${this.totalIncl.value}
+    Date: ${this.date.value}
+    Category: ${this.category.value}
+    Time: ${this.time.value}
+    Merchant name: ${this.merchantName.value}
+    Taxes: ${this.taxes.map((tax) => tax.toString()).join(" - ")}
+    Total taxes: ${this.totalTax.value}
+    `;
+  }
+
+  static async load(path) {
+    const file = fs.readFile(path);
+    const args = JSON.parse(file);
+    return new Receipt({ reconsctruted: true, ...args });
+  }
+
+  /**
+   * Call all check methods
+   */
+  #checklist() {
+    this.checklist = { taxesMatchTotalIncl: this.#taxesMatchTotal() };
+  }
+
+  #taxesMatchTotal() {
+    // Check taxes and total amount exist
+
+    if (this.taxes.length === 0 || this.totalIncl.value == null) return false;
+
+    // Reconstruct total_incl from taxes
+    let totalVat = 0;
+    let reconstructedTotal = 0;
+    this.taxes.forEach((tax) => {
+      if (tax.value == null || !tax.rate) return false;
+      totalVat += tax.value;
+      reconstructedTotal += tax.value + (100 * tax.value) / tax.rate;
+    });
+
+    // Sanity check
+    if (totalVat <= 0) return false;
+
+    // Crate epsilon
+    const eps = 1 / (100 * totalVat);
+
+    if (
+      this.totalIncl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
+      reconstructedTotal <= this.totalIncl.value * (1 + eps) + 0.02
+    ) {
+      this.taxes = this.taxes.map((tax) => ({ ...tax, probability: 1.0 }));
+      this.totalTax.probability = 1.0;
+      this.totalIncl.probability = 1.0;
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Call all fields that need to be reconstructed
+   */
+  #reconstruct() {
+    this.#reconstructTotalExclFromTCCAndTaxes();
+    this.#reconstructTotalTax();
+  }
+
+  /**
+   * Set this.totalExcl with Amount object
+   * The totalExcl Amount value is the difference between totalIncl and sum of taxes
+   * The totalExcl Amount probability is the product of this.taxes probabilities multiplied by totalIncl probability
+   */
+  #reconstructTotalExclFromTCCAndTaxes() {
+    if (this.taxes.length && this.totalIncl.value != null) {
+      const totalExcl = {
+        value: this.totalIncl.value - Field.arraySum(this.taxes),
+        probability:
+          Field.arrayProbability(this.taxes) * this.totalIncl.probability,
+      };
+      this.totalExcl = new Amount({
+        prediction: totalExcl,
+        valueKey: "value",
+        reconstructed: true,
+      });
+    }
+  }
+
+  /**
+   * Set this.totalTax with Amount object
+   * The totalTax Amount value is the sum of all this.taxes value
+   * The totalTax Amount probability is the product of this.taxes probabilities
+   */
+  #reconstructTotalTax() {
+    if (this.taxes.length && this.totalTax.value == null) {
+      const totalTax = {
+        value: this.taxes
+          .map((tax) => tax.value || 0)
+          .reduce((a, b) => a + b, 0),
+        probability: Field.arrayProbability(this.taxes),
+      };
+      if (totalTax.value > 0)
+        this.totalTax = new Amount({
+          prediction: totalTax,
+          valueKey: "value",
+          reconstructed: true,
+        });
+    }
   }
 }
 
