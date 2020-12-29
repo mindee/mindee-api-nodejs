@@ -1,5 +1,6 @@
 const Document = require("../documents").document;
 const Receipt = require("../documents").receipt;
+const Invoice = require("../documents").invoice;
 const fs = require("fs").promises;
 
 class Response {
@@ -33,7 +34,7 @@ class Response {
   formatResponse() {
     const constructors = {
       receipt: (params) => new Receipt(params),
-      //invoice: (params) => new Invoice(params),
+      invoice: (params) => new Invoice(params),
       //financialDocument: (params) => new FinancialDocument(params),
     };
     const predictions = this.httpResponse.data.predictions.entries();

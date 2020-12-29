@@ -1,6 +1,7 @@
 const errorHandler = require("./errors/handler");
 const logger = require("./logger");
 const APIReceipt = require("./api/receipt");
+const APIInvoice = require("./api/invoice");
 class Client {
   constructor({
     receiptToken = undefined,
@@ -13,6 +14,7 @@ class Client {
     errorHandler.throwOnError = throwOnError;
     logger.level = debug ?? process.env.MINDEE_DEBUG ? "debug" : "warn";
     this.receipt = new APIReceipt(this.receiptToken);
+    this.invoice = new APIInvoice(this.invoiceToken);
   }
 }
 
