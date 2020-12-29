@@ -350,13 +350,6 @@ class Invoice extends Document {
       this.totalExcl.value != null &&
       this.totalIncl.value === undefined
     ) {
-      console.log(this.totalExcl.value);
-      console.log(
-        this.taxes.reduce((acc, tax) => {
-          console.log(tax.value);
-          return tax.value !== undefined ? acc + tax.value : acc;
-        }, 0.0)
-      );
       const totalIncl = {
         value:
           this.totalExcl.value +

@@ -122,17 +122,27 @@ class FinancialDocument extends Document {
   }
 
   #initFromApiPrediction(apiPrediction, inputFile, pageNumber) {
-    if ("invoiceNumber" in Object.keys(apiPrediction)) {
-      const invoice = Invoice(apiPrediction, inputFile, pageNumber);
+    if (Object.keys(apiPrediction).includes("invoiceNumber")) {
+      const invoice = new Invoice(apiPrediction, inputFile, pageNumber);
       Object.assign(this, invoice);
-      this.time = Field({ value: undefined, probability: 0.0 });
-      this.merchantName = Field({ value: undefined, probability: 0.0 });
+      this.time = new Field({
+        prediction: { value: undefined, probability: 0.0 },
+      });
+      this.merchantName = new Field({
+        prediction: { value: undefined, probability: 0.0 },
+      });
     } else {
-      const receipt = Receipt(apiPrediction, inputFile, pageNumber);
+      const receipt = new Receipt(apiPrediction, inputFile, pageNumber);
       Object.assign(this, receipt);
-      this.invoiceNumber = Field({ value: undefined, probability: 0.0 });
-      this.paymentDetails = Field({ value: undefined, probability: 0.0 });
-      this.companyNumber = Field({ value: undefined, probability: 0.0 });
+      this.invoiceNumber = new Field({
+        prediction: { value: undefined, probability: 0.0 },
+      });
+      this.paymentDetails = new Field({
+        prediction: { value: undefined, probability: 0.0 },
+      });
+      this.companyNumber = new Field({
+        prediction: { value: undefined, probability: 0.0 },
+      });
     }
   }
 
