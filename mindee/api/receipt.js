@@ -8,11 +8,11 @@ class APIReceipt extends APIObject {
   }
 
   /**
-   * @param {Boolean} include_words: , extract all words into http_response
-   * @param {Boolean} cut_pdf: Automatically reconstruct pdf with more than 4 pages
-   * @param {String} input_type: String in {'path', 'stream', 'base64'}
    * @param {String} file: Receipt filepath (allowed jpg, png, tiff, pdf)
+   * @param {String} inputType: String in {'path', 'stream', 'base64'}
+   * @param {Boolean} includeWords: extract all words into http_response
    * @param {String} version: expense_receipt api version
+   * @param {Boolean} cutPdf: Automatically reconstruct pdf with more than 4 pages
    * @returns {Response} Wrapped response with Receipts objects parsed
    */
   async parse(

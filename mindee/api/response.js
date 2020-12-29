@@ -44,7 +44,7 @@ class Response {
       this[`${this.documentType}s`].push(
         constructors[this.documentType]({
           apiPrediction: prediction,
-          input: this.input,
+          inputFile: this.input,
           pageNumber: pageNumber,
         })
       );
