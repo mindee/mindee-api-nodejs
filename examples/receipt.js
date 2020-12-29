@@ -1,6 +1,6 @@
 const { Client } = require("mindee");
 
-// Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via param (Client({receiptToken: "token"}))
+// Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via params (Client({receiptToken: "token"}))
 const mindeeClient = new Client();
 
 // parsing receipt from picture
