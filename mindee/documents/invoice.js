@@ -12,19 +12,19 @@ class Invoice extends Document {
    *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
    *  @param {Input} input - Input object
    *  @param {Integer} pageNumber - Page number for multi pages pdf input
-   *  @param locale - locale value for creating Invoice object from scratch
-   *  @param totalIncl - total tax included value for creating Invoice object from scratch
-   *  @param totalExcl - total tax excluded value for creating Invoice object from scratch
-   *  @param invoiceDate - invoice date value for creating Invoice object from scratch
-   *  @param invoiceNumber - invoice number value for creating Invoice object from scratch
-   *  @param taxes - taxes value for creating Invoice object from scratch
-   *  @param supplier - supplier value for creating Invoice object from scratch
-   *  @param paymentDetails - payment details value for creating Invoice object from scratch
-   *  @param companyNumber - company number value for creating Invoice object from scratch
-   *  @param vatNumber - vat number value for creating Invoice object from scratch
-   *  @param orientation - orientation value for creating Invoice object from scratch
-   *  @param totalTax - total tax value for creating Invoice object from scratch
-   *  @param pageNumber - pageNumber for multi pages pdf input
+   *  @param {Object} locale - locale value for creating Invoice object from scratch
+   *  @param {Object} totalIncl - total tax included value for creating Invoice object from scratch
+   *  @param {Object} totalExcl - total tax excluded value for creating Invoice object from scratch
+   *  @param {Object} invoiceDate - invoice date value for creating Invoice object from scratch
+   *  @param {Object} invoiceNumber - invoice number value for creating Invoice object from scratch
+   *  @param {Object} taxes - taxes value for creating Invoice object from scratch
+   *  @param {Object} supplier - supplier value for creating Invoice object from scratch
+   *  @param {Object} paymentDetails - payment details value for creating Invoice object from scratch
+   *  @param {Object} companyNumber - company number value for creating Invoice object from scratch
+   *  @param {Object} vatNumber - vat number value for creating Invoice object from scratch
+   *  @param {Object} orientation - orientation value for creating Invoice object from scratch
+   *  @param {Object} totalTax - total tax value for creating Invoice object from scratch
+   *  @param {Object} pageNumber - pageNumber for multi pages pdf input
    */
   constructor({
     apiPrediction = undefined,
