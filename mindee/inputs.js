@@ -14,7 +14,7 @@ class Input {
   ALLOWED_INPUT_TYPE = ["base64", "path", "dummy"];
   CUT_PDF_SIZE = 5;
 
-  /*
+  /**
    * @param {(String | Buffer)} file - the file that will be read. Either path or base64 string, or a steam
    * @param {String} inputType - the type of input used in file ("base64", "path", "dummy").
    *                             NB: in case of base64 file, only jpeg file is supported
@@ -80,6 +80,7 @@ class Input {
     this.fileExtension = "";
   }
 
+  /** Cut PDF if pages > 5 */
   async cutPdf() {
     // convert document to PDFDocument & cut CUT_PDF_SIZE - 1 first pages and last page
     const pdfDocument = await PDFDocument.load(this.fileObject);
