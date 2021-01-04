@@ -6,7 +6,6 @@ const Date = require("./fields").date;
 const Amount = require("./fields").amount;
 const Locale = require("./fields").locale;
 const Orientation = require("./fields").orientation;
-const PaymentDetails = require("./fields").paymentDetails;
 const Tax = require("./fields").tax;
 
 class FinancialDocument extends Document {
@@ -122,8 +121,8 @@ class FinancialDocument extends Document {
   }
 
   #initFromApiPrediction(apiPrediction, inputFile, pageNumber) {
-    if (Object.keys(apiPrediction).includes("invoiceNumber")) {
-      const invoice = new Invoice(apiPrediction, inputFile, pageNumber);
+    if (Object.keys(apiPrediction).includes("invoice_number")) {
+      const invoice = new Invoice({ apiPrediction, inputFile, pageNumber });
       Object.assign(this, invoice);
       this.time = new Field({
         prediction: { value: undefined, probability: 0.0 },
@@ -132,9 +131,15 @@ class FinancialDocument extends Document {
         prediction: { value: undefined, probability: 0.0 },
       });
     } else {
-      const receipt = new Receipt(apiPrediction, inputFile, pageNumber);
+      const receipt = new Receipt({ apiPrediction, inputFile, pageNumber });
       Object.assign(this, receipt);
+      this.invoiceDate = new Field({
+        prediction: { value: undefined, probability: 0.0 },
+      });
       this.invoiceNumber = new Field({
+        prediction: { value: undefined, probability: 0.0 },
+      });
+      this.dueDate = new Field({
         prediction: { value: undefined, probability: 0.0 },
       });
       this.paymentDetails = new Field({
