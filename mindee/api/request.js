@@ -6,11 +6,18 @@ const FormData = require("form-data");
 const request = (url, method, headers, input) => {
   return new Promise(function (resolve, reject) {
     const form = new FormData();
-    const fileParams = { filename: input.filename };
-    form.append("file", input.fileObject, fileParams);
-
+    const body = JSON.stringify({ file: input.fileObject });
     headers["User-Agent"] = `mindee-node/${sdkVersion} node/${process.version}`;
-    headers = { ...headers, ...form.getHeaders() };
+
+    if (input.inputType === "path") {
+      const fileParams = { filename: input.filename };
+      form.append("file", input.fileObject, fileParams);
+      headers = { ...headers, ...form.getHeaders() };
+    } else if (input.inputType === "base64") {
+      headers["Content-Type"] = "application/json";
+      headers["Content-Length"] = body.length;
+    }
+
     const uri = new URL(url);
     const options = {
       method: method,
@@ -19,11 +26,7 @@ const request = (url, method, headers, input) => {
       path: `${uri.pathname}${uri.search}`,
     };
 
-    const req = https.request(options);
-
-    form.pipe(req);
-
-    req.on("response", function (res) {
+    const req = https.request(options, function (res) {
       let responseBody = [];
 
       res.on("data", function (chunk) {
@@ -41,6 +44,15 @@ const request = (url, method, headers, input) => {
     req.on("error", (err) => {
       reject(err);
     });
+
+    if (input.inputType === "path") {
+      form.pipe(req);
+    }
+
+    if (input.inputType === "base64") {
+      req.write(body);
+      req.end();
+    }
   });
 };
 

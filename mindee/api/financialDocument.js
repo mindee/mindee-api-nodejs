@@ -1,10 +1,11 @@
 const APIObject = require("./object");
 const Input = require("../inputs");
 
-class APIReceipt extends APIObject {
-  constructor(apiToken = undefined) {
-    super(apiToken, "receipt");
-    this.baseUrl = `${this.baseUrl}/expense_receipts/`;
+class APIFinancialDocument extends APIObject {
+  constructor(invoiceToken, receiptToken) {
+    super(undefined, "financialDocument");
+    this.invoiceToken = invoiceToken;
+    this.receiptToken = receiptToken;
   }
 
   /**
@@ -22,13 +23,17 @@ class APIReceipt extends APIObject {
     cutPdf = true,
     includeWords = false
   ) {
-    super.parse();
     const inputFile = new Input({ file, inputType, cutPdf });
+    this.apiToken =
+      inputFile.fileExtension === "pdf" ? this.invoiceToken : this.receiptToken;
     await inputFile.init();
-    const url = `v${version}/predict`;
-
+    const url =
+      inputFile.fileExtension === "pdf"
+        ? "/invoices/v1/predict"
+        : "/expense_receipts/v3/predict";
+    super.parse();
     return await super._request(url, inputFile, version, includeWords);
   }
 }
 
-module.exports = APIReceipt;
+module.exports = APIFinancialDocument;

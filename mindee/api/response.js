@@ -1,5 +1,7 @@
 const Document = require("../documents").document;
 const Receipt = require("../documents").receipt;
+const Invoice = require("../documents").invoice;
+const FinancialDocument = require("../documents").financialDocument;
 const fs = require("fs").promises;
 
 class Response {
@@ -33,8 +35,8 @@ class Response {
   formatResponse() {
     const constructors = {
       receipt: (params) => new Receipt(params),
-      //invoice: (params) => new Invoice(params),
-      //financialDocument: (params) => new FinancialDocument(params),
+      invoice: (params) => new Invoice(params),
+      financialDocument: (params) => new FinancialDocument(params),
     };
     const predictions = this.httpResponse.data.predictions.entries();
     this[`${this.documentType}s`] = [];
@@ -44,7 +46,7 @@ class Response {
       this[`${this.documentType}s`].push(
         constructors[this.documentType]({
           apiPrediction: prediction,
-          input: this.input,
+          inputFile: this.input,
           pageNumber: pageNumber,
         })
       );

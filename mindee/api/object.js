@@ -59,7 +59,7 @@ class APIObject {
       const errorMessage = JSON.stringify(response.data, null, 4);
       errorHandler.throw(
         new Error(
-          `Receipt API ${response.statusCode} HTTP error: ${errorMessage}`
+          `${this.apiName} API ${response.statusCode} HTTP error: ${errorMessage}`
         ),
         false
       );
