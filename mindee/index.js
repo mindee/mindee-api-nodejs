@@ -4,6 +4,12 @@ const APIReceipt = require("./api/receipt");
 const APIInvoice = require("./api/invoice");
 const APIFinancialDocument = require("./api/financialDocument");
 class Client {
+  /**
+   * @param {string} receiptToken - Receipt Expense Token from Mindee dashboard
+   * @param {string} invoiceToken - Invoice Token from Mindee dashboard
+   * @param {boolean} throwOnError - Throw if an error is send from the API / SDK (true by default)
+   * @param {boolean} debug - Enable debug logging (disable by default)
+   */
   constructor({
     receiptToken = undefined,
     invoiceToken = undefined,
