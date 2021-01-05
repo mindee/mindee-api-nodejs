@@ -12,16 +12,16 @@ class Receipt extends Document {
    *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
    *  @param {Input} input - Input object
    *  @param {Integer} pageNumber - Page number for multi pages pdf input
-   *  @param locale - locale value for creating Receipt object from scratch
-   *  @param totalIncl - total tax Included value for creating Receipt object from scratch
-   *  @param date - date value for creating Receipt object from scratch
-   *  @param category - category value for creating Receipt object from scratch
-   *  @param merchantName - merchant_name value for creating Receipt object from scratch
-   *  @param time - time value for creating Receipt object from scratch
-   *  @param taxes - taxes value for creating Receipt object from scratch
-   *  @param orientation - orientation value for creating Receipt object from scratch
-   *  @param totalTax - total taxes value for creating Receipt object from scratch
-   *  @param totalExcl - total taxes excluded value for creating Receipt object from scratch
+   *  @param {Object} locale - locale value for creating Receipt object from scratch
+   *  @param {Object} totalIncl - total tax Included value for creating Receipt object from scratch
+   *  @param {Object} date - date value for creating Receipt object from scratch
+   *  @param {Object} category - category value for creating Receipt object from scratch
+   *  @param {Object} merchantName - merchant name value for creating Receipt object from scratch
+   *  @param {Object} time - time value for creating Receipt object from scratch
+   *  @param {Object} taxes - taxes value for creating Receipt object from scratch
+   *  @param {Object} orientation - orientation value for creating Receipt object from scratch
+   *  @param {Object} totalTax - total taxes value for creating Receipt object from scratch
+   *  @param {Object} totalExcl - total taxes excluded value for creating Receipt object from scratch
    */
   constructor({
     apiPrediction = undefined,

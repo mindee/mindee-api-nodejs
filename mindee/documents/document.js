@@ -1,6 +1,11 @@
 const fs = require("fs").promises;
 
 class Document {
+  /**
+   * Takes a list of Documents and return one Document where
+   * each field is set with the maximum probability field
+   * @param {Input} inputFile - input file given to parse the document
+   */
   constructor(inputFile = undefined) {
     this.filepath = undefined;
     this.filename = undefined;
@@ -18,14 +23,17 @@ class Document {
     return JSON.parse(JSON.stringify(this));
   }
 
+  /** return true if all checklist of the document if true */
   checkAll() {
     return this.checklist.every((item) => item == true);
   }
 
+  /** Export document into a JSON file */
   async dump(path) {
     return await fs.writeFile(path, JSON.stringify(Object.entries(this)));
   }
 
+  /** Create a Document from a JSON file */
   static async load(path) {
     const file = fs.readFile(path);
     const args = JSON.parse(file);

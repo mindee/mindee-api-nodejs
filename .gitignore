@@ -108,3 +108,5 @@ dist
 .vscode/
 
 lib/
+
+docs/

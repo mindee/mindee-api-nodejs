@@ -26,8 +26,6 @@ const request = (url, method, headers, input) => {
       path: `${uri.pathname}${uri.search}`,
     };
 
-    console.log(options);
-
     const req = https.request(options, function (res) {
       let responseBody = [];
 
