@@ -33,7 +33,7 @@ You can find more examples on how to use the SDK into the folder `examples`
 
 ## Client
 
-The mindee Client can take multiple parameters to be initialize. Some this parameters can also be set with env variables. If the env variable and the parameter are both set, the parameter will be the one choosen by the client. This is a list of them:
+The mindee Client can take multiple parameters to be initialize. Some this parameters can also be set with env variables. If the env variable and the parameter are both set, the parameter will be the one chosen by the client. This is a list of them:
 
 - invoiceToken (env variable : `MINDEE_INVOICE_TOKEN`) The expense api token
 - receiptToken (env variable : `MINDEE_RECEIPT_TOKEN`) The invoice api token
