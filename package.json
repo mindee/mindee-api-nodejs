@@ -1,8 +1,9 @@
 {
   "name": "mindee",
-  "version": "0.0.1",
-  "description": "Mindee SDK API for node",
+  "version": "1.0.0",
+  "description": "Mindee SDK API for Node.js",
   "main": "lib/index.js",
+  "license": "GPL-3.0",
   "scripts": {
     "build": "babel mindee -d lib",
     "test": "npm run build && mocha tests/**/*.js",
@@ -13,8 +14,7 @@
     "type": "git",
     "url": "git+https://github.com/derniercri/mindee-api-node.git"
   },
-  "author": "mindee",
-  "license": "GPL-3.0-only",
+  "author": "@techmindee",
   "bugs": {
     "url": "https://github.com/derniercri/mindee-api-node/issues"
   },
@@ -36,5 +36,12 @@
   "dependencies": {
     "form-data": "^3.0.0",
     "pdf-lib": "^1.13.0"
-  }
+  },
+  "keywords": [
+    "javascript",
+    "mindee",
+    "api",
+    "SDK",
+    "nodejs"
+  ]
 }
