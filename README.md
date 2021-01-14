@@ -1,4 +1,4 @@
-# mindee-api-node
+# API SDK for Node.js
 
 # Installation
 
