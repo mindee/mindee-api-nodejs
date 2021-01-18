@@ -6,14 +6,18 @@ const FormData = require("form-data");
 const request = (url, method, headers, input) => {
   return new Promise(function (resolve, reject) {
     const form = new FormData();
-    const body = JSON.stringify({ file: input.fileObject });
+    let body;
     headers["User-Agent"] = `mindee-node/${sdkVersion} node/${process.version}`;
 
     if (input.inputType === "path") {
       const fileParams = { filename: input.filename };
       form.append("file", input.fileObject, fileParams);
       headers = { ...headers, ...form.getHeaders() };
+    } else if (input.inputType === "stream") {
+      form.append("file", input.fileObject);
+      headers = { ...headers, ...form.getHeaders() };
     } else if (input.inputType === "base64") {
+      body = JSON.stringify({ file: input.fileObject });
       headers["Content-Type"] = "application/json";
       headers["Content-Length"] = body.length;
     }
@@ -45,7 +49,7 @@ const request = (url, method, headers, input) => {
       reject(err);
     });
 
-    if (input.inputType === "path") {
+    if (["path", "stream"].includes(input.inputType)) {
       form.pipe(req);
     }
 
