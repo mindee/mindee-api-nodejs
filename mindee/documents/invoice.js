@@ -117,6 +117,7 @@ class Invoice extends Document {
   }
 
   #initFromApiPrediction(apiPrediction, pageNumber) {
+    this.words = [];
     this.locale = new Locale({ prediction: apiPrediction.locale, pageNumber });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
@@ -162,7 +163,7 @@ class Invoice extends Document {
       return new Field({
         prediction: companyNumber,
         pageNumber,
-        extra_fields: ["type"],
+        extraFields: ["type"],
       });
     });
     this.dueDate = new Date({
@@ -183,6 +184,8 @@ class Invoice extends Document {
     ) {
       return new PaymentDetails({ prediction: paymentDetail, pageNumber });
     });
+
+    if ("mvision" in apiPrediction) this.words = apiPrediction.mvision;
   }
 
   toString() {
@@ -211,6 +214,7 @@ class Invoice extends Document {
     this.#reconstructTotalTax();
     this.#reconstructTotalExcl();
     this.#reconstructTotalIncl();
+    this.#reconstructTotalTaxFromTotals();
   }
 
   #taxesMatchTotalIncl() {
@@ -311,6 +315,26 @@ class Invoice extends Document {
           return tax.value !== undefined ? acc + tax.value : acc;
         }, 0),
         probability: Field.arrayProbability(this.taxes),
+      };
+      if (totalTax.value > 0)
+        this.totalTax = new Amount({
+          prediction: totalTax,
+          valueKey: "value",
+          reconstructed: true,
+        });
+    }
+  }
+
+  #reconstructTotalTaxFromTotals() {
+    if (
+      this.totalTax.value === undefined &&
+      this.totalIncl.value > 0 &&
+      this.totalExcl.value > 0 &&
+      this.totalExcl.value <= this.totalIncl.value
+    ) {
+      const totalTax = {
+        value: this.totalIncl.value - this.totalExcl.value,
+        probability: this.totalIncl.probability * this.totalExcl.probability,
       };
       if (totalTax.value > 0)
         this.totalTax = new Amount({
