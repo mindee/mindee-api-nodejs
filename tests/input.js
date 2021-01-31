@@ -37,6 +37,16 @@ describe("Test different types of input", () => {
     expect(input.fileObject).to.eqls(expectedResult);
   });
 
+  it("should accept read streams", async () => {
+    const stream = fs.createReadStream("data/receipts/receipt.jpg");
+    const input = new Input({ file: stream, inputType: "stream" });
+    await input.init();
+    expect(input.inputType).to.equals("stream");
+    expect(input.filename).to.equals(undefined);
+    expect(input.fileExtension).to.equals("image/jpg");
+    expect(input.fileObject).to.eqls(stream);
+  });
+
   it("should create a dummy file", async () => {
     const input = new Input({ inputType: "dummy" });
     await input.init();

@@ -57,8 +57,9 @@ result = client.invoice.parse("/path/to/file");
 // and create a FinancialDocument object under result.financial_document
 result = client.financialDocument.parse("/path/to/file", "file");
 
-// You can also parse your document with base64 string like so
+// You can also parse your document with base64 string and streams like so
 result = client.invoice.parse(base64string, "base64");
+result = client.invoice.parse(readStream, "stream");
 ```
 
 # Tests

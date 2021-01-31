@@ -11,7 +11,7 @@ class Input {
     webp: "image/webp",
     pdf: "application/pdf",
   };
-  ALLOWED_INPUT_TYPE = ["base64", "path", "dummy"];
+  ALLOWED_INPUT_TYPE = ["base64", "path", "stream", "dummy"];
   CUT_PDF_SIZE = 5;
 
   /**
@@ -42,6 +42,7 @@ class Input {
   async init() {
     if (this.inputType === "base64") this.initBase64();
     else if (this.inputType === "path") await this.initFile();
+    else if (this.inputType === "stream") await this.initStream();
     else this.initDummy();
   }
 
@@ -73,6 +74,12 @@ class Input {
     }
   }
 
+  async initStream() {
+    this.fileObject = this.file;
+    this.filepath = undefined;
+    this.filename = undefined;
+  }
+
   initDummy() {
     this.fileObject = "";
     this.filename = "";
@@ -93,7 +100,8 @@ class Input {
     ];
     const pages = await splitedPdfDocument.copyPages(pdfDocument, pagesNumbers);
     pages.forEach((page) => splitedPdfDocument.addPage(page));
-    this.fileObject = await splitedPdfDocument.save();
+    const data = await splitedPdfDocument.save();
+    this.fileObject = Buffer.from(data);
   }
 }
 
