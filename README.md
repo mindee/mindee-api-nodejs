@@ -22,9 +22,9 @@ const mindeeClient = Client({
   receiptToken: "receiptExpenseApiToken",
 });
 
-client.invoice.parse("path/to/file", "file");
-client.receipt.parse(base64String, "base64");
-client.financialDocument.parse(base64String, "base64");
+mindeeClient.invoice.parse("path/to/file", "file");
+mindeeClient.receipt.parse(base64String, "base64");
+mindeeClient.financialDocument.parse(base64String, "base64");
 ```
 
 Three apis are actually supported : invoice (`ìnvoice`), receipt (`receipt`) and financial document (`financialDocument`)
