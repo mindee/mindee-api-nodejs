@@ -43,23 +43,74 @@ The mindee Client can take multiple parameters to be initialize. Some this param
 Depending on what type of document you want to parse, you need to add specifics auth token for each endpoint.
 We suggest storing your credentials as environment variables for security reasons.
 
-## Parsing
+## Parsing Invoices
 
 ```js
-// Call the receipt parsing API and create a receipt object under result.receipt
-result = client.receipt.parse("/path/to/file");
+const { Client } = require("mindee");
+const fs = require("fs");
 
-// Call the invoice parsing API and create an invoice object under result.invoice
-result = client.invoice.parse("/path/to/file");
+// Invoice token can be set by Env (MINDEE_INVOICE_TOKEN) or via params (Client({invoiceToken: "token"}))
+const mindeeClient = new Client();
 
-// If you have a mixed data flow of invoice and receipt, use financialDocument
-// Call the invoice or receipt parsing API according to your input data type (pdf -> invoice, picture -> receipt)
-// and create a FinancialDocument object under result.financial_document
-result = client.financialDocument.parse("/path/to/file", "file");
+// parsing invoice from pdf
+mindeeClient.invoice
+  .parse("./documents/invoices/invoice.pdf") // see examples for more input types
+  .then((res) => {
+    console.log("Success !");
+    console.log(res.invoices);
+    console.log(res.invoice);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+```
 
-// You can also parse your document with base64 string and streams like so
-result = client.invoice.parse(base64string, "base64");
-result = client.invoice.parse(readStream, "stream");
+## Parsing receipts
+```js
+const { Client } = require("mindee");
+const fs = require("fs");
+
+// Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via params (Client({receiptToken: "token"}))
+const mindeeClient = new Client();
+
+// parsing receipt from picture
+mindeeClient.receipt
+  .parse("./documents/receipts/receipt.jpg") // see examples for more input types
+  .then((res) => {
+    console.log("Success !");
+    console.log(res.receipts);
+    console.log(res.receipt);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+```
+
+## Parsing a mix of invoices and receipts: Financial document
+
+The Financial document API optimizes the parsing results when you don't know if your file is a receipt or an invoice.
+
+```js
+const { Client } = require("mindee");
+
+// Invoice token and Receipt token must be set
+// Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via params (Client({receiptToken: "token"}))
+// Invoice token can be set by Env (MINDEE_INVOICE_TOKEN) or via params (Client({invoiceToken: "token"}))
+
+const mindeeClient = new Client();
+
+// parsing receipt from picture
+mindeeClient.financialDocument
+  .parse("./documents/receipts/receipt.jpg")
+  .then((res) => {
+    console.log("Success !");
+    console.log(res.financialDocuments);
+    console.log(res.financialDocument);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
 ```
 
 # Tests
