@@ -3,7 +3,7 @@ const { version: sdkVersion } = require("../../package.json");
 const { URL } = require("url");
 const FormData = require("form-data");
 
-const request = (url, method, headers, input) => {
+const request = (url, method, headers, input, includeWords=false) => {
   return new Promise(function (resolve, reject) {
     const form = new FormData();
     let body;
@@ -13,14 +13,19 @@ const request = (url, method, headers, input) => {
       const fileParams = { filename: input.filename };
       form.append("file", input.fileObject, fileParams);
       headers = { ...headers, ...form.getHeaders() };
+      if(includeWords) form.append("include_mvision", "true")
     } else if (input.inputType === "stream") {
       form.append("file", input.fileObject);
       headers = { ...headers, ...form.getHeaders() };
+      if(includeWords) form.append("include_mvision", "true")
     } else if (input.inputType === "base64") {
-      body = JSON.stringify({ file: input.fileObject });
+      let body_obj = { file: input.fileObject }
+      if(includeWords) body_obj["include_mvision"] = "true"
+      body = JSON.stringify(body_obj);
       headers["Content-Type"] = "application/json";
       headers["Content-Length"] = body.length;
     }
+
 
     const uri = new URL(url);
     const options = {
