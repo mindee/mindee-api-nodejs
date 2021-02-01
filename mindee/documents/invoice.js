@@ -117,7 +117,7 @@ class Invoice extends Document {
   }
 
   #initFromApiPrediction(apiPrediction, pageNumber) {
-    this.words = []
+    this.words = [];
     this.locale = new Locale({ prediction: apiPrediction.locale, pageNumber });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
@@ -185,7 +185,7 @@ class Invoice extends Document {
       return new PaymentDetails({ prediction: paymentDetail, pageNumber });
     });
 
-    if("mvision" in apiPrediction) this.words = apiPrediction.mvision
+    if ("mvision" in apiPrediction) this.words = apiPrediction.mvision;
   }
 
   toString() {
@@ -215,7 +215,6 @@ class Invoice extends Document {
     this.#reconstructTotalExcl();
     this.#reconstructTotalIncl();
     this.#reconstructTotalTaxFromTotals();
-
   }
 
   #taxesMatchTotalIncl() {
@@ -327,10 +326,12 @@ class Invoice extends Document {
   }
 
   #reconstructTotalTaxFromTotals() {
-    if (this.totalTax.value  === undefined
-      && this.totalIncl.value > 0
-      && this.totalExcl.value > 0
-      && this.totalExcl.value <= this.totalIncl.value ) {
+    if (
+      this.totalTax.value === undefined &&
+      this.totalIncl.value > 0 &&
+      this.totalExcl.value > 0 &&
+      this.totalExcl.value <= this.totalIncl.value
+    ) {
       const totalTax = {
         value: this.totalIncl.value - this.totalExcl.value,
         probability: this.totalIncl.probability * this.totalExcl.probability,
