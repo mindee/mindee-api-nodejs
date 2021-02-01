@@ -11,7 +11,7 @@ class Amount extends Field {
     prediction,
     valueKey = "amount",
     reconstructed = false,
-    pageNumber = undefined,
+    pageNumber = 0,
   }) {
     super({ prediction, valueKey, reconstructed, pageNumber });
     this.value = +parseFloat(prediction[valueKey]).toFixed(3);

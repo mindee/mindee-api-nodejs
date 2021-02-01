@@ -11,7 +11,7 @@ class Orientation extends Field {
     prediction,
     valueKey = "degrees",
     reconstructed = false,
-    pageNumber = undefined,
+    pageNumber = 0,
   }) {
     const orientations = [0, 90, 180, 270];
     super({ prediction, valueKey, reconstructed, pageNumber });

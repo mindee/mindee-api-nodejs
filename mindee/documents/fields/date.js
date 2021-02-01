@@ -11,7 +11,7 @@ class DateField extends Field {
     prediction,
     valueKey = "iso",
     reconstructed = false,
-    pageNumber = undefined,
+    pageNumber = 0,
   }) {
     super({ prediction, valueKey, reconstructed, pageNumber });
     this.dateObject = new Date(this.value);

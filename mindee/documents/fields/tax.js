@@ -15,7 +15,7 @@ class Tax extends Field {
     rateKey = "rate",
     codeKey = "code",
     reconstructed = false,
-    pageNumber = undefined,
+    pageNumber = 0,
   }) {
     super({ prediction, valueKey, reconstructed, pageNumber });
 

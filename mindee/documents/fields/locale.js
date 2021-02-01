@@ -11,7 +11,7 @@ class Locale extends Field {
     prediction,
     valueKey = "value",
     reconstructed = false,
-    pageNumber = undefined,
+    pageNumber = 0,
   }) {
     super({ prediction, valueKey, reconstructed, pageNumber });
 
