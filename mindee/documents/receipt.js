@@ -106,7 +106,6 @@ class Receipt extends Document {
     @param pageNumber: Page number for multi pages pdf input
    */
   #initFromApiPrediction(apiPrediction, pageNumber) {
-    this.words = [];
     this.locale = new Locale({ prediction: apiPrediction.locale, pageNumber });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
@@ -156,7 +155,6 @@ class Receipt extends Document {
       valueKey: "value",
       pageNumber,
     });
-    if ("mvision" in apiPrediction) this.words = apiPrediction.mvision;
   }
 
   toString() {

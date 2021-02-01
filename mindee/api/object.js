@@ -37,12 +37,13 @@ class APIObject {
     const headers = {
       "X-Inferuser-Token": this.apiToken,
     };
+    const params = {};
+    if (includeWords) params["include_mvision"] = "true";
     const response = await request(
       `${this.baseUrl}${url}`,
       "POST",
       headers,
-      inputFile,
-      includeWords
+      inputFile
     );
     return this.wrapResponse(inputFile, response, this.apiName);
   }
