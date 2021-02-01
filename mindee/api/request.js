@@ -12,15 +12,15 @@ const request = (url, method, headers, input, includeWords=false) => {
     if (input.inputType === "path") {
       const fileParams = { filename: input.filename };
       form.append("file", input.fileObject, fileParams);
+      if (includeWords) form.append("include_mvision", "true")
       headers = { ...headers, ...form.getHeaders() };
-      if(includeWords) form.append("include_mvision", "true")
     } else if (input.inputType === "stream") {
       form.append("file", input.fileObject);
+      if (includeWords) form.append("include_mvision", "true")
       headers = { ...headers, ...form.getHeaders() };
-      if(includeWords) form.append("include_mvision", "true")
     } else if (input.inputType === "base64") {
       let body_obj = { file: input.fileObject }
-      if(includeWords) body_obj["include_mvision"] = "true"
+      if (includeWords) body_obj["include_mvision"] = "true"
       body = JSON.stringify(body_obj);
       headers["Content-Type"] = "application/json";
       headers["Content-Length"] = body.length;
