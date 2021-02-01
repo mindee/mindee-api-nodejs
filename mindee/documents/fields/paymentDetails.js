@@ -19,7 +19,7 @@ class PaymentDetails extends Field {
     routingNumberKey = "routing_number",
     swiftKey = "swift",
     reconstructed = false,
-    pageNumber = undefined,
+    pageNumber = 0,
   }) {
     super({ prediction, valueKey, reconstructed, pageNumber });
 
