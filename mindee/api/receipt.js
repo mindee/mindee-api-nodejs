@@ -26,7 +26,7 @@ class APIReceipt extends APIObject {
     const inputFile = new Input({ file, inputType, cutPdf });
     await inputFile.init();
     const url = `v${version}/predict`;
-    return await super._request(url, inputFile, version, includeWords);
+    return await super._request(url, inputFile, includeWords);
   }
 }
 

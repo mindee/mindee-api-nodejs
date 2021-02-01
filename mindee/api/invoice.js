@@ -20,13 +20,13 @@ class APIInvoice extends APIObject {
     inputType = "path",
     version = "2",
     cutPdf = true,
-    includeWords = true
+    includeWords = false
   ) {
     super.parse();
     const inputFile = new Input({ file, inputType, cutPdf });
     await inputFile.init();
     const url = `v${version}/predict`;
-    return await super._request(url, inputFile, version, includeWords);
+    return await super._request(url, inputFile, includeWords);
   }
 }
 
