@@ -53,8 +53,9 @@ class Document {
         if (
           document?.[attribute]?.probability >
           finalDocument[attribute].probability
-        )
-          finalDocument[attribute] = document?.[attribute]?.probability;
+        ) {
+          finalDocument[attribute] = document?.[attribute];
+        }
       }
     }
     return finalDocument;
