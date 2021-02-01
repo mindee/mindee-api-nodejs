@@ -1,6 +1,6 @@
 {
   "name": "mindee",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Mindee API SDK for Node.js",
   "main": "lib/index.js",
   "license": "GPL-3.0",
