@@ -6,7 +6,7 @@ const mindeeClient = new Client();
 
 // parsing invoice from pdf
 mindeeClient.invoice
-  .parse("./documents/invoices/invoice.pdf")
+  .parse({ input: "./documents/invoices/invoice.pdf" })
   .then((res) => {
     console.log("Success !");
     console.log(res.invoices);
@@ -18,7 +18,7 @@ mindeeClient.invoice
 
 // // parsing invoice from multiple page pdf
 mindeeClient.invoice
-  .parse("./documents/invoices/invoice_6p.pdf")
+  .parse({ input: "./documents/invoices/invoice_6p.pdf" })
   .then((res) => {
     console.log("Success !");
     console.log(res.invoices);
@@ -33,7 +33,7 @@ const base64 = fs.readFileSync("./documents/invoices/invoice.pdf", {
   encoding: "base64",
 });
 mindeeClient.invoice
-  .parse(base64, "base64")
+  .parse({ input: base64, inputType: "base64" })
   .then((res) => {
     console.log("Success !");
     console.log(res.invoices);
@@ -46,7 +46,7 @@ mindeeClient.invoice
 // parsing invoice from stream
 const stream = fs.createReadStream("./documents/invoices/invoice.pdf");
 mindeeClient.invoice
-  .parse(stream, "stream")
+  .parse({ input: stream, inputType: "stream" })
   .then((res) => {
     console.log("Success !");
     console.log(res.invoices);

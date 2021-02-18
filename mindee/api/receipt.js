@@ -15,15 +15,15 @@ class APIReceipt extends APIObject {
    * @param {Boolean} cutPdf: Automatically reconstruct pdf with more than 4 pages
    * @returns {Response} Wrapped response with Receipts objects parsed
    */
-  async parse(
-    file,
+  async parse({
+    input,
     inputType = "path",
     version = "3",
     cutPdf = true,
-    includeWords = false
-  ) {
+    includeWords = false,
+  }) {
     super.parse();
-    const inputFile = new Input({ file, inputType, cutPdf });
+    const inputFile = new Input({ file: input, inputType, cutPdf });
     await inputFile.init();
     const url = `v${version}/predict`;
     return await super._request(url, inputFile, includeWords);

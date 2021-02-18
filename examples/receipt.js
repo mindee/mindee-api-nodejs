@@ -6,7 +6,7 @@ const mindeeClient = new Client();
 
 // parsing receipt from picture
 mindeeClient.receipt
-  .parse("./documents/receipts/receipt.jpg")
+  .parse({ input: "./documents/receipts/receipt.jpg" })
   .then((res) => {
     console.log("Success !");
     console.log(res.receipts);
@@ -21,7 +21,7 @@ const base64 = fs.readFileSync("./documents/receipts/receipt.jpg", {
   encoding: "base64",
 });
 mindeeClient.receipt
-  .parse(base64, "base64")
+  .parse({ input: base64, inputType: "base64" })
   .then((res) => {
     console.log("Success !");
     console.log(res.receipts);
@@ -34,7 +34,7 @@ mindeeClient.receipt
 // parsing receipt from stream
 const stream = fs.createReadStream("./documents/receipts/receipt.jpg");
 mindeeClient.receipt
-  .parse(stream, "stream")
+  .parse({ input: stream, inputType: "stream" })
   .then((res) => {
     console.log("Success !");
     console.log(res.receipts);
