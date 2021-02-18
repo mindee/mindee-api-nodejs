@@ -15,15 +15,16 @@ class APIInvoice extends APIObject {
    * @param {String} version: expense_receipt api version
    * @returns {Response} Wrapped response with Receipts objects parsed
    */
-  async parse(
-    file,
+  async parse({
+    input,
     inputType = "path",
+    filename = undefined,
     version = "2",
     cutPdf = true,
-    includeWords = false
-  ) {
+    includeWords = false,
+  }) {
     super.parse();
-    const inputFile = new Input({ file, inputType, cutPdf });
+    const inputFile = new Input({ file: input, inputType, filename, cutPdf });
     await inputFile.init();
     const url = `v${version}/predict`;
     return await super._request(url, inputFile, includeWords);

@@ -5,7 +5,7 @@ const mindeeClient = new Client();
 
 // parsing receipt from picture
 mindeeClient.financialDocument
-  .parse("./documents/receipts/receipt.jpg")
+  .parse({ input: "./documents/receipts/receipt.jpg" })
   .then((res) => {
     console.log("Success !");
     console.log(res.financialDocuments);
@@ -21,7 +21,7 @@ const base64 = fs.readFileSync("./documents/receipts/receipt.jpg", {
   encoding: "base64",
 });
 mindeeClient.financialDocument
-  .parse(base64, "base64")
+  .parse({ input: base64, inputType: "base64" })
   .then((res) => {
     console.log("Success !");
     console.log(res.financialDocuments);

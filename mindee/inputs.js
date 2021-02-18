@@ -55,7 +55,7 @@ class Input {
   async initFile() {
     this.fileObject = await fs.readFile(this.file);
     this.filepath = this.file;
-    this.filename = path.basename(this.file);
+    this.filename = this.filename || path.basename(this.file);
     // Check if file type is valid
     const filetype = this.filename.split(".").pop();
     if (!(filetype in this.MIMETYPES)) {
@@ -76,8 +76,8 @@ class Input {
 
   async initStream() {
     this.fileObject = this.file;
+    this.filename = this.filename || "stream";
     this.filepath = undefined;
-    this.filename = undefined;
   }
 
   initDummy() {

@@ -22,9 +22,12 @@ const mindeeClient = Client({
   receiptToken: "receiptExpenseApiToken",
 });
 
-mindeeClient.invoice.parse("path/to/file", "file");
-mindeeClient.receipt.parse(base64String, "base64");
-mindeeClient.financialDocument.parse(base64String, "base64");
+mindeeClient.invoice.parse({ input: "path/to/file", inputType: "file" });
+mindeeClient.receipt.parse({ input: base64String, inputType: "base64" });
+mindeeClient.financialDocument.parse({
+  input: base64String,
+  inputType: "base64",
+});
 ```
 
 Three apis are actually supported : invoice (`ìnvoice`), receipt (`receipt`) and financial document (`financialDocument`)
@@ -54,7 +57,7 @@ const mindeeClient = new Client();
 
 // parsing invoice from pdf
 mindeeClient.invoice
-  .parse("./documents/invoices/invoice.pdf") // see examples for more input types
+  .parse({ input: "./documents/invoices/invoice.pdf" }) // see examples for more input types
   .then((res) => {
     console.log("Success !");
     console.log(res.invoices);
@@ -66,6 +69,7 @@ mindeeClient.invoice
 ```
 
 ## Parsing receipts
+
 ```js
 const { Client } = require("mindee");
 const fs = require("fs");
@@ -75,7 +79,7 @@ const mindeeClient = new Client();
 
 // parsing receipt from picture
 mindeeClient.receipt
-  .parse("./documents/receipts/receipt.jpg") // see examples for more input types
+  .parse({ input: "./documents/receipts/receipt.jpg" }) // see examples for more input types
   .then((res) => {
     console.log("Success !");
     console.log(res.receipts);
@@ -101,7 +105,7 @@ const mindeeClient = new Client();
 
 // parsing receipt from picture
 mindeeClient.financialDocument
-  .parse("./documents/receipts/receipt.jpg")
+  .parse({ input: "./documents/receipts/receipt.jpg" })
   .then((res) => {
     console.log("Success !");
     console.log(res.financialDocuments);
@@ -110,7 +114,6 @@ mindeeClient.financialDocument
   .catch((err) => {
     console.error(err);
   });
-
 ```
 
 # Tests
