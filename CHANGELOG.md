@@ -1,19 +1,31 @@
 # CHANGELOG
 
+## v1.0.4 (2021-02-18)
 
-## v1.0.3 (01/02/2021)
+### New
+* :sparkles: :zap: Add a parameter `filename` and a default filename for streams
 
-fix: :bug: _request parameters
-fix: :bug: pageNumber default value
-fix: :bug: reconstruction method set fields to probability
-
-
-## v1.0.2 (01/02/2021)
-
-chg: :sparkles: Better coverage for total tax
-fix: :bug: includeWords is now working
+### Changes
+* :zap: Change parse function to use an object instead of multiples parameters
 
 
-## v1.0.1 (11/01/2021)
+## v1.0.3 (2021-02-01)
 
-🎉 First release
+### Fixes
+* :bug: _request parameters
+* :bug: `pageNumber` default value
+* :bug: reconstruction method set fields to probability
+
+
+## v1.0.2 (2021-02-01)
+
+### Changes
+* :zap: Better coverage for total tax
+
+### Fixes
+* :bug: `includeWords` is now working
+
+
+## v1.0.1 (2021-01-11)
+
+* 🎉 First release

@@ -1,6 +1,6 @@
 {
   "name": "mindee",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Mindee API SDK for Node.js",
   "main": "lib/index.js",
   "license": "GPL-3.0",
@@ -12,13 +12,13 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/publicMindee/mindee-api-nodejs.git"
+    "url": "git+https://github.com/mindee/mindee-api-nodejs.git"
   },
   "author": "@techmindee",
   "bugs": {
-    "url": "https://github.com/publicMindee/mindee-api-nodejs/issues"
+    "url": "https://github.com/mindee/mindee-api-nodejs/issues"
   },
-  "homepage": "https://github.com/publicMindee/mindee-api-nodejs/#readme",
+  "homepage": "https://github.com/mindee/mindee-api-nodejs/#readme",
   "devDependencies": {
     "@babel/cli": "^7.12.8",
     "@babel/core": "^7.12.9",
