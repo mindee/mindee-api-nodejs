@@ -9,13 +9,9 @@ const request = (url, method, headers, input, includeWords = false) => {
     let body;
     headers["User-Agent"] = `mindee-node/${sdkVersion} node/${process.version}`;
 
-    if (input.inputType === "path") {
+    if (["path", "stream"].includes(input.inputType)) {
       const fileParams = { filename: input.filename };
       form.append("file", input.fileObject, fileParams);
-      if (includeWords) form.append("include_mvision", "true");
-      headers = { ...headers, ...form.getHeaders() };
-    } else if (input.inputType === "stream") {
-      form.append("file", input.fileObject);
       if (includeWords) form.append("include_mvision", "true");
       headers = { ...headers, ...form.getHeaders() };
     } else if (input.inputType === "base64") {
