@@ -11,6 +11,20 @@ mindeeClient.invoice
     console.log("Success !");
     console.log(res.invoices);
     console.log(res.invoice);
+    console.log(res.documentType);
+  })
+  .catch((err) => {
+    console.error(err);
+  });
+
+// parsing credit note from pdf
+mindeeClient.invoice
+  .parse({ input: "./documents/invoices/credit_note.pdf" })
+  .then((res) => {
+    console.log("Success !");
+    console.log(res.invoices);
+    console.log(res.invoice);
+    console.log(res.documentType);
   })
   .catch((err) => {
     console.error(err);
@@ -21,6 +35,7 @@ mindeeClient.invoice
   .parse({ input: "./documents/invoices/invoice_6p.pdf" })
   .then((res) => {
     console.log("Success !");
+    console.log(res.documentType);
     console.log(res.invoices);
     console.log(res.invoice);
   })
@@ -36,6 +51,7 @@ mindeeClient.invoice
   .parse({ input: base64, inputType: "base64" })
   .then((res) => {
     console.log("Success !");
+    console.log(res.documentType);
     console.log(res.invoices);
     console.log(res.invoice);
   })
@@ -49,6 +65,7 @@ mindeeClient.invoice
   .parse({ input: stream, inputType: "stream" })
   .then((res) => {
     console.log("Success !");
+    console.log(res.documentType);
     console.log(res.invoices);
     console.log(res.invoice);
   })
