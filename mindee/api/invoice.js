@@ -29,6 +29,20 @@ class APIInvoice extends APIObject {
     const url = `v${version}/predict`;
     return await super._request(url, inputFile, includeWords);
   }
+
+  /** 
+    @param {String} inputFile - Input object
+    @param {} response - HTTP response
+    @param {Document} documentType - Document class in {"Receipt", "Invoice", "Financial_document"}
+    @returns {Response}
+  */
+  wrapResponse(inputFile, response, documentType) {
+    let result = super.wrapResponse(inputFile, response, documentType);
+    result.documentType =
+      result.httpResponse.data?.predictions?.[0]?.document_type?.value?.toLowerCase() ||
+      result.documentType;
+    return result;
+  }
 }
 
 module.exports = APIInvoice;
