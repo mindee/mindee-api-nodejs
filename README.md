@@ -17,7 +17,7 @@ You can use the SDK easily by creating a Client like this :
 ```js
 const { Client } = require("mindee");
 
-const mindeeClient = Client({
+const mindeeClient = new Client({
   invoiceToken: "invoiceApiToken",
   receiptToken: "receiptExpenseApiToken",
 });
