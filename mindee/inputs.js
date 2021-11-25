@@ -2,6 +2,10 @@ const fs = require("fs").promises;
 const errorHandler = require("./errors/handler");
 const path = require("path");
 const { PDFDocument } = require("pdf-lib");
+const magic = require("stream-mmmagic");
+const concat = require("concat-stream");
+const { Base64Encode } = require("base64-stream");
+const ReadableStreamClone = require("readable-stream-clone");
 
 class Input {
   MIMETYPES = {
@@ -56,6 +60,7 @@ class Input {
     this.fileObject = await fs.readFile(this.file);
     this.filepath = this.file;
     this.filename = this.filename || path.basename(this.file);
+
     // Check if file type is valid
     const filetype = this.filename.split(".").pop();
     if (!(filetype in this.MIMETYPES)) {
@@ -78,6 +83,16 @@ class Input {
     this.fileObject = this.file;
     this.filename = this.filename || "stream";
     this.filepath = undefined;
+
+    //Copy the ReadableStream
+    const stream = new ReadableStreamClone(this.fileObject);
+    this.fileObject = new ReadableStreamClone(this.fileObject);
+
+    const [mime, output] = await magic.promise(stream);
+
+    if (mime.type === "application/pdf" && this.allowCutPdf == true) {
+      await this.cutPdf();
+    }
   }
 
   initDummy() {
@@ -87,10 +102,42 @@ class Input {
     this.fileExtension = "";
   }
 
+  /**
+   * Convert ReadableStream to Base64 encoded String
+   *
+   * @param {*} stream ReadableStream to encode
+   * @returns Base64 encoded String
+   */
+  async streamToBase64(stream) {
+    return await new Promise((resolve, reject) => {
+      const base64 = new Base64Encode();
+
+      const cbConcat = (base64) => {
+        resolve(base64);
+      };
+
+      stream
+        .pipe(base64)
+        .pipe(concat(cbConcat))
+        .on("error", (error) => {
+          reject(error);
+        });
+    });
+  }
+
   /** Cut PDF if pages > 5 */
   async cutPdf() {
     // convert document to PDFDocument & cut CUT_PDF_SIZE - 1 first pages and last page
-    const pdfDocument = await PDFDocument.load(this.fileObject);
+    let pdfDocument;
+
+    if (this.filename == "stream") {
+      pdfDocument = await PDFDocument.load(
+        await this.streamToBase64(this.fileObject)
+      );
+    } else {
+      pdfDocument = await PDFDocument.load(this.fileObject);
+    }
+
     const splitedPdfDocument = await PDFDocument.create();
     const pdfLength = pdfDocument.getPageCount();
     if (pdfLength <= this.CUT_PDF_SIZE) return;
