@@ -2,7 +2,7 @@
   "name": "mindee",
   "version": "1.0.4",
   "description": "Mindee API SDK for Node.js",
-  "main": "lib/index.js",
+  "main": "mindee/index.js",
   "license": "GPL-3.0",
   "scripts": {
     "build": "babel mindee -d lib",
