@@ -34,12 +34,12 @@
     "prettier": "^2.2.0"
   },
   "dependencies": {
+    "base64-arraybuffer": "^1.0.1",
     "base64-stream": "^1.0.0",
     "concat-stream": "^2.0.0",
+    "file-type": "^16.5.3",
     "form-data": "^3.0.0",
-    "pdf-lib": "^1.13.0",
-    "readable-stream-clone": "^0.0.7",
-    "stream-mmmagic": "^2.3.0"
+    "pdf-lib": "^1.13.0"
   },
   "keywords": [
     "javascript",
