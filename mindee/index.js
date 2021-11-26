@@ -3,6 +3,7 @@ const logger = require("./logger");
 const APIReceipt = require("./api/receipt");
 const APIInvoice = require("./api/invoice");
 const APIFinancialDocument = require("./api/financialDocument");
+
 class Client {
   /**
    * @param {string} receiptToken - Receipt Expense Token from Mindee dashboard
