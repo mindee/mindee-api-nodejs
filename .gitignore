@@ -110,3 +110,7 @@ dist
 lib/
 
 docs/
+
+# macOS files
+.DS_Store
+
