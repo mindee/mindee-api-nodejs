@@ -24,7 +24,12 @@ class APIReceipt extends APIObject {
     includeWords = false,
   }) {
     super.parse();
-    const inputFile = new Input({ file: input, inputType, filename, cutPdf });
+    const inputFile = new Input({
+      file: input,
+      inputType,
+      filename,
+      allowCutPdf: cutPdf,
+    });
     await inputFile.init();
     const url = `v${version}/predict`;
     return await super._request(url, inputFile, includeWords);
