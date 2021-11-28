@@ -59,7 +59,9 @@ class Input {
         Buffer.from(this.fileObject, "base64")
       );
 
-      if (typeOfFile !== null && typeOfFile.mime === "application/pdf") {
+      if (typeOfFile === undefined) {
+        console.error(`Cannot detect mime type of: ${this.fileObject}`);
+      } else if (typeOfFile.mime === "application/pdf") {
         await this.cutPdf();
       }
     }
@@ -89,7 +91,9 @@ class Input {
   }
 
   async initStream() {
-    this.file = await this.streamToBase64(this.file);
+    const file = await this.streamToBase64(this.file);
+
+    this.file = file;
     this.inputType = "base64";
     await this.initBase64();
   }
@@ -127,7 +131,9 @@ class Input {
   /** Cut PDF if pages > 5 */
   async cutPdf() {
     // convert document to PDFDocument & cut CUT_PDF_SIZE - 1 first pages and last page
-    let pdfDocument = await PDFDocument.load(this.fileObject);
+    let pdfDocument = await PDFDocument.load(this.fileObject, {
+      ignoreEncryption: true,
+    });
     const splitedPdfDocument = await PDFDocument.create();
     const pdfLength = pdfDocument.getPageCount();
     if (pdfLength <= this.CUT_PDF_SIZE) return;
