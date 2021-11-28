@@ -38,10 +38,14 @@ const request = (url, method, headers, input, includeWords = false) => {
       });
 
       res.on("end", function () {
-        resolve({
-          ...res,
-          data: JSON.parse(responseBody),
-        });
+        try {
+          resolve({
+            ...res,
+            data: JSON.parse(responseBody),
+          });
+        } catch (error) {
+          console.log(responseBody);
+        }
       });
     });
 
