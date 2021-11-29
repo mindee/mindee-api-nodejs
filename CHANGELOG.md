@@ -1,5 +1,27 @@
 # CHANGELOG
 
+## v1.0.8 (2021-11-29)
+
+### Fixes
+- 🐛 fix cutPDF for ReadableStream + add it for base64 file string
+- 🐛 Updated api Input initialization to specifically declare parameters
+- 🐛 prevent error when the mime type isn't detectable
+- 🐛 raise proper error when the APi doesn't return a valid JSON
+
+### new
+- :see_no_evil: add .DS_Store to ignore file
+
+## v1.0.7 (2021-11-25)
+
+### New
+- ✨ Added pdf page number parameter for multi-pages pdfs with file
+
+### Changes
+- :arrow_up: upgrade path-parse dependency
+- :arrow_up: upgrade browserslist dependency
+- :arrow_up: upgrade lodash dependency
+- :arrow_up: upgrade y18n dependency
+
 ## v1.0.4 (2021-02-18)
 
 ### New
