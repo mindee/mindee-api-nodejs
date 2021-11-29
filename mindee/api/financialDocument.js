@@ -24,7 +24,12 @@ class APIFinancialDocument extends APIObject {
     cutPdf = true,
     includeWords = false,
   }) {
-    const inputFile = new Input({ file: input, inputType, filename, cutPdf });
+    const inputFile = new Input({
+      file: input,
+      inputType: inputType,
+      filename: filename,
+      allowCutPdf: cutPdf,
+    });
     this.apiToken =
       inputFile.fileExtension === "pdf" ? this.invoiceToken : this.receiptToken;
     await inputFile.init();

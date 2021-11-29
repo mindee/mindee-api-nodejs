@@ -26,8 +26,8 @@ class APIReceipt extends APIObject {
     super.parse();
     const inputFile = new Input({
       file: input,
-      inputType,
-      filename,
+      inputType: inputType,
+      filename: filename,
       allowCutPdf: cutPdf,
     });
     await inputFile.init();
