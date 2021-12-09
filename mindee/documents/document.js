@@ -50,7 +50,11 @@ class Document {
     const attributes = Object.getOwnPropertyNames(finalDocument);
     for (const document of documents) {
       for (const attribute of attributes) {
-        if (
+        if (Array.isArray(document?.[attribute])) {
+          finalDocument[attribute] = finalDocument[attribute]?.length
+            ? finalDocument[attribute]
+            : document?.[attribute];
+        } else if (
           document?.[attribute]?.probability >
           finalDocument[attribute].probability
         ) {
