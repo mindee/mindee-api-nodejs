@@ -1,173 +1,364 @@
 {
-  "data": {
-    "input_type": "path",
-    "filename": "receipt.jpg",
-    "filepath": "/dummy/receipt.jpg",
-    "file_extension": "image/png",
-    "document_type": "receipt",
-    "call": {
-      "endpoint": {
-        "name": "expense_receipts",
-        "version": "2.1"
-      },
-      "finished_at": "2020-10-09T20:56:38+00:00",
-      "id": "d1c35ec5-8c22-4a2f-a735-861440bbe6cf",
-      "n_documents": 1,
-      "n_inputs": 1,
-      "processing_time": 0.896,
-      "started_at": "2020-10-09T20:56:37+00:00"
+  "data":
+  {
+    "api_request": {
+      "error": {},
+      "resources": [
+        "document"
+      ],
+      "status": "success",
+      "status_code": 201,
+      "url": "http://api.mindee.net/v1/products/mindee/expense_receipts/v3/predict"
     },
-    "documents": [
-      {
-        "id": "65943b99-a7bb-464d-8728-ba3df2d38962",
-        "name": "receipt.jpg"
-      }
-    ],
-    "predictions": [
-      {
-        "category": {
-          "probability": 0.99,
-          "value": "food"
-        },
-        "date": {
-          "value": "2016-02-26",
-          "probability": 0.99,
-          "raw": "26-Feb-2016",
-          "segmentation": {
-            "bounding_box": [
-              [
-                0.479,
-                0.172
-              ],
-              [
-                0.611,
-                0.172
-              ],
-              [
-                0.611,
-                0.196
-              ],
-              [
-                0.479,
-                0.196
-              ]
-            ]
-          }
-        },
-        "locale": {
-          "country": "GB",
-          "currency": "GBP",
-          "language": "en",
-          "probability": 0.82,
-          "value": "en-GB"
-        },
-        "supplier": {
-          "value": "CLACHAN",
-          "probability": 0.71,
-          "segmentation": {
-            "bounding_box": [
-              [
-                0.394,
-                0.068
-              ],
-              [
-                0.477,
-                0.068
-              ],
-              [
-                0.477,
-                0.087
-              ],
-              [
-                0.394,
-                0.087
-              ]
-            ]
-          }
-        },
-        "orientation": {
-          "degrees": 0,
-          "probability": 0.99
-        },
-        "taxes": [
+    "document": {
+      "annotations": {
+        "labels": {}
+      },
+      "id": "392707f7-14b8-4589-bfdb-4ff3eae52da7",
+      "inference": {
+        "extras": {},
+        "finished_at": "2022-01-11T05:16:00+00:00",
+        "pages": [
           {
-            "value": 1.7,
-            "probability": 1.0,
-            "rate": 20.0,
-            "code": "N/A",
-            "segmentation": {
-              "bounding_box": [
-                [
-                  0.17,
-                  0.647
+            "id": 0,
+            "prediction": {
+              "category": {
+                "confidence": 1.0,
+                "value": "food"
+              },
+              "date": {
+                "confidence": 0.99,
+                "polygon": [
+                  [
+                    0.365,
+                    0.242
+                  ],
+                  [
+                    0.49,
+                    0.242
+                  ],
+                  [
+                    0.49,
+                    0.273
+                  ],
+                  [
+                    0.365,
+                    0.273
+                  ]
                 ],
-                [
-                  0.719,
-                  0.647
+                "raw": "Apr-08-2018",
+                "value": "2018-04-08"
+              },
+              "locale": {
+                "confidence": 0.85,
+                "country": "FR",
+                "currency": "EUR",
+                "language": "fr",
+                "value": "fr-FR"
+              },
+              "orientation": {
+                "confidence": 0.99,
+                "degrees": 0
+              },
+              "supplier": {
+                "confidence": 0.9,
+                "polygon": [
+                  [
+                    0.41,
+                    0.026
+                  ],
+                  [
+                    0.453,
+                    0.026
+                  ],
+                  [
+                    0.453,
+                    0.048
+                  ],
+                  [
+                    0.41,
+                    0.048
+                  ]
                 ],
-                [
-                  0.719,
-                  0.675
+                "value": "SSP"
+              },
+              "taxes": [
+                {
+                  "code": null,
+                  "confidence": 0.98,
+                  "polygon": [
+                    [
+                      0.301,
+                      0.552
+                    ],
+                    [
+                      0.512,
+                      0.552
+                    ],
+                    [
+                      0.512,
+                      0.574
+                    ],
+                    [
+                      0.301,
+                      0.574
+                    ]
+                  ],
+                  "rate": 5.5,
+                  "value": 0.09
+                },
+                {
+                  "code": null,
+                  "confidence": 0.98,
+                  "polygon": [
+                    [
+                      0.301,
+                      0.495
+                    ],
+                    [
+                      0.495,
+                      0.495
+                    ],
+                    [
+                      0.495,
+                      0.519
+                    ],
+                    [
+                      0.301,
+                      0.519
+                    ]
+                  ],
+                  "rate": 10.0,
+                  "value": 0.34
+                }
+              ],
+              "time": {
+                "confidence": 0.99,
+                "polygon": [
+                  [
+                    0.501,
+                    0.253
+                  ],
+                  [
+                    0.609,
+                    0.253
+                  ],
+                  [
+                    0.609,
+                    0.277
+                  ],
+                  [
+                    0.501,
+                    0.277
+                  ]
                 ],
-                [
-                  0.17,
-                  0.675
-                ]
-              ]
+                "raw": "12:20 PM",
+                "value": "12:20"
+              },
+              "total_incl": {
+                "confidence": 0.99,
+                "polygon": [
+                  [
+                    0.557,
+                    0.645
+                  ],
+                  [
+                    0.685,
+                    0.645
+                  ],
+                  [
+                    0.685,
+                    0.665
+                  ],
+                  [
+                    0.557,
+                    0.665
+                  ]
+                ],
+                "value": 5.4
+              }
             }
           }
         ],
-        "time": {
-          "value": "15:20",
-          "probability": 0.99,
-          "raw": "15:20",
-          "segmentation": {
-            "bounding_box": [
+        "prediction": {
+          "category": {
+            "confidence": 1.0,
+            "value": "food"
+          },
+          "date": {
+            "confidence": 0.99,
+            "page_id": 0,
+            "polygon": [
               [
-                0.623,
-                0.172
+                0.365,
+                0.242
               ],
               [
-                0.68,
-                0.172
+                0.49,
+                0.242
               ],
               [
-                0.68,
-                0.189
+                0.49,
+                0.273
               ],
               [
-                0.623,
-                0.189
+                0.365,
+                0.273
               ]
-            ]
+            ],
+            "raw": "Apr-08-2018",
+            "value": "2018-04-08"
+          },
+          "locale": {
+            "confidence": 0.85,
+            "country": "FR",
+            "currency": "EUR",
+            "language": "fr",
+            "value": "fr-FR"
+          },
+          "supplier": {
+            "confidence": 0.9,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.41,
+                0.026
+              ],
+              [
+                0.453,
+                0.026
+              ],
+              [
+                0.453,
+                0.048
+              ],
+              [
+                0.41,
+                0.048
+              ]
+            ],
+            "value": "SSP"
+          },
+          "taxes": [
+            {
+              "code": null,
+              "confidence": 0.98,
+              "page_id": 0,
+              "polygon": [
+                [
+                  0.301,
+                  0.552
+                ],
+                [
+                  0.512,
+                  0.552
+                ],
+                [
+                  0.512,
+                  0.574
+                ],
+                [
+                  0.301,
+                  0.574
+                ]
+              ],
+              "rate": 5.5,
+              "value": 0.09
+            },
+            {
+              "code": null,
+              "confidence": 0.98,
+              "page_id": 0,
+              "polygon": [
+                [
+                  0.301,
+                  0.495
+                ],
+                [
+                  0.495,
+                  0.495
+                ],
+                [
+                  0.495,
+                  0.519
+                ],
+                [
+                  0.301,
+                  0.519
+                ]
+              ],
+              "rate": 10.0,
+              "value": 0.34
+            }
+          ],
+          "time": {
+            "confidence": 0.99,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.501,
+                0.253
+              ],
+              [
+                0.609,
+                0.253
+              ],
+              [
+                0.609,
+                0.277
+              ],
+              [
+                0.501,
+                0.277
+              ]
+            ],
+            "raw": "12:20 PM",
+            "value": "12:20"
+          },
+          "total_incl": {
+            "confidence": 0.99,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.557,
+                0.645
+              ],
+              [
+                0.685,
+                0.645
+              ],
+              [
+                0.685,
+                0.665
+              ],
+              [
+                0.557,
+                0.665
+              ]
+            ],
+            "value": 5.4
           }
         },
-        "total_incl": {
-          "value": 10.2,
-          "probability": 0.99,
-          "segmentation": {
-            "bounding_box": [
-              [
-                0.564,
-                0.614
-              ],
-              [
-                0.725,
-                0.614
-              ],
-              [
-                0.725,
-                0.644
-              ],
-              [
-                0.564,
-                0.644
-              ]
-            ]
-          }
-        }
-      }
-    ]
-  },
-  "statusCode": 200
+        "processing_time": 2.029,
+        "product": {
+          "features": [
+            "locale",
+            "category",
+            "date",
+            "time",
+            "total_incl",
+            "taxes",
+            "supplier",
+            "orientation"
+          ],
+          "name": "mindee/expense_receipts",
+          "type": "standard",
+          "version": "3.0"
+        },
+        "started_at": "2022-01-11T05:15:58+00:00"
+      },
+      "n_pages": 1,
+      "name": "b7b17d72-235f-42dd-a9fa-270fd112eee8.jpg"
+    }
+  }
 }

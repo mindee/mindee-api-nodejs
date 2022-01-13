@@ -1,78 +1,127 @@
 {
-  "statusCode": 200,
   "data": {
-    "input_type": "path",
-    "filename": "receipt.jpg",
-    "filepath": "/dummy/receipt.jpg",
-    "file_extension": "image/png",
-    "document_type": "receipt",
-    "call": {
-      "endpoint": {
-        "name": "expense_receipts",
-        "version": "2.1"
-      },
-      "finished_at": "2020-10-09T20:56:38+00:00",
-      "id": "d1c35ec5-8c22-4a2f-a735-861440bbe6cf",
-      "n_documents": 1,
-      "n_inputs": 1,
-      "processing_time": 0.896,
-      "started_at": "2020-10-09T20:56:37+00:00"
+    "api_request": {
+      "error": {},
+      "resources": [
+        "document"
+      ],
+      "status": "success",
+      "status_code": 201,
+      "url": "http://api.mindee.net/v1/products/mindee/expense_receipts/v3/predict"
     },
-    "documents": [
-      {
-        "id": "65943b99-a7bb-464d-8728-ba3df2d38962",
-        "name": "receipt.jpg"
-      }
-    ],
-    "predictions": [
-      {
-        "category": {
-          "probability": 0.99,
-          "value": "N/A"
-        },
-        "date": {
-          "value": "N/A",
-          "probability": 0.09,
-          "raw": "",
-          "segmentation": {
-            "bounding_box": []
+    "document": {
+      "annotations": {
+        "labels": {}
+      },
+      "id": "0dbb97eb-7e54-48fc-8241-afc671f52c52",
+      "inference": {
+        "extras": {},
+        "finished_at": "2022-01-11T02:28:13+00:00",
+        "pages": [
+          {
+            "id": 0,
+            "prediction": {
+              "category": {
+                "confidence": 0.5,
+                "value": "food"
+              },
+              "date": {
+                "confidence": 0.0,
+                "polygon": [],
+                "raw": null,
+                "value": null
+              },
+              "locale": {
+                "confidence": 0.0,
+                "country": null,
+                "currency": null,
+                "language": null,
+                "value": null
+              },
+              "orientation": {
+                "confidence": 0.99,
+                "degrees": 0
+              },
+              "supplier": {
+                "confidence": 0.0,
+                "polygon": [],
+                "value": null
+              },
+              "taxes": [],
+              "time": {
+                "confidence": 0.0,
+                "polygon": [],
+                "raw": null,
+                "value": null
+              },
+              "total_incl": {
+                "confidence": 0.0,
+                "polygon": [],
+                "value": null
+              }
+            }
+          }
+        ],
+        "prediction": {
+          "category": {
+            "confidence": 0.5,
+            "value": "food"
+          },
+          "date": {
+            "confidence": 0.0,
+            "page_id": null,
+            "polygon": [],
+            "raw": null,
+            "value": null
+          },
+          "locale": {
+            "confidence": 0.0,
+            "country": null,
+            "currency": null,
+            "language": null,
+            "value": null
+          },
+          "supplier": {
+            "confidence": 0.0,
+            "page_id": null,
+            "polygon": [],
+            "value": null
+          },
+          "taxes": [],
+          "time": {
+            "confidence": 0.0,
+            "page_id": null,
+            "polygon": [],
+            "raw": null,
+            "value": null
+          },
+          "total_incl": {
+            "confidence": 0.0,
+            "page_id": null,
+            "polygon": [],
+            "value": null
           }
         },
-        "locale": {
-          "country": "N/A",
-          "currency": "N/A",
-          "language": "N/A",
-          "probability": 0.82,
-          "value": "N/A"
+        "processing_time": 1.286,
+        "product": {
+          "features": [
+            "locale",
+            "category",
+            "date",
+            "time",
+            "total_incl",
+            "taxes",
+            "supplier",
+            "orientation"
+          ],
+          "name": "mindee/expense_receipts",
+          "type": "standard",
+          "version": "3.0"
         },
-        "supplier": {
-          "value": "N/A",
-          "probability": 0.71,
-          "segmentation": {
-            "bounding_box": []
-          }
-        },
-        "orientation": {
-          "degrees": 0,
-          "probability": 0.99
-        },
-        "taxes": [],
-        "time": {
-          "value": "N/A",
-          "probability": 0.99,
-          "raw": "",
-          "segmentation": {
-            "bounding_box": []
-          }
-        },
-        "total_incl": {
-          "value": "N/A",
-          "probability": 0.99,
-          "segmentation": {
-            "bounding_box": []
-          }
-        }
-      }
-    ]
+        "started_at": "2022-01-11T02:28:11+00:00"
+      },
+      "n_pages": 1,
+      "name": "15f0deaa-87bb-4c43-b05f-0489ac7f0ab7.jpg"
+    }
   }
 }
