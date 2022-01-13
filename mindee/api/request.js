@@ -2,15 +2,16 @@ const https = require("https");
 const { version: sdkVersion } = require("../../package.json");
 const { URL } = require("url");
 const FormData = require("form-data");
-const os = require('os');
+const os = require("os");
 
 const request = (url, method, headers, input, includeWords = false) => {
   return new Promise(function (resolve, reject) {
     const form = new FormData();
     let body;
 
-    headers["User-Agent"] = `mindee-api-nodejs@v${sdkVersion} nodejs-${process.version} ${os.type().toLowerCase()}`;
-    console.log(headers)
+    headers["User-Agent"] = `mindee-api-nodejs@v${sdkVersion} nodejs-${
+      process.version
+    } ${os.type().toLowerCase()}`;
     if (["path", "stream"].includes(input.inputType)) {
       const fileParams = { filename: input.filename };
       form.append("document", input.fileObject, fileParams);
