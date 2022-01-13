@@ -38,14 +38,14 @@ class Response {
       invoice: (params) => new Invoice(params),
       financialDocument: (params) => new FinancialDocument(params),
     };
-    const predictions = this.httpResponse.data.predictions.entries();
+    const predictions = this.httpResponse.data.document.inference.pages.entries();
     this[`${this.documentType}s`] = [];
 
     // Create a list of Document (Receipt, Invoice...) for each page of the input document
     for (const [pageNumber, prediction] of predictions) {
       this[`${this.documentType}s`].push(
         constructors[this.documentType]({
-          apiPrediction: prediction,
+          apiPrediction: prediction.prediction,
           inputFile: this.input,
           pageNumber: pageNumber,
         })
@@ -53,9 +53,12 @@ class Response {
     }
 
     // Merge the list of Document into a unique Document
-    this[this.documentType] = Document.mergePages(
-      this[`${this.documentType}s`]
-    );
+    this[this.documentType] = constructors[this.documentType]({
+      apiPrediction: this.httpResponse.data.document.inference.prediction,
+      inputFile: this.input,
+      pageNumber: -1,
+      level: "document",
+    });
   }
 }
 

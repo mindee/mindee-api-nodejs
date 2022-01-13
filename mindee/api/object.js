@@ -10,7 +10,7 @@ const request = require("./request");
 class APIObject {
   constructor(apiToken = undefined, apiName = "") {
     this.apiToken = apiToken;
-    this.baseUrl = "https://api.mindee.net/products";
+    this.baseUrl = "https://api.mindee.net/v1/products/mindee/";
     this.apiName = apiName;
   }
 
@@ -54,7 +54,7 @@ class APIObject {
     @returns {Response}
   */
   wrapResponse(inputFile, response, documentType) {
-    if (response.statusCode != 200) {
+    if (response.statusCode > 201) {
       const errorMessage = JSON.stringify(response.data, null, 4);
       errorHandler.throw(
         new Error(
