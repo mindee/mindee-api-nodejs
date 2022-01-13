@@ -11,7 +11,6 @@ class Invoice extends Document {
   /**
    *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
    *  @param {Input} input - Input object
-   *  @param {Integer} pageNumber - Page number for multi pages pdf input
    *  @param {Object} locale - locale value for creating Invoice object from scratch
    *  @param {Object} totalIncl - total tax included value for creating Invoice object from scratch
    *  @param {Object} totalExcl - total tax excluded value for creating Invoice object from scratch
@@ -24,7 +23,8 @@ class Invoice extends Document {
    *  @param {Object} vatNumber - vat number value for creating Invoice object from scratch
    *  @param {Object} orientation - orientation value for creating Invoice object from scratch
    *  @param {Object} totalTax - total tax value for creating Invoice object from scratch
-   *  @param {Object} pageNumber - pageNumber for multi pages pdf input
+   *  @param {Number} pageNumber - pageNumber for multi pages pdf input
+   *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
   constructor({
     apiPrediction = undefined,
@@ -43,8 +43,13 @@ class Invoice extends Document {
     orientation = undefined,
     totalTax = undefined,
     pageNumber = 0,
+    level = "page",
   }) {
     super(inputFile);
+    this.level = level;
+    this.constructPrediction = function (item) {
+      return { prediction: { value: item }, valueKey: "value", pageNumber };
+    };
     if (apiPrediction === undefined) {
       this.#initFromScratch({
         locale,
@@ -85,22 +90,18 @@ class Invoice extends Document {
     orientation,
     pageNumber,
   }) {
-    const constructPrediction = function (item) {
-      return { prediction: { value: item }, valueKey: "value", pageNumber };
-    };
-    this.locale = new Locale(constructPrediction(locale));
-    this.totalIncl = new Amount(constructPrediction(totalIncl));
-    this.totalExcl = new Amount(constructPrediction(totalExcl));
-    this.totalTax = new Amount(constructPrediction(totalTax));
-    this.date = new Date(constructPrediction(invoiceDate));
-    this.invoiceDate = new Date(constructPrediction(invoiceDate));
-    this.dueDate = new Date(constructPrediction(dueDate));
-    this.supplier = new Field(constructPrediction(supplier));
-    this.orientation = new Orientation(constructPrediction(orientation));
-    this.invoiceNumber = new Field(constructPrediction(invoiceNumber));
-    this.paymentDetails = new Field(constructPrediction(paymentDetails));
-    this.companyNumber = new Field(constructPrediction(companyNumber));
-    this.vatNumber = new Field(constructPrediction(vatNumber));
+    this.locale = new Locale(this.constructPrediction(locale));
+    this.totalIncl = new Amount(this.constructPrediction(totalIncl));
+    this.totalExcl = new Amount(this.constructPrediction(totalExcl));
+    this.totalTax = new Amount(this.constructPrediction(totalTax));
+    this.date = new Date(this.constructPrediction(invoiceDate));
+    this.invoiceDate = new Date(this.constructPrediction(invoiceDate));
+    this.dueDate = new Date(this.constructPrediction(dueDate));
+    this.supplier = new Field(this.constructPrediction(supplier));
+    this.invoiceNumber = new Field(this.constructPrediction(invoiceNumber));
+    this.paymentDetails = new Field(this.constructPrediction(paymentDetails));
+    this.companyNumber = new Field(this.constructPrediction(companyNumber));
+    this.vatNumber = new Field(this.constructPrediction(vatNumber));
     if (taxes !== undefined) {
       this.taxes = [];
       for (const t of taxes) {
@@ -113,6 +114,9 @@ class Invoice extends Document {
           })
         );
       }
+    }
+    if (this.level === "page") {
+      this.orientation = new Orientation(this.constructPrediction(orientation));
     }
   }
 
@@ -153,10 +157,6 @@ class Invoice extends Document {
         codeKey: "code",
       });
     });
-    this.orientation = new Orientation({
-      prediction: apiPrediction.orientation,
-      pageNumber,
-    });
     this.companyNumber = apiPrediction.company_registration.map(function (
       companyNumber
     ) {
@@ -184,7 +184,23 @@ class Invoice extends Document {
     ) {
       return new PaymentDetails({ prediction: paymentDetail, pageNumber });
     });
-
+    if (this.level === "page") {
+      this.orientation = new Orientation({
+        prediction: apiPrediction.orientation,
+        pageNumber,
+      });
+    } else {
+      this.orientation = new Orientation(
+        this.constructPrediction({
+          prediction: {
+            value: undefined,
+            probability: 0.0,
+            degrees: undefined,
+          },
+        })
+      );
+    }
+    // document.inference.ocr
     if ("mvision" in apiPrediction) this.words = apiPrediction.mvision;
   }
 

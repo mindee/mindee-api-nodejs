@@ -22,6 +22,7 @@ class Receipt extends Document {
    *  @param {Object} orientation - orientation value for creating Receipt object from scratch
    *  @param {Object} totalTax - total taxes value for creating Receipt object from scratch
    *  @param {Object} totalExcl - total taxes excluded value for creating Receipt object from scratch
+   *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
   constructor({
     apiPrediction = undefined,
@@ -37,8 +38,13 @@ class Receipt extends Document {
     totalTax = undefined,
     totalExcl = undefined,
     pageNumber = 0,
+    level = "page",
   }) {
     super(inputFile);
+    this.level = level;
+    this.constructPrediction = function (item) {
+      return { prediction: { value: item }, valueKey: "value", pageNumber };
+    };
     if (apiPrediction === undefined) {
       this.#initFromScratch({
         locale,
@@ -73,15 +79,12 @@ class Receipt extends Document {
     totalTax,
     pageNumber,
   }) {
-    const constructPrediction = function (item) {
-      return { prediction: { value: item }, valueKey: "value", pageNumber };
-    };
-    this.locale = new Locale(constructPrediction(locale));
-    this.totalIncl = new Amount(constructPrediction(totalIncl));
-    this.date = new Date(constructPrediction(date));
-    this.category = new Field(constructPrediction(category));
-    this.merchantName = new Field(constructPrediction(merchantName));
-    this.time = new Field(constructPrediction(time));
+    this.locale = new Locale(this.constructPrediction(locale));
+    this.totalIncl = new Amount(this.constructPrediction(totalIncl));
+    this.date = new Date(this.constructPrediction(date));
+    this.category = new Field(this.constructPrediction(category));
+    this.merchantName = new Field(this.constructPrediction(merchantName));
+    this.time = new Field(this.constructPrediction(time));
     if (taxes !== undefined) {
       this.taxes = [];
       for (const t of taxes) {
@@ -95,9 +98,9 @@ class Receipt extends Document {
         );
       }
     }
-    this.orientation = new Orientation(constructPrediction(orientation));
-    this.totalTax = new Amount(constructPrediction(totalTax));
-    this.totalExcl = new Amount(constructPrediction(totalExcl));
+    this.orientation = new Orientation(this.constructPrediction(orientation));
+    this.totalTax = new Amount(this.constructPrediction(totalTax));
+    this.totalExcl = new Amount(this.constructPrediction(totalExcl));
   }
 
   /**
@@ -142,10 +145,6 @@ class Receipt extends Document {
           codeKey: "code",
         })
     );
-    this.orientation = new Orientation({
-      prediction: apiPrediction.orientation,
-      pageNumber,
-    });
     this.totalTax = new Amount({
       prediction: { value: undefined, probability: 0 },
       valueKey: "value",
@@ -156,6 +155,22 @@ class Receipt extends Document {
       valueKey: "value",
       pageNumber,
     });
+    if (this.level === "page") {
+      this.orientation = new Orientation({
+        prediction: apiPrediction.orientation,
+        pageNumber,
+      });
+    } else {
+      this.orientation = new Orientation(
+        this.constructPrediction({
+          prediction: {
+            value: undefined,
+            probability: 0.0,
+            degrees: undefined,
+          },
+        })
+      );
+    }
     if ("mvision" in apiPrediction) this.words = apiPrediction.mvision;
   }
 
