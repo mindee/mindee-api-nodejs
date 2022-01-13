@@ -27,6 +27,7 @@ class FinancialDocument extends Document {
    *  @param {Object} totalTax - total tax value for creating FinancialDocument object from scratch
    *  @param {Object} time - time value for creating FinancialDocument object from scratch
    *  @param {Object} pageNumber - pageNumber for multi pages pdf input
+   *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
   constructor({
     apiPrediction = undefined,
@@ -46,8 +47,10 @@ class FinancialDocument extends Document {
     totalTax = undefined,
     time = undefined,
     pageNumber = 0,
+    level = "page",
   }) {
     super(inputFile);
+    this.level = level;
     if (apiPrediction === undefined) {
       this.#initFromScratch({
         locale,
@@ -57,7 +60,7 @@ class FinancialDocument extends Document {
         invoiceNumber,
         dueDate,
         taxes,
-        merchantName,
+        supplier,
         paymentDetails,
         companyNumber,
         vatNumber,
@@ -86,7 +89,7 @@ class FinancialDocument extends Document {
     vatNumber,
     orientation,
     pageNumber,
-    merchantName,
+    supplier,
     time,
   }) {
     const constructPrediction = function (item) {
@@ -98,7 +101,7 @@ class FinancialDocument extends Document {
     this.totalTax = new Amount(constructPrediction(totalTax));
     this.date = new Date(constructPrediction(date));
     this.dueDate = new Date(constructPrediction(dueDate));
-    this.merchantName = new Field(constructPrediction(merchantName));
+    this.supplier = new Field(constructPrediction(supplier));
     this.time = new Field(constructPrediction(time));
     this.orientation = new Orientation(constructPrediction(orientation));
     this.invoiceNumber = new Field(constructPrediction(invoiceNumber));
@@ -122,24 +125,45 @@ class FinancialDocument extends Document {
 
   #initFromApiPrediction(apiPrediction, inputFile, pageNumber) {
     if (Object.keys(apiPrediction).includes("invoice_number")) {
-      const invoice = new Invoice({ apiPrediction, inputFile, pageNumber });
-      Object.assign(this, invoice);
+      const invoice = new Invoice({
+        apiPrediction,
+        inputFile,
+        pageNumber,
+        level: this.level,
+      });
+      this.locale = invoice.locale;
+      this.totalIncl = invoice.totalIncl;
+      this.totalExcl = invoice.totalExcl;
+      this.date = invoice.invoiceDate;
+      this.invoiceNumber = invoice.invoiceNumber;
+      this.dueDate = invoice.dueDate;
+      this.taxes = invoice.taxes;
+      this.supplier = invoice.supplier;
+      this.paymentDetails = invoice.paymentDetails;
+      this.companyNumber = invoice.companyNumber;
+      this.orientation = invoice.orientation;
+      this.totalTax = invoice.totalTax;
       this.time = new Field({
         prediction: { value: undefined, probability: 0.0 },
       });
-      this.merchantName = new Field({
-        prediction: { value: undefined, probability: 0.0 },
-      });
     } else {
-      const receipt = new Receipt({ apiPrediction, inputFile, pageNumber });
-      Object.assign(this, receipt);
-      this.invoiceDate = new Field({
-        prediction: { value: undefined, probability: 0.0 },
+      const receipt = new Receipt({
+        apiPrediction,
+        inputFile,
+        pageNumber,
+        level: this.level,
       });
+      this.orientation = receipt.orientation;
+      this.date = receipt.date;
+      this.dueDate = receipt.date;
+      this.taxes = receipt.taxes;
+      this.locale = receipt.locale;
+      this.totalIncl = receipt.totalIncl;
+      this.totalExcl = receipt.totalExcl;
+      this.supplier = receipt.merchantName;
+      this.time = receipt.time;
+      this.totalTax = receipt.totalTax;
       this.invoiceNumber = new Field({
-        prediction: { value: undefined, probability: 0.0 },
-      });
-      this.dueDate = new Field({
         prediction: { value: undefined, probability: 0.0 },
       });
       this.paymentDetails = new Field({
@@ -157,7 +181,7 @@ class FinancialDocument extends Document {
     Filename: ${this.filename}
     Total amount: ${this.totalIncl.value}
     Date: ${this.date.value}
-    Merchant name: ${this.merchantName.value}
+    Supplier: ${this.supplier.value}
     Total taxes: ${this.totalTax.value}
     `;
   }
