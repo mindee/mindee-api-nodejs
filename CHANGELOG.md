@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v1.1.0 (2022-01-03)
+
+### new
+
+- chg: :sparkles: New Mindee API V2 support
+- chg: :zap: Server side invoice reconstruction from multi-page pdfs
+- new: :sparkles: Added OS in User-Agent headers
+
+
 ## v1.0.9 (2021-12-09)
 
 ### Fixes
