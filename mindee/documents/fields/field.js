@@ -18,7 +18,7 @@ class Field {
     this.value = undefined;
     this.probability = 0.0;
     this.bbox = [];
-    if (valueKey in prediction && prediction[valueKey] !== "N/A") {
+    if (valueKey in prediction && prediction[valueKey] !== null) {
       this.value = prediction[valueKey];
       if (prediction.probability) this.probability = prediction.probability;
       if (prediction.segmentation)
