@@ -47,7 +47,7 @@ describe("Test differents init of Field", () => {
 
   it("should create with an N/A value", () => {
     const prediction = {
-      value: "N/A",
+      value: null,
     };
     const field = new Field({ prediction });
     expect(field.value).to.be.undefined;

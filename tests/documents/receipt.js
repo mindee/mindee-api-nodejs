@@ -8,7 +8,9 @@ describe("Receipt Object initialization", async () => {
     const jsonData = await fs.readFile(
       path.resolve("tests/data/api/receipt/v3/receipt_all_na.json")
     );
-    this.basePrediction = JSON.parse(jsonData).data.predictions[0];
+    this.basePrediction = JSON.parse(
+      jsonData
+    ).data.document.inference.pages[0].prediction;
   });
 
   it("should initialize from a prediction object", async () => {
@@ -17,11 +19,11 @@ describe("Receipt Object initialization", async () => {
     );
     const response = JSON.parse(jsonData);
     const receipt = new Receipt({
-      apiPrediction: response.data.predictions[0],
+      apiPrediction: response.data.document.inference.pages[0].prediction,
     });
-    expect(receipt.date.value).to.be.equal("2016-02-26");
-    expect(receipt.totalTax.value).to.be.equal(1.7);
-    expect(receipt.merchantName.value).to.be.equal("CLACHAN");
+    expect(receipt.date.value).to.be.equal("2018-04-08");
+    expect(receipt.totalTax.value).to.be.equal(0.43);
+    expect(receipt.merchantName.value).to.be.equal("SSP");
     expect(receipt.checklist.taxesMatchTotalIncl).to.be.true;
     expect(typeof receipt.toString()).to.be.equal("string");
     for (const key in receipt.checklist) {
@@ -58,7 +60,7 @@ describe("Receipt Object initialization", async () => {
     );
     const response = JSON.parse(jsonData);
     const receipt = new Receipt({
-      apiPrediction: response.data.predictions[0],
+      apiPrediction: response.data.document.inference.pages[0].prediction,
     });
     expect(receipt.locale.value).to.be.undefined;
     expect(receipt.totalIncl.value).to.be.undefined;
