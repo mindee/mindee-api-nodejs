@@ -30,12 +30,14 @@ class APIFinancialDocument extends APIObject {
       filename: filename,
       allowCutPdf: cutPdf,
     });
-    this.apiToken =
-      inputFile.fileExtension === "pdf" ? this.invoiceToken : this.receiptToken;
     await inputFile.init();
+    this.apiToken =
+      inputFile.fileExtension === "application/pdf"
+        ? this.invoiceToken
+        : this.receiptToken;
     const url =
-      inputFile.fileExtension === "pdf"
-        ? "/invoices/v1/predict"
+      inputFile.fileExtension === "application/pdf"
+        ? "/invoices/v2/predict"
         : "/expense_receipts/v3/predict";
     super.parse();
     return await super._request(url, inputFile, version, includeWords);
