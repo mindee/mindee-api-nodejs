@@ -47,7 +47,7 @@ const request = (url, method, headers, input, includeWords = false) => {
             data: JSON.parse(responseBody),
           });
         } catch (error) {
-          console.log("error");
+          console.log(responseBody, error);
         }
       });
     });
