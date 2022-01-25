@@ -1,10 +1,7 @@
 name: Lint
 
 on:
-  pull_request:
-    branches:
-      - master
-      - dev
+  - pull_request
 
 jobs:
   run-linters:
@@ -18,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v1
         with:
-          node-version: 12
+          node-version: 16
 
       # ESLint and Prettier must be in `package.json`
       - name: Install Node.js dependencies

@@ -2,9 +2,14 @@
 
 # Installation
 
+## Requirements
+
+The SDK is officially supported on Node.js LTS _active_ and _maintenance_
+[versions](https://nodejs.org/en/about/releases/).
+
 ## From source code
 
-Download and decompress or clone the source code from github and then do in your node project :
+Download and decompress or clone the source code from Github and then do in your node project:
 
 ```sh
 npm install mindee
@@ -12,7 +17,7 @@ npm install mindee
 
 # Usage
 
-You can use the SDK easily by creating a Client like this :
+You can use the SDK easily by creating a Client like this:
 
 ```js
 const { Client } = require("mindee");
@@ -32,11 +37,14 @@ mindeeClient.financialDocument.parse({
 
 Three apis are actually supported : invoice (`ìnvoice`), receipt (`receipt`) and financial document (`financialDocument`)
 
-You can find more examples on how to use the SDK into the folder `examples`
+You can find more examples on how to use the SDK into the folder `examples`.
 
 ## Client
 
-The mindee Client can take multiple parameters to be initialize. Some this parameters can also be set with env variables. If the env variable and the parameter are both set, the parameter will be the one chosen by the client. This is a list of them:
+The mindee Client can take multiple parameters to be initialize.
+Some this parameters can also be set with env variables.
+If the env variable and the parameter are both set, the parameter will be the one chosen by the client.
+This is a list of them:
 
 - invoiceToken (env variable : `MINDEE_INVOICE_TOKEN`) The expense api token
 - receiptToken (env variable : `MINDEE_RECEIPT_TOKEN`) The invoice api token
@@ -118,7 +126,7 @@ mindeeClient.financialDocument
 
 # Tests
 
-First, link your package to the test repository by linking the node package to the tests :
+First, link your package to the test repository by linking the node package to the tests:
 
 ```sh
 cd mindee-api-nodejs/
