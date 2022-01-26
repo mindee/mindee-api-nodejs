@@ -41,7 +41,7 @@ You can find more examples on how to use the SDK into the folder `examples`.
 
 ## Client
 
-The mindee Client can take multiple parameters to be initialize.
+The Mindee client can take multiple parameters to be initialize.
 Some this parameters can also be set with env variables.
 If the env variable and the parameter are both set, the parameter will be the one chosen by the client.
 This is a list of them:
@@ -143,3 +143,4 @@ A basic documentation of the sdk has been done with the help of JSDoc.
 If you want to generate it, you can use the command `npm run documentation`.
 A folder `docs` will be created with generated documentation.
 Open the `index.html` in your browser to read the documentation.
+
