@@ -1,4 +1,3 @@
-const Document = require("../documents").document;
 const Receipt = require("../documents").receipt;
 const Invoice = require("../documents").invoice;
 const FinancialDocument = require("../documents").financialDocument;

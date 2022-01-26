@@ -39,7 +39,7 @@ class FinancialDocument extends Document {
     invoiceNumber = undefined,
     dueDate = undefined,
     taxes = undefined,
-    merchantName = undefined,
+    supplier = undefined,
     paymentDetails = undefined,
     companyNumber = undefined,
     vatNumber = undefined,
