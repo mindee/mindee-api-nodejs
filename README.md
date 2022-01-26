@@ -9,7 +9,7 @@ The SDK is officially supported on Node.js LTS _active_ and _maintenance_
 
 ## From source code
 
-Download and decompress or clone the source code from Github and then do in your node project:
+Download and decompress or clone the source code from GitHub and then do in your Node.js project:
 
 ```sh
 npm install mindee
