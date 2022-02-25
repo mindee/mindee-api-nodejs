@@ -18,11 +18,15 @@ class Invoice extends Document {
    *  @param {Object} invoiceNumber - invoice number value for creating Invoice object from scratch
    *  @param {Object} taxes - taxes value for creating Invoice object from scratch
    *  @param {Object} supplier - supplier value for creating Invoice object from scratch
+   *  @param {Object} supplierAddress - supplier address value for creating Invoice object from scratch
    *  @param {Object} paymentDetails - payment details value for creating Invoice object from scratch
    *  @param {Object} companyNumber - company number value for creating Invoice object from scratch
    *  @param {Object} vatNumber - vat number value for creating Invoice object from scratch
    *  @param {Object} orientation - orientation value for creating Invoice object from scratch
    *  @param {Object} totalTax - total tax value for creating Invoice object from scratch
+   *  @param {Object} customerName - customer name value for creating Invoice object from scratch
+   *  @param {Object} customerAddress - customer address value for creating Invoice object from scratch
+   *  @param {Object} customerCompanyRegistration - customer company registration value for creating Invoice object from scratch
    *  @param {Number} pageNumber - pageNumber for multi pages pdf input
    *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
@@ -37,11 +41,15 @@ class Invoice extends Document {
     dueDate = undefined,
     taxes = undefined,
     supplier = undefined,
+    supplierAddress = undefined,
     paymentDetails = undefined,
     companyNumber = undefined,
     vatNumber = undefined,
     orientation = undefined,
     totalTax = undefined,
+    customerName = undefined,
+    customerAddress = undefined,
+    customerCompanyRegistration = undefined,
     pageNumber = 0,
     level = "page",
   }) {
@@ -60,12 +68,16 @@ class Invoice extends Document {
         dueDate,
         taxes,
         supplier,
+        supplierAddress,
         paymentDetails,
         companyNumber,
         vatNumber,
         orientation,
         pageNumber,
         totalTax,
+        customerName,
+        customerAddress,
+        customerCompanyRegistration,
       });
     } else {
       this.#initFromApiPrediction(apiPrediction, pageNumber);
@@ -84,11 +96,15 @@ class Invoice extends Document {
     dueDate,
     taxes,
     supplier,
+    supplierAddress,
     paymentDetails,
     companyNumber,
     vatNumber,
     orientation,
     pageNumber,
+    customerName,
+    customerAddress,
+    customerCompanyRegistration,
   }) {
     this.locale = new Locale(this.constructPrediction(locale));
     this.totalIncl = new Amount(this.constructPrediction(totalIncl));
@@ -98,10 +114,16 @@ class Invoice extends Document {
     this.invoiceDate = new Date(this.constructPrediction(invoiceDate));
     this.dueDate = new Date(this.constructPrediction(dueDate));
     this.supplier = new Field(this.constructPrediction(supplier));
+    this.supplierAddress = new Field(this.constructPrediction(supplierAddress));
     this.invoiceNumber = new Field(this.constructPrediction(invoiceNumber));
     this.paymentDetails = new Field(this.constructPrediction(paymentDetails));
     this.companyNumber = new Field(this.constructPrediction(companyNumber));
     this.vatNumber = new Field(this.constructPrediction(vatNumber));
+    this.customerName = new Field(this.constructPrediction(customerName));
+    this.customerAddress = new Field(this.constructPrediction(customerAddress));
+    this.customerCompanyRegistration = new Field(
+      this.constructPrediction(customerCompanyRegistration)
+    );
     if (taxes !== undefined) {
       this.taxes = [];
       for (const t of taxes) {
@@ -179,6 +201,27 @@ class Invoice extends Document {
       prediction: apiPrediction.supplier,
       pageNumber,
     });
+    this.supplierAddress = new Field({
+      prediction: apiPrediction.supplier_address,
+      pageNumber,
+    });
+    this.customerName = new Field({
+      prediction: apiPrediction.customer,
+      pageNumber,
+    });
+    this.customerAddress = new Field({
+      prediction: apiPrediction.customer_address,
+      pageNumber,
+    });
+    this.customerCompanyRegistration = apiPrediction.customer_company_registration.map(
+      function (customerCompanyRegistration) {
+        return new Field({
+          prediction: customerCompanyRegistration,
+          pageNumber,
+          extraFields: ["type"],
+        });
+      }
+    );
     this.paymentDetails = apiPrediction.payment_details.map(function (
       paymentDetail
     ) {
@@ -213,6 +256,9 @@ class Invoice extends Document {
     Total amount excluding taxes: ${this.totalExcl.value}
     Invoice Date: ${this.invoiceDate.value}
     Supplier name: ${this.supplier.value}
+    Supplier address: ${this.supplierAddress.value}
+    Customer name: ${this.customerName.value}
+    Customer address: ${this.customerAddress.value}
     Taxes: ${this.taxes.map((tax) => tax.toString()).join(" - ")}
     Total taxes: ${this.totalTax.value}
     `;

@@ -56,6 +56,25 @@
                 "polygon": [],
                 "value": null
               },
+              "supplier_address": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [],
+                "value": null
+              },
+              "customer": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [],
+                "value": null
+              },
+              "customer_address": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [],
+                "value": null
+              },
+              "customer_company_registration": [],
               "taxes": [],
               "total_excl": {
                 "confidence": 0.99,
@@ -107,6 +126,25 @@
                 "polygon": [],
                 "value": null
               },
+              "supplier_address": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [],
+                "value": null
+              },
+              "customer": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [],
+                "value": null
+              },
+              "customer_address": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [],
+                "value": null
+              },
+              "customer_company_registration": [],
               "taxes": [],
               "total_excl": {
                 "confidence": 0.0,
@@ -157,6 +195,25 @@
             "polygon": [],
             "value": null
           },
+          "supplier_address": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [],
+            "value": null
+          },
+          "customer": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [],
+            "value": null
+          },
+          "customer_address": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [],
+            "value": null
+          },
+          "customer_company_registration": [],
           "taxes": [],
           "total_excl": {
             "confidence": 0.99,
@@ -185,6 +242,10 @@
             "payment_details",
             "company_registration",
             "supplier",
+            "supplier_address",
+            "customer",
+            "customer_address",
+            "customer_company_registration",
             "orientation"
           ],
           "name": "mindee/invoices",

@@ -44,6 +44,10 @@ describe("Invoice Object initialization", async () => {
     expect(invoice.invoiceNumber.value).to.be.undefined;
     expect(invoice.dueDate.value).to.be.undefined;
     expect(invoice.supplier.value).to.be.undefined;
+    expect(invoice.supplierAddress.value).to.be.undefined;
+    expect(invoice.customerName.value).to.be.undefined;
+    expect(invoice.customerAddress.value).to.be.undefined;
+    expect(invoice.customerCompanyRegistration.value).to.be.undefined;
     expect(invoice.taxes.length).to.be.equal(0);
     expect(invoice.paymentDetails.length).to.be.equal(0);
     expect(invoice.companyNumber.length).to.be.equal(0);

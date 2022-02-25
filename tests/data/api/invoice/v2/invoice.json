@@ -220,6 +220,146 @@
                 ],
                 "value": "COMPANY"
               },
+          "supplier_address": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.186,
+                0.057
+              ],
+              [
+                0.479,
+                0.057
+              ],
+              [
+                0.479,
+                0.072
+              ],
+              [
+                0.186,
+                0.072
+              ]
+            ],
+            "value": "COMPANY ADDRESS"
+          },
+          "customer": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.186,
+                0.057
+              ],
+              [
+                0.479,
+                0.057
+              ],
+              [
+                0.479,
+                0.072
+              ],
+              [
+                0.186,
+                0.072
+              ]
+            ],
+            "value": "CUSTOMER"
+          },
+          "customer_address": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.186,
+                0.057
+              ],
+              [
+                0.479,
+                0.057
+              ],
+              [
+                0.479,
+                0.072
+              ],
+              [
+                0.186,
+                0.072
+              ]
+            ],
+            "value": "CUSTOMER ADDRESS"
+          },
+          "customer_company_registration": [
+            {
+              "confidence": 0.65,
+              "polygon": [
+                [
+                  0.31,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.162
+                ],
+                [
+                  0.31,
+                  0.162
+                ]
+              ],
+              "type": "SIREN",
+              "value": "843695665"
+            },
+            {
+              "confidence": 0.65,
+              "polygon": [
+                [
+                  0.31,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.162
+                ],
+                [
+                  0.31,
+                  0.162
+                ]
+              ],
+              "type": "SIRET",
+              "value": "84369566500015"
+            },
+            {
+              "confidence": 0.65,
+              "polygon": [
+                [
+                  0.31,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.162
+                ],
+                [
+                  0.31,
+                  0.162
+                ]
+              ],
+              "type": "VAT NUMBER",
+              "value": "FR08843695665"
+            }
+          ],
               "taxes": [
                 {
                   "value": 44.41,
@@ -329,6 +469,129 @@
                 "polygon": [],
                 "value": null
               },
+              "supplier_address": {
+                "confidence": 0.0,
+                "page_id": 0,
+                "polygon": [],
+                "value": null
+              },
+              "customer": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [
+                  [
+                    0.186,
+                    0.057
+                  ],
+                  [
+                    0.479,
+                    0.057
+                  ],
+                  [
+                    0.479,
+                    0.072
+                  ],
+                  [
+                    0.186,
+                    0.072
+                  ]
+                ],
+                "value": "CUSTOMER"
+              },
+              "customer_address": {
+                "confidence": 0.83,
+                "page_id": 0,
+                "polygon": [
+                  [
+                    0.186,
+                    0.057
+                  ],
+                  [
+                    0.479,
+                    0.057
+                  ],
+                  [
+                    0.479,
+                    0.072
+                  ],
+                  [
+                    0.186,
+                    0.072
+                  ]
+                ],
+                "value": "CUSTOMER ADDRESS"
+              },
+              "customer_company_registration": [
+                {
+                  "confidence": 0.65,
+                  "polygon": [
+                    [
+                      0.31,
+                      0.149
+                    ],
+                    [
+                      0.426,
+                      0.149
+                    ],
+                    [
+                      0.426,
+                      0.162
+                    ],
+                    [
+                      0.31,
+                      0.162
+                    ]
+                  ],
+                  "type": "SIREN",
+                  "value": "843695665"
+                },
+                {
+                  "confidence": 0.65,
+                  "polygon": [
+                    [
+                      0.31,
+                      0.149
+                    ],
+                    [
+                      0.426,
+                      0.149
+                    ],
+                    [
+                      0.426,
+                      0.162
+                    ],
+                    [
+                      0.31,
+                      0.162
+                    ]
+                  ],
+                  "type": "SIRET",
+                  "value": "84369566500015"
+                },
+                {
+                  "confidence": 0.65,
+                  "polygon": [
+                    [
+                      0.31,
+                      0.149
+                    ],
+                    [
+                      0.426,
+                      0.149
+                    ],
+                    [
+                      0.426,
+                      0.162
+                    ],
+                    [
+                      0.31,
+                      0.162
+                    ]
+                  ],
+                  "type": "VAT NUMBER",
+                  "value": "FR08843695665"
+                }
+              ],
               "taxes": [
                 {
                   "value": 44.41,
@@ -571,6 +834,146 @@
             ],
             "value": "COMPANY"
           },
+          "supplier_address": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.186,
+                0.057
+              ],
+              [
+                0.479,
+                0.057
+              ],
+              [
+                0.479,
+                0.072
+              ],
+              [
+                0.186,
+                0.072
+              ]
+            ],
+            "value": "COMPANY ADDRESS"
+          },
+          "customer": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.186,
+                0.057
+              ],
+              [
+                0.479,
+                0.057
+              ],
+              [
+                0.479,
+                0.072
+              ],
+              [
+                0.186,
+                0.072
+              ]
+            ],
+            "value": "CUSTOMER"
+          },
+          "customer_address": {
+            "confidence": 0.83,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.186,
+                0.057
+              ],
+              [
+                0.479,
+                0.057
+              ],
+              [
+                0.479,
+                0.072
+              ],
+              [
+                0.186,
+                0.072
+              ]
+            ],
+            "value": "CUSTOMER ADDRESS"
+          },
+          "customer_company_registration": [
+            {
+              "confidence": 0.65,
+              "polygon": [
+                [
+                  0.31,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.162
+                ],
+                [
+                  0.31,
+                  0.162
+                ]
+              ],
+              "type": "SIREN",
+              "value": "843695665"
+            },
+            {
+              "confidence": 0.65,
+              "polygon": [
+                [
+                  0.31,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.162
+                ],
+                [
+                  0.31,
+                  0.162
+                ]
+              ],
+              "type": "SIRET",
+              "value": "84369566500015"
+            },
+            {
+              "confidence": 0.65,
+              "polygon": [
+                [
+                  0.31,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.149
+                ],
+                [
+                  0.426,
+                  0.162
+                ],
+                [
+                  0.31,
+                  0.162
+                ]
+              ],
+              "type": "VAT NUMBER",
+              "value": "FR08843695665"
+            }
+          ],
           "taxes": [
             {
               "value": 44.41,
@@ -657,6 +1060,10 @@
             "payment_details",
             "company_registration",
             "supplier",
+            "supplier_address",
+            "customer",
+            "customer_address",
+            "customer_company_registration",
             "orientation"
           ],
           "name": "mindee/invoices",
