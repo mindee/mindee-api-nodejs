@@ -127,7 +127,7 @@
                 "value": null
               },
               "supplier_address": {
-                "confidence": 0.83,
+                "confidence": 0.0,
                 "page_id": 0,
                 "polygon": [],
                 "value": null
