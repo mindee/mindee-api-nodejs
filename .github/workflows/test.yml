@@ -33,7 +33,7 @@ jobs:
 
       - name: Link mindee to tests
         if: matrix.node-version != 12
-        run: npm link mindee
+        run: (cd tests && npm link mindee)
 
       - name: Test code
         run: npm run test
