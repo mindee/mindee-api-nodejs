@@ -2,21 +2,18 @@ const Receipt = require("../../mindee/documents/receipt");
 const expect = require("chai").expect;
 const fs = require("fs").promises;
 const path = require("path");
+const api_path = require("../data/api/api_paths.json");
 
 describe("Receipt Object initialization", async () => {
   before(async function () {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt_all_na.json")
-    );
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all_na));
     this.basePrediction = JSON.parse(
       jsonData
     ).data.document.inference.pages[0].prediction;
   });
 
   it("should initialize from a prediction object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt.json")
-    );
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all));
     const response = JSON.parse(jsonData);
     const receipt = new Receipt({
       apiPrediction: response.data.document.inference.pages[0].prediction,
@@ -55,9 +52,7 @@ describe("Receipt Object initialization", async () => {
   });
 
   it("should initialize from a prediction object with N/A value", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt_all_na.json")
-    );
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all_na));
     const response = JSON.parse(jsonData);
     const receipt = new Receipt({
       apiPrediction: response.data.document.inference.pages[0].prediction,

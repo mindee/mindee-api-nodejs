@@ -2,14 +2,15 @@ const fs = require("fs").promises;
 const path = require("path");
 const FinancialDocument = require("../../mindee/documents/financialDocument");
 const expect = require("chai").expect;
+const api_path = require("../data/api/api_paths.json");
 
 describe("Financial Document Object initialization", async () => {
   before(async function () {
     const invoiceJsonDataNA = await fs.readFile(
-      path.resolve("tests/data/api/invoice/v2/invoice_all_na.json")
+      path.resolve(api_path.invoices.all_na)
     );
     const receiptJsonDataNA = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt_all_na.json")
+      path.resolve(api_path.receipts.all_na)
     );
     this.invoiceBasePrediction = JSON.parse(
       invoiceJsonDataNA
@@ -19,10 +20,8 @@ describe("Financial Document Object initialization", async () => {
     ).data.document.inference.pages[0].prediction;
   });
 
-  it("should initialize from a v2 invoice object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/invoice/v2/invoice.json")
-    );
+  it("should initialize from an invoice object", async () => {
+    const jsonData = await fs.readFile(path.resolve(api_path.invoices.all));
     const response = JSON.parse(jsonData);
     const financialDocument = new FinancialDocument({
       apiPrediction: response.data.document.inference.pages[0].prediction,
@@ -33,10 +32,8 @@ describe("Financial Document Object initialization", async () => {
     expect(financialDocument.supplier.value).to.be.equal("COMPANY");
   });
 
-  it("should initialize from a v3 receipt object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt.json")
-    );
+  it("should initialize from a receipt object", async () => {
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all));
     const response = JSON.parse(jsonData);
     const financialDocument = new FinancialDocument({
       apiPrediction: response.data.document.inference.pages[0].prediction,

@@ -2,21 +2,20 @@ const fs = require("fs").promises;
 const path = require("path");
 const Invoice = require("../../mindee/documents/invoice");
 const expect = require("chai").expect;
+const api_path = require("../data/api/api_paths.json");
 
 describe("Invoice Object initialization", async () => {
   before(async function () {
     const jsonDataNA = await fs.readFile(
-      path.resolve("tests/data/api/invoice/v2/invoice_all_na.json")
+      path.resolve(api_path.invoices.all_na)
     );
     this.basePrediction = JSON.parse(
       jsonDataNA
     ).data.document.inference.pages[0].prediction;
   });
 
-  it("should initialize from a V2 prediction object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/invoice/v2/invoice.json")
-    );
+  it("should initialize from a prediction object", async () => {
+    const jsonData = await fs.readFile(path.resolve(api_path.invoices.all));
     const response = JSON.parse(jsonData);
     const invoice = new Invoice({
       apiPrediction: response.data.document.inference.pages[0].prediction,
@@ -30,14 +29,11 @@ describe("Invoice Object initialization", async () => {
   });
 
   it("should initialize from a N/A prediction object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/invoice/v2/invoice_all_na.json")
-    );
+    const jsonData = await fs.readFile(path.resolve(api_path.invoices.all_na));
     const response = JSON.parse(jsonData);
     const invoice = new Invoice({
       apiPrediction: response.data.document.inference.pages[0].prediction,
     });
-    console.log(invoice);
     expect(invoice.locale.value).to.be.undefined;
     expect(invoice.totalIncl.value).to.be.undefined;
     expect(invoice.totalExcl.value).to.be.undefined;
