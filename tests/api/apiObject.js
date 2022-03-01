@@ -1,5 +1,5 @@
-const APIObject = require("mindee").api.APIObject;
-const Input = require("mindee").inputs;
+const APIObject = require("../../mindee/api/object");
+const Input = require("../../mindee/inputs");
 const fs = require("fs").promises;
 const expect = require("chai").expect;
 const path = require("path");

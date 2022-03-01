@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 const path = require("path");
-const FinancialDocument = require("mindee").documents.financialDocument;
+const FinancialDocument = require("../../mindee/documents/financialDocument");
 const expect = require("chai").expect;
 
 describe("Financial Document Object initialization", async () => {

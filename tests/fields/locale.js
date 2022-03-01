@@ -1,4 +1,4 @@
-const Locale = require("mindee").documents.fields.locale;
+const Locale = require("../../mindee/documents/fields/locale");
 const expect = require("chai").expect;
 
 describe("Test Locale field", () => {

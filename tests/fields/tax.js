@@ -1,4 +1,4 @@
-const Tax = require("mindee").documents.fields.tax;
+const Tax = require("../../mindee/documents/fields/tax");
 const expect = require("chai").expect;
 
 describe("Test Tax field", () => {

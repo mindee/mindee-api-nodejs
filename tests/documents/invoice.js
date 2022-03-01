@@ -1,6 +1,6 @@
 const fs = require("fs").promises;
 const path = require("path");
-const Invoice = require("mindee").documents.invoice;
+const Invoice = require("../../mindee/documents/invoice");
 const expect = require("chai").expect;
 
 describe("Invoice Object initialization", async () => {
@@ -37,6 +37,7 @@ describe("Invoice Object initialization", async () => {
     const invoice = new Invoice({
       apiPrediction: response.data.document.inference.pages[0].prediction,
     });
+    console.log(invoice);
     expect(invoice.locale.value).to.be.undefined;
     expect(invoice.totalIncl.value).to.be.undefined;
     expect(invoice.totalExcl.value).to.be.undefined;

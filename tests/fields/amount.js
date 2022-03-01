@@ -1,4 +1,4 @@
-const Amount = require("mindee").documents.fields.amount;
+const Amount = require("../../mindee/documents/fields/amount");
 const expect = require("chai").expect;
 
 describe("Test Amount field", () => {

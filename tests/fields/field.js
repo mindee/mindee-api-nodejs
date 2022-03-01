@@ -1,4 +1,4 @@
-const Field = require("mindee").documents.fields.field;
+const Field = require("../../mindee/documents/fields/field");
 const expect = require("chai").expect;
 
 describe("Test differents init of Field", () => {

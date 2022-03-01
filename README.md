@@ -126,15 +126,6 @@ mindeeClient.financialDocument
 
 # Tests
 
-First, link your package to the test repository by linking the node package to the tests:
-
-```sh
-cd mindee-api-nodejs/
-npm link
-cd tests/
-npm link mindee
-```
-
 To run the tests, use the command `npm run test`
 
 # Documentation

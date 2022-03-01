@@ -1,4 +1,4 @@
-const Receipt = require("mindee").documents.receipt;
+const Receipt = require("../../mindee/documents/receipt");
 const expect = require("chai").expect;
 const fs = require("fs").promises;
 const path = require("path");

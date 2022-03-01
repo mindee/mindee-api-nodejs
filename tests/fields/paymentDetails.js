@@ -1,4 +1,4 @@
-const PaymentDetails = require("mindee").documents.fields.paymentDetails;
+const PaymentDetails = require("../../mindee/documents/fields/paymentDetails");
 const expect = require("chai").expect;
 
 describe("Test PaymentDetails field", () => {

@@ -1,4 +1,4 @@
-const DateField = require("mindee").documents.fields.date;
+const DateField = require("../../mindee/documents/fields/date");
 const expect = require("chai").expect;
 
 describe("Test Date field", () => {
