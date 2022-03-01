@@ -34,7 +34,6 @@ describe("Invoice Object initialization", async () => {
     const invoice = new Invoice({
       apiPrediction: response.data.document.inference.pages[0].prediction,
     });
-    console.log(invoice);
     expect(invoice.locale.value).to.be.undefined;
     expect(invoice.totalIncl.value).to.be.undefined;
     expect(invoice.totalExcl.value).to.be.undefined;
