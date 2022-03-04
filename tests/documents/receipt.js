@@ -73,10 +73,10 @@ describe("Receipt Object initialization", async () => {
     const receiptTotalInclNA = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
-        total_incl: { value: "N/A", probability: 0.5 },
+        total_incl: { value: "N/A", confidence: 0.5 },
         taxes: [
-          { rate: 20, value: 0.5, probability: 0.1 },
-          { rate: 10, value: 4.25, probability: 0.6 },
+          { rate: 20, value: 0.5, confidence: 0.1 },
+          { rate: 10, value: 4.25, confidence: 0.6 },
         ],
       },
     });
@@ -87,7 +87,7 @@ describe("Receipt Object initialization", async () => {
     const receiptNoTaxes = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
-        total_incl: { value: 12.54, probability: 0.5 },
+        total_incl: { value: 12.54, confidence: 0.5 },
         taxes: [],
       },
     });
@@ -98,10 +98,10 @@ describe("Receipt Object initialization", async () => {
     const receipt = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
-        total_incl: { value: 12.54, probability: 0.5 },
+        total_incl: { value: 12.54, confidence: 0.5 },
         taxes: [
-          { rate: 20, value: 0.5, probability: 0.1 },
-          { rate: 10, value: 4.25, probability: 0.6 },
+          { rate: 20, value: 0.5, confidence: 0.1 },
+          { rate: 10, value: 4.25, confidence: 0.6 },
         ],
       },
     });

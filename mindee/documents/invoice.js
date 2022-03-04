@@ -151,7 +151,7 @@ class Invoice extends Document {
       pageNumber,
     });
     this.totalTax = new Amount({
-      prediction: { value: undefined, probability: 0.0 },
+      prediction: { value: undefined, confidence: 0.0 },
       valueKey: "value",
       pageNumber,
     });
@@ -237,7 +237,7 @@ class Invoice extends Document {
         this.constructPrediction({
           prediction: {
             value: undefined,
-            probability: 0.0,
+            confidence: 0.0,
             degrees: undefined,
           },
         })
@@ -376,7 +376,7 @@ class Invoice extends Document {
         value: this.taxes.reduce((acc, tax) => {
           return tax.value !== undefined ? acc + tax.value : acc;
         }, 0),
-        probability: Field.arrayProbability(this.taxes),
+        confidence: Field.arrayProbability(this.taxes),
       };
       if (totalTax.value > 0)
         this.totalTax = new Amount({
@@ -396,7 +396,7 @@ class Invoice extends Document {
     ) {
       const totalTax = {
         value: this.totalIncl.value - this.totalExcl.value,
-        probability: this.totalIncl.probability * this.totalExcl.probability,
+        confidence: this.totalIncl.probability * this.totalExcl.probability,
       };
       if (totalTax.value > 0)
         this.totalTax = new Amount({
@@ -419,7 +419,7 @@ class Invoice extends Document {
           this.taxes.reduce((acc, tax) => {
             return tax.value !== undefined ? acc + tax.value : acc;
           }, 0),
-        probability:
+        confidence:
           Field.arrayProbability(this.taxes) * this.totalIncl.probability,
       };
       this.totalExcl = new Amount({
@@ -442,7 +442,7 @@ class Invoice extends Document {
           this.taxes.reduce((acc, tax) => {
             return tax.value ? acc + tax.value : acc;
           }, 0.0),
-        probability:
+        confidence:
           Field.arrayProbability(this.taxes) * this.totalExcl.probability,
       };
       this.totalIncl = new Amount({

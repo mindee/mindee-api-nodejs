@@ -16,13 +16,10 @@ class Field {
     this.pageNumber = pageNumber;
     this.reconstructed = reconstructed;
     this.value = undefined;
-    this.probability = 0.0;
-    this.bbox = [];
+    this.probability = prediction.confidence ? prediction.confidence : 0.0;
+    this.bbox = prediction.polygon ? prediction.polygon : [];
     if (valueKey in prediction && prediction[valueKey] !== null) {
       this.value = prediction[valueKey];
-      if (prediction.probability) this.probability = prediction.probability;
-      if (prediction.segmentation)
-        this.bbox = prediction.segmentation.bounding_box || [];
       if (extraFields) {
         for (const fieldName of extraFields) {
           this[fieldName] = prediction[fieldName];

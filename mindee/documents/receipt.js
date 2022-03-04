@@ -146,12 +146,12 @@ class Receipt extends Document {
         })
     );
     this.totalTax = new Amount({
-      prediction: { value: undefined, probability: 0 },
+      prediction: { value: undefined, confidence: 0 },
       valueKey: "value",
       pageNumber,
     });
     this.totalExcl = new Amount({
-      prediction: { value: undefined, probability: 0 },
+      prediction: { value: undefined, confidence: 0 },
       valueKey: "value",
       pageNumber,
     });
@@ -165,7 +165,7 @@ class Receipt extends Document {
         this.constructPrediction({
           prediction: {
             value: undefined,
-            probability: 0.0,
+            confidence: 0.0,
             degrees: undefined,
           },
         })
@@ -250,7 +250,7 @@ class Receipt extends Document {
     if (this.taxes.length && this.totalIncl.value != null) {
       const totalExcl = {
         value: this.totalIncl.value - Field.arraySum(this.taxes),
-        probability:
+        confidence:
           Field.arrayProbability(this.taxes) * this.totalIncl.probability,
       };
       this.totalExcl = new Amount({
@@ -272,7 +272,7 @@ class Receipt extends Document {
         value: this.taxes
           .map((tax) => tax.value || 0)
           .reduce((a, b) => a + b, 0),
-        probability: Field.arrayProbability(this.taxes),
+        confidence: Field.arrayProbability(this.taxes),
       };
       if (totalTax.value > 0)
         this.totalTax = new Amount({

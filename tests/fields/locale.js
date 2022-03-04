@@ -8,7 +8,7 @@ describe("Test Locale field", () => {
       language: "en",
       country: "uk",
       currency: "GBP",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const locale = new Locale({ prediction });
     expect(locale.value).to.be.equal("en-EN");
@@ -20,7 +20,7 @@ describe("Test Locale field", () => {
   it("Should create a Locale with some empty fields", () => {
     const prediction = {
       value: "en-EN",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const locale = new Locale({ prediction });
     expect(locale.language).to.be.undefined;

@@ -5,7 +5,7 @@ describe("Test Amount field", () => {
   it("Should create an Amount field", () => {
     const prediction = {
       amount: "2",
-      probability: 0.1,
+      confidence: 0.1,
       segmentation: {
         bounding_box: [
           [0.016, 0.707],
@@ -22,7 +22,7 @@ describe("Test Amount field", () => {
   it("Should create an Amount field with a N/A value as input", () => {
     const prediction = {
       amount: "N/A",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const amount = new Amount({ prediction });
     expect(amount.value).to.be.equal(undefined);

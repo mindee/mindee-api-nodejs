@@ -5,15 +5,13 @@ describe("Test differents init of Field", () => {
   it("Should create a Field", () => {
     const prediction = {
       value: "test",
-      probability: 0.1,
-      segmentation: {
-        bounding_box: [
-          [0.016, 0.707],
-          [0.414, 0.707],
-          [0.414, 0.831],
-          [0.016, 0.831],
-        ],
-      },
+      confidence: 0.1,
+      polygon: [
+        [0.016, 0.707],
+        [0.414, 0.707],
+        [0.414, 0.831],
+        [0.016, 0.831],
+      ],
     };
     const field = new Field({ prediction });
     expect(field.value).to.equals("test");
@@ -24,7 +22,7 @@ describe("Test differents init of Field", () => {
   it("should not create a bbox", () => {
     const prediction = {
       value: "test",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const field = new Field({ prediction });
     expect(field.bbox.length).to.equals(0);
@@ -33,11 +31,11 @@ describe("Test differents init of Field", () => {
   it("should be equal to itself only", () => {
     const prediction1 = {
       value: "test",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const prediction2 = {
       value: "other",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const field1 = new Field({ prediction: prediction1 });
     const field2 = new Field({ prediction: prediction2 });
@@ -56,14 +54,14 @@ describe("Test differents init of Field", () => {
 
   it("should manipulate multiple fields", () => {
     const fields = [
-      new Field({ prediction: { value: 1, probability: 0.1 } }),
-      new Field({ prediction: { value: 2, probability: 0.8 } }),
+      new Field({ prediction: { value: 1, confidence: 0.1 } }),
+      new Field({ prediction: { value: 2, confidence: 0.8 } }),
     ];
     expect(Field.arrayProbability(fields)).to.be.equals(0.8 * 0.1);
     expect(Field.arraySum(fields)).to.be.equals(3);
     const fields2 = [
-      new Field({ prediction: { value: undefined, probability: undefined } }),
-      new Field({ prediction: { value: 4, probability: 0.8 } }),
+      new Field({ prediction: { value: undefined, confidence: undefined } }),
+      new Field({ prediction: { value: 4, confidence: 0.8 } }),
     ];
     expect(Field.arrayProbability(fields2)).to.be.equals(0.0);
     expect(Field.arraySum(fields2)).to.be.equals(0.0);

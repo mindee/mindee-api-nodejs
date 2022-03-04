@@ -8,7 +8,7 @@ describe("Test PaymentDetails field", () => {
       iban: "iban",
       routing_number: "routing_number",
       swift: "swift",
-      probability: 0.1,
+      confidence: 0.1,
       segmentation: {
         boundingBox: [
           [0.016, 0.707],
@@ -32,7 +32,7 @@ describe("Test PaymentDetails field", () => {
       iban: "N/A",
       routing_number: "N/A",
       swift: "N/A",
-      probability: 0.1,
+      confidence: 0.1,
       segmentation: {
         bounding_box: [
           [0.016, 0.707],
@@ -55,7 +55,7 @@ describe("Test PaymentDetails field", () => {
       iban: {},
       routing_number: {},
       swift: {},
-      probability: 0.1,
+      confidence: 0.1,
       segmentation: {
         bounding_box: [
           [0.016, 0.707],
