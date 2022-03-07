@@ -14,7 +14,7 @@ describe("Financial Document Object initialization", async () => {
     );
     this.invoiceBasePrediction = JSON.parse(
       invoiceJsonDataNA
-    ).data.document.inference.pages[0].prediction;
+    ).document.inference.pages[0].prediction;
     this.receiptBasePrediction = JSON.parse(
       receiptJsonDataNA
     ).data.document.inference.pages[0].prediction;
@@ -24,12 +24,12 @@ describe("Financial Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(api_path.invoices.all));
     const response = JSON.parse(jsonData);
     const financialDocument = new FinancialDocument({
-      apiPrediction: response.data.document.inference.pages[0].prediction,
+      apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect(financialDocument.date.value).to.be.equal("2020-09-20");
-    expect(financialDocument.totalTax.value).to.be.equal(44.41);
+    expect(financialDocument.date.value).to.be.equal("2020-02-17");
+    expect(financialDocument.totalTax.value).to.be.equal(97.98);
     expect(typeof financialDocument.toString()).to.be.equal("string");
-    expect(financialDocument.supplier.value).to.be.equal("COMPANY");
+    expect(financialDocument.supplier.value).to.be.equal("TURNPIKE DESIGNS CO.");
   });
 
   it("should initialize from a receipt object", async () => {
@@ -38,9 +38,9 @@ describe("Financial Document Object initialization", async () => {
     const financialDocument = new FinancialDocument({
       apiPrediction: response.data.document.inference.pages[0].prediction,
     });
-    expect(financialDocument.date.value).to.be.equal("2018-04-08");
-    expect(financialDocument.totalTax.value).to.be.equal(0.43);
-    expect(financialDocument.supplier.value).to.be.equal("SSP");
+    expect(financialDocument.date.value).to.be.equal("2016-02-26");
+    expect(financialDocument.totalTax.value).to.be.equal(1.7);
+    expect(financialDocument.supplier.value).to.be.equal("CLACHAN");
     expect(financialDocument.checklist.taxesMatchTotalIncl).to.be.true;
     expect(typeof financialDocument.toString()).to.be.equal("string");
     for (const key in financialDocument.checklist) {

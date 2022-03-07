@@ -1,1079 +1,851 @@
 {
-  "data": {
-    "api_request": {
-      "error": {},
-      "resources": [
-        "document"
-      ],
-      "status": "success",
-      "status_code": 201,
-      "url": "http://api.mindee.net/v1/products/mindee/invoices/v2/predict"
+  "api_request": {
+    "error": {},
+    "resources": [
+      "document"
+    ],
+    "status": "success",
+    "status_code": 201,
+    "url": "http://api.mindee.net/v1/products/mindee/invoices/v3/predict"
+  },
+  "document": {
+    "annotations": {
+      "labels": {}
     },
-    "document": {
-      "annotations": {
-        "labels": {}
-      },
-      "id": "09d3e246-b681-4189-b58e-8d59fde7eb48",
-      "inference": {
-        "extras": {},
-        "finished_at": "2022-01-11T15:38:06+00:00",
-        "pages": [
-          {
-            "id": 0,
-            "prediction": {
-              "company_registration": [
-                {
-                  "confidence": 0.65,
-                  "polygon": [
-                    [
-                      0.31,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.162
-                    ],
-                    [
-                      0.31,
-                      0.162
-                    ]
-                  ],
-                  "type": "SIREN",
-                  "value": "843695665"
-                },
-                {
-                  "confidence": 0.65,
-                  "polygon": [
-                    [
-                      0.31,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.162
-                    ],
-                    [
-                      0.31,
-                      0.162
-                    ]
-                  ],
-                  "type": "SIRET",
-                  "value": "84369566500015"
-                },
-                {
-                  "confidence": 0.65,
-                  "polygon": [
-                    [
-                      0.31,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.162
-                    ],
-                    [
-                      0.31,
-                      0.162
-                    ]
-                  ],
-                  "type": "VAT NUMBER",
-                  "value": "FR08843695665"
-                }
-              ],
-              "date": {
-                "confidence": 0.99,
+    "id": "d262d169-c1ce-40c2-aeb8-28d05f597dc4",
+    "inference": {
+      "extras": {},
+      "finished_at": "2022-03-01T15:33:41+00:00",
+      "pages": [
+        {
+          "extras": {},
+          "id": 0,
+          "prediction": {
+            "company_registration": [
+              {
+                "confidence": 0.39,
                 "polygon": [
                   [
-                    0.548,
-                    0.079
+                    0.759,
+                    0.125
                   ],
                   [
-                    0.645,
-                    0.079
+                    0.835,
+                    0.125
                   ],
                   [
-                    0.645,
-                    0.093
+                    0.835,
+                    0.137
                   ],
                   [
-                    0.548,
-                    0.093
+                    0.759,
+                    0.137
                   ]
                 ],
-                "value": "2020-09-20"
+                "type": "SIREN",
+                "value": "501124705"
               },
-              "document_type": {
-                "value": "INVOICE"
-              },
-              "due_date": {
-                "confidence": 0.99,
+              {
+                "confidence": 0.39,
                 "polygon": [
                   [
-                    0.783,
-                    0.9
+                    0.759,
+                    0.125
                   ],
                   [
-                    0.879,
-                    0.9
+                    0.835,
+                    0.125
                   ],
                   [
-                    0.879,
-                    0.913
+                    0.835,
+                    0.137
                   ],
                   [
-                    0.783,
-                    0.913
+                    0.759,
+                    0.137
                   ]
                 ],
-                "raw": "2020-10-20",
-                "value": "2020-10-20"
-              },
-              "invoice_number": {
-                "confidence": 0.8,
-                "polygon": [
-                  [
-                    0.783,
-                    0.862
-                  ],
-                  [
-                    0.872,
-                    0.862
-                  ],
-                  [
-                    0.872,
-                    0.876
-                  ],
-                  [
-                    0.783,
-                    0.876
-                  ]
-                ],
-                "value": "FA0002XXX"
-              },
-              "locale": {
-                "confidence": 0.9,
-                "currency": "EUR",
-                "language": "fr"
-              },
-              "orientation": {
-                "confidence": 0.99,
-                "degrees": 0
-              },
-              "payment_details": [
-                {
-                  "account_number": null,
-                  "confidence": 0.96,
-                  "iban": "XXXXXXXXXXXX",
-                  "polygon": [
-                    [
-                      0.097,
-                      0.783
-                    ],
-                    [
-                      0.295,
-                      0.783
-                    ],
-                    [
-                      0.295,
-                      0.803
-                    ],
-                    [
-                      0.097,
-                      0.803
-                    ]
-                  ],
-                  "routing_number": null,
-                  "swift": "XXXXXX"
-                }
-              ],
-              "supplier": {
-                "confidence": 0.83,
-                "polygon": [
-                  [
-                    0.186,
-                    0.057
-                  ],
-                  [
-                    0.479,
-                    0.057
-                  ],
-                  [
-                    0.479,
-                    0.072
-                  ],
-                  [
-                    0.186,
-                    0.072
-                  ]
-                ],
-                "value": "COMPANY"
-              },
-          "supplier_address": {
-            "confidence": 0.83,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.186,
-                0.057
-              ],
-              [
-                0.479,
-                0.057
-              ],
-              [
-                0.479,
-                0.072
-              ],
-              [
-                0.186,
-                0.072
-              ]
-            ],
-            "value": "COMPANY ADDRESS"
-          },
-          "customer": {
-            "confidence": 0.83,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.186,
-                0.057
-              ],
-              [
-                0.479,
-                0.057
-              ],
-              [
-                0.479,
-                0.072
-              ],
-              [
-                0.186,
-                0.072
-              ]
-            ],
-            "value": "CUSTOMER"
-          },
-          "customer_address": {
-            "confidence": 0.83,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.186,
-                0.057
-              ],
-              [
-                0.479,
-                0.057
-              ],
-              [
-                0.479,
-                0.072
-              ],
-              [
-                0.186,
-                0.072
-              ]
-            ],
-            "value": "CUSTOMER ADDRESS"
-          },
-          "customer_company_registration": [
-            {
-              "confidence": 0.65,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "SIREN",
-              "value": "843695665"
-            },
-            {
-              "confidence": 0.65,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "SIRET",
-              "value": "84369566500015"
-            },
-            {
-              "confidence": 0.65,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "VAT NUMBER",
-              "value": "FR08843695665"
-            }
-          ],
-              "taxes": [
-                {
-                  "value": 44.41,
-                  "rate": 5.5305,
-                  "confidence": 0.99,
-                  "polygon": [
-                    [
-                      0.218,
-                      0.9
-                    ],
-                    [
-                      0.261,
-                      0.9
-                    ],
-                    [
-                      0.261,
-                      0.916
-                    ],
-                    [
-                      0.218,
-                      0.916
-                    ]
-                  ]
-                }
-              ],
-              "total_excl": {
-                "confidence": 0.99,
-                "polygon": [
-                  [
-                    0.218,
-                    0.9
-                  ],
-                  [
-                    0.261,
-                    0.9
-                  ],
-                  [
-                    0.261,
-                    0.916
-                  ],
-                  [
-                    0.218,
-                    0.916
-                  ]
-                ],
-                "value": 803.0
-              },
-              "total_incl": {
-                "confidence": 0.99,
-                "polygon": [
-                  [
-                    0.518,
-                    0.87
-                  ],
-                  [
-                    0.583,
-                    0.87
-                  ],
-                  [
-                    0.583,
-                    0.889
-                  ],
-                  [
-                    0.518,
-                    0.889
-                  ]
-                ],
-                "value": 847.41
+                "type": "VAT NUMBER",
+                "value": "FR33501124705"
               }
-            }
-          },
-          {
-            "id": 1,
-            "prediction": {
-              "company_registration": [],
-              "date": {
-                "confidence": 0.0,
-                "polygon": [],
-                "value": null
-              },
-              "document_type": {
-                "value": "INVOICE"
-              },
-              "due_date": {
-                "confidence": 0.0,
-                "polygon": [],
-                "raw": null,
-                "value": null
-              },
-              "invoice_number": {
-                "confidence": 0.0,
-                "polygon": [],
-                "value": null
-              },
-              "locale": {
-                "confidence": 0.9,
-                "currency": "EUR",
-                "language": "fr"
-              },
-              "orientation": {
-                "confidence": 0.75,
-                "degrees": 0
-              },
-              "payment_details": [],
-              "supplier": {
-                "confidence": 0.0,
-                "polygon": [],
-                "value": null
-              },
-              "supplier_address": {
-                "confidence": 0.0,
-                "page_id": 0,
-                "polygon": [],
-                "value": null
-              },
-              "customer": {
-                "confidence": 0.83,
-                "page_id": 0,
-                "polygon": [
-                  [
-                    0.186,
-                    0.057
-                  ],
-                  [
-                    0.479,
-                    0.057
-                  ],
-                  [
-                    0.479,
-                    0.072
-                  ],
-                  [
-                    0.186,
-                    0.072
-                  ]
-                ],
-                "value": "CUSTOMER"
-              },
-              "customer_address": {
-                "confidence": 0.83,
-                "page_id": 0,
-                "polygon": [
-                  [
-                    0.186,
-                    0.057
-                  ],
-                  [
-                    0.479,
-                    0.057
-                  ],
-                  [
-                    0.479,
-                    0.072
-                  ],
-                  [
-                    0.186,
-                    0.072
-                  ]
-                ],
-                "value": "CUSTOMER ADDRESS"
-              },
-              "customer_company_registration": [
-                {
-                  "confidence": 0.65,
-                  "polygon": [
-                    [
-                      0.31,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.162
-                    ],
-                    [
-                      0.31,
-                      0.162
-                    ]
-                  ],
-                  "type": "SIREN",
-                  "value": "843695665"
-                },
-                {
-                  "confidence": 0.65,
-                  "polygon": [
-                    [
-                      0.31,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.162
-                    ],
-                    [
-                      0.31,
-                      0.162
-                    ]
-                  ],
-                  "type": "SIRET",
-                  "value": "84369566500015"
-                },
-                {
-                  "confidence": 0.65,
-                  "polygon": [
-                    [
-                      0.31,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.149
-                    ],
-                    [
-                      0.426,
-                      0.162
-                    ],
-                    [
-                      0.31,
-                      0.162
-                    ]
-                  ],
-                  "type": "VAT NUMBER",
-                  "value": "FR08843695665"
-                }
-              ],
-              "taxes": [
-                {
-                  "value": 44.41,
-                  "rate": 5.5305,
-                  "confidence": 0.99,
-                  "polygon": [
-                    [
-                      0.218,
-                      0.9
-                    ],
-                    [
-                      0.261,
-                      0.9
-                    ],
-                    [
-                      0.261,
-                      0.916
-                    ],
-                    [
-                      0.218,
-                      0.916
-                    ]
-                  ]
-                }
-              ],
-              "total_excl": {
-                "confidence": 0.0,
-                "polygon": [],
-                "value": null
-              },
-              "total_incl": {
-                "confidence": 0.0,
-                "polygon": [],
-                "value": null
-              }
-            }
-          }
-        ],
-        "prediction": {
-          "company_registration": [
-            {
-              "confidence": 0.65,
-              "page_id": 0,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "SIREN",
-              "value": "843695665"
+            ],
+            "customer": {
+              "confidence": 0.0,
+              "polygon": [],
+              "value": null
             },
-            {
-              "confidence": 0.65,
-              "page_id": 0,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "SIRET",
-              "value": "84369566500015"
+            "customer_address": {
+              "confidence": 0.0,
+              "polygon": [],
+              "value": null
             },
-            {
-              "confidence": 0.65,
-              "page_id": 0,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "VAT NUMBER",
-              "value": "FR08843695665"
-            }
-          ],
-          "date": {
-            "confidence": 0.99,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.548,
-                0.079
-              ],
-              [
-                0.645,
-                0.079
-              ],
-              [
-                0.645,
-                0.093
-              ],
-              [
-                0.548,
-                0.093
-              ]
-            ],
-            "value": "2020-09-20"
-          },
-          "document_type": {
-            "value": "INVOICE"
-          },
-          "due_date": {
-            "confidence": 0.99,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.783,
-                0.9
-              ],
-              [
-                0.879,
-                0.9
-              ],
-              [
-                0.879,
-                0.913
-              ],
-              [
-                0.783,
-                0.913
-              ]
-            ],
-            "raw": "2020-10-20",
-            "value": "2020-10-20"
-          },
-          "invoice_number": {
-            "confidence": 0.8,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.783,
-                0.862
-              ],
-              [
-                0.872,
-                0.862
-              ],
-              [
-                0.872,
-                0.876
-              ],
-              [
-                0.783,
-                0.876
-              ]
-            ],
-            "value": "FA000XXXX"
-          },
-          "locale": {
-            "confidence": 0.9,
-            "currency": "EUR",
-            "language": "fr"
-          },
-          "payment_details": [
-            {
-              "account_number": null,
-              "confidence": 0.96,
-              "iban": "XXXXXXXXXX",
-              "page_id": 0,
-              "polygon": [
-                [
-                  0.097,
-                  0.783
-                ],
-                [
-                  0.295,
-                  0.783
-                ],
-                [
-                  0.295,
-                  0.803
-                ],
-                [
-                  0.097,
-                  0.803
-                ]
-              ],
-              "routing_number": null,
-              "swift": "XXXXX"
-            }
-          ],
-          "supplier": {
-            "confidence": 0.83,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.186,
-                0.057
-              ],
-              [
-                0.479,
-                0.057
-              ],
-              [
-                0.479,
-                0.072
-              ],
-              [
-                0.186,
-                0.072
-              ]
-            ],
-            "value": "COMPANY"
-          },
-          "supplier_address": {
-            "confidence": 0.83,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.186,
-                0.057
-              ],
-              [
-                0.479,
-                0.057
-              ],
-              [
-                0.479,
-                0.072
-              ],
-              [
-                0.186,
-                0.072
-              ]
-            ],
-            "value": "COMPANY ADDRESS"
-          },
-          "customer": {
-            "confidence": 0.83,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.186,
-                0.057
-              ],
-              [
-                0.479,
-                0.057
-              ],
-              [
-                0.479,
-                0.072
-              ],
-              [
-                0.186,
-                0.072
-              ]
-            ],
-            "value": "CUSTOMER"
-          },
-          "customer_address": {
-            "confidence": 0.83,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.186,
-                0.057
-              ],
-              [
-                0.479,
-                0.057
-              ],
-              [
-                0.479,
-                0.072
-              ],
-              [
-                0.186,
-                0.072
-              ]
-            ],
-            "value": "CUSTOMER ADDRESS"
-          },
-          "customer_company_registration": [
-            {
-              "confidence": 0.65,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "SIREN",
-              "value": "843695665"
-            },
-            {
-              "confidence": 0.65,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "SIRET",
-              "value": "84369566500015"
-            },
-            {
-              "confidence": 0.65,
-              "polygon": [
-                [
-                  0.31,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.149
-                ],
-                [
-                  0.426,
-                  0.162
-                ],
-                [
-                  0.31,
-                  0.162
-                ]
-              ],
-              "type": "VAT NUMBER",
-              "value": "FR08843695665"
-            }
-          ],
-          "taxes": [
-            {
-              "value": 44.41,
-              "rate": 5.5305,
+            "customer_company_registration": [],
+            "date": {
               "confidence": 0.99,
               "polygon": [
                 [
-                  0.218,
-                  0.9
+                  0.382,
+                  0.306
                 ],
                 [
-                  0.261,
-                  0.9
+                  0.44,
+                  0.306
                 ],
                 [
-                  0.261,
-                  0.916
+                  0.44,
+                  0.318
                 ],
                 [
-                  0.218,
-                  0.916
+                  0.382,
+                  0.318
                 ]
-              ]
+              ],
+              "value": "2020-02-17"
+            },
+            "document_type": {
+              "value": "INVOICE"
+            },
+            "due_date": {
+              "confidence": 0.99,
+              "polygon": [
+                [
+                  0.382,
+                  0.306
+                ],
+                [
+                  0.44,
+                  0.306
+                ],
+                [
+                  0.44,
+                  0.318
+                ],
+                [
+                  0.382,
+                  0.318
+                ]
+              ],
+              "raw": "2020-02-17",
+              "value": "2020-02-17"
+            },
+            "invoice_number": {
+              "confidence": 0.95,
+              "polygon": [
+                [
+                  0.177,
+                  0.307
+                ],
+                [
+                  0.265,
+                  0.307
+                ],
+                [
+                  0.265,
+                  0.32
+                ],
+                [
+                  0.177,
+                  0.32
+                ]
+              ],
+              "value": "0042004801351"
+            },
+            "locale": {
+              "confidence": 0.94,
+              "currency": "EUR",
+              "language": "fr"
+            },
+            "orientation": {
+              "confidence": 0.99,
+              "degrees": 0
+            },
+            "payment_details": [
+              {
+                "account_number": null,
+                "confidence": 0.94,
+                "iban": "FR7640254025476501124705368",
+                "polygon": [
+                  [
+                    0.666,
+                    0.123
+                  ],
+                  [
+                    0.861,
+                    0.123
+                  ],
+                  [
+                    0.861,
+                    0.14
+                  ],
+                  [
+                    0.666,
+                    0.14
+                  ]
+                ],
+                "routing_number": null,
+                "swift": null
+              }
+            ],
+            "supplier": {
+              "confidence": 0.7,
+              "polygon": [
+                [
+                  0.164,
+                  0.088
+                ],
+                [
+                  0.399,
+                  0.088
+                ],
+                [
+                  0.399,
+                  0.147
+                ],
+                [
+                  0.164,
+                  0.147
+                ]
+              ],
+              "value": "TURNPIKE DESIGNS CO."
+            },
+            "supplier_address": {
+              "confidence": 0.52,
+              "polygon": [
+                [
+                  0.757,
+                  0.129
+                ],
+                [
+                  0.963,
+                  0.129
+                ],
+                [
+                  0.963,
+                  0.162
+                ],
+                [
+                  0.757,
+                  0.162
+                ]
+              ],
+              "value": "156 University Ave, Toronto ON, Canada M5H 2H7"
+            },
+            "taxes": [
+              {
+                "confidence": 0.85,
+                "polygon": [
+                  [
+                    0.295,
+                    0.749
+                  ],
+                  [
+                    0.543,
+                    0.749
+                  ],
+                  [
+                    0.543,
+                    0.762
+                  ],
+                  [
+                    0.295,
+                    0.762
+                  ]
+                ],
+                "rate": 20.0,
+                "value": 97.98
+              }
+            ],
+            "total_excl": {
+              "confidence": 0.99,
+              "polygon": [
+                [
+                  0.661,
+                  0.764
+                ],
+                [
+                  0.709,
+                  0.764
+                ],
+                [
+                  0.709,
+                  0.78
+                ],
+                [
+                  0.661,
+                  0.78
+                ]
+              ],
+              "value": 489.97
+            },
+            "total_incl": {
+              "confidence": 0.99,
+              "polygon": [
+                [
+                  0.889,
+                  0.783
+                ],
+                [
+                  0.94,
+                  0.783
+                ],
+                [
+                  0.94,
+                  0.797
+                ],
+                [
+                  0.889,
+                  0.797
+                ]
+              ],
+              "value": 587.95
             }
-          ],
-          "total_excl": {
-            "confidence": 0.99,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.218,
-                0.9
-              ],
-              [
-                0.261,
-                0.9
-              ],
-              [
-                0.261,
-                0.916
-              ],
-              [
-                0.218,
-                0.916
-              ]
-            ],
-            "value": 803.0
-          },
-          "total_incl": {
-            "confidence": 0.99,
-            "page_id": 0,
-            "polygon": [
-              [
-                0.518,
-                0.87
-              ],
-              [
-                0.583,
-                0.87
-              ],
-              [
-                0.583,
-                0.889
-              ],
-              [
-                0.518,
-                0.889
-              ]
-            ],
-            "value": 847.41
           }
         },
-        "processing_time": 4.252,
-        "product": {
-          "features": [
-            "locale",
-            "invoice_number",
-            "date",
-            "due_date",
-            "total_incl",
-            "total_excl",
-            "taxes",
-            "document_type",
-            "payment_details",
-            "company_registration",
-            "supplier",
-            "supplier_address",
-            "customer",
-            "customer_address",
-            "customer_company_registration",
-            "orientation"
+        {
+          "extras": {},
+          "id": 1,
+          "prediction": {
+            "company_registration": [],
+            "customer": {
+              "confidence": 0.87,
+              "polygon": [
+                [
+                  0.037,
+                  0.284
+                ],
+                [
+                  0.099,
+                  0.284
+                ],
+                [
+                  0.099,
+                  0.297
+                ],
+                [
+                  0.037,
+                  0.297
+                ]
+              ],
+              "value": "JIRO DOI"
+            },
+            "customer_address": {
+              "confidence": 0.26,
+              "polygon": [
+                [
+                  0.035,
+                  0.303
+                ],
+                [
+                  0.212,
+                  0.303
+                ],
+                [
+                  0.212,
+                  0.354
+                ],
+                [
+                  0.035,
+                  0.354
+                ]
+              ],
+              "value": "1954 Bloon Street West Toronto, ON, M6P 3K9 Canada"
+            },
+            "customer_company_registration": [],
+            "date": {
+              "confidence": 0.0,
+              "polygon": [],
+              "value": null
+            },
+            "document_type": {
+              "value": "INVOICE"
+            },
+            "due_date": {
+              "confidence": 0.93,
+              "polygon": [
+                [
+                  0.84,
+                  0.326
+                ],
+                [
+                  0.941,
+                  0.326
+                ],
+                [
+                  0.941,
+                  0.34
+                ],
+                [
+                  0.84,
+                  0.34
+                ]
+              ],
+              "raw": "receipt Upon",
+              "value": "2020-02-17"
+            },
+            "invoice_number": {
+              "confidence": 0.0,
+              "polygon": [],
+              "value": null
+            },
+            "locale": {
+              "confidence": 0.94,
+              "currency": "EUR",
+              "language": "fr"
+            },
+            "orientation": {
+              "confidence": 0.99,
+              "degrees": 0
+            },
+            "payment_details": [],
+            "supplier": {
+              "confidence": 0.7,
+              "polygon": [
+                [
+                  0.164,
+                  0.088
+                ],
+                [
+                  0.399,
+                  0.088
+                ],
+                [
+                  0.399,
+                  0.147
+                ],
+                [
+                  0.164,
+                  0.147
+                ]
+              ],
+              "value": "TURNPIKE DESIGNS CO."
+            },
+            "supplier_address": {
+              "confidence": 0.52,
+              "polygon": [
+                [
+                  0.757,
+                  0.129
+                ],
+                [
+                  0.963,
+                  0.129
+                ],
+                [
+                  0.963,
+                  0.162
+                ],
+                [
+                  0.757,
+                  0.162
+                ]
+              ],
+              "value": "156 University Ave, Toronto ON, Canada M5H 2H7"
+            },
+            "taxes": [
+              {
+                "confidence": 0.79,
+                "polygon": [
+                  [
+                    0.785,
+                    0.744
+                  ],
+                  [
+                    0.963,
+                    0.744
+                  ],
+                  [
+                    0.963,
+                    0.758
+                  ],
+                  [
+                    0.785,
+                    0.758
+                  ]
+                ],
+                "rate": 8.0,
+                "value": 193.2
+              }
+            ],
+            "total_excl": {
+              "confidence": 0.0,
+              "polygon": [],
+              "value": null
+            },
+            "total_incl": {
+              "confidence": 0.99,
+              "polygon": [
+                [
+                  0.887,
+                  0.84
+                ],
+                [
+                  0.969,
+                  0.84
+                ],
+                [
+                  0.969,
+                  0.857
+                ],
+                [
+                  0.887,
+                  0.857
+                ]
+              ],
+              "value": 2608.2
+            }
+          }
+        }
+      ],
+      "prediction": {
+        "company_registration": [
+          {
+            "confidence": 0.39,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.759,
+                0.125
+              ],
+              [
+                0.835,
+                0.125
+              ],
+              [
+                0.835,
+                0.137
+              ],
+              [
+                0.759,
+                0.137
+              ]
+            ],
+            "type": "SIREN",
+            "value": "501124705"
+          },
+          {
+            "confidence": 0.39,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.759,
+                0.125
+              ],
+              [
+                0.835,
+                0.125
+              ],
+              [
+                0.835,
+                0.137
+              ],
+              [
+                0.759,
+                0.137
+              ]
+            ],
+            "type": "VAT NUMBER",
+            "value": "FR33501124705"
+          }
+        ],
+        "customer": {
+          "confidence": 0.87,
+          "page_id": 1,
+          "polygon": [
+            [
+              0.037,
+              0.284
+            ],
+            [
+              0.099,
+              0.284
+            ],
+            [
+              0.099,
+              0.297
+            ],
+            [
+              0.037,
+              0.297
+            ]
           ],
-          "name": "mindee/invoices",
-          "type": "standard",
-          "version": "2.1"
+          "value": "JIRO DOI"
         },
-        "started_at": "2022-01-11T15:38:01+00:00"
+        "customer_address": {
+          "confidence": 0.26,
+          "page_id": 1,
+          "polygon": [
+            [
+              0.035,
+              0.303
+            ],
+            [
+              0.212,
+              0.303
+            ],
+            [
+              0.212,
+              0.354
+            ],
+            [
+              0.035,
+              0.354
+            ]
+          ],
+          "value": "1954 Bloon Street West Toronto, ON, M6P 3K9 Canada"
+        },
+        "customer_company_registration": [],
+        "date": {
+          "confidence": 0.99,
+          "page_id": 0,
+          "polygon": [
+            [
+              0.382,
+              0.306
+            ],
+            [
+              0.44,
+              0.306
+            ],
+            [
+              0.44,
+              0.318
+            ],
+            [
+              0.382,
+              0.318
+            ]
+          ],
+          "value": "2020-02-17"
+        },
+        "document_type": {
+          "value": "INVOICE"
+        },
+        "due_date": {
+          "confidence": 0.99,
+          "page_id": 0,
+          "polygon": [
+            [
+              0.382,
+              0.306
+            ],
+            [
+              0.44,
+              0.306
+            ],
+            [
+              0.44,
+              0.318
+            ],
+            [
+              0.382,
+              0.318
+            ]
+          ],
+          "raw": "2020-02-17",
+          "value": "2020-02-17"
+        },
+        "invoice_number": {
+          "confidence": 0.95,
+          "page_id": 0,
+          "polygon": [
+            [
+              0.177,
+              0.307
+            ],
+            [
+              0.265,
+              0.307
+            ],
+            [
+              0.265,
+              0.32
+            ],
+            [
+              0.177,
+              0.32
+            ]
+          ],
+          "value": "0042004801351"
+        },
+        "locale": {
+          "confidence": 0.94,
+          "currency": "EUR",
+          "language": "fr"
+        },
+        "payment_details": [
+          {
+            "account_number": null,
+            "confidence": 0.94,
+            "iban": "FR7640254025476501124705368",
+            "page_id": 0,
+            "polygon": [
+              [
+                0.666,
+                0.123
+              ],
+              [
+                0.861,
+                0.123
+              ],
+              [
+                0.861,
+                0.14
+              ],
+              [
+                0.666,
+                0.14
+              ]
+            ],
+            "routing_number": null,
+            "swift": null
+          }
+        ],
+        "supplier": {
+          "confidence": 0.7,
+          "page_id": 1,
+          "polygon": [
+            [
+              0.164,
+              0.088
+            ],
+            [
+              0.399,
+              0.088
+            ],
+            [
+              0.399,
+              0.147
+            ],
+            [
+              0.164,
+              0.147
+            ]
+          ],
+          "value": "TURNPIKE DESIGNS CO."
+        },
+        "supplier_address": {
+          "confidence": 0.52,
+          "page_id": 1,
+          "polygon": [
+            [
+              0.757,
+              0.129
+            ],
+            [
+              0.963,
+              0.129
+            ],
+            [
+              0.963,
+              0.162
+            ],
+            [
+              0.757,
+              0.162
+            ]
+          ],
+          "value": "156 University Ave, Toronto ON, Canada M5H 2H7"
+        },
+        "taxes": [
+          {
+            "confidence": 0.85,
+            "page_id": 0,
+            "polygon": [
+              [
+                0.295,
+                0.749
+              ],
+              [
+                0.543,
+                0.749
+              ],
+              [
+                0.543,
+                0.762
+              ],
+              [
+                0.295,
+                0.762
+              ]
+            ],
+            "rate": 20.0,
+            "value": 97.98
+          }
+        ],
+        "total_excl": {
+          "confidence": 0.99,
+          "page_id": 0,
+          "polygon": [
+            [
+              0.661,
+              0.764
+            ],
+            [
+              0.709,
+              0.764
+            ],
+            [
+              0.709,
+              0.78
+            ],
+            [
+              0.661,
+              0.78
+            ]
+          ],
+          "value": 489.97
+        },
+        "total_incl": {
+          "confidence": 0.99,
+          "page_id": 0,
+          "polygon": [
+            [
+              0.889,
+              0.783
+            ],
+            [
+              0.94,
+              0.783
+            ],
+            [
+              0.94,
+              0.797
+            ],
+            [
+              0.889,
+              0.797
+            ]
+          ],
+          "value": 587.95
+        }
       },
-      "n_pages": 2,
-      "name": "0c8cbaa8-5b6f-4192-a6d1-684a66068469.pdf"
-    }
+      "processing_time": 4.634,
+      "product": {
+        "features": [
+          "locale",
+          "invoice_number",
+          "date",
+          "due_date",
+          "total_excl",
+          "total_incl",
+          "taxes",
+          "payment_details",
+          "supplier",
+          "company_registration",
+          "supplier_address",
+          "customer",
+          "customer_company_registration",
+          "customer_address",
+          "document_type",
+          "orientation"
+        ],
+        "name": "mindee/invoices",
+        "type": "standard",
+        "version": "3.0"
+      },
+      "started_at": "2022-03-01T15:33:37+00:00"
+    },
+    "n_pages": 2,
+    "name": "invoice.pdf"
   }
 }

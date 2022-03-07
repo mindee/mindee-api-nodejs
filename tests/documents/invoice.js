@@ -11,20 +11,20 @@ describe("Invoice Object initialization", async () => {
     );
     this.basePrediction = JSON.parse(
       jsonDataNA
-    ).data.document.inference.pages[0].prediction;
+    ).document.inference.pages[0].prediction;
   });
 
   it("should initialize from a prediction object", async () => {
     const jsonData = await fs.readFile(path.resolve(api_path.invoices.all));
     const response = JSON.parse(jsonData);
     const invoice = new Invoice({
-      apiPrediction: response.data.document.inference.pages[0].prediction,
+      apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect(invoice.invoiceDate.value).to.be.equal("2020-09-20");
+    expect(invoice.invoiceDate.value).to.be.equal("2020-02-17");
     expect(invoice.checklist.taxesMatchTotalIncl).to.be.true;
     expect(invoice.checklist.taxesMatchTotalExcl).to.be.true;
     expect(invoice.checklist.taxesPlusTotalExclMatchTotalIncl).to.be.true;
-    expect(invoice.totalTax.value).to.be.equal(44.41);
+    expect(invoice.totalTax.value).to.be.equal(97.98);
     expect(typeof invoice.toString()).to.be.equal("string");
   });
 
@@ -32,7 +32,7 @@ describe("Invoice Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(api_path.invoices.all_na));
     const response = JSON.parse(jsonData);
     const invoice = new Invoice({
-      apiPrediction: response.data.document.inference.pages[0].prediction,
+      apiPrediction: response.document.inference.pages[0].prediction,
     });
     expect(invoice.locale.value).to.be.undefined;
     expect(invoice.totalIncl.value).to.be.undefined;

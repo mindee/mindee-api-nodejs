@@ -18,9 +18,9 @@ describe("Receipt Object initialization", async () => {
     const receipt = new Receipt({
       apiPrediction: response.data.document.inference.pages[0].prediction,
     });
-    expect(receipt.date.value).to.be.equal("2018-04-08");
-    expect(receipt.totalTax.value).to.be.equal(0.43);
-    expect(receipt.merchantName.value).to.be.equal("SSP");
+    expect(receipt.date.value).to.be.equal("2016-02-26");
+    expect(receipt.totalTax.value).to.be.equal(1.7);
+    expect(receipt.merchantName.value).to.be.equal("CLACHAN");
     expect(receipt.checklist.taxesMatchTotalIncl).to.be.true;
     expect(typeof receipt.toString()).to.be.equal("string");
     for (const key in receipt.checklist) {
