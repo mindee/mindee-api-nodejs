@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v1.1.2
+
+### Fixes
+
+- fix: 🐛 Fix returned probability value
+- fix: 🐛 Fix returned bbox value
+
+### new
+
+- new: ✨ New Mindee Invoice API V3 support
+- new: ✨ Add new supplier and customer fields
+
 ## v1.1.0 (2022-01-03)
 
 ### new
