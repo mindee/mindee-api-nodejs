@@ -55,7 +55,7 @@ class Response {
     this[this.documentType] = constructors[this.documentType]({
       apiPrediction: this.httpResponse.data.document.inference.prediction,
       inputFile: this.input,
-      pageNumber: -1,
+      pageNumber: this.httpResponse.data.document.n_pages,
       level: "document",
     });
   }

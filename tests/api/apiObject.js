@@ -1,5 +1,5 @@
-const APIObject = require("mindee").api.APIObject;
-const Input = require("mindee").inputs;
+const APIObject = require("../../mindee/api/object");
+const Input = require("../../mindee/inputs");
 const fs = require("fs").promises;
 const expect = require("chai").expect;
 const path = require("path");
@@ -22,8 +22,8 @@ describe("test APIObject", () => {
     const apiResponse = JSON.parse(jsonData);
     const input = new Input({ inputType: "dummy" });
     const response = apiObject.wrapResponse(input, apiResponse, "receipt");
-    expect(response.receipt.date.value).to.be.equal("2018-04-08");
-    expect(response.receipt.totalTax.value).to.be.equal(0.43);
+    expect(response.receipt.date.value).to.be.equal("2016-02-26");
+    expect(response.receipt.totalTax.value).to.be.equal(1.7);
     expect(response.receipt.checklist.taxesMatchTotalIncl).to.be.true;
     expect(typeof response.receipt.toString()).to.be.equal("string");
   });

@@ -1,6 +1,5 @@
 {
-  "data":
-  {
+  "data": {
     "api_request": {
       "error": {},
       "resources": [
@@ -8,181 +7,156 @@
       ],
       "status": "success",
       "status_code": 201,
-      "url": "http://api.mindee.net/v1/products/mindee/expense_receipts/v3/predict"
+      "url": "http://api.mindee.net/v1/products/mindee/expense_receipts/v3/predict?include_mvision=True"
     },
     "document": {
       "annotations": {
-        "labels": {}
+        "labels": []
       },
-      "id": "392707f7-14b8-4589-bfdb-4ff3eae52da7",
+      "id": "79b9ea7f-ab4f-429e-9631-98d29ba2a49d",
       "inference": {
-        "extras": {},
-        "finished_at": "2022-01-11T05:16:00+00:00",
+        "finished_at": "2021-08-24T08:10:12+00:00",
         "pages": [
           {
             "id": 0,
             "prediction": {
               "category": {
-                "confidence": 1.0,
+                "confidence": 0.99,
                 "value": "food"
               },
               "date": {
                 "confidence": 0.99,
                 "polygon": [
                   [
-                    0.365,
-                    0.242
+                    0.479,
+                    0.173
                   ],
                   [
-                    0.49,
-                    0.242
+                    0.613,
+                    0.173
                   ],
                   [
-                    0.49,
-                    0.273
+                    0.613,
+                    0.197
                   ],
                   [
-                    0.365,
-                    0.273
+                    0.479,
+                    0.197
                   ]
                 ],
-                "raw": "Apr-08-2018",
-                "value": "2018-04-08"
+                "raw": "26-Feb-2016",
+                "value": "2016-02-26"
               },
               "locale": {
-                "confidence": 0.85,
-                "country": "FR",
-                "currency": "EUR",
-                "language": "fr",
-                "value": "fr-FR"
+                "confidence": 0.82,
+                "country": "GB",
+                "currency": "GBP",
+                "language": "en",
+                "value": "en-GB"
               },
               "orientation": {
                 "confidence": 0.99,
                 "degrees": 0
               },
               "supplier": {
-                "confidence": 0.9,
+                "confidence": 0.71,
                 "polygon": [
                   [
-                    0.41,
-                    0.026
+                    0.394,
+                    0.068
                   ],
                   [
-                    0.453,
-                    0.026
+                    0.477,
+                    0.068
                   ],
                   [
-                    0.453,
-                    0.048
+                    0.477,
+                    0.087
                   ],
                   [
-                    0.41,
-                    0.048
+                    0.394,
+                    0.087
                   ]
                 ],
-                "value": "SSP"
+                "value": "CLACHAN"
               },
               "taxes": [
                 {
-                  "code": null,
+                  "code": "None",
                   "confidence": 0.98,
                   "polygon": [
                     [
-                      0.301,
-                      0.552
+                      0.19,
+                      0.402
                     ],
                     [
-                      0.512,
-                      0.552
+                      0.698,
+                      0.402
                     ],
                     [
-                      0.512,
-                      0.574
+                      0.698,
+                      0.432
                     ],
                     [
-                      0.301,
-                      0.574
+                      0.19,
+                      0.432
                     ]
                   ],
-                  "rate": 5.5,
-                  "value": 0.09
-                },
-                {
-                  "code": null,
-                  "confidence": 0.98,
-                  "polygon": [
-                    [
-                      0.301,
-                      0.495
-                    ],
-                    [
-                      0.495,
-                      0.495
-                    ],
-                    [
-                      0.495,
-                      0.519
-                    ],
-                    [
-                      0.301,
-                      0.519
-                    ]
-                  ],
-                  "rate": 10.0,
-                  "value": 0.34
+                  "rate": 20.0,
+                  "value": 1.7
                 }
               ],
               "time": {
                 "confidence": 0.99,
                 "polygon": [
                   [
-                    0.501,
-                    0.253
+                    0.62,
+                    0.173
                   ],
                   [
-                    0.609,
-                    0.253
+                    0.681,
+                    0.173
                   ],
                   [
-                    0.609,
-                    0.277
+                    0.681,
+                    0.191
                   ],
                   [
-                    0.501,
-                    0.277
+                    0.62,
+                    0.191
                   ]
                 ],
-                "raw": "12:20 PM",
-                "value": "12:20"
+                "raw": "15:20",
+                "value": "15:20"
               },
               "total_incl": {
                 "confidence": 0.99,
                 "polygon": [
                   [
-                    0.557,
-                    0.645
+                    0.549,
+                    0.619
                   ],
                   [
-                    0.685,
-                    0.645
+                    0.715,
+                    0.619
                   ],
                   [
-                    0.685,
-                    0.665
+                    0.715,
+                    0.642
                   ],
                   [
-                    0.557,
-                    0.665
+                    0.549,
+                    0.642
                   ]
                 ],
-                "value": 5.4
+                "value": 10.2
               }
             }
           }
         ],
         "prediction": {
           "category": {
-            "confidence": 1.0,
+            "confidence": 0.99,
             "value": "food"
           },
           "date": {
@@ -190,105 +164,80 @@
             "page_id": 0,
             "polygon": [
               [
-                0.365,
-                0.242
+                0.479,
+                0.173
               ],
               [
-                0.49,
-                0.242
+                0.613,
+                0.173
               ],
               [
-                0.49,
-                0.273
+                0.613,
+                0.197
               ],
               [
-                0.365,
-                0.273
+                0.479,
+                0.197
               ]
             ],
-            "raw": "Apr-08-2018",
-            "value": "2018-04-08"
+            "raw": "26-Feb-2016",
+            "value": "2016-02-26"
           },
           "locale": {
-            "confidence": 0.85,
-            "country": "FR",
-            "currency": "EUR",
-            "language": "fr",
-            "value": "fr-FR"
+            "confidence": 0.82,
+            "country": "GB",
+            "currency": "GBP",
+            "language": "en",
+            "value": "en-GB"
           },
           "supplier": {
-            "confidence": 0.9,
+            "confidence": 0.71,
             "page_id": 0,
             "polygon": [
               [
-                0.41,
-                0.026
+                0.394,
+                0.068
               ],
               [
-                0.453,
-                0.026
+                0.477,
+                0.068
               ],
               [
-                0.453,
-                0.048
+                0.477,
+                0.087
               ],
               [
-                0.41,
-                0.048
+                0.394,
+                0.087
               ]
             ],
-            "value": "SSP"
+            "value": "CLACHAN"
           },
           "taxes": [
             {
-              "code": null,
+              "code": "None",
               "confidence": 0.98,
               "page_id": 0,
               "polygon": [
                 [
-                  0.301,
-                  0.552
+                  0.19,
+                  0.402
                 ],
                 [
-                  0.512,
-                  0.552
+                  0.698,
+                  0.402
                 ],
                 [
-                  0.512,
-                  0.574
+                  0.698,
+                  0.432
                 ],
                 [
-                  0.301,
-                  0.574
+                  0.19,
+                  0.432
                 ]
               ],
-              "rate": 5.5,
-              "value": 0.09
-            },
-            {
-              "code": null,
-              "confidence": 0.98,
-              "page_id": 0,
-              "polygon": [
-                [
-                  0.301,
-                  0.495
-                ],
-                [
-                  0.495,
-                  0.495
-                ],
-                [
-                  0.495,
-                  0.519
-                ],
-                [
-                  0.301,
-                  0.519
-                ]
-              ],
-              "rate": 10.0,
-              "value": 0.34
+              "rate": 20.0,
+              "value": 1.7
             }
           ],
           "time": {
@@ -296,50 +245,50 @@
             "page_id": 0,
             "polygon": [
               [
-                0.501,
-                0.253
+                0.62,
+                0.173
               ],
               [
-                0.609,
-                0.253
+                0.681,
+                0.173
               ],
               [
-                0.609,
-                0.277
+                0.681,
+                0.191
               ],
               [
-                0.501,
-                0.277
+                0.62,
+                0.191
               ]
             ],
-            "raw": "12:20 PM",
-            "value": "12:20"
+            "raw": "15:20",
+            "value": "15:20"
           },
           "total_incl": {
             "confidence": 0.99,
             "page_id": 0,
             "polygon": [
               [
-                0.557,
-                0.645
+                0.549,
+                0.619
               ],
               [
-                0.685,
-                0.645
+                0.715,
+                0.619
               ],
               [
-                0.685,
-                0.665
+                0.715,
+                0.642
               ],
               [
-                0.557,
-                0.665
+                0.549,
+                0.642
               ]
             ],
-            "value": 5.4
+            "value": 10.2
           }
         },
-        "processing_time": 2.029,
+        "processing_time": 1.099,
         "product": {
           "features": [
             "locale",
@@ -355,10 +304,16 @@
           "type": "standard",
           "version": "3.0"
         },
-        "started_at": "2022-01-11T05:15:58+00:00"
+        "started_at": "2021-08-24T08:10:11+00:00"
       },
       "n_pages": 1,
-      "name": "b7b17d72-235f-42dd-a9fa-270fd112eee8.jpg"
-    }
+      "name": "document",
+      "ocr": {}
+    },
+    "document_type": "receipt",
+    "input_type": "path",
+    "filename": "receipt.jpg",
+    "filepath": "./tests/data/expense_receipts/receipt.jpg",
+    "file_extension": "image/jpeg"
   }
 }

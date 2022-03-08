@@ -22,18 +22,9 @@ jobs:
         uses: actions/setup-node@v2
         with:
           node-version: ${{ matrix.node-version }}
-          cache: npm
 
       - name: Install Node.js dependencies
         run: npm install
-
-      - name: Link mindee to tests (old way)
-        if: matrix.node-version == 12
-        run: (cd tests && npm link ../.)
-
-      - name: Link mindee to tests
-        if: matrix.node-version != 12
-        run: npm link mindee
 
       - name: Test code
         run: npm run test

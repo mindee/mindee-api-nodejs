@@ -1,49 +1,46 @@
 const fs = require("fs").promises;
 const path = require("path");
-const FinancialDocument = require("mindee").documents.financialDocument;
+const FinancialDocument = require("../../mindee/documents/financialDocument");
 const expect = require("chai").expect;
+const api_path = require("../data/api/api_paths.json");
 
 describe("Financial Document Object initialization", async () => {
   before(async function () {
     const invoiceJsonDataNA = await fs.readFile(
-      path.resolve("tests/data/api/invoice/v2/invoice_all_na.json")
+      path.resolve(api_path.invoices.all_na)
     );
     const receiptJsonDataNA = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt_all_na.json")
+      path.resolve(api_path.receipts.all_na)
     );
     this.invoiceBasePrediction = JSON.parse(
       invoiceJsonDataNA
-    ).data.document.inference.pages[0].prediction;
+    ).document.inference.pages[0].prediction;
     this.receiptBasePrediction = JSON.parse(
       receiptJsonDataNA
     ).data.document.inference.pages[0].prediction;
   });
 
-  it("should initialize from a v2 invoice object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/invoice/v2/invoice.json")
-    );
+  it("should initialize from an invoice object", async () => {
+    const jsonData = await fs.readFile(path.resolve(api_path.invoices.all));
     const response = JSON.parse(jsonData);
     const financialDocument = new FinancialDocument({
-      apiPrediction: response.data.document.inference.pages[0].prediction,
+      apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect(financialDocument.date.value).to.be.equal("2020-09-20");
-    expect(financialDocument.totalTax.value).to.be.equal(44.41);
+    expect(financialDocument.date.value).to.be.equal("2020-02-17");
+    expect(financialDocument.totalTax.value).to.be.equal(97.98);
     expect(typeof financialDocument.toString()).to.be.equal("string");
-    expect(financialDocument.supplier.value).to.be.equal("COMPANY");
+    expect(financialDocument.supplier.value).to.be.equal("TURNPIKE DESIGNS CO.");
   });
 
-  it("should initialize from a v3 receipt object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt.json")
-    );
+  it("should initialize from a receipt object", async () => {
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all));
     const response = JSON.parse(jsonData);
     const financialDocument = new FinancialDocument({
       apiPrediction: response.data.document.inference.pages[0].prediction,
     });
-    expect(financialDocument.date.value).to.be.equal("2018-04-08");
-    expect(financialDocument.totalTax.value).to.be.equal(0.43);
-    expect(financialDocument.supplier.value).to.be.equal("SSP");
+    expect(financialDocument.date.value).to.be.equal("2016-02-26");
+    expect(financialDocument.totalTax.value).to.be.equal(1.7);
+    expect(financialDocument.supplier.value).to.be.equal("CLACHAN");
     expect(financialDocument.checklist.taxesMatchTotalIncl).to.be.true;
     expect(typeof financialDocument.toString()).to.be.equal("string");
     for (const key in financialDocument.checklist) {

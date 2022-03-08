@@ -1,4 +1,4 @@
-const Orientation = require("mindee").documents.fields.orientation;
+const Orientation = require("../../mindee/documents/fields/orientation");
 const expect = require("chai").expect;
 
 describe("Test Orientation field", () => {

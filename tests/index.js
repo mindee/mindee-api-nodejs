@@ -1,9 +1,9 @@
 const expect = require("chai").expect;
-const mindee = require("mindee");
+const Client = require("../mindee/index");
 
 describe("Test client initialization", () => {
   it("should create a client", () => {
-    const client = new mindee.Client();
+    const client = new Client();
     expect(client).to.exist;
   });
 });

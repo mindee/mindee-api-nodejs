@@ -7,22 +7,21 @@
       ],
       "status": "success",
       "status_code": 201,
-      "url": "http://api.mindee.net/v1/products/mindee/expense_receipts/v3/predict"
+      "url": "http://api.mindee.net/v1/products/mindee/expense_receipts/v3/predict?include_mvision=True"
     },
     "document": {
       "annotations": {
-        "labels": {}
+        "labels": []
       },
-      "id": "0dbb97eb-7e54-48fc-8241-afc671f52c52",
+      "id": "0fdf5179-d31c-4cc6-9aae-b69cbca2d70d",
       "inference": {
-        "extras": {},
-        "finished_at": "2022-01-11T02:28:13+00:00",
+        "finished_at": "2021-08-24T08:11:28+00:00",
         "pages": [
           {
             "id": 0,
             "prediction": {
               "category": {
-                "confidence": 0.5,
+                "confidence": 0.46,
                 "value": "food"
               },
               "date": {
@@ -32,7 +31,7 @@
                 "value": null
               },
               "locale": {
-                "confidence": 0.0,
+                "confidence": 0.15,
                 "country": null,
                 "currency": null,
                 "language": null,
@@ -64,7 +63,7 @@
         ],
         "prediction": {
           "category": {
-            "confidence": 0.5,
+            "confidence": 0.46,
             "value": "food"
           },
           "date": {
@@ -75,7 +74,7 @@
             "value": null
           },
           "locale": {
-            "confidence": 0.0,
+            "confidence": 0.15,
             "country": null,
             "currency": null,
             "language": null,
@@ -102,7 +101,7 @@
             "value": null
           }
         },
-        "processing_time": 1.286,
+        "processing_time": 1.42,
         "product": {
           "features": [
             "locale",
@@ -118,10 +117,16 @@
           "type": "standard",
           "version": "3.0"
         },
-        "started_at": "2022-01-11T02:28:11+00:00"
+        "started_at": "2021-08-24T08:11:26+00:00"
       },
       "n_pages": 1,
-      "name": "15f0deaa-87bb-4c43-b05f-0489ac7f0ab7.jpg"
-    }
+      "name": "document",
+      "ocr": {}
+    },
+    "document_type": "receipt",
+    "input_type": "path",
+    "filename": "passport.jpeg",
+    "filepath": "./tests/data/passport/passport.jpeg",
+    "file_extension": "image/jpeg"
   }
 }

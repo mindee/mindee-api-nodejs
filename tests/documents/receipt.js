@@ -1,29 +1,26 @@
-const Receipt = require("mindee").documents.receipt;
+const Receipt = require("../../mindee/documents/receipt");
 const expect = require("chai").expect;
 const fs = require("fs").promises;
 const path = require("path");
+const api_path = require("../data/api/api_paths.json");
 
 describe("Receipt Object initialization", async () => {
   before(async function () {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt_all_na.json")
-    );
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all_na));
     this.basePrediction = JSON.parse(
       jsonData
     ).data.document.inference.pages[0].prediction;
   });
 
   it("should initialize from a prediction object", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt.json")
-    );
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all));
     const response = JSON.parse(jsonData);
     const receipt = new Receipt({
       apiPrediction: response.data.document.inference.pages[0].prediction,
     });
-    expect(receipt.date.value).to.be.equal("2018-04-08");
-    expect(receipt.totalTax.value).to.be.equal(0.43);
-    expect(receipt.merchantName.value).to.be.equal("SSP");
+    expect(receipt.date.value).to.be.equal("2016-02-26");
+    expect(receipt.totalTax.value).to.be.equal(1.7);
+    expect(receipt.merchantName.value).to.be.equal("CLACHAN");
     expect(receipt.checklist.taxesMatchTotalIncl).to.be.true;
     expect(typeof receipt.toString()).to.be.equal("string");
     for (const key in receipt.checklist) {
@@ -55,9 +52,7 @@ describe("Receipt Object initialization", async () => {
   });
 
   it("should initialize from a prediction object with N/A value", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt_all_na.json")
-    );
+    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all_na));
     const response = JSON.parse(jsonData);
     const receipt = new Receipt({
       apiPrediction: response.data.document.inference.pages[0].prediction,
@@ -78,10 +73,10 @@ describe("Receipt Object initialization", async () => {
     const receiptTotalInclNA = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
-        total_incl: { value: "N/A", probability: 0.5 },
+        total_incl: { value: "N/A", confidence: 0.5 },
         taxes: [
-          { rate: 20, value: 0.5, probability: 0.1 },
-          { rate: 10, value: 4.25, probability: 0.6 },
+          { rate: 20, value: 0.5, confidence: 0.1 },
+          { rate: 10, value: 4.25, confidence: 0.6 },
         ],
       },
     });
@@ -92,7 +87,7 @@ describe("Receipt Object initialization", async () => {
     const receiptNoTaxes = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
-        total_incl: { value: 12.54, probability: 0.5 },
+        total_incl: { value: 12.54, confidence: 0.5 },
         taxes: [],
       },
     });
@@ -103,10 +98,10 @@ describe("Receipt Object initialization", async () => {
     const receipt = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
-        total_incl: { value: 12.54, probability: 0.5 },
+        total_incl: { value: 12.54, confidence: 0.5 },
         taxes: [
-          { rate: 20, value: 0.5, probability: 0.1 },
-          { rate: 10, value: 4.25, probability: 0.6 },
+          { rate: 20, value: 0.5, confidence: 0.1 },
+          { rate: 10, value: 4.25, confidence: 0.6 },
         ],
       },
     });

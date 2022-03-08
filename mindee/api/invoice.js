@@ -19,7 +19,7 @@ class APIInvoice extends APIObject {
     input,
     inputType = "path",
     filename = undefined,
-    version = "2",
+    version = "3",
     cutPdf = true,
     includeWords = false,
   }) {

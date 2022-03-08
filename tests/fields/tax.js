@@ -1,4 +1,4 @@
-const Tax = require("mindee").documents.fields.tax;
+const Tax = require("../../mindee/documents/fields/tax");
 const expect = require("chai").expect;
 
 describe("Test Tax field", () => {
@@ -7,15 +7,13 @@ describe("Test Tax field", () => {
       value: "2",
       rate: 0.2,
       code: "QST",
-      probability: 0.1,
-      segmentation: {
-        bounding_box: [
-          [0.016, 0.707],
-          [0.414, 0.707],
-          [0.414, 0.831],
-          [0.016, 0.831],
-        ],
-      },
+      confidence: 0.1,
+      polygon: [
+        [0.016, 0.707],
+        [0.414, 0.707],
+        [0.414, 0.831],
+        [0.016, 0.831],
+      ],
     };
     const tax = new Tax({ prediction, valueKey: "value" });
     expect(tax.value).to.be.equal(2);
@@ -29,7 +27,7 @@ describe("Test Tax field", () => {
     const prediction = {
       value: 2,
       rate: "aa",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const tax = new Tax({ prediction });
     expect(tax.rate).to.be.undefined;
@@ -41,7 +39,7 @@ describe("Test Tax field", () => {
       value: "NA",
       rate: "AA",
       code: "N/A",
-      probability: 0.1,
+      confidence: 0.1,
     };
     const tax = new Tax({ prediction });
     expect(tax.value).to.be.undefined;

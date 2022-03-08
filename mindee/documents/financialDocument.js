@@ -19,13 +19,17 @@ class FinancialDocument extends Document {
    *  @param {Object} Date - date value for creating FinancialDocument object from scratch
    *  @param {Object} InvoiceNumber - Invoice number value for creating FinancialDocument object from scratch
    *  @param {Object} taxes - taxes value for creating FinancialDocument object from scratch
-   *  @param {Object} merchantName - merchant name value for creating FinancialDocument object from scratch
+   *  @param {Object} supplier - supplier value for creating FinancialDocument object from scratch
+   *  @param {Object} supplierAddress - supplier address value for creating FinancialDocument object from scratch
    *  @param {Object} paymentDetails - payment details value for creating FinancialDocument object from scratch
    *  @param {Object} companyNumber - company number value for creating FinancialDocument object from scratch
    *  @param {Object} vatNumber - vat number value for creating FinancialDocument object from scratch
    *  @param {Object} orientation - orientation value for creating FinancialDocument object from scratch
    *  @param {Object} totalTax - total tax value for creating FinancialDocument object from scratch
    *  @param {Object} time - time value for creating FinancialDocument object from scratch
+   *  @param {Object} customerName - customer name value for creating FinancialDocument object from scratch
+   *  @param {Object} customerAddress - customer address value for creating FinancialDocument object from scratch
+   *  @param {Object} customerCompanyRegistration - customer company registration value for creating FinancialDocument object from scratch
    *  @param {Object} pageNumber - pageNumber for multi pages pdf input
    *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
@@ -40,12 +44,16 @@ class FinancialDocument extends Document {
     dueDate = undefined,
     taxes = undefined,
     supplier = undefined,
+    supplierAddress = undefined,
     paymentDetails = undefined,
     companyNumber = undefined,
     vatNumber = undefined,
     orientation = undefined,
     totalTax = undefined,
     time = undefined,
+    customerName = undefined,
+    customerAddress = undefined,
+    customerCompanyRegistration = undefined,
     pageNumber = 0,
     level = "page",
   }) {
@@ -61,6 +69,7 @@ class FinancialDocument extends Document {
         dueDate,
         taxes,
         supplier,
+        supplierAddress,
         paymentDetails,
         companyNumber,
         vatNumber,
@@ -68,6 +77,9 @@ class FinancialDocument extends Document {
         pageNumber,
         totalTax,
         time,
+        customerName,
+        customerAddress,
+        customerCompanyRegistration,
       });
     } else {
       this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber);
@@ -90,7 +102,11 @@ class FinancialDocument extends Document {
     orientation,
     pageNumber,
     supplier,
+    supplierAddress,
     time,
+    customerName,
+    customerAddress,
+    customerCompanyRegistration,
   }) {
     const constructPrediction = function (item) {
       return { prediction: { value: item }, valueKey: "value", pageNumber };
@@ -102,12 +118,18 @@ class FinancialDocument extends Document {
     this.date = new Date(constructPrediction(date));
     this.dueDate = new Date(constructPrediction(dueDate));
     this.supplier = new Field(constructPrediction(supplier));
+    this.supplierAddress = new Field(this.constructPrediction(supplierAddress));
     this.time = new Field(constructPrediction(time));
     this.orientation = new Orientation(constructPrediction(orientation));
     this.invoiceNumber = new Field(constructPrediction(invoiceNumber));
     this.paymentDetails = new Field(constructPrediction(paymentDetails));
     this.companyNumber = new Field(constructPrediction(companyNumber));
     this.vatNumber = new Field(constructPrediction(vatNumber));
+    this.customerName = new Field(this.constructPrediction(customerName));
+    this.customerAddress = new Field(this.constructPrediction(customerAddress));
+    this.customerCompanyRegistration = new Field(
+      this.constructPrediction(customerCompanyRegistration)
+    );
     if (taxes !== undefined) {
       this.taxes = [];
       for (const t of taxes) {
@@ -139,13 +161,17 @@ class FinancialDocument extends Document {
       this.dueDate = invoice.dueDate;
       this.taxes = invoice.taxes;
       this.supplier = invoice.supplier;
+      this.supplierAddress = invoice.supplierAddress;
       this.paymentDetails = invoice.paymentDetails;
       this.companyNumber = invoice.companyNumber;
       this.orientation = invoice.orientation;
       this.totalTax = invoice.totalTax;
       this.time = new Field({
-        prediction: { value: undefined, probability: 0.0 },
+        prediction: { value: undefined, confidence: 0.0 },
       });
+      this.customerName = invoice.customerName;
+      this.customerAddress = invoice.customerAddress;
+      this.customerCompanyRegistration = invoice.customerCompanyRegistration;
     } else {
       const receipt = new Receipt({
         apiPrediction,
@@ -161,17 +187,27 @@ class FinancialDocument extends Document {
       this.totalIncl = receipt.totalIncl;
       this.totalExcl = receipt.totalExcl;
       this.supplier = receipt.merchantName;
+      this.supplierAddress = new Field({
+        prediction: { value: undefined, confidence: 0.0 },
+      });
       this.time = receipt.time;
       this.totalTax = receipt.totalTax;
       this.invoiceNumber = new Field({
-        prediction: { value: undefined, probability: 0.0 },
+        prediction: { value: undefined, confidence: 0.0 },
       });
       this.paymentDetails = new Field({
-        prediction: { value: undefined, probability: 0.0 },
+        prediction: { value: undefined, confidence: 0.0 },
       });
       this.companyNumber = new Field({
-        prediction: { value: undefined, probability: 0.0 },
+        prediction: { value: undefined, confidence: 0.0 },
       });
+      this.customerName = new Field({
+        prediction: { value: undefined, confidence: 0.0 },
+      });
+      this.customerAddress = new Field({
+        prediction: { value: undefined, confidence: 0.0 },
+      });
+      this.customerCompanyRegistration = [];
     }
   }
 
@@ -216,7 +252,7 @@ class FinancialDocument extends Document {
       this.totalIncl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
       reconstructedTotal <= this.totalIncl.value * (1 + eps) + 0.02
     ) {
-      this.taxes = this.taxes.map((tax) => ({ ...tax, probability: 1.0 }));
+      this.taxes = this.taxes.map((tax) => ({ ...tax, confidence: 1.0 }));
       this.totalTax.probability = 1.0;
       this.totalIncl.probability = 1.0;
       return true;
