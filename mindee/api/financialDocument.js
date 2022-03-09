@@ -37,10 +37,10 @@ class APIFinancialDocument extends APIObject {
         : this.receiptToken;
     const url =
       inputFile.fileExtension === "application/pdf"
-        ? "/invoices/v3/predict"
-        : "/expense_receipts/v3/predict";
+        ? `/invoices/v${version}/predict`
+        : `/expense_receipts/v${version}/predict`;
     super.parse();
-    return await super._request(url, inputFile, version, includeWords);
+    return super._request(url, inputFile, includeWords);
   }
 }
 

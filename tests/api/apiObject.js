@@ -10,7 +10,7 @@ describe("test APIObject", () => {
     expect(apiObject.apiToken).to.be.equal("dummyToken");
     expect(apiObject.apiName).to.be.equal("dummyApiName");
     expect(apiObject.baseUrl).to.be.equal(
-      "https://api.mindee.net/v1/products/mindee/"
+      "https://api.mindee.net/v1/products/mindee"
     );
   });
 

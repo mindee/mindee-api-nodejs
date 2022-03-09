@@ -50,6 +50,7 @@ class Invoice extends Document {
     customerName = undefined,
     customerAddress = undefined,
     customerCompanyRegistration = undefined,
+    words = undefined,
     pageNumber = 0,
     level = "page",
   }) {
@@ -80,7 +81,7 @@ class Invoice extends Document {
         customerCompanyRegistration,
       });
     } else {
-      this.#initFromApiPrediction(apiPrediction, pageNumber);
+      this.#initFromApiPrediction(apiPrediction, pageNumber, words);
     }
     this.#checklist();
     this.#reconstruct();
@@ -142,8 +143,7 @@ class Invoice extends Document {
     }
   }
 
-  #initFromApiPrediction(apiPrediction, pageNumber) {
-    this.words = [];
+  #initFromApiPrediction(apiPrediction, pageNumber, words) {
     this.locale = new Locale({ prediction: apiPrediction.locale, pageNumber });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
@@ -243,8 +243,7 @@ class Invoice extends Document {
         })
       );
     }
-    // document.inference.ocr
-    if ("mvision" in apiPrediction) this.words = apiPrediction.mvision;
+    if (words && words.length > 0) this.words = words;
   }
 
   toString() {

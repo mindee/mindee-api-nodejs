@@ -37,6 +37,7 @@ class Receipt extends Document {
     orientation = undefined,
     totalTax = undefined,
     totalExcl = undefined,
+    words = undefined,
     pageNumber = 0,
     level = "page",
   }) {
@@ -60,7 +61,7 @@ class Receipt extends Document {
         pageNumber,
       });
     } else {
-      this.#initFromApiPrediction(apiPrediction, pageNumber);
+      this.#initFromApiPrediction(apiPrediction, pageNumber, words);
     }
     this.#checklist();
     this.#reconstruct();
@@ -108,8 +109,7 @@ class Receipt extends Document {
     @param apiPrediction: Raw prediction from HTTP response
     @param pageNumber: Page number for multi pages pdf input
    */
-  #initFromApiPrediction(apiPrediction, pageNumber) {
-    this.words = [];
+  #initFromApiPrediction(apiPrediction, pageNumber, words) {
     this.locale = new Locale({ prediction: apiPrediction.locale, pageNumber });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
@@ -171,7 +171,7 @@ class Receipt extends Document {
         })
       );
     }
-    if ("mvision" in apiPrediction) this.words = apiPrediction.mvision;
+    if (words && words.length > 0) this.words = words;
   }
 
   toString() {
