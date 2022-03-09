@@ -4,7 +4,7 @@
 
 ### Fixes
 
-- fix: 🐛 Get words values when includeWords parameter is true
+- fix: 🐛 Get `words` values when `includeWords` parameter is `true`
 
 ## v1.1.2
 
