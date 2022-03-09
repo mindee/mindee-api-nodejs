@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v1.2.0
+
+### Fixes
+
+- fix: 🐛 Get `words` values when `includeWords` parameter is `true`
+
 ## v1.1.2
 
 ### Fixes
