@@ -40,7 +40,7 @@ class APIFinancialDocument extends APIObject {
         ? "/invoices/v3/predict"
         : "/expense_receipts/v3/predict";
     super.parse();
-    return await super._request(url, inputFile, version, includeWords);
+    return super._request(url, inputFile, includeWords);
   }
 }
 

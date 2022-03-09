@@ -54,6 +54,7 @@ class FinancialDocument extends Document {
     customerName = undefined,
     customerAddress = undefined,
     customerCompanyRegistration = undefined,
+    words = undefined,
     pageNumber = 0,
     level = "page",
   }) {
@@ -82,7 +83,7 @@ class FinancialDocument extends Document {
         customerCompanyRegistration,
       });
     } else {
-      this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber);
+      this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber, words);
     }
     this.#checklist();
   }
@@ -145,13 +146,14 @@ class FinancialDocument extends Document {
     }
   }
 
-  #initFromApiPrediction(apiPrediction, inputFile, pageNumber) {
+  #initFromApiPrediction(apiPrediction, inputFile, pageNumber, words) {
     if (Object.keys(apiPrediction).includes("invoice_number")) {
       const invoice = new Invoice({
         apiPrediction,
         inputFile,
         pageNumber,
         level: this.level,
+        words: words,
       });
       this.locale = invoice.locale;
       this.totalIncl = invoice.totalIncl;
@@ -166,6 +168,7 @@ class FinancialDocument extends Document {
       this.companyNumber = invoice.companyNumber;
       this.orientation = invoice.orientation;
       this.totalTax = invoice.totalTax;
+      if (invoice.words) this.words = invoice.words;
       this.time = new Field({
         prediction: { value: undefined, confidence: 0.0 },
       });
@@ -178,6 +181,7 @@ class FinancialDocument extends Document {
         inputFile,
         pageNumber,
         level: this.level,
+        words: words,
       });
       this.orientation = receipt.orientation;
       this.date = receipt.date;
@@ -208,6 +212,7 @@ class FinancialDocument extends Document {
         prediction: { value: undefined, confidence: 0.0 },
       });
       this.customerCompanyRegistration = [];
+      if (receipt.words) this.words = receipt.words;
     }
   }
 

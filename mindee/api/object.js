@@ -10,7 +10,7 @@ const request = require("./request");
 class APIObject {
   constructor(apiToken = undefined, apiName = "") {
     this.apiToken = apiToken;
-    this.baseUrl = "https://api.mindee.net/v1/products/mindee/";
+    this.baseUrl = "https://api.mindee.net/v1/products/mindee";
     this.apiName = apiName;
   }
 
