@@ -4,12 +4,14 @@
         "es6": true,
         "mocha": true
     },
-    "parser": "@babel/eslint-parser",
-    "extends": ["eslint:recommended", "plugin:prettier/recommended"],
+    "parser": "@typescript-eslint/parser",
+    "plugins": ["@typescript-eslint"],
+    "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended", "plugin:prettier/recommended"],
     "globals": {
         "Promise": true
     },
     "rules": {
+        "@typescript-eslint/no-unused-vars": "error",
         "quotes": [
             "error",
             "double",
