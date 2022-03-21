@@ -1,0 +1,23 @@
+{
+  "extends": "@tsconfig/node16/tsconfig.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "target": "es6",
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "allowJs": true,
+    "declaration": true,
+    "rootDir": "mindee",
+    "baseUrl": "./",
+    "paths": {
+        "@mindee/*": ["mindee/*"],
+        "@api/*": ["mindee/api/*"],
+        "@documents/*": ["mindee/documents/*"],
+        "@fields/*": ["mindee/documents/fields/*"],
+        "@errors/*": ["mindee/errors/*"],
+        "#apiPaths": ["tests/data/api/api_paths.json"]
+      }
+  },
+  "include": ["./mindee/"],
+  "exclude": ["./node_modules/", "./dist/"]
+}

@@ -20,7 +20,7 @@ npm install mindee
 You can use the SDK easily by creating a Client like this:
 
 ```js
-const { Client } = require("mindee");
+const { Client } = require("mindee/index");
 
 const mindeeClient = new Client({
   invoiceToken: "invoiceApiToken",
@@ -70,7 +70,7 @@ We suggest storing your credentials as environment variables for security reason
 ## Parsing Invoices
 
 ```js
-const { Client } = require("mindee");
+const { Client } = require("mindee/index");
 const fs = require("fs");
 
 // Invoice token can be set by Env (MINDEE_INVOICE_TOKEN) or via params (Client({invoiceToken: "token"}))
@@ -92,7 +92,7 @@ mindeeClient.invoice
 ## Parsing receipts
 
 ```js
-const { Client } = require("mindee");
+const { Client } = require("mindee/index");
 const fs = require("fs");
 
 // Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via params (Client({receiptToken: "token"}))
@@ -116,7 +116,7 @@ mindeeClient.receipt
 The Financial document API optimizes the parsing results when you don't know if your file is a receipt or an invoice.
 
 ```js
-const { Client } = require("mindee");
+const { Client } = require("mindee/index");
 
 // Invoice token and Receipt token must be set
 // Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via params (Client({receiptToken: "token"}))
