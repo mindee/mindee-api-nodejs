@@ -1,4 +1,4 @@
-# API SDK for Node.js
+# Mindee Client Library for Node.js
 
 # Installation
 
@@ -35,9 +35,22 @@ mindeeClient.financialDocument.parse({
 });
 ```
 
-Three apis are actually supported : invoice (`ìnvoice`), receipt (`receipt`) and financial document (`financialDocument`)
+Three APIs are actually supported: invoice (`ìnvoice`), receipt (`receipt`) and financial document (`financialDocument`)
 
 You can find more examples on how to use the SDK into the folder `examples`.
+
+## MIME Types
+When using `stream` or `base64` inputs, the MIME type is guessed using magic numbers.
+In some cases, for example with non-standard files, it will not be possible to detect the MIME type in this way.
+
+If you are getting MIME type errors, you will need to specify a file name having the correct extension, for example:
+```js
+mindeeClient.invoice.parse({
+  input: base64String,
+  inputType: "base64",
+  filename: "myfile.pdf",
+});
+```
 
 ## Client
 
