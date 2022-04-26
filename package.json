@@ -1,9 +1,9 @@
 {
   "name": "mindee",
-  "version": "1.2.0",
-  "description": "Mindee API SDK for Node.js",
+  "version": "1.3.0",
+  "description": "Mindee Client Library for Node.js",
   "main": "mindee/index.js",
-  "license": "Apache-2.0",
+  "license": "MIT",
   "scripts": {
     "build": "babel mindee -d lib",
     "test": "npm run build && mocha tests/**/*.js",
