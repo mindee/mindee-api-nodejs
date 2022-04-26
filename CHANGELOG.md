@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.3.0
+
+### Changes
+
+- :sparkles: allow sending the filename for streams and base64
+- fixes :bug: not able to specify MIME type
+- :page_facing_up: change license to MIT
+- :white_check_mark: add node18 to tests
+- various package updates
+
 ## v1.2.0
 
 ### Fixes
