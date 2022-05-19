@@ -1,21 +1,24 @@
-import fs from "fs/promises";
+import { promises as fs } from "fs";
 
 export class Document {
+  documentType: string;
   checklist: any;
   fileExtension: string | undefined;
   filename: string | undefined;
   filepath: string | undefined;
+
   /**
    * Takes a list of Documents and return one Document where
    * each field is set with the maximum probability field
    * @param {Input} inputFile - input file given to parse the document
    */
-  constructor(inputFile?: any) {
+  constructor(documentType: string, inputFile?: any) {
+    this.documentType = documentType;
     this.filepath = undefined;
     this.filename = undefined;
     this.fileExtension = undefined;
 
-    if (inputFile != undefined) {
+    if (inputFile !== undefined) {
       this.filepath = inputFile.filepath;
       this.filename = inputFile.filename;
       this.fileExtension = inputFile.fileExtension;
@@ -29,7 +32,7 @@ export class Document {
 
   /** return true if all checklist of the document if true */
   checkAll() {
-    return this.checklist.every((item: any) => item == true);
+    return this.checklist.every((item: any) => item === true);
   }
 
   /** Export document into a JSON file */
@@ -43,7 +46,7 @@ export class Document {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore
     const args = JSON.parse(file);
-    return new Document({ reconsctruted: true, ...args });
+    return new Document({ reconstructed: true, ...args });
   }
 
   /**
@@ -61,8 +64,8 @@ export class Document {
             ? finalDocument[attribute]
             : document?.[attribute];
         } else if (
-          document?.[attribute]?.probability >
-          finalDocument[attribute].probability
+          document?.[attribute]?.confidence >
+          finalDocument[attribute].confidence
         ) {
           finalDocument[attribute] = document?.[attribute];
         }

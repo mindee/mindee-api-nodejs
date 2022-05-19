@@ -9,7 +9,7 @@ interface LoggerInterface {
   error(level: any[]): void;
 }
 
-const LOGGER_LEVELS: LoggerLevels = {
+export const LOG_LEVELS: LoggerLevels = {
   debug: 0,
   info: 1,
   warn: 2,
@@ -18,24 +18,26 @@ const LOGGER_LEVELS: LoggerLevels = {
 
 class Logger implements LoggerInterface {
   constructor(public level: string | number = "debug") {
-    if (!(level in LOGGER_LEVELS)) level = "debug";
-    this.level = LOGGER_LEVELS[level];
+    if (!(level in LOG_LEVELS)) {
+      this.level = "debug";
+    }
+    this.level = LOG_LEVELS[level];
   }
 
   debug(...args: any[]) {
-    if (this.level <= LOGGER_LEVELS["debug"]) console.debug(args);
+    if (this.level <= LOG_LEVELS["debug"]) console.debug(args);
   }
 
   info(...args: any[]) {
-    if (this.level <= LOGGER_LEVELS["info"]) console.info(args);
+    if (this.level <= LOG_LEVELS["info"]) console.info(args);
   }
 
   warn(...args: any[]) {
-    if (this.level <= LOGGER_LEVELS["warn"]) console.warn(args);
+    if (this.level <= LOG_LEVELS["warn"]) console.warn(args);
   }
 
   error(...args: any[]) {
-    if (this.level <= LOGGER_LEVELS["error"]) console.error(args);
+    if (this.level <= LOG_LEVELS["error"]) console.error(args);
   }
 }
 

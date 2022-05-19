@@ -1,11 +1,11 @@
-import { Field } from "@fields/field";
+import { Field } from "./field";
 
 export class Orientation extends Field {
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi pages pdf
+   * @param {Integer} pageNumber - Page number for multi-page PDF
    */
   constructor({
     prediction,

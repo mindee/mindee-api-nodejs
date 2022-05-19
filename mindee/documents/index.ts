@@ -1,5 +1,6 @@
-export { Field } from "@documents/fields";
-export { Document } from "@documents/document";
-export { Receipt } from "@documents/receipt";
-export { Invoice } from "@documents/invoice";
-export { FinancialDocument } from "@documents/financialDocument";
+export { Document } from "./document";
+export { Receipt } from "./receipt";
+export { Invoice } from "./invoice";
+export { FinancialDocument } from "./financialDocument";
+export { CustomDocument } from "./custom";
+export { Passport } from "./passport";

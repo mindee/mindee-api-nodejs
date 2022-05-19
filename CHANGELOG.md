@@ -13,24 +13,24 @@
 ## v1.3.3
 
 ### Fixes
-* 🐛 reject errors instead of printing them only to the console
+* :bug: reject errors instead of printing them only to the console
 
 ## v1.3.2
 
 ### Fixes
-* 🐛 use PDF length instead of cut PDF size limit
+* :bug: use PDF length instead of cut PDF size limit
 
 ## v1.3.1
 
 ### Fixes
-* 🐛 forward api error to stderr instead of stdout
+* :bug: forward api error to stderr instead of stdout
 
 ## v1.3.0
 
 ### Changes
 
 * :sparkles: allow sending the filename for streams and base64
-* fixes :bug: not able to specify MIME type
+* :bug: not able to specify MIME type
 * :page_facing_up: change license to MIT
 * :white_check_mark: add node18 to tests
 * various package updates
@@ -39,43 +39,43 @@
 
 ### Fixes
 
-* fix: 🐛 Get `words` values when `includeWords` parameter is `true`
+* :bug: Get `words` values when `includeWords` parameter is `true`
 
 ## v1.1.2
 
 ### Fixes
 
-* fix: 🐛 Fix returned probability value
-* fix: 🐛 Fix returned bbox value
+* :bug: Fix returned probability value
+* :bug: Fix returned bbox value
 
 ### new
 
-* new: ✨ New Mindee Invoice API V3 support
-* new: ✨ Add new supplier and customer fields
+* :sparkles: New Mindee Invoice API V3 support
+* :sparkles: Add new supplier and customer fields
 
 ## v1.1.0 (2022-01-03)
 
 ### new
 
-* chg: :sparkles: New Mindee API V2 support
-* chg: :zap: Server side invoice reconstruction from multi-page pdfs
-* new: :sparkles: Added OS in User-Agent headers
+* :sparkles: New Mindee API V2 support
+* :zap: Server side invoice reconstruction from multi-page pdfs
+* :sparkles: Added OS in User-Agent headers
 
 
 ## v1.0.9 (2021-12-09)
 
 ### Fixes
 
-* fix: 🐛 handle attribute of type array when merging pages
+* :bug: handle attribute of type array when merging pages
 
 ## v1.0.8 (2021-11-29)
 
 ### Fixes
 
-* 🐛 fix cutPDF for ReadableStream + add it for base64 file string
-* 🐛 Updated api Input initialization to specifically declare parameters
-* 🐛 prevent error when the mime type isn't detectable
-* 🐛 raise proper error when the APi doesn't return a valid JSON
+* :bug: fix cutPDF for ReadableStream + add it for base64 file string
+* :bug: Updated api Input initialization to specifically declare parameters
+* :bug: prevent error when the mime type isn't detectable
+* :bug: raise proper error when the APi doesn't return a valid JSON
 
 ### new
 
@@ -85,7 +85,7 @@
 
 ### New
 
-* ✨ Added pdf page number parameter for multi-pages pdfs with file
+* :sparkles: Added pdf page number parameter for multi-pages pdfs with file
 
 ### Changes
 
@@ -124,4 +124,4 @@
 
 ## v1.0.1 (2021-01-11)
 
-* 🎉 First release
+* :tada: First release

@@ -1,14 +1,14 @@
-import { Document } from "@documents/document";
-import { Invoice } from "@documents/invoice";
-import { Receipt } from "@documents/receipt";
+import { Document } from "./document";
+import { Invoice } from "./invoice";
+import { Receipt } from "./receipt";
 import {
-  Tax,
+  TaxField,
   Field,
   Amount,
   Locale,
   Orientation,
   DateField as Date,
-} from "@documents/fields";
+} from "./fields";
 
 interface FinancialDocumentInterface {
   pageNumber: number | undefined;
@@ -22,7 +22,7 @@ interface FinancialDocumentInterface {
   merchantName: Field | undefined;
   time: Field | undefined;
   orientation: Orientation | undefined;
-  taxes: any[] | undefined;
+  taxes: TaxField[];
   totalTax: Amount | undefined;
   totalExcl: Amount | undefined;
   words: any[] | undefined;
@@ -76,7 +76,7 @@ export class FinancialDocument
   merchantName: Field | undefined;
   time: Field | undefined;
   orientation: Orientation | undefined;
-  taxes: any[] | undefined;
+  taxes: TaxField[];
   totalTax: Amount | undefined;
   totalExcl: Amount | undefined;
   words: any[] | undefined;
@@ -93,125 +93,27 @@ export class FinancialDocument
   constructor({
     apiPrediction = undefined,
     inputFile = undefined,
-    locale = undefined,
-    totalIncl = undefined,
-    totalExcl = undefined,
-    date = undefined,
-    invoiceNumber = undefined,
-    dueDate = undefined,
-    taxes = undefined,
-    supplier = undefined,
-    supplierAddress = undefined,
-    paymentDetails = undefined,
-    companyNumber = undefined,
-    vatNumber = undefined,
-    orientation = undefined,
-    totalTax = undefined,
-    time = undefined,
-    customerName = undefined,
-    customerAddress = undefined,
-    customerCompanyRegistration = undefined,
     words = undefined,
     pageNumber = 0,
     level = "page",
+    documentType = "",
   }) {
-    super(inputFile);
+    super(documentType, inputFile);
     this.level = level;
-    if (apiPrediction === undefined) {
-      this.#initFromScratch({
-        locale,
-        totalIncl,
-        totalExcl,
-        date,
-        invoiceNumber,
-        dueDate,
-        taxes,
-        supplier,
-        supplierAddress,
-        paymentDetails,
-        companyNumber,
-        vatNumber,
-        orientation,
-        pageNumber,
-        totalTax,
-        time,
-        customerName,
-        customerAddress,
-        customerCompanyRegistration,
-      });
-    } else {
-      this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber, words);
-    }
+    this.taxes = [];
+    this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber, words);
     this.#checklist();
   }
 
-  #initFromScratch({
-    locale,
-    totalIncl,
-    totalExcl,
-    totalTax,
-    date,
-    invoiceNumber,
-    dueDate,
-    taxes,
-    paymentDetails,
-    companyNumber,
-    vatNumber,
-    orientation,
-    pageNumber,
-    supplier,
-    supplierAddress,
-    time,
-    customerName,
-    customerAddress,
-    customerCompanyRegistration,
-  }: any) {
-    const constructPrediction = function (item: any) {
-      return { prediction: { value: item }, valueKey: "value", pageNumber };
-    };
-    this.locale = new Locale(constructPrediction(locale));
-    this.totalIncl = new Amount(constructPrediction(totalIncl));
-    this.totalExcl = new Amount(constructPrediction(totalExcl));
-    this.totalTax = new Amount(constructPrediction(totalTax));
-    this.date = new Date(constructPrediction(date));
-    this.dueDate = new Date(constructPrediction(dueDate));
-    this.supplier = new Field(constructPrediction(supplier));
-    this.supplierAddress = new Field(constructPrediction(supplierAddress));
-    this.time = new Field(constructPrediction(time));
-    this.orientation = new Orientation(constructPrediction(orientation));
-    this.invoiceNumber = new Field(constructPrediction(invoiceNumber));
-    this.paymentDetails = new Field(constructPrediction(paymentDetails));
-    this.companyNumber = new Field(constructPrediction(companyNumber));
-    this.vatNumber = new Field(constructPrediction(vatNumber));
-    this.customerName = new Field(constructPrediction(customerName));
-    this.customerAddress = new Field(constructPrediction(customerAddress));
-    this.customerCompanyRegistration = new Field(
-      constructPrediction(customerCompanyRegistration)
-    );
-    if (taxes !== undefined) {
-      this.taxes = [];
-      for (const t of taxes) {
-        this.taxes.push(
-          new Tax({
-            prediction: { value: t[0], rate: t[1] },
-            pageNumber,
-            valueKey: "value",
-            rateKey: "rate",
-          })
-        );
-      }
-    }
-  }
-
   #initFromApiPrediction(
-    apiPrediction: any,
+    prediction: any,
     inputFile: any,
     pageNumber: any,
     words: any
   ) {
-    if (Object.keys(apiPrediction).includes("invoice_number")) {
+    if (Object.keys(prediction).includes("invoice_number")) {
       const invoice = new Invoice({
-        apiPrediction,
+        apiPrediction: prediction,
         inputFile,
         pageNumber,
         level: this.level,
@@ -239,7 +141,7 @@ export class FinancialDocument
       this.customerCompanyRegistration = invoice.customerCompanyRegistration;
     } else {
       const receipt = new Receipt({
-        apiPrediction,
+        apiPrediction: prediction,
         inputFile,
         pageNumber,
         level: this.level,

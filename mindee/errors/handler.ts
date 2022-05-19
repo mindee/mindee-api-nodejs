@@ -1,4 +1,4 @@
-import { logger } from "@mindee/logger";
+import { logger } from "../logger";
 
 interface ErrorHandlerInterface {
   throwOnError: boolean;

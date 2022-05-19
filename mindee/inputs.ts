@@ -1,21 +1,20 @@
-import fs from "fs/promises";
+import { promises as fs, ReadStream } from "fs";
 import * as path from "path";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import * as concat from "concat-stream";
-import { Base64Encode } from "base64-stream";
 import * as fileType from "file-type";
-import * as ArrayBufferEncode from "base64-arraybuffer";
 
-import { errorHandler } from "@errors/handler";
+import { errorHandler } from "./errors/handler";
 import { PDFDocument } from "pdf-lib";
+import { Buffer } from "node:buffer";
 
 interface InputProps {
   inputType: string;
-  file?: Buffer | string;
   cutPages?: boolean;
-  filename: string;
 }
+
+const INPUT_TYPE_STREAM = "stream";
+const INPUT_TYPE_BASE64 = "base64";
+const INPUT_TYPE_BYTES = "bytes";
+const INPUT_TYPE_PATH = "path";
 
 export class Input {
   MIMETYPES = new Map<string, string>([
@@ -28,143 +27,79 @@ export class Input {
     ["tiff", "image/tiff"],
     ["webp", "image/webp"],
   ]);
-  ALLOWED_INPUT_TYPE = ["base64", "path", "stream", "dummy"];
+  ALLOWED_INPUT_TYPES = [
+    INPUT_TYPE_STREAM,
+    INPUT_TYPE_BASE64,
+    INPUT_TYPE_BYTES,
+    INPUT_TYPE_PATH,
+  ];
   MAX_DOC_PAGES = 3;
-  public file;
-  public inputType;
-  public cutPages;
-  public filename: string;
-  public fileObject?: Buffer | string;
-  public filepath?: Buffer | string;
-  public fileExtension?: string;
+  public inputType: string;
+  public cutPages: boolean;
+  public filename: string = "";
+  public filepath?: string;
+  public fileExtension: string = "";
+  public fileObject: Buffer = Buffer.alloc(0);
 
   /**
-   * @param {(String | Buffer)} file - the file that will be read. Either path or base64 string, or a steam
    * @param {String} inputType - the type of input used in file ("base64", "path", "dummy").
    *                             NB: dummy is only used for tests purposes
-   * @param {String} filename - File name of the input
-   * @param cutPages
+   * @param {Boolean} cutPages
    * NB: Because of async calls, init() should be called after creating the object
    */
-  constructor({ file, inputType, cutPages = true, filename }: InputProps) {
+  constructor({ inputType, cutPages = true }: InputProps) {
     // Check if inputType is valid
-    if (!this.ALLOWED_INPUT_TYPE.includes(inputType)) {
+    if (!this.ALLOWED_INPUT_TYPES.includes(inputType)) {
+      const allowed = Array.from(this.MIMETYPES.keys()).join(", ");
       errorHandler.throw(
-        new Error(
-          `The input type is invalid. It should be \
-          ${this.ALLOWED_INPUT_TYPE.toString()}`
-        )
+        new Error(`Invalid input type, must be one of ${allowed}.`)
       );
     }
-    this.file = file;
-    this.filename = filename;
     this.inputType = inputType;
     this.cutPages = cutPages;
   }
 
   async init() {
-    if (this.inputType === "base64") await this.doc_from_base64();
-    else if (this.inputType === "path") await this.doc_from_path();
-    else if (this.inputType === "stream") await this.doc_from_file();
-    else this.initDummy();
+    throw new Error("not Implemented");
+  }
 
-    if (this.fileExtension === "application/pdf" && this.cutPages) {
+  async cutDocPages() {
+    if (this.cutPages && this.fileExtension === "application/pdf") {
       await this.cutPdf();
     }
   }
 
-  async guessMimetype(): Promise<string> {
+  async checkMimetype(): Promise<string> {
     let mimeType: string;
     const fileExt = this.filename.split(".").pop();
     if (fileExt) {
       mimeType = this.MIMETYPES.get(fileExt) || "";
     } else {
-      const guess = await fileType.fromBuffer(
-        // @ts-expect-error ts-migrate(2769) FIXME: No overload matches this call.
-        Buffer.from(this.fileObject, "base64")
-      );
+      const guess = await fileType.fromBuffer(this.fileObject);
       if (guess !== undefined) {
         mimeType = guess.mime;
       } else {
         throw "Could not determine the MIME type of the file";
       }
     }
-    if ((this.MIMETYPES.get(mimeType))) {
-      errorHandler.throw(
-          new Error(
-              `File type is not allowed. It must be one of ${this.MIMETYPES.keys()}`
-          )
-      );
+    if (!mimeType) {
+      const allowed = Array.from(this.MIMETYPES.keys()).join(", ");
+      const err = new Error(`Invalid file type, must be one of ${allowed}.`);
+      errorHandler.throw(err);
     }
     return mimeType;
   }
 
-  async doc_from_base64() {
-    this.fileObject = this.file;
-    this.filepath = undefined;
-    this.fileExtension = await this.guessMimetype();
-  }
-
-  async doc_from_path() {
-    this.fileObject = await fs.readFile(this.file as string);
-    this.filepath = this.file;
-    if (typeof this.file === "string") {
-      this.filename = this.filename || path.basename(this.file);
-    }
-    this.fileExtension = await this.guessMimetype();
-  }
-
-  async doc_from_file() {
-    this.file = await this.streamToBase64(this.file);
-    this.inputType = "base64";
-    await this.doc_from_base64();
-  }
-
-  initDummy() {
-    this.fileObject = "";
-    this.filename = "";
-    this.filepath = "";
-    this.fileExtension = "";
-  }
-
-  /**
-   * Convert ReadableStream to Base64 encoded String
-   *
-   * @param {*} stream ReadableStream to encode
-   * @returns Base64 encoded String
-   */
-  async streamToBase64(stream: any): Promise<string> {
-    return new Promise((resolve, reject) => {
-      const base64 = new Base64Encode();
-
-      const cbConcat = (base64: Base64Encode) => {
-        // @ts-ignore TO DO : FIX
-        resolve(base64);
-      };
-
-      stream
-        .pipe(base64)
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore TO DO : FIX
-        .pipe(concat(cbConcat))
-        .on("error", (error: any) => {
-          reject(error);
-        });
-    });
-  }
-
   async countPages() {
-    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string | Buffer | undefined'
-    let pdfDocument = await PDFDocument.load(this.fileObject, {
+    const pdfDocument = await PDFDocument.load(this.fileObject, {
       ignoreEncryption: true,
     });
     return pdfDocument.getPageCount();
   }
 
   /** Merge PDF pages */
-  async cutPdf() {
-    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string | Buffer | undefined'
-    let currentPdf = await PDFDocument.load(this.fileObject, {
+  protected async cutPdf() {
+    const currentPdf = await PDFDocument.load(this.fileObject, {
       ignoreEncryption: true,
     });
 
@@ -183,10 +118,134 @@ export class Input {
     pages.forEach((page) => newPdf.addPage(page));
     const data = await newPdf.save();
 
-    if (this.inputType === "path") {
-      this.fileObject = Buffer.from(data);
-    } else if (this.inputType === "base64") {
-      this.fileObject = ArrayBufferEncode.encode(data);
-    }
+    this.fileObject = Buffer.from(data);
+  }
+}
+
+//
+// Path
+//
+
+interface PathInputProps {
+  inputPath: string;
+  cutPages: boolean;
+}
+
+export class PathInput extends Input {
+  readonly inputPath: string;
+
+  constructor({ inputPath, cutPages }: PathInputProps) {
+    super({
+      inputType: INPUT_TYPE_PATH,
+      cutPages: cutPages,
+    });
+    this.inputPath = inputPath;
+    this.filename = path.basename(this.inputPath);
+  }
+
+  async init() {
+    this.fileObject = Buffer.from(await fs.readFile(this.inputPath));
+    this.fileExtension = await this.checkMimetype();
+    await this.cutDocPages();
+  }
+}
+
+//
+// Base 64
+//
+
+interface Base64InputProps {
+  inputString: string;
+  filename: string;
+  cutPages: boolean;
+}
+
+export class Base64Input extends Input {
+  private inputString: string;
+
+  constructor({ inputString, filename, cutPages }: Base64InputProps) {
+    super({
+      inputType: INPUT_TYPE_BASE64,
+      cutPages: cutPages,
+    });
+    this.filename = filename;
+    this.inputString = inputString;
+  }
+
+  async init() {
+    this.fileObject = Buffer.from(this.inputString, "base64");
+    this.fileExtension = await this.checkMimetype();
+    // clear out the string
+    this.inputString = "";
+    await this.cutDocPages();
+  }
+}
+
+//
+// Stream
+//
+
+interface StreamInputProps {
+  inputStream: ReadStream;
+  filename: string;
+  cutPages: boolean;
+}
+
+export class StreamInput extends Input {
+  private inputStream: ReadStream;
+
+  constructor({ inputStream, filename, cutPages }: StreamInputProps) {
+    super({
+      inputType: INPUT_TYPE_STREAM,
+      cutPages: cutPages,
+    });
+    this.filename = filename;
+    this.inputStream = inputStream;
+  }
+
+  async init() {
+    this.fileObject = await this.stream2buffer(this.inputStream);
+    this.fileExtension = await this.checkMimetype();
+    await this.cutDocPages();
+  }
+
+  async stream2buffer(stream: ReadStream): Promise<Buffer> {
+    return new Promise<Buffer>((resolve, reject) => {
+      const _buf = Array<any>();
+      stream.on("data", (chunk) => _buf.push(chunk));
+      stream.on("end", () => resolve(Buffer.concat(_buf)));
+      stream.on("error", (err) => reject(`Error converting stream - ${err}`));
+    });
+  }
+}
+
+//
+// Bytes
+//
+
+interface BytesInputProps {
+  inputBytes: string;
+  filename: string;
+  cutPages: boolean;
+}
+
+export class BytesInput extends Input {
+  private inputBytes: string;
+
+  constructor({ inputBytes, filename, cutPages }: BytesInputProps) {
+    super({
+      inputType: INPUT_TYPE_BYTES,
+      cutPages: cutPages,
+    });
+    this.filename = filename;
+    this.inputBytes = inputBytes;
+  }
+
+  async init() {
+    this.fileObject = Buffer.from(this.inputBytes, "hex");
+    this.fileExtension = await this.checkMimetype();
+    // clear out the string
+    this.inputBytes = "";
+    await this.cutDocPages();
   }
 }
