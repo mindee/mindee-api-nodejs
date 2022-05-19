@@ -16,7 +16,7 @@ export class Field {
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi pages pdf
+   * @param {Integer} pageNumber - Page number for multi-page PDF
    * @param {Array<String>} extraFields - Extra fields to get from the prediction and to set as attribute of the Field
    */
   constructor({
@@ -43,16 +43,13 @@ export class Field {
     }
   }
 
-  compare(other: any) {
-    if (this.value == null && other.value == null) return true;
-    else if (this.value == null || other.value == null) return false;
-    else {
-      if (typeof this.value == "string") {
-        return this.value.toLowerCase() === other.value.toLowerCase();
-      } else {
-        return this.value === other.value;
-      }
+  compare(other: Field) {
+    if (this.value === null && other.value === null) return true;
+    if (this.value === null || other.value === null) return false;
+    if (typeof this.value === "string") {
+      return this.value.toLowerCase() === other.value.toLowerCase();
     }
+    return this.value === other.value;
   }
 
   /**
@@ -61,7 +58,11 @@ export class Field {
   @param {String} attr - Attribute to compare
   @returns {Boolean} - true if all elements in array1 exist in array2 and vice-versa, false otherwise
    */
-  static compareArrays(array1: any, array2: any, attr = "value"): boolean {
+  static compareArrays(
+    array1: Field[],
+    array2: Field[],
+    attr = "value"
+  ): boolean {
     const list1 = array1.map((item: any) => item[attr]);
     const list2 = array2.map((item: any) => item[attr]);
     if (list1.length !== list2.length) return false;
@@ -75,7 +76,7 @@ export class Field {
    * @param {Array<Field>} array - Array of Fields
    * @returns {Number} product of all the fields probaility
    */
-  static arrayProbability(array: any): number {
+  static arrayConfidence(array: any): number {
     let total = 1.0;
     for (const field of array) {
       total *= field.confidence;

@@ -23,7 +23,7 @@ const base64 = fs.readFileSync("./documents/receipts/receipt.jpg", {
 mindeeClient.financialDocument
   .parse({ input: base64, inputType: "base64" })
   .then((res) => {
-    console.log("Success !");
+    console.log("Success!");
     console.log(res.financialDocuments);
     console.log(res.financialDocument);
   })

@@ -1,22 +1,22 @@
-import { Field } from "@fields/field";
+import { Field } from "./field";
 
 interface TaxConstructor {
   prediction: any;
-  valueKey: string;
+  valueKey?: string;
   rateKey?: string;
   codeKey?: string;
   reconstructed?: boolean;
-  pageNumber: number;
+  pageNumber?: number;
 }
 
-export class Tax extends Field {
+export class TaxField extends Field {
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict to get the tax value
    * @param {String} rateKey - Key to use to get the tax rate in the prediction dict
    * @param {String} codeKey - Key to use to get the tax code in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi pages pdf
+   * @param {Integer} pageNumber - Page number for multi-page PDF
    */
   rate: number | undefined;
   code: string | undefined;

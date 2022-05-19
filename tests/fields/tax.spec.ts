@@ -1,4 +1,4 @@
-import { Tax } from "@mindee/documents/fields";
+import { TaxField } from "@mindee/documents/fields";
 import { expect } from "chai";
 
 describe("Test Tax field", () => {
@@ -15,9 +15,9 @@ describe("Test Tax field", () => {
         [0.016, 0.831],
       ],
     };
-    const tax = new Tax({ prediction, valueKey: "value" });
+    const tax = new TaxField({ prediction, valueKey: "value" });
     expect(tax.value).to.be.equal(2);
-    expect(tax.probability).to.be.equal(0.1);
+    expect(tax.confidence).to.be.equal(0.1);
     expect(tax.rate).to.be.equal(0.2);
     expect(tax.bbox.length).to.be.equal(4);
     expect(tax.toString()).to.be.equal("2; 0.2%; QST");
@@ -29,7 +29,7 @@ describe("Test Tax field", () => {
       rate: "aa",
       confidence: 0.1,
     };
-    const tax = new Tax({ prediction });
+    const tax = new TaxField({ prediction });
     expect(tax.rate).to.be.undefined;
     expect(tax.bbox.length).to.be.equal(0);
   });
@@ -41,7 +41,7 @@ describe("Test Tax field", () => {
       code: "N/A",
       confidence: 0.1,
     };
-    const tax = new Tax({ prediction });
+    const tax = new TaxField({ prediction });
     expect(tax.value).to.be.undefined;
     expect(typeof tax.toString()).to.equal("string");
   });

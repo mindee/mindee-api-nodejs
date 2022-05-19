@@ -1,53 +1,63 @@
-import { Invoice } from "@mindee/documents";
-import fs from "fs/promises";
+import { Invoice } from "../../mindee/documents";
+import { promises as fs } from "fs";
 import path from "path";
 import { expect } from "chai";
-import * as api_path from "#apiPaths";
+import * as api_path from "../data/apiPaths.json";
+import {
+  Amount,
+  DateField,
+  Locale,
+  Orientation,
+  TaxField,
+  Field,
+} from "../../mindee/documents/fields";
 
 describe("Invoice Object initialization", async () => {
   before(async function () {
     const jsonDataNA = await fs.readFile(
       path.resolve(api_path.invoices.all_na)
     );
-    this.basePrediction =
-      JSON.parse(jsonDataNA).document.inference.pages[0].prediction;
+    this.basePrediction = JSON.parse(
+      jsonDataNA.toString()
+    ).document.inference.pages[0].prediction;
   });
 
   it("should initialize from a prediction object", async () => {
     const jsonData = await fs.readFile(path.resolve(api_path.invoices.all));
-    const response = JSON.parse(jsonData);
+    const response = JSON.parse(jsonData.toString());
     const invoice = new Invoice({
       apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect(invoice.invoiceDate.value).to.be.equal("2020-02-17");
+    expect((invoice.invoiceDate as DateField).value).to.be.equal("2020-02-17");
     expect(invoice.checklist.taxesMatchTotalIncl).to.be.true;
     expect(invoice.checklist.taxesMatchTotalExcl).to.be.true;
-    expect(invoice.checklist.taxesPlusTotalExclMatchTotalIncl).to.be.true;
-    expect(invoice.totalTax.value).to.be.equal(97.98);
+    expect(invoice.checklist.taxesAndTotalExclMatchTotalIncl).to.be.true;
+    expect((invoice.totalTax as TaxField).value).to.be.equal(97.98);
     expect(typeof invoice.toString()).to.be.equal("string");
   });
 
   it("should initialize from a N/A prediction object", async () => {
     const jsonData = await fs.readFile(path.resolve(api_path.invoices.all_na));
-    const response = JSON.parse(jsonData);
+    const response = JSON.parse(jsonData.toString());
     const invoice = new Invoice({
       apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect(invoice.locale.value).to.be.undefined;
-    expect(invoice.totalIncl.value).to.be.undefined;
-    expect(invoice.totalExcl.value).to.be.undefined;
-    expect(invoice.invoiceDate.value).to.be.undefined;
-    expect(invoice.invoiceNumber.value).to.be.undefined;
-    expect(invoice.dueDate.value).to.be.undefined;
-    expect(invoice.supplier.value).to.be.undefined;
-    expect(invoice.supplierAddress.value).to.be.undefined;
-    expect(invoice.customerName.value).to.be.undefined;
-    expect(invoice.customerAddress.value).to.be.undefined;
-    expect(invoice.customerCompanyRegistration.value).to.be.undefined;
-    expect(invoice.taxes.length).to.be.equal(0);
-    expect(invoice.paymentDetails.length).to.be.equal(0);
-    expect(invoice.companyNumber.length).to.be.equal(0);
-    expect(invoice.orientation.value).to.be.equal(0);
+    expect((invoice.locale as Locale).value).to.be.undefined;
+    expect((invoice.totalIncl as Amount).value).to.be.undefined;
+    expect((invoice.totalExcl as Amount).value).to.be.undefined;
+    expect((invoice.invoiceDate as DateField).value).to.be.undefined;
+    expect((invoice.invoiceNumber as Field).value).to.be.undefined;
+    expect((invoice.dueDate as DateField).value).to.be.undefined;
+    expect((invoice.supplier as Field).value).to.be.undefined;
+    expect((invoice.supplierAddress as Field).value).to.be.undefined;
+    expect((invoice.customerName as Field).value).to.be.undefined;
+    expect((invoice.customerAddress as Field).value).to.be.undefined;
+    expect((invoice.customerCompanyRegistration as Field).value).to.be
+      .undefined;
+    expect((invoice.taxes as TaxField[]).length).to.be.equal(0);
+    expect((invoice.paymentDetails as any).length).to.be.equal(0);
+    expect((invoice.companyNumber as any).length).to.be.equal(0);
+    expect((invoice.orientation as Orientation).value).to.be.equal(0);
     expect(Object.values(invoice.checklist)).to.have.ordered.members([
       false,
       false,
@@ -64,7 +74,7 @@ describe("Invoice Object initialization", async () => {
         taxes: [],
       },
     });
-    expect(invoiceNoIncludeTaxes.totalIncl.value).to.be.undefined;
+    expect((invoiceNoIncludeTaxes.totalIncl as Amount).value).to.be.undefined;
   });
 
   it("should not reconstruct totalIncl without totalExcl", function () {
@@ -76,7 +86,7 @@ describe("Invoice Object initialization", async () => {
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(invoiceNoIncludeTaxes.totalIncl.value).to.be.undefined;
+    expect((invoiceNoIncludeTaxes.totalIncl as Amount).value).to.be.undefined;
   });
 
   it("should not reconstruct totalIncl with totalIncl already set", function () {
@@ -88,8 +98,10 @@ describe("Invoice Object initialization", async () => {
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(invoiceNoIncludeTaxes.totalIncl.value).to.be.equal(260);
-    expect(invoiceNoIncludeTaxes.totalIncl.probability).to.be.equal(0.4);
+    expect((invoiceNoIncludeTaxes.totalIncl as Amount).value).to.be.equal(260);
+    expect((invoiceNoIncludeTaxes.totalIncl as Amount).confidence).to.be.equal(
+      0.4
+    );
   });
 
   it("should reconstruct totalIncl", function () {
@@ -101,8 +113,10 @@ describe("Invoice Object initialization", async () => {
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(invoiceNoIncludeTaxes.totalIncl.value).to.be.equal(250);
-    expect(invoiceNoIncludeTaxes.totalIncl.probability).to.be.equal(0.81);
+    expect((invoiceNoIncludeTaxes.totalIncl as Amount).value).to.be.equal(250);
+    expect((invoiceNoIncludeTaxes.totalIncl as Amount).confidence).to.be.equal(
+      0.81
+    );
   });
 
   it("should not reconstruct totalExcl without totalIncl", function () {
@@ -114,7 +128,7 @@ describe("Invoice Object initialization", async () => {
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(invoiceNoExclTaxes.totalExcl.value).to.be.undefined;
+    expect((invoiceNoExclTaxes.totalExcl as Amount).value).to.be.undefined;
   });
 
   it("should not reconstruct totalExcl without taxes", function () {
@@ -126,7 +140,7 @@ describe("Invoice Object initialization", async () => {
         taxes: [],
       },
     });
-    expect(invoiceNoExclTaxes.totalExcl.value).to.be.undefined;
+    expect((invoiceNoExclTaxes.totalExcl as Amount).value).to.be.undefined;
   });
 
   it("should not reconstruct totalExcl with totalExcl already set", function () {
@@ -138,8 +152,10 @@ describe("Invoice Object initialization", async () => {
         taxes: [],
       },
     });
-    expect(invoiceNoExclTaxes.totalExcl.value).to.be.equal(1050.0);
-    expect(invoiceNoExclTaxes.totalExcl.probability).to.be.equal(0.4);
+    expect((invoiceNoExclTaxes.totalExcl as Amount).value).to.be.equal(1050.0);
+    expect((invoiceNoExclTaxes.totalExcl as Amount).confidence).to.be.equal(
+      0.4
+    );
   });
 
   it("should reconstruct totalExcl", function () {
@@ -154,8 +170,10 @@ describe("Invoice Object initialization", async () => {
         ],
       },
     });
-    expect(invoiceNoExclTaxes.totalExcl.value).to.be.equal(1100);
-    expect(invoiceNoExclTaxes.totalExcl.probability).to.be.equal(0.03);
+    expect((invoiceNoExclTaxes.totalExcl as Amount).value).to.be.equal(1100);
+    expect((invoiceNoExclTaxes.totalExcl as Amount).confidence).to.be.equal(
+      0.03
+    );
   });
 
   it("should not reconstruct totalTax without taxes", function () {
@@ -165,7 +183,7 @@ describe("Invoice Object initialization", async () => {
         taxes: [],
       },
     });
-    expect(invoiceNoExclTaxes.totalTax.value).to.be.undefined;
+    expect((invoiceNoExclTaxes.totalTax as Amount).value).to.be.undefined;
   });
 
   it("should reconstruct totalTax", function () {
@@ -178,8 +196,10 @@ describe("Invoice Object initialization", async () => {
         ],
       },
     });
-    expect(invoiceNoExclTaxes.totalTax.value).to.be.equal(50.2);
-    expect(invoiceNoExclTaxes.totalTax.probability).to.be.equal(0.05);
+    expect((invoiceNoExclTaxes.totalTax as Amount).value).to.be.equal(50.2);
+    expect((invoiceNoExclTaxes.totalTax as Amount).confidence).to.be.equal(
+      0.05
+    );
   });
 
   it("should match on totalIncl", function () {
@@ -194,8 +214,10 @@ describe("Invoice Object initialization", async () => {
       },
     });
     expect(invoice.checklist.taxesMatchTotalIncl).to.be.true;
-    expect(invoice.totalIncl.probability).to.be.equal(1.0);
-    invoice.taxes.map((tax) => expect(tax.probability).to.be.equal(1.0));
+    expect((invoice.totalIncl as Amount).confidence).to.be.equal(1.0);
+    (invoice.taxes as TaxField[]).map((tax) =>
+      expect(tax.confidence).to.be.equal(1.0)
+    );
   });
 
   it("should not match on totalIncl", function () {
@@ -235,8 +257,10 @@ describe("Invoice Object initialization", async () => {
       },
     });
     expect(invoice.checklist.taxesMatchTotalExcl).to.be.true;
-    expect(invoice.totalExcl.probability).to.be.equal(1.0);
-    invoice.taxes.map((tax) => expect(tax.probability).to.be.equal(1.0));
+    expect((invoice.totalExcl as Amount).confidence).to.be.equal(1.0);
+    (invoice.taxes as TaxField[]).map((tax) =>
+      expect(tax.confidence).to.be.equal(1.0)
+    );
   });
 
   it("should not match on totalExcl", function () {
@@ -276,10 +300,12 @@ describe("Invoice Object initialization", async () => {
         ],
       },
     });
-    expect(invoice.checklist.taxesPlusTotalExclMatchTotalIncl).to.be.true;
-    expect(invoice.totalIncl.probability).to.be.equal(1.0);
-    expect(invoice.totalExcl.probability).to.be.equal(1.0);
-    invoice.taxes.map((tax) => expect(tax.probability).to.be.equal(1.0));
+    expect(invoice.checklist.taxesAndTotalExclMatchTotalIncl).to.be.true;
+    expect((invoice.totalIncl as Amount).confidence).to.be.equal(1.0);
+    expect((invoice.totalExcl as Amount).confidence).to.be.equal(1.0);
+    (invoice.taxes as TaxField[]).map((tax) =>
+      expect(tax.confidence).to.be.equal(1.0)
+    );
   });
 
   it("should not match on Taxes + totalExcl = totalIncl", function () {
@@ -294,7 +320,7 @@ describe("Invoice Object initialization", async () => {
         ],
       },
     });
-    expect(invoice.checklist.taxesPlusTotalExclMatchTotalIncl).to.be.false;
+    expect(invoice.checklist.taxesAndTotalExclMatchTotalIncl).to.be.false;
   });
 
   it("should not match on Taxes + totalExcl = totalIncl 2", function () {
@@ -306,6 +332,6 @@ describe("Invoice Object initialization", async () => {
         taxes: [{ rate: 20, value: 0, confidence: 0.5 }],
       },
     });
-    expect(invoice.checklist.taxesPlusTotalExclMatchTotalIncl).to.be.false;
+    expect(invoice.checklist.taxesAndTotalExclMatchTotalIncl).to.be.false;
   });
 });

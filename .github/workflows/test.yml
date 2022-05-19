@@ -10,7 +10,6 @@ jobs:
     strategy:
       matrix:
         node-version:
-          - "12"
           - "14"
           - "16"
           - "18"
@@ -26,6 +25,9 @@ jobs:
 
       - name: Install Node.js dependencies
         run: npm install
+
+      - name: Compilation
+        run: npm run build
 
       - name: Test code
         run: npm run test

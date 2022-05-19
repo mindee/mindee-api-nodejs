@@ -1,4 +1,4 @@
-import { Field } from "@fields/field";
+import { Field } from "./field";
 
 interface PaymentDetailsConstructor {
   prediction: any;
@@ -8,14 +8,14 @@ interface PaymentDetailsConstructor {
   routingNumberKey?: string;
   swiftKey?: string;
   reconstructed?: boolean;
-  pageNumber: number;
+  pageNumber?: number;
 }
 
 export class PaymentDetails extends Field {
-  private accountNumber: number | undefined;
-  private iban: string | undefined;
-  private routingNumber: number | undefined;
-  private swift: number | undefined;
+  accountNumber: number | undefined;
+  iban: string | undefined;
+  routingNumber: number | undefined;
+  swift: number | undefined;
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict to get the iban
@@ -24,7 +24,7 @@ export class PaymentDetails extends Field {
    * @param {String} routingNumberKey - Key to use to get the routing number in the prediction dict
    * @param {String} swiftKey - Key to use to get the SWIFT in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi pages pdf
+   * @param {Integer} pageNumber - Page number for multi-page PDF
    */
   constructor({
     prediction,
