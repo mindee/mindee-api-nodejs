@@ -3,7 +3,7 @@
 ## v1.3.2
 
 ### Fixes
-* 🐛 use pdf length instead of cut pdf size limit
+* 🐛 use PDF length instead of cut PDF size limit
 
 ## v1.3.1
 
