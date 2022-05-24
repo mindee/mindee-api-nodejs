@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.3.2
+
+### Fixes
+* 🐛 use PDF length instead of cut PDF size limit
+
 ## v1.3.1
 
 ### Fixes
