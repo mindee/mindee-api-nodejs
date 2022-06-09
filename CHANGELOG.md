@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v1.3.3
+
+### Fixes
+* 🐛 reject error instead of only print it
+
 ## v1.3.2
 
 ### Fixes
