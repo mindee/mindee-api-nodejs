@@ -3,7 +3,7 @@
 ## v1.3.3
 
 ### Fixes
-* 🐛 reject error instead of only print it
+* 🐛 reject errors instead of printing them only to the console
 
 ## v1.3.2
 
