@@ -143,7 +143,7 @@ class Input {
     const splitedPdfDocument = await PDFDocument.create();
     const pdfLength = pdfDocument.getPageCount();
     if (pdfLength <= this.CUT_PDF_SIZE) return;
-    const pagesNumbers = [...Array(pdfLength - 1).keys(), pdfLength - 1];
+    const pagesNumbers = [...Array(CUT_PDF_SIZE - 1).keys(), pdfLength - 2];
     const pages = await splitedPdfDocument.copyPages(pdfDocument, pagesNumbers);
     pages.forEach((page) => splitedPdfDocument.addPage(page));
     const data = await splitedPdfDocument.save();
