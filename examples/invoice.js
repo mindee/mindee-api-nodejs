@@ -32,7 +32,7 @@ mindeeClient.invoice
 
 // // parsing invoice from multiple page pdf
 mindeeClient.invoice
-  .parse({ input: "./documents/invoices/invoice_6p.pdf" })
+  .parse({ input: "./documents/invoices/invoice_10p.pdf" })
   .then((res) => {
     console.log("Success !");
     console.log(res.documentType);

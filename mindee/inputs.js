@@ -9,14 +9,14 @@ const ArrayBufferEncode = require("base64-arraybuffer");
 
 class Input {
   MIMETYPES = {
+    pdf: "application/pdf",
     png: "image/png",
     jpg: "image/jpg",
     jpeg: "image/jpeg",
     webp: "image/webp",
-    pdf: "application/pdf",
   };
   ALLOWED_INPUT_TYPE = ["base64", "path", "stream", "dummy"];
-  CUT_PDF_SIZE = 5;
+  MAX_DOC_PAGES = 3;
 
   /**
    * @param {(String | Buffer)} file - the file that will be read. Either path or base64 string, or a steam
@@ -47,6 +47,10 @@ class Input {
     else if (this.inputType === "path") await this.initFile();
     else if (this.inputType === "stream") await this.initStream();
     else this.initDummy();
+
+    if (this.fileExtension === "application/pdf" && this.allowCutPdf === true) {
+      await this.cutPdf();
+    }
   }
 
   async initBase64() {
@@ -67,10 +71,6 @@ class Input {
       const filetype = this.filename.split(".").pop();
       this.fileExtension = this.MIMETYPES[filetype];
     }
-
-    if (this.fileExtension === "application/pdf" && this.allowCutPdf == true) {
-      await this.cutPdf();
-    }
   }
 
   async initFile() {
@@ -90,10 +90,6 @@ class Input {
       );
     }
     this.fileExtension = this.MIMETYPES[filetype];
-
-    if (this.fileExtension === "application/pdf" && this.allowCutPdf == true) {
-      await this.cutPdf();
-    }
   }
 
   async initStream() {
@@ -134,19 +130,34 @@ class Input {
     });
   }
 
-  /** Cut PDF if pages > 5 */
-  async cutPdf() {
-    // convert document to PDFDocument & cut CUT_PDF_SIZE - 1 first pages and last page
+  async countPages() {
     let pdfDocument = await PDFDocument.load(this.fileObject, {
       ignoreEncryption: true,
     });
-    const splitedPdfDocument = await PDFDocument.create();
-    const pdfLength = pdfDocument.getPageCount();
-    if (pdfLength <= this.CUT_PDF_SIZE) return;
-    const pagesNumbers = [...Array(pdfLength - 1).keys(), pdfLength - 1];
-    const pages = await splitedPdfDocument.copyPages(pdfDocument, pagesNumbers);
-    pages.forEach((page) => splitedPdfDocument.addPage(page));
-    const data = await splitedPdfDocument.save();
+    return pdfDocument.getPageCount();
+  }
+
+  /** Merge PDF pages */
+  async cutPdf() {
+    let currentPdf = await PDFDocument.load(this.fileObject, {
+      ignoreEncryption: true,
+    });
+
+    const pdfLength = currentPdf.getPageCount();
+    if (pdfLength <= this.MAX_DOC_PAGES) {
+      return;
+    }
+
+    const newPdf = await PDFDocument.create();
+    const pagesNumbers = [0, pdfLength - 2, pdfLength - 1].slice(
+      0,
+      this.MAX_DOC_PAGES
+    );
+
+    const pages = await newPdf.copyPages(currentPdf, pagesNumbers);
+    pages.forEach((page) => newPdf.addPage(page));
+    const data = await newPdf.save();
+
     if (this.inputType === "path") {
       this.fileObject = Buffer.from(data);
     } else if (this.inputType === "base64") {
