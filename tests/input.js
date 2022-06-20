@@ -2,7 +2,6 @@ const Input = require("../mindee/inputs");
 const path = require("path");
 const fs = require("fs").promises;
 const expect = require("chai").expect;
-const { PDFDocument } = require("pdf-lib");
 
 describe("Test different types of input", () => {
   it("should accept base64 inputs", async () => {
@@ -60,12 +59,10 @@ describe("Test different types of input", () => {
       inputType: "path",
     });
     await input.init();
-    const pdfDocument = await PDFDocument.load(input.fileObject);
-    const pdfLength = pdfDocument.getPageCount();
     expect(input.inputType).to.equals("path");
     expect(input.filename).to.equals("invoice_6p.pdf");
     expect(input.fileExtension).to.equals("application/pdf");
-    expect(pdfLength).to.be.equal(input.CUT_PDF_SIZE);
+    expect(input.countPages()).to.equals(30);
   });
 
   it("should not cut pdf", async () => {

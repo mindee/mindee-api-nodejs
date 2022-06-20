@@ -17,7 +17,7 @@ describe("test APIObject", () => {
   it("should return a Response Object with an Receipt inside", async () => {
     const apiObject = new APIObject("dummyToken", "dummyApiName");
     const jsonData = await fs.readFile(
-      path.resolve("tests/data/api/receipt/v3/receipt.json")
+      path.resolve("tests/data/receipt/v3/receipt.json")
     );
     const apiResponse = JSON.parse(jsonData);
     const input = new Input({ inputType: "dummy" });
