@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 const FinancialDocument = require("../../mindee/documents/financialDocument");
 const expect = require("chai").expect;
-const api_path = require("../data/api/api_paths.json");
+const api_path = require("../data/api_paths.json");
 
 describe("Financial Document Object initialization", async () => {
   before(async function () {

@@ -2,7 +2,7 @@ const fs = require("fs").promises;
 const path = require("path");
 const Invoice = require("../../mindee/documents/invoice");
 const expect = require("chai").expect;
-const api_path = require("../data/api/api_paths.json");
+const api_path = require("../data/api_paths.json");
 
 describe("Invoice Object initialization", async () => {
   before(async function () {

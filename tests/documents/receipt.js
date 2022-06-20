@@ -2,7 +2,7 @@ const Receipt = require("../../mindee/documents/receipt");
 const expect = require("chai").expect;
 const fs = require("fs").promises;
 const path = require("path");
-const api_path = require("../data/api/api_paths.json");
+const api_path = require("../data/api_paths.json");
 
 describe("Receipt Object initialization", async () => {
   before(async function () {
