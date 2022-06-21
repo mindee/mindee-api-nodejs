@@ -10,9 +10,12 @@ const ArrayBufferEncode = require("base64-arraybuffer");
 class Input {
   MIMETYPES = {
     pdf: "application/pdf",
-    png: "image/png",
-    jpg: "image/jpg",
+    heic: "image/heic",
+    jpg: "image/jpeg",
     jpeg: "image/jpeg",
+    png: "image/png",
+    tif: "image/tiff",
+    tiff: "image/tiff",
     webp: "image/webp",
   };
   ALLOWED_INPUT_TYPE = ["base64", "path", "stream", "dummy"];
