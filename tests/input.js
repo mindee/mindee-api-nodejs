@@ -6,8 +6,7 @@ const expect = require("chai").expect;
 describe("Test different types of input", () => {
   it("should accept base64 inputs", async () => {
     const b64String = fs.promises.readFile(
-      path.join(__dirname, "data/receipt/receipt.jpg"),
-      { encoding: "base64" }
+      path.join(__dirname, "data/receipt/receipt.txt")
     );
     const filename = "test.jpg";
     const input = new Input({
@@ -21,7 +20,7 @@ describe("Test different types of input", () => {
     expect(input.fileObject).to.eqls(b64String);
   });
 
-  it("should accept files with a path", async () => {
+  it("should accept JPEG files from a path", async () => {
     const input = new Input({
       file: path.join(__dirname, "data/receipt/receipt.jpg"),
       inputType: "path",
@@ -32,7 +31,37 @@ describe("Test different types of input", () => {
     );
     expect(input.inputType).to.equals("path");
     expect(input.filename).to.equals("receipt.jpg");
-    expect(input.fileExtension).to.equals("image/jpg");
+    expect(input.fileExtension).to.equals("image/jpeg");
+    expect(input.fileObject).to.eqls(expectedResult);
+  });
+
+  it("should accept TIFF from a path", async () => {
+    const input = new Input({
+      file: path.join(__dirname, "data/receipt/receipt.tif"),
+      inputType: "path",
+    });
+    await input.init();
+    const expectedResult = await fs.promises.readFile(
+      path.join(__dirname, "data/receipt/receipt.tif")
+    );
+    expect(input.inputType).to.equals("path");
+    expect(input.filename).to.equals("receipt.tif");
+    expect(input.fileExtension).to.equals("image/tiff");
+    expect(input.fileObject).to.eqls(expectedResult);
+  });
+
+  it("should accept HEIC from a path", async () => {
+    const input = new Input({
+      file: path.join(__dirname, "data/receipt/receipt.heic"),
+      inputType: "path",
+    });
+    await input.init();
+    const expectedResult = await fs.promises.readFile(
+      path.join(__dirname, "data/receipt/receipt.heic")
+    );
+    expect(input.inputType).to.equals("path");
+    expect(input.filename).to.equals("receipt.heic");
+    expect(input.fileExtension).to.equals("image/heic");
     expect(input.fileObject).to.eqls(expectedResult);
   });
 
