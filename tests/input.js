@@ -85,15 +85,29 @@ describe("Test different types of input", () => {
   });
 
   it("should cut a PDF", async () => {
-    const input = new Input({
-      file: path.join(__dirname, "data/invoice/invoice_10p.pdf"),
+    const inputDoc = new Input({
+      file: path.join(__dirname, "data/pdf/multipage.pdf"),
       inputType: "path",
+      cutPdf: true,
     });
-    await input.init();
-    expect(input.inputType).to.equals("path");
-    expect(input.filename).to.equals("invoice_10p.pdf");
-    expect(input.fileExtension).to.equals("application/pdf");
-    expect(await input.countPages()).to.equals(3);
+    await inputDoc.init();
+    expect(inputDoc.inputType).to.equals("path");
+    expect(inputDoc.filename).to.equals("multipage.pdf");
+    expect(inputDoc.fileExtension).to.equals("application/pdf");
+    expect(await inputDoc.countPages()).to.equals(3);
+
+    const lengthRE = /(?<=\/FlateDecode[\s\S]\/Length )\d{1,3}/gm;
+
+    const expectedResult = await fs.promises.readFile(
+      path.join(__dirname, "data/pdf/multipage_cut-3.pdf"),
+      "utf-8"
+    );
+
+    const expectedLengths = expectedResult.match(lengthRE);
+    const inputDocLengths = inputDoc.fileObject
+      .toString("utf-8")
+      .match(lengthRE);
+    expect(expectedLengths).to.have.ordered.members(inputDocLengths);
   });
 
   it("should not cut a PDF", async () => {
