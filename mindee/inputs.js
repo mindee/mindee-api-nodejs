@@ -6,6 +6,7 @@ const concat = require("concat-stream");
 const { Base64Encode } = require("base64-stream");
 const fileType = require("file-type");
 const ArrayBufferEncode = require("base64-arraybuffer");
+const { logger } = require("./logger");
 
 class Input {
   MIMETYPES = {
@@ -148,6 +149,14 @@ class Input {
 
     const pdfLength = currentPdf.getPageCount();
     if (pdfLength <= this.MAX_DOC_PAGES) {
+      return;
+    }
+
+    if (currentPdf.isEncrypted) {
+      logger.error(
+        "PDF of %d pages is encrypted, not possible to cut pages.",
+        pdfLength
+      );
       return;
     }
 
