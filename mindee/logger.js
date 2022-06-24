@@ -12,22 +12,23 @@ class Logger {
   }
 
   debug(...args) {
-    if (this.level <= LOGGER_LEVELS["debug"]) console.debug(args);
+    if (this.level <= LOGGER_LEVELS["debug"]) console.debug(...args);
   }
 
   info(...args) {
-    if (this.level <= LOGGER_LEVELS["info"]) console.info(args);
+    if (this.level <= LOGGER_LEVELS["info"]) console.info(...args);
   }
 
   warn(...args) {
-    if (this.level <= LOGGER_LEVELS["warn"]) console.warn(args);
+    if (this.level <= LOGGER_LEVELS["warn"]) console.warn(...args);
   }
 
   error(...args) {
-    if (this.level <= LOGGER_LEVELS["error"]) console.error(args);
+    if (this.level <= LOGGER_LEVELS["error"]) console.error(...args);
   }
 }
 
-const logger = new Logger();
-
-module.exports = logger;
+module.exports = {
+  logger: new Logger(),
+  LOG_LEVELS: LOGGER_LEVELS,
+};
