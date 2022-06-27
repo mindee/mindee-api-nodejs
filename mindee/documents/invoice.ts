@@ -1,4 +1,4 @@
-import { Document } from "./document";
+import { Document, DocumentConstructorProps } from "./document";
 
 import {
   TaxField,
@@ -8,36 +8,14 @@ import {
   Amount,
   Field,
   DateField as Date,
+  TypedField,
 } from "./fields";
 
-interface InvoiceInterface {
-  pageNumber: number | undefined;
-  level: string;
-  locale: Locale | undefined;
-  totalIncl: Amount | undefined;
-  date: Date | undefined;
-  invoiceDate: Date | undefined;
-  dueDate: Date | undefined;
-  category: Field | undefined;
-  merchantName: Field | undefined;
-  time: Field | undefined;
-  orientation: Orientation | undefined;
-  taxes: TaxField[];
-  totalTax: Amount | undefined;
-  totalExcl: Amount | undefined;
-  words: any[] | undefined;
-  supplier: Field | undefined;
-  supplierAddress: Field | undefined;
-  invoiceNumber: Field | undefined;
-  paymentDetails: Field | undefined;
-  companyNumber: Field | undefined;
-  vatNumber: Field | undefined;
-  customerName: Field | undefined;
-  customerAddress: Field | undefined;
-  customerCompanyRegistration: Field | undefined;
+interface InvoiceConstructorProps extends DocumentConstructorProps {
+  documentType?: string;
 }
 
-export class Invoice extends Document implements InvoiceInterface {
+export class Invoice extends Document {
   /**
    *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
    *  @param {Input} input - Input object
@@ -58,62 +36,47 @@ export class Invoice extends Document implements InvoiceInterface {
    *  @param {Object} customerAddress - customer address value for creating Invoice object from scratch
    *  @param {Object} customerCompanyRegistration - customer company registration value for creating Invoice object from scratch
    *  @param {Number} pageNumber - pageNumber for multi pages pdf input
-   *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
-  pageNumber: number | undefined;
-  level: string;
-  locale: Locale | undefined;
-  totalIncl: Amount | undefined;
-  date: Date | undefined;
-  invoiceDate: Date | undefined;
-  dueDate: Date | undefined;
-  category: Field | undefined;
-  merchantName: Field | undefined;
-  time: Field | undefined;
-  orientation: Orientation | undefined;
-  taxes: TaxField[];
-  totalTax: Amount | undefined;
-  totalExcl: Amount | undefined;
-  words: any[] | undefined;
-  supplier: Field | undefined;
-  supplierAddress: Field | undefined;
-  invoiceNumber: Field | undefined;
-  paymentDetails: Field | undefined;
-  companyNumber: Field | undefined;
-  vatNumber: Field | undefined;
-  customerName: Field | undefined;
-  customerAddress: Field | undefined;
-  customerCompanyRegistration: Field | undefined;
-
-  private readonly constructPrediction: (item: any) => {
-    pageNumber: number;
-    prediction: { value: any };
-    valueKey: string;
-  };
+  locale!: Locale;
+  totalIncl!: Amount;
+  date!: Date;
+  dueDate!: Date;
+  category!: Field;
+  time!: Field;
+  orientation!: Orientation;
+  totalTax!: Amount;
+  totalExcl!: Amount;
+  supplier!: Field;
+  supplierAddress!: Field;
+  invoiceNumber!: Field;
+  companyNumber: Field[] = [];
+  customerName!: Field;
+  customerAddress!: Field;
+  taxes: TaxField[] = [];
+  paymentDetails: PaymentDetails[] = [];
+  customerCompanyRegistration: TypedField[] = [];
 
   constructor({
-    apiPrediction = undefined,
+    apiPrediction,
     inputFile = undefined,
-    words = undefined,
-    pageNumber = 0,
-    level = "page",
+    fullText = undefined,
+    pageNumber = undefined,
     documentType = "",
-  }) {
-    super(documentType, inputFile);
-    this.level = level;
-    this.taxes = [];
-    this.constructPrediction = function (item) {
-      return { prediction: { value: item }, valueKey: "value", pageNumber };
-    };
-    this.#initFromApiPrediction(apiPrediction, pageNumber, words);
+  }: InvoiceConstructorProps) {
+    super(documentType, inputFile, pageNumber, fullText);
+    this.#initFromApiPrediction(apiPrediction, pageNumber);
     this.#checklist();
     this.#reconstruct();
   }
 
-  #initFromApiPrediction(prediction: any, pageNumber: number, words: any) {
-    this.locale = new Locale({ prediction: prediction.locale, pageNumber });
+  #initFromApiPrediction(apiPrediction: any, pageNumber?: number) {
+    this.locale = new Locale({
+      prediction: apiPrediction.locale,
+      pageNumber: pageNumber,
+      valueKey: "language",
+    });
     this.totalIncl = new Amount({
-      prediction: prediction.total_incl,
+      prediction: apiPrediction.total_incl,
       valueKey: "value",
       pageNumber,
     });
@@ -123,120 +86,123 @@ export class Invoice extends Document implements InvoiceInterface {
       pageNumber,
     });
     this.totalExcl = new Amount({
-      prediction: prediction.total_excl,
+      prediction: apiPrediction.total_excl,
       valueKey: "value",
       pageNumber,
     });
     this.date = new Date({
-      prediction: prediction.date,
+      prediction: apiPrediction.date,
       valueKey: "value",
       pageNumber,
     });
-    this.invoiceDate = new Date({
-      prediction: prediction.date,
-      valueKey: "value",
-      pageNumber,
-    });
-    this.taxes = prediction.taxes.map(function (taxPrediction: any) {
-      return new TaxField({
-        prediction: taxPrediction,
-        pageNumber,
-        valueKey: "value",
-        rateKey: "rate",
-        codeKey: "code",
-      });
-    });
-    this.companyNumber = prediction.company_registration.map(function (
-      companyNumber: any
-    ) {
-      return new Field({
-        prediction: companyNumber,
-        pageNumber,
-        extraFields: ["type"],
-      });
-    });
+    apiPrediction.taxes.map((prediction: { [index: string]: any }) =>
+      this.taxes.push(
+        new TaxField({
+          prediction: prediction,
+          pageNumber,
+          valueKey: "value",
+          rateKey: "rate",
+          codeKey: "code",
+        })
+      )
+    );
+    this.companyNumber = apiPrediction.company_registration.map(
+      function (prediction: { [index: string]: any }) {
+        return new TypedField({
+          prediction: prediction,
+          pageNumber,
+        });
+      }
+    );
     this.dueDate = new Date({
-      prediction: prediction.due_date,
+      prediction: apiPrediction.due_date,
       valueKey: "value",
       pageNumber,
     });
     this.invoiceNumber = new Field({
-      prediction: prediction.invoice_number,
+      prediction: apiPrediction.invoice_number,
       pageNumber,
     });
     this.supplier = new Field({
-      prediction: prediction.supplier,
+      prediction: apiPrediction.supplier,
       pageNumber,
     });
     this.supplierAddress = new Field({
-      prediction: prediction.supplier_address,
+      prediction: apiPrediction.supplier_address,
       pageNumber,
     });
     this.customerName = new Field({
-      prediction: prediction.customer,
+      prediction: apiPrediction.customer,
       pageNumber,
     });
     this.customerAddress = new Field({
-      prediction: prediction.customer_address,
+      prediction: apiPrediction.customer_address,
       pageNumber,
     });
-    this.customerCompanyRegistration =
-      prediction.customer_company_registration.map(function (
-        customerCompanyRegistration: any
-      ) {
-        return new Field({
-          prediction: customerCompanyRegistration,
+    apiPrediction.customer_company_registration.map(
+      (prediction: { [index: string]: any }) =>
+        this.customerCompanyRegistration.push(
+          new TypedField({
+            prediction: prediction,
+            pageNumber,
+          })
+        )
+    );
+    apiPrediction.payment_details.map((prediction: { [index: string]: any }) =>
+      this.paymentDetails.push(
+        new PaymentDetails({
+          prediction: prediction,
           pageNumber,
-          extraFields: ["type"],
-        });
-      });
-    this.paymentDetails = prediction.payment_details.map(function (
-      paymentDetail: any
-    ) {
-      return new PaymentDetails({ prediction: paymentDetail, pageNumber });
-    });
-    if (this.level === "page") {
+        })
+      )
+    );
+    if (pageNumber !== undefined) {
       this.orientation = new Orientation({
-        prediction: prediction.orientation,
+        prediction: apiPrediction.orientation,
         pageNumber,
       });
-    } else {
-      this.orientation = new Orientation(
-        this.constructPrediction({
-          prediction: {
-            value: undefined,
-            confidence: 0.0,
-            degrees: undefined,
-          },
-        })
-      );
     }
-    if (words && words.length > 0) this.words = words;
   }
 
-  toString() {
-    const taxes = this.taxes.map((tax) => tax.toString()).join(" - ");
-    return `
-    -----Invoice data-----
-    Filename: ${this.filename}
-    Invoice number: ${(this.invoiceNumber as Field).value}
-    Total amount including taxes: ${(this.totalIncl as Amount).value}
-    Total amount excluding taxes: ${(this.totalExcl as Amount).value}
-    Invoice Date: ${(this.invoiceDate as Date).value}
-    Supplier name: ${(this.supplier as Field).value}
-    Supplier address: ${(this.supplierAddress as Field).value}
-    Customer name: ${(this.customerName as Field).value}
-    Customer address: ${(this.customerAddress as Field).value}
-    Taxes: ${taxes}
-    Total taxes: ${(this.totalTax as Amount).value}
-    `;
+  toString(): string {
+    const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
+    const paymentDetails = this.paymentDetails
+      .map((item) => item.toString())
+      .join("\n                 ");
+    const companyRegistration = this.customerCompanyRegistration
+      .map((item) => item.toString())
+      .join("; ");
+    const companyNumbers = this.companyNumber
+      .map((item) => item.toString())
+      .join("; ");
+
+    const outStr = `-----Invoice data-----
+Filename: ${this.filename}
+Invoice number: ${this.invoiceNumber}
+Total amount including taxes: ${this.totalIncl}
+Total amount excluding taxes: ${this.totalExcl}
+Invoice date: ${this.date}
+Invoice due date: ${this.dueDate}
+Supplier name: ${this.supplier}
+Supplier address: ${this.supplierAddress}
+Customer name: ${this.customerName}
+Customer company registration: ${companyRegistration}
+Customer address: ${this.customerAddress}
+Payment details: ${paymentDetails}
+Company numbers: ${companyNumbers}
+Taxes: ${taxes}
+Total taxes: ${this.totalTax}
+Locale: ${this.locale}
+----------------------
+`;
+    return Invoice.cleanOutString(outStr);
   }
 
   #checklist() {
     this.checklist = {
-      taxesMatchTotalIncl: this.#taxesMatchTotalIncl(),
-      taxesMatchTotalExcl: this.#taxesMatchTotalExcl(),
-      taxesAndTotalExclMatchTotalIncl: this.#taxesAndTotalExclMatchTotalIncl(),
+      taxesMatchTotalIncl: this.taxesMatchTotalIncl(),
+      taxesMatchTotalExcl: this.taxesMatchTotalExcl(),
+      taxesAndTotalExclMatchTotalIncl: this.taxesAndTotalExclMatchTotalIncl(),
     };
   }
 
@@ -247,18 +213,15 @@ export class Invoice extends Document implements InvoiceInterface {
     this.#reconstructTotalTaxFromTotals();
   }
 
-  #taxesMatchTotalIncl() {
+  private taxesMatchTotalIncl(): boolean {
     // Check taxes and total include exist
-    if (
-      (this.taxes as any[]).length === 0 ||
-      (this.totalIncl as Amount).value === undefined
-    )
+    if (this.taxes.length === 0 || this.totalIncl.value === undefined)
       return false;
 
     // Reconstruct totalIncl from taxes
     let totalVat = 0;
     let reconstructedTotal = 0;
-    (this.taxes as any[]).forEach((tax) => {
+    this.taxes.forEach((tax) => {
       if (tax.value === undefined || !tax.rate) return false;
       totalVat += tax.value;
       reconstructedTotal += tax.value + (100 * tax.value) / tax.rate;
@@ -271,16 +234,14 @@ export class Invoice extends Document implements InvoiceInterface {
     const eps = 1 / (100 * totalVat);
 
     if (
-      (this.totalIncl as Amount).value * (1 - eps) - 0.02 <=
-        reconstructedTotal &&
-      reconstructedTotal <= (this.totalIncl as Amount).value * (1 + eps) + 0.02
+      this.totalIncl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
+      reconstructedTotal <= this.totalIncl.value * (1 + eps) + 0.02
     ) {
-      this.taxes = (this.taxes as any[]).map((tax) => ({
-        ...tax,
-        confidence: 1.0,
-      }));
-      (this.totalTax as Amount).confidence = 1.0;
-      (this.totalIncl as Amount).confidence = 1.0;
+      this.taxes.forEach((tax) => {
+        tax.confidence = 1.0;
+      });
+      this.totalTax.confidence = 1.0;
+      this.totalIncl.confidence = 1.0;
       return true;
     }
     return false;
@@ -289,19 +250,19 @@ export class Invoice extends Document implements InvoiceInterface {
   /**
    *
    */
-  #taxesMatchTotalExcl() {
+  private taxesMatchTotalExcl(): boolean {
     // Check taxes and total amount exist
-    if (
-      (this.taxes as any[]).length === 0 ||
-      (this.totalExcl as Amount).value === null
-    )
+    if (this.taxes.length === 0 || this.totalExcl.value === undefined) {
       return false;
+    }
 
     // Reconstruct total_incl from taxes
     let totalVat = 0;
     let reconstructedTotal = 0;
-    (this.taxes as any[]).forEach((tax) => {
-      if (tax.value === null || !tax.rate) return false;
+    this.taxes.forEach((tax) => {
+      if (tax.value === undefined || !tax.rate) {
+        return false;
+      }
       totalVat += tax.value;
       reconstructedTotal += (100 * tax.value) / tax.rate;
     });
@@ -313,53 +274,50 @@ export class Invoice extends Document implements InvoiceInterface {
     const eps = 1 / (100 * totalVat);
 
     if (
-      (this.totalExcl as Amount).value * (1 - eps) - 0.02 <=
-        reconstructedTotal &&
-      reconstructedTotal <= (this.totalExcl as Amount).value * (1 + eps) + 0.02
+      this.totalExcl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
+      reconstructedTotal <= this.totalExcl.value * (1 + eps) + 0.02
     ) {
-      this.taxes = (this.taxes as any[]).map((tax) => ({
-        ...tax,
-        confidence: 1.0,
-      }));
-      (this.totalTax as Amount).confidence = 1.0;
-      (this.totalExcl as Amount).confidence = 1.0;
+      this.taxes.forEach((tax) => {
+        tax.confidence = 1.0;
+      });
+      this.totalTax.confidence = 1.0;
+      this.totalExcl.confidence = 1.0;
       return true;
     }
     return false;
   }
 
-  #taxesAndTotalExclMatchTotalIncl() {
+  private taxesAndTotalExclMatchTotalIncl(): boolean {
     if (
-      (this.totalExcl as Amount).value === undefined ||
-      (this.taxes as any[]).length === 0 ||
-      (this.totalIncl as Amount) === undefined
+      this.totalExcl.value === undefined ||
+      this.taxes.length === 0 ||
+      this.totalIncl.value === undefined
     )
       return false;
     let totalVat = 0;
-    (this.taxes as any[]).forEach((tax) => (totalVat += tax.value));
-    const reconstructedTotal = totalVat + (this.totalExcl as Amount).value;
+    this.taxes.forEach((tax) => (totalVat += tax.value || 0));
+    const reconstructedTotal = totalVat + this.totalExcl.value;
 
     if (totalVat <= 0) return false;
 
     if (
-      (this.totalIncl as Amount).value - 0.01 <= reconstructedTotal &&
-      reconstructedTotal <= (this.totalIncl as Amount).value + 0.01
+      this.totalIncl.value - 0.01 <= reconstructedTotal &&
+      reconstructedTotal <= this.totalIncl.value + 0.01
     ) {
-      this.taxes = (this.taxes as any[]).map((tax) => ({
-        ...tax,
-        confidence: 1.0,
-      }));
-      (this.totalTax as Amount).confidence = 1.0;
-      (this.totalIncl as Amount).confidence = 1.0;
+      this.taxes.forEach((tax) => {
+        tax.confidence = 1.0;
+      });
+      this.totalTax.confidence = 1.0;
+      this.totalIncl.confidence = 1.0;
       return true;
     }
     return false;
   }
 
   #reconstructTotalTax() {
-    if ((this.taxes as any[]).length > 0) {
+    if (this.taxes.length > 0) {
       const totalTax = {
-        value: (this.taxes as any[]).reduce((acc, tax) => {
+        value: this.taxes.reduce((acc, tax) => {
           return tax.value !== undefined ? acc + tax.value : acc;
         }, 0),
         confidence: Field.arrayConfidence(this.taxes),
@@ -375,62 +333,62 @@ export class Invoice extends Document implements InvoiceInterface {
 
   #reconstructTotalTaxFromTotals() {
     if (
-      (this.totalTax as Amount).value === undefined &&
-      (this.totalIncl as Amount).value > 0 &&
-      (this.totalExcl as Amount).value > 0 &&
-      (this.totalExcl as Amount).value <= (this.totalIncl as Amount).value
+      this.totalTax.value !== undefined ||
+      this.totalExcl.value === undefined ||
+      this.totalIncl.value === undefined
     ) {
-      const totalTax = {
-        value:
-          (this.totalIncl as Amount).value - (this.totalExcl as Amount).value,
-        confidence:
-          (this.totalIncl as Amount).confidence *
-          (this.totalExcl as Amount).confidence,
-      };
-      if (totalTax.value > 0)
-        this.totalTax = new Amount({
-          prediction: totalTax,
-          valueKey: "value",
-          reconstructed: true,
-        });
+      return;
     }
-  }
-
-  #reconstructTotalExcl() {
-    if (
-      this.taxes.length &&
-      (this.totalIncl as Amount).value !== null &&
-      (this.totalExcl as Amount).value === undefined
-    ) {
-      const totalExcl = {
-        value: (this.totalIncl as Amount).value - Field.arraySum(this.taxes),
-        confidence:
-          Field.arrayConfidence(this.taxes) *
-          (this.totalIncl as Amount).confidence,
-      };
-      this.totalExcl = new Amount({
-        prediction: totalExcl,
+    const totalTax = {
+      value: this.totalIncl.value - this.totalExcl.value,
+      confidence: this.totalIncl.confidence * this.totalExcl.confidence,
+    };
+    if (totalTax.value >= 0) {
+      this.totalTax = new Amount({
+        prediction: totalTax,
         valueKey: "value",
         reconstructed: true,
       });
     }
   }
 
+  #reconstructTotalExcl() {
+    if (
+      this.totalIncl.value === undefined ||
+      this.taxes.length === 0 ||
+      this.totalExcl.value !== undefined
+    ) {
+      return;
+    }
+    const totalExcl = {
+      value: this.totalIncl.value - Field.arraySum(this.taxes),
+      confidence:
+        Field.arrayConfidence(this.taxes) *
+        (this.totalIncl as Amount).confidence,
+    };
+    this.totalExcl = new Amount({
+      prediction: totalExcl,
+      valueKey: "value",
+      reconstructed: true,
+    });
+  }
+
   #reconstructTotalIncl() {
     if (
-      this.taxes.length &&
-      (this.totalExcl as Amount).value !== null &&
-      (this.totalIncl as Amount).value === undefined
+      !(
+        this.totalExcl.value === undefined ||
+        this.taxes.length === 0 ||
+        this.totalIncl.value !== undefined
+      )
     ) {
       const totalIncl = {
         value:
-          (this.totalExcl as Amount).value +
+          this.totalExcl.value +
           (this.taxes as any[]).reduce((acc, tax) => {
             return tax.value ? acc + tax.value : acc;
           }, 0.0),
         confidence:
-          Field.arrayConfidence(this.taxes) *
-          (this.totalExcl as Amount).confidence,
+          Field.arrayConfidence(this.taxes) * this.totalExcl.confidence,
       };
       this.totalIncl = new Amount({
         prediction: totalIncl,

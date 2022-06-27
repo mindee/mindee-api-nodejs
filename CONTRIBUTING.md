@@ -1,12 +1,14 @@
-# Contributing to react-mindee-js
+# Contributing to mindee-api-nodejs
 
 :+1::tada: First off, thanks for taking the time to contribute! :tada::+1:
 
-The following is a set of guidelines for contributing to react-mindee-js which are hosted on GitHub. These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
+The following is a set of guidelines for contributing to react-mindee-js which are hosted on GitHub.
+These are mostly guidelines, not rules. Use your best judgment, and feel free to propose changes to this document in a pull request.
 
 ## Code of Conduct
 
-This project and everyone participating in it is governed by the following [Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code. Please report unacceptable behavior to [contact@mindee.com](mailto:contact@mindee.com).
+This project and everyone participating in it is governed by the following [Code of Conduct](CODE_OF_CONDUCT.md).
+By participating, you are expected to uphold this code. Please report unacceptable behavior to [contact@mindee.com](mailto:contact@mindee.com).
 
 ## How Can I Contribute
 
@@ -28,8 +30,8 @@ To help maintainers and the community to be efficient, follow these guidelines:
 
 Include details about your configuration and environment:
 
-* **Which version of react-mindee-js are you using?**
-* **What's the name and version of the browser you're using, on which OS**?
+* **Which version of mindee-api-nodejs are you using?**
+* **What's the name and version of the OS you're using**?
 
 ### Suggesting Enhancements
 
@@ -49,14 +51,14 @@ Make sure to provide the following information:
 
 The process described here has several goals:
 
-- Maintain mindee SDK quality
-- Fix problems that are important to users
-- Engage the community in working toward the best possible SDK
-- Enable a sustainable system for mindee's maintainers to review contributions
+* Maintain Mindee code quality
+* Fix problems that are important to users
+* Engage the community in working toward the best possible SDK
+* Enable a sustainable system for Mindee's maintainers to review contributions
 
 Please follow these steps to have your contribution considered by the maintainers:
 
-1. Follow all instructions in [the template](PULL_REQUEST_TEMPLATE.md)
+1. Follow all instructions in [the template](.github/PULL_REQUEST_TEMPLATE.md)
 2. Follow the [styleguides](#styleguides)
 
 While the prerequisites above must be satisfied prior to having your pull request reviewed, the reviewer(s) may ask you to complete additional design work, tests, or other changes before your pull request can be ultimately accepted.
@@ -67,18 +69,16 @@ While the prerequisites above must be satisfied prior to having your pull reques
 
 * Use the present tense ("Add feature" not "Added feature")
 * Use the imperative mood ("Move cursor to..." not "Moves cursor to...")
-* Limit the first line to 72 characters or less
+* Limit the first line to 72 characters or fewer
 * Reference issues and pull requests liberally after the first line
-* Please prefix your commit message with `chg:`, `new:` or `fix:` according to the content
-* Consider starting the commit message with an applicable emoji, see [gitmoji](https://gitmoji.carloscuesta.me/) as a reference.
+* Start the commit message with an applicable emoji, see [gitmoji](https://gitmoji.carloscuesta.me/) as a reference.
 
 Example:
 
-* chg: :pencil: Add usage section in README
-* new: :sparkles: Add CONTRIBUTING file in repository
-* fix: :bug: MyComponent - Prevent MouseEvent from firing unexpectedly
+* :pencil: Add usage section in README
+* :sparkles: Add CONTRIBUTING file in repository
+* :bug: MyComponent - Prevent MouseEvent from firing unexpectedly
 
 ### JavaScript Styleguide
 
-We keep our code base consistent and we expect React/JavaScript code to must adhere to [JavaScript Standard Style](https://standardjs.com/).
-When possible, adding [flow](https://flow.org/) types is also expected.
+To keep our code base consistent, we expect contributions to adhere to our `.eslintrc` file parameters.

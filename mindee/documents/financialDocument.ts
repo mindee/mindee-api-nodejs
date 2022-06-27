@@ -1,4 +1,4 @@
-import { Document } from "./document";
+import { Document, DocumentConstructorProps } from "./document";
 import { Invoice } from "./invoice";
 import { Receipt } from "./receipt";
 import {
@@ -8,39 +8,14 @@ import {
   Locale,
   Orientation,
   DateField as Date,
+  TypedField,
 } from "./fields";
 
-interface FinancialDocumentInterface {
-  pageNumber: number | undefined;
-  level: string;
-  locale: Locale | undefined;
-  totalIncl: Amount | undefined;
-  date: Date | undefined;
-  invoiceDate: Date | undefined;
-  dueDate: Date | undefined;
-  category: Field | undefined;
-  merchantName: Field | undefined;
-  time: Field | undefined;
-  orientation: Orientation | undefined;
-  taxes: TaxField[];
-  totalTax: Amount | undefined;
-  totalExcl: Amount | undefined;
-  words: any[] | undefined;
-  supplier: Field | undefined;
-  supplierAddress: Field | undefined;
-  invoiceNumber: Field | undefined;
-  paymentDetails: Field | undefined;
-  companyNumber: Field | undefined;
-  vatNumber: Field | undefined;
-  customerName: Field | undefined;
-  customerAddress: Field | undefined;
-  customerCompanyRegistration: Field | undefined;
+interface FinancialDocConstructorProps extends DocumentConstructorProps {
+  documentType?: string;
 }
 
-export class FinancialDocument
-  extends Document
-  implements FinancialDocumentInterface
-{
+export class FinancialDocument extends Document {
   /**
    *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
    *  @param {Input} input - Input object
@@ -66,63 +41,55 @@ export class FinancialDocument
    *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
   pageNumber: number | undefined;
-  level: string;
-  locale: Locale | undefined;
-  totalIncl: Amount | undefined;
-  date: Date | undefined;
-  invoiceDate: Date | undefined;
-  dueDate: Date | undefined;
-  category: Field | undefined;
+  locale!: Locale;
+  totalIncl!: Amount;
+  date!: Date;
+  dueDate!: Date;
+  category!: Field;
   merchantName: Field | undefined;
-  time: Field | undefined;
+  time!: Field;
   orientation: Orientation | undefined;
   taxes: TaxField[];
-  totalTax: Amount | undefined;
-  totalExcl: Amount | undefined;
-  words: any[] | undefined;
-  supplier: Field | undefined;
-  supplierAddress: Field | undefined;
-  invoiceNumber: Field | undefined;
-  paymentDetails: Field | undefined;
-  companyNumber: Field | undefined;
-  vatNumber: Field | undefined;
-  customerName: Field | undefined;
-  customerAddress: Field | undefined;
-  customerCompanyRegistration: Field | undefined;
+  totalTax!: Amount;
+  totalExcl!: Amount;
+  words: any[] = [];
+  supplier!: Field;
+  supplierAddress!: Field;
+  invoiceNumber!: Field;
+  companyNumber: Field[] = [];
+  customerName!: Field;
+  customerAddress!: Field;
+  paymentDetails: Field[] = [];
+  customerCompanyRegistration: TypedField[] = [];
 
   constructor({
-    apiPrediction = undefined,
+    apiPrediction,
     inputFile = undefined,
-    words = undefined,
-    pageNumber = 0,
-    level = "page",
+    fullText = undefined,
+    pageNumber = undefined,
     documentType = "",
-  }) {
-    super(documentType, inputFile);
-    this.level = level;
+  }: FinancialDocConstructorProps) {
+    super(documentType, inputFile, pageNumber, fullText);
     this.taxes = [];
-    this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber, words);
+    this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber);
     this.#checklist();
   }
 
   #initFromApiPrediction(
     prediction: any,
     inputFile: any,
-    pageNumber: any,
-    words: any
+    pageNumber: number | undefined
   ) {
     if (Object.keys(prediction).includes("invoice_number")) {
       const invoice = new Invoice({
         apiPrediction: prediction,
         inputFile,
         pageNumber,
-        level: this.level,
-        words: words,
       });
       this.locale = invoice.locale;
       this.totalIncl = invoice.totalIncl;
       this.totalExcl = invoice.totalExcl;
-      this.date = invoice.invoiceDate;
+      this.date = invoice.date;
       this.invoiceNumber = invoice.invoiceNumber;
       this.dueDate = invoice.dueDate;
       this.taxes = invoice.taxes;
@@ -132,7 +99,6 @@ export class FinancialDocument
       this.companyNumber = invoice.companyNumber;
       this.orientation = invoice.orientation;
       this.totalTax = invoice.totalTax;
-      if (invoice.words) this.words = invoice.words;
       this.time = new Field({
         prediction: { value: undefined, confidence: 0.0 },
       });
@@ -144,8 +110,6 @@ export class FinancialDocument
         apiPrediction: prediction,
         inputFile,
         pageNumber,
-        level: this.level,
-        words: words,
       });
       this.orientation = receipt.orientation;
       this.date = receipt.date;
@@ -163,34 +127,26 @@ export class FinancialDocument
       this.invoiceNumber = new Field({
         prediction: { value: undefined, confidence: 0.0 },
       });
-      this.paymentDetails = new Field({
-        prediction: { value: undefined, confidence: 0.0 },
-      });
-      this.companyNumber = new Field({
-        prediction: { value: undefined, confidence: 0.0 },
-      });
       this.customerName = new Field({
         prediction: { value: undefined, confidence: 0.0 },
       });
       this.customerAddress = new Field({
         prediction: { value: undefined, confidence: 0.0 },
       });
-      this.customerCompanyRegistration = new Field({
-        prediction: { value: undefined, confidence: 0.0 },
-      });
       if (receipt.words) this.words = receipt.words;
     }
   }
 
-  toString() {
-    return `
-    -----Financial document-----
-    Filename: ${this.filename}
-    Total amount: ${(this.totalIncl as Amount).value}
-    Date: ${(this.date as Date).value}
-    Supplier: ${(this.supplier as Field).value}
-    Total taxes: ${(this.totalTax as Amount).value}
-    `;
+  toString(): string {
+    const outStr = `-----Financial document-----
+Filename: ${this.filename}
+Total amount: ${(this.totalIncl as Amount).value}
+Date: ${(this.date as Date).value}
+Supplier: ${(this.supplier as Field).value}
+Total taxes: ${(this.totalTax as Amount).value}
+----------------------
+`;
+    return FinancialDocument.cleanOutString(outStr);
   }
 
   #checklist() {
@@ -201,16 +157,13 @@ export class FinancialDocument
 
   #taxesMatchTotalIncl() {
     // Check taxes and total include exist
-    if (
-      (this.taxes as any[]).length === 0 ||
-      (this.totalIncl as Amount).value === undefined
-    )
+    if (this.taxes.length === 0 || this.totalIncl.value === undefined)
       return false;
 
     // Reconstruct totalIncl from taxes
     let totalVat = 0;
     let reconstructedTotal = 0;
-    (this.taxes as any[]).forEach((tax: any) => {
+    this.taxes.forEach((tax) => {
       if (tax.value === undefined || !tax.rate) return false;
       totalVat += tax.value;
       reconstructedTotal += tax.value + (100 * tax.value) / tax.rate;
@@ -223,16 +176,15 @@ export class FinancialDocument
     const eps = 1 / (100 * totalVat);
 
     if (
-      (this.totalIncl as Amount).value * (1 - eps) - 0.02 <=
-        reconstructedTotal &&
-      reconstructedTotal <= (this.totalIncl as Amount).value * (1 + eps) + 0.02
+      this.totalIncl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
+      reconstructedTotal <= this.totalIncl.value * (1 + eps) + 0.02
     ) {
       this.taxes = (this.taxes as any[]).map((tax: any) => ({
         ...tax,
         confidence: 1.0,
       }));
-      (this.totalTax as Amount).confidence = 1.0;
-      (this.totalIncl as Amount).confidence = 1.0;
+      this.totalTax.confidence = 1.0;
+      this.totalIncl.confidence = 1.0;
       return true;
     }
     return false;

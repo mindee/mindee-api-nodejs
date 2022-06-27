@@ -1,31 +1,35 @@
 const { Client } = require("mindee");
 const fs = require("fs");
 
-// Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via params (Client({receiptToken: "token"}))
 const mindeeClient = new Client();
 
-// parsing receipt from picture
-mindeeClient.receipt
-  .parse({ input: "./documents/receipts/receipt.jpg" })
+// Receipt API key can also be set by envvar: MINDEE_RECEIPT_API_KEY
+mindeeClient.configReceipt("my-receipt-api-key");
+
+// parsing receipt from image
+const pathDoc = mindeeClient.docFromPath("./documents/receipts/receipt.jpg");
+pathDoc
+  .parse("receipt")
   .then((res) => {
-    console.log("Success !");
-    console.log(res.receipts);
-    console.log(res.receipt);
+    console.log("Success!");
+    console.log(res.pages);
+    console.log(res.document);
   })
   .catch((err) => {
     console.error(err);
   });
 
-// parsing receipt from base64 picture
+// parsing receipt from base64-encoded image
 const base64 = fs.readFileSync("./documents/receipts/receipt.jpg", {
   encoding: "base64",
 });
-mindeeClient.receipt
-  .parse({ input: base64, inputType: "base64" })
+const base64Doc = mindeeClient.docFromBase64(base64.toString(), "receipt.jpg");
+base64Doc
+  .parse("receipt")
   .then((res) => {
-    console.log("Success !");
-    console.log(res.receipts);
-    console.log(res.receipt);
+    console.log("Success!");
+      console.log(res.pages);
+      console.log(res.document);
   })
   .catch((err) => {
     console.error(err);
@@ -33,12 +37,13 @@ mindeeClient.receipt
 
 // parsing receipt from stream
 const stream = fs.createReadStream("./documents/receipts/receipt.jpg");
-mindeeClient.receipt
-  .parse({ input: stream, inputType: "stream" })
+const streamDoc = mindeeClient.docFromStream(stream, "receipt.jpg");
+streamDoc
+  .parse("receipt")
   .then((res) => {
     console.log("Success !");
-    console.log(res.receipts);
-    console.log(res.receipt);
+      console.log(res.pages);
+      console.log(res.document);
   })
   .catch((err) => {
     console.error(err);

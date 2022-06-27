@@ -1,4 +1,5 @@
 -----Receipt data-----
+Filename:
 Total amount including taxes: 10.2
 Total amount excluding taxes: 8.5
 Date: 2016-02-26

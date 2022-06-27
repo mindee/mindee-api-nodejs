@@ -1,4 +1,4 @@
-export { Document } from "./document";
+export { Document, FullText } from "./document";
 export { Receipt } from "./receipt";
 export { Invoice } from "./invoice";
 export { FinancialDocument } from "./financialDocument";

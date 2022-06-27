@@ -1,31 +1,28 @@
 const { Client } = require("mindee");
 
-// Receipt token can be set by Env (MINDEE_RECEIPT_TOKEN) or via params (Client({receiptToken: "token"}))
 const mindeeClient = new Client();
 
-// parsing receipt from picture
-mindeeClient.financialDocument
-  .parse({ input: "./documents/receipts/receipt.jpg" })
+// parsing receipt from PDF, will return invoice info
+invoiceDoc = mindeeClient.docFromPath("./documents/invoices/invoice.pdf");
+invoiceDoc
+  .parse("financialDoc")
   .then((res) => {
-    console.log("Success !");
-    console.log(res.financialDocuments);
-    console.log(res.financialDocument);
+    console.log("Success!");
+    console.log(res.pages);
+    console.log(res.document);
   })
   .catch((err) => {
     console.error(err);
   });
 
-// parsing receipt from base64 picture
-const fs = require("fs");
-const base64 = fs.readFileSync("./documents/receipts/receipt.jpg", {
-  encoding: "base64",
-});
-mindeeClient.financialDocument
-  .parse({ input: base64, inputType: "base64" })
+// parsing receipt from base64 image, will return receipt info
+receiptDoc = mindeeClient.docFromPath("./documents/receipts/receipt.jpg");
+receiptDoc
+  .parse("financialDoc")
   .then((res) => {
     console.log("Success!");
-    console.log(res.financialDocuments);
-    console.log(res.financialDocument);
+    console.log(res.pages);
+    console.log(res.document);
   })
   .catch((err) => {
     console.error(err);

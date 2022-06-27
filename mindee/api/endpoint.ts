@@ -5,12 +5,14 @@ import { version as sdkVersion } from "../../package.json";
 import { URL } from "url";
 import FormData from "form-data";
 import { Input } from "@mindee/inputs";
+import { logger } from "../logger";
 
 const MINDEE_API_URL = "https://api.mindee.net/v1";
 const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${
   process.version
 } ${os.type().toLowerCase()}`;
-const OWNER = "mindee";
+
+const OTS_OWNER = "mindee";
 
 const INVOICE_URL_NAME = "invoices";
 const INVOICE_VERSION = "3";
@@ -21,19 +23,42 @@ const RECEIPT_VERSION = "3";
 const PASSPORT_URL_NAME = "passport";
 const PASSPORT_VERSION = "1";
 
+function toSnakeCase(name: string): string {
+  return name
+    .trim()
+    .split(/(?=[A-Z-])/g)
+    .join("_");
+}
+
 export class Endpoint {
   apiKey: string;
   urlName: string;
+  keyName: string;
   owner: string;
   version: string;
   urlRoot: string;
 
-  constructor(owner: string, urlName: string, version: string, apiKey: string) {
+  constructor(
+    owner: string,
+    urlName: string,
+    version: string,
+    apiKey: string,
+    keyName?: string
+  ) {
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
-    this.apiKey = apiKey;
+    this.keyName = keyName || urlName;
+    this.apiKey = apiKey || this.apiKeyFromEnv();
     this.urlRoot = `${MINDEE_API_URL}/products/${owner}/${urlName}/v${version}`;
+  }
+
+  envVarKeyName(): string {
+    let envKeyName: string = toSnakeCase(this.keyName);
+    if (this.owner !== OTS_OWNER) {
+      envKeyName = `${toSnakeCase(this.owner)}_${envKeyName}`;
+    }
+    return `MINDEE_${envKeyName}_API_KEY`.toUpperCase();
   }
 
   /**
@@ -48,6 +73,8 @@ export class Endpoint {
         Authorization: `Token ${this.apiKey}`,
       };
 
+      // TODO: redo this section given there should only
+      //       be a single way of reading the input doc
       if (["path", "stream"].includes(input.inputType)) {
         const fileParams = { filename: input.filename };
         form.append("document", input.fileObject, fileParams);
@@ -106,23 +133,33 @@ export class Endpoint {
       }
     });
   }
+
+  protected apiKeyFromEnv(): string {
+    const envVarName = this.envVarKeyName();
+    const envVarValue = process.env[envVarName];
+    if (envVarValue) {
+      logger.debug("Set from environment: %s", envVarName);
+      return envVarValue;
+    }
+    return "";
+  }
 }
 
 export class InvoiceEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OWNER, INVOICE_URL_NAME, INVOICE_VERSION, apiKey);
+    super(OTS_OWNER, INVOICE_URL_NAME, INVOICE_VERSION, apiKey, "invoice");
   }
 }
 
 export class ReceiptEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OWNER, RECEIPT_URL_NAME, RECEIPT_VERSION, apiKey);
+    super(OTS_OWNER, RECEIPT_URL_NAME, RECEIPT_VERSION, apiKey, "receipt");
   }
 }
 
 export class PassportEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OWNER, PASSPORT_URL_NAME, PASSPORT_VERSION, apiKey);
+    super(OTS_OWNER, PASSPORT_URL_NAME, PASSPORT_VERSION, apiKey);
   }
 }
 

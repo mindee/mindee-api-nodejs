@@ -1,20 +1,18 @@
 import { logger } from "../logger";
 
-interface ErrorHandlerInterface {
-  throwOnError: boolean;
-  throw(error: any): void;
-}
+class ErrorHandler {
+  public throwOnError: boolean;
 
-class ErrorHandler implements ErrorHandlerInterface {
-  constructor(public throwOnError: boolean = true) {
+  constructor(throwOnError: boolean = true) {
     this.throwOnError = throwOnError;
   }
 
-  throw(error: any): void {
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    if (this.throwOnError || force) throw error;
-    else logger.error(error.message);
+  throw(error: Error): void {
+    if (this.throwOnError) {
+      throw error;
+    } else {
+      logger.error(error.message);
+    }
   }
 }
 

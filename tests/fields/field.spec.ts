@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Field } from "@mindee/documents/fields";
+import { Field } from "../../mindee/documents/fields";
 
 describe("Test differents init of Field", () => {
   it("Should create a Field", () => {
