@@ -1,35 +1,35 @@
-import { Document } from "./document";
+import { Document, DocumentConstructorProps } from "./document";
 import { ListField } from "./fields";
 
+interface CustomDocConstructorProps extends DocumentConstructorProps {
+  documentType: string;
+}
+
 export class CustomDocument extends Document {
-  fields: { [key: string]: any };
-  pageId: number;
+  fields: { [key: string]: ListField };
 
-  constructor({ inputFile, prediction, pageId, documentType }: any) {
-    super(documentType, inputFile);
+  constructor({
+    inputFile,
+    apiPrediction,
+    pageNumber,
+    documentType,
+  }: CustomDocConstructorProps) {
+    super(documentType, inputFile, pageNumber);
     this.fields = {};
-    this.pageId = pageId;
 
-    Object.keys(prediction).forEach((fieldName) => {
-      const fieldPrediction = prediction[fieldName];
-      this.fields[fieldName] = new ListField(fieldPrediction, pageId);
+    Object.keys(apiPrediction).forEach((fieldName) => {
+      const fieldPrediction = apiPrediction[fieldName];
+      this.fields[fieldName] = new ListField(fieldPrediction, pageNumber);
     });
   }
 
   toString(): string {
-    let outStr = `----- ${this.documentType} -----\n`;
-    for (const [name, info] of Object.entries(this.fields)) {
-      const valuesList: any[] = [];
-      info.values.forEach((value: any) => {
-        valuesList.push(value.content);
-      });
-      if (valuesList.length === 0) {
-        outStr += `${name}:\n`;
-      } else {
-        outStr += `${name}: ${valuesList.join(" ")}\n`;
-      }
+    let outStr = `----- ${this.documentType} -----`;
+    outStr += `\nFilename: ${this.filename}`.trimEnd();
+    for (const [name, fieldData] of Object.entries(this.fields)) {
+      outStr += `\n${name}: ${fieldData}`.trimEnd();
     }
-    outStr += "----------------------\n";
+    outStr += "\n----------------------\n";
     return outStr;
   }
 }

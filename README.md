@@ -1,5 +1,5 @@
-# Mindee API Helper Library for NodeJS
-Quickly and easily connect to Mindee's API services using NodeJS.
+# Mindee API Helper Library for Node.js
+Quickly and easily connect to Mindee's API services using Node.js.
 
 ## Quick Start
 Here's the TL;DR of getting started.
@@ -11,20 +11,20 @@ Then, install this library:
 npm install mindee
 ```
 
-Finally, NodeJS away!
+Finally, Node.js away!
 
 ### Off-the-Shelf Document
 ```js
 import { Client } from "mindee/index";
 
 // Init a new client and configure the Invoice API
-const mindeeClient = new Client().configInvoice("my-invoice-api-key")
+const mindeeClient = new Client().configInvoice("my-invoice-api-key");
 
 // Load a file from disk and parse it
-const apiResponse = mindeeClient.docFromPath("/path/to/the/invoice.pdf").parse("invoice");
+const invoiceResponse = mindeeClient.docFromPath("/path/to/the/invoice.pdf").parse("invoice");
 
 // Print a brief summary of the parsed data
-console.log(apiResponse.invoice);
+console.log(invoiceResponse.document);
 ```
 
 ### Custom Document (API Builder)
@@ -34,17 +34,15 @@ import { Client } from "mindee/index";
 // Init a new client and configure your custom document
 const mindeeClient = new Client().configCustomDoc({
     documentType: "pokemon-card",
-    singularName: "card",
-    pluralName: "cards",
     accountName: "pikachu",
     apiKey: "pokemon-card-api-key",
   });
 
 // Load a file from disk and parse it
-const apiResponse = mindee_client.doc_from_path("/path/to/the/card.jpg").parse("pokemon-card")
+const customResponse = mindeeClient.docFromPath("/path/to/the/card.jpg").parse("pokemon-card");
 
 // Print a brief summary of the parsed data
-console.log(apiResponse.card);
+console.log(customResponse.document);
 ```
 
 ## Further Reading

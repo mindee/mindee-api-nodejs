@@ -12,9 +12,9 @@ export class Locale extends Field {
    */
   constructor({
     prediction,
-    valueKey = "value",
     reconstructed = false,
-    pageNumber = 0,
+    pageNumber = undefined,
+    valueKey = "value",
   }: any) {
     super({ prediction, valueKey, reconstructed, pageNumber });
 
@@ -27,5 +27,22 @@ export class Locale extends Field {
       this.country = prediction.country;
     if ("currency" in prediction && prediction.currency !== "N/A")
       this.currency = prediction.currency;
+  }
+
+  toString(): string {
+    let outStr = "";
+    if (this.value) {
+      outStr += `${this.value}; `;
+    }
+    if (this.language) {
+      outStr += `${this.language}; `;
+    }
+    if (this.country) {
+      outStr += `${this.country}; `;
+    }
+    if (this.currency) {
+      outStr += `${this.currency};`;
+    }
+    return outStr.trimEnd();
   }
 }

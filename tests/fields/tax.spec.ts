@@ -1,4 +1,4 @@
-import { TaxField } from "@mindee/documents/fields";
+import { TaxField } from "../../mindee/documents/fields";
 import { expect } from "chai";
 
 describe("Test Tax field", () => {
@@ -20,7 +20,7 @@ describe("Test Tax field", () => {
     expect(tax.confidence).to.be.equal(0.1);
     expect(tax.rate).to.be.equal(0.2);
     expect(tax.bbox.length).to.be.equal(4);
-    expect(tax.toString()).to.be.equal("2; 0.2%; QST");
+    expect(tax.toString()).to.be.equal("2.0 0.2% QST");
   });
 
   it("should create a Tax with rate not valid", () => {
@@ -32,6 +32,7 @@ describe("Test Tax field", () => {
     const tax = new TaxField({ prediction });
     expect(tax.rate).to.be.undefined;
     expect(tax.bbox.length).to.be.equal(0);
+    expect(tax.toString()).to.be.equal("2.0");
   });
 
   it("should create a Tax with amount not valid", () => {
@@ -43,6 +44,6 @@ describe("Test Tax field", () => {
     };
     const tax = new TaxField({ prediction });
     expect(tax.value).to.be.undefined;
-    expect(typeof tax.toString()).to.equal("string");
+    expect(tax.toString()).to.be.equal("");
   });
 });

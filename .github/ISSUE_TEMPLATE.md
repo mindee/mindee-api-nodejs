@@ -1,6 +1,7 @@
 <!--
 
-Have you read react-mindee-js's Code of Conduct? By filing an Issue, you are expected to comply with it, including treating everyone with respect: [Code of Conduct](CODE_OF_CONDUCT.md)
+Have you read mindee-api-nodejs's Code of Conduct?
+By filing an Issue, you are expected to comply with it, including treating everyone with respect: [Code of Conduct](CODE_OF_CONDUCT.md)
 
 Do you want to ask a question? Are you looking for enterprise support? Get in touch via [email](contact@mindee.com)
 

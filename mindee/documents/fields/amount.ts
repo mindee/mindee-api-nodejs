@@ -7,7 +7,16 @@ interface AmountConstructor {
   pageNumber?: number;
 }
 
+export function floatToString(value: number) {
+  if (Number.isInteger(value)) {
+    return `${value}.0`;
+  }
+  return value.toString();
+}
+
 export class Amount extends Field {
+  value: number | undefined;
+
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
@@ -18,13 +27,20 @@ export class Amount extends Field {
     prediction,
     valueKey = "amount",
     reconstructed = false,
-    pageNumber = 0,
+    pageNumber = undefined,
   }: AmountConstructor) {
     super({ prediction, valueKey, reconstructed, pageNumber });
     this.value = +parseFloat(prediction[valueKey]).toFixed(3);
     if (isNaN(this.value)) {
       this.value = undefined;
-      this.confidence = 0;
+      this.confidence = 0.0;
     }
+  }
+
+  toString(): string {
+    if (this.value !== undefined) {
+      return floatToString(this.value);
+    }
+    return "";
   }
 }

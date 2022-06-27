@@ -1,17 +1,19 @@
+import * as geometry from "../../geometry";
+
 export interface FieldConstructor {
-  prediction: any;
+  prediction: { [index: string]: any };
   valueKey?: string;
   reconstructed?: boolean;
-  extraFields?: any;
   pageNumber?: number | undefined;
 }
 
 export class Field {
-  bbox: any;
+  bbox: geometry.Polygon = [];
+  polygon: geometry.Polygon = [];
   pageNumber: number | undefined;
   confidence: number;
   reconstructed: boolean;
-  value: any;
+  value?: any;
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
@@ -23,23 +25,19 @@ export class Field {
     prediction,
     valueKey = "value",
     reconstructed = false,
-    extraFields,
     pageNumber,
   }: FieldConstructor) {
     this.pageNumber = pageNumber;
     this.reconstructed = reconstructed;
     this.value = undefined;
     this.confidence = prediction.confidence ? prediction.confidence : 0.0;
-    this.bbox = prediction.polygon ? prediction.polygon : [];
+    // TODO: make a real BBOX
+    if (prediction.polygon) {
+      this.polygon = prediction.polygon;
+      this.bbox = geometry.getBboxAsPolygon(prediction.polygon);
+    }
     if (valueKey in prediction && prediction[valueKey] !== null) {
       this.value = prediction[valueKey];
-      if (extraFields) {
-        for (const fieldName of extraFields) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          this[fieldName] = prediction[fieldName];
-        }
-      }
     }
   }
 
@@ -90,11 +88,32 @@ export class Field {
    * @returns {Number} Sum of all the Fields values in the array
    */
   static arraySum(array: any): number {
-    let total = 0;
+    let total = 0.0;
     for (const field of array) {
       total += field.value;
       if (isNaN(total)) return 0.0;
     }
     return total;
+  }
+
+  toString(): string {
+    if (this.value !== undefined) {
+      return `${this.value}`;
+    }
+    return "";
+  }
+}
+
+export class TypedField extends Field {
+  type: string;
+
+  constructor({
+    prediction,
+    valueKey = "value",
+    reconstructed = false,
+    pageNumber,
+  }: FieldConstructor) {
+    super({ prediction, valueKey, reconstructed, pageNumber });
+    this.type = prediction.type;
   }
 }

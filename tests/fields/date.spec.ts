@@ -1,4 +1,4 @@
-import { DateField } from "@mindee/documents/fields";
+import { DateField } from "../../mindee/documents/fields";
 import { expect } from "chai";
 
 describe("Test Date field", () => {

@@ -1,24 +1,23 @@
 import { promises as fs } from "fs";
-import path from "path";
+import * as path from "path";
 import { expect } from "chai";
-import * as api_path from "../data/apiPaths.json";
+import { dataPath } from "../apiPaths";
 import { FinancialDocument } from "../../mindee/documents";
 import {
   Amount,
   DateField,
   Field,
   Locale,
-  Orientation,
   TaxField,
 } from "../../mindee/documents/fields";
 
 describe("Financial Document Object initialization", async () => {
   before(async function () {
     const invoiceJsonDataNA = await fs.readFile(
-      path.resolve(api_path.invoices.all_na)
+      path.resolve(dataPath.invoice.empty)
     );
     const receiptJsonDataNA = await fs.readFile(
-      path.resolve(api_path.receipts.all_na)
+      path.resolve(dataPath.receipt.empty)
     );
     this.invoiceBasePrediction = JSON.parse(
       invoiceJsonDataNA.toString()
@@ -29,73 +28,74 @@ describe("Financial Document Object initialization", async () => {
   });
 
   it("should initialize from an invoice object", async () => {
-    const jsonData = await fs.readFile(path.resolve(api_path.invoices.all));
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoice.complete));
     const response = JSON.parse(jsonData.toString());
-    const financialDocument = new FinancialDocument({
-      apiPrediction: response.document.inference.pages[0].prediction,
+    const doc = new FinancialDocument({
+      apiPrediction: response.document.inference.prediction,
     });
-    expect((financialDocument.date as DateField).value).to.be.equal(
+    expect((doc.date as DateField).value).to.be.equal(
       "2020-02-17"
     );
-    expect((financialDocument.totalTax as TaxField).value).to.be.equal(97.98);
-    expect(typeof financialDocument.toString()).to.be.equal("string");
-    expect((financialDocument.supplier as Field).value).to.be.equal(
+    expect((doc.totalTax as TaxField).value).to.be.equal(97.98);
+    expect(typeof doc.toString()).to.be.equal("string");
+    expect((doc.supplier as Field).value).to.be.equal(
       "TURNPIKE DESIGNS CO."
     );
   });
 
   it("should initialize from a receipt object", async () => {
-    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
     const response = JSON.parse(jsonData.toString());
-    const financialDocument = new FinancialDocument({
+    const doc = new FinancialDocument({
       apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect((financialDocument.date as DateField).value).to.be.equal(
+    expect((doc.date as DateField).value).to.be.equal(
       "2016-02-26"
     );
-    expect((financialDocument.totalTax as TaxField).value).to.be.equal(1.7);
-    expect((financialDocument.supplier as Field).value).to.be.equal("CLACHAN");
-    expect(financialDocument.checklist.taxesMatchTotalIncl).to.be.true;
-    expect(typeof financialDocument.toString()).to.be.equal("string");
-    for (const key in financialDocument.checklist) {
-      expect(financialDocument.checklist[key]).to.be.true;
+    expect((doc.totalTax as TaxField).value).to.be.equal(1.7);
+    expect((doc.supplier as Field).value).to.be.equal("CLACHAN");
+    expect(doc.checklist.taxesMatchTotalIncl).to.be.true;
+    expect(typeof doc.toString()).to.be.equal("string");
+    for (const key in doc.checklist) {
+      expect(doc.checklist[key]).to.be.true;
     }
-    expect((financialDocument.invoiceNumber as Field).value).to.be.undefined;
+    expect((doc.invoiceNumber as Field).value).to.be.undefined;
   });
 
   it("should initialize from a N/A receipt", async function () {
-    const financialDocument = new FinancialDocument({
+    const doc = new FinancialDocument({
       apiPrediction: this.receiptBasePrediction,
     });
-    expect((financialDocument.locale as Locale).value).to.be.undefined;
-    expect((financialDocument.totalIncl as Amount).value).to.be.undefined;
-    expect((financialDocument.totalTax as Amount).value).to.be.undefined;
-    expect((financialDocument.taxes as TaxField[]).length).to.be.equal(0);
-    expect((financialDocument.date as DateField).value).to.be.undefined;
-    expect((financialDocument.time as Field).value).to.be.undefined;
-    expect((financialDocument.supplier as Field).value).to.be.undefined;
-    for (const key in financialDocument.checklist) {
-      expect(financialDocument.checklist[key]).to.be.false;
+    expect((doc.locale as Locale).value).to.be.undefined;
+    expect((doc.totalIncl as Amount).value).to.be.undefined;
+    expect((doc.totalTax as Amount).value).to.be.undefined;
+    expect(doc.taxes.length).to.be.equal(0);
+    expect((doc.date as DateField).value).to.be.undefined;
+    expect((doc.time as Field).value).to.be.undefined;
+    expect((doc.supplier as Field).value).to.be.undefined;
+    for (const key in doc.checklist) {
+      expect(doc.checklist[key]).to.be.false;
     }
   });
 
   it("should initialize from a N/A invoice", async function () {
-    const financialDocument = new FinancialDocument({
+    const doc = new FinancialDocument({
       apiPrediction: this.invoiceBasePrediction,
     });
-    expect((financialDocument.locale as Locale).value).to.be.undefined;
-    expect((financialDocument.totalIncl as Amount).value).to.be.undefined;
-    expect((financialDocument.totalTax as Amount).value).to.be.undefined;
-    expect((financialDocument.date as DateField).value).to.be.undefined;
-    expect((financialDocument.invoiceNumber as Field).value).to.be.undefined;
-    expect((financialDocument.dueDate as DateField).value).to.be.undefined;
-    expect((financialDocument.supplier as Field).value).to.be.undefined;
-    expect((financialDocument.taxes as TaxField[]).length).to.be.equal(0);
-    expect((financialDocument.paymentDetails as any).length).to.be.equal(0);
-    expect((financialDocument.companyNumber as any).length).to.be.equal(0);
-    expect((financialDocument.orientation as Orientation).value).to.be.equal(0);
-    expect(Object.values(financialDocument.checklist)).to.have.ordered.members([
+    expect((doc.locale as Locale).value).to.be.undefined;
+    expect((doc.totalIncl as Amount).value).to.be.undefined;
+    expect((doc.totalTax as Amount).value).to.be.undefined;
+    expect((doc.date as DateField).value).to.be.undefined;
+    expect((doc.invoiceNumber as Field).value).to.be.undefined;
+    expect((doc.dueDate as DateField).value).to.be.undefined;
+    expect((doc.supplier as Field).value).to.be.undefined;
+    expect(doc.taxes.length).to.be.equal(0);
+    expect((doc.paymentDetails as any).length).to.be.equal(0);
+    expect((doc.companyNumber as any).length).to.be.equal(0);
+    expect(doc.orientation).to.be.undefined;
+    expect(Object.values(doc.checklist)).to.have.ordered.members([
       false,
     ]);
+    expect(doc.checkAll()).to.be.false;
   });
 });

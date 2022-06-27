@@ -1,28 +1,58 @@
 import { promises as fs } from "fs";
+import { Input } from "../inputs";
+import { Polygon } from "../geometry";
+
+export interface DocumentConstructorProps {
+  apiPrediction: { [index: string]: any };
+  inputFile?: Input;
+  pageNumber?: number;
+  fullText?: FullText;
+}
+
+type Word = {
+  polygon: Polygon;
+  text: string;
+  confidence: number;
+};
+
+export class FullText {
+  words: Word[] = [];
+}
 
 export class Document {
-  documentType: string;
-  checklist: any;
-  fileExtension: string | undefined;
-  filename: string | undefined;
+  readonly documentType: string;
+  checklist: { [index: string]: boolean };
+  mimeType: string | undefined;
+  filename: string = "";
   filepath: string | undefined;
+  fullText?: FullText;
+  pageNumber?: number | undefined;
 
   /**
    * Takes a list of Documents and return one Document where
    * each field is set with the maximum probability field
+   * @param documentType - the internal document type
    * @param {Input} inputFile - input file given to parse the document
+   * @param {number} pageNumber - Page number (ID)
+   * @param {FullText} fullText - full OCR extracted text
    */
-  constructor(documentType: string, inputFile?: any) {
+  constructor(
+    documentType: string,
+    inputFile?: Input,
+    pageNumber?: number,
+    fullText?: FullText
+  ) {
     this.documentType = documentType;
     this.filepath = undefined;
-    this.filename = undefined;
-    this.fileExtension = undefined;
+    this.pageNumber = pageNumber;
 
     if (inputFile !== undefined) {
       this.filepath = inputFile.filepath;
       this.filename = inputFile.filename;
-      this.fileExtension = inputFile.fileExtension;
+      this.mimeType = inputFile.mimeType;
     }
+    this.fullText = fullText;
+
     this.checklist = {};
   }
 
@@ -32,21 +62,12 @@ export class Document {
 
   /** return true if all checklist of the document if true */
   checkAll() {
-    return this.checklist.every((item: any) => item === true);
+    return Object.values(this.checklist).every((item) => item);
   }
 
   /** Export document into a JSON file */
   async dump(path: any) {
     return await fs.writeFile(path, JSON.stringify(Object.entries(this)));
-  }
-
-  /** Create a Document from a JSON file */
-  static async load(path: any) {
-    const file = fs.readFile(path);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const args = JSON.parse(file);
-    return new Document({ reconstructed: true, ...args });
   }
 
   /**
@@ -72,5 +93,10 @@ export class Document {
       }
     }
     return finalDocument;
+  }
+
+  static cleanOutString(outStr: string): string {
+    const lines = / \n/gm;
+    return outStr.replace(lines, "\n");
   }
 }

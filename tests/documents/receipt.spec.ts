@@ -1,8 +1,8 @@
 import { Receipt } from "../../mindee/documents";
 import { promises as fs } from "fs";
-import path from "path";
+import * as path from "path";
 import { expect } from "chai";
-import * as api_path from "../data/apiPaths.json";
+import { dataPath } from "../apiPaths";
 import {
   Amount,
   DateField,
@@ -13,48 +13,61 @@ import {
 
 describe("Receipt Object initialization", async () => {
   before(async function () {
-    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all_na));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.empty));
     this.basePrediction = JSON.parse(
       jsonData.toString()
     ).document.inference.pages[0].prediction;
   });
 
-  it("should initialize from a prediction object", async () => {
-    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all));
+  it("should initialize from a prediction object with N/A value", async () => {
+    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.empty));
     const response = JSON.parse(jsonData.toString());
-    const receipt = new Receipt({
+    const doc = new Receipt({
       apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect((receipt.date as DateField).value).to.be.equal("2016-02-26");
-    expect((receipt.totalTax as Amount).value).to.be.equal(1.7);
-    expect((receipt.merchantName as Field).value).to.be.equal("CLACHAN");
-    expect(receipt.checklist.taxesMatchTotalIncl).to.be.true;
-    expect(typeof receipt.toString()).to.be.equal("string");
-    for (const key in receipt.checklist) {
-      expect(receipt.checklist[key]).to.be.true;
+    expect((doc.locale as Locale).value).to.be.undefined;
+    expect((doc.totalIncl as Amount).value).to.be.undefined;
+    expect((doc.totalTax as Amount).value).to.be.undefined;
+    expect((doc.taxes as TaxField[]).length).to.be.equal(0);
+    expect((doc.date as DateField).value).to.be.undefined;
+    expect((doc.time as Field).value).to.be.undefined;
+    expect((doc.merchantName as Field).value).to.be.undefined;
+    for (const key in doc.checklist) {
+      expect(doc.checklist[key]).to.be.false;
+    }
+    expect(doc.checkAll()).to.be.false;
+  });
+
+  it("should load a complete document prediction", async () => {
+    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
+    const response = JSON.parse(jsonData.toString());
+    const prediction = response.document.inference.prediction;
+    const doc = new Receipt({
+      apiPrediction: prediction,
+    });
+    const to_string = await fs.readFile(path.join(dataPath.receipt.docString));
+    expect(doc.toString()).to.be.equals(to_string.toString());
+    for (const key in doc.checklist) {
+      expect(doc.checklist[key]).to.be.true;
     }
   });
 
-  it("should initialize from a prediction object with N/A value", async () => {
-    const jsonData = await fs.readFile(path.resolve(api_path.receipts.all_na));
+  it("should load a complete page 0 prediction", async () => {
+    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
     const response = JSON.parse(jsonData.toString());
-    const receipt = new Receipt({
-      apiPrediction: response.document.inference.pages[0].prediction,
+    const pageData = response.document.inference.pages[0];
+    const doc = new Receipt({
+      apiPrediction: pageData.prediction,
+      pageNumber: pageData.id,
     });
-    expect((receipt.locale as Locale).value).to.be.undefined;
-    expect((receipt.totalIncl as Amount).value).to.be.undefined;
-    expect((receipt.totalTax as Amount).value).to.be.undefined;
-    expect((receipt.taxes as TaxField[]).length).to.be.equal(0);
-    expect((receipt.date as DateField).value).to.be.undefined;
-    expect((receipt.time as Field).value).to.be.undefined;
-    expect((receipt.merchantName as Field).value).to.be.undefined;
-    for (const key in receipt.checklist) {
-      expect(receipt.checklist[key]).to.be.false;
-    }
+    const to_string = await fs.readFile(
+      path.join(dataPath.receipt.page0String)
+    );
+    expect(doc.toString()).to.be.equals(to_string.toString());
   });
 
   it("should reconstruct with N/A total", function () {
-    const receiptTotalInclNA = new Receipt({
+    const doc = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.5 },
@@ -64,22 +77,22 @@ describe("Receipt Object initialization", async () => {
         ],
       },
     });
-    expect((receiptTotalInclNA.totalExcl as Amount).value).to.be.undefined;
+    expect(doc.totalExcl.value).to.be.undefined;
   });
 
   it("should reconstruct with empty taxes", function () {
-    const receiptNoTaxes = new Receipt({
+    const doc = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },
         taxes: [],
       },
     });
-    expect((receiptNoTaxes.totalExcl as Amount).value).to.be.undefined;
+    expect(doc.totalExcl.value).to.be.undefined;
   });
 
   it("should reconstruct with taxes", function () {
-    const receipt = new Receipt({
+    const doc = new Receipt({
       apiPrediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },
@@ -89,7 +102,7 @@ describe("Receipt Object initialization", async () => {
         ],
       },
     });
-    expect((receipt.totalExcl as Amount).confidence).to.be.equal(0.03);
-    expect((receipt.totalExcl as Amount).value).to.be.equal(7.79);
+    expect(doc.totalExcl.confidence).to.be.equal(0.03);
+    expect(doc.totalExcl.value).to.be.equal(7.79);
   });
 });

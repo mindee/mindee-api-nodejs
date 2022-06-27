@@ -1,4 +1,5 @@
 -----Invoice data-----
+Filename:
 Invoice number: 0042004801351
 Total amount including taxes: 587.95
 Total amount excluding taxes: 489.97
@@ -13,5 +14,5 @@ Payment details: FR7640254025476501124705368;
 Company numbers: 501124705; FR33501124705
 Taxes: 97.98 20.0%
 Total taxes: 97.98
-Locale: fr; EUR;
+Locale: fr; fr; EUR;
 ----------------------
