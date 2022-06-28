@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v1.4.0
+### Fixes
+* :bug: cut/merge pages of an encrypted PDF leads to unexpected results
+* :bug: logger not activating in some cases
+* :bug: align PDF cut/merge with other client libs
+
+### Changes
+* :sparkles: Add TIFF and HEIC support
+* :white_check_mark: fully test PDF cut function
+
 ## v1.3.3
 
 ### Fixes
