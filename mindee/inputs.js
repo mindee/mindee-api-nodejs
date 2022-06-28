@@ -153,7 +153,7 @@ class Input {
     }
 
     if (currentPdf.isEncrypted) {
-      logger.error(
+      logger.warn(
         "PDF of %d pages is encrypted, not possible to cut pages.",
         pdfLength
       );
