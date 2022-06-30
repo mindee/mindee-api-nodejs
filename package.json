@@ -10,6 +10,15 @@
     "lint": "eslint 'mindee/**/*.js' 'tests/*.js' --max-warnings=0 --report-unused-disable-directives && echo '✔  Your .js files look good.'",
     "documentation": "jsdoc -r mindee -d docs"
   },
+  "files": [
+    "mindee/",
+    "LICENSE",
+    "README.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">= 12.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/mindee/mindee-api-nodejs.git"
