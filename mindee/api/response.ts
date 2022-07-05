@@ -6,8 +6,8 @@ import {
   Invoice,
   FinancialDocument,
   CustomDocument,
-  FullText,
 } from "../documents";
+import { FullText } from "../documents/fields";
 import { Input } from "../inputs";
 
 interface ResponseProps {
