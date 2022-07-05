@@ -1,22 +1,12 @@
 import { promises as fs } from "fs";
 import { Input } from "../inputs";
-import { Polygon } from "../geometry";
+import { FullText } from "./fields/fullText";
 
 export interface DocumentConstructorProps {
   apiPrediction: { [index: string]: any };
   inputFile?: Input;
   pageNumber?: number;
   fullText?: FullText;
-}
-
-type Word = {
-  polygon: Polygon;
-  text: string;
-  confidence: number;
-};
-
-export class FullText {
-  words: Word[] = [];
 }
 
 export class Document {
