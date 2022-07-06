@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { CustomDocument } from "../../mindee/documents";
+import { CustomDocument } from "../../src/documents";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
 
@@ -36,7 +36,7 @@ describe("Custom Document Object initialization", async () => {
     const custom = new CustomDocument({
       apiPrediction: pageData.prediction,
       documentType: "field_test",
-      pageNumber: pageData.id,
+      pageId: pageData.id,
     });
     const to_string = await fs.readFile(path.join(dataPath.custom.page0String));
     expect(custom.toString()).to.be.equals(to_string.toString());
@@ -49,7 +49,7 @@ describe("Custom Document Object initialization", async () => {
     const custom = new CustomDocument({
       apiPrediction: pageData.prediction,
       documentType: "field_test",
-      pageNumber: pageData.id,
+      pageId: pageData.id,
     });
     const to_string = await fs.readFile(path.join(dataPath.custom.page1String));
     expect(custom.toString()).to.be.equals(to_string.toString());

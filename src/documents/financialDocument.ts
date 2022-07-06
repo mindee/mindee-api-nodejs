@@ -40,7 +40,7 @@ export class FinancialDocument extends Document {
    *  @param {Object} pageNumber - pageNumber for multi pages pdf input
    *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
    */
-  pageNumber: number | undefined;
+  pageId: number | undefined;
   locale!: Locale;
   totalIncl!: Amount;
   date!: Date;
@@ -66,12 +66,12 @@ export class FinancialDocument extends Document {
     apiPrediction,
     inputFile = undefined,
     fullText = undefined,
-    pageNumber = undefined,
+    pageId = undefined,
     documentType = "",
   }: FinancialDocConstructorProps) {
-    super(documentType, inputFile, pageNumber, fullText);
+    super(documentType, inputFile, pageId, fullText);
     this.taxes = [];
-    this.#initFromApiPrediction(apiPrediction, inputFile, pageNumber);
+    this.#initFromApiPrediction(apiPrediction, inputFile, pageId);
     this.#checklist();
   }
 
@@ -84,7 +84,7 @@ export class FinancialDocument extends Document {
       const invoice = new Invoice({
         apiPrediction: prediction,
         inputFile,
-        pageNumber,
+        pageId: pageNumber,
       });
       this.locale = invoice.locale;
       this.totalIncl = invoice.totalIncl;
@@ -109,7 +109,7 @@ export class FinancialDocument extends Document {
       const receipt = new Receipt({
         apiPrediction: prediction,
         inputFile,
-        pageNumber,
+        pageId: pageNumber,
       });
       this.orientation = receipt.orientation;
       this.date = receipt.date;

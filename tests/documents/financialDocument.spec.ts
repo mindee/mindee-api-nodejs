@@ -2,14 +2,14 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
-import { FinancialDocument } from "../../mindee/documents";
+import { FinancialDocument } from "../../src/documents";
 import {
   Amount,
   DateField,
   Field,
   Locale,
   TaxField,
-} from "../../mindee/documents/fields";
+} from "../../src/documents/fields";
 
 describe("Financial Document Object initialization", async () => {
   before(async function () {

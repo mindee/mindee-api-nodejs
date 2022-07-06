@@ -60,46 +60,45 @@ export class Invoice extends Document {
     apiPrediction,
     inputFile = undefined,
     fullText = undefined,
-    pageNumber = undefined,
+    pageId = undefined,
     documentType = "",
   }: InvoiceConstructorProps) {
-    super(documentType, inputFile, pageNumber, fullText);
-    this.#initFromApiPrediction(apiPrediction, pageNumber);
+    super(documentType, inputFile, pageId, fullText);
+    this.#initFromApiPrediction(apiPrediction, pageId);
     this.#checklist();
     this.#reconstruct();
   }
 
-  #initFromApiPrediction(apiPrediction: any, pageNumber?: number) {
+  #initFromApiPrediction(apiPrediction: any, pageId?: number) {
     this.locale = new Locale({
       prediction: apiPrediction.locale,
-      pageNumber: pageNumber,
       valueKey: "language",
     });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0.0 },
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.totalExcl = new Amount({
       prediction: apiPrediction.total_excl,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.date = new Date({
       prediction: apiPrediction.date,
       valueKey: "value",
-      pageNumber,
+      pageId,
     });
     apiPrediction.taxes.map((prediction: { [index: string]: any }) =>
       this.taxes.push(
         new TaxField({
           prediction: prediction,
-          pageNumber,
+          pageId: pageId,
           valueKey: "value",
           rateKey: "rate",
           codeKey: "code",
@@ -110,41 +109,41 @@ export class Invoice extends Document {
       function (prediction: { [index: string]: any }) {
         return new TypedField({
           prediction: prediction,
-          pageNumber,
+          pageId: pageId,
         });
       }
     );
     this.dueDate = new Date({
       prediction: apiPrediction.due_date,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.invoiceNumber = new Field({
       prediction: apiPrediction.invoice_number,
-      pageNumber,
+      pageId: pageId,
     });
     this.supplier = new Field({
       prediction: apiPrediction.supplier,
-      pageNumber,
+      pageId: pageId,
     });
     this.supplierAddress = new Field({
       prediction: apiPrediction.supplier_address,
-      pageNumber,
+      pageId: pageId,
     });
     this.customerName = new Field({
       prediction: apiPrediction.customer,
-      pageNumber,
+      pageId: pageId,
     });
     this.customerAddress = new Field({
       prediction: apiPrediction.customer_address,
-      pageNumber,
+      pageId: pageId,
     });
     apiPrediction.customer_company_registration.map(
       (prediction: { [index: string]: any }) =>
         this.customerCompanyRegistration.push(
           new TypedField({
             prediction: prediction,
-            pageNumber,
+            pageId: pageId,
           })
         )
     );
@@ -152,14 +151,14 @@ export class Invoice extends Document {
       this.paymentDetails.push(
         new PaymentDetails({
           prediction: prediction,
-          pageNumber,
+          pageId: pageId,
         })
       )
     );
-    if (pageNumber !== undefined) {
+    if (pageId !== undefined) {
       this.orientation = new Orientation({
         prediction: apiPrediction.orientation,
-        pageNumber,
+        pageId: pageId,
       });
     }
   }

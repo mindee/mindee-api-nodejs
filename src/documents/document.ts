@@ -5,7 +5,7 @@ import { FullText } from "./fields/fullText";
 export interface DocumentConstructorProps {
   apiPrediction: { [index: string]: any };
   inputFile?: Input;
-  pageNumber?: number;
+  pageId?: number;
   fullText?: FullText;
 }
 
@@ -16,25 +16,25 @@ export class Document {
   filename: string = "";
   filepath: string | undefined;
   fullText?: FullText;
-  pageNumber?: number | undefined;
+  pageId?: number | undefined;
 
   /**
    * Takes a list of Documents and return one Document where
    * each field is set with the maximum probability field
    * @param documentType - the internal document type
    * @param {Input} inputFile - input file given to parse the document
-   * @param {number} pageNumber - Page number (ID)
+   * @param {number} pageId - Page ID for multi-page document
    * @param {FullText} fullText - full OCR extracted text
    */
   constructor(
     documentType: string,
     inputFile?: Input,
-    pageNumber?: number,
+    pageId?: number,
     fullText?: FullText
   ) {
     this.documentType = documentType;
     this.filepath = undefined;
-    this.pageNumber = pageNumber;
+    this.pageId = pageId;
 
     if (inputFile !== undefined) {
       this.filepath = inputFile.filepath;

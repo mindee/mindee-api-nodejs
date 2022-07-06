@@ -8,13 +8,6 @@ type Word = {
 
 type Line = Word[];
 
-function relativeX(word: Word): number {
-  const sum: number = word.polygon
-    .map((point) => point[0])
-    .reduce((prev, cur) => prev + cur);
-  return word.polygon.length * sum;
-}
-
 function orderLines(fullText: Word[]): Array<Line> {
   const lines: Array<Line> = [];
   const idxs: Array<number> = [];
@@ -47,7 +40,7 @@ function orderLines(fullText: Word[]): Array<Line> {
   const orderedLines: Array<Line> = [];
   lines.forEach((line) => {
     const sortedLine = line.sort((a, b) => {
-      return relativeX(a) - relativeX(b);
+      return geometry.relativeX(a.polygon) - geometry.relativeX(b.polygon);
     });
     orderedLines.push(sortedLine);
   });

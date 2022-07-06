@@ -105,10 +105,10 @@ export class ReceiptConfig extends DocumentConfig {
 }
 
 export class FinancialDocConfig extends DocumentConfig {
-  constructor(invoiceApiKey: string, receiptApiKey: string) {
+  constructor(apiKey: string) {
     const endpoints = [
-      new InvoiceEndpoint(invoiceApiKey),
-      new ReceiptEndpoint(receiptApiKey),
+      new InvoiceEndpoint(apiKey),
+      new ReceiptEndpoint(apiKey),
     ];
     super(FinancialDocument, "financialDoc", endpoints);
   }

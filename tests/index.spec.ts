@@ -1,4 +1,4 @@
-import { Client } from "../mindee";
+import { Client } from "../src";
 import { expect } from "chai";
 
 describe("Test client initialization", () => {

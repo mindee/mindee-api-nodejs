@@ -4,13 +4,13 @@ export interface FieldConstructor {
   prediction: { [index: string]: any };
   valueKey?: string;
   reconstructed?: boolean;
-  pageNumber?: number | undefined;
+  pageId?: number | undefined;
 }
 
 export class Field {
   bbox: geometry.Polygon = [];
   polygon: geometry.Polygon = [];
-  pageNumber: number | undefined;
+  pageId: number | undefined;
   confidence: number;
   reconstructed: boolean;
   value?: any;
@@ -18,20 +18,19 @@ export class Field {
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi-page PDF
+   * @param {Integer} pageId - Page ID for multi-page document
    * @param {Array<String>} extraFields - Extra fields to get from the prediction and to set as attribute of the Field
    */
   constructor({
     prediction,
     valueKey = "value",
     reconstructed = false,
-    pageNumber,
+    pageId,
   }: FieldConstructor) {
-    this.pageNumber = pageNumber;
+    this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
     this.reconstructed = reconstructed;
     this.value = undefined;
     this.confidence = prediction.confidence ? prediction.confidence : 0.0;
-    // TODO: make a real BBOX
     if (prediction.polygon) {
       this.polygon = prediction.polygon;
       this.bbox = geometry.getBboxAsPolygon(prediction.polygon);
@@ -111,9 +110,9 @@ export class TypedField extends Field {
     prediction,
     valueKey = "value",
     reconstructed = false,
-    pageNumber,
+    pageId,
   }: FieldConstructor) {
-    super({ prediction, valueKey, reconstructed, pageNumber });
+    super({ prediction, valueKey, reconstructed, pageId });
     this.type = prediction.type;
   }
 }

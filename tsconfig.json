@@ -16,6 +16,9 @@
         "@mindee/*": ["mindee/*"],
       }
   },
-  "include": ["./mindee/**/*.ts"],
-  "exclude": ["./node_modules/", "./dist/", "./tests/**/*.spec.ts"]
+  "include": [
+    "./src/**/*.ts",
+    "./bin/**/*"
+  ],
+  "exclude": ["./node_modules/", "./dist/", "./tests/"]
 }

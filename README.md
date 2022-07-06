@@ -14,8 +14,9 @@ npm install mindee
 Finally, Node.js away!
 
 ### Off-the-Shelf Document
+
 ```js
-import { Client } from "mindee/index";
+import {Client} from "src/index";
 
 // Init a new client and configure the Invoice API
 const mindeeClient = new Client().configInvoice("my-invoice-api-key");
@@ -28,15 +29,16 @@ console.log(invoiceResponse.document);
 ```
 
 ### Custom Document (API Builder)
+
 ```js
-import { Client } from "mindee/index";
+import {Client} from "src/index";
 
 // Init a new client and configure your custom document
 const mindeeClient = new Client().configCustomDoc({
     documentType: "pokemon-card",
     accountName: "pikachu",
     apiKey: "pokemon-card-api-key",
-  });
+});
 
 // Load a file from disk and parse it
 const customResponse = mindeeClient.docFromPath("/path/to/the/card.jpg").parse("pokemon-card");

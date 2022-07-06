@@ -3,7 +3,7 @@ import {
   PathInput,
   StreamInput,
   BytesInput,
-} from "../mindee/inputs";
+} from "../src/inputs";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";

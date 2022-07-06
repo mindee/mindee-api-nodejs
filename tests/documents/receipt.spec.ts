@@ -1,4 +1,4 @@
-import { Receipt } from "../../mindee/documents";
+import { Receipt } from "../../src/documents";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
@@ -9,7 +9,7 @@ import {
   Field,
   Locale,
   TaxField,
-} from "../../mindee/documents/fields";
+} from "../../src/documents/fields";
 
 describe("Receipt Object initialization", async () => {
   before(async function () {
@@ -58,7 +58,7 @@ describe("Receipt Object initialization", async () => {
     const pageData = response.document.inference.pages[0];
     const doc = new Receipt({
       apiPrediction: pageData.prediction,
-      pageNumber: pageData.id,
+      pageId: pageData.id,
     });
     const to_string = await fs.readFile(
       path.join(dataPath.receipt.page0String)
