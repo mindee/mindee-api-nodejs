@@ -24,7 +24,7 @@ export class ListField {
     this.values = [];
     this.confidence = prediction["confidence"];
     this.reconstructed = constructed;
-    this.pageId = pageId;
+    this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
 
     if (Object.prototype.hasOwnProperty.call(prediction, "values")) {
       prediction["values"].forEach((field: any) => {

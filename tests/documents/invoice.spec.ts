@@ -1,9 +1,9 @@
-import { Invoice } from "../../mindee/documents";
+import { Invoice } from "../../src/documents";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
-import { TaxField } from "../../mindee/documents/fields";
+import { TaxField } from "../../src/documents/fields";
 
 describe("Invoice Object initialization", async () => {
   before(async function () {
@@ -61,7 +61,7 @@ describe("Invoice Object initialization", async () => {
     const pageData = response.document.inference.pages[0];
     const doc = new Invoice({
       apiPrediction: pageData.prediction,
-      pageNumber: pageData.id,
+      pageId: pageData.id,
     });
     const to_string = await fs.readFile(
       path.join(dataPath.invoice.page0String)

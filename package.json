@@ -2,18 +2,19 @@
   "name": "mindee",
   "version": "2.0.0",
   "description": "Mindee Client Library for Node.js",
-  "main": "dist/index.js",
+  "main": "src/index.js",
   "license": "MIT",
   "scripts": {
     "build": "tsc --build",
     "clean": "rm -rf ./dist",
     "test": "mocha 'tests/**/*.spec.ts'",
-    "lint-fix": "eslint 'mindee/**/*.ts' --fix",
-    "lint": "eslint 'mindee/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
-    "docs": "jsdoc -r mindee -d docs"
+    "lint-fix": "eslint 'src/**/*.ts' --fix",
+    "lint": "eslint 'src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
+    "docs": "jsdoc -r src -d docs"
   },
   "files": [
     "dist/",
+    "bin/",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"

@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { Passport } from "../../mindee/documents";
+import { Passport } from "../../src/documents";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
 
@@ -50,7 +50,7 @@ describe("Passport Object initialization", async () => {
     const pageData = response.document.inference.pages[0];
     const doc = new Passport({
       apiPrediction: pageData.prediction,
-      pageNumber: pageData.id,
+      pageId: pageData.id,
     });
     const to_string = await fs.readFile(
       path.join(dataPath.passport.page0String)

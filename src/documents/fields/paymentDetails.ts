@@ -8,7 +8,7 @@ interface PaymentDetailsConstructor {
   routingNumberKey?: string;
   swiftKey?: string;
   reconstructed?: boolean;
-  pageNumber?: number;
+  pageId?: number;
 }
 
 export class PaymentDetails extends Field {
@@ -24,7 +24,7 @@ export class PaymentDetails extends Field {
    * @param {String} routingNumberKey - Key to use to get the routing number in the prediction dict
    * @param {String} swiftKey - Key to use to get the SWIFT in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi-page PDF
+   * @param {Integer} pageId - Page ID for multi-page document
    */
   constructor({
     prediction,
@@ -34,9 +34,9 @@ export class PaymentDetails extends Field {
     routingNumberKey = "routing_number",
     swiftKey = "swift",
     reconstructed = false,
-    pageNumber = 0,
+    pageId = undefined,
   }: PaymentDetailsConstructor) {
-    super({ prediction, valueKey, reconstructed, pageNumber });
+    super({ prediction, valueKey, reconstructed, pageId });
 
     this.accountNumber = undefined;
     this.iban = undefined;

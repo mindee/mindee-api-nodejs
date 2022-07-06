@@ -4,7 +4,7 @@ import * as os from "os";
 import { version as sdkVersion } from "../../package.json";
 import { URL } from "url";
 import FormData from "form-data";
-import { Input } from "@mindee/inputs";
+import { Input } from "../inputs";
 import { logger } from "../logger";
 
 const MINDEE_API_URL = "https://api.mindee.net/v1";

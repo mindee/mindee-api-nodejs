@@ -8,15 +8,13 @@ export class Locale extends Field {
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi-page PDF
    */
   constructor({
     prediction,
     reconstructed = false,
-    pageNumber = undefined,
     valueKey = "value",
   }: any) {
-    super({ prediction, valueKey, reconstructed, pageNumber });
+    super({ prediction, valueKey, reconstructed });
 
     this.language = undefined;
     this.country = undefined;

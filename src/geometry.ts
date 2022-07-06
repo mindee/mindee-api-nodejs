@@ -61,3 +61,15 @@ export function getMinMaxY(vertices: Array<Point>): MinMax {
   const points = vertices.map((point) => point[1]);
   return { min: Math.min(...points), max: Math.max(...points) };
 }
+
+/**
+ * Calculate the relative X position of a Polygon.
+ *
+ * Can be used to order (sort) words in the same line.
+ */
+export function relativeX(polygon: Polygon): number {
+  const sum: number = polygon
+    .map((point) => point[0])
+    .reduce((prev, cur) => prev + cur);
+  return polygon.length * sum;
+}

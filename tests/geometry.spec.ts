@@ -1,6 +1,6 @@
-import * as geometry from "../mindee/geometry";
+import * as geometry from "../src/geometry";
 import { expect } from "chai";
-import {getCentroid, getMinMaxY} from "../mindee/geometry";
+import {getCentroid, getMinMaxY} from "../src/geometry";
 
 describe("Geometry functions", () => {
 

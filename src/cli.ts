@@ -5,7 +5,6 @@ const program = new Command();
 
 interface OtsCliConfig {
   help: string;
-  requiredKeys: Array<string>;
   docType: string;
 }
 
@@ -19,7 +18,6 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     COMMAND_INVOICE,
     {
       help: "Invoice",
-      requiredKeys: ["invoice"],
       docType: "invoice",
     },
   ],
@@ -27,7 +25,6 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     COMMAND_RECEIPT,
     {
       help: "Expense Receipt",
-      requiredKeys: ["receipt"],
       docType: "receipt",
     },
   ],
@@ -35,7 +32,6 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     COMMAND_PASSPORT,
     {
       help: "Passport",
-      requiredKeys: ["passport"],
       docType: "passport",
     },
   ],
@@ -43,7 +39,6 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     COMMAND_FINANCIAL,
     {
       help: "Financial Document (receipt or invoice)",
-      requiredKeys: ["invoice", "receipt"],
       docType: "financialDoc",
     },
   ],
@@ -57,19 +52,19 @@ async function predictCall(command: string, inputPath: string, options: any) {
   }
   switch (info.docType) {
     case COMMAND_INVOICE: {
-      mindeeClient.configInvoice(options.invoiceKey);
+      mindeeClient.configInvoice(options.apiKey);
       break;
     }
     case COMMAND_RECEIPT: {
-      mindeeClient.configReceipt(options.receiptKey);
+      mindeeClient.configReceipt(options.apiKey);
       break;
     }
     case COMMAND_PASSPORT: {
-      mindeeClient.configPassport(options.passportKey);
+      mindeeClient.configPassport(options.apiKey);
       break;
     }
     case COMMAND_FINANCIAL: {
-      mindeeClient.configFinancialDoc(options.invoiceKey, options.receiptKey);
+      mindeeClient.configFinancialDoc(options.apiKey);
       break;
     }
     default: {
@@ -77,16 +72,11 @@ async function predictCall(command: string, inputPath: string, options: any) {
     }
   }
   const doc = mindeeClient.docFromPath(inputPath);
-  const result = await doc.parse(
-    {
-      documentType: info.docType,
-      username: undefined,
-    },
-    {
-      cutPages: options.cutPages,
-      fullText: options.fullText,
-    }
-  );
+  const result = await doc.parse(info.docType, {
+    username: undefined,
+    cutPages: options.cutPages,
+    fullText: options.fullText,
+  });
   if (result.document) {
     console.log(`\n${result.document}`);
   }
@@ -99,12 +89,7 @@ export function cli() {
     const prog = program.command(name);
     prog.description(info.help);
 
-    info.requiredKeys.forEach((keyName) => {
-      prog.option(
-        `--${keyName}-key <${keyName}>`,
-        `API key for ${keyName} document endpoint`
-      );
-    });
+    prog.option("-k, --api-key", "API key for document endpoint");
     prog.option("-C, --no-cut-pages", "Don't cut document pages");
     prog.option("-t, --full-text", "Include full document text in response");
     prog.argument("<input_path>", "Full path to the file");

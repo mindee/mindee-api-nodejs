@@ -17,12 +17,8 @@ import { ReadStream } from "fs";
 import { errorHandler } from "./errors/handler";
 import { logger, LOG_LEVELS } from "./logger";
 
-interface ParseParams {
-  documentType: string;
+interface PredictOptions {
   username?: string;
-}
-
-interface ParseOptions {
   cutPages?: boolean;
   fullText?: boolean;
 }
@@ -36,20 +32,19 @@ class DocumentClient {
     this.docConfigs = docConfigs;
   }
 
-  async parse(
-    { documentType, username }: ParseParams,
-    { cutPages = true, fullText = false }: ParseOptions
-  ) {
+  async parse(docType: string, options?: PredictOptions) {
     const found: any = [];
     Object.keys(this.docConfigs).forEach((conf) => {
       const splitConf = conf.split(",");
-      if (splitConf[1] === documentType) found.push(splitConf);
+      if (splitConf[1] === docType) {
+        found.push(splitConf);
+      }
     });
     // TODO: raise error when document type is not configured => when found is empty
 
     let configKey: string[] = [];
-    if (username) {
-      configKey = [username, documentType];
+    if (options?.username) {
+      configKey = [options.username, docType];
     } else if (found.length === 1) {
       configKey = found[0];
     }
@@ -58,22 +53,34 @@ class DocumentClient {
     //   // TODO: raise error printing all usernames
     // }
 
+    // seems like there should be a better way of doing this
+    const fullText = options?.fullText ? options.fullText : false;
+    const cutPages = options?.cutPages ? options.cutPages : true;
+
     const docConfig = this.docConfigs[configKey.toString()];
     return await docConfig.predict(this.inputDoc, fullText, cutPages);
   }
 }
 
+interface ClientOptions {
+  apiKey?: string;
+  throwOnError?: boolean;
+  debug?: boolean;
+}
+
 /**
- * Hello there!
+ * Mindee Client
  */
 export class Client {
   docConfigs: { [key: string]: any };
 
   /**
-   * @param {boolean} throwOnError - Throw if an error is sent from the API (default: true)
-   * @param debug - Force debug logging (default: false)
+   * @param options
    */
-  constructor(throwOnError: boolean = true, debug: boolean = false) {
+  constructor(options?: ClientOptions) {
+    const throwOnError =
+      options?.throwOnError === undefined ? true : options.throwOnError;
+    const debug = options?.debug === undefined ? true : options.debug;
     this.docConfigs = {};
 
     errorHandler.throwOnError = throwOnError;
@@ -93,10 +100,9 @@ export class Client {
     return this;
   }
 
-  configFinancialDoc(invoiceApiKey: string = "", receiptApiKey: string = "") {
+  configFinancialDoc(apiKey: string = "") {
     this.docConfigs["mindee,financialDoc"] = new FinancialDocConfig(
-      invoiceApiKey,
-      receiptApiKey
+      apiKey,
     );
     return this;
   }

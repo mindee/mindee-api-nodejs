@@ -5,7 +5,7 @@ export class DateField extends Field {
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page number for multi-page PDF
+   * @param {Integer} pageId - Page ID for multi-page document
    */
   public dateObject: Date | undefined;
 
@@ -13,9 +13,9 @@ export class DateField extends Field {
     prediction,
     valueKey = "iso",
     reconstructed = false,
-    pageNumber = 0,
+    pageId = undefined,
   }: any) {
-    super({ prediction, valueKey, reconstructed, pageNumber });
+    super({ prediction, valueKey, reconstructed, pageId });
     this.dateObject = new Date(this.value);
     if (isNaN(this.dateObject.valueOf())) {
       this.dateObject = undefined;

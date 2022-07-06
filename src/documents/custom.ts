@@ -11,15 +11,15 @@ export class CustomDocument extends Document {
   constructor({
     inputFile,
     apiPrediction,
-    pageNumber,
+    pageId,
     documentType,
   }: CustomDocConstructorProps) {
-    super(documentType, inputFile, pageNumber);
+    super(documentType, inputFile, pageId);
     this.fields = {};
 
     Object.keys(apiPrediction).forEach((fieldName) => {
       const fieldPrediction = apiPrediction[fieldName];
-      this.fields[fieldName] = new ListField(fieldPrediction, pageNumber);
+      this.fields[fieldName] = new ListField(fieldPrediction, pageId);
     });
   }
 

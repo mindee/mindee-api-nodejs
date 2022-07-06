@@ -1,4 +1,4 @@
-const { Client } = require("mindee");
+const { Client } = require("src");
 const fs = require("fs");
 
 const mindeeClient = new Client();

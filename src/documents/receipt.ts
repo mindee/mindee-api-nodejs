@@ -46,68 +46,70 @@ export class Receipt extends Document {
     apiPrediction,
     inputFile = undefined,
     fullText = undefined,
-    pageNumber = undefined,
+    pageId = undefined,
     documentType = "",
   }: ReceiptConstructorProps) {
-    super(documentType, inputFile, pageNumber, fullText);
+    super(documentType, inputFile, pageId, fullText);
 
-    this.locale = new Locale({ prediction: apiPrediction.locale, pageNumber });
+    this.locale = new Locale({
+      prediction: apiPrediction.locale, pageId: pageId,
+    });
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0 },
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.totalExcl = new Amount({
       prediction: { value: undefined, confidence: 0 },
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
 
-    this.#initFromApiPrediction(apiPrediction, pageNumber);
+    this.#initFromApiPrediction(apiPrediction, pageId);
     this.#checklist();
     this.#reconstruct();
   }
 
-  #initFromApiPrediction(apiPrediction: any, pageNumber?: number) {
+  #initFromApiPrediction(apiPrediction: any, pageId?: number) {
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.date = new DateField({
       prediction: apiPrediction.date,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.category = new Field({
       prediction: apiPrediction.category,
-      pageNumber,
+      pageId: pageId,
     });
     this.merchantName = new Field({
       prediction: apiPrediction.supplier,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.time = new Field({
       prediction: apiPrediction.time,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     apiPrediction.taxes.map((taxPrediction: { [index: string]: any }) =>
       this.taxes.push(
         new TaxField({
           prediction: taxPrediction,
-          pageNumber,
+          pageId: pageId,
           valueKey: "value",
           rateKey: "rate",
           codeKey: "code",
         })
       )
     );
-    if (pageNumber !== undefined) {
+    if (pageId !== undefined) {
       this.orientation = new Orientation({
         prediction: apiPrediction.orientation,
-        pageNumber,
+        pageId,
       });
     }
   }

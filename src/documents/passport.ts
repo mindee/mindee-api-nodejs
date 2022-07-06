@@ -25,48 +25,58 @@ export class Passport extends Document {
   constructor({
     apiPrediction,
     inputFile = undefined,
-    pageNumber = undefined,
+    pageId = undefined,
     documentType = "",
   }: PassportConstructorProps) {
-    super(documentType, inputFile, pageNumber);
-    this.country = new Field({ prediction: apiPrediction.country, pageNumber });
+    super(documentType, inputFile, pageId);
+    this.country = new Field({
+      prediction: apiPrediction.country, pageId: pageId,
+    });
     this.idNumber = new Field({
       prediction: apiPrediction.id_number,
-      pageNumber,
+      pageId: pageId,
     });
     this.birthDate = new DateField({
       prediction: apiPrediction.birth_date,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.expiryDate = new DateField({
       prediction: apiPrediction.expiry_date,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.issuanceDate = new DateField({
       prediction: apiPrediction.issuance_date,
       valueKey: "value",
-      pageNumber,
+      pageId: pageId,
     });
     this.birthPlace = new Field({
       prediction: apiPrediction.birth_place,
-      pageNumber,
+      pageId: pageId,
     });
-    this.gender = new Field({ prediction: apiPrediction.gender, pageNumber });
-    this.surname = new Field({ prediction: apiPrediction.surname, pageNumber });
-    this.mrz1 = new Field({ prediction: apiPrediction.mrz1, pageNumber });
-    this.mrz2 = new Field({ prediction: apiPrediction.mrz2, pageNumber });
+    this.gender = new Field({
+      prediction: apiPrediction.gender, pageId: pageId
+    });
+    this.surname = new Field({
+      prediction: apiPrediction.surname, pageId: pageId
+    });
+    this.mrz1 = new Field({
+      prediction: apiPrediction.mrz1, pageId: pageId
+    });
+    this.mrz2 = new Field({
+      prediction: apiPrediction.mrz2, pageId: pageId
+    });
     apiPrediction.given_names.map((prediction: { [index: string]: any }) =>
       this.givenNames.push(
         new Field({
           prediction: prediction,
-          pageNumber,
+          pageId: pageId,
         })
       )
     );
-    this.fullName = this.constructFullName(pageNumber) as Field;
-    this.mrz = this.constructMRZ(pageNumber) as Field;
+    this.fullName = this.constructFullName(pageId) as Field;
+    this.mrz = this.constructMRZ(pageId) as Field;
     this.#checklist();
   }
 
@@ -189,7 +199,7 @@ MRZ: ${this.mrz}
       };
       return new Field({
         prediction: fullName,
-        pageNumber: pageNumber,
+        pageId: pageNumber,
         reconstructed: true,
       });
     }
@@ -203,7 +213,7 @@ MRZ: ${this.mrz}
       };
       return new Field({
         prediction: mrz,
-        pageNumber: pageNumber,
+        pageId: pageNumber,
         reconstructed: true,
       });
     }

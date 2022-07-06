@@ -1,4 +1,4 @@
-import { PaymentDetails } from "../../mindee/documents/fields";
+import { PaymentDetails } from "../../src/documents/fields";
 import { expect } from "chai";
 
 describe("Test PaymentDetails field", () => {
