@@ -46,7 +46,7 @@
     "base64-arraybuffer": "^1.0.2",
     "base64-stream": "^1.0.0",
     "concat-stream": "^2.0.0",
-    "file-type": "^16.5.3",
+    "file-type": "^16.5.4",
     "form-data": "^3.0.1",
     "pdf-lib": "^1.17.1"
   },
