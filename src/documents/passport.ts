@@ -30,7 +30,8 @@ export class Passport extends Document {
   }: PassportConstructorProps) {
     super(documentType, inputFile, pageId);
     this.country = new Field({
-      prediction: apiPrediction.country, pageId: pageId,
+      prediction: apiPrediction.country,
+      pageId: pageId,
     });
     this.idNumber = new Field({
       prediction: apiPrediction.id_number,
@@ -56,16 +57,20 @@ export class Passport extends Document {
       pageId: pageId,
     });
     this.gender = new Field({
-      prediction: apiPrediction.gender, pageId: pageId
+      prediction: apiPrediction.gender,
+      pageId: pageId,
     });
     this.surname = new Field({
-      prediction: apiPrediction.surname, pageId: pageId
+      prediction: apiPrediction.surname,
+      pageId: pageId,
     });
     this.mrz1 = new Field({
-      prediction: apiPrediction.mrz1, pageId: pageId
+      prediction: apiPrediction.mrz1,
+      pageId: pageId,
     });
     this.mrz2 = new Field({
-      prediction: apiPrediction.mrz2, pageId: pageId
+      prediction: apiPrediction.mrz2,
+      pageId: pageId,
     });
     apiPrediction.given_names.map((prediction: { [index: string]: any }) =>
       this.givenNames.push(

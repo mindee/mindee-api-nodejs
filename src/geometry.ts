@@ -1,5 +1,5 @@
-type Point = [number, number];
 type MinMax = { min: number; max: number };
+export type Point = [number, number];
 export type BoundingBox = [number, number, number, number];
 export type Polygon = Array<Point>;
 
@@ -46,12 +46,20 @@ export function getCentroid(vertices: Array<Point>): Point {
 /**
  * Determine if a Point is within two Y coordinates.
  */
-export function isPointInPolygonY(
+export function isPointInY(
   centroid: Point,
   minY: number,
   maxY: number
 ): boolean {
   return minY <= centroid[1] && centroid[1] <= maxY;
+}
+
+/**
+ * Determine if a Point is within a Polygon.
+ */
+export function isPointInPolygonY(centroid: Point, polygon: Polygon): boolean {
+  const yCoords = getMinMaxY(polygon);
+  return isPointInY(centroid, yCoords.min, yCoords.max);
 }
 
 /**

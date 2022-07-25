@@ -52,7 +52,8 @@ export class Receipt extends Document {
     super(documentType, inputFile, pageId, fullText);
 
     this.locale = new Locale({
-      prediction: apiPrediction.locale, pageId: pageId,
+      prediction: apiPrediction.locale,
+      pageId: pageId,
     });
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0 },

@@ -4,7 +4,7 @@ Quickly and easily connect to Mindee's API services using Node.js.
 ## Quick Start
 Here's the TL;DR of getting started.
 
-First, get an [API Key](https://developers.mindee.com/docs/make-your-first-request#create-an-api-key)
+First, get an [API Key](https://developers.mindee.com/docs/create-api-key)
 
 Then, install this library:
 ```shell
@@ -19,7 +19,7 @@ Finally, Node.js away!
 import {Client} from "src/index";
 
 // Init a new client and configure the Invoice API
-const mindeeClient = new Client().configInvoice("my-invoice-api-key");
+const mindeeClient = new Client({apiKey: "my-api-key"}).configInvoice();
 
 // Load a file from disk and parse it
 const invoiceResponse = mindeeClient.docFromPath("/path/to/the/invoice.pdf").parse("invoice");
@@ -34,10 +34,9 @@ console.log(invoiceResponse.document);
 import {Client} from "src/index";
 
 // Init a new client and configure your custom document
-const mindeeClient = new Client().configCustomDoc({
+const mindeeClient = new Client({apiKey: "my-api-key"}).configCustomDoc({
     documentType: "pokemon-card",
     accountName: "pikachu",
-    apiKey: "pokemon-card-api-key",
 });
 
 // Load a file from disk and parse it

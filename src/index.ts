@@ -17,6 +17,8 @@ import { ReadStream } from "fs";
 import { errorHandler } from "./errors/handler";
 import { logger, LOG_LEVELS } from "./logger";
 
+type DocConfigs = { [key: string]: DocumentConfig };
+
 interface PredictOptions {
   username?: string;
   cutPages?: boolean;
@@ -25,7 +27,7 @@ interface PredictOptions {
 
 class DocumentClient {
   inputDoc: Input;
-  docConfigs: { [key: string]: DocumentConfig };
+  docConfigs: DocConfigs;
 
   constructor(inputDoc: Input, docConfigs: any) {
     this.inputDoc = inputDoc;
@@ -72,7 +74,8 @@ interface ClientOptions {
  * Mindee Client
  */
 export class Client {
-  docConfigs: { [key: string]: any };
+  protected docConfigs: DocConfigs;
+  protected apiKey: string;
 
   /**
    * @param options
@@ -80,7 +83,8 @@ export class Client {
   constructor(options?: ClientOptions) {
     const throwOnError =
       options?.throwOnError === undefined ? true : options.throwOnError;
-    const debug = options?.debug === undefined ? true : options.debug;
+    const debug = options?.debug === undefined ? false : options.debug;
+    this.apiKey = options?.apiKey === undefined ? "" : options.apiKey;
     this.docConfigs = {};
 
     errorHandler.throwOnError = throwOnError;
@@ -91,38 +95,44 @@ export class Client {
   }
 
   configInvoice(apiKey: string = "") {
-    this.docConfigs["mindee,invoice"] = new InvoiceConfig(apiKey);
+    this.docConfigs["mindee,invoice"] = new InvoiceConfig(
+      apiKey || this.apiKey
+    );
     return this;
   }
 
   configReceipt(apiKey: string = "") {
-    this.docConfigs["mindee,receipt"] = new ReceiptConfig(apiKey);
+    this.docConfigs["mindee,receipt"] = new ReceiptConfig(
+      apiKey || this.apiKey
+    );
     return this;
   }
 
   configFinancialDoc(apiKey: string = "") {
     this.docConfigs["mindee,financialDoc"] = new FinancialDocConfig(
-      apiKey,
+      apiKey || this.apiKey
     );
     return this;
   }
 
   configPassport(apiKey: string = "") {
-    this.docConfigs["mindee,passport"] = new PassportConfig(apiKey);
+    this.docConfigs["mindee,passport"] = new PassportConfig(
+      apiKey || this.apiKey
+    );
     return this;
   }
 
   configCustomDoc(
     accountName: string,
     documentType: string,
-    apiKey = "",
-    version = "1"
+    apiKey: string = "",
+    version: string = "1"
   ) {
     this.docConfigs[`${accountName},${documentType}`] = new CustomDocConfig({
       documentType: documentType,
       accountName: accountName,
       version: version,
-      apiKey: apiKey,
+      apiKey: apiKey || this.apiKey,
     });
     return this;
   }

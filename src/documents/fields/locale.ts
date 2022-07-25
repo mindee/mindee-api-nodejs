@@ -9,11 +9,7 @@ export class Locale extends Field {
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    */
-  constructor({
-    prediction,
-    reconstructed = false,
-    valueKey = "value",
-  }: any) {
+  constructor({ prediction, reconstructed = false, valueKey = "value" }: any) {
     super({ prediction, valueKey, reconstructed });
 
     this.language = undefined;

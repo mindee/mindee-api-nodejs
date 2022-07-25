@@ -136,9 +136,14 @@ export class Endpoint {
 
   protected apiKeyFromEnv(): string {
     const envVarName = this.envVarKeyName();
-    const envVarValue = process.env[envVarName];
+    let envVarValue = process.env[envVarName];
     if (envVarValue) {
       logger.debug("Set from environment: %s", envVarName);
+      return envVarValue;
+    }
+    envVarValue = process.env["MINDEE_API_KEY"];
+    if (envVarValue) {
+      logger.debug("Set from environment: MINDEE_API_KEY");
       return envVarValue;
     }
     return "";
