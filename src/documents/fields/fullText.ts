@@ -22,9 +22,8 @@ function orderLines(fullText: Word[]): Array<Line> {
           idxs.push(idx);
           line = [current];
         } else {
-          const yCoords = geometry.getMinMaxY(current.polygon);
           const centroid = geometry.getCentroid(word.polygon);
-          if (geometry.isPointInPolygonY(centroid, yCoords.min, yCoords.max)) {
+          if (geometry.isPointInPolygonY(centroid, current.polygon)) {
             line.push(word);
             idxs.push(idx);
           }

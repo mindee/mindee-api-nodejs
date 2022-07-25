@@ -57,11 +57,18 @@ describe("Geometry functions", () => {
   });
 
   it("should determine if two polygons are on the same line", () => {
-    const centroidA = geometry.getCentroid(polygonA());
-    const minMaxB = getMinMaxY(polygonB());
-    const minMaxC = getMinMaxY(polygonC());
-    expect(geometry.isPointInPolygonY(centroidA, minMaxB.min, minMaxB.max)).to.be.true;
-    expect(geometry.isPointInPolygonY(centroidA, minMaxC.min, minMaxC.max)).to.be.false;
+    // Should be in polygon A & B, since polygons overlap
+    const pointA: geometry.Point = [0.125, 0.535];
+    // Should only be in polygon C
+    const pointB: geometry.Point = [0.300, 0.420];
+
+    expect(geometry.isPointInPolygonY(pointA, polygonA())).to.be.true;
+    expect(geometry.isPointInPolygonY(pointA, polygonB())).to.be.true;
+    expect(geometry.isPointInPolygonY(pointA, polygonC())).to.be.false;
+
+    expect(geometry.isPointInPolygonY(pointB, polygonA())).to.be.false;
+    expect(geometry.isPointInPolygonY(pointB, polygonB())).to.be.false;
+    expect(geometry.isPointInPolygonY(pointB, polygonC())).to.be.true;
   });
 
 });
