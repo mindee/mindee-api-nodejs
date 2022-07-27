@@ -53,7 +53,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "commander": "^9.3.0",
+    "commander": "^9.4.0",
     "file-type": "^16.5.4",
     "form-data": "^3.0.1",
     "mrz": "^3.1.4",

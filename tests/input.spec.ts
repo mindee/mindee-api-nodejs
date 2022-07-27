@@ -1,9 +1,4 @@
-import {
-  Base64Input,
-  PathInput,
-  StreamInput,
-  BytesInput,
-} from "../src/inputs";
+import { Base64Input, PathInput, StreamInput, BytesInput } from "../src/inputs";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";

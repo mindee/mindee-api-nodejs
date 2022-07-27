@@ -6,6 +6,7 @@ import { URL } from "url";
 import FormData from "form-data";
 import { Input } from "../inputs";
 import { logger } from "../logger";
+import { IncomingMessage } from "http";
 
 const MINDEE_API_URL = "https://api.mindee.net/v1";
 const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${
@@ -100,8 +101,9 @@ export class Endpoint {
         path: `${uri.pathname}${uri.search}`,
       };
 
-      const req = https.request(options, function (res: any) {
-        let responseBody: any = [];
+      logger.debug(`Prediction request: ${uri}`);
+      const req = https.request(options, function (res: IncomingMessage) {
+        let responseBody: any = {};
 
         res.on("data", function (chunk: any) {
           responseBody += chunk;
@@ -135,15 +137,16 @@ export class Endpoint {
   }
 
   protected apiKeyFromEnv(): string {
-    const envVarName = this.envVarKeyName();
+    let envVarName = this.envVarKeyName();
     let envVarValue = process.env[envVarName];
-    if (envVarValue) {
-      logger.debug("Set from environment: %s", envVarName);
-      return envVarValue;
+    if (!envVarValue) {
+      envVarName = "MINDEE_API_KEY";
+      envVarValue = process.env[envVarName];
     }
-    envVarValue = process.env["MINDEE_API_KEY"];
     if (envVarValue) {
-      logger.debug("Set from environment: MINDEE_API_KEY");
+      logger.debug(
+        `Set '${this.keyName}' API key from environment: ${envVarName}`
+      );
       return envVarValue;
     }
     return "";

@@ -45,8 +45,8 @@ describe("Receipt Object initialization", async () => {
     const doc = new Receipt({
       apiPrediction: prediction,
     });
-    const to_string = await fs.readFile(path.join(dataPath.receipt.docString));
-    expect(doc.toString()).to.be.equals(to_string.toString());
+    const docString = await fs.readFile(path.join(dataPath.receipt.docString));
+    expect(doc.toString()).to.be.equals(docString.toString());
     for (const key in doc.checklist) {
       expect(doc.checklist[key]).to.be.true;
     }
@@ -60,10 +60,10 @@ describe("Receipt Object initialization", async () => {
       apiPrediction: pageData.prediction,
       pageId: pageData.id,
     });
-    const to_string = await fs.readFile(
+    const docString = await fs.readFile(
       path.join(dataPath.receipt.page0String)
     );
-    expect(doc.toString()).to.be.equals(to_string.toString());
+    expect(doc.toString()).to.be.equals(docString.toString());
   });
 
   it("should reconstruct with N/A total", function () {

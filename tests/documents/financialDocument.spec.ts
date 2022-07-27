@@ -33,14 +33,10 @@ describe("Financial Document Object initialization", async () => {
     const doc = new FinancialDocument({
       apiPrediction: response.document.inference.prediction,
     });
-    expect((doc.date as DateField).value).to.be.equal(
-      "2020-02-17"
-    );
+    expect((doc.date as DateField).value).to.be.equal("2020-02-17");
     expect((doc.totalTax as TaxField).value).to.be.equal(97.98);
     expect(typeof doc.toString()).to.be.equal("string");
-    expect((doc.supplier as Field).value).to.be.equal(
-      "TURNPIKE DESIGNS CO."
-    );
+    expect((doc.supplier as Field).value).to.be.equal("TURNPIKE DESIGNS CO.");
   });
 
   it("should initialize from a receipt object", async () => {
@@ -49,9 +45,7 @@ describe("Financial Document Object initialization", async () => {
     const doc = new FinancialDocument({
       apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect((doc.date as DateField).value).to.be.equal(
-      "2016-02-26"
-    );
+    expect((doc.date as DateField).value).to.be.equal("2016-02-26");
     expect((doc.totalTax as TaxField).value).to.be.equal(1.7);
     expect((doc.supplier as Field).value).to.be.equal("CLACHAN");
     expect(doc.checklist.taxesMatchTotalIncl).to.be.true;
@@ -93,9 +87,7 @@ describe("Financial Document Object initialization", async () => {
     expect((doc.paymentDetails as any).length).to.be.equal(0);
     expect((doc.companyNumber as any).length).to.be.equal(0);
     expect(doc.orientation).to.be.undefined;
-    expect(Object.values(doc.checklist)).to.have.ordered.members([
-      false,
-    ]);
+    expect(Object.values(doc.checklist)).to.have.ordered.members([false]);
     expect(doc.checkAll()).to.be.false;
   });
 });

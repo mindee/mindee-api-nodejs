@@ -1,4 +1,3 @@
-import { promises as fs } from "fs";
 import {
   Document,
   Passport,
@@ -6,9 +5,15 @@ import {
   Invoice,
   FinancialDocument,
   CustomDocument,
+  DOC_TYPE_INVOICE,
+  DOC_TYPE_RECEIPT,
+  DOC_TYPE_PASSPORT,
+  DOC_TYPE_FINANCIAL,
 } from "../documents";
 import { FullText } from "../documents/fields";
 import { Input } from "../inputs";
+import { DocumentConstructorProps } from "../documents/document";
+import { CustomDocConstructorProps } from "../documents/custom";
 
 interface ResponseProps {
   httpResponse: any;
@@ -18,6 +23,9 @@ interface ResponseProps {
 }
 
 type stringDict = { [index: string]: any };
+type docConstructor = (
+  params: DocumentConstructorProps | CustomDocConstructorProps
+) => Document;
 
 export class Response {
   httpResponse: any;
@@ -36,23 +44,9 @@ export class Response {
     }
   }
 
-  async dump(path: string) {
-    return await fs.writeFile(path, JSON.stringify(Object.entries(this)));
-  }
-
-  formatResponse() {
-    const constructors: { [index: string]: CallableFunction } = {
-      receipt: (params: any) => new Receipt(params),
-      invoice: (params: any) => new Invoice(params),
-      financialDoc: (params: any) => new FinancialDocument(params),
-      customDocument: (params: any) => new CustomDocument(params),
-      passport: (params: any) => new Passport(params),
-    };
-    if (!(this.documentType in constructors)) {
-      throw new Error(`Unknown document type: ${this.documentType}`);
-    }
+  protected formatResponse() {
+    const constructor: docConstructor = this.getConstructor();
     const httpDataDocument = this.httpResponse.data.document;
-
     httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
       const pageText = new FullText();
       if (
@@ -63,20 +57,40 @@ export class Response {
           httpDataDocument.ocr["mvision-v1"].pages[apiPage.id].all_words;
       }
       this.pages.push(
-        constructors[this.documentType]({
+        constructor({
           apiPrediction: apiPage.prediction,
           inputFile: this.inputFile,
           documentType: this.documentType,
-          pageNumber: apiPage.id,
+          pageId: apiPage.id,
           fullText: pageText,
         })
       );
     });
-
-    this.document = constructors[this.documentType]({
+    this.document = constructor({
       apiPrediction: httpDataDocument.inference.prediction,
       inputFile: this.inputFile,
       documentType: this.documentType,
     });
+  }
+
+  protected getConstructor(): docConstructor {
+    switch (this.documentType) {
+      case DOC_TYPE_INVOICE: {
+        return (params: DocumentConstructorProps) => new Invoice(params);
+      }
+      case DOC_TYPE_RECEIPT: {
+        return (params: DocumentConstructorProps) => new Receipt(params);
+      }
+      case DOC_TYPE_FINANCIAL: {
+        return (params: DocumentConstructorProps) =>
+          new FinancialDocument(params);
+      }
+      case DOC_TYPE_PASSPORT: {
+        return (params: DocumentConstructorProps) => new Passport(params);
+      }
+      default: {
+        return (params: any) => new CustomDocument(params);
+      }
+    }
   }
 }

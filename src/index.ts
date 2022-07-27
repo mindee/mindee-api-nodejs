@@ -6,6 +6,12 @@ import {
   BytesInput,
 } from "./inputs";
 import {
+  DOC_TYPE_INVOICE,
+  DOC_TYPE_RECEIPT,
+  DOC_TYPE_PASSPORT,
+  DOC_TYPE_FINANCIAL,
+} from "./documents";
+import {
   DocumentConfig,
   CustomDocConfig,
   FinancialDocConfig,
@@ -92,31 +98,32 @@ export class Client {
       debug ?? process.env.MINDEE_DEBUG
         ? LOG_LEVELS["debug"]
         : LOG_LEVELS["warn"];
+    logger.debug("Client initialized");
   }
 
   configInvoice(apiKey: string = "") {
-    this.docConfigs["mindee,invoice"] = new InvoiceConfig(
+    this.docConfigs[`mindee,${DOC_TYPE_INVOICE}`] = new InvoiceConfig(
       apiKey || this.apiKey
     );
     return this;
   }
 
   configReceipt(apiKey: string = "") {
-    this.docConfigs["mindee,receipt"] = new ReceiptConfig(
+    this.docConfigs[`mindee,${DOC_TYPE_RECEIPT}`] = new ReceiptConfig(
       apiKey || this.apiKey
     );
     return this;
   }
 
   configFinancialDoc(apiKey: string = "") {
-    this.docConfigs["mindee,financialDoc"] = new FinancialDocConfig(
+    this.docConfigs[`mindee,${DOC_TYPE_FINANCIAL}`] = new FinancialDocConfig(
       apiKey || this.apiKey
     );
     return this;
   }
 
   configPassport(apiKey: string = "") {
-    this.docConfigs["mindee,passport"] = new PassportConfig(
+    this.docConfigs[`mindee,${DOC_TYPE_PASSPORT}`] = new PassportConfig(
       apiKey || this.apiKey
     );
     return this;

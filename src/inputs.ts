@@ -5,15 +5,16 @@ import * as fileType from "file-type";
 import { errorHandler } from "./errors/handler";
 import { PDFDocument } from "pdf-lib";
 import { Buffer } from "node:buffer";
+import { logger } from "./logger";
 
 interface InputProps {
   inputType: string;
 }
 
-const INPUT_TYPE_STREAM = "stream";
-const INPUT_TYPE_BASE64 = "base64";
-const INPUT_TYPE_BYTES = "bytes";
-const INPUT_TYPE_PATH = "path";
+export const INPUT_TYPE_STREAM = "stream";
+export const INPUT_TYPE_BASE64 = "base64";
+export const INPUT_TYPE_BYTES = "bytes";
+export const INPUT_TYPE_PATH = "path";
 
 const MIMETYPES = new Map<string, string>([
   [".pdf", "application/pdf"],
@@ -55,6 +56,7 @@ export class Input {
       );
     }
     this.inputType = inputType;
+    logger.debug(`Loading file from: ${inputType}`);
   }
 
   async init() {
@@ -83,6 +85,7 @@ export class Input {
       const err = new Error(`Invalid file type, must be one of ${allowed}.`);
       errorHandler.throw(err);
     }
+    logger.debug(`File is of type: ${mimeType}`);
     return mimeType;
   }
 
@@ -109,6 +112,7 @@ export class Input {
       0,
       this.MAX_DOC_PAGES
     );
+    logger.debug(`Cutting PDF, keeping pages: ${pagesNumbers}`);
 
     const pages = await newPdf.copyPages(currentPdf, pagesNumbers);
     pages.forEach((page) => newPdf.addPage(page));

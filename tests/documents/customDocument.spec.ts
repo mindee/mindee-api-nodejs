@@ -14,7 +14,7 @@ describe("Custom Document Object initialization", async () => {
       apiPrediction: response.document.inference.pages[0].prediction,
       documentType: "field_test",
     });
-    expect(custom.documentType).to.be.equals("field_test");
+    expect(custom.internalDocType).to.be.equals("field_test");
     expect(Object.keys(custom.fields).length).to.be.equals(10);
   });
 
@@ -25,8 +25,8 @@ describe("Custom Document Object initialization", async () => {
       apiPrediction: response.document.inference.prediction,
       documentType: "field_test",
     });
-    const to_string = await fs.readFile(path.join(dataPath.custom.docString));
-    expect(custom.toString()).to.be.equals(to_string.toString());
+    const docString = await fs.readFile(path.join(dataPath.custom.docString));
+    expect(custom.toString()).to.be.equals(docString.toString());
   });
 
   it("should load a complete page 0 prediction", async () => {
@@ -38,8 +38,8 @@ describe("Custom Document Object initialization", async () => {
       documentType: "field_test",
       pageId: pageData.id,
     });
-    const to_string = await fs.readFile(path.join(dataPath.custom.page0String));
-    expect(custom.toString()).to.be.equals(to_string.toString());
+    const docString = await fs.readFile(path.join(dataPath.custom.page0String));
+    expect(custom.toString()).to.be.equals(docString.toString());
   });
 
   it("should load a complete page 1 prediction", async () => {
@@ -51,7 +51,7 @@ describe("Custom Document Object initialization", async () => {
       documentType: "field_test",
       pageId: pageData.id,
     });
-    const to_string = await fs.readFile(path.join(dataPath.custom.page1String));
-    expect(custom.toString()).to.be.equals(to_string.toString());
+    const docString = await fs.readFile(path.join(dataPath.custom.page1String));
+    expect(custom.toString()).to.be.equals(docString.toString());
   });
 });

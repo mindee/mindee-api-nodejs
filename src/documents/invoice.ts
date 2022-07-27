@@ -10,10 +10,7 @@ import {
   DateField as Date,
   TypedField,
 } from "./fields";
-
-interface InvoiceConstructorProps extends DocumentConstructorProps {
-  documentType?: string;
-}
+import { DOC_TYPE_INVOICE } from "./index";
 
 export class Invoice extends Document {
   /**
@@ -61,9 +58,8 @@ export class Invoice extends Document {
     inputFile = undefined,
     fullText = undefined,
     pageId = undefined,
-    documentType = "",
-  }: InvoiceConstructorProps) {
-    super(documentType, inputFile, pageId, fullText);
+  }: DocumentConstructorProps) {
+    super(DOC_TYPE_INVOICE, inputFile, pageId, fullText);
     this.#initFromApiPrediction(apiPrediction, pageId);
     this.#checklist();
     this.#reconstruct();

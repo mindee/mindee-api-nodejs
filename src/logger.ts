@@ -17,7 +17,7 @@ export const LOG_LEVELS: LoggerLevels = {
 };
 
 class Logger implements LoggerInterface {
-  constructor(public level: string | number = "debug") {
+  constructor(public level: string | number = "warn") {
     if (!(level in LOG_LEVELS)) {
       this.level = "debug";
     }

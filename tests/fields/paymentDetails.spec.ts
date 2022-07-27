@@ -21,7 +21,9 @@ describe("Test PaymentDetails field", () => {
     expect(paymentDetail.iban).to.be.equal(prediction.iban);
     expect(paymentDetail.routingNumber).to.be.equal(prediction.routing_number);
     expect(paymentDetail.swift).to.be.equal(prediction.swift);
-    expect(paymentDetail.toString()).to.be.equal("account_number; iban; routing_number; swift; ");
+    expect(paymentDetail.toString()).to.be.equal(
+      "account_number; iban; routing_number; swift; "
+    );
   });
 
   it("should create a PaymentDetails field with N/A inputs", () => {

@@ -50,8 +50,8 @@ describe("Invoice Object initialization", async () => {
     const doc = new Invoice({
       apiPrediction: prediction,
     });
-    const to_string = await fs.readFile(path.join(dataPath.invoice.docString));
-    expect(doc.toString()).to.be.equals(to_string.toString());
+    const docString = await fs.readFile(path.join(dataPath.invoice.docString));
+    expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
   });
 
@@ -63,10 +63,10 @@ describe("Invoice Object initialization", async () => {
       apiPrediction: pageData.prediction,
       pageId: pageData.id,
     });
-    const to_string = await fs.readFile(
+    const docString = await fs.readFile(
       path.join(dataPath.invoice.page0String)
     );
-    expect(doc.toString()).to.be.equals(to_string.toString());
+    expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
   });
 
