@@ -16,14 +16,14 @@ const INPUT_TYPE_BYTES = "bytes";
 const INPUT_TYPE_PATH = "path";
 
 const MIMETYPES = new Map<string, string>([
-  ["pdf", "application/pdf"],
-  ["heic", "image/heic"],
-  ["jpg", "image/jpeg"],
-  ["jpeg", "image/jpeg"],
-  ["png", "image/png"],
-  ["tif", "image/tiff"],
-  ["tiff", "image/tiff"],
-  ["webp", "image/webp"],
+  [".pdf", "application/pdf"],
+  [".heic", "image/heic"],
+  [".jpg", "image/jpeg"],
+  [".jpeg", "image/jpeg"],
+  [".png", "image/png"],
+  [".tif", "image/tiff"],
+  [".tiff", "image/tiff"],
+  [".webp", "image/webp"],
 ]);
 const ALLOWED_INPUT_TYPES = [
   INPUT_TYPE_STREAM,
@@ -67,7 +67,7 @@ export class Input {
 
   async checkMimetype(): Promise<string> {
     let mimeType: string;
-    const fileExt = this.filename.split(".").pop();
+    const fileExt = path.extname(this.filename);
     if (fileExt) {
       mimeType = MIMETYPES.get(fileExt.toLowerCase()) || "";
     } else {

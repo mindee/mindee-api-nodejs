@@ -14,7 +14,9 @@ describe("Test different types of input", () => {
       path.join(__dirname, "data/receipt/receipt.txt")
     );
     const b64String = b64Input.toString();
-    const filename = "receipt.jpg";
+    // don't provide an extension to see if we can detect MIME
+    // type based on contents
+    const filename = "receipt";
     const input = new Base64Input({
       inputString: b64String,
       filename: filename,
@@ -22,6 +24,7 @@ describe("Test different types of input", () => {
     await input.init();
     expect(input.inputType).to.equals("base64");
     expect(input.filename).to.equals(filename);
+    expect(input.mimeType).to.equals("image/jpeg");
     // we need to insert a newline very 76 chars to match the format
     // of the input file.
     const expectedString = input.fileObject
@@ -92,8 +95,9 @@ describe("Test different types of input", () => {
   it("should accept raw bytes", async () => {
     const filePath = path.join(__dirname, "data/receipt/receipt.jpg");
     const inputBytes = await fs.promises.readFile(filePath);
-
-    const filename = "receipt.jpg";
+    // don't provide an extension to see if we can detect MIME
+    // type based on contents
+    const filename = "receipt";
     const input = new BytesInput({
       inputBytes: inputBytes.toString("hex"),
       filename: filename,
