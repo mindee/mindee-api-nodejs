@@ -1,5 +1,11 @@
 import { Command } from "commander";
 import { Client } from "./index";
+import {
+  DOC_TYPE_INVOICE,
+  DOC_TYPE_RECEIPT,
+  DOC_TYPE_PASSPORT,
+  DOC_TYPE_FINANCIAL,
+} from "./documents";
 
 const program = new Command();
 
@@ -18,57 +24,57 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     COMMAND_INVOICE,
     {
       help: "Invoice",
-      docType: "invoice",
+      docType: DOC_TYPE_INVOICE,
     },
   ],
   [
     COMMAND_RECEIPT,
     {
       help: "Expense Receipt",
-      docType: "receipt",
+      docType: DOC_TYPE_RECEIPT,
     },
   ],
   [
     COMMAND_PASSPORT,
     {
       help: "Passport",
-      docType: "passport",
+      docType: DOC_TYPE_PASSPORT,
     },
   ],
   [
     COMMAND_FINANCIAL,
     {
       help: "Financial Document (receipt or invoice)",
-      docType: "financialDoc",
+      docType: DOC_TYPE_FINANCIAL,
     },
   ],
 ]);
 
 async function predictCall(command: string, inputPath: string, options: any) {
   const info = OTS_DOCUMENTS.get(command);
-  const mindeeClient = new Client();
   if (!info) {
     throw new Error(`Invalid document type ${command}`);
   }
+  const mindeeClient = new Client({
+    apiKey: options.apiKey,
+    debug: options.verbose,
+  });
   switch (info.docType) {
     case COMMAND_INVOICE: {
-      mindeeClient.configInvoice(options.apiKey);
+      mindeeClient.configInvoice();
       break;
     }
     case COMMAND_RECEIPT: {
-      mindeeClient.configReceipt(options.apiKey);
+      mindeeClient.configReceipt();
       break;
     }
     case COMMAND_PASSPORT: {
-      mindeeClient.configPassport(options.apiKey);
+      mindeeClient.configPassport();
       break;
     }
     case COMMAND_FINANCIAL: {
-      mindeeClient.configFinancialDoc(options.apiKey);
+      mindeeClient.configFinancialDoc();
       break;
-    }
-    default: {
-      throw new Error(`Invalid document type ${command}`);
     }
   }
   const doc = mindeeClient.docFromPath(inputPath);
@@ -84,6 +90,7 @@ async function predictCall(command: string, inputPath: string, options: any) {
 
 export function cli() {
   program.name("mindee");
+  program.option("-v, --verbose", "high verbosity mode");
 
   OTS_DOCUMENTS.forEach((info, name) => {
     const prog = program.command(name);
@@ -94,7 +101,11 @@ export function cli() {
     prog.option("-t, --full-text", "Include full document text in response");
     prog.argument("<input_path>", "Full path to the file");
     prog.action((inputPath: string, options: any, command: any) => {
-      predictCall(command.name(), inputPath, options);
+      const allOptions = {
+        ...program.opts(),
+        ...options,
+      };
+      predictCall(command.name(), inputPath, allOptions);
     });
   });
   program.parse(process.argv);

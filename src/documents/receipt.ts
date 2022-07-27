@@ -8,10 +8,7 @@ import {
   DateField,
 } from "./fields";
 import { promises as fs } from "fs";
-
-interface ReceiptConstructorProps extends DocumentConstructorProps {
-  documentType?: string;
-}
+import { DOC_TYPE_RECEIPT } from "./index";
 
 export class Receipt extends Document {
   /**
@@ -47,9 +44,8 @@ export class Receipt extends Document {
     inputFile = undefined,
     fullText = undefined,
     pageId = undefined,
-    documentType = "",
-  }: ReceiptConstructorProps) {
-    super(documentType, inputFile, pageId, fullText);
+  }: DocumentConstructorProps) {
+    super(DOC_TYPE_RECEIPT, inputFile, pageId, fullText);
 
     this.locale = new Locale({
       prediction: apiPrediction.locale,

@@ -1,7 +1,7 @@
 import { Document, DocumentConstructorProps } from "./document";
 import { ListField } from "./fields";
 
-interface CustomDocConstructorProps extends DocumentConstructorProps {
+export interface CustomDocConstructorProps extends DocumentConstructorProps {
   documentType: string;
 }
 
@@ -24,7 +24,7 @@ export class CustomDocument extends Document {
   }
 
   toString(): string {
-    let outStr = `----- ${this.documentType} -----`;
+    let outStr = `----- ${this.internalDocType} -----`;
     outStr += `\nFilename: ${this.filename}`.trimEnd();
     for (const [name, fieldData] of Object.entries(this.fields)) {
       outStr += `\n${name}: ${fieldData}`.trimEnd();
