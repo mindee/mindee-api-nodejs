@@ -9,7 +9,7 @@ import {
   Field,
   Locale,
   TaxField,
-} from "../../src/documents/fields";
+} from "../../src/fields";
 
 describe("Financial Document Object initialization", async () => {
   before(async function () {

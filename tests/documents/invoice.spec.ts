@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
-import { TaxField } from "../../src/documents/fields";
+import { TaxField } from "../../src/fields";
 
 describe("Invoice Object initialization", async () => {
   before(async function () {

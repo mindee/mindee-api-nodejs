@@ -1,4 +1,4 @@
-import { PaymentDetails } from "../../src/documents/fields";
+import { PaymentDetails } from "../../src/fields";
 import { expect } from "chai";
 
 describe("Test PaymentDetails field", () => {

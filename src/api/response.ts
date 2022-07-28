@@ -10,7 +10,7 @@ import {
   DOC_TYPE_PASSPORT,
   DOC_TYPE_FINANCIAL,
 } from "../documents";
-import { FullText } from "../documents/fields";
+import { FullText } from "../fields";
 import { Input } from "../inputs";
 import { DocumentConstructorProps } from "../documents/document";
 import { CustomDocConstructorProps } from "../documents/custom";

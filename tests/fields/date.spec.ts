@@ -1,4 +1,4 @@
-import { DateField } from "../../src/documents/fields";
+import { DateField } from "../../src/fields";
 import { expect } from "chai";
 
 describe("Test Date field", () => {

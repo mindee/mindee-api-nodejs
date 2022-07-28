@@ -9,7 +9,7 @@ import {
   Orientation,
   DateField as Date,
   CompanyRegistration,
-} from "./fields";
+} from "../fields";
 
 interface FinancialDocConstructorProps extends DocumentConstructorProps {
   documentType?: string;
@@ -132,7 +132,6 @@ export class FinancialDocument extends Document {
       this.customerAddress = new Field({
         prediction: { value: undefined, confidence: 0.0 },
       });
-      if (receipt.words) this.words = receipt.words;
     }
   }
 

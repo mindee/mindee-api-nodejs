@@ -1,4 +1,4 @@
-import { Orientation } from "../../src/documents/fields";
+import { Orientation } from "../../src/fields";
 import { expect } from "chai";
 
 describe("Test Orientation field", () => {

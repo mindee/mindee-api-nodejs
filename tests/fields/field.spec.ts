@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Field } from "../../src/documents/fields";
+import { Field } from "../../src/fields";
 
 describe("Test differents init of Field", () => {
   it("Should create a Field", () => {

@@ -9,7 +9,7 @@ import {
   Field,
   Locale,
   TaxField,
-} from "../../src/documents/fields";
+} from "../../src/fields";
 
 describe("Receipt Object initialization", async () => {
   before(async function () {
