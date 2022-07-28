@@ -1,4 +1,7 @@
 type MinMax = { min: number; max: number };
+/**
+ * A point on the document: X, Y
+ */
 export type Point = [number, number];
 export type BoundingBox = [number, number, number, number];
 export type Polygon = Array<Point>;
@@ -48,14 +51,22 @@ export function getCentroid(vertices: Array<Point>): Point {
  */
 export function isPointInY(
   centroid: Point,
-  minY: number,
-  maxY: number
+  yMin: number,
+  yMax: number
 ): boolean {
-  return minY <= centroid[1] && centroid[1] <= maxY;
+  return yMin <= centroid[1] && centroid[1] <= yMax;
 }
 
 /**
- * Determine if a Point is within a Polygon.
+ * Get the maximum and minimum X coordinates in a given list of Points.
+ */
+export function getMinMaxY(vertices: Array<Point>): MinMax {
+  const points = vertices.map((point) => point[1]);
+  return { min: Math.min(...points), max: Math.max(...points) };
+}
+
+/**
+ * Determine if a Point is within a Polygon's Y axis.
  */
 export function isPointInPolygonY(centroid: Point, polygon: Polygon): boolean {
   const yCoords = getMinMaxY(polygon);
@@ -63,11 +74,30 @@ export function isPointInPolygonY(centroid: Point, polygon: Polygon): boolean {
 }
 
 /**
- * Get the maximum and minimum Y coordinates in a given list of Points.
+ * Determine if a Point is within two X coordinates.
  */
-export function getMinMaxY(vertices: Array<Point>): MinMax {
-  const points = vertices.map((point) => point[1]);
+export function isPointInX(
+  centroid: Point,
+  xMin: number,
+  xMax: number
+): boolean {
+  return xMin <= centroid[0] && centroid[0] <= xMax;
+}
+
+/**
+ * Get the maximum and minimum X coordinates in a given list of Points.
+ */
+export function getMinMaxX(vertices: Array<Point>): MinMax {
+  const points = vertices.map((point) => point[0]);
   return { min: Math.min(...points), max: Math.max(...points) };
+}
+
+/**
+ * Determine if a Point is within a Polygon's X axis.
+ */
+export function isPointInPolygonX(centroid: Point, polygon: Polygon): boolean {
+  const xCoords = getMinMaxX(polygon);
+  return isPointInX(centroid, xCoords.min, xCoords.max);
 }
 
 /**

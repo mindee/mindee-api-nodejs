@@ -85,4 +85,19 @@ describe("Geometry functions", () => {
     expect(geometry.isPointInPolygonY(pointB, polygonB())).to.be.false;
     expect(geometry.isPointInPolygonY(pointB, polygonC())).to.be.true;
   });
+
+  it("should determine if two polygons are on the same column", () => {
+    // Should be in polygon A & B, since polygons overlap
+    const pointA: geometry.Point = [0.125, 0.535];
+    // Should only be in polygon C
+    const pointB: geometry.Point = [0.3, 0.42];
+
+    expect(geometry.isPointInPolygonX(pointA, polygonA())).to.be.true;
+    expect(geometry.isPointInPolygonX(pointA, polygonB())).to.be.true;
+    expect(geometry.isPointInPolygonX(pointA, polygonC())).to.be.false;
+
+    expect(geometry.isPointInPolygonX(pointB, polygonA())).to.be.false;
+    expect(geometry.isPointInPolygonX(pointB, polygonB())).to.be.false;
+    expect(geometry.isPointInPolygonX(pointB, polygonC())).to.be.true;
+  });
 });
