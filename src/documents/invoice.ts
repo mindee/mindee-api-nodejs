@@ -7,10 +7,11 @@ import {
   Locale,
   Amount,
   Field,
-  DateField as Date,
-  TypedField,
+  DateField,
+  CompanyRegistration,
 } from "./fields";
 import { DOC_TYPE_INVOICE } from "./index";
+import { BaseField } from "./fields/field";
 
 export class Invoice extends Document {
   /**
@@ -35,9 +36,10 @@ export class Invoice extends Document {
    *  @param {Number} pageNumber - pageNumber for multi pages pdf input
    */
   locale!: Locale;
+  documentType!: BaseField;
   totalIncl!: Amount;
-  date!: Date;
-  dueDate!: Date;
+  date!: DateField;
+  dueDate!: DateField;
   category!: Field;
   time!: Field;
   orientation!: Orientation;
@@ -46,12 +48,12 @@ export class Invoice extends Document {
   supplier!: Field;
   supplierAddress!: Field;
   invoiceNumber!: Field;
-  companyNumber: Field[] = [];
+  companyRegistration: CompanyRegistration[] = [];
   customerName!: Field;
   customerAddress!: Field;
   taxes: TaxField[] = [];
   paymentDetails: PaymentDetails[] = [];
-  customerCompanyRegistration: TypedField[] = [];
+  customerCompanyRegistration: CompanyRegistration[] = [];
 
   constructor({
     apiPrediction,
@@ -70,6 +72,10 @@ export class Invoice extends Document {
       prediction: apiPrediction.locale,
       valueKey: "language",
     });
+    this.documentType = new BaseField({
+      prediction: apiPrediction.document_type,
+      valueKey: "value",
+    });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
       valueKey: "value",
@@ -85,9 +91,8 @@ export class Invoice extends Document {
       valueKey: "value",
       pageId: pageId,
     });
-    this.date = new Date({
+    this.date = new DateField({
       prediction: apiPrediction.date,
-      valueKey: "value",
       pageId,
     });
     apiPrediction.taxes.map((prediction: { [index: string]: any }) =>
@@ -101,17 +106,16 @@ export class Invoice extends Document {
         })
       )
     );
-    this.companyNumber = apiPrediction.company_registration.map(
+    this.companyRegistration = apiPrediction.company_registration.map(
       function (prediction: { [index: string]: any }) {
-        return new TypedField({
+        return new CompanyRegistration({
           prediction: prediction,
           pageId: pageId,
         });
       }
     );
-    this.dueDate = new Date({
+    this.dueDate = new DateField({
       prediction: apiPrediction.due_date,
-      valueKey: "value",
       pageId: pageId,
     });
     this.invoiceNumber = new Field({
@@ -137,7 +141,7 @@ export class Invoice extends Document {
     apiPrediction.customer_company_registration.map(
       (prediction: { [index: string]: any }) =>
         this.customerCompanyRegistration.push(
-          new TypedField({
+          new CompanyRegistration({
             prediction: prediction,
             pageId: pageId,
           })
@@ -164,10 +168,10 @@ export class Invoice extends Document {
     const paymentDetails = this.paymentDetails
       .map((item) => item.toString())
       .join("\n                 ");
-    const companyRegistration = this.customerCompanyRegistration
+    const customerCompanyRegistration = this.customerCompanyRegistration
       .map((item) => item.toString())
       .join("; ");
-    const companyNumbers = this.companyNumber
+    const companyRegistration = this.companyRegistration
       .map((item) => item.toString())
       .join("; ");
 
@@ -181,10 +185,10 @@ Invoice due date: ${this.dueDate}
 Supplier name: ${this.supplier}
 Supplier address: ${this.supplierAddress}
 Customer name: ${this.customerName}
-Customer company registration: ${companyRegistration}
+Customer company registration: ${customerCompanyRegistration}
 Customer address: ${this.customerAddress}
 Payment details: ${paymentDetails}
-Company numbers: ${companyNumbers}
+Company numbers: ${companyRegistration}
 Taxes: ${taxes}
 Total taxes: ${this.totalTax}
 Locale: ${this.locale}

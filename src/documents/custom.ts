@@ -18,8 +18,10 @@ export class CustomDocument extends Document {
     this.fields = {};
 
     Object.keys(apiPrediction).forEach((fieldName) => {
-      const fieldPrediction = apiPrediction[fieldName];
-      this.fields[fieldName] = new ListField(fieldPrediction, pageId);
+      this.fields[fieldName] = new ListField({
+        prediction: apiPrediction[fieldName],
+        pageId: pageId,
+      });
     });
   }
 

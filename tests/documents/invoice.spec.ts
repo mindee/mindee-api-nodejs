@@ -33,7 +33,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.customerCompanyRegistration.length).to.be.eq(0);
     expect(doc.taxes.length).to.be.equal(0);
     expect(doc.paymentDetails.length).to.be.equal(0);
-    expect(doc.companyNumber.length).to.be.equal(0);
+    expect(doc.companyRegistration.length).to.be.equal(0);
     expect(doc.orientation).to.be.undefined;
     expect(doc.checkAll()).to.be.false;
     expect(Object.values(doc.checklist)).to.have.ordered.members([
@@ -66,6 +66,7 @@ describe("Invoice Object initialization", async () => {
     const docString = await fs.readFile(
       path.join(dataPath.invoice.page0String)
     );
+    expect(doc.documentType.value).to.be.equal("INVOICE");
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
   });

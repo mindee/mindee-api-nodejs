@@ -35,17 +35,14 @@ export class Passport extends Document {
     });
     this.birthDate = new DateField({
       prediction: apiPrediction.birth_date,
-      valueKey: "value",
       pageId: pageId,
     });
     this.expiryDate = new DateField({
       prediction: apiPrediction.expiry_date,
-      valueKey: "value",
       pageId: pageId,
     });
     this.issuanceDate = new DateField({
       prediction: apiPrediction.issuance_date,
-      valueKey: "value",
       pageId: pageId,
     });
     this.birthPlace = new Field({

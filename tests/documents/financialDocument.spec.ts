@@ -85,7 +85,7 @@ describe("Financial Document Object initialization", async () => {
     expect((doc.supplier as Field).value).to.be.undefined;
     expect(doc.taxes.length).to.be.equal(0);
     expect((doc.paymentDetails as any).length).to.be.equal(0);
-    expect((doc.companyNumber as any).length).to.be.equal(0);
+    expect((doc.companyRegistration as any).length).to.be.equal(0);
     expect(doc.orientation).to.be.undefined;
     expect(Object.values(doc.checklist)).to.have.ordered.members([false]);
     expect(doc.checkAll()).to.be.false;

@@ -1,11 +1,4 @@
-import { Field } from "./field";
-
-interface AmountConstructor {
-  prediction: any;
-  valueKey?: string;
-  reconstructed?: boolean;
-  pageId?: number;
-}
+import { Field, FieldConstructor } from "./field";
 
 export function floatToString(value: number) {
   if (Number.isInteger(value)) {
@@ -28,7 +21,7 @@ export class Amount extends Field {
     valueKey = "amount",
     reconstructed = false,
     pageId = undefined,
-  }: AmountConstructor) {
+  }: FieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
     this.value = +parseFloat(prediction[valueKey]).toFixed(3);
     if (isNaN(this.value)) {

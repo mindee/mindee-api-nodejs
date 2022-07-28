@@ -103,9 +103,11 @@ export class Endpoint {
 
       logger.debug(`Prediction request: ${uri}`);
       const req = https.request(options, function (res: IncomingMessage) {
-        let responseBody: any = {};
+        // when the encoding is set, data chunks will be strings
+        res.setEncoding("utf-8");
 
-        res.on("data", function (chunk: any) {
+        let responseBody = "";
+        res.on("data", function (chunk: string) {
           responseBody += chunk;
         });
 
