@@ -6,8 +6,7 @@ import {
   Locale,
   Orientation,
   DateField,
-} from "./fields";
-import { promises as fs } from "fs";
+} from "../fields";
 import { DOC_TYPE_RECEIPT } from "./index";
 
 export class Receipt extends Document {
@@ -37,7 +36,6 @@ export class Receipt extends Document {
   totalTax: Amount;
   totalExcl: Amount;
   taxes: TaxField[] = [];
-  words: any[] = [];
 
   constructor({
     apiPrediction,
@@ -124,14 +122,6 @@ Locale: ${this.locale}
 ----------------------
 `;
     return Receipt.cleanOutString(outStr);
-  }
-
-  static async load(path: any) {
-    const file = fs.readFile(path);
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore
-    const args = JSON.parse(file);
-    return new Receipt({ reconstructed: true, ...args });
   }
 
   /**

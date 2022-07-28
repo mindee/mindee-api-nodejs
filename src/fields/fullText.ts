@@ -1,6 +1,6 @@
-import * as geometry from "../../geometry";
+import * as geometry from "../geometry";
 
-type Word = {
+export type Word = {
   polygon: geometry.Polygon;
   text: string;
   confidence: number;

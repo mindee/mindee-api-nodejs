@@ -1,4 +1,4 @@
-import { Polygon, getBboxAsPolygon } from "../../geometry";
+import { Polygon, getBboxAsPolygon } from "../geometry";
 
 type stringDict = { [index: string]: any };
 

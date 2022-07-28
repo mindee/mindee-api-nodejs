@@ -1,5 +1,5 @@
 import { FieldConstructor } from "./field";
-import { Polygon, getBboxAsPolygon } from "../../geometry";
+import { Polygon, getBboxAsPolygon } from "../geometry";
 
 export class ListFieldItem {
   content: any;

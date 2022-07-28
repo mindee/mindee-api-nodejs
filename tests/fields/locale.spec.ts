@@ -1,4 +1,4 @@
-import { Locale } from "../../src/documents/fields";
+import { Locale } from "../../src/fields";
 import { expect } from "chai";
 
 describe("Test Locale field", () => {

@@ -1,5 +1,5 @@
 import { Document, DocumentConstructorProps } from "./document";
-import { Field, DateField } from "./fields";
+import { Field, DateField } from "../fields";
 // @ts-ignore
 import * as MRZ from "mrz";
 import { DOC_TYPE_PASSPORT } from "./index";

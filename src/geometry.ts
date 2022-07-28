@@ -111,3 +111,15 @@ export function relativeX(polygon: Polygon): number {
     .reduce((prev, cur) => prev + cur);
   return polygon.length * sum;
 }
+
+/**
+ * Calculate the relative Y position of a Polygon.
+ *
+ * Can be used to order (sort) words in the same column.
+ */
+export function relativeY(polygon: Polygon): number {
+  const sum: number = polygon
+    .map((point) => point[1])
+    .reduce((prev, cur) => prev + cur);
+  return polygon.length * sum;
+}

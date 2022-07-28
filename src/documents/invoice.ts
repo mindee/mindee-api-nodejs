@@ -1,6 +1,7 @@
 import { Document, DocumentConstructorProps } from "./document";
 
 import {
+  BaseField,
   TaxField,
   PaymentDetails,
   Orientation,
@@ -9,9 +10,8 @@ import {
   Field,
   DateField,
   CompanyRegistration,
-} from "./fields";
+} from "../fields";
 import { DOC_TYPE_INVOICE } from "./index";
-import { BaseField } from "./fields/field";
 
 export class Invoice extends Document {
   /**

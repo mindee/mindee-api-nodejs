@@ -1,6 +1,5 @@
-import { promises as fs } from "fs";
 import { Input } from "../inputs";
-import { FullText } from "./fields/fullText";
+import { FullText } from "../fields";
 
 export interface DocumentConstructorProps {
   apiPrediction: { [index: string]: any };
@@ -52,11 +51,6 @@ export class Document {
   /** return true if all checklist of the document if true */
   checkAll() {
     return Object.values(this.checklist).every((item) => item);
-  }
-
-  /** Export document into a JSON file */
-  async dump(path: any) {
-    return await fs.writeFile(path, JSON.stringify(Object.entries(this)));
   }
 
   /**

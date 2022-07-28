@@ -1,5 +1,5 @@
 import { Document, DocumentConstructorProps } from "./document";
-import { ListField } from "./fields";
+import { ListField } from "../fields";
 
 export interface CustomDocConstructorProps extends DocumentConstructorProps {
   documentType: string;
