@@ -75,7 +75,6 @@ export class Receipt extends Document {
     });
     this.date = new DateField({
       prediction: apiPrediction.date,
-      valueKey: "value",
       pageId: pageId,
     });
     this.category = new Field({
@@ -84,12 +83,10 @@ export class Receipt extends Document {
     });
     this.merchantName = new Field({
       prediction: apiPrediction.supplier,
-      valueKey: "value",
       pageId: pageId,
     });
     this.time = new Field({
       prediction: apiPrediction.time,
-      valueKey: "value",
       pageId: pageId,
     });
     apiPrediction.taxes.map((taxPrediction: { [index: string]: any }) =>

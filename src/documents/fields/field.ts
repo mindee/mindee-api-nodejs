@@ -1,4 +1,6 @@
-import * as geometry from "../../geometry";
+import { Polygon, getBboxAsPolygon } from "../../geometry";
+
+type stringDict = { [index: string]: any };
 
 export interface FieldConstructor {
   prediction: { [index: string]: any };
@@ -7,13 +9,31 @@ export interface FieldConstructor {
   pageId?: number | undefined;
 }
 
-export class Field {
-  bbox: geometry.Polygon = [];
-  polygon: geometry.Polygon = [];
+interface BaseFieldConstructor {
+  prediction: stringDict;
+  valueKey: string;
+}
+
+export class BaseField {
+  value?: any = undefined;
+
+  /**
+   * @param {Object} prediction - Prediction object from HTTP response
+   * @param {String} valueKey - Key to use in the prediction dict
+   */
+  constructor({ prediction, valueKey }: BaseFieldConstructor) {
+    if (valueKey in prediction && prediction[valueKey] !== null) {
+      this.value = prediction[valueKey];
+    }
+  }
+}
+
+export class Field extends BaseField {
+  bbox: Polygon = [];
+  polygon: Polygon = [];
   pageId: number | undefined;
   confidence: number;
   reconstructed: boolean;
-  value?: any;
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
@@ -27,16 +47,13 @@ export class Field {
     reconstructed = false,
     pageId,
   }: FieldConstructor) {
+    super({ prediction, valueKey });
     this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
     this.reconstructed = reconstructed;
-    this.value = undefined;
     this.confidence = prediction.confidence ? prediction.confidence : 0.0;
     if (prediction.polygon) {
       this.polygon = prediction.polygon;
-      this.bbox = geometry.getBboxAsPolygon(prediction.polygon);
-    }
-    if (valueKey in prediction && prediction[valueKey] !== null) {
-      this.value = prediction[valueKey];
+      this.bbox = getBboxAsPolygon(prediction.polygon);
     }
   }
 
@@ -100,19 +117,5 @@ export class Field {
       return `${this.value}`;
     }
     return "";
-  }
-}
-
-export class TypedField extends Field {
-  type: string;
-
-  constructor({
-    prediction,
-    valueKey = "value",
-    reconstructed = false,
-    pageId,
-  }: FieldConstructor) {
-    super({ prediction, valueKey, reconstructed, pageId });
-    this.type = prediction.type;
   }
 }

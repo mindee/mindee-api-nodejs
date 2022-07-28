@@ -1,4 +1,4 @@
-import { Field } from "./field";
+import { Field, FieldConstructor } from "./field";
 
 export class DateField extends Field {
   /**
@@ -11,10 +11,10 @@ export class DateField extends Field {
 
   constructor({
     prediction,
-    valueKey = "iso",
+    valueKey = "value",
     reconstructed = false,
-    pageId = undefined,
-  }: any) {
+    pageId,
+  }: FieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
     this.dateObject = new Date(this.value);
     if (isNaN(this.dateObject.valueOf())) {

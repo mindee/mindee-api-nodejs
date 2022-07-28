@@ -8,7 +8,7 @@ import {
   Locale,
   Orientation,
   DateField as Date,
-  TypedField,
+  CompanyRegistration,
 } from "./fields";
 
 interface FinancialDocConstructorProps extends DocumentConstructorProps {
@@ -46,7 +46,6 @@ export class FinancialDocument extends Document {
   date!: Date;
   dueDate!: Date;
   category!: Field;
-  merchantName: Field | undefined;
   time!: Field;
   orientation: Orientation | undefined;
   taxes: TaxField[];
@@ -56,11 +55,11 @@ export class FinancialDocument extends Document {
   supplier!: Field;
   supplierAddress!: Field;
   invoiceNumber!: Field;
-  companyNumber: Field[] = [];
+  companyRegistration: CompanyRegistration[] = [];
   customerName!: Field;
   customerAddress!: Field;
   paymentDetails: Field[] = [];
-  customerCompanyRegistration: TypedField[] = [];
+  customerCompanyRegistration: CompanyRegistration[] = [];
 
   constructor({
     apiPrediction,
@@ -96,7 +95,7 @@ export class FinancialDocument extends Document {
       this.supplier = invoice.supplier;
       this.supplierAddress = invoice.supplierAddress;
       this.paymentDetails = invoice.paymentDetails;
-      this.companyNumber = invoice.companyNumber;
+      this.companyRegistration = invoice.customerCompanyRegistration;
       this.orientation = invoice.orientation;
       this.totalTax = invoice.totalTax;
       this.time = new Field({
