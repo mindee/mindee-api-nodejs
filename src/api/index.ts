@@ -1,4 +1,11 @@
-export { Response } from "./response";
+export {
+  Response,
+  InvoiceResponse,
+  ReceiptResponse,
+  FinancialResponse,
+  PassportResponse,
+  CustomResponse,
+} from "./response";
 export {
   Endpoint,
   InvoiceEndpoint,

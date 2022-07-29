@@ -6,12 +6,20 @@ import {
   DOC_TYPE_PASSPORT,
   DOC_TYPE_FINANCIAL,
 } from "./documents";
+import {
+  Response,
+  FinancialResponse,
+  InvoiceResponse,
+  PassportResponse,
+  ReceiptResponse,
+} from "./api";
 
 const program = new Command();
 
 interface OtsCliConfig {
   help: string;
   docType: string;
+  responseClass: typeof Response;
 }
 
 const COMMAND_INVOICE = "invoice";
@@ -25,6 +33,7 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     {
       help: "Invoice",
       docType: DOC_TYPE_INVOICE,
+      responseClass: InvoiceResponse,
     },
   ],
   [
@@ -32,6 +41,7 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     {
       help: "Expense Receipt",
       docType: DOC_TYPE_RECEIPT,
+      responseClass: ReceiptResponse,
     },
   ],
   [
@@ -39,6 +49,7 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     {
       help: "Passport",
       docType: DOC_TYPE_PASSPORT,
+      responseClass: PassportResponse,
     },
   ],
   [
@@ -46,6 +57,7 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
     {
       help: "Financial Document (receipt or invoice)",
       docType: DOC_TYPE_FINANCIAL,
+      responseClass: FinancialResponse,
     },
   ],
 ]);
@@ -78,7 +90,8 @@ async function predictCall(command: string, inputPath: string, options: any) {
     }
   }
   const doc = mindeeClient.docFromPath(inputPath);
-  const result = await doc.parse(info.docType, {
+  const result = await doc.parse(info.responseClass, {
+    docType: info.docType,
     username: undefined,
     cutPages: options.cutPages,
     fullText: options.fullText,
