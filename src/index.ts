@@ -18,14 +18,33 @@ import {
   InvoiceConfig,
   PassportConfig,
   ReceiptConfig,
+  responseSig,
 } from "./documents/documentConfig";
 import { ReadStream } from "fs";
 import { errorHandler } from "./errors/handler";
 import { logger, LOG_LEVELS } from "./logger";
+import {
+  Response,
+  FinancialResponse,
+  InvoiceResponse,
+  PassportResponse,
+  ReceiptResponse,
+  CustomResponse,
+} from "./api";
 
-type DocConfigs = { [key: string]: DocumentConfig };
+export {
+  Response,
+  FinancialResponse,
+  InvoiceResponse,
+  PassportResponse,
+  ReceiptResponse,
+  CustomResponse,
+};
+
+type DocConfigs = Map<string[], DocumentConfig>;
 
 interface PredictOptions {
+  docType: string;
   username?: string;
   cutPages?: boolean;
   fullText?: boolean;
@@ -40,33 +59,39 @@ class DocumentClient {
     this.docConfigs = docConfigs;
   }
 
-  async parse(docType: string, options?: PredictOptions) {
-    const found: any = [];
-    Object.keys(this.docConfigs).forEach((conf) => {
-      const splitConf = conf.split(",");
-      if (splitConf[1] === docType) {
-        found.push(splitConf);
+  async parse<T extends Response>(
+    responseType: responseSig<T>,
+    params: PredictOptions
+  ): Promise<T> {
+    const found: Array<string[]> = [];
+    this.docConfigs.forEach((config, configKey) => {
+      if (configKey[1] === params.docType) {
+        found.push(configKey);
       }
     });
     // TODO: raise error when document type is not configured => when found is empty
 
     let configKey: string[] = [];
-    if (options?.username) {
-      configKey = [options.username, docType];
+    if (params.username) {
+      configKey = [params.username, params.docType];
     } else if (found.length === 1) {
       configKey = found[0];
     }
-    // } else {
-    //   const usernames = found.map((conf: string[]) => conf[0]);
-    //   // TODO: raise error printing all usernames
-    // }
+    const docConfig = this.docConfigs.get(configKey);
+    if (docConfig === undefined) {
+      // TODO: raise error printing all usernames
+      throw "Couldn't find the config";
+    }
 
     // seems like there should be a better way of doing this
-    const fullText = options?.fullText ? options.fullText : false;
-    const cutPages = options?.cutPages ? options.cutPages : true;
+    const fullText = params?.fullText !== undefined ? params.fullText : false;
+    const cutPages = params?.cutPages !== undefined ? params.cutPages : true;
 
-    const docConfig = this.docConfigs[configKey.toString()];
-    return await docConfig.predict(this.inputDoc, fullText, cutPages);
+    return await docConfig.predict(responseType, {
+      inputDoc: this.inputDoc,
+      includeWords: fullText,
+      cutPages: cutPages,
+    });
   }
 }
 
@@ -91,7 +116,7 @@ export class Client {
       options?.throwOnError === undefined ? true : options.throwOnError;
     const debug = options?.debug === undefined ? false : options.debug;
     this.apiKey = options?.apiKey === undefined ? "" : options.apiKey;
-    this.docConfigs = {};
+    this.docConfigs = new Map();
 
     errorHandler.throwOnError = throwOnError;
     logger.level =
@@ -102,29 +127,33 @@ export class Client {
   }
 
   configInvoice(apiKey: string = "") {
-    this.docConfigs[`mindee,${DOC_TYPE_INVOICE}`] = new InvoiceConfig(
-      apiKey || this.apiKey
+    this.docConfigs.set(
+      ["mindee", DOC_TYPE_INVOICE],
+      new InvoiceConfig(apiKey || this.apiKey)
     );
     return this;
   }
 
   configReceipt(apiKey: string = "") {
-    this.docConfigs[`mindee,${DOC_TYPE_RECEIPT}`] = new ReceiptConfig(
-      apiKey || this.apiKey
+    this.docConfigs.set(
+      ["mindee", DOC_TYPE_RECEIPT],
+      new ReceiptConfig(apiKey || this.apiKey)
     );
     return this;
   }
 
   configFinancialDoc(apiKey: string = "") {
-    this.docConfigs[`mindee,${DOC_TYPE_FINANCIAL}`] = new FinancialDocConfig(
-      apiKey || this.apiKey
+    this.docConfigs.set(
+      ["mindee", DOC_TYPE_FINANCIAL],
+      new FinancialDocConfig(apiKey || this.apiKey)
     );
     return this;
   }
 
   configPassport(apiKey: string = "") {
-    this.docConfigs[`mindee,${DOC_TYPE_PASSPORT}`] = new PassportConfig(
-      apiKey || this.apiKey
+    this.docConfigs.set(
+      ["mindee", DOC_TYPE_PASSPORT],
+      new PassportConfig(apiKey || this.apiKey)
     );
     return this;
   }
@@ -135,12 +164,15 @@ export class Client {
     apiKey: string = "",
     version: string = "1"
   ) {
-    this.docConfigs[`${accountName},${documentType}`] = new CustomDocConfig({
-      documentType: documentType,
-      accountName: accountName,
-      version: version,
-      apiKey: apiKey || this.apiKey,
-    });
+    this.docConfigs.set(
+      [accountName, documentType],
+      new CustomDocConfig({
+        documentType: documentType,
+        accountName: accountName,
+        version: version,
+        apiKey: apiKey || this.apiKey,
+      })
+    );
     return this;
   }
 

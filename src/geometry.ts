@@ -58,7 +58,7 @@ export function isPointInY(
 }
 
 /**
- * Get the maximum and minimum X coordinates in a given list of Points.
+ * Get the maximum and minimum Y coordinates in a given list of Points.
  */
 export function getMinMaxY(vertices: Array<Point>): MinMax {
   const points = vertices.map((point) => point[1]);
@@ -71,6 +71,18 @@ export function getMinMaxY(vertices: Array<Point>): MinMax {
 export function isPointInPolygonY(centroid: Point, polygon: Polygon): boolean {
   const yCoords = getMinMaxY(polygon);
   return isPointInY(centroid, yCoords.min, yCoords.max);
+}
+
+/**
+ * Calculate the relative Y position of a Polygon.
+ *
+ * Can be used to order (sort) words in the same column.
+ */
+export function relativeY(polygon: Polygon): number {
+  const sum: number = polygon
+    .map((point) => point[1])
+    .reduce((prev, cur) => prev + cur);
+  return polygon.length * sum;
 }
 
 /**
@@ -108,18 +120,6 @@ export function isPointInPolygonX(centroid: Point, polygon: Polygon): boolean {
 export function relativeX(polygon: Polygon): number {
   const sum: number = polygon
     .map((point) => point[0])
-    .reduce((prev, cur) => prev + cur);
-  return polygon.length * sum;
-}
-
-/**
- * Calculate the relative Y position of a Polygon.
- *
- * Can be used to order (sort) words in the same column.
- */
-export function relativeY(polygon: Polygon): number {
-  const sum: number = polygon
-    .map((point) => point[1])
     .reduce((prev, cur) => prev + cur);
   return polygon.length * sum;
 }

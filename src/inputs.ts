@@ -142,6 +142,7 @@ export class PathInput extends Input {
   }
 
   async init() {
+    logger.debug(`Loading from: ${this.inputPath}`);
     this.fileObject = Buffer.from(await fs.readFile(this.inputPath));
     this.mimeType = await this.checkMimetype();
   }

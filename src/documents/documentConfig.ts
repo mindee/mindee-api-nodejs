@@ -16,6 +16,7 @@ import {
   FinancialDocument,
 } from "./index";
 import { errorHandler } from "../errors/handler";
+import { ResponseProps } from "../api/response";
 
 interface CustomDocConstructor {
   documentType: string;
@@ -23,6 +24,10 @@ interface CustomDocConstructor {
   version: string;
   apiKey: string;
 }
+
+export type responseSig<T> = {
+  new ({ httpResponse, documentType, input, error }: ResponseProps): T;
+};
 
 export class DocumentConfig {
   docClass: Document;
@@ -39,7 +44,11 @@ export class DocumentConfig {
     return await this.endpoints[0].predictRequest(inputDoc, includeWords);
   }
 
-  buildResult(inputFile: Input, response: any) {
+  buildResult<T extends Response>(
+    responseType: responseSig<T>,
+    inputFile: Input,
+    response: any
+  ): T {
     if (response.statusCode > 201) {
       const errorMessage = JSON.stringify(response.data, null, 4);
       errorHandler.throw(
@@ -47,14 +56,14 @@ export class DocumentConfig {
           `${this.endpoints[0].urlName} API ${response.statusCode} HTTP error: ${errorMessage}`
         )
       );
-      return new Response({
+      return new responseType({
         httpResponse: response,
         documentType: this.documentType,
         input: inputFile,
         error: true,
       });
     }
-    return new Response({
+    return new responseType({
       httpResponse: response,
       documentType: this.documentType,
       input: inputFile,
@@ -62,12 +71,18 @@ export class DocumentConfig {
     });
   }
 
-  async predict(inputDoc: Input, includeWords: boolean, cutPages: boolean) {
+  async predict<T extends Response>(
+    responseType: responseSig<T>,
+    params: { inputDoc: Input; includeWords: boolean; cutPages: boolean }
+  ): Promise<T> {
     this.checkApiKeys();
-    await inputDoc.init();
-    await this.cutDocPages(inputDoc, cutPages);
-    const response = await this.predictRequest(inputDoc, includeWords);
-    return this.buildResult(inputDoc, response);
+    await params.inputDoc.init();
+    await this.cutDocPages(params.inputDoc, params.cutPages);
+    const response = await this.predictRequest(
+      params.inputDoc,
+      params.includeWords
+    );
+    return this.buildResult(responseType, params.inputDoc, response);
   }
 
   async cutDocPages(inputDoc: Input, cutPages: boolean) {

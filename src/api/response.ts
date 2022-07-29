@@ -5,17 +5,11 @@ import {
   Invoice,
   FinancialDocument,
   CustomDocument,
-  DOC_TYPE_INVOICE,
-  DOC_TYPE_RECEIPT,
-  DOC_TYPE_PASSPORT,
-  DOC_TYPE_FINANCIAL,
 } from "../documents";
 import { FullText } from "../fields";
 import { Input } from "../inputs";
-import { DocumentConstructorProps } from "../documents/document";
-import { CustomDocConstructorProps } from "../documents/custom";
 
-interface ResponseProps {
+export interface ResponseProps {
   httpResponse: any;
   documentType: string;
   input: Input;
@@ -23,74 +17,183 @@ interface ResponseProps {
 }
 
 type stringDict = { [index: string]: any };
-type docConstructor = (
-  params: DocumentConstructorProps | CustomDocConstructorProps
-) => Document;
 
 export class Response {
   httpResponse: any;
   readonly documentType: string;
   inputFile: Input;
-  pages: Array<Document>;
   document?: Document;
 
-  constructor({ httpResponse, documentType, input, error }: ResponseProps) {
-    this.httpResponse = httpResponse;
-    this.documentType = documentType;
-    this.inputFile = input;
-    this.pages = [];
-    if (!error) {
+  constructor(params: ResponseProps) {
+    this.httpResponse = params.httpResponse;
+    this.documentType = params.documentType;
+    this.inputFile = params.input;
+  }
+
+  protected getPageText(httpDataDocument: any, pageId: number): FullText {
+    const pageText = new FullText();
+    if (
+      "ocr" in httpDataDocument &&
+      Object.keys(httpDataDocument.ocr).length > 0
+    ) {
+      pageText.words =
+        httpDataDocument.ocr["mvision-v1"].pages[pageId].all_words;
+    }
+    return pageText;
+  }
+}
+
+export class InvoiceResponse extends Response {
+  pages: Array<Invoice> = [];
+  document?: Invoice;
+
+  constructor(params: ResponseProps) {
+    super(params);
+    if (!params.error) {
       this.formatResponse();
     }
   }
 
   protected formatResponse() {
-    const constructor: docConstructor = this.getConstructor();
     const httpDataDocument = this.httpResponse.data.document;
     httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
-      const pageText = new FullText();
-      if (
-        "ocr" in httpDataDocument &&
-        Object.keys(httpDataDocument.ocr).length > 0
-      ) {
-        pageText.words =
-          httpDataDocument.ocr["mvision-v1"].pages[apiPage.id].all_words;
-      }
+      const pageText = this.getPageText(httpDataDocument, apiPage.id);
       this.pages.push(
-        constructor({
+        new Invoice({
           apiPrediction: apiPage.prediction,
           inputFile: this.inputFile,
-          documentType: this.documentType,
           pageId: apiPage.id,
           fullText: pageText,
         })
       );
     });
-    this.document = constructor({
+    this.document = new Invoice({
+      apiPrediction: httpDataDocument.inference.prediction,
+      inputFile: this.inputFile,
+    });
+  }
+}
+
+export class ReceiptResponse extends Response {
+  pages: Array<Receipt> = [];
+  document?: Receipt;
+
+  constructor(params: ResponseProps) {
+    super(params);
+    if (!params.error) {
+      this.formatResponse();
+    }
+  }
+
+  protected formatResponse() {
+    const httpDataDocument = this.httpResponse.data.document;
+    httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
+      const pageText = this.getPageText(httpDataDocument, apiPage.id);
+      this.pages.push(
+        new Receipt({
+          apiPrediction: apiPage.prediction,
+          inputFile: this.inputFile,
+          pageId: apiPage.id,
+          fullText: pageText,
+        })
+      );
+    });
+    this.document = new Receipt({
+      apiPrediction: httpDataDocument.inference.prediction,
+      inputFile: this.inputFile,
+    });
+  }
+}
+
+export class FinancialResponse extends Response {
+  pages: Array<FinancialDocument> = [];
+  document?: FinancialDocument;
+
+  constructor(params: ResponseProps) {
+    super(params);
+    if (!params.error) {
+      this.formatResponse();
+    }
+  }
+
+  protected formatResponse() {
+    const httpDataDocument = this.httpResponse.data.document;
+    httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
+      const pageText = this.getPageText(httpDataDocument, apiPage.id);
+      this.pages.push(
+        new FinancialDocument({
+          apiPrediction: apiPage.prediction,
+          inputFile: this.inputFile,
+          pageId: apiPage.id,
+          fullText: pageText,
+        })
+      );
+    });
+    this.document = new FinancialDocument({
+      apiPrediction: httpDataDocument.inference.prediction,
+      inputFile: this.inputFile,
+    });
+  }
+}
+
+export class PassportResponse extends Response {
+  pages: Array<Passport> = [];
+  document?: Passport;
+
+  constructor(params: ResponseProps) {
+    super(params);
+    if (!params.error) {
+      this.formatResponse();
+    }
+  }
+
+  protected formatResponse() {
+    const httpDataDocument = this.httpResponse.data.document;
+    httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
+      const pageText = this.getPageText(httpDataDocument, apiPage.id);
+      this.pages.push(
+        new Passport({
+          apiPrediction: apiPage.prediction,
+          inputFile: this.inputFile,
+          pageId: apiPage.id,
+          fullText: pageText,
+        })
+      );
+    });
+    this.document = new Passport({
+      apiPrediction: httpDataDocument.inference.prediction,
+      inputFile: this.inputFile,
+    });
+  }
+}
+
+export class CustomResponse extends Response {
+  pages: Array<CustomDocument> = [];
+  document?: CustomDocument;
+
+  constructor(params: ResponseProps) {
+    super(params);
+    if (!params.error) {
+      this.formatResponse();
+    }
+  }
+
+  protected formatResponse() {
+    const httpDataDocument = this.httpResponse.data.document;
+    httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
+      this.pages.push(
+        new CustomDocument({
+          apiPrediction: apiPage.prediction,
+          inputFile: this.inputFile,
+          pageId: apiPage.id,
+          documentType: this.documentType,
+        })
+      );
+    });
+    this.document = new CustomDocument({
       apiPrediction: httpDataDocument.inference.prediction,
       inputFile: this.inputFile,
       documentType: this.documentType,
     });
-  }
-
-  protected getConstructor(): docConstructor {
-    switch (this.documentType) {
-      case DOC_TYPE_INVOICE: {
-        return (params: DocumentConstructorProps) => new Invoice(params);
-      }
-      case DOC_TYPE_RECEIPT: {
-        return (params: DocumentConstructorProps) => new Receipt(params);
-      }
-      case DOC_TYPE_FINANCIAL: {
-        return (params: DocumentConstructorProps) =>
-          new FinancialDocument(params);
-      }
-      case DOC_TYPE_PASSPORT: {
-        return (params: DocumentConstructorProps) => new Passport(params);
-      }
-      default: {
-        return (params: any) => new CustomDocument(params);
-      }
-    }
   }
 }
