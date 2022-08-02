@@ -22,6 +22,7 @@ export class TaxField extends Field {
   value?: number = undefined;
   rate?: number = undefined;
   code?: string = undefined;
+  pageId!: number;
 
   constructor({
     prediction,
