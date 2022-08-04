@@ -11,11 +11,12 @@ describe("Custom Document Object initialization", async () => {
     );
     const response = JSON.parse(jsonDataNA.toString());
     const custom = new CustomDocument({
-      apiPrediction: response.document.inference.pages[0].prediction,
+      apiPrediction: response.document.inference.prediction,
       documentType: "field_test",
     });
     expect(custom.internalDocType).to.be.equals("field_test");
-    expect(Object.keys(custom.fields).length).to.be.equals(10);
+    expect(custom.fields.size).to.be.equals(10);
+    expect(custom.classifications.size).to.be.equals(1);
   });
 
   it("should load a complete document prediction", async () => {
@@ -25,6 +26,13 @@ describe("Custom Document Object initialization", async () => {
       apiPrediction: response.document.inference.prediction,
       documentType: "field_test",
     });
+    const stringAll = custom.fields.get("string_all");
+    expect(stringAll).to.have.property('values');
+    expect(stringAll?.contentsString("-")).to.equals("Mindee-is-awesome");
+    expect(stringAll?.contentsList()).to.have.members(["Mindee", "is", "awesome"]);
+    expect(custom.classifications.get("doc_type")).to.have.property('value');
+    expect(custom.fields.size).to.be.equals(10);
+    expect(custom.classifications.size).to.be.equals(1);
     const docString = await fs.readFile(path.join(dataPath.custom.docString));
     expect(custom.toString()).to.be.equals(docString.toString());
   });

@@ -571,6 +571,10 @@
         }
       ],
       "prediction": {
+        "doc_type": {
+          "confidence": 0.53,
+          "value": "type_b"
+        },
         "date_normal": {
           "confidence": 0.99,
           "page_id": 0,
@@ -907,7 +911,8 @@
           "date_us",
           "phone",
           "email",
-          "url"
+          "url",
+          "doc_type"
         ],
         "name": "ianare/field_test",
         "type": "constructed",

@@ -66,6 +66,10 @@
         }
       ],
       "prediction": {
+        "doc_type": {
+          "confidence": 0.0,
+          "value": null
+        },
         "date_normal": {
           "confidence": 0.0,
           "page_id": 0,

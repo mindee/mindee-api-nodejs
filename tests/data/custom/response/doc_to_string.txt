@@ -1,5 +1,6 @@
 ----- field_test -----
 Filename:
+doc_type: type_b
 date_normal: 2020-12-17
 date_us: 2020-12-17
 email: contact@mindee.com

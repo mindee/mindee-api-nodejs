@@ -1,6 +1,6 @@
 import { Polygon, getBboxAsPolygon } from "../geometry";
 
-type stringDict = { [index: string]: any };
+export type stringDict = { [index: string]: any };
 
 export interface FieldConstructor {
   prediction: { [index: string]: any };
