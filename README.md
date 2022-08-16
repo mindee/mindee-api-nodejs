@@ -15,35 +15,41 @@ Finally, Node.js away!
 
 ### Off-the-Shelf Document
 
-```js
-import {Client} from "src/index";
+```ts
+import { Client, InvoiceResponse } from "mindee";
 
 // Init a new client and configure the Invoice API
 const mindeeClient = new Client({apiKey: "my-api-key"}).configInvoice();
 
 // Load a file from disk and parse it
-const invoiceResponse = mindeeClient.docFromPath("/path/to/the/invoice.pdf").parse("invoice");
+const pathDoc = mindeeClient.docFromPath("/path/to/the/invoice.pdf");
+const invoiceResponse = pathDoc.parse(InvoiceResponse, { docType: "invoice" });
 
 // Print a brief summary of the parsed data
-console.log(invoiceResponse.document);
+invoiceResponse.then((resp) => {
+  console.log(resp.document);
+});
 ```
 
 ### Custom Document (API Builder)
 
-```js
-import {Client} from "src/index";
+```ts
+import { Client, CustomResponse } from "mindee";
 
 // Init a new client and configure your custom document
-const mindeeClient = new Client({apiKey: "my-api-key"}).configCustomDoc({
-    documentType: "pokemon-card",
-    accountName: "pikachu",
-});
+const mindeeClient = new Client({apiKey: "my-api-key"}).configCustomDoc(
+  "pokemon-card",
+  "pikachu",
+);
 
 // Load a file from disk and parse it
-const customResponse = mindeeClient.docFromPath("/path/to/the/card.jpg").parse("pokemon-card");
+const customResponse = mindeeClient.docFromPath("/path/to/the/card.jpg")
+  .parse(CustomResponse, {docType: "pokemon-card"});
 
 // Print a brief summary of the parsed data
-console.log(customResponse.document);
+customResponse.then((resp) => {
+  console.log(resp.document);
+});
 ```
 
 ## Further Reading

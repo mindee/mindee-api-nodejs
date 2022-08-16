@@ -6,7 +6,7 @@ import {
   CustomEndpoint,
   PassportEndpoint,
   ReceiptEndpoint,
-} from "../api/index";
+} from "../api";
 import {
   Document,
   Invoice,
@@ -71,10 +71,10 @@ export class DocumentConfig {
     });
   }
 
-  async predict<T extends Response>(
-    responseType: responseSig<T>,
+  async predict<RespType extends Response>(
+    responseType: responseSig<RespType>,
     params: { inputDoc: Input; includeWords: boolean; cutPages: boolean }
-  ): Promise<T> {
+  ): Promise<RespType> {
     this.checkApiKeys();
     await params.inputDoc.init();
     await this.cutDocPages(params.inputDoc, params.cutPages);
