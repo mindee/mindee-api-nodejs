@@ -12,6 +12,7 @@ import {
   InvoiceResponse,
   PassportResponse,
   ReceiptResponse,
+  CustomResponse,
 } from "./api";
 
 const program = new Command();
@@ -20,12 +21,14 @@ interface OtsCliConfig {
   help: string;
   docType: string;
   responseClass: typeof Response;
+  fullText: boolean;
 }
 
 const COMMAND_INVOICE = "invoice";
 const COMMAND_RECEIPT = "receipt";
 const COMMAND_PASSPORT = "passport";
 const COMMAND_FINANCIAL = "financial";
+const COMMAND_CUSTOM = "custom";
 
 const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
   [
@@ -34,6 +37,7 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
       help: "Invoice",
       docType: DOC_TYPE_INVOICE,
       responseClass: InvoiceResponse,
+      fullText: true,
     },
   ],
   [
@@ -42,6 +46,7 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
       help: "Expense Receipt",
       docType: DOC_TYPE_RECEIPT,
       responseClass: ReceiptResponse,
+      fullText: true,
     },
   ],
   [
@@ -50,6 +55,7 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
       help: "Passport",
       docType: DOC_TYPE_PASSPORT,
       responseClass: PassportResponse,
+      fullText: false,
     },
   ],
   [
@@ -58,6 +64,16 @@ const OTS_DOCUMENTS = new Map<string, OtsCliConfig>([
       help: "Financial Document (receipt or invoice)",
       docType: DOC_TYPE_FINANCIAL,
       responseClass: FinancialResponse,
+      fullText: true,
+    },
+  ],
+  [
+    COMMAND_CUSTOM,
+    {
+      help: "A custom document",
+      docType: "",
+      responseClass: CustomResponse,
+      fullText: false,
     },
   ],
 ]);
@@ -71,28 +87,35 @@ async function predictCall(command: string, inputPath: string, options: any) {
     apiKey: options.apiKey,
     debug: options.verbose,
   });
-  switch (info.docType) {
+  switch (command) {
     case COMMAND_INVOICE: {
-      mindeeClient.configInvoice();
+      mindeeClient.configInvoice({});
       break;
     }
     case COMMAND_RECEIPT: {
-      mindeeClient.configReceipt();
+      mindeeClient.configReceipt({});
       break;
     }
     case COMMAND_PASSPORT: {
-      mindeeClient.configPassport();
+      mindeeClient.configPassport({});
       break;
     }
     case COMMAND_FINANCIAL: {
-      mindeeClient.configFinancialDoc();
+      mindeeClient.configFinancialDoc({});
+      break;
+    }
+    case COMMAND_CUSTOM: {
+      mindeeClient.configCustomDoc({
+        accountName: options.user,
+        documentType: options.documentType,
+      });
       break;
     }
   }
   const doc = mindeeClient.docFromPath(inputPath);
   const result = await doc.parse(info.responseClass, {
-    docType: info.docType,
-    username: undefined,
+    docType: info.docType || options.documentType,
+    username: options.user || "mindee",
     cutPages: options.cutPages,
     fullText: options.fullText,
   });
@@ -109,17 +132,45 @@ export function cli() {
     const prog = program.command(name);
     prog.description(info.help);
 
-    prog.option("-k, --api-key", "API key for document endpoint");
+    prog.option("-k, --api-key <api_key>", "API key for document endpoint");
     prog.option("-C, --no-cut-pages", "Don't cut document pages");
-    prog.option("-t, --full-text", "Include full document text in response");
+    if (info.fullText) {
+      prog.option("-t, --full-text", "Include full document text in response");
+    }
+    if (name === COMMAND_CUSTOM) {
+      prog.requiredOption(
+        "-u, --user <username>",
+        "API account name for the endpoint"
+      );
+      prog.argument("<document_type>", "Document type");
+    }
     prog.argument("<input_path>", "Full path to the file");
-    prog.action((inputPath: string, options: any, command: any) => {
-      const allOptions = {
-        ...program.opts(),
-        ...options,
-      };
-      predictCall(command.name(), inputPath, allOptions);
-    });
+    if (name === COMMAND_CUSTOM) {
+      prog.action(
+        (
+          documentType: string,
+          inputPath: string,
+          options: any,
+          command: any
+        ) => {
+          const allOptions = {
+            ...program.opts(),
+            ...options,
+            documentType: documentType,
+          };
+          predictCall(command.name(), inputPath, allOptions);
+        }
+      );
+    } else {
+      prog.action((inputPath: string, options: any, command: any) => {
+        const allOptions = {
+          ...program.opts(),
+          ...options,
+          documentType: undefined,
+        };
+        predictCall(command.name(), inputPath, allOptions);
+      });
+    }
   });
   program.parse(process.argv);
 }

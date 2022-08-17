@@ -59,28 +59,30 @@ class DocumentClient {
     this.docConfigs = docConfigs;
   }
 
-  async parse<T extends Response>(
-    responseType: responseSig<T>,
+  async parse<RespType extends Response>(
+    responseType: responseSig<RespType>,
     params: PredictOptions
-  ): Promise<T> {
+  ): Promise<RespType> {
     const found: Array<string[]> = [];
     this.docConfigs.forEach((config, configKey) => {
       if (configKey[1] === params.docType) {
         found.push(configKey);
       }
     });
-    // TODO: raise error when document type is not configured => when found is empty
+    if (found.length === 0) {
+      throw `Document type not configured: '${params.docType}'`;
+    }
 
     let configKey: string[] = [];
-    if (params.username) {
-      configKey = [params.username, params.docType];
-    } else if (found.length === 1) {
+    if (found.length === 1) {
       configKey = found[0];
+    } else if (params.username) {
+      configKey = [params.username, params.docType];
     }
     const docConfig = this.docConfigs.get(configKey);
     if (docConfig === undefined) {
       // TODO: raise error printing all usernames
-      throw "Couldn't find the config";
+      throw `Couldn't find the config '${configKey}'`;
     }
 
     // seems like there should be a better way of doing this
@@ -101,11 +103,21 @@ interface ClientOptions {
   debug?: boolean;
 }
 
+interface baseConfigParams {
+  apiKey?: string;
+}
+
+interface customConfigParams extends baseConfigParams {
+  accountName: string;
+  documentType: string;
+  version?: string;
+}
+
 /**
  * Mindee Client
  */
 export class Client {
-  protected docConfigs: DocConfigs;
+  readonly docConfigs: DocConfigs;
   protected apiKey: string;
 
   /**
@@ -126,7 +138,7 @@ export class Client {
     logger.debug("Client initialized");
   }
 
-  configInvoice(apiKey: string = "") {
+  configInvoice({ apiKey = "" }: baseConfigParams) {
     this.docConfigs.set(
       ["mindee", DOC_TYPE_INVOICE],
       new InvoiceConfig(apiKey || this.apiKey)
@@ -134,7 +146,7 @@ export class Client {
     return this;
   }
 
-  configReceipt(apiKey: string = "") {
+  configReceipt({ apiKey = "" }: baseConfigParams) {
     this.docConfigs.set(
       ["mindee", DOC_TYPE_RECEIPT],
       new ReceiptConfig(apiKey || this.apiKey)
@@ -142,7 +154,7 @@ export class Client {
     return this;
   }
 
-  configFinancialDoc(apiKey: string = "") {
+  configFinancialDoc({ apiKey = "" }: baseConfigParams) {
     this.docConfigs.set(
       ["mindee", DOC_TYPE_FINANCIAL],
       new FinancialDocConfig(apiKey || this.apiKey)
@@ -150,7 +162,7 @@ export class Client {
     return this;
   }
 
-  configPassport(apiKey: string = "") {
+  configPassport({ apiKey = "" }: baseConfigParams) {
     this.docConfigs.set(
       ["mindee", DOC_TYPE_PASSPORT],
       new PassportConfig(apiKey || this.apiKey)
@@ -158,12 +170,12 @@ export class Client {
     return this;
   }
 
-  configCustomDoc(
-    accountName: string,
-    documentType: string,
-    apiKey: string = "",
-    version: string = "1"
-  ) {
+  configCustomDoc({
+    accountName,
+    documentType,
+    apiKey = "",
+    version = "1",
+  }: customConfigParams) {
     this.docConfigs.set(
       [accountName, documentType],
       new CustomDocConfig({

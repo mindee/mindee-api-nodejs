@@ -4,6 +4,7 @@ export class Locale extends Field {
   language: string | undefined;
   country: string | undefined;
   currency: string | undefined;
+
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict

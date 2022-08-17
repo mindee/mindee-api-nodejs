@@ -16,6 +16,7 @@ export class PaymentDetails extends Field {
   iban: string | undefined;
   routingNumber: number | undefined;
   swift: number | undefined;
+
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict to get the iban

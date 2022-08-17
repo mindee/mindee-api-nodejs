@@ -19,7 +19,7 @@ Finally, Node.js away!
 import { Client, InvoiceResponse } from "mindee";
 
 // Init a new client and configure the Invoice API
-const mindeeClient = new Client({apiKey: "my-api-key"}).configInvoice();
+const mindeeClient = new Client({apiKey: "my-api-key"}).configInvoice({});
 
 // Load a file from disk and parse it
 const pathDoc = mindeeClient.docFromPath("/path/to/the/invoice.pdf");
@@ -37,14 +37,14 @@ invoiceResponse.then((resp) => {
 import { Client, CustomResponse } from "mindee";
 
 // Init a new client and configure your custom document
-const mindeeClient = new Client({apiKey: "my-api-key"}).configCustomDoc(
-  "pokemon-card",
-  "pikachu",
-);
+const mindeeClient = new Client({apiKey: "my-api-key"}).configCustomDoc({
+  accountName: "john",
+  documentType: "wsnine",
+});
 
 // Load a file from disk and parse it
-const customResponse = mindeeClient.docFromPath("/path/to/the/card.jpg")
-  .parse(CustomResponse, {docType: "pokemon-card"});
+const customResponse = mindeeClient.docFromPath("/path/to/the/wsnine.jpg")
+  .parse(CustomResponse, {docType: "wsnine"});
 
 // Print a brief summary of the parsed data
 customResponse.then((resp) => {

@@ -14,33 +14,11 @@ import {
 import { DOC_TYPE_INVOICE } from "./index";
 
 export class Invoice extends Document {
-  /**
-   *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
-   *  @param {Input} input - Input object
-   *  @param {Object} locale - locale value for creating Invoice object from scratch
-   *  @param {Object} totalIncl - total tax included value for creating Invoice object from scratch
-   *  @param {Object} totalExcl - total tax excluded value for creating Invoice object from scratch
-   *  @param {Object} invoiceDate - invoice date value for creating Invoice object from scratch
-   *  @param {Object} invoiceNumber - invoice number value for creating Invoice object from scratch
-   *  @param {Object} taxes - taxes value for creating Invoice object from scratch
-   *  @param {Object} supplier - supplier value for creating Invoice object from scratch
-   *  @param {Object} supplierAddress - supplier address value for creating Invoice object from scratch
-   *  @param {Object} paymentDetails - payment details value for creating Invoice object from scratch
-   *  @param {Object} companyNumber - company number value for creating Invoice object from scratch
-   *  @param {Object} vatNumber - vat number value for creating Invoice object from scratch
-   *  @param {Object} orientation - orientation value for creating Invoice object from scratch
-   *  @param {Object} totalTax - total tax value for creating Invoice object from scratch
-   *  @param {Object} customerName - customer name value for creating Invoice object from scratch
-   *  @param {Object} customerAddress - customer address value for creating Invoice object from scratch
-   *  @param {Object} customerCompanyRegistration - customer company registration value for creating Invoice object from scratch
-   *  @param {Number} pageNumber - pageNumber for multi pages pdf input
-   */
   locale!: Locale;
   documentType!: BaseField;
   totalIncl!: Amount;
   date!: DateField;
   dueDate!: DateField;
-  category!: Field;
   time!: Field;
   orientation!: Orientation;
   totalTax!: Amount;
@@ -55,6 +33,12 @@ export class Invoice extends Document {
   paymentDetails: PaymentDetails[] = [];
   customerCompanyRegistration: CompanyRegistration[] = [];
 
+  /**
+   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
+   * @param {Input} inputFile - input file given to parse the document
+   * @param {number} pageId - Page ID for multi-page document
+   * @param {FullText} fullText - full OCR extracted text
+   */
   constructor({
     apiPrediction,
     inputFile = undefined,

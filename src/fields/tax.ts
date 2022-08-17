@@ -11,6 +11,15 @@ interface TaxConstructor {
 }
 
 export class TaxField extends Field {
+  /** The tax amount. */
+  value?: number = undefined;
+  /**  The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..). */
+  rate?: number = undefined;
+  /** The tax rate. */
+  code?: string = undefined;
+  /** The document page on which the information was found. */
+  pageId!: number;
+
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict to get the tax value
@@ -19,11 +28,6 @@ export class TaxField extends Field {
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    * @param {Integer} pageNumber - Page ID for multi-page document
    */
-  value?: number = undefined;
-  rate?: number = undefined;
-  code?: string = undefined;
-  pageId!: number;
-
   constructor({
     prediction,
     valueKey = "value",

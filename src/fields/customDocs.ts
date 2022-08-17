@@ -17,8 +17,20 @@ export class ClassificationField {
 
 export class ListFieldItem {
   content: any;
+  /**
+   * The confidence score of the prediction.
+   * Note: Score is calculated on **word selection**, not its textual content (OCR).
+   */
   confidence: number;
+  /**
+   * Contains exactly 4 relative vertices coordinates (points) of a right
+   * rectangle containing the word in the document.
+   */
   bbox: Polygon = [];
+  /**
+   * Contains the relative vertices coordinates (points) of a polygon containing
+   * the word in the document.
+   */
   polygon: Polygon = [];
 
   constructor(prediction: stringDict) {
@@ -38,7 +50,9 @@ export class ListFieldItem {
 export class ListField {
   values: ListFieldItem[];
   confidence: number;
+  /** True if the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
+  /** The document page on which the information was found. */
   pageId?: number;
 
   constructor({ prediction, reconstructed = false, pageId }: FieldConstructor) {
