@@ -10,25 +10,10 @@ import {
 import { DOC_TYPE_RECEIPT } from "./index";
 
 export class Receipt extends Document {
-  /**
-   *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
-   *  @param {Input} input - Input object
-   *  @param {Integer} pageNumber - Page number for multi pages pdf input
-   *  @param {Object} locale - locale value for creating Receipt object from scratch
-   *  @param {Object} totalIncl - total tax Included value for creating Receipt object from scratch
-   *  @param {Object} date - date value for creating Receipt object from scratch
-   *  @param {Object} category - category value for creating Receipt object from scratch
-   *  @param {Object} merchantName - merchant name value for creating Receipt object from scratch
-   *  @param {Object} time - time value for creating Receipt object from scratch
-   *  @param {Object} taxes - taxes value for creating Receipt object from scratch
-   *  @param {Object} orientation - orientation value for creating Receipt object from scratch
-   *  @param {Object} totalTax - total taxes value for creating Receipt object from scratch
-   *  @param {Object} totalExcl - total taxes excluded value for creating Receipt object from scratch
-   *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
-   */
   locale: Locale;
   totalIncl!: Amount;
   date!: DateField;
+  /** Receipt category as seen on the receipt. */
   category!: Field;
   merchantName!: Field;
   time!: Field;
@@ -37,6 +22,12 @@ export class Receipt extends Document {
   totalExcl: Amount;
   taxes: TaxField[] = [];
 
+  /**
+   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
+   * @param {Input} inputFile - input file given to parse the document
+   * @param {number} pageId - Page ID for multi-page document
+   * @param {FullText} fullText - full OCR extracted text
+   */
   constructor({
     apiPrediction,
     inputFile = undefined,

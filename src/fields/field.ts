@@ -29,10 +29,25 @@ export class BaseField {
 }
 
 export class Field extends BaseField {
+  /**
+   * Contains exactly 4 relative vertices coordinates (points) of a right
+   * rectangle containing the field in the document.
+   */
   bbox: Polygon = [];
+  /**
+   * Contains the relative vertices coordinates (points) of a polygon containing
+   * the field in the document.
+   */
   polygon: Polygon = [];
+  /** The document page on which the information was found. */
   pageId: number | undefined;
+  /**
+   * The confidence score of the prediction.
+   */
   confidence: number;
+  /**
+   * True if the field was reconstructed or computed using other fields.
+   */
   reconstructed: boolean;
   /**
    * @param {Object} prediction - Prediction object from HTTP response

@@ -19,6 +19,12 @@ export class Passport extends Document {
   fullName: Field;
   mrz: Field;
 
+  /**
+   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
+   * @param {Input} inputFile - input file given to parse the document
+   * @param {number} pageId - Page ID for multi-page document
+   * @param {FullText} fullText - full OCR extracted text
+   */
   constructor({
     apiPrediction,
     inputFile = undefined,

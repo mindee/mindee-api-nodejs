@@ -10,36 +10,13 @@ import {
   DateField as Date,
   CompanyRegistration,
 } from "../fields";
+import {DOC_TYPE_INVOICE, DOC_TYPE_RECEIPT} from "./index";
 
 interface FinancialDocConstructorProps extends DocumentConstructorProps {
   documentType?: string;
 }
 
 export class FinancialDocument extends Document {
-  /**
-   *  @param {Object} apiPrediction - Json parsed prediction from HTTP response
-   *  @param {Input} input - Input object
-   *  @param {Integer} pageNumber - Page number for multi pages pdf input
-   *  @param {Object} locale - locale value for creating FinancialDocument object from scratch
-   *  @param {Object} totalIncl - total tax included value for creating FinancialDocument object from scratch
-   *  @param {Object} totalExcl - total tax excluded value for creating FinancialDocument object from scratch
-   *  @param {Object} Date - date value for creating FinancialDocument object from scratch
-   *  @param {Object} InvoiceNumber - Invoice number value for creating FinancialDocument object from scratch
-   *  @param {Object} taxes - taxes value for creating FinancialDocument object from scratch
-   *  @param {Object} supplier - supplier value for creating FinancialDocument object from scratch
-   *  @param {Object} supplierAddress - supplier address value for creating FinancialDocument object from scratch
-   *  @param {Object} paymentDetails - payment details value for creating FinancialDocument object from scratch
-   *  @param {Object} companyNumber - company number value for creating FinancialDocument object from scratch
-   *  @param {Object} vatNumber - vat number value for creating FinancialDocument object from scratch
-   *  @param {Object} orientation - orientation value for creating FinancialDocument object from scratch
-   *  @param {Object} totalTax - total tax value for creating FinancialDocument object from scratch
-   *  @param {Object} time - time value for creating FinancialDocument object from scratch
-   *  @param {Object} customerName - customer name value for creating FinancialDocument object from scratch
-   *  @param {Object} customerAddress - customer address value for creating FinancialDocument object from scratch
-   *  @param {Object} customerCompanyRegistration - customer company registration value for creating FinancialDocument object from scratch
-   *  @param {Object} pageNumber - pageNumber for multi pages pdf input
-   *  @param {String} level - specify whether object is built from "page" level or "document" level prediction
-   */
   pageId: number | undefined;
   locale!: Locale;
   totalIncl!: Amount;
@@ -48,10 +25,9 @@ export class FinancialDocument extends Document {
   category!: Field;
   time!: Field;
   orientation: Orientation | undefined;
-  taxes: TaxField[];
+  taxes: TaxField[] = [];
   totalTax!: Amount;
   totalExcl!: Amount;
-  words: any[] = [];
   supplier!: Field;
   supplierAddress!: Field;
   invoiceNumber!: Field;
@@ -61,15 +37,25 @@ export class FinancialDocument extends Document {
   paymentDetails: Field[] = [];
   customerCompanyRegistration: CompanyRegistration[] = [];
 
+  /**
+   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
+   * @param {Input} inputFile - input file given to parse the document
+   * @param {number} pageId - Page ID for multi-page document
+   * @param {FullText} fullText - full OCR extracted text
+   */
   constructor({
     apiPrediction,
     inputFile = undefined,
     fullText = undefined,
     pageId = undefined,
-    documentType = "",
-  }: FinancialDocConstructorProps) {
+  }: DocumentConstructorProps) {
+    let documentType: string;
+    if (Object.keys(apiPrediction).includes("invoice_number")) {
+      documentType = DOC_TYPE_INVOICE;
+    } else {
+      documentType = DOC_TYPE_RECEIPT;
+    }
     super(documentType, inputFile, pageId, fullText);
-    this.taxes = [];
     this.#initFromApiPrediction(apiPrediction, inputFile, pageId);
     this.#checklist();
   }
@@ -79,7 +65,7 @@ export class FinancialDocument extends Document {
     inputFile: any,
     pageNumber: number | undefined
   ) {
-    if (Object.keys(prediction).includes("invoice_number")) {
+    if (this.internalDocType === DOC_TYPE_INVOICE) {
       const invoice = new Invoice({
         apiPrediction: prediction,
         inputFile,
