@@ -14,7 +14,7 @@ describe("Custom Document Object initialization", async () => {
       apiPrediction: response.document.inference.prediction,
       documentType: "field_test",
     });
-    expect(custom.internalDocType).to.be.equals("field_test");
+    expect(custom.documentType).to.be.equals("field_test");
     expect(custom.fields.size).to.be.equals(10);
     expect(custom.classifications.size).to.be.equals(1);
   });

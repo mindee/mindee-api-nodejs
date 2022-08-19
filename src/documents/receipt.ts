@@ -7,7 +7,6 @@ import {
   Orientation,
   DateField,
 } from "../fields";
-import { DOC_TYPE_RECEIPT } from "./index";
 
 export class Receipt extends Document {
   locale: Locale;
@@ -34,7 +33,7 @@ export class Receipt extends Document {
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super(DOC_TYPE_RECEIPT, inputFile, pageId, fullText);
+    super(inputFile, pageId, fullText);
 
     this.locale = new Locale({
       prediction: apiPrediction.locale,

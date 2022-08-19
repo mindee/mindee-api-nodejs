@@ -19,19 +19,19 @@ import { errorHandler } from "../errors/handler";
 import { ResponseProps } from "../api/response";
 
 interface CustomDocConstructor {
-  endpointName: string;
+  documentType: string;
   accountName: string;
   version: string;
   apiKey: string;
 }
 
-export type responseSig<RespType> = {
+export type responseSig<RespType extends Response<Document>> = {
   new ({ httpResponse, documentType, input, error }: ResponseProps): RespType;
 };
 
 export class DocumentConfig {
-  documentType: string;
-  endpoints: Array<Endpoint>;
+  readonly documentType: string;
+  readonly endpoints: Array<Endpoint>;
 
   constructor(documentType: string, endpoints: Array<Endpoint>) {
     this.documentType = documentType;
@@ -144,14 +144,14 @@ export class PassportConfig extends DocumentConfig {
 
 export class CustomDocConfig extends DocumentConfig {
   constructor({
-    endpointName,
+    documentType,
     accountName,
     version,
     apiKey,
   }: CustomDocConstructor) {
     const endpoints = [
-      new CustomEndpoint(endpointName, accountName, version, apiKey),
+      new CustomEndpoint(documentType, accountName, version, apiKey),
     ];
-    super(endpointName, endpoints);
+    super(documentType, endpoints);
   }
 }

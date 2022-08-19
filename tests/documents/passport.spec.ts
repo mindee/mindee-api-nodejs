@@ -11,7 +11,6 @@ describe("Passport Object initialization", async () => {
     const doc = new Passport({
       apiPrediction: response.document.inference.pages[0].prediction,
     });
-    expect(doc.internalDocType).to.be.equals("passport");
     expect(doc.birthDate.value).to.be.undefined;
     expect(doc.isExpired()).to.be.true;
     expect(doc.surname.value).to.be.undefined;

@@ -11,7 +11,6 @@ import {
   DateField,
   CompanyRegistration,
 } from "../fields";
-import { DOC_TYPE_INVOICE } from "./index";
 
 export class Invoice extends Document {
   locale!: Locale;
@@ -45,7 +44,7 @@ export class Invoice extends Document {
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super(DOC_TYPE_INVOICE, inputFile, pageId, fullText);
+    super(inputFile, pageId, fullText);
     this.#initFromApiPrediction(apiPrediction, pageId);
     this.#checklist();
     this.#reconstruct();

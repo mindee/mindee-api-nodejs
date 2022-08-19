@@ -2,7 +2,7 @@ export {
   Response,
   InvoiceResponse,
   ReceiptResponse,
-  FinancialResponse,
+  FinancialDocResponse,
   PassportResponse,
   CustomResponse,
 } from "./response";
@@ -12,6 +12,6 @@ export {
   ReceiptEndpoint,
   PassportEndpoint,
   CustomEndpoint,
-  OTS_OWNER,
+  STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,
 } from "./endpoint";
