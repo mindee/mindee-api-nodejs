@@ -13,23 +13,8 @@ const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${
   process.version
 } ${os.type().toLowerCase()}`;
 
-const OTS_OWNER = "mindee";
-
-const INVOICE_URL_NAME = "invoices";
-const INVOICE_VERSION = "3";
-
-const RECEIPT_URL_NAME = "expense_receipts";
-const RECEIPT_VERSION = "3";
-
-const PASSPORT_URL_NAME = "passport";
-const PASSPORT_VERSION = "1";
-
-function toSnakeCase(name: string): string {
-  return name
-    .trim()
-    .split(/(?=[A-Z-])/g)
-    .join("_");
-}
+export const OTS_OWNER = "mindee";
+export const API_KEY_ENVVAR_NAME = "MINDEE_API_KEY";
 
 export class Endpoint {
   apiKey: string;
@@ -52,14 +37,6 @@ export class Endpoint {
     this.keyName = keyName || urlName;
     this.apiKey = apiKey || this.apiKeyFromEnv();
     this.urlRoot = `${MINDEE_API_URL}/products/${owner}/${urlName}/v${version}`;
-  }
-
-  envVarKeyName(): string {
-    let envKeyName: string = toSnakeCase(this.keyName);
-    if (this.owner !== OTS_OWNER) {
-      envKeyName = `${toSnakeCase(this.owner)}_${envKeyName}`;
-    }
-    return `MINDEE_${envKeyName}_API_KEY`.toUpperCase();
   }
 
   /**
@@ -139,15 +116,10 @@ export class Endpoint {
   }
 
   protected apiKeyFromEnv(): string {
-    let envVarName = this.envVarKeyName();
-    let envVarValue = process.env[envVarName];
-    if (!envVarValue) {
-      envVarName = "MINDEE_API_KEY";
-      envVarValue = process.env[envVarName];
-    }
+    const envVarValue = process.env[API_KEY_ENVVAR_NAME];
     if (envVarValue) {
       logger.debug(
-        `Set '${this.keyName}' API key from environment: ${envVarName}`
+        `Set '${this.keyName}' API key from environment: ${API_KEY_ENVVAR_NAME}`
       );
       return envVarValue;
     }
@@ -157,19 +129,19 @@ export class Endpoint {
 
 export class InvoiceEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OTS_OWNER, INVOICE_URL_NAME, INVOICE_VERSION, apiKey, "invoice");
+    super(OTS_OWNER, "invoices", "3", apiKey, "invoice");
   }
 }
 
 export class ReceiptEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OTS_OWNER, RECEIPT_URL_NAME, RECEIPT_VERSION, apiKey, "receipt");
+    super(OTS_OWNER, "expense_receipts", "3", apiKey, "receipt");
   }
 }
 
 export class PassportEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OTS_OWNER, PASSPORT_URL_NAME, PASSPORT_VERSION, apiKey);
+    super(OTS_OWNER, "passport", "1", apiKey);
   }
 }
 

@@ -12,4 +12,6 @@ export {
   ReceiptEndpoint,
   PassportEndpoint,
   CustomEndpoint,
+  OTS_OWNER,
+  API_KEY_ENVVAR_NAME,
 } from "./endpoint";

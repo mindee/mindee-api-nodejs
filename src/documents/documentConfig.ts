@@ -6,36 +6,34 @@ import {
   CustomEndpoint,
   PassportEndpoint,
   ReceiptEndpoint,
+  API_KEY_ENVVAR_NAME,
 } from "../api";
 import {
+  DOC_TYPE_FINANCIAL,
+  DOC_TYPE_INVOICE,
+  DOC_TYPE_PASSPORT,
+  DOC_TYPE_RECEIPT,
   Document,
-  Invoice,
-  CustomDocument,
-  Passport,
-  Receipt,
-  FinancialDocument,
 } from "./index";
 import { errorHandler } from "../errors/handler";
 import { ResponseProps } from "../api/response";
 
 interface CustomDocConstructor {
-  documentType: string;
+  endpointName: string;
   accountName: string;
   version: string;
   apiKey: string;
 }
 
-export type responseSig<T> = {
-  new ({ httpResponse, documentType, input, error }: ResponseProps): T;
+export type responseSig<RespType> = {
+  new ({ httpResponse, documentType, input, error }: ResponseProps): RespType;
 };
 
 export class DocumentConfig {
-  docClass: Document;
   documentType: string;
   endpoints: Array<Endpoint>;
 
-  constructor(docClass: any, documentType: string, endpoints: any) {
-    this.docClass = docClass;
+  constructor(documentType: string, endpoints: Array<Endpoint>) {
     this.documentType = documentType;
     this.endpoints = endpoints;
   }
@@ -44,11 +42,11 @@ export class DocumentConfig {
     return await this.endpoints[0].predictRequest(inputDoc, includeWords);
   }
 
-  buildResult<T extends Response>(
-    responseType: responseSig<T>,
+  buildResult<RespType extends Response<Document>>(
+    responseType: responseSig<RespType>,
     inputFile: Input,
     response: any
-  ): T {
+  ): RespType {
     if (response.statusCode > 201) {
       const errorMessage = JSON.stringify(response.data, null, 4);
       errorHandler.throw(
@@ -71,7 +69,7 @@ export class DocumentConfig {
     });
   }
 
-  async predict<RespType extends Response>(
+  async predict<RespType extends Response<Document>>(
     responseType: responseSig<RespType>,
     params: { inputDoc: Input; includeWords: boolean; cutPages: boolean }
   ): Promise<RespType> {
@@ -95,10 +93,8 @@ export class DocumentConfig {
     this.endpoints.forEach((endpoint) => {
       if (!endpoint.apiKey) {
         throw new Error(
-          `Missing API key for '${
-            endpoint.keyName
-          }', check your Client configuration.
-You can set this using the '${endpoint.envVarKeyName()}' environment variable.\n`
+          `Missing API key for '${endpoint.keyName}', check your Client configuration.
+You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
         );
       }
     });
@@ -108,14 +104,14 @@ You can set this using the '${endpoint.envVarKeyName()}' environment variable.\n
 export class InvoiceConfig extends DocumentConfig {
   constructor(apiKey: string) {
     const endpoints = [new InvoiceEndpoint(apiKey)];
-    super(Invoice, "invoice", endpoints);
+    super(DOC_TYPE_INVOICE, endpoints);
   }
 }
 
 export class ReceiptConfig extends DocumentConfig {
   constructor(apiKey: string) {
     const endpoints = [new ReceiptEndpoint(apiKey)];
-    super(Receipt, "receipt", endpoints);
+    super(DOC_TYPE_RECEIPT, endpoints);
   }
 }
 
@@ -125,7 +121,7 @@ export class FinancialDocConfig extends DocumentConfig {
       new InvoiceEndpoint(apiKey),
       new ReceiptEndpoint(apiKey),
     ];
-    super(FinancialDocument, "financialDoc", endpoints);
+    super(DOC_TYPE_FINANCIAL, endpoints);
   }
 
   async predictRequest(inputDoc: Input, includeWords = false) {
@@ -142,20 +138,20 @@ export class FinancialDocConfig extends DocumentConfig {
 export class PassportConfig extends DocumentConfig {
   constructor(apiKey: string) {
     const endpoints = [new PassportEndpoint(apiKey)];
-    super(Passport, "passport", endpoints);
+    super(DOC_TYPE_PASSPORT, endpoints);
   }
 }
 
 export class CustomDocConfig extends DocumentConfig {
   constructor({
-    documentType,
+    endpointName,
     accountName,
     version,
     apiKey,
   }: CustomDocConstructor) {
     const endpoints = [
-      new CustomEndpoint(documentType, accountName, version, apiKey),
+      new CustomEndpoint(endpointName, accountName, version, apiKey),
     ];
-    super(CustomDocument, documentType, endpoints);
+    super(endpointName, endpoints);
   }
 }

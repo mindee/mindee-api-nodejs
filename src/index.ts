@@ -10,6 +10,7 @@ import {
   DOC_TYPE_RECEIPT,
   DOC_TYPE_PASSPORT,
   DOC_TYPE_FINANCIAL,
+  Document,
 } from "./documents";
 import {
   DocumentConfig,
@@ -30,6 +31,7 @@ import {
   PassportResponse,
   ReceiptResponse,
   CustomResponse,
+  OTS_OWNER,
 } from "./api";
 
 export {
@@ -59,7 +61,7 @@ class DocumentClient {
     this.docConfigs = docConfigs;
   }
 
-  async parse<RespType extends Response>(
+  async parse<RespType extends Response<Document>>(
     responseType: responseSig<RespType>,
     params: PredictOptions
   ): Promise<RespType> {
@@ -103,13 +105,9 @@ interface ClientOptions {
   debug?: boolean;
 }
 
-interface baseConfigParams {
-  apiKey?: string;
-}
-
-interface customConfigParams extends baseConfigParams {
+interface customConfigParams {
   accountName: string;
-  documentType: string;
+  endpointName: string;
   version?: string;
 }
 
@@ -138,51 +136,50 @@ export class Client {
     logger.debug("Client initialized");
   }
 
-  configInvoice({ apiKey = "" }: baseConfigParams) {
+  configInvoice() {
     this.docConfigs.set(
-      ["mindee", DOC_TYPE_INVOICE],
-      new InvoiceConfig(apiKey || this.apiKey)
+      [OTS_OWNER, DOC_TYPE_INVOICE],
+      new InvoiceConfig(this.apiKey)
     );
     return this;
   }
 
-  configReceipt({ apiKey = "" }: baseConfigParams) {
+  configReceipt() {
     this.docConfigs.set(
-      ["mindee", DOC_TYPE_RECEIPT],
-      new ReceiptConfig(apiKey || this.apiKey)
+      [OTS_OWNER, DOC_TYPE_RECEIPT],
+      new ReceiptConfig(this.apiKey)
     );
     return this;
   }
 
-  configFinancialDoc({ apiKey = "" }: baseConfigParams) {
+  configFinancialDoc() {
     this.docConfigs.set(
-      ["mindee", DOC_TYPE_FINANCIAL],
-      new FinancialDocConfig(apiKey || this.apiKey)
+      [OTS_OWNER, DOC_TYPE_FINANCIAL],
+      new FinancialDocConfig(this.apiKey)
     );
     return this;
   }
 
-  configPassport({ apiKey = "" }: baseConfigParams) {
+  configPassport() {
     this.docConfigs.set(
-      ["mindee", DOC_TYPE_PASSPORT],
-      new PassportConfig(apiKey || this.apiKey)
+      [OTS_OWNER, DOC_TYPE_PASSPORT],
+      new PassportConfig(this.apiKey)
     );
     return this;
   }
 
-  configCustomDoc({
+  addEndpoint({
     accountName,
-    documentType,
-    apiKey = "",
+    endpointName,
     version = "1",
   }: customConfigParams) {
     this.docConfigs.set(
-      [accountName, documentType],
+      [accountName, endpointName],
       new CustomDocConfig({
-        documentType: documentType,
         accountName: accountName,
+        endpointName: endpointName,
         version: version,
-        apiKey: apiKey || this.apiKey,
+        apiKey: this.apiKey,
       })
     );
     return this;
