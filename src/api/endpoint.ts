@@ -13,7 +13,7 @@ const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${
   process.version
 } ${os.type().toLowerCase()}`;
 
-export const OTS_OWNER = "mindee";
+export const STANDARD_API_OWNER = "mindee";
 export const API_KEY_ENVVAR_NAME = "MINDEE_API_KEY";
 
 export class Endpoint {
@@ -129,19 +129,19 @@ export class Endpoint {
 
 export class InvoiceEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OTS_OWNER, "invoices", "3", apiKey, "invoice");
+    super(STANDARD_API_OWNER, "invoices", "3", apiKey, "invoice");
   }
 }
 
 export class ReceiptEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OTS_OWNER, "expense_receipts", "3", apiKey, "receipt");
+    super(STANDARD_API_OWNER, "expense_receipts", "3", apiKey, "receipt");
   }
 }
 
 export class PassportEndpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(OTS_OWNER, "passport", "1", apiKey);
+    super(STANDARD_API_OWNER, "passport", "1", apiKey);
   }
 }
 

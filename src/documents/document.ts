@@ -9,7 +9,6 @@ export interface DocumentConstructorProps {
 }
 
 export class Document {
-  readonly internalDocType: string;
   checklist: { [index: string]: boolean };
   mimeType: string | undefined;
   filename: string = "";
@@ -20,18 +19,11 @@ export class Document {
   /**
    * Takes a list of Documents and return one Document where
    * each field is set with the maximum probability field
-   * @param internalDocType - the internal document type
    * @param {Input} inputFile - input file given to parse the document
    * @param {number} pageId - Page ID for multi-page document
    * @param {FullText} fullText - full OCR extracted text
    */
-  constructor(
-    internalDocType: string,
-    inputFile?: Input,
-    pageId?: number,
-    fullText?: FullText
-  ) {
-    this.internalDocType = internalDocType;
+  constructor(inputFile?: Input, pageId?: number, fullText?: FullText) {
     this.filepath = undefined;
     this.pageId = pageId;
 

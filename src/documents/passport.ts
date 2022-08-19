@@ -2,7 +2,6 @@ import { Document, DocumentConstructorProps } from "./document";
 import { Field, DateField } from "../fields";
 // @ts-ignore
 import * as MRZ from "mrz";
-import { DOC_TYPE_PASSPORT } from "./index";
 
 export class Passport extends Document {
   country: Field;
@@ -30,7 +29,7 @@ export class Passport extends Document {
     inputFile = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super(DOC_TYPE_PASSPORT, inputFile, pageId);
+    super(inputFile, pageId);
     this.country = new Field({
       prediction: apiPrediction.country,
       pageId: pageId,

@@ -18,12 +18,12 @@ Finally, Node.js away!
 ```ts
 import { Client, InvoiceResponse } from "mindee";
 
-// Init a new client and configure the Invoice API
-const mindeeClient = new Client({apiKey: "my-api-key"}).configInvoice({});
+// Init a new client
+const mindeeClient = new Client({apiKey: "my-api-key"});
 
 // Load a file from disk and parse it
-const pathDoc = mindeeClient.docFromPath("/path/to/the/invoice.pdf");
-const invoiceResponse = pathDoc.parse(InvoiceResponse, { docType: "invoice" });
+const invoiceResponse = mindeeClient.docFromPath("/path/to/the/invoice.pdf")
+  .parse(InvoiceResponse);
 
 // Print a brief summary of the parsed data
 invoiceResponse.then((resp) => {
@@ -36,10 +36,11 @@ invoiceResponse.then((resp) => {
 ```ts
 import { Client, CustomResponse } from "mindee";
 
-// Init a new client and configure your custom document
-const mindeeClient = new Client({apiKey: "my-api-key"}).configCustomDoc({
-  accountName: "john",
-  documentType: "wsnine",
+// Init a new client and add your document endpoint
+const mindeeClient = new Client({apiKey: "my-api-key"})
+  .addEndpoint({
+    accountName: "john",
+    documentType: "wsnine",
 });
 
 // Load a file from disk and parse it

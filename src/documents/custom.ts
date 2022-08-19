@@ -9,6 +9,7 @@ export interface CustomDocConstructorProps extends DocumentConstructorProps {
 export class CustomDocument extends Document {
   fields: Map<string, ListField> = new Map();
   classifications: Map<string, ClassificationField> = new Map();
+  readonly documentType: string;
 
   constructor({
     inputFile,
@@ -16,7 +17,8 @@ export class CustomDocument extends Document {
     pageId,
     documentType,
   }: CustomDocConstructorProps) {
-    super(documentType, inputFile, pageId);
+    super(inputFile, pageId);
+    this.documentType = documentType;
 
     Object.keys(apiPrediction).forEach((fieldName) => {
       this.setField(fieldName, apiPrediction, pageId);
@@ -54,7 +56,7 @@ export class CustomDocument extends Document {
   }
 
   toString(): string {
-    let outStr = `----- ${this.internalDocType} -----`;
+    let outStr = `----- ${this.documentType} -----`;
     outStr += `\nFilename: ${this.filename}`.trimEnd();
     this.classifications.forEach((fieldData, name) => {
       outStr += `\n${name}: ${fieldData}`.trimEnd();

@@ -15,7 +15,7 @@ export class ClassificationField {
   }
 }
 
-export class ListFieldItem {
+export class ListFieldValue {
   content: any;
   /**
    * The confidence score of the prediction.
@@ -48,7 +48,7 @@ export class ListFieldItem {
 }
 
 export class ListField {
-  values: ListFieldItem[];
+  readonly values: ListFieldValue[];
   confidence: number;
   /** True if the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
@@ -63,7 +63,7 @@ export class ListField {
 
     if (Object.prototype.hasOwnProperty.call(prediction, "values")) {
       prediction["values"].forEach((field: any) => {
-        this.values.push(new ListFieldItem(field));
+        this.values.push(new ListFieldValue(field));
       });
     }
   }

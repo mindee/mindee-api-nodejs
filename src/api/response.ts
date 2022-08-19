@@ -49,7 +49,7 @@ export class Response<DocType extends Document> {
 }
 
 /**
- * Class for all custom endpoint responses.
+ * Class for all constructed (API Builder) endpoint responses.
  */
 export class CustomResponse extends Response<CustomDocument> {
   constructor(params: ResponseProps) {
@@ -79,7 +79,7 @@ export class CustomResponse extends Response<CustomDocument> {
   }
 }
 
-type OtsDocumentSig<DocType extends Document> = {
+type StandardDocumentSig<DocType extends Document> = {
   new ({
     apiPrediction,
     inputFile,
@@ -89,12 +89,17 @@ type OtsDocumentSig<DocType extends Document> = {
 };
 
 /**
- * Generic class for all OTS endpoint responses.
+ * Generic class for all standard (Off-the-Shelf) endpoint responses.
  */
-export class OtsResponse<DocType extends Document> extends Response<DocType> {
-  documentClass: OtsDocumentSig<DocType>;
+export class StandardProductResponse<
+  DocType extends Document
+> extends Response<DocType> {
+  documentClass: StandardDocumentSig<DocType>;
 
-  constructor(documentClass: OtsDocumentSig<DocType>, params: ResponseProps) {
+  constructor(
+    documentClass: StandardDocumentSig<DocType>,
+    params: ResponseProps
+  ) {
     super(params);
     this.documentClass = documentClass;
     if (!params.error) {
@@ -122,25 +127,25 @@ export class OtsResponse<DocType extends Document> extends Response<DocType> {
   }
 }
 
-export class InvoiceResponse extends OtsResponse<Invoice> {
+export class InvoiceResponse extends StandardProductResponse<Invoice> {
   constructor(params: ResponseProps) {
     super(Invoice, params);
   }
 }
 
-export class ReceiptResponse extends OtsResponse<Receipt> {
+export class ReceiptResponse extends StandardProductResponse<Receipt> {
   constructor(params: ResponseProps) {
     super(Receipt, params);
   }
 }
 
-export class FinancialResponse extends OtsResponse<FinancialDocument> {
+export class FinancialDocResponse extends StandardProductResponse<FinancialDocument> {
   constructor(params: ResponseProps) {
     super(FinancialDocument, params);
   }
 }
 
-export class PassportResponse extends OtsResponse<Passport> {
+export class PassportResponse extends StandardProductResponse<Passport> {
   constructor(params: ResponseProps) {
     super(Passport, params);
   }

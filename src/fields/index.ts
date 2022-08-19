@@ -6,6 +6,6 @@ export { Amount } from "./amount";
 export { DateField } from "./date";
 export { BaseField } from "./field";
 export { Field } from "./field";
-export { ListField, ListFieldItem, ClassificationField } from "./customDocs";
+export { ListField, ListFieldValue, ClassificationField } from "./customDocs";
 export { FullText } from "./fullText";
 export { CompanyRegistration } from "./companyRegistration";

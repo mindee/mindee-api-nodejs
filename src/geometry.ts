@@ -1,9 +1,9 @@
 type MinMax = { min: number; max: number };
-/**
- * A point on the document: X, Y
- */
+/** A point on the document defined by 2 coordinates: X, Y */
 export type Point = [number, number];
+/** A bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */
 export type BoundingBox = [number, number, number, number];
+/** A polygon, composed of several Points. */
 export type Polygon = Array<Point>;
 
 /**

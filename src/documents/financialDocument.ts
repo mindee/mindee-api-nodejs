@@ -10,7 +10,6 @@ import {
   DateField as Date,
   CompanyRegistration,
 } from "../fields";
-import { DOC_TYPE_INVOICE, DOC_TYPE_RECEIPT } from "./index";
 
 export class FinancialDocument extends Document {
   pageId: number | undefined;
@@ -45,13 +44,7 @@ export class FinancialDocument extends Document {
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    let documentType: string;
-    if (Object.keys(apiPrediction).includes("invoice_number")) {
-      documentType = DOC_TYPE_INVOICE;
-    } else {
-      documentType = DOC_TYPE_RECEIPT;
-    }
-    super(documentType, inputFile, pageId, fullText);
+    super(inputFile, pageId, fullText);
     this.#initFromApiPrediction(apiPrediction, inputFile, pageId);
     this.#checklist();
   }
@@ -61,7 +54,7 @@ export class FinancialDocument extends Document {
     inputFile: any,
     pageNumber: number | undefined
   ) {
-    if (this.internalDocType === DOC_TYPE_INVOICE) {
+    if (Object.keys(prediction).includes("invoice_number")) {
       const invoice = new Invoice({
         apiPrediction: prediction,
         inputFile,
