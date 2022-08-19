@@ -308,10 +308,5 @@
     "n_pages": 1,
     "name": "document",
     "ocr": {}
-  },
-  "document_type": "receipt",
-  "input_type": "path",
-  "filename": "receipt.jpg",
-  "filepath": "./tests/data/expense_receipts/receipt.jpg",
-  "file_extension": "image/jpeg"
+  }
 }

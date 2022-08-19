@@ -5,6 +5,7 @@ import {
   DOC_TYPE_RECEIPT,
   DOC_TYPE_PASSPORT,
   DOC_TYPE_FINANCIAL,
+  Document,
 } from "./documents";
 import {
   Response,
@@ -20,7 +21,7 @@ const program = new Command();
 interface OtsCliConfig {
   help: string;
   docType: string;
-  responseClass: typeof Response;
+  responseClass: typeof Response<Document>;
   fullText: boolean;
 }
 
@@ -89,25 +90,25 @@ async function predictCall(command: string, inputPath: string, options: any) {
   });
   switch (command) {
     case COMMAND_INVOICE: {
-      mindeeClient.configInvoice({});
+      mindeeClient.configInvoice();
       break;
     }
     case COMMAND_RECEIPT: {
-      mindeeClient.configReceipt({});
+      mindeeClient.configReceipt();
       break;
     }
     case COMMAND_PASSPORT: {
-      mindeeClient.configPassport({});
+      mindeeClient.configPassport();
       break;
     }
     case COMMAND_FINANCIAL: {
-      mindeeClient.configFinancialDoc({});
+      mindeeClient.configFinancialDoc();
       break;
     }
     case COMMAND_CUSTOM: {
-      mindeeClient.configCustomDoc({
+      mindeeClient.addEndpoint({
         accountName: options.user,
-        documentType: options.documentType,
+        endpointName: options.documentType,
       });
       break;
     }
@@ -142,13 +143,13 @@ export function cli() {
         "-u, --user <username>",
         "API account name for the endpoint"
       );
-      prog.argument("<document_type>", "Document type");
+      prog.argument("<endpoint_name>", "API endpoint name");
     }
     prog.argument("<input_path>", "Full path to the file");
     if (name === COMMAND_CUSTOM) {
       prog.action(
         (
-          documentType: string,
+          endpointName: string,
           inputPath: string,
           options: any,
           command: any
@@ -156,7 +157,7 @@ export function cli() {
           const allOptions = {
             ...program.opts(),
             ...options,
-            documentType: documentType,
+            endpointName: endpointName,
           };
           predictCall(command.name(), inputPath, allOptions);
         }
@@ -166,7 +167,7 @@ export function cli() {
         const allOptions = {
           ...program.opts(),
           ...options,
-          documentType: undefined,
+          endpointName: undefined,
         };
         predictCall(command.name(), inputPath, allOptions);
       });

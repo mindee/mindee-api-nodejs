@@ -10,11 +10,7 @@ import {
   DateField as Date,
   CompanyRegistration,
 } from "../fields";
-import {DOC_TYPE_INVOICE, DOC_TYPE_RECEIPT} from "./index";
-
-interface FinancialDocConstructorProps extends DocumentConstructorProps {
-  documentType?: string;
-}
+import { DOC_TYPE_INVOICE, DOC_TYPE_RECEIPT } from "./index";
 
 export class FinancialDocument extends Document {
   pageId: number | undefined;

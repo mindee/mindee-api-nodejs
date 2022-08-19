@@ -552,10 +552,5 @@
     "n_pages": 1,
     "name": "document",
     "ocr": {}
-  },
-  "document_type": "passport",
-  "input_type": "path",
-  "filename": "passport.jpeg",
-  "filepath": "./tests/data/passport/passport.jpeg",
-  "file_extension": "image/jpeg"
+  }
 }
