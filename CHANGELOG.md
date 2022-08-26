@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v2.0.0 (2022-08-26)
+### Note
+This is a complete rewrite in TypeScript!
+
+It's **not** backwards compatible with previous versions.
+
+### Changes
+* :sparkles: Add Passport API support
+* :sparkles: Add custom document support (API builder)
+* :sparkles: Add basic geometry functions
+* :label: everything is typed, in particular response objects.
+  Allows for much easier auto-completion in your IDE.
+* :arrow_up: all major dependencies updated
+
 ## v1.4.0
 ### Fixes
 * :bug: cut/merge pages of an encrypted PDF leads to unexpected results
