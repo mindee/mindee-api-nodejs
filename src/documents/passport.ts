@@ -18,59 +18,55 @@ export class Passport extends Document {
   fullName: Field;
   mrz: Field;
 
-  /**
-   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
-   * @param {Input} inputFile - input file given to parse the document
-   * @param {number} pageId - Page ID for multi-page document
-   * @param {FullText} fullText - full OCR extracted text
-   */
   constructor({
-    apiPrediction,
+    prediction,
+    orientation = undefined,
+    extras = undefined,
     inputFile = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super(inputFile, pageId);
+    super({ inputFile, pageId, orientation, extras });
     this.country = new Field({
-      prediction: apiPrediction.country,
+      prediction: prediction.country,
       pageId: pageId,
     });
     this.idNumber = new Field({
-      prediction: apiPrediction.id_number,
+      prediction: prediction.id_number,
       pageId: pageId,
     });
     this.birthDate = new DateField({
-      prediction: apiPrediction.birth_date,
+      prediction: prediction.birth_date,
       pageId: pageId,
     });
     this.expiryDate = new DateField({
-      prediction: apiPrediction.expiry_date,
+      prediction: prediction.expiry_date,
       pageId: pageId,
     });
     this.issuanceDate = new DateField({
-      prediction: apiPrediction.issuance_date,
+      prediction: prediction.issuance_date,
       pageId: pageId,
     });
     this.birthPlace = new Field({
-      prediction: apiPrediction.birth_place,
+      prediction: prediction.birth_place,
       pageId: pageId,
     });
     this.gender = new Field({
-      prediction: apiPrediction.gender,
+      prediction: prediction.gender,
       pageId: pageId,
     });
     this.surname = new Field({
-      prediction: apiPrediction.surname,
+      prediction: prediction.surname,
       pageId: pageId,
     });
     this.mrz1 = new Field({
-      prediction: apiPrediction.mrz1,
+      prediction: prediction.mrz1,
       pageId: pageId,
     });
     this.mrz2 = new Field({
-      prediction: apiPrediction.mrz2,
+      prediction: prediction.mrz2,
       pageId: pageId,
     });
-    apiPrediction.given_names.map((prediction: { [index: string]: any }) =>
+    prediction.given_names.map((prediction: { [index: string]: any }) =>
       this.givenNames.push(
         new Field({
           prediction: prediction,

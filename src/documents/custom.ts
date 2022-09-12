@@ -1,6 +1,6 @@
 import { Document, DocumentConstructorProps } from "./document";
 import { ClassificationField, ListField } from "../fields";
-import { stringDict } from "../fields/field";
+import { stringDict } from "../fields";
 
 export interface CustomDocConstructorProps extends DocumentConstructorProps {
   documentType: string;
@@ -13,15 +13,17 @@ export class CustomDocument extends Document {
 
   constructor({
     inputFile,
-    apiPrediction,
+    prediction,
+    extras = undefined,
+    orientation = undefined,
     pageId,
     documentType,
   }: CustomDocConstructorProps) {
-    super(inputFile, pageId);
+    super({ inputFile, pageId, orientation, extras });
     this.documentType = documentType;
 
-    Object.keys(apiPrediction).forEach((fieldName) => {
-      this.setField(fieldName, apiPrediction, pageId);
+    Object.keys(prediction).forEach((fieldName) => {
+      this.setField(fieldName, prediction, pageId);
     });
   }
 

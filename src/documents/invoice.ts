@@ -4,7 +4,6 @@ import {
   BaseField,
   TaxField,
   PaymentDetails,
-  Orientation,
   Locale,
   Amount,
   Field,
@@ -19,7 +18,6 @@ export class Invoice extends Document {
   date!: DateField;
   dueDate!: DateField;
   time!: Field;
-  orientation!: Orientation;
   totalTax!: Amount;
   totalExcl!: Amount;
   supplier!: Field;
@@ -32,20 +30,16 @@ export class Invoice extends Document {
   paymentDetails: PaymentDetails[] = [];
   customerCompanyRegistration: CompanyRegistration[] = [];
 
-  /**
-   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
-   * @param {Input} inputFile - input file given to parse the document
-   * @param {number} pageId - Page ID for multi-page document
-   * @param {FullText} fullText - full OCR extracted text
-   */
   constructor({
-    apiPrediction,
+    prediction,
+    orientation = undefined,
+    extras = undefined,
     inputFile = undefined,
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super(inputFile, pageId, fullText);
-    this.#initFromApiPrediction(apiPrediction, pageId);
+    super({ inputFile, pageId, fullText, orientation, extras });
+    this.#initFromApiPrediction(prediction, pageId);
     this.#checklist();
     this.#reconstruct();
   }
@@ -138,12 +132,6 @@ export class Invoice extends Document {
         })
       )
     );
-    if (pageId !== undefined) {
-      this.orientation = new Orientation({
-        prediction: apiPrediction.orientation,
-        pageId: pageId,
-      });
-    }
   }
 
   toString(): string {

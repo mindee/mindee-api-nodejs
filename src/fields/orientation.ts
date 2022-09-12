@@ -1,6 +1,13 @@
-import { Field } from "./field";
+import { BaseField, BaseFieldConstructor } from "./field";
 
-export class Orientation extends Field {
+interface OrientationFieldConstructor extends BaseFieldConstructor {
+  pageId: number;
+}
+
+export class OrientationField extends BaseField {
+  value: number;
+  pageId: number;
+
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
@@ -9,14 +16,18 @@ export class Orientation extends Field {
    */
   constructor({
     prediction,
-    valueKey = "degrees",
+    valueKey = "value",
     reconstructed = false,
     pageId,
-  }: any) {
+  }: OrientationFieldConstructor) {
+    super({ prediction, valueKey, reconstructed });
     const orientations = [0, 90, 180, 270];
-    super({ prediction, valueKey, reconstructed, pageId });
+    this.pageId = pageId;
     this.value = parseInt(prediction[valueKey]);
-    if (isNaN(this.value)) this.confidence = 0.0;
     if (!orientations.includes(this.value)) this.value = 0;
+  }
+
+  toString() {
+    return `${this.value} degrees`;
   }
 }

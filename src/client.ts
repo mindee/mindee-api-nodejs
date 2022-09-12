@@ -7,6 +7,7 @@ import {
 } from "./inputs";
 import { Response, STANDARD_API_OWNER } from "./api";
 import {
+  DOC_TYPE_CROPPER,
   DOC_TYPE_FINANCIAL,
   DOC_TYPE_INVOICE,
   DOC_TYPE_PASSPORT,
@@ -14,6 +15,7 @@ import {
   Document,
 } from "./documents";
 import {
+  CropperConfig,
   CustomDocConfig,
   DocumentConfig,
   FinancialDocConfig,
@@ -34,6 +36,7 @@ interface PredictOptions {
   username?: string;
   cutPages?: boolean;
   fullText?: boolean;
+  cropper?: boolean;
 }
 
 class DocumentClient {
@@ -52,10 +55,12 @@ class DocumentClient {
       username: "",
       cutPages: true,
       fullText: false,
+      cropper: false,
     }
   ): Promise<RespType> {
     // seems like there should be a better way of doing this
     const fullText = params?.fullText !== undefined ? params.fullText : false;
+    const cropper = params?.cropper !== undefined ? params.cropper : false;
     const cutPages = params?.cutPages !== undefined ? params.cutPages : true;
     const docType: string =
       params.docType === undefined || params.docType === ""
@@ -88,6 +93,7 @@ class DocumentClient {
       inputDoc: this.inputDoc,
       includeWords: fullText,
       cutPages: cutPages,
+      cropper: cropper,
     });
   }
 
@@ -152,6 +158,10 @@ export class Client {
     this.docConfigs.set(
       [STANDARD_API_OWNER, DOC_TYPE_PASSPORT],
       new PassportConfig(this.apiKey)
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, DOC_TYPE_CROPPER],
+      new CropperConfig(this.apiKey)
     );
   }
 

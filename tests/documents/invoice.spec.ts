@@ -17,7 +17,7 @@ describe("Invoice Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoice.empty));
     const response = JSON.parse(jsonData.toString());
     const doc = new Invoice({
-      apiPrediction: response.document.inference.pages[0].prediction,
+      prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.locale.value).to.be.undefined;
     expect(doc.totalIncl.value).to.be.undefined;
@@ -48,9 +48,10 @@ describe("Invoice Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
     const doc = new Invoice({
-      apiPrediction: prediction,
+      prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.invoice.docString));
+    expect(doc.orientation).to.be.undefined;
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
   });
@@ -60,20 +61,23 @@ describe("Invoice Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
     const doc = new Invoice({
-      apiPrediction: pageData.prediction,
+      prediction: pageData.prediction,
       pageId: pageData.id,
+      orientation: pageData.orientation,
+      extras: pageData.extras,
     });
     const docString = await fs.readFile(
       path.join(dataPath.invoice.page0String)
     );
     expect(doc.documentType.value).to.be.equal("INVOICE");
+    expect(doc.orientation?.value).to.be.equals(0);
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
   });
 
   it("should not reconstruct totalIncl without taxes", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.0 },
         total_excl: { value: 240.5, confidence: 0.9 },
@@ -85,7 +89,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not reconstruct totalIncl without totalExcl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.0 },
         total_excl: { value: "N/A", confidence: 0.0 },
@@ -97,7 +101,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not reconstruct totalIncl with totalIncl already set", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 260, confidence: 0.4 },
         total_excl: { value: 240.5, confidence: 0.9 },
@@ -110,7 +114,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should reconstruct totalIncl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.0 },
         total_excl: { value: 240.5, confidence: 0.9 },
@@ -123,7 +127,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not reconstruct totalExcl without totalIncl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.0 },
         total_excl: { value: "N/A", confidence: 0.0 },
@@ -135,7 +139,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not reconstruct totalExcl without taxes", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 1150.2, confidence: 0.7 },
         total_excl: { value: "N/A", confidence: 0.0 },
@@ -147,7 +151,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not reconstruct totalExcl with totalExcl already set", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 1150.2, confidence: 0.7 },
         total_excl: { value: 1050.0, confidence: 0.4 },
@@ -160,7 +164,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should reconstruct totalExcl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 1150.2, confidence: 0.6 },
         total_excl: { value: "N/A", confidence: 0.0 },
@@ -176,7 +180,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not reconstruct totalTax without taxes", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         taxes: [],
       },
@@ -186,7 +190,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should reconstruct totalTax", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         taxes: [
           { rate: 20, value: 10.2, confidence: 0.5 },
@@ -200,7 +204,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should match on totalIncl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 507.25, confidence: 0.6 },
         taxes: [
@@ -218,7 +222,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not match on totalIncl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 507.25, confidence: 0.6 },
         taxes: [
@@ -232,7 +236,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not match on totalIncl 2", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 507.25, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0.0, confidence: 0.5 }],
@@ -243,7 +247,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should match on totalExcl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_excl: { value: 456.15, confidence: 0.6 },
         taxes: [
@@ -261,7 +265,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not match on totalExcl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_excl: { value: 507.25, confidence: 0.6 },
         taxes: [
@@ -275,7 +279,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not match on totalExcl 2", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_excl: { value: 507.25, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0.0, confidence: 0.5 }],
@@ -286,7 +290,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should match on Taxes + totalExcl = totalIncl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 507.25, confidence: 0.6 },
         total_excl: { value: 456.15, confidence: 0.6 },
@@ -306,7 +310,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not match on Taxes + totalExcl = totalIncl", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 507.2, confidence: 0.6 },
         total_excl: { value: 456.15, confidence: 0.6 },
@@ -321,7 +325,7 @@ describe("Invoice Object initialization", async () => {
 
   it("should not match on Taxes + totalExcl = totalIncl 2", function () {
     const doc = new Invoice({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 507.25, confidence: 0.6 },
         total_excl: { value: 456.15, confidence: 0.6 },

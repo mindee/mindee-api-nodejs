@@ -1,31 +1,67 @@
 import { Input } from "../inputs";
-import { FullText } from "../fields";
+import {
+  CropperField,
+  FullText,
+  OrientationField,
+  stringDict,
+} from "../fields";
 
-export interface DocumentConstructorProps {
-  apiPrediction: { [index: string]: any };
+export interface DocumentConstructorProps extends BaseDocumentConstructorProps {
+  /** JSON parsed prediction from HTTP response */
+  prediction: stringDict;
+}
+
+interface BaseDocumentConstructorProps {
+  /** Orientation JSON for page-level document */
+  orientation?: stringDict;
+  /** Extras JSON */
+  extras?: stringDict;
+  /** input file given to parse the document */
   inputFile?: Input;
+  /** Page ID for page-level document */
   pageId?: number;
+  /** full OCR extracted text */
   fullText?: FullText;
 }
 
 export class Document {
   checklist: { [index: string]: boolean };
-  mimeType: string | undefined;
+  mimeType?: string;
   filename: string = "";
-  filepath: string | undefined;
+  filepath?: string;
   fullText?: FullText;
   pageId?: number | undefined;
+  orientation?: OrientationField;
+  cropper: CropperField[] = [];
 
-  /**
-   * Takes a list of Documents and return one Document where
-   * each field is set with the maximum probability field
-   * @param {Input} inputFile - input file given to parse the document
-   * @param {number} pageId - Page ID for multi-page document
-   * @param {FullText} fullText - full OCR extracted text
-   */
-  constructor(inputFile?: Input, pageId?: number, fullText?: FullText) {
+  constructor({
+    orientation = undefined,
+    extras = undefined,
+    inputFile = undefined,
+    fullText = undefined,
+    pageId = undefined,
+  }: BaseDocumentConstructorProps) {
     this.filepath = undefined;
     this.pageId = pageId;
+
+    if (pageId !== undefined && orientation !== undefined) {
+      this.orientation = new OrientationField({
+        prediction: orientation,
+        pageId: pageId,
+      });
+    }
+    if (extras !== undefined) {
+      if (extras.cropper !== undefined) {
+        extras.cropper.cropping.forEach((crop: any) => {
+          this.cropper.push(
+            new CropperField({
+              prediction: crop,
+              pageId: pageId,
+            })
+          );
+        });
+      }
+    }
 
     if (inputFile !== undefined) {
       this.filepath = inputFile.filepath;

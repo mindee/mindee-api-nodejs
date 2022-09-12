@@ -1,12 +1,5 @@
 import { Document, DocumentConstructorProps } from "./document";
-import {
-  TaxField,
-  Field,
-  Amount,
-  Locale,
-  Orientation,
-  DateField,
-} from "../fields";
+import { TaxField, Field, Amount, Locale, DateField } from "../fields";
 
 export class Receipt extends Document {
   locale: Locale;
@@ -16,27 +9,22 @@ export class Receipt extends Document {
   category!: Field;
   merchantName!: Field;
   time!: Field;
-  orientation: Orientation | undefined;
   totalTax: Amount;
   totalExcl: Amount;
   taxes: TaxField[] = [];
 
-  /**
-   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
-   * @param {Input} inputFile - input file given to parse the document
-   * @param {number} pageId - Page ID for multi-page document
-   * @param {FullText} fullText - full OCR extracted text
-   */
   constructor({
-    apiPrediction,
+    prediction,
+    orientation = undefined,
+    extras = undefined,
     inputFile = undefined,
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super(inputFile, pageId, fullText);
+    super({ inputFile, pageId, fullText, orientation, extras });
 
     this.locale = new Locale({
-      prediction: apiPrediction.locale,
+      prediction: prediction.locale,
       pageId: pageId,
     });
     this.totalTax = new Amount({
@@ -50,7 +38,7 @@ export class Receipt extends Document {
       pageId: pageId,
     });
 
-    this.#initFromApiPrediction(apiPrediction, pageId);
+    this.#initFromApiPrediction(prediction, pageId);
     this.#checklist();
     this.#reconstruct();
   }
@@ -88,12 +76,6 @@ export class Receipt extends Document {
         })
       )
     );
-    if (pageId !== undefined) {
-      this.orientation = new Orientation({
-        prediction: apiPrediction.orientation,
-        pageId,
-      });
-    }
   }
 
   toString(): string {
