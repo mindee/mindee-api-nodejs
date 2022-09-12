@@ -6,7 +6,6 @@ import {
   Field,
   Amount,
   Locale,
-  Orientation,
   DateField as Date,
   CompanyRegistration,
 } from "../fields";
@@ -19,7 +18,6 @@ export class FinancialDocument extends Document {
   dueDate!: Date;
   category!: Field;
   time!: Field;
-  orientation: Orientation | undefined;
   taxes: TaxField[] = [];
   totalTax!: Amount;
   totalExcl!: Amount;
@@ -32,33 +30,39 @@ export class FinancialDocument extends Document {
   paymentDetails: Field[] = [];
   customerCompanyRegistration: CompanyRegistration[] = [];
 
-  /**
-   * @param {Object} apiPrediction - Json parsed prediction from HTTP response
-   * @param {Input} inputFile - input file given to parse the document
-   * @param {number} pageId - Page ID for multi-page document
-   * @param {FullText} fullText - full OCR extracted text
-   */
   constructor({
-    apiPrediction,
+    prediction,
+    orientation = undefined,
+    extras = undefined,
     inputFile = undefined,
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super(inputFile, pageId, fullText);
-    this.#initFromApiPrediction(apiPrediction, inputFile, pageId);
+    super({ inputFile, pageId, fullText, orientation, extras });
+    this.#initFromApiPrediction(
+      prediction,
+      inputFile,
+      pageId,
+      orientation,
+      extras
+    );
     this.#checklist();
   }
 
   #initFromApiPrediction(
     prediction: any,
     inputFile: any,
-    pageNumber: number | undefined
+    pageNumber: number | undefined,
+    orientation: any,
+    extras: any
   ) {
     if (Object.keys(prediction).includes("invoice_number")) {
       const invoice = new Invoice({
-        apiPrediction: prediction,
+        prediction: prediction,
         inputFile,
         pageId: pageNumber,
+        orientation: orientation,
+        extras: extras,
       });
       this.locale = invoice.locale;
       this.totalIncl = invoice.totalIncl;
@@ -81,9 +85,11 @@ export class FinancialDocument extends Document {
       this.customerCompanyRegistration = invoice.customerCompanyRegistration;
     } else {
       const receipt = new Receipt({
-        apiPrediction: prediction,
+        prediction: prediction,
         inputFile,
         pageId: pageNumber,
+        orientation: orientation,
+        extras: extras,
       });
       this.orientation = receipt.orientation;
       this.date = receipt.date;

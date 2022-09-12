@@ -23,7 +23,7 @@ describe("Receipt Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.receipt.empty));
     const response = JSON.parse(jsonData.toString());
     const doc = new Receipt({
-      apiPrediction: response.document.inference.pages[0].prediction,
+      prediction: response.document.inference.pages[0].prediction,
     });
     expect((doc.locale as Locale).value).to.be.undefined;
     expect((doc.totalIncl as Amount).value).to.be.undefined;
@@ -43,7 +43,7 @@ describe("Receipt Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
     const doc = new Receipt({
-      apiPrediction: prediction,
+      prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.receipt.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
@@ -57,18 +57,21 @@ describe("Receipt Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
     const doc = new Receipt({
-      apiPrediction: pageData.prediction,
+      prediction: pageData.prediction,
       pageId: pageData.id,
+      orientation: pageData.orientation,
+      extras: pageData.extras,
     });
     const docString = await fs.readFile(
       path.join(dataPath.receipt.page0String)
     );
+    expect(doc.orientation?.value).to.be.equals(0);
     expect(doc.toString()).to.be.equals(docString.toString());
   });
 
   it("should reconstruct with N/A total", function () {
     const doc = new Receipt({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.5 },
         taxes: [
@@ -82,7 +85,7 @@ describe("Receipt Object initialization", async () => {
 
   it("should reconstruct with empty taxes", function () {
     const doc = new Receipt({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },
         taxes: [],
@@ -93,7 +96,7 @@ describe("Receipt Object initialization", async () => {
 
   it("should reconstruct with taxes", function () {
     const doc = new Receipt({
-      apiPrediction: {
+      prediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },
         taxes: [

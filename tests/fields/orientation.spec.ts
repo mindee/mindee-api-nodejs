@@ -1,31 +1,28 @@
-import { Orientation } from "../../src/fields";
+import { OrientationField } from "../../src/fields";
 import { expect } from "chai";
 
 describe("Test Orientation field", () => {
   it("should create an Orientation field", () => {
     const prediction = {
-      degrees: 90,
-      probability: 0.1,
+      value: 90,
     };
-    const orientation = new Orientation({ prediction });
+    const orientation = new OrientationField({ prediction, pageId: 0 });
     expect(orientation.value).to.be.equal(90);
   });
 
   it("should create an Orientation field with an NaN value", () => {
     const prediction = {
-      degrees: "aze",
-      probability: 0.1,
+      value: "aze",
     };
-    const orientation = new Orientation({ prediction });
+    const orientation = new OrientationField({ prediction, pageId: 0 });
     expect(orientation.value).to.be.equal(0);
   });
 
   it("should create an Orientation field with an incorrect value", () => {
     const prediction = {
-      degrees: 255,
-      probability: 0.1,
+      value: 255,
     };
-    const orientation = new Orientation({ prediction });
+    const orientation = new OrientationField({ prediction, pageId: 0 });
     expect(orientation.value).to.be.equal(0);
   });
 });

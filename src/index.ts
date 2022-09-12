@@ -5,5 +5,6 @@ export {
   PassportResponse,
   ReceiptResponse,
   CustomResponse,
+  CropperResponse,
 } from "./api";
 export { Client } from "./client";

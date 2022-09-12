@@ -31,7 +31,7 @@ describe("Financial Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoice.complete));
     const response = JSON.parse(jsonData.toString());
     const doc = new FinancialDocument({
-      apiPrediction: response.document.inference.prediction,
+      prediction: response.document.inference.prediction,
     });
     expect((doc.date as DateField).value).to.be.equal("2020-02-17");
     expect((doc.totalTax as TaxField).value).to.be.equal(97.98);
@@ -43,7 +43,7 @@ describe("Financial Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
     const response = JSON.parse(jsonData.toString());
     const doc = new FinancialDocument({
-      apiPrediction: response.document.inference.pages[0].prediction,
+      prediction: response.document.inference.pages[0].prediction,
     });
     expect((doc.date as DateField).value).to.be.equal("2016-02-26");
     expect((doc.totalTax as TaxField).value).to.be.equal(1.7);
@@ -58,7 +58,7 @@ describe("Financial Document Object initialization", async () => {
 
   it("should initialize from a N/A receipt", async function () {
     const doc = new FinancialDocument({
-      apiPrediction: this.receiptBasePrediction,
+      prediction: this.receiptBasePrediction,
     });
     expect((doc.locale as Locale).value).to.be.undefined;
     expect((doc.totalIncl as Amount).value).to.be.undefined;
@@ -74,7 +74,7 @@ describe("Financial Document Object initialization", async () => {
 
   it("should initialize from a N/A invoice", async function () {
     const doc = new FinancialDocument({
-      apiPrediction: this.invoiceBasePrediction,
+      prediction: this.invoiceBasePrediction,
     });
     expect((doc.locale as Locale).value).to.be.undefined;
     expect((doc.totalIncl as Amount).value).to.be.undefined;

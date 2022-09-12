@@ -49,7 +49,7 @@ async function predictCall(command: string, inputPath: string, options: any) {
     });
   }
   const doc = mindeeClient.docFromPath(inputPath);
-  const params = {
+  const predictParams = {
     docType: command === COMMAND_CUSTOM ? options.documentType : conf.docType,
     username: command === COMMAND_CUSTOM ? options.user : STANDARD_API_OWNER,
     cutPages: options.cutPages,
@@ -64,22 +64,32 @@ async function predictCall(command: string, inputPath: string, options: any) {
   let response;
   switch (command) {
     case COMMAND_INVOICE:
-      response = await doc.parse(InvoiceResponse, params);
+      response = await doc.parse(InvoiceResponse, predictParams);
       break;
     case COMMAND_RECEIPT:
-      response = await doc.parse(ReceiptResponse, params);
+      response = await doc.parse(ReceiptResponse, predictParams);
       break;
     case COMMAND_FINANCIAL:
-      response = await doc.parse(FinancialDocResponse, params);
+      response = await doc.parse(FinancialDocResponse, predictParams);
       break;
     case COMMAND_PASSPORT:
-      response = await doc.parse(PassportResponse, params);
+      response = await doc.parse(PassportResponse, predictParams);
       break;
     case COMMAND_CUSTOM:
-      response = await doc.parse(CustomResponse, params);
+      response = await doc.parse(CustomResponse, predictParams);
       break;
     default:
       throw `Unhandled command: ${command}`;
+  }
+  if (options.fullText) {
+    response.pages.forEach((page) => {
+      console.log(page.fullText?.toString());
+    });
+  }
+  if (options.pages) {
+    response.pages.forEach((page) => {
+      console.log(`\n${page}`);
+    });
   }
   if (response.document) {
     console.log(`\n${response.document}`);
@@ -96,6 +106,7 @@ export function cli() {
 
     prog.option("-k, --api-key <api_key>", "API key for document endpoint");
     prog.option("-C, --no-cut-pages", "Don't cut document pages");
+    prog.option("-p, --pages", "Show pages content");
     if (info.fullText) {
       prog.option("-t, --full-text", "Include full document text in response");
     }

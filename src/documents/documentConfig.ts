@@ -6,9 +6,11 @@ import {
   CustomEndpoint,
   PassportEndpoint,
   ReceiptEndpoint,
+  CropperEndpoint,
   API_KEY_ENVVAR_NAME,
 } from "../api";
 import {
+  DOC_TYPE_CROPPER,
   DOC_TYPE_FINANCIAL,
   DOC_TYPE_INVOICE,
   DOC_TYPE_PASSPORT,
@@ -38,8 +40,16 @@ export class DocumentConfig {
     this.endpoints = endpoints;
   }
 
-  async predictRequest(inputDoc: Input, includeWords = false) {
-    return await this.endpoints[0].predictRequest(inputDoc, includeWords);
+  async predictRequest(
+    inputDoc: Input,
+    includeWords: boolean,
+    cropping: boolean
+  ) {
+    return await this.endpoints[0].predictRequest(
+      inputDoc,
+      includeWords,
+      cropping
+    );
   }
 
   buildResult<RespType extends Response<Document>>(
@@ -71,14 +81,20 @@ export class DocumentConfig {
 
   async predict<RespType extends Response<Document>>(
     responseType: responseSig<RespType>,
-    params: { inputDoc: Input; includeWords: boolean; cutPages: boolean }
+    params: {
+      inputDoc: Input;
+      includeWords: boolean;
+      cutPages: boolean;
+      cropper: boolean;
+    }
   ): Promise<RespType> {
     this.checkApiKeys();
     await params.inputDoc.init();
     await this.cutDocPages(params.inputDoc, params.cutPages);
     const response = await this.predictRequest(
       params.inputDoc,
-      params.includeWords
+      params.includeWords,
+      params.cropper
     );
     return this.buildResult(responseType, params.inputDoc, response);
   }
@@ -124,14 +140,18 @@ export class FinancialDocConfig extends DocumentConfig {
     super(DOC_TYPE_FINANCIAL, endpoints);
   }
 
-  async predictRequest(inputDoc: Input, includeWords = false) {
+  async predictRequest(
+    inputDoc: Input,
+    includeWords: boolean,
+    cropping: boolean
+  ) {
     let endpoint: Endpoint;
     if (inputDoc.isPdf()) {
       endpoint = this.endpoints[0];
     } else {
       endpoint = this.endpoints[1];
     }
-    return await endpoint.predictRequest(inputDoc, includeWords);
+    return await endpoint.predictRequest(inputDoc, includeWords, cropping);
   }
 }
 
@@ -139,6 +159,13 @@ export class PassportConfig extends DocumentConfig {
   constructor(apiKey: string) {
     const endpoints = [new PassportEndpoint(apiKey)];
     super(DOC_TYPE_PASSPORT, endpoints);
+  }
+}
+
+export class CropperConfig extends DocumentConfig {
+  constructor(apiKey: string) {
+    const endpoints = [new CropperEndpoint(apiKey)];
+    super(DOC_TYPE_CROPPER, endpoints);
   }
 }
 

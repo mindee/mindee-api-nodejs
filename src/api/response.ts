@@ -6,6 +6,7 @@ import {
   FinancialDocument,
   CustomDocument,
   DocumentConstructorProps,
+  Cropper,
 } from "../documents";
 import { FullText } from "../fields";
 import { Input } from "../inputs";
@@ -64,7 +65,9 @@ export class CustomResponse extends Response<CustomDocument> {
     httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
       this.pages.push(
         new CustomDocument({
-          apiPrediction: apiPage.prediction,
+          prediction: apiPage.prediction,
+          orientation: apiPage.orientation,
+          extras: apiPage.extras,
           inputFile: this.inputFile,
           pageId: apiPage.id,
           documentType: this.documentType,
@@ -72,16 +75,18 @@ export class CustomResponse extends Response<CustomDocument> {
       );
     });
     this.document = new CustomDocument({
-      apiPrediction: httpDataDocument.inference.prediction,
+      prediction: httpDataDocument.inference.prediction,
       inputFile: this.inputFile,
       documentType: this.documentType,
+      orientation: {},
+      extras: {},
     });
   }
 }
 
 type StandardDocumentSig<DocType extends Document> = {
   new ({
-    apiPrediction,
+    prediction,
     inputFile,
     pageId,
     fullText,
@@ -113,16 +118,20 @@ export class StandardProductResponse<
       const pageText = this.getPageText(httpDataDocument, apiPage.id);
       this.pages.push(
         new this.documentClass({
-          apiPrediction: apiPage.prediction,
+          prediction: apiPage.prediction,
           inputFile: this.inputFile,
           pageId: apiPage.id,
+          orientation: apiPage.orientation,
+          extras: apiPage.extras,
           fullText: pageText,
         })
       );
     });
     this.document = new this.documentClass({
-      apiPrediction: httpDataDocument.inference.prediction,
+      prediction: httpDataDocument.inference.prediction,
       inputFile: this.inputFile,
+      orientation: {},
+      extras: {},
     });
   }
 }
@@ -148,5 +157,11 @@ export class FinancialDocResponse extends StandardProductResponse<FinancialDocum
 export class PassportResponse extends StandardProductResponse<Passport> {
   constructor(params: ResponseProps) {
     super(Passport, params);
+  }
+}
+
+export class CropperResponse extends StandardProductResponse<Cropper> {
+  constructor(params: ResponseProps) {
+    super(Cropper, params);
   }
 }

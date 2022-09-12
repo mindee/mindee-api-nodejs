@@ -3,25 +3,37 @@ import { Polygon, getBboxAsPolygon } from "../geometry";
 export type stringDict = { [index: string]: any };
 
 export interface FieldConstructor {
-  prediction: { [index: string]: any };
+  prediction: stringDict;
   valueKey?: string;
   reconstructed?: boolean;
   pageId?: number | undefined;
 }
 
-interface BaseFieldConstructor {
+export interface BaseFieldConstructor {
   prediction: stringDict;
-  valueKey: string;
+  valueKey?: string;
+  reconstructed?: boolean;
 }
 
 export class BaseField {
   value?: any = undefined;
+  /**
+   * True if the field was reconstructed or computed using other fields.
+   */
+  reconstructed: boolean;
 
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
+   * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    */
-  constructor({ prediction, valueKey }: BaseFieldConstructor) {
+  constructor({
+    prediction,
+    valueKey = "value",
+    reconstructed = false,
+  }: BaseFieldConstructor) {
+    this.reconstructed = reconstructed;
+
     if (valueKey in prediction && prediction[valueKey] !== null) {
       this.value = prediction[valueKey];
     }
@@ -46,10 +58,6 @@ export class Field extends BaseField {
    */
   confidence: number;
   /**
-   * True if the field was reconstructed or computed using other fields.
-   */
-  reconstructed: boolean;
-  /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
@@ -62,9 +70,9 @@ export class Field extends BaseField {
     reconstructed = false,
     pageId,
   }: FieldConstructor) {
-    super({ prediction, valueKey });
+    super({ prediction, valueKey, reconstructed });
     this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
-    this.reconstructed = reconstructed;
+
     this.confidence = prediction.confidence ? prediction.confidence : 0.0;
     if (prediction.polygon) {
       this.polygon = prediction.polygon;

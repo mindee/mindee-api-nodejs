@@ -1,4 +1,5 @@
 import {
+  CropperResponse,
   CustomResponse,
   FinancialDocResponse,
   InvoiceResponse,
@@ -12,6 +13,7 @@ import {
   DOC_TYPE_INVOICE,
   DOC_TYPE_PASSPORT,
   DOC_TYPE_RECEIPT,
+  DOC_TYPE_CROPPER,
   Document,
 } from "./documents";
 
@@ -52,6 +54,12 @@ export class ProductConfigs {
       description: "A custom document",
       docType: DOC_TYPE_CUSTOM,
       responseClass: CustomResponse,
+      fullText: false,
+    },
+    {
+      description: "Cropper",
+      docType: DOC_TYPE_CROPPER,
+      responseClass: CropperResponse,
       fullText: false,
     },
   ];

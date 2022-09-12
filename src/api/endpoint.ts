@@ -42,7 +42,7 @@ export class Endpoint {
   /**
    * Make a prediction request.
    */
-  predictRequest(input: Input, includeWords = false) {
+  predictRequest(input: Input, includeWords = false, cropper = false) {
     return new Promise((resolve, reject) => {
       const form = new FormData();
       let body;
@@ -51,26 +51,17 @@ export class Endpoint {
         Authorization: `Token ${this.apiKey}`,
       };
 
-      // TODO: redo this section given there should only
-      //       be a single way of reading the input doc
-      if (["path", "stream"].includes(input.inputType)) {
-        const fileParams = { filename: input.filename };
-        form.append("document", input.fileObject, fileParams);
-        if (includeWords) {
-          form.append("include_mvision", "true");
-        }
-        headers = { ...headers, ...form.getHeaders() };
-      } else if (input.inputType === "base64") {
-        const bodyObj: any = { document: input.fileObject };
-        if (includeWords) {
-          bodyObj["include_mvision"] = "true";
-        }
-        body = JSON.stringify(bodyObj);
-        headers["Content-Type"] = "application/json";
-        headers["Content-Length"] = body.length;
-      }
-
       const uri = new URL(`${this.urlRoot}/predict`);
+      const fileParams = { filename: input.filename };
+      form.append("document", input.fileObject, fileParams);
+      if (includeWords) {
+        form.append("include_mvision", "true");
+      }
+      if (cropper) {
+        uri.searchParams.append("cropper", "true");
+      }
+      headers = { ...headers, ...form.getHeaders() };
+
       const options = {
         method: "POST",
         headers: headers,
@@ -142,6 +133,12 @@ export class ReceiptEndpoint extends Endpoint {
 export class PassportEndpoint extends Endpoint {
   constructor(apiKey: string) {
     super(STANDARD_API_OWNER, "passport", "1", apiKey);
+  }
+}
+
+export class CropperEndpoint extends Endpoint {
+  constructor(apiKey: string) {
+    super(STANDARD_API_OWNER, "cropper", "1", apiKey);
   }
 }
 
