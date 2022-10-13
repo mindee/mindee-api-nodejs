@@ -1,11 +1,15 @@
-name: Lint
+#
+# Publish releases to NPM
+#
+name: Publish
 
 on:
-  - push
+  release:
+    types: [ published ]
 
 jobs:
-  run-linters:
-    name: Run linters
+  publish:
+    name: Publish release to NPM
     runs-on: ubuntu-latest
 
     steps:
@@ -13,7 +17,7 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v3
         with:
           node-version: 16
           cache: "npm"
@@ -21,5 +25,5 @@ jobs:
       - name: Install Node.js dependencies
         run: npm install
 
-      - name: Test lint
-        run: npm run lint
+      - name: Publish dry run
+        run: npm publish --dry-run
