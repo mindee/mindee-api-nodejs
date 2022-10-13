@@ -13,13 +13,11 @@
     "rootDir": "./",
     "baseUrl": "./",
     "sourceMap": false,
+    "newLine": "lf",
     "paths": {
-        "@mindee/*": ["mindee/*"],
+        "@mindee/*": ["./src/*"],
       }
   },
-  "include": [
-    "./src/**/*.ts",
-    "./bin/**/*"
-  ],
+  "include": ["./src/**/*", "./bin/**/*"],
   "exclude": ["./node_modules/", "./dist/", "./tests/"]
 }
