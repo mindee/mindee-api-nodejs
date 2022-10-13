@@ -1,6 +1,10 @@
 # CHANGELOG
 
-## v2.0.0 (2022-08-26)
+## v2.0.1 - 2022-10-13
+### Fixes
+* :bug: Fix for packaging and documentation related to commonJS imports
+
+## v2.0.0 - 2022-08-26
 ### Note
 This is a complete rewrite in TypeScript!
 
