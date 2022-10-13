@@ -14,7 +14,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -23,7 +23,13 @@ jobs:
           cache: "npm"
 
       - name: Install Node.js dependencies
-        run: npm install
+        run: npm ci
 
-      - name: Publish dry run
-        run: npm publish --dry-run
+      - name: Build
+        run: npm run build
+
+      - name: Publish
+        run: |
+          cd ./dist
+          npm set "//registry.npmjs.org/:_authToken" ${{ secrets.NPM_PUBLISH_TOKEN }}
+          npm publish

@@ -13,7 +13,7 @@ jobs:
 
     steps:
       - name: Check out Git repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v3
@@ -22,7 +22,7 @@ jobs:
           cache: "npm"
 
       - name: Install Node.js dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install NPM License Checker
         run: npm install -g license-checker

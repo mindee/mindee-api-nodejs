@@ -13,31 +13,35 @@ npm install mindee
 
 Finally, Node.js away!
 
-### Off-the-Shelf Document
+### Off-the-Shelf Documents
 
-```ts
-import { Client, InvoiceResponse } from "mindee";
+```js
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
 
 // Init a new client
-const mindeeClient = new Client({apiKey: "my-api-key"});
+const mindeeClient = new mindee.Client({apiKey: "my-api-key"});
 
 // Load a file from disk and parse it
 const invoiceResponse = mindeeClient.docFromPath("/path/to/the/invoice.pdf")
-  .parse(InvoiceResponse);
+    .parse(mindee.InvoiceResponse);
 
 // Print a brief summary of the parsed data
 invoiceResponse.then((resp) => {
-  console.log(resp.document);
+    console.log(resp.document);
 });
 ```
 
-### Custom Document (API Builder)
+### Custom Documents (API Builder)
 
-```ts
-import { Client, CustomResponse } from "mindee";
+```js
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
 
 // Init a new client and add your document endpoint
-const mindeeClient = new Client({apiKey: "my-api-key"})
+const mindeeClient = new mindee.Client({apiKey: "my-api-key"})
   .addEndpoint({
     accountName: "john",
     documentType: "wsnine",
@@ -45,7 +49,7 @@ const mindeeClient = new Client({apiKey: "my-api-key"})
 
 // Load a file from disk and parse it
 const customResponse = mindeeClient.docFromPath("/path/to/the/wsnine.jpg")
-  .parse(CustomResponse, {docType: "wsnine"});
+  .parse(mindee.CustomResponse, {docType: "wsnine"});
 
 // Print a brief summary of the parsed data
 customResponse.then((resp) => {
