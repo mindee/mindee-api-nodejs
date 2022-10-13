@@ -1,3 +1,5 @@
 #!/usr/bin/env node
 
-require('../src/cli').cli();
+import { cli } from "../src/cli";
+
+cli();

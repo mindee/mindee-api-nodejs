@@ -1,26 +1,27 @@
 {
   "name": "mindee",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Mindee Client Library for Node.js",
   "main": "src/index.js",
+  "bin": "bin/mindee.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build",
+    "build": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
     "clean": "rm -rf ./dist",
     "test": "mocha 'tests/**/*.spec.ts'",
-    "lint-fix": "eslint 'src/**/*.ts' --fix",
-    "lint": "eslint 'src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
+    "lint-fix": "eslint '**/*.ts' --fix",
+    "lint": "eslint '**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
     "docs": "jsdoc -r src -d docs"
   },
   "files": [
-    "dist/",
-    "bin/",
+    "src/*",
+    "bin/*",
     "LICENSE",
     "README.md",
     "CHANGELOG.md"
   ],
   "engines": {
-    "node": ">= 14.0.0"
+    "node": ">= 14"
   },
   "repository": {
     "type": "git",
@@ -36,7 +37,6 @@
   },
   "homepage": "https://mindee.com/",
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.3",
     "@types/chai": "^4.3.1",
     "@types/mocha": "^9.1.1",
     "@types/node": "^17.0.38",
