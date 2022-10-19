@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v2.1.0 - 2022-10-19
+### Changes
+* :sparkles: add cropper support to predict requests
+* :sparkles: add stand-alone cropper support
+
+
 ## v2.0.1 - 2022-10-13
 ### Fixes
 * :bug: Fix for packaging and documentation related to commonJS imports
