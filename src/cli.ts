@@ -1,17 +1,17 @@
 import { Command } from "commander";
 import {
-  DOC_TYPE_INVOICE,
-  DOC_TYPE_RECEIPT,
-  DOC_TYPE_PASSPORT,
-  DOC_TYPE_FINANCIAL,
+  DOC_TYPE_INVOICE_V3,
+  DOC_TYPE_RECEIPT_V3,
+  DOC_TYPE_PASSPORT_V1,
+  DOC_TYPE_FINANCIAL_V1,
   DOC_TYPE_CUSTOM,
 } from "./documents";
 import {
   CustomResponse,
-  FinancialDocResponse,
-  InvoiceResponse,
-  PassportResponse,
-  ReceiptResponse,
+  FinancialDocV1Response,
+  InvoiceV3Response,
+  PassportV1Response,
+  ReceiptV3Response,
   STANDARD_API_OWNER,
 } from "./api";
 import { Client } from "./client";
@@ -26,10 +26,10 @@ const COMMAND_FINANCIAL = "financial";
 const COMMAND_CUSTOM = "custom";
 
 const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
-  [COMMAND_INVOICE, ProductConfigs.getByDocType(DOC_TYPE_INVOICE)],
-  [COMMAND_RECEIPT, ProductConfigs.getByDocType(DOC_TYPE_RECEIPT)],
-  [COMMAND_PASSPORT, ProductConfigs.getByDocType(DOC_TYPE_PASSPORT)],
-  [COMMAND_FINANCIAL, ProductConfigs.getByDocType(DOC_TYPE_FINANCIAL)],
+  [COMMAND_INVOICE, ProductConfigs.getByDocType(DOC_TYPE_INVOICE_V3)],
+  [COMMAND_RECEIPT, ProductConfigs.getByDocType(DOC_TYPE_RECEIPT_V3)],
+  [COMMAND_PASSPORT, ProductConfigs.getByDocType(DOC_TYPE_PASSPORT_V1)],
+  [COMMAND_FINANCIAL, ProductConfigs.getByDocType(DOC_TYPE_FINANCIAL_V1)],
   [COMMAND_CUSTOM, ProductConfigs.getByDocType(DOC_TYPE_CUSTOM)],
 ]);
 
@@ -45,7 +45,7 @@ async function predictCall(command: string, inputPath: string, options: any) {
   if (command === COMMAND_CUSTOM) {
     mindeeClient.addEndpoint({
       accountName: options.user,
-      documentType: options.documentType,
+      endpointName: options.documentType,
     });
   }
   const doc = mindeeClient.docFromPath(inputPath);
@@ -64,16 +64,16 @@ async function predictCall(command: string, inputPath: string, options: any) {
   let response;
   switch (command) {
     case COMMAND_INVOICE:
-      response = await doc.parse(InvoiceResponse, predictParams);
+      response = await doc.parse(InvoiceV3Response, predictParams);
       break;
     case COMMAND_RECEIPT:
-      response = await doc.parse(ReceiptResponse, predictParams);
+      response = await doc.parse(ReceiptV3Response, predictParams);
       break;
     case COMMAND_FINANCIAL:
-      response = await doc.parse(FinancialDocResponse, predictParams);
+      response = await doc.parse(FinancialDocV1Response, predictParams);
       break;
     case COMMAND_PASSPORT:
-      response = await doc.parse(PassportResponse, predictParams);
+      response = await doc.parse(PassportV1Response, predictParams);
       break;
     case COMMAND_CUSTOM:
       response = await doc.parse(CustomResponse, predictParams);

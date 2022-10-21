@@ -1,9 +1,9 @@
-import { Document, DocumentConstructorProps } from "./document";
-import { Field, DateField } from "../fields";
+import { Document, DocumentConstructorProps } from "../document";
+import { Field, DateField } from "../../fields";
 // @ts-ignore
 import * as MRZ from "mrz";
 
-export class Passport extends Document {
+export class PassportV1 extends Document {
   country: Field;
   idNumber: Field;
   birthDate: DateField;
@@ -118,7 +118,7 @@ MRZ 2: ${this.mrz2}
 MRZ: ${this.mrz}
 ----------------------
 `;
-    return Passport.cleanOutString(outStr);
+    return PassportV1.cleanOutString(outStr);
   }
 
   isExpired(): boolean {
@@ -139,7 +139,7 @@ MRZ: ${this.mrz}
     if (this.birthDate.dateObject === undefined || !mrz.fields.birthDate) {
       return false;
     }
-    const mrzDate: Date = Passport.convertMRZDateToDatetime(
+    const mrzDate: Date = PassportV1.convertMRZDateToDatetime(
       mrz.fields.birthDate
     );
     const check = DateField.compareDates(this.birthDate.dateObject, mrzDate);
@@ -156,7 +156,7 @@ MRZ: ${this.mrz}
     ) {
       return false;
     }
-    const mrzDate: Date = Passport.convertMRZDateToDatetime(
+    const mrzDate: Date = PassportV1.convertMRZDateToDatetime(
       mrz.fields.expirationDate
     );
     const check = DateField.compareDates(this.expiryDate.dateObject, mrzDate);

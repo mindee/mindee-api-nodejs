@@ -25,7 +25,7 @@ const mindeeClient = new mindee.Client({apiKey: "my-api-key"});
 
 // Load a file from disk and parse it
 const invoiceResponse = mindeeClient.docFromPath("/path/to/the/invoice.pdf")
-    .parse(mindee.InvoiceResponse);
+    .parse(mindee.InvoiceV3Response);
 
 // Print a brief summary of the parsed data
 invoiceResponse.then((resp) => {
@@ -42,18 +42,18 @@ const mindee = require("mindee");
 
 // Init a new client and add your document endpoint
 const mindeeClient = new mindee.Client({apiKey: "my-api-key"})
-  .addEndpoint({
-    accountName: "john",
-    documentType: "wsnine",
-});
+    .addEndpoint({
+        accountName: "john",
+        endpointName: "wsnine",
+    });
 
 // Load a file from disk and parse it
 const customResponse = mindeeClient.docFromPath("/path/to/the/wsnine.jpg")
-  .parse(mindee.CustomResponse, {docType: "wsnine"});
+    .parse(mindee.CustomResponse, {docType: "wsnine"});
 
 // Print a brief summary of the parsed data
 customResponse.then((resp) => {
-  console.log(resp.document);
+    console.log(resp.document);
 });
 ```
 

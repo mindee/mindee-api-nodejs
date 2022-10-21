@@ -1,4 +1,4 @@
-import { Document, DocumentConstructorProps } from "./document";
+import { Document, DocumentConstructorProps } from "../document";
 
 import {
   BaseField,
@@ -9,9 +9,9 @@ import {
   Field,
   DateField,
   CompanyRegistration,
-} from "../fields";
+} from "../../fields";
 
-export class Invoice extends Document {
+export class InvoiceV3 extends Document {
   locale!: Locale;
   documentType!: BaseField;
   totalIncl!: Amount;
@@ -165,7 +165,7 @@ Total taxes: ${this.totalTax}
 Locale: ${this.locale}
 ----------------------
 `;
-    return Invoice.cleanOutString(outStr);
+    return InvoiceV3.cleanOutString(outStr);
   }
 
   #checklist() {

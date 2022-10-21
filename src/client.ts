@@ -2,26 +2,28 @@ import {
   Base64Input,
   BytesInput,
   Input,
+  PageOptions,
   PathInput,
   StreamInput,
 } from "./inputs";
 import { Response, STANDARD_API_OWNER } from "./api";
 import {
-  DOC_TYPE_CROPPER,
-  DOC_TYPE_FINANCIAL,
-  DOC_TYPE_INVOICE,
-  DOC_TYPE_PASSPORT,
-  DOC_TYPE_RECEIPT,
+  DOC_TYPE_CROPPER_V1,
+  DOC_TYPE_FINANCIAL_V1,
+  DOC_TYPE_INVOICE_V3,
+  DOC_TYPE_PASSPORT_V1,
+  DOC_TYPE_RECEIPT_V3,
+  DOC_TYPE_RECEIPT_V4,
   Document,
 } from "./documents";
 import {
-  CropperConfig,
+  CropperV1Config,
   CustomDocConfig,
   DocumentConfig,
-  FinancialDocConfig,
-  InvoiceConfig,
-  PassportConfig,
-  ReceiptConfig,
+  FinancialDocV1Config,
+  InvoiceV3Config,
+  PassportV1Config,
+  ReceiptV3Config,
   responseSig,
 } from "./documents/documentConfig";
 import { errorHandler } from "./errors/handler";
@@ -34,9 +36,9 @@ type DocConfigs = Map<string[], DocumentConfig>;
 interface PredictOptions {
   docType?: string;
   username?: string;
-  cutPages?: boolean;
   fullText?: boolean;
   cropper?: boolean;
+  pageOptions?: PageOptions;
 }
 
 class DocumentClient {
@@ -53,15 +55,14 @@ class DocumentClient {
     params: PredictOptions = {
       docType: "",
       username: "",
-      cutPages: true,
       fullText: false,
       cropper: false,
+      pageOptions: undefined,
     }
   ): Promise<RespType> {
     // seems like there should be a better way of doing this
     const fullText = params?.fullText !== undefined ? params.fullText : false;
     const cropper = params?.cropper !== undefined ? params.cropper : false;
-    const cutPages = params?.cutPages !== undefined ? params.cutPages : true;
     const docType: string =
       params.docType === undefined || params.docType === ""
         ? this.getDocType(responseClass.name)
@@ -92,7 +93,7 @@ class DocumentClient {
     return await docConfig.predict(responseClass, {
       inputDoc: this.inputDoc,
       includeWords: fullText,
-      cutPages: cutPages,
+      pageOptions: params.pageOptions,
       cropper: cropper,
     });
   }
@@ -104,7 +105,7 @@ class DocumentClient {
 
 interface customConfigParams {
   accountName: string;
-  documentType: string;
+  endpointName: string;
   version?: string;
 }
 
@@ -144,37 +145,41 @@ export class Client {
   // TODO: init only those endpoints we actually need.
   protected addStandardEndpoints() {
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_INVOICE],
-      new InvoiceConfig(this.apiKey)
+      [STANDARD_API_OWNER, DOC_TYPE_INVOICE_V3],
+      new InvoiceV3Config(this.apiKey)
     );
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_RECEIPT],
-      new ReceiptConfig(this.apiKey)
+      [STANDARD_API_OWNER, DOC_TYPE_RECEIPT_V3],
+      new ReceiptV3Config(this.apiKey)
     );
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_FINANCIAL],
-      new FinancialDocConfig(this.apiKey)
+      [STANDARD_API_OWNER, DOC_TYPE_RECEIPT_V4],
+      new ReceiptV3Config(this.apiKey)
     );
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_PASSPORT],
-      new PassportConfig(this.apiKey)
+      [STANDARD_API_OWNER, DOC_TYPE_FINANCIAL_V1],
+      new FinancialDocV1Config(this.apiKey)
     );
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_CROPPER],
-      new CropperConfig(this.apiKey)
+      [STANDARD_API_OWNER, DOC_TYPE_PASSPORT_V1],
+      new PassportV1Config(this.apiKey)
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, DOC_TYPE_CROPPER_V1],
+      new CropperV1Config(this.apiKey)
     );
   }
 
   addEndpoint({
     accountName,
-    documentType,
+    endpointName,
     version = "1",
   }: customConfigParams) {
     this.docConfigs.set(
-      [accountName, documentType],
+      [accountName, endpointName],
       new CustomDocConfig({
         accountName: accountName,
-        documentType: documentType,
+        documentType: endpointName,
         version: version,
         apiKey: this.apiKey,
       })

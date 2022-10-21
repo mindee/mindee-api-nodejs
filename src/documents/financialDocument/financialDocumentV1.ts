@@ -1,6 +1,6 @@
-import { Document, DocumentConstructorProps } from "./document";
-import { Invoice } from "./invoice";
-import { Receipt } from "./receipt";
+import { Document, DocumentConstructorProps } from "../document";
+import { InvoiceV3 } from "../invoice/invoiceV3";
+import { ReceiptV3 } from "../receipt/receiptV3";
 import {
   TaxField,
   Field,
@@ -8,9 +8,9 @@ import {
   Locale,
   DateField as Date,
   CompanyRegistration,
-} from "../fields";
+} from "../../fields";
 
-export class FinancialDocument extends Document {
+export class FinancialDocumentV1 extends Document {
   pageId: number | undefined;
   locale!: Locale;
   totalIncl!: Amount;
@@ -57,7 +57,7 @@ export class FinancialDocument extends Document {
     extras: any
   ) {
     if (Object.keys(prediction).includes("invoice_number")) {
-      const invoice = new Invoice({
+      const invoice = new InvoiceV3({
         prediction: prediction,
         inputFile,
         pageId: pageNumber,
@@ -84,7 +84,7 @@ export class FinancialDocument extends Document {
       this.customerAddress = invoice.customerAddress;
       this.customerCompanyRegistration = invoice.customerCompanyRegistration;
     } else {
-      const receipt = new Receipt({
+      const receipt = new ReceiptV3({
         prediction: prediction,
         inputFile,
         pageId: pageNumber,
@@ -125,7 +125,7 @@ Supplier: ${(this.supplier as Field).value}
 Total taxes: ${(this.totalTax as Amount).value}
 ----------------------
 `;
-    return FinancialDocument.cleanOutString(outStr);
+    return FinancialDocumentV1.cleanOutString(outStr);
   }
 
   #checklist() {

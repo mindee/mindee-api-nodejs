@@ -1,7 +1,7 @@
-import { Document, DocumentConstructorProps } from "./document";
-import { TaxField, Field, Amount, Locale, DateField } from "../fields";
+import { Document, DocumentConstructorProps } from "../document";
+import { TaxField, Field, Amount, Locale, DateField } from "../../fields";
 
-export class Receipt extends Document {
+export class ReceiptV3 extends Document {
   locale: Locale;
   totalIncl!: Amount;
   date!: DateField;
@@ -93,7 +93,7 @@ Total taxes: ${this.totalTax}
 Locale: ${this.locale}
 ----------------------
 `;
-    return Receipt.cleanOutString(outStr);
+    return ReceiptV3.cleanOutString(outStr);
   }
 
   /**

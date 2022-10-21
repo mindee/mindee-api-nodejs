@@ -1,19 +1,21 @@
 import {
-  CropperResponse,
+  CropperV1Response,
   CustomResponse,
-  FinancialDocResponse,
-  InvoiceResponse,
-  PassportResponse,
-  ReceiptResponse,
+  FinancialDocV1Response,
+  InvoiceV3Response,
+  PassportV1Response,
+  ReceiptV3Response,
+  ReceiptV4Response,
   Response,
 } from "./api";
 import {
   DOC_TYPE_CUSTOM,
-  DOC_TYPE_FINANCIAL,
-  DOC_TYPE_INVOICE,
-  DOC_TYPE_PASSPORT,
-  DOC_TYPE_RECEIPT,
-  DOC_TYPE_CROPPER,
+  DOC_TYPE_FINANCIAL_V1,
+  DOC_TYPE_INVOICE_V3,
+  DOC_TYPE_PASSPORT_V1,
+  DOC_TYPE_RECEIPT_V3,
+  DOC_TYPE_RECEIPT_V4,
+  DOC_TYPE_CROPPER_V1,
   Document,
 } from "./documents";
 
@@ -27,27 +29,33 @@ export interface ProductConfig {
 export class ProductConfigs {
   private static configs: Array<ProductConfig> = [
     {
-      description: "Invoice",
-      docType: DOC_TYPE_INVOICE,
-      responseClass: InvoiceResponse,
+      description: "Invoice V3",
+      docType: DOC_TYPE_INVOICE_V3,
+      responseClass: InvoiceV3Response,
       fullText: true,
     },
     {
-      description: "Expense Receipt",
-      docType: DOC_TYPE_RECEIPT,
-      responseClass: ReceiptResponse,
+      description: "Expense Receipt V3",
+      docType: DOC_TYPE_RECEIPT_V3,
+      responseClass: ReceiptV3Response,
       fullText: true,
     },
     {
-      description: "Passport",
-      docType: DOC_TYPE_PASSPORT,
-      responseClass: PassportResponse,
+      description: "Expense Receipt V4",
+      docType: DOC_TYPE_RECEIPT_V4,
+      responseClass: ReceiptV4Response,
+      fullText: true,
+    },
+    {
+      description: "Passport V1",
+      docType: DOC_TYPE_PASSPORT_V1,
+      responseClass: PassportV1Response,
       fullText: false,
     },
     {
-      description: "Financial Document (receipt or invoice)",
-      docType: DOC_TYPE_FINANCIAL,
-      responseClass: FinancialDocResponse,
+      description: "Financial Document V1 (receipt or invoice)",
+      docType: DOC_TYPE_FINANCIAL_V1,
+      responseClass: FinancialDocV1Response,
       fullText: true,
     },
     {
@@ -57,9 +65,9 @@ export class ProductConfigs {
       fullText: false,
     },
     {
-      description: "Cropper",
-      docType: DOC_TYPE_CROPPER,
-      responseClass: CropperResponse,
+      description: "Cropper V1",
+      docType: DOC_TYPE_CROPPER_V1,
+      responseClass: CropperV1Response,
       fullText: false,
     },
   ];

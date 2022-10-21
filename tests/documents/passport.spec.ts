@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { Passport } from "../../src/documents";
+import { PassportV1 } from "../../src/documents";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
 
@@ -8,7 +8,7 @@ describe("Passport Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPath.passport.empty));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new Passport({
+    const doc = new PassportV1({
       prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.birthDate.value).to.be.undefined;
@@ -24,7 +24,7 @@ describe("Passport Object initialization", async () => {
     );
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new Passport({
+    const doc = new PassportV1({
       prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.passport.docString));
@@ -46,7 +46,7 @@ describe("Passport Object initialization", async () => {
     );
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new Passport({
+    const doc = new PassportV1({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,

@@ -1,4 +1,4 @@
-import { Receipt } from "../../src/documents";
+import { ReceiptV3 } from "../../src/documents";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
@@ -13,16 +13,16 @@ import {
 
 describe("Receipt Object initialization", async () => {
   before(async function () {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.empty));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.empty));
     this.basePrediction = JSON.parse(
       jsonData.toString()
     ).document.inference.pages[0].prediction;
   });
 
   it("should initialize from a prediction object with N/A value", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.empty));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new Receipt({
+    const doc = new ReceiptV3({
       prediction: response.document.inference.pages[0].prediction,
     });
     expect((doc.locale as Locale).value).to.be.undefined;
@@ -39,13 +39,13 @@ describe("Receipt Object initialization", async () => {
   });
 
   it("should load a complete document prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new Receipt({
+    const doc = new ReceiptV3({
       prediction: prediction,
     });
-    const docString = await fs.readFile(path.join(dataPath.receipt.docString));
+    const docString = await fs.readFile(path.join(dataPath.receiptV3.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
     for (const key in doc.checklist) {
       expect(doc.checklist[key]).to.be.true;
@@ -53,24 +53,24 @@ describe("Receipt Object initialization", async () => {
   });
 
   it("should load a complete page 0 prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new Receipt({
+    const doc = new ReceiptV3({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,
       extras: pageData.extras,
     });
     const docString = await fs.readFile(
-      path.join(dataPath.receipt.page0String)
+      path.join(dataPath.receiptV3.page0String)
     );
     expect(doc.orientation?.value).to.be.equals(0);
     expect(doc.toString()).to.be.equals(docString.toString());
   });
 
   it("should reconstruct with N/A total", function () {
-    const doc = new Receipt({
+    const doc = new ReceiptV3({
       prediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.5 },
@@ -84,7 +84,7 @@ describe("Receipt Object initialization", async () => {
   });
 
   it("should reconstruct with empty taxes", function () {
-    const doc = new Receipt({
+    const doc = new ReceiptV3({
       prediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },
@@ -95,7 +95,7 @@ describe("Receipt Object initialization", async () => {
   });
 
   it("should reconstruct with taxes", function () {
-    const doc = new Receipt({
+    const doc = new ReceiptV3({
       prediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },

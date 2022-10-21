@@ -33,6 +33,17 @@ const ALLOWED_INPUT_TYPES = [
   INPUT_TYPE_PATH,
 ];
 
+export enum PageOptionsBehavior {
+  KeepOnly = "KEEP_ONLY",
+  Remove = "REMOVE",
+}
+
+export interface PageOptions {
+  pageIndexes: number[];
+  behavior: PageOptionsBehavior;
+  onMinPages: number;
+}
+
 export class Input {
   MAX_DOC_PAGES = 3;
   public inputType: string;
@@ -97,13 +108,15 @@ export class Input {
   }
 
   /** Merge PDF pages */
-  async cutPdf() {
+  async cutPdf(pageOptions: PageOptions) {
+    // TODO: use pageOptions to cut the PDF
+    console.log(pageOptions);
     const currentPdf = await PDFDocument.load(this.fileObject, {
       ignoreEncryption: true,
     });
 
     const pdfLength = currentPdf.getPageCount();
-    if (pdfLength <= this.MAX_DOC_PAGES) {
+    if (pdfLength < this.MAX_DOC_PAGES) {
       return;
     }
 
