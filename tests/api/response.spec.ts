@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import {CustomResponse, InvoiceResponse, PassportResponse, ReceiptResponse} from "../../src/api";
-import {DOC_TYPE_INVOICE, DOC_TYPE_RECEIPT} from "../../src/documents";
+import {CustomResponse, InvoiceV3Response, PassportV1Response, ReceiptV3Response} from "../../src/api";
+import {DOC_TYPE_INVOICE_V3, DOC_TYPE_RECEIPT_V3} from "../../src/documents";
 import { promises as fs } from "fs";
 import path from "path";
 import { dataPath } from "../apiPaths";
@@ -8,13 +8,13 @@ import { Input, INPUT_TYPE_PATH } from "../../src/inputs";
 
 describe("API response", () => {
   it("should build a Receipt response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new ReceiptResponse({
+    const response = new ReceiptV3Response({
       httpResponse: httpResponse,
-      documentType: DOC_TYPE_RECEIPT,
+      documentType: DOC_TYPE_RECEIPT_V3,
       input: new Input({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
@@ -31,9 +31,9 @@ describe("API response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new InvoiceResponse({
+    const response = new InvoiceV3Response({
       httpResponse: httpResponse,
-      documentType: DOC_TYPE_INVOICE,
+      documentType: DOC_TYPE_INVOICE_V3,
       input: new Input({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
@@ -50,9 +50,9 @@ describe("API response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new PassportResponse({
+    const response = new PassportV1Response({
       httpResponse: httpResponse,
-      documentType: DOC_TYPE_INVOICE,
+      documentType: DOC_TYPE_INVOICE_V3,
       input: new Input({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });

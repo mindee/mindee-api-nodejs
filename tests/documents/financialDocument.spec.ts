@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
-import { FinancialDocument } from "../../src/documents";
+import { FinancialDocumentV1 } from "../../src/documents";
 import {
   Amount,
   DateField,
@@ -17,7 +17,7 @@ describe("Financial Document Object initialization", async () => {
       path.resolve(dataPath.invoice.empty)
     );
     const receiptJsonDataNA = await fs.readFile(
-      path.resolve(dataPath.receipt.empty)
+      path.resolve(dataPath.receiptV3.empty)
     );
     this.invoiceBasePrediction = JSON.parse(
       invoiceJsonDataNA.toString()
@@ -30,7 +30,7 @@ describe("Financial Document Object initialization", async () => {
   it("should initialize from an invoice object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoice.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new FinancialDocument({
+    const doc = new FinancialDocumentV1({
       prediction: response.document.inference.prediction,
     });
     expect((doc.date as DateField).value).to.be.equal("2020-02-17");
@@ -40,9 +40,9 @@ describe("Financial Document Object initialization", async () => {
   });
 
   it("should initialize from a receipt object", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receipt.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new FinancialDocument({
+    const doc = new FinancialDocumentV1({
       prediction: response.document.inference.pages[0].prediction,
     });
     expect((doc.date as DateField).value).to.be.equal("2016-02-26");
@@ -57,7 +57,7 @@ describe("Financial Document Object initialization", async () => {
   });
 
   it("should initialize from a N/A receipt", async function () {
-    const doc = new FinancialDocument({
+    const doc = new FinancialDocumentV1({
       prediction: this.receiptBasePrediction,
     });
     expect((doc.locale as Locale).value).to.be.undefined;
@@ -73,7 +73,7 @@ describe("Financial Document Object initialization", async () => {
   });
 
   it("should initialize from a N/A invoice", async function () {
-    const doc = new FinancialDocument({
+    const doc = new FinancialDocumentV1({
       prediction: this.invoiceBasePrediction,
     });
     expect((doc.locale as Locale).value).to.be.undefined;

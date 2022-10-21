@@ -1,20 +1,22 @@
-import { Input } from "../inputs";
+import { Input, PageOptions } from "../inputs";
 import {
   Response,
   Endpoint,
-  InvoiceEndpoint,
+  InvoiceV3Endpoint,
   CustomEndpoint,
-  PassportEndpoint,
-  ReceiptEndpoint,
-  CropperEndpoint,
+  PassportV1Endpoint,
+  ReceiptV3Endpoint,
+  ReceiptV4Endpoint,
+  CropperV1Endpoint,
   API_KEY_ENVVAR_NAME,
 } from "../api";
 import {
-  DOC_TYPE_CROPPER,
-  DOC_TYPE_FINANCIAL,
-  DOC_TYPE_INVOICE,
-  DOC_TYPE_PASSPORT,
-  DOC_TYPE_RECEIPT,
+  DOC_TYPE_CROPPER_V1,
+  DOC_TYPE_FINANCIAL_V1,
+  DOC_TYPE_INVOICE_V3,
+  DOC_TYPE_PASSPORT_V1,
+  DOC_TYPE_RECEIPT_V3,
+  DOC_TYPE_RECEIPT_V4,
   Document,
 } from "./index";
 import { errorHandler } from "../errors/handler";
@@ -84,13 +86,15 @@ export class DocumentConfig {
     params: {
       inputDoc: Input;
       includeWords: boolean;
-      cutPages: boolean;
+      pageOptions?: PageOptions;
       cropper: boolean;
     }
   ): Promise<RespType> {
     this.checkApiKeys();
     await params.inputDoc.init();
-    await this.cutDocPages(params.inputDoc, params.cutPages);
+    if (params.pageOptions !== undefined) {
+      await this.cutDocPages(params.inputDoc, params.pageOptions);
+    }
     const response = await this.predictRequest(
       params.inputDoc,
       params.includeWords,
@@ -99,9 +103,9 @@ export class DocumentConfig {
     return this.buildResult(responseType, params.inputDoc, response);
   }
 
-  async cutDocPages(inputDoc: Input, cutPages: boolean) {
-    if (cutPages && inputDoc.isPdf()) {
-      await inputDoc.cutPdf();
+  async cutDocPages(inputDoc: Input, pageOptions: PageOptions) {
+    if (inputDoc.isPdf()) {
+      await inputDoc.cutPdf(pageOptions);
     }
   }
 
@@ -109,7 +113,7 @@ export class DocumentConfig {
     this.endpoints.forEach((endpoint) => {
       if (!endpoint.apiKey) {
         throw new Error(
-          `Missing API key for '${endpoint.keyName}', check your Client configuration.
+          `Missing API key for '${this.documentType}', check your Client configuration.
 You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
         );
       }
@@ -117,27 +121,34 @@ You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
   }
 }
 
-export class InvoiceConfig extends DocumentConfig {
+export class InvoiceV3Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new InvoiceEndpoint(apiKey)];
-    super(DOC_TYPE_INVOICE, endpoints);
+    const endpoints = [new InvoiceV3Endpoint(apiKey)];
+    super(DOC_TYPE_INVOICE_V3, endpoints);
   }
 }
 
-export class ReceiptConfig extends DocumentConfig {
+export class ReceiptV3Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new ReceiptEndpoint(apiKey)];
-    super(DOC_TYPE_RECEIPT, endpoints);
+    const endpoints = [new ReceiptV3Endpoint(apiKey)];
+    super(DOC_TYPE_RECEIPT_V3, endpoints);
   }
 }
 
-export class FinancialDocConfig extends DocumentConfig {
+export class ReceiptV4Config extends DocumentConfig {
+  constructor(apiKey: string) {
+    const endpoints = [new ReceiptV4Endpoint(apiKey)];
+    super(DOC_TYPE_RECEIPT_V4, endpoints);
+  }
+}
+
+export class FinancialDocV1Config extends DocumentConfig {
   constructor(apiKey: string) {
     const endpoints = [
-      new InvoiceEndpoint(apiKey),
-      new ReceiptEndpoint(apiKey),
+      new InvoiceV3Endpoint(apiKey),
+      new ReceiptV3Endpoint(apiKey),
     ];
-    super(DOC_TYPE_FINANCIAL, endpoints);
+    super(DOC_TYPE_FINANCIAL_V1, endpoints);
   }
 
   async predictRequest(
@@ -155,17 +166,17 @@ export class FinancialDocConfig extends DocumentConfig {
   }
 }
 
-export class PassportConfig extends DocumentConfig {
+export class PassportV1Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new PassportEndpoint(apiKey)];
-    super(DOC_TYPE_PASSPORT, endpoints);
+    const endpoints = [new PassportV1Endpoint(apiKey)];
+    super(DOC_TYPE_PASSPORT_V1, endpoints);
   }
 }
 
-export class CropperConfig extends DocumentConfig {
+export class CropperV1Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new CropperEndpoint(apiKey)];
-    super(DOC_TYPE_CROPPER, endpoints);
+    const endpoints = [new CropperV1Endpoint(apiKey)];
+    super(DOC_TYPE_CROPPER_V1, endpoints);
   }
 }
 

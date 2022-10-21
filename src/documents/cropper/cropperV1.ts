@@ -1,7 +1,7 @@
-import { Document, DocumentConstructorProps } from "./document";
-import { CropperField } from "../fields";
+import { Document, DocumentConstructorProps } from "../document";
+import { CropperField } from "../../fields";
 
-export class Cropper extends Document {
+export class CropperV1 extends Document {
   cropping: CropperField[] = [];
 
   constructor({
@@ -32,6 +32,6 @@ Filename: ${this.filename}
 Cropping: ${cropping}
 ------------------------
 `;
-    return Cropper.cleanOutString(outStr);
+    return CropperV1.cleanOutString(outStr);
   }
 }

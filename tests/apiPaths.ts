@@ -5,11 +5,11 @@ export const dataPath = {
     docString: "tests/data/invoice/response/doc_to_string.txt",
     page0String: "tests/data/invoice/response/page0_to_string.txt",
   },
-  receipt: {
-    complete: "tests/data/receipt/response/complete.json",
-    empty: "tests/data/receipt/response/empty.json",
-    docString: "tests/data/receipt/response/doc_to_string.txt",
-    page0String: "tests/data/receipt/response/page0_to_string.txt",
+  receiptV3: {
+    complete: "tests/data/receipt/response_v3/complete.json",
+    empty: "tests/data/receipt/response_v3/empty.json",
+    docString: "tests/data/receipt/response_v3/doc_to_string.txt",
+    page0String: "tests/data/receipt/response_v3/page0_to_string.txt",
   },
   passport: {
     complete: "tests/data/passport/response/complete.json",
@@ -18,10 +18,10 @@ export const dataPath = {
     page0String: "tests/data/passport/response/page0_to_string.txt",
   },
   cropperV1: {
-    complete: "tests/data/cropper/v1/response/complete.json",
-    empty: "tests/data/cropper/v1/response/empty.json",
-    docString: "tests/data/cropper/v1/response/doc_to_string.txt",
-    page0String: "tests/data/cropper/v1/response/page0_to_string.txt",
+    complete: "tests/data/cropper/response_v1/complete.json",
+    empty: "tests/data/cropper/response_v1/empty.json",
+    docString: "tests/data/cropper/response_v1/doc_to_string.txt",
+    page0String: "tests/data/cropper/response_v1/page0_to_string.txt",
   },
   custom: {
     complete: "tests/data/custom/response/complete.json",

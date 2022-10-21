@@ -1,12 +1,12 @@
 import {
   Document,
-  Passport,
-  Receipt,
-  Invoice,
-  FinancialDocument,
+  PassportV1,
+  ReceiptV3,
+  InvoiceV3,
+  FinancialDocumentV1,
   CustomDocument,
   DocumentConstructorProps,
-  Cropper,
+  CropperV1,
 } from "../documents";
 import { FullText } from "../fields";
 import { Input } from "../inputs";
@@ -136,32 +136,42 @@ export class StandardProductResponse<
   }
 }
 
-export class InvoiceResponse extends StandardProductResponse<Invoice> {
+// Should be an easier way of doing this
+// Could look into a factory method
+// Could also try to eliminate the need to pass this to `parse` and instead pass only the Document
+
+export class InvoiceV3Response extends StandardProductResponse<InvoiceV3> {
   constructor(params: ResponseProps) {
-    super(Invoice, params);
+    super(InvoiceV3, params);
   }
 }
 
-export class ReceiptResponse extends StandardProductResponse<Receipt> {
+export class ReceiptV3Response extends StandardProductResponse<ReceiptV3> {
   constructor(params: ResponseProps) {
-    super(Receipt, params);
+    super(ReceiptV3, params);
   }
 }
 
-export class FinancialDocResponse extends StandardProductResponse<FinancialDocument> {
+export class ReceiptV4Response extends StandardProductResponse<ReceiptV3> {
   constructor(params: ResponseProps) {
-    super(FinancialDocument, params);
+    super(ReceiptV3, params);
   }
 }
 
-export class PassportResponse extends StandardProductResponse<Passport> {
+export class FinancialDocV1Response extends StandardProductResponse<FinancialDocumentV1> {
   constructor(params: ResponseProps) {
-    super(Passport, params);
+    super(FinancialDocumentV1, params);
   }
 }
 
-export class CropperResponse extends StandardProductResponse<Cropper> {
+export class PassportV1Response extends StandardProductResponse<PassportV1> {
   constructor(params: ResponseProps) {
-    super(Cropper, params);
+    super(PassportV1, params);
+  }
+}
+
+export class CropperV1Response extends StandardProductResponse<CropperV1> {
+  constructor(params: ResponseProps) {
+    super(CropperV1, params);
   }
 }

@@ -19,22 +19,14 @@ export const API_KEY_ENVVAR_NAME = "MINDEE_API_KEY";
 export class Endpoint {
   apiKey: string;
   urlName: string;
-  keyName: string;
   owner: string;
   version: string;
   urlRoot: string;
 
-  constructor(
-    owner: string,
-    urlName: string,
-    version: string,
-    apiKey: string,
-    keyName?: string
-  ) {
+  constructor(owner: string, urlName: string, version: string, apiKey: string) {
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
-    this.keyName = keyName || urlName;
     this.apiKey = apiKey || this.apiKeyFromEnv();
     this.urlRoot = `${MINDEE_API_URL}/products/${owner}/${urlName}/v${version}`;
   }
@@ -101,7 +93,7 @@ export class Endpoint {
     const envVarValue = process.env[API_KEY_ENVVAR_NAME];
     if (envVarValue) {
       logger.debug(
-        `Set '${this.keyName}' API key from environment: ${API_KEY_ENVVAR_NAME}`
+        `Set '${this.urlName}' API key from environment: ${API_KEY_ENVVAR_NAME}`
       );
       return envVarValue;
     }
@@ -109,25 +101,31 @@ export class Endpoint {
   }
 }
 
-export class InvoiceEndpoint extends Endpoint {
+export class InvoiceV3Endpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(STANDARD_API_OWNER, "invoices", "3", apiKey, "invoice");
+    super(STANDARD_API_OWNER, "invoices", "3", apiKey);
   }
 }
 
-export class ReceiptEndpoint extends Endpoint {
+export class ReceiptV3Endpoint extends Endpoint {
   constructor(apiKey: string) {
-    super(STANDARD_API_OWNER, "expense_receipts", "3", apiKey, "receipt");
+    super(STANDARD_API_OWNER, "expense_receipts", "3", apiKey);
   }
 }
 
-export class PassportEndpoint extends Endpoint {
+export class ReceiptV4Endpoint extends Endpoint {
+  constructor(apiKey: string) {
+    super(STANDARD_API_OWNER, "expense_receipts", "4", apiKey);
+  }
+}
+
+export class PassportV1Endpoint extends Endpoint {
   constructor(apiKey: string) {
     super(STANDARD_API_OWNER, "passport", "1", apiKey);
   }
 }
 
-export class CropperEndpoint extends Endpoint {
+export class CropperV1Endpoint extends Endpoint {
   constructor(apiKey: string) {
     super(STANDARD_API_OWNER, "cropper", "1", apiKey);
   }

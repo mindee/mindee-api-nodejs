@@ -1,4 +1,4 @@
-import { Base64Input, PathInput, StreamInput, BytesInput } from "../src/inputs";
+import { Base64Input, PathInput, StreamInput, BytesInput, PageOptionsBehavior } from "../src/inputs";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
@@ -110,7 +110,7 @@ describe("Test different types of input", () => {
       inputPath: path.join(__dirname, "data/pdf/multipage.pdf"),
     });
     await inputDoc.init();
-    await inputDoc.cutPdf();
+    await inputDoc.cutPdf({behavior: PageOptionsBehavior.KeepOnly, onMinPages: 3, pageIndexes: [0, 1, 3]});
     expect(inputDoc.inputType).to.equals("path");
     expect(inputDoc.filename).to.equals("multipage.pdf");
     expect(inputDoc.mimeType).to.equals("application/pdf");
