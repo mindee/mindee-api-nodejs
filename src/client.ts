@@ -2,9 +2,9 @@ import {
   Base64Input,
   BytesInput,
   Input,
-  PageOptions,
   PathInput,
   StreamInput,
+  PageOptions,
 } from "./inputs";
 import { Response, STANDARD_API_OWNER } from "./api";
 import {

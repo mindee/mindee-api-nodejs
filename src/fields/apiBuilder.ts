@@ -3,6 +3,10 @@ import { Polygon, getBboxAsPolygon } from "../geometry";
 
 export class ClassificationField {
   value: string;
+  /**
+   * The confidence score of the prediction.
+   * Note: Score is calculated on **word selection**, not its textual content (OCR).
+   */
   confidence: number;
 
   constructor({ prediction }: { prediction: stringDict }) {
@@ -53,7 +57,7 @@ export class ListField {
   /** True if the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
   /** The document page on which the information was found. */
-  pageId?: number;
+  pageId: number;
 
   constructor({ prediction, reconstructed = false, pageId }: FieldConstructor) {
     this.values = [];

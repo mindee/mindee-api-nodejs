@@ -5,7 +5,7 @@ export { Locale } from "./locale";
 export { Amount } from "./amount";
 export { DateField } from "./date";
 export { BaseField, stringDict, Field } from "./field";
-export { ListField, ListFieldValue, ClassificationField } from "./customDocs";
+export { ListField, ListFieldValue, ClassificationField } from "./apiBuilder";
 export { FullText } from "./fullText";
 export { CompanyRegistration } from "./companyRegistration";
 export { CropperField } from "./cropper";

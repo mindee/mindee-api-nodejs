@@ -2,10 +2,11 @@ import { promises as fs, ReadStream } from "fs";
 import * as path from "path";
 import * as fileType from "file-type";
 
-import { errorHandler } from "./errors/handler";
-import { PDFDocument } from "pdf-lib";
+import { errorHandler } from "../errors/handler";
 import { Buffer } from "node:buffer";
-import { logger } from "./logger";
+import { logger } from "../logger";
+import { PageOptions } from "./PageOptions";
+import { cutPdf } from "../pdf";
 
 interface InputProps {
   inputType: string;
@@ -33,19 +34,7 @@ const ALLOWED_INPUT_TYPES = [
   INPUT_TYPE_PATH,
 ];
 
-export enum PageOptionsBehavior {
-  KeepOnly = "KEEP_ONLY",
-  Remove = "REMOVE",
-}
-
-export interface PageOptions {
-  pageIndexes: number[];
-  behavior: PageOptionsBehavior;
-  onMinPages: number;
-}
-
 export class Input {
-  MAX_DOC_PAGES = 3;
   public inputType: string;
   public filename: string = "";
   public filepath?: string;
@@ -100,38 +89,10 @@ export class Input {
     return mimeType;
   }
 
-  async countPages() {
-    const pdfDocument = await PDFDocument.load(this.fileObject, {
-      ignoreEncryption: true,
-    });
-    return pdfDocument.getPageCount();
-  }
-
   /** Merge PDF pages */
   async cutPdf(pageOptions: PageOptions) {
-    // TODO: use pageOptions to cut the PDF
-    console.log(pageOptions);
-    const currentPdf = await PDFDocument.load(this.fileObject, {
-      ignoreEncryption: true,
-    });
-
-    const pdfLength = currentPdf.getPageCount();
-    if (pdfLength < this.MAX_DOC_PAGES) {
-      return;
-    }
-
-    const newPdf = await PDFDocument.create();
-    const pagesNumbers = [0, pdfLength - 2, pdfLength - 1].slice(
-      0,
-      this.MAX_DOC_PAGES
-    );
-    logger.debug(`Cutting PDF, keeping pages: ${pagesNumbers}`);
-
-    const pages = await newPdf.copyPages(currentPdf, pagesNumbers);
-    pages.forEach((page) => newPdf.addPage(page));
-    const data = await newPdf.save();
-
-    this.fileObject = Buffer.from(data);
+    const splittedPdf = await cutPdf(this.fileObject, pageOptions);
+    this.fileObject = Buffer.from(splittedPdf.file);
   }
 }
 

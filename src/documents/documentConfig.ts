@@ -1,4 +1,4 @@
-import { Input, PageOptions } from "../inputs";
+import { Input } from "../inputs";
 import {
   Response,
   Endpoint,
@@ -21,6 +21,7 @@ import {
 } from "./index";
 import { errorHandler } from "../errors/handler";
 import { ResponseProps } from "../api/response";
+import { PageOptions } from "../inputs/PageOptions";
 
 interface CustomDocConstructor {
   documentType: string;

@@ -7,6 +7,7 @@ import {
   CustomDocument,
   DocumentConstructorProps,
   CropperV1,
+  ReceiptV4,
 } from "../documents";
 import { FullText } from "../fields";
 import { Input } from "../inputs";
@@ -152,9 +153,9 @@ export class ReceiptV3Response extends StandardProductResponse<ReceiptV3> {
   }
 }
 
-export class ReceiptV4Response extends StandardProductResponse<ReceiptV3> {
+export class ReceiptV4Response extends StandardProductResponse<ReceiptV4> {
   constructor(params: ResponseProps) {
-    super(ReceiptV3, params);
+    super(ReceiptV4, params);
   }
 }
 

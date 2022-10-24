@@ -1,20 +1,20 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { dataPath } from "../apiPaths";
-import { FinancialDocumentV1 } from "../../src/documents";
+import { dataPath } from "../../apiPaths";
+import { FinancialDocumentV1 } from "../../../src/documents";
 import {
   Amount,
   DateField,
   Field,
   Locale,
   TaxField,
-} from "../../src/fields";
+} from "../../../src/fields";
 
 describe("Financial Document Object initialization", async () => {
   before(async function () {
     const invoiceJsonDataNA = await fs.readFile(
-      path.resolve(dataPath.invoice.empty)
+      path.resolve(dataPath.invoiceV3.empty)
     );
     const receiptJsonDataNA = await fs.readFile(
       path.resolve(dataPath.receiptV3.empty)
@@ -28,7 +28,7 @@ describe("Financial Document Object initialization", async () => {
   });
 
   it("should initialize from an invoice object", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoice.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3.complete));
     const response = JSON.parse(jsonData.toString());
     const doc = new FinancialDocumentV1({
       prediction: response.document.inference.prediction,

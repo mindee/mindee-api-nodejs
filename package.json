@@ -1,12 +1,13 @@
 {
   "name": "mindee",
-  "version": "2.1.1",
+  "version": "3.0.0",
   "description": "Mindee Client Library for Node.js",
   "main": "src/index.js",
   "bin": "bin/mindee.js",
   "license": "MIT",
   "scripts": {
-    "build": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
+    "build": "tsc --build",
+    "build-for-publish": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
     "clean": "rm -rf ./dist",
     "test": "mocha 'tests/**/*.spec.ts'",
     "lint-fix": "eslint '**/*.ts' --fix",
