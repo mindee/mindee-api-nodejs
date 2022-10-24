@@ -1,17 +1,17 @@
-import { ReceiptV3 } from "../../src/documents";
+import { ReceiptV3 } from "../../../src/documents";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { dataPath } from "../apiPaths";
+import { dataPath } from "../../apiPaths";
 import {
   Amount,
   DateField,
   Field,
   Locale,
   TaxField,
-} from "../../src/fields";
+} from "../../../src/fields";
 
-describe("Receipt Object initialization", async () => {
+describe("Receipt Object V3 initialization", async () => {
   before(async function () {
     const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.empty));
     this.basePrediction = JSON.parse(

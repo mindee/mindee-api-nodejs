@@ -27,7 +27,7 @@ describe("API response", () => {
   });
 
   it("should build an Invoice response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoice.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3.complete));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
@@ -46,7 +46,7 @@ describe("API response", () => {
   });
 
   it("should build a Password response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.passport.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.passportV1.complete));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };

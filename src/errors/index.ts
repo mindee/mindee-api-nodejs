@@ -1,0 +1,1 @@
+export { MindeeError } from "./MindeeError";

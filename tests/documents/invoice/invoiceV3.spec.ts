@@ -1,20 +1,20 @@
-import { InvoiceV3 } from "../../src/documents";
+import { InvoiceV3 } from "../../../src/documents";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { dataPath } from "../apiPaths";
-import { TaxField } from "../../src/fields";
+import { dataPath } from "../../apiPaths";
+import { TaxField } from "../../../src/fields";
 
 describe("Invoice Object initialization", async () => {
   before(async function () {
-    const jsonDataNA = await fs.readFile(path.resolve(dataPath.invoice.empty));
+    const jsonDataNA = await fs.readFile(path.resolve(dataPath.invoiceV3.empty));
     this.basePrediction = JSON.parse(
       jsonDataNA.toString()
     ).document.inference.pages[0].prediction;
   });
 
   it("should initialize from a N/A prediction object", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoice.empty));
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3.empty));
     const response = JSON.parse(jsonData.toString());
     const doc = new InvoiceV3({
       prediction: response.document.inference.pages[0].prediction,
@@ -44,20 +44,20 @@ describe("Invoice Object initialization", async () => {
   });
 
   it("should load a complete document prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoice.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
     const doc = new InvoiceV3({
       prediction: prediction,
     });
-    const docString = await fs.readFile(path.join(dataPath.invoice.docString));
+    const docString = await fs.readFile(path.join(dataPath.invoiceV3.docString));
     expect(doc.orientation).to.be.undefined;
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
   });
 
   it("should load a complete page 0 prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoice.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
     const doc = new InvoiceV3({
@@ -67,7 +67,7 @@ describe("Invoice Object initialization", async () => {
       extras: pageData.extras,
     });
     const docString = await fs.readFile(
-      path.join(dataPath.invoice.page0String)
+      path.join(dataPath.invoiceV3.page0String)
     );
     expect(doc.documentType.value).to.be.equal("INVOICE");
     expect(doc.orientation?.value).to.be.equals(0);

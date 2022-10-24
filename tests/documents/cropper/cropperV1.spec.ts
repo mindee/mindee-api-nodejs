@@ -1,8 +1,8 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { CropperV1 } from "../../src/documents";
+import { CropperV1 } from "../../../src/documents";
 import { expect } from "chai";
-import { dataPath } from "../apiPaths";
+import { dataPath } from "../../apiPaths";
 
 describe("Cropper Object initialization", async () => {
   it("should load an empty document prediction", async () => {
