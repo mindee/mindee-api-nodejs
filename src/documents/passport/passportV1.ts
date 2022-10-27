@@ -22,10 +22,10 @@ export class PassportV1 extends Document {
     prediction,
     orientation = undefined,
     extras = undefined,
-    inputFile = undefined,
+    inputSource = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super({ inputFile, pageId, orientation, extras });
+    super({ inputSource: inputSource, pageId, orientation, extras });
     this.country = new Field({
       prediction: prediction.country,
       pageId: pageId,

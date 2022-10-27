@@ -7,10 +7,10 @@ export class CropperV1 extends Document {
   constructor({
     prediction,
     orientation = undefined,
-    inputFile = undefined,
+    inputSource = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super({ inputFile, pageId, orientation });
+    super({ inputSource: inputSource, pageId, orientation });
     if (pageId !== undefined) {
       prediction.cropping.forEach((crop: any) => {
         this.cropping.push(

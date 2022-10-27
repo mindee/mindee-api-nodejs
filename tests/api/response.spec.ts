@@ -4,7 +4,7 @@ import {DOC_TYPE_INVOICE_V3, DOC_TYPE_RECEIPT_V3} from "../../src/documents";
 import { promises as fs } from "fs";
 import path from "path";
 import { dataPath } from "../apiPaths";
-import { Input, INPUT_TYPE_PATH } from "../../src/inputs";
+import { InputSource, INPUT_TYPE_PATH } from "../../src/inputs";
 
 describe("API response", () => {
   it("should build a Receipt response", async () => {
@@ -15,7 +15,7 @@ describe("API response", () => {
     const response = new ReceiptV3Response({
       httpResponse: httpResponse,
       documentType: DOC_TYPE_RECEIPT_V3,
-      input: new Input({ inputType: INPUT_TYPE_PATH }),
+      input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
     expect(response.document).to.not.be.undefined;
@@ -34,7 +34,7 @@ describe("API response", () => {
     const response = new InvoiceV3Response({
       httpResponse: httpResponse,
       documentType: DOC_TYPE_INVOICE_V3,
-      input: new Input({ inputType: INPUT_TYPE_PATH }),
+      input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
     expect(response.document).to.not.be.undefined;
@@ -53,7 +53,7 @@ describe("API response", () => {
     const response = new PassportV1Response({
       httpResponse: httpResponse,
       documentType: DOC_TYPE_INVOICE_V3,
-      input: new Input({ inputType: INPUT_TYPE_PATH }),
+      input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
     expect(response.document).to.not.be.undefined;
@@ -71,7 +71,7 @@ describe("API response", () => {
     const response = new CustomResponse({
       httpResponse: httpResponse,
       documentType: "field_test",
-      input: new Input({ inputType: INPUT_TYPE_PATH }),
+      input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
     expect(response.document).to.not.be.undefined;

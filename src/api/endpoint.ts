@@ -4,7 +4,7 @@ import * as os from "os";
 import { version as sdkVersion } from "../../package.json";
 import { URL } from "url";
 import FormData from "form-data";
-import { Input } from "../inputs";
+import { InputSource } from "../inputs";
 import { logger } from "../logger";
 import { IncomingMessage } from "http";
 
@@ -16,12 +16,18 @@ const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${
 export const STANDARD_API_OWNER = "mindee";
 export const API_KEY_ENVVAR_NAME = "MINDEE_API_KEY";
 
+export interface predictResponse {
+  messageObj: IncomingMessage;
+  data: { [key: string]: any };
+}
+
 export class Endpoint {
   apiKey: string;
   urlName: string;
   owner: string;
   version: string;
   urlRoot: string;
+  private readonly baseHeaders: { [key: string]: string };
 
   constructor(owner: string, urlName: string, version: string, apiKey: string) {
     this.owner = owner;
@@ -29,30 +35,42 @@ export class Endpoint {
     this.version = version;
     this.apiKey = apiKey || this.apiKeyFromEnv();
     this.urlRoot = `${MINDEE_API_URL}/products/${owner}/${urlName}/v${version}`;
+    this.baseHeaders = {
+      "User-Agent": USER_AGENT,
+      Authorization: `Token ${this.apiKey}`,
+    };
   }
 
   /**
-   * Make a prediction request.
+   * Make a request to POST a document for prediction.
+   * @param input
+   * @param includeWords
+   * @param cropper
    */
-  predictRequest(input: Input, includeWords = false, cropper = false) {
+  predictReqPost(
+    input: InputSource,
+    includeWords = false,
+    cropper = false
+  ): Promise<predictResponse> {
     return new Promise((resolve, reject) => {
-      let headers: { [key: string]: string | number } = {
-        "User-Agent": USER_AGENT,
-        Authorization: `Token ${this.apiKey}`,
-      };
       const uri = new URL(`${this.urlRoot}/predict`);
       if (cropper) {
         uri.searchParams.append("cropper", "true");
       }
-      logger.debug(`Prediction request: ${uri}`);
+      logger.debug(`Request URI: ${uri}`);
 
       const form = new FormData();
-      const fileParams = { filename: input.filename };
-      form.append("document", input.fileObject, fileParams);
+
+      if (input.fileObject instanceof Buffer) {
+        form.append("document", input.fileObject, { filename: input.filename });
+      } else {
+        form.append("document", input.fileObject);
+      }
+
       if (includeWords) {
         form.append("include_mvision", "true");
       }
-      headers = { ...headers, ...form.getHeaders() };
+      const headers = { ...this.baseHeaders, ...form.getHeaders() };
 
       const options = {
         method: "POST",
@@ -72,7 +90,7 @@ export class Endpoint {
         res.on("end", function () {
           try {
             resolve({
-              ...res,
+              messageObj: res,
               data: JSON.parse(responseBody),
             });
           } catch (error) {
@@ -93,7 +111,7 @@ export class Endpoint {
     const envVarValue = process.env[API_KEY_ENVVAR_NAME];
     if (envVarValue) {
       logger.debug(
-        `Set '${this.urlName}' API key from environment: ${API_KEY_ENVVAR_NAME}`
+        `Set ${this.urlName} v${this.version} API key from environment: ${API_KEY_ENVVAR_NAME}`
       );
       return envVarValue;
     }
@@ -101,43 +119,19 @@ export class Endpoint {
   }
 }
 
-export class InvoiceV3Endpoint extends Endpoint {
-  constructor(apiKey: string) {
-    super(STANDARD_API_OWNER, "invoices", "3", apiKey);
-  }
-}
-
-export class ReceiptV3Endpoint extends Endpoint {
-  constructor(apiKey: string) {
-    super(STANDARD_API_OWNER, "expense_receipts", "3", apiKey);
-  }
-}
-
-export class ReceiptV4Endpoint extends Endpoint {
-  constructor(apiKey: string) {
-    super(STANDARD_API_OWNER, "expense_receipts", "4", apiKey);
-  }
-}
-
-export class PassportV1Endpoint extends Endpoint {
-  constructor(apiKey: string) {
-    super(STANDARD_API_OWNER, "passport", "1", apiKey);
-  }
-}
-
-export class CropperV1Endpoint extends Endpoint {
-  constructor(apiKey: string) {
-    super(STANDARD_API_OWNER, "cropper", "1", apiKey);
+export class StandardEndpoint extends Endpoint {
+  constructor(endpointName: string, version: string, apiKey: string) {
+    super(STANDARD_API_OWNER, endpointName, version, apiKey);
   }
 }
 
 export class CustomEndpoint extends Endpoint {
   constructor(
-    documentType: string,
+    endpointName: string,
     accountName: string,
     version: string,
     apiKey: string
   ) {
-    super(accountName, documentType, version, apiKey);
+    super(accountName, endpointName, version, apiKey);
   }
 }

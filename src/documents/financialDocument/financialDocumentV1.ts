@@ -34,14 +34,14 @@ export class FinancialDocumentV1 extends Document {
     prediction,
     orientation = undefined,
     extras = undefined,
-    inputFile = undefined,
+    inputSource = undefined,
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super({ inputFile, pageId, fullText, orientation, extras });
+    super({ inputSource: inputSource, pageId, fullText, orientation, extras });
     this.#initFromApiPrediction(
       prediction,
-      inputFile,
+      inputSource,
       pageId,
       orientation,
       extras
@@ -59,7 +59,7 @@ export class FinancialDocumentV1 extends Document {
     if (Object.keys(prediction).includes("invoice_number")) {
       const invoice = new InvoiceV3({
         prediction: prediction,
-        inputFile,
+        inputSource: inputFile,
         pageId: pageNumber,
         orientation: orientation,
         extras: extras,
@@ -86,7 +86,7 @@ export class FinancialDocumentV1 extends Document {
     } else {
       const receipt = new ReceiptV3({
         prediction: prediction,
-        inputFile,
+        inputSource: inputFile,
         pageId: pageNumber,
         orientation: orientation,
         extras: extras,

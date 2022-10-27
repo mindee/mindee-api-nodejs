@@ -1,7 +1,7 @@
 import { errorHandler } from "../errors/handler";
 import { PDFDocument } from "pdf-lib";
 import { PageOptions, PageOptionsOperation } from "../inputs";
-import { SplitPdf } from "./SplitPdf";
+import { SplitPdf } from "./splitPdf";
 import { MindeeError } from "../errors";
 
 /**

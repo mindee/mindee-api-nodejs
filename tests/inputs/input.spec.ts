@@ -1,8 +1,7 @@
-import { Base64Input, PathInput, StreamInput, BytesInput } from "../../src/inputs";
+import { Base64Input, PathInput, StreamInput, BytesInput, UrlInput, PageOptionsOperation } from "../../src/inputs";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { PageOptionsOperation } from "../../src/inputs/PageOptions";
 
 describe("Test different types of input", () => {
   it("should accept base64 inputs", async () => {
@@ -104,6 +103,13 @@ describe("Test different types of input", () => {
     expect(input.mimeType).to.equals("image/jpeg");
     const expectedResult = await fs.promises.readFile(filePath);
     expect(input.fileObject.toString()).to.eqls(expectedResult.toString());
+  });
+
+  it("should accept a URL", async () => {
+    const input = new UrlInput({
+      url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/576px-ReceiptSwiss.jpg",
+    });
+    await input.init();
   });
 
   it("should cut a PDF", async () => {

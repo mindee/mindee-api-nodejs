@@ -34,11 +34,11 @@ export class InvoiceV3 extends Document {
     prediction,
     orientation = undefined,
     extras = undefined,
-    inputFile = undefined,
+    inputSource = undefined,
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super({ inputFile, pageId, fullText, orientation, extras });
+    super({ inputSource: inputSource, pageId, fullText, orientation, extras });
     this.#initFromApiPrediction(prediction, pageId);
     this.#checklist();
     this.#reconstruct();

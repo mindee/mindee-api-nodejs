@@ -10,14 +10,14 @@ import {
   ReceiptV4,
 } from "../documents";
 import { FullText } from "../fields";
-import { Input } from "../inputs";
+import { InputSource } from "../inputs";
 
 type stringDict = { [index: string]: any };
 
 export interface ResponseProps {
   httpResponse: any;
   documentType: string;
-  input: Input;
+  input: InputSource;
   error: boolean;
 }
 
@@ -27,7 +27,7 @@ export interface ResponseProps {
 export class Response<DocType extends Document> {
   httpResponse: any;
   readonly documentType: string;
-  inputFile: Input;
+  inputFile: InputSource;
   document?: DocType;
   pages: Array<DocType> = [];
 
@@ -69,7 +69,7 @@ export class CustomResponse extends Response<CustomDocument> {
           prediction: apiPage.prediction,
           orientation: apiPage.orientation,
           extras: apiPage.extras,
-          inputFile: this.inputFile,
+          inputSource: this.inputFile,
           pageId: apiPage.id,
           documentType: this.documentType,
         })
@@ -77,7 +77,7 @@ export class CustomResponse extends Response<CustomDocument> {
     });
     this.document = new CustomDocument({
       prediction: httpDataDocument.inference.prediction,
-      inputFile: this.inputFile,
+      inputSource: this.inputFile,
       documentType: this.documentType,
       orientation: {},
       extras: {},
@@ -88,7 +88,7 @@ export class CustomResponse extends Response<CustomDocument> {
 type StandardDocumentSig<DocType extends Document> = {
   new ({
     prediction,
-    inputFile,
+    inputSource,
     pageId,
     fullText,
   }: DocumentConstructorProps): DocType;
@@ -120,7 +120,7 @@ export class StandardProductResponse<
       this.pages.push(
         new this.documentClass({
           prediction: apiPage.prediction,
-          inputFile: this.inputFile,
+          inputSource: this.inputFile,
           pageId: apiPage.id,
           orientation: apiPage.orientation,
           extras: apiPage.extras,
@@ -130,7 +130,7 @@ export class StandardProductResponse<
     });
     this.document = new this.documentClass({
       prediction: httpDataDocument.inference.prediction,
-      inputFile: this.inputFile,
+      inputSource: this.inputFile,
       orientation: {},
       extras: {},
     });
