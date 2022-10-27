@@ -12,14 +12,14 @@ export class CustomDocument extends Document {
   readonly documentType: string;
 
   constructor({
-    inputFile,
+    inputSource,
     prediction,
     extras = undefined,
     orientation = undefined,
     pageId,
     documentType,
   }: CustomDocConstructorProps) {
-    super({ inputFile, pageId, orientation, extras });
+    super({ inputSource: inputSource, pageId, orientation, extras });
     this.documentType = documentType;
 
     Object.keys(prediction).forEach((fieldName) => {

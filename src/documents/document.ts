@@ -1,4 +1,4 @@
-import { Input } from "../inputs";
+import { InputSource } from "../inputs";
 import {
   CropperField,
   FullText,
@@ -17,7 +17,7 @@ interface BaseDocumentConstructorProps {
   /** Extras JSON */
   extras?: stringDict;
   /** input file given to parse the document */
-  inputFile?: Input;
+  inputSource?: InputSource;
   /** Page ID for page-level document */
   pageId?: number;
   /** full OCR extracted text */
@@ -37,7 +37,7 @@ export class Document {
   constructor({
     orientation = undefined,
     extras = undefined,
-    inputFile = undefined,
+    inputSource = undefined,
     fullText = undefined,
     pageId = undefined,
   }: BaseDocumentConstructorProps) {
@@ -63,10 +63,10 @@ export class Document {
       }
     }
 
-    if (inputFile !== undefined) {
-      this.filepath = inputFile.filepath;
-      this.filename = inputFile.filename;
-      this.mimeType = inputFile.mimeType;
+    if (inputSource !== undefined) {
+      this.filepath = inputSource.filepath;
+      this.filename = inputSource.filename;
+      this.mimeType = inputSource.mimeType;
     }
     this.fullText = fullText;
     this.checklist = {};

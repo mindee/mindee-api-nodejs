@@ -1,13 +1,10 @@
-import { Input } from "../inputs";
+import { InputSource } from "../inputs";
 import {
   Response,
   Endpoint,
-  InvoiceV3Endpoint,
   CustomEndpoint,
-  PassportV1Endpoint,
-  ReceiptV3Endpoint,
-  ReceiptV4Endpoint,
-  CropperV1Endpoint,
+  StandardEndpoint,
+  predictResponse,
   API_KEY_ENVVAR_NAME,
 } from "../api";
 import {
@@ -21,10 +18,10 @@ import {
 } from "./index";
 import { errorHandler } from "../errors/handler";
 import { ResponseProps } from "../api/response";
-import { PageOptions } from "../inputs/PageOptions";
+import { PageOptions } from "../inputs";
 
 interface CustomDocConstructor {
-  documentType: string;
+  endpointName: string;
   accountName: string;
   version: string;
   apiKey: string;
@@ -44,11 +41,11 @@ export class DocumentConfig {
   }
 
   async predictRequest(
-    inputDoc: Input,
+    inputDoc: InputSource,
     includeWords: boolean,
     cropping: boolean
   ) {
-    return await this.endpoints[0].predictRequest(
+    return await this.endpoints[0].predictReqPost(
       inputDoc,
       includeWords,
       cropping
@@ -57,14 +54,15 @@ export class DocumentConfig {
 
   buildResult<RespType extends Response<Document>>(
     responseType: responseSig<RespType>,
-    inputFile: Input,
-    response: any
+    inputFile: InputSource,
+    response: predictResponse
   ): RespType {
-    if (response.statusCode > 201) {
-      const errorMessage = JSON.stringify(response.data, null, 4);
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode > 201) {
+      const errorMessage = JSON.stringify(response.data, null, 2);
       errorHandler.throw(
         new Error(
-          `${this.endpoints[0].urlName} API ${response.statusCode} HTTP error: ${errorMessage}`
+          `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
         )
       );
       return new responseType({
@@ -85,7 +83,7 @@ export class DocumentConfig {
   async predict<RespType extends Response<Document>>(
     responseType: responseSig<RespType>,
     params: {
-      inputDoc: Input;
+      inputDoc: InputSource;
       includeWords: boolean;
       pageOptions?: PageOptions;
       cropper: boolean;
@@ -104,7 +102,7 @@ export class DocumentConfig {
     return this.buildResult(responseType, params.inputDoc, response);
   }
 
-  async cutDocPages(inputDoc: Input, pageOptions: PageOptions) {
+  async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc.isPdf()) {
       await inputDoc.cutPdf(pageOptions);
     }
@@ -124,21 +122,21 @@ You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
 
 export class InvoiceV3Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new InvoiceV3Endpoint(apiKey)];
+    const endpoints = [new StandardEndpoint("invoices", "3", apiKey)];
     super(DOC_TYPE_INVOICE_V3, endpoints);
   }
 }
 
 export class ReceiptV3Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new ReceiptV3Endpoint(apiKey)];
+    const endpoints = [new StandardEndpoint("expense_receipts", "3", apiKey)];
     super(DOC_TYPE_RECEIPT_V3, endpoints);
   }
 }
 
 export class ReceiptV4Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new ReceiptV4Endpoint(apiKey)];
+    const endpoints = [new StandardEndpoint("expense_receipts", "4", apiKey)];
     super(DOC_TYPE_RECEIPT_V4, endpoints);
   }
 }
@@ -146,14 +144,14 @@ export class ReceiptV4Config extends DocumentConfig {
 export class FinancialDocV1Config extends DocumentConfig {
   constructor(apiKey: string) {
     const endpoints = [
-      new InvoiceV3Endpoint(apiKey),
-      new ReceiptV3Endpoint(apiKey),
+      new StandardEndpoint("invoices", "3", apiKey),
+      new StandardEndpoint("expense_receipts", "3", apiKey),
     ];
     super(DOC_TYPE_FINANCIAL_V1, endpoints);
   }
 
   async predictRequest(
-    inputDoc: Input,
+    inputDoc: InputSource,
     includeWords: boolean,
     cropping: boolean
   ) {
@@ -163,34 +161,34 @@ export class FinancialDocV1Config extends DocumentConfig {
     } else {
       endpoint = this.endpoints[1];
     }
-    return await endpoint.predictRequest(inputDoc, includeWords, cropping);
+    return await endpoint.predictReqPost(inputDoc, includeWords, cropping);
   }
 }
 
 export class PassportV1Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new PassportV1Endpoint(apiKey)];
+    const endpoints = [new StandardEndpoint("passport", "1", apiKey)];
     super(DOC_TYPE_PASSPORT_V1, endpoints);
   }
 }
 
 export class CropperV1Config extends DocumentConfig {
   constructor(apiKey: string) {
-    const endpoints = [new CropperV1Endpoint(apiKey)];
+    const endpoints = [new StandardEndpoint("cropper", "1", apiKey)];
     super(DOC_TYPE_CROPPER_V1, endpoints);
   }
 }
 
 export class CustomDocConfig extends DocumentConfig {
   constructor({
-    documentType,
+    endpointName,
     accountName,
     version,
     apiKey,
   }: CustomDocConstructor) {
     const endpoints = [
-      new CustomEndpoint(documentType, accountName, version, apiKey),
+      new CustomEndpoint(endpointName, accountName, version, apiKey),
     ];
-    super(documentType, endpoints);
+    super(endpointName, endpoints);
   }
 }

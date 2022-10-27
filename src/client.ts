@@ -1,10 +1,11 @@
 import {
   Base64Input,
   BytesInput,
-  Input,
+  InputSource,
   PathInput,
   StreamInput,
   PageOptions,
+  UrlInput,
 } from "./inputs";
 import { Response, STANDARD_API_OWNER } from "./api";
 import {
@@ -24,6 +25,7 @@ import {
   InvoiceV3Config,
   PassportV1Config,
   ReceiptV3Config,
+  ReceiptV4Config,
   responseSig,
 } from "./documents/documentConfig";
 import { errorHandler } from "./errors/handler";
@@ -34,27 +36,32 @@ import { ProductConfigs } from "./constants";
 type DocConfigs = Map<string[], DocumentConfig>;
 
 interface PredictOptions {
-  docType?: string;
-  username?: string;
+  endpointName?: string;
+  accountName?: string;
   fullText?: boolean;
   cropper?: boolean;
   pageOptions?: PageOptions;
 }
 
 class DocumentClient {
-  inputDoc: Input;
+  inputSource: InputSource;
   docConfigs: DocConfigs;
 
-  constructor(inputDoc: Input, docConfigs: DocConfigs) {
-    this.inputDoc = inputDoc;
+  constructor(inputSource: InputSource, docConfigs: DocConfigs) {
+    this.inputSource = inputSource;
     this.docConfigs = docConfigs;
   }
 
+  /**
+   * Send a document to an endpoint and parse the predictions.
+   * @param responseClass
+   * @param params
+   */
   async parse<RespType extends Response<Document>>(
     responseClass: responseSig<RespType>,
     params: PredictOptions = {
-      docType: "",
-      username: "",
+      endpointName: "",
+      accountName: "",
       fullText: false,
       cropper: false,
       pageOptions: undefined,
@@ -64,9 +71,9 @@ class DocumentClient {
     const fullText = params?.fullText !== undefined ? params.fullText : false;
     const cropper = params?.cropper !== undefined ? params.cropper : false;
     const docType: string =
-      params.docType === undefined || params.docType === ""
+      params.endpointName === undefined || params.endpointName === ""
         ? this.getDocType(responseClass.name)
-        : params.docType;
+        : params.endpointName;
 
     const found: Array<string[]> = [];
     this.docConfigs.forEach((config, configKey) => {
@@ -81,8 +88,8 @@ class DocumentClient {
     let configKey: string[] = [];
     if (found.length === 1) {
       configKey = found[0];
-    } else if (params.username) {
-      configKey = [params.username, docType];
+    } else if (params.accountName) {
+      configKey = [params.accountName, docType];
     }
     const docConfig = this.docConfigs.get(configKey);
     if (docConfig === undefined) {
@@ -91,7 +98,7 @@ class DocumentClient {
     }
 
     return await docConfig.predict(responseClass, {
-      inputDoc: this.inputDoc,
+      inputDoc: this.inputSource,
       includeWords: fullText,
       pageOptions: params.pageOptions,
       cropper: cropper,
@@ -154,7 +161,7 @@ export class Client {
     );
     this.docConfigs.set(
       [STANDARD_API_OWNER, DOC_TYPE_RECEIPT_V4],
-      new ReceiptV3Config(this.apiKey)
+      new ReceiptV4Config(this.apiKey)
     );
     this.docConfigs.set(
       [STANDARD_API_OWNER, DOC_TYPE_FINANCIAL_V1],
@@ -170,6 +177,12 @@ export class Client {
     );
   }
 
+  /**
+   * Add a custom endpoint to the client.
+   * @param accountName
+   * @param endpointName
+   * @param version
+   */
   addEndpoint({
     accountName,
     endpointName,
@@ -179,7 +192,7 @@ export class Client {
       [accountName, endpointName],
       new CustomDocConfig({
         accountName: accountName,
-        documentType: endpointName,
+        endpointName: endpointName,
         version: version,
         apiKey: this.apiKey,
       })
@@ -187,6 +200,10 @@ export class Client {
     return this;
   }
 
+  /**
+   * Load an input document from a local path.
+   * @param inputPath
+   */
   docFromPath(inputPath: string) {
     const doc = new PathInput({
       inputPath: inputPath,
@@ -194,6 +211,11 @@ export class Client {
     return new DocumentClient(doc, this.docConfigs);
   }
 
+  /**
+   * Load an input document from a base64 encoded string.
+   * @param inputString
+   * @param filename
+   */
   docFromBase64(inputString: string, filename: string) {
     const doc = new Base64Input({
       inputString: inputString,
@@ -202,6 +224,11 @@ export class Client {
     return new DocumentClient(doc, this.docConfigs);
   }
 
+  /**
+   * Load an input document from a `ReadStream`.
+   * @param inputStream
+   * @param filename
+   */
   docFromStream(inputStream: ReadStream, filename: string) {
     const doc = new StreamInput({
       inputStream: inputStream,
@@ -210,10 +237,26 @@ export class Client {
     return new DocumentClient(doc, this.docConfigs);
   }
 
+  /**
+   * Load an input document from a bytes string.
+   * @param inputBytes
+   * @param filename
+   */
   docFromBytes(inputBytes: string, filename: string) {
     const doc = new BytesInput({
       inputBytes: inputBytes,
       filename: filename,
+    });
+    return new DocumentClient(doc, this.docConfigs);
+  }
+
+  /**
+   * Load an input document from a URL.
+   * @param url
+   */
+  docFromUrl(url: string) {
+    const doc = new UrlInput({
+      url: url,
     });
     return new DocumentClient(doc, this.docConfigs);
   }

@@ -10,12 +10,9 @@ export {
 } from "./response";
 export {
   Endpoint,
-  InvoiceV3Endpoint,
-  ReceiptV3Endpoint,
-  ReceiptV4Endpoint,
-  PassportV1Endpoint,
   CustomEndpoint,
-  CropperV1Endpoint,
+  StandardEndpoint,
+  predictResponse,
   STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,
 } from "./endpoint";
