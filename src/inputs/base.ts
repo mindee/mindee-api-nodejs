@@ -2,7 +2,7 @@ import * as fileType from "file-type";
 import * as path from "path";
 
 import { PageOptions } from "./pageOptions";
-import { cutPdf } from "../pdf";
+import { extractPages } from "../pdf";
 import { logger } from "../logger";
 import { errorHandler } from "../errors/handler";
 
@@ -104,7 +104,7 @@ export class InputSource {
         `Cannot modify an input source of type ${this.inputType}.`
       );
     }
-    const processedPdf = await cutPdf(this.fileObject, pageOptions);
-    this.fileObject = Buffer.from(processedPdf.file);
+    const processedPdf = await extractPages(this.fileObject, pageOptions);
+    this.fileObject = processedPdf.file;
   }
 }

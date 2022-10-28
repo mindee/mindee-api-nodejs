@@ -1,2 +1,1 @@
-export { SplitPdf } from "./splitPdf";
-export { cutPdf } from "./pdfOperation";
+export { extractPages, countPages, SplitPdf } from "./pdfOperation";

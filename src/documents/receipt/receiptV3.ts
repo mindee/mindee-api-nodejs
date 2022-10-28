@@ -21,8 +21,13 @@ export class ReceiptV3 extends Document {
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super({ inputSource: inputSource, pageId, fullText, orientation, extras });
-
+    super({
+      inputSource: inputSource,
+      pageId: pageId,
+      orientation: orientation,
+      extras: extras,
+      fullText: fullText,
+    });
     this.locale = new Locale({
       prediction: prediction.locale,
       pageId: pageId,

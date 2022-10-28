@@ -1,21 +1,18 @@
 import { Command } from "commander";
 import {
   DOC_TYPE_INVOICE_V3,
-  DOC_TYPE_RECEIPT_V3,
   DOC_TYPE_PASSPORT_V1,
   DOC_TYPE_FINANCIAL_V1,
   DOC_TYPE_CUSTOM,
+  InvoiceV3,
+  ReceiptV4,
+  FinancialDocumentV1,
+  PassportV1,
+  CustomV1,
+  DOC_TYPE_RECEIPT_V4,
 } from "./documents";
-import {
-  CustomResponse,
-  FinancialDocV1Response,
-  InvoiceV3Response,
-  PassportV1Response,
-  ReceiptV3Response,
-  STANDARD_API_OWNER,
-} from "./api";
+import { STANDARD_API_OWNER } from "./api";
 import { Client } from "./client";
-import { ProductConfigs, ProductConfig } from "./constants";
 
 const program = new Command();
 
@@ -25,12 +22,53 @@ const COMMAND_PASSPORT = "passport";
 const COMMAND_FINANCIAL = "financial";
 const COMMAND_CUSTOM = "custom";
 
+interface ProductConfig {
+  description: string;
+  docType: string;
+  fullText: boolean;
+}
+
 const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
-  [COMMAND_INVOICE, ProductConfigs.getByDocType(DOC_TYPE_INVOICE_V3)],
-  [COMMAND_RECEIPT, ProductConfigs.getByDocType(DOC_TYPE_RECEIPT_V3)],
-  [COMMAND_PASSPORT, ProductConfigs.getByDocType(DOC_TYPE_PASSPORT_V1)],
-  [COMMAND_FINANCIAL, ProductConfigs.getByDocType(DOC_TYPE_FINANCIAL_V1)],
-  [COMMAND_CUSTOM, ProductConfigs.getByDocType(DOC_TYPE_CUSTOM)],
+  [
+    COMMAND_INVOICE,
+    {
+      description: "Invoice V3",
+      docType: DOC_TYPE_INVOICE_V3,
+      fullText: true,
+    },
+  ],
+  [
+    COMMAND_RECEIPT,
+    {
+      description: "Expense Receipt V4",
+      docType: DOC_TYPE_RECEIPT_V4,
+      fullText: true,
+    },
+  ],
+  [
+    COMMAND_PASSPORT,
+    {
+      description: "Passport V1",
+      docType: DOC_TYPE_PASSPORT_V1,
+      fullText: false,
+    },
+  ],
+  [
+    COMMAND_FINANCIAL,
+    {
+      description: "Financial Document V1 (receipt or invoice)",
+      docType: DOC_TYPE_FINANCIAL_V1,
+      fullText: true,
+    },
+  ],
+  [
+    COMMAND_CUSTOM,
+    {
+      description: "A custom document",
+      docType: DOC_TYPE_CUSTOM,
+      fullText: false,
+    },
+  ],
 ]);
 
 async function predictCall(command: string, inputPath: string, options: any) {
@@ -64,19 +102,19 @@ async function predictCall(command: string, inputPath: string, options: any) {
   let response;
   switch (command) {
     case COMMAND_INVOICE:
-      response = await doc.parse(InvoiceV3Response, predictParams);
+      response = await doc.parse(InvoiceV3, predictParams);
       break;
     case COMMAND_RECEIPT:
-      response = await doc.parse(ReceiptV3Response, predictParams);
+      response = await doc.parse(ReceiptV4, predictParams);
       break;
     case COMMAND_FINANCIAL:
-      response = await doc.parse(FinancialDocV1Response, predictParams);
+      response = await doc.parse(FinancialDocumentV1, predictParams);
       break;
     case COMMAND_PASSPORT:
-      response = await doc.parse(PassportV1Response, predictParams);
+      response = await doc.parse(PassportV1, predictParams);
       break;
     case COMMAND_CUSTOM:
-      response = await doc.parse(CustomResponse, predictParams);
+      response = await doc.parse(CustomV1, predictParams);
       break;
     default:
       throw `Unhandled command: ${command}`;

@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { CustomDocument } from "../../src/documents";
+import { CustomV1 } from "../../src/documents";
 import { expect } from "chai";
 import { dataPath } from "../apiPaths";
 
@@ -10,11 +10,11 @@ describe("Custom Document Object initialization", async () => {
       path.resolve(dataPath.custom.complete)
     );
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new CustomDocument({
+    const doc = new CustomV1({
       prediction: response.document.inference.prediction,
       documentType: "field_test",
     });
-    expect(doc.documentType).to.be.equals("field_test");
+    expect(doc.docType).to.be.equals("field_test");
     expect(doc.fields.size).to.be.equals(10);
     expect(doc.classifications.size).to.be.equals(1);
   });
@@ -22,7 +22,7 @@ describe("Custom Document Object initialization", async () => {
   it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.custom.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new CustomDocument({
+    const doc = new CustomV1({
       prediction: response.document.inference.prediction,
       documentType: "field_test",
     });
@@ -41,7 +41,7 @@ describe("Custom Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.custom.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new CustomDocument({
+    const doc = new CustomV1({
       prediction: pageData.prediction,
       documentType: "field_test",
       pageId: pageData.id,
@@ -58,7 +58,7 @@ describe("Custom Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.custom.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[1];
-    const doc = new CustomDocument({
+    const doc = new CustomV1({
       prediction: pageData.prediction,
       documentType: "field_test",
       pageId: pageData.id,

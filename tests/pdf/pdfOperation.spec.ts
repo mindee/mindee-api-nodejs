@@ -1,8 +1,8 @@
-import {cutPdf} from "../../src/pdf"
+import * as pdf from "../../src/pdf"
 import * as path from "path";
 import * as fs from "fs";
-import {expect} from "chai";
-import {PathInput, PageOptions, PageOptionsOperation} from "../../src/inputs";
+import { expect } from "chai";
+import { PathInput, PageOptions, PageOptionsOperation } from "../../src/inputs";
 
 describe("Test pdf operation", () => {
   it("should cut a PDF to get 2 pages", async () => {
@@ -17,11 +17,10 @@ describe("Test pdf operation", () => {
       operation: PageOptionsOperation.KeepOnly,
       onMinPages: 1,
     };
-
-    const splitPdf = await cutPdf(inputDoc.fileObject, pageOptions);
-
-    expect(await splitPdf.totalPagesRemoved)
+    const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
+    expect(splitPdf.totalPagesRemoved)
       .to.eq(10);
+    expect(await pdf.countPages(splitPdf.file)).to.eq(2);
   });
 
   it("should cut a PDF to get only the first page", async () => {
@@ -35,11 +34,10 @@ describe("Test pdf operation", () => {
       operation: PageOptionsOperation.KeepOnly,
       onMinPages: 1,
     };
-
-    const splitPdf = await cutPdf(inputDoc.fileObject, pageOptions);
-
-    expect(await splitPdf.totalPagesRemoved)
+    const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
+    expect(splitPdf.totalPagesRemoved)
       .to.eq(11);
+    expect(await pdf.countPages(splitPdf.file)).to.eq(1);
   });
 
   it("should not cut a PDF but throw exception because index page out of range", async () => {
@@ -53,9 +51,8 @@ describe("Test pdf operation", () => {
       operation: PageOptionsOperation.KeepOnly,
       onMinPages: 1,
     };
-
     try {
-      await cutPdf(inputDoc.fileObject, pageOptions);
+      await pdf.extractPages(inputDoc.fileObject, pageOptions);
     } catch (error: any) {
       expect(error).to.be.an("error");
       expect(error.name).to.be.eq("MindeeError");
@@ -76,7 +73,7 @@ describe("Test pdf operation", () => {
     };
 
     try {
-      await cutPdf(inputDoc.fileObject, pageOptions);
+      await pdf.extractPages(inputDoc.fileObject, pageOptions);
     } catch (error: any) {
       expect(error).to.be.an("error");
       expect(error.name).to.be.eq("MindeeError");
@@ -95,10 +92,11 @@ describe("Test pdf operation", () => {
       onMinPages: 1,
     };
 
-    const splitPdf = await cutPdf(inputDoc.fileObject, pageOptions);
+    const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
 
-    expect(await splitPdf.totalPagesRemoved)
+    expect(splitPdf.totalPagesRemoved)
       .to.eq(3);
+    expect(await pdf.countPages(splitPdf.file)).to.eq(9);
   });
 
   it("should not remove pages from a PDF because min pages are not met", async () => {
@@ -112,11 +110,10 @@ describe("Test pdf operation", () => {
       operation: PageOptionsOperation.Remove,
       onMinPages: 5,
     };
-
-    const splitPdf = await cutPdf(inputDoc.fileObject, pageOptions);
-
-    expect(await splitPdf.totalPagesRemoved)
+    const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
+    expect(splitPdf.totalPagesRemoved)
       .to.eq(0);
+    expect(await pdf.countPages(splitPdf.file)).to.eq(2);
   });
 
   it("should not cut pages from a PDF because min pages are not met", async () => {
@@ -130,11 +127,10 @@ describe("Test pdf operation", () => {
       operation: PageOptionsOperation.KeepOnly,
       onMinPages: 12,
     };
-
-    const splittedPdf = await cutPdf(inputDoc.fileObject, pageOptions);
-
-    expect(await splittedPdf.totalPagesRemoved)
+    const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
+    expect(splitPdf.totalPagesRemoved)
       .to.eq(0);
+    expect(await pdf.countPages(splitPdf.file)).to.eq(2);
   });
 
   it("should cut the first and the 2 last pages from a PDF", async () => {
@@ -148,11 +144,10 @@ describe("Test pdf operation", () => {
       operation: PageOptionsOperation.KeepOnly,
       onMinPages: 0,
     };
-
-    const splitPdf = await cutPdf(inputDoc.fileObject, pageOptions);
-
-    expect(await splitPdf.totalPagesRemoved)
+    const newPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
+    expect(newPdf.totalPagesRemoved)
       .to.eq(9);
+    expect(await pdf.countPages(newPdf.file)).to.eq(3);
 
     // This is how the length of the word is set in the
     // raw PDF file.
@@ -163,10 +158,10 @@ describe("Test pdf operation", () => {
       "utf-8"
     );
 
-    inputDoc.fileObject = Buffer.from(splitPdf.file);
+    inputDoc.fileObject = Buffer.from(newPdf.file);
     const expectedLengths = expectedResult.match(lengthRE);
-    const inputDocLengths =
-      inputDoc.fileObject.toString("utf-8").match(lengthRE) || [];
+    const inputDocLengths = inputDoc.fileObject.toString("utf-8")
+      .match(lengthRE) || [];
     expect(expectedLengths).to.have.ordered.members(inputDocLengths);
   });
 });

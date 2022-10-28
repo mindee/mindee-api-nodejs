@@ -7,17 +7,8 @@ import {
   predictResponse,
   API_KEY_ENVVAR_NAME,
 } from "../api";
-import {
-  DOC_TYPE_CROPPER_V1,
-  DOC_TYPE_FINANCIAL_V1,
-  DOC_TYPE_INVOICE_V3,
-  DOC_TYPE_PASSPORT_V1,
-  DOC_TYPE_RECEIPT_V3,
-  DOC_TYPE_RECEIPT_V4,
-  Document,
-} from "./index";
+import { Document, FinancialDocumentV1, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
-import { ResponseProps } from "../api/response";
 import { PageOptions } from "../inputs";
 
 interface CustomDocConstructor {
@@ -27,20 +18,22 @@ interface CustomDocConstructor {
   apiKey: string;
 }
 
-export type responseSig<RespType extends Response<Document>> = {
-  new ({ httpResponse, documentType, input, error }: ResponseProps): RespType;
-};
-
-export class DocumentConfig {
-  readonly documentType: string;
+export class DocumentConfig<DocType extends Document> {
+  readonly documentType: string | undefined;
   readonly endpoints: Array<Endpoint>;
+  readonly documentClass: DocumentSig<DocType>;
 
-  constructor(documentType: string, endpoints: Array<Endpoint>) {
+  constructor(
+    documentClass: DocumentSig<DocType>,
+    endpoints: Array<Endpoint>,
+    documentType?: string
+  ) {
     this.documentType = documentType;
     this.endpoints = endpoints;
+    this.documentClass = documentClass;
   }
 
-  async predictRequest(
+  protected async predictRequest(
     inputDoc: InputSource,
     includeWords: boolean,
     cropping: boolean
@@ -52,11 +45,10 @@ export class DocumentConfig {
     );
   }
 
-  buildResult<RespType extends Response<Document>>(
-    responseType: responseSig<RespType>,
+  buildResult(
     inputFile: InputSource,
     response: predictResponse
-  ): RespType {
+  ): Response<DocType> {
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode > 201) {
       const errorMessage = JSON.stringify(response.data, null, 2);
@@ -65,14 +57,14 @@ export class DocumentConfig {
           `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
         )
       );
-      return new responseType({
+      return new Response<DocType>(this.documentClass, {
         httpResponse: response,
         documentType: this.documentType,
         input: inputFile,
         error: true,
       });
     }
-    return new responseType({
+    return new Response<DocType>(this.documentClass, {
       httpResponse: response,
       documentType: this.documentType,
       input: inputFile,
@@ -80,15 +72,12 @@ export class DocumentConfig {
     });
   }
 
-  async predict<RespType extends Response<Document>>(
-    responseType: responseSig<RespType>,
-    params: {
-      inputDoc: InputSource;
-      includeWords: boolean;
-      pageOptions?: PageOptions;
-      cropper: boolean;
-    }
-  ): Promise<RespType> {
+  async predict(params: {
+    inputDoc: InputSource;
+    includeWords: boolean;
+    pageOptions?: PageOptions;
+    cropper: boolean;
+  }): Promise<Response<DocType>> {
     this.checkApiKeys();
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
@@ -99,7 +88,7 @@ export class DocumentConfig {
       params.includeWords,
       params.cropper
     );
-    return this.buildResult(responseType, params.inputDoc, response);
+    return this.buildResult(params.inputDoc, response);
   }
 
   async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
@@ -120,37 +109,30 @@ You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
   }
 }
 
-export class InvoiceV3Config extends DocumentConfig {
-  constructor(apiKey: string) {
-    const endpoints = [new StandardEndpoint("invoices", "3", apiKey)];
-    super(DOC_TYPE_INVOICE_V3, endpoints);
+export class CustomDocConfig extends DocumentConfig<CustomV1> {
+  constructor({
+    endpointName,
+    accountName,
+    version,
+    apiKey,
+  }: CustomDocConstructor) {
+    const endpoints = [
+      new CustomEndpoint(endpointName, accountName, version, apiKey),
+    ];
+    super(CustomV1, endpoints, endpointName);
   }
 }
 
-export class ReceiptV3Config extends DocumentConfig {
-  constructor(apiKey: string) {
-    const endpoints = [new StandardEndpoint("expense_receipts", "3", apiKey)];
-    super(DOC_TYPE_RECEIPT_V3, endpoints);
-  }
-}
-
-export class ReceiptV4Config extends DocumentConfig {
-  constructor(apiKey: string) {
-    const endpoints = [new StandardEndpoint("expense_receipts", "4", apiKey)];
-    super(DOC_TYPE_RECEIPT_V4, endpoints);
-  }
-}
-
-export class FinancialDocV1Config extends DocumentConfig {
+export class FinancialDocV1Config extends DocumentConfig<FinancialDocumentV1> {
   constructor(apiKey: string) {
     const endpoints = [
       new StandardEndpoint("invoices", "3", apiKey),
       new StandardEndpoint("expense_receipts", "3", apiKey),
     ];
-    super(DOC_TYPE_FINANCIAL_V1, endpoints);
+    super(FinancialDocumentV1, endpoints);
   }
 
-  async predictRequest(
+  protected async predictRequest(
     inputDoc: InputSource,
     includeWords: boolean,
     cropping: boolean
@@ -162,33 +144,5 @@ export class FinancialDocV1Config extends DocumentConfig {
       endpoint = this.endpoints[1];
     }
     return await endpoint.predictReqPost(inputDoc, includeWords, cropping);
-  }
-}
-
-export class PassportV1Config extends DocumentConfig {
-  constructor(apiKey: string) {
-    const endpoints = [new StandardEndpoint("passport", "1", apiKey)];
-    super(DOC_TYPE_PASSPORT_V1, endpoints);
-  }
-}
-
-export class CropperV1Config extends DocumentConfig {
-  constructor(apiKey: string) {
-    const endpoints = [new StandardEndpoint("cropper", "1", apiKey)];
-    super(DOC_TYPE_CROPPER_V1, endpoints);
-  }
-}
-
-export class CustomDocConfig extends DocumentConfig {
-  constructor({
-    endpointName,
-    accountName,
-    version,
-    apiKey,
-  }: CustomDocConstructor) {
-    const endpoints = [
-      new CustomEndpoint(endpointName, accountName, version, apiKey),
-    ];
-    super(endpointName, endpoints);
   }
 }

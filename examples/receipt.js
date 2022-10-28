@@ -1,19 +1,18 @@
-const { Client } = require("src");
+const mindee = require("../dist");
 const fs = require("fs");
 
-const mindeeClient = new Client();
-
-// Receipt API key can also be set by envvar: MINDEE_RECEIPT_API_KEY
-mindeeClient.configReceipt("my-receipt-api-key");
+// The API key can also be set by envvar: MINDEE_API_KEY
+const mindeeClient = new mindee.Client({apiKey: "my-api-key"});
 
 // parsing receipt from image
 const pathDoc = mindeeClient.docFromPath("./documents/receipts/receipt.jpg");
 pathDoc
-  .parse("receipt")
+  .parse(mindee.ReceiptV4)
   .then((res) => {
     console.log("Success!");
     console.log(res.pages);
     console.log(res.document);
+    console.log(res.document.toString());
   })
   .catch((err) => {
     console.error(err);
@@ -25,11 +24,12 @@ const base64 = fs.readFileSync("./documents/receipts/receipt.jpg", {
 });
 const base64Doc = mindeeClient.docFromBase64(base64.toString(), "receipt.jpg");
 base64Doc
-  .parse("receipt")
+  .parse(mindee.ReceiptV4)
   .then((res) => {
     console.log("Success!");
-      console.log(res.pages);
-      console.log(res.document);
+    console.log(res.pages);
+    console.log(res.document);
+    console.log(res.document.toString());
   })
   .catch((err) => {
     console.error(err);
@@ -39,11 +39,12 @@ base64Doc
 const stream = fs.createReadStream("./documents/receipts/receipt.jpg");
 const streamDoc = mindeeClient.docFromStream(stream, "receipt.jpg");
 streamDoc
-  .parse("receipt")
+  .parse(mindee.ReceiptV4)
   .then((res) => {
-    console.log("Success !");
-      console.log(res.pages);
-      console.log(res.document);
+    console.log("Success!");
+    console.log(res.pages);
+    console.log(res.document);
+    console.log(res.document.toString());
   })
   .catch((err) => {
     console.error(err);
