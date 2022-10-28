@@ -7,33 +7,27 @@ import {
   PageOptions,
   UrlInput,
 } from "./inputs";
-import { Response, STANDARD_API_OWNER } from "./api";
+import { Response, STANDARD_API_OWNER, StandardEndpoint } from "./api";
 import {
-  DOC_TYPE_CROPPER_V1,
-  DOC_TYPE_FINANCIAL_V1,
-  DOC_TYPE_INVOICE_V3,
-  DOC_TYPE_PASSPORT_V1,
-  DOC_TYPE_RECEIPT_V3,
-  DOC_TYPE_RECEIPT_V4,
   Document,
+  DocumentSig,
+  ReceiptV4,
+  ReceiptV3,
+  CropperV1,
+  PassportV1,
+  InvoiceV3,
+  FinancialDocumentV1,
 } from "./documents";
 import {
-  CropperV1Config,
   CustomDocConfig,
   DocumentConfig,
   FinancialDocV1Config,
-  InvoiceV3Config,
-  PassportV1Config,
-  ReceiptV3Config,
-  ReceiptV4Config,
-  responseSig,
 } from "./documents/documentConfig";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 import { ReadStream } from "fs";
-import { ProductConfigs } from "./constants";
 
-type DocConfigs = Map<string[], DocumentConfig>;
+type DocConfigs = Map<string[], DocumentConfig<any>>;
 
 interface PredictOptions {
   endpointName?: string;
@@ -54,11 +48,11 @@ class DocumentClient {
 
   /**
    * Send a document to an endpoint and parse the predictions.
-   * @param responseClass
+   * @param documentClass
    * @param params
    */
-  async parse<RespType extends Response<Document>>(
-    responseClass: responseSig<RespType>,
+  async parse<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
     params: PredictOptions = {
       endpointName: "",
       accountName: "",
@@ -66,13 +60,13 @@ class DocumentClient {
       cropper: false,
       pageOptions: undefined,
     }
-  ): Promise<RespType> {
+  ): Promise<Response<DocType>> {
     // seems like there should be a better way of doing this
     const fullText = params?.fullText !== undefined ? params.fullText : false;
     const cropper = params?.cropper !== undefined ? params.cropper : false;
     const docType: string =
       params.endpointName === undefined || params.endpointName === ""
-        ? this.getDocType(responseClass.name)
+        ? documentClass.name
         : params.endpointName;
 
     const found: Array<string[]> = [];
@@ -97,16 +91,12 @@ class DocumentClient {
       throw `Couldn't find the config '${configKey}'`;
     }
 
-    return await docConfig.predict(responseClass, {
+    return await docConfig.predict({
       inputDoc: this.inputSource,
       includeWords: fullText,
       pageOptions: params.pageOptions,
       cropper: cropper,
     });
-  }
-
-  protected getDocType(responseClass: string): string {
-    return ProductConfigs.getByResponseClassName(responseClass).docType;
   }
 }
 
@@ -152,28 +142,38 @@ export class Client {
   // TODO: init only those endpoints we actually need.
   protected addStandardEndpoints() {
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_INVOICE_V3],
-      new InvoiceV3Config(this.apiKey)
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_RECEIPT_V3],
-      new ReceiptV3Config(this.apiKey)
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_RECEIPT_V4],
-      new ReceiptV4Config(this.apiKey)
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_FINANCIAL_V1],
+      [STANDARD_API_OWNER, FinancialDocumentV1.name],
       new FinancialDocV1Config(this.apiKey)
     );
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_PASSPORT_V1],
-      new PassportV1Config(this.apiKey)
+      [STANDARD_API_OWNER, InvoiceV3.name],
+      new DocumentConfig(InvoiceV3, [
+        new StandardEndpoint("invoices", "3", this.apiKey),
+      ])
     );
     this.docConfigs.set(
-      [STANDARD_API_OWNER, DOC_TYPE_CROPPER_V1],
-      new CropperV1Config(this.apiKey)
+      [STANDARD_API_OWNER, ReceiptV3.name],
+      new DocumentConfig(ReceiptV3, [
+        new StandardEndpoint("expense_receipts", "3", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, ReceiptV4.name],
+      new DocumentConfig(ReceiptV4, [
+        new StandardEndpoint("expense_receipts", "4", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, PassportV1.name],
+      new DocumentConfig(PassportV1, [
+        new StandardEndpoint("passport", "1", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, CropperV1.name],
+      new DocumentConfig(CropperV1, [
+        new StandardEndpoint("cropper", "1", this.apiKey),
+      ])
     );
   }
 

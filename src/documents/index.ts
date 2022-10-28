@@ -3,21 +3,21 @@ import { ReceiptV3 } from "./receipt/receiptV3";
 import { ReceiptV4 } from "./receipt/receiptV4";
 import { PassportV1 } from "./passport/passportV1";
 import { FinancialDocumentV1 } from "./financialDocument/financialDocumentV1";
-import { CustomDocument } from "./custom";
+import { CustomV1 } from "./custom";
 import { CropperV1 } from "./cropper/cropperV1";
 
-export { Document, DocumentConstructorProps } from "./document";
+export { Document, DocumentConstructorProps, DocumentSig } from "./document";
 export {
   ReceiptV3,
   ReceiptV4,
   InvoiceV3,
   FinancialDocumentV1,
   PassportV1,
-  CustomDocument,
+  CustomV1,
   CropperV1,
 };
 
-export const DOC_TYPE_CUSTOM = CustomDocument.name;
+export const DOC_TYPE_CUSTOM = CustomV1.name;
 export const DOC_TYPE_INVOICE_V3 = InvoiceV3.name;
 export const DOC_TYPE_RECEIPT_V3 = ReceiptV3.name;
 export const DOC_TYPE_RECEIPT_V4 = ReceiptV4.name;

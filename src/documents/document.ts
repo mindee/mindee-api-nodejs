@@ -6,6 +6,18 @@ import {
   stringDict,
 } from "../fields";
 
+export type DocumentSig<DocType extends Document> = {
+  new ({
+    prediction,
+    orientation,
+    extras,
+    inputSource,
+    pageId,
+    fullText,
+    documentType,
+  }: DocumentConstructorProps): DocType;
+};
+
 export interface DocumentConstructorProps extends BaseDocumentConstructorProps {
   /** JSON parsed prediction from HTTP response */
   prediction: stringDict;
@@ -22,6 +34,7 @@ interface BaseDocumentConstructorProps {
   pageId?: number;
   /** full OCR extracted text */
   fullText?: FullText;
+  documentType?: string;
 }
 
 export class Document {
@@ -33,6 +46,7 @@ export class Document {
   pageId?: number | undefined;
   orientation?: OrientationField;
   cropper: CropperField[] = [];
+  readonly docType: string;
 
   constructor({
     orientation = undefined,
@@ -40,9 +54,15 @@ export class Document {
     inputSource = undefined,
     fullText = undefined,
     pageId = undefined,
+    documentType,
   }: BaseDocumentConstructorProps) {
     this.filepath = undefined;
     this.pageId = pageId;
+    if (documentType === undefined || documentType === "") {
+      this.docType = Object.getPrototypeOf(this).constructor.name;
+    } else {
+      this.docType = documentType;
+    }
 
     if (pageId !== undefined && orientation !== undefined) {
       this.orientation = new OrientationField({

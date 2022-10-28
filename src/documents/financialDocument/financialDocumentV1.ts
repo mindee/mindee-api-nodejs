@@ -38,7 +38,13 @@ export class FinancialDocumentV1 extends Document {
     fullText = undefined,
     pageId = undefined,
   }: DocumentConstructorProps) {
-    super({ inputSource: inputSource, pageId, fullText, orientation, extras });
+    super({
+      inputSource: inputSource,
+      pageId: pageId,
+      orientation: orientation,
+      fullText: fullText,
+      extras: extras,
+    });
     this.#initFromApiPrediction(
       prediction,
       inputSource,

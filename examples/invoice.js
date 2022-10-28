@@ -1,20 +1,18 @@
-const { Client } = require("src");
+const mindee = require("../dist");
 const fs = require("fs");
 
-const mindeeClient = new Client();
-
-// Receipt API key can also be set by envvar: MINDEE_INVOICE_API_KEY
-mindeeClient.configInvoice("my-receipt-api-key");
+// The API key can also be set by envvar: MINDEE_API_KEY
+const mindeeClient = new mindee.Client({apiKey: "my-api-key"});
 
 // parsing invoice from PDF
 const pathDoc = mindeeClient.docFromPath("./documents/invoices/invoice.pdf");
 pathDoc
-  .parse("invoice")
+  .parse(mindee.InvoiceV3)
   .then((res) => {
     console.log("Success!");
     console.log(res.pages);
     console.log(res.document);
-    console.log(res.documentType);
+    console.log(res.document.toString());
   })
   .catch((err) => {
     console.error(err);
@@ -26,12 +24,12 @@ const base64 = fs.readFileSync("./documents/invoices/credit_note.pdf", {
 });
 const base64Doc = mindeeClient.docFromBase64(base64.toString(), "credit_note.pdf");
 base64Doc
-  .parse("invoice")
+  .parse(mindee.InvoiceV3)
   .then((res) => {
     console.log("Success!");
-    console.log(res.documentType);
     console.log(res.pages);
     console.log(res.document);
+    console.log(res.document.toString());
   })
   .catch((err) => {
     console.error(err);
@@ -39,14 +37,20 @@ base64Doc
 
 // parsing invoice from multi-page PDF stream
 const stream = fs.createReadStream("./documents/invoices/invoice_10p.pdf");
-const streamDoc = mindeeClient.docFromStream(stream, "receipt.jpg");
+const streamDoc = mindeeClient.docFromStream(stream, "invoice_10p.pdf");
 streamDoc
-  .parse("invoice")
+  .parse(mindee.InvoiceV3, {
+    pageOptions: {
+      operation: mindee.PageOptionsOperation.KeepOnly,
+      pageIndexes: [0, -2, -1],
+      onMinPages: 5,
+    },
+  })
   .then((res) => {
     console.log("Success!");
-    console.log(res.documentType);
     console.log(res.pages);
     console.log(res.document);
+    console.log(res.document.toString());
   })
   .catch((err) => {
     console.error(err);

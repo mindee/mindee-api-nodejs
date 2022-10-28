@@ -1,8 +1,12 @@
 import { errorHandler } from "../errors/handler";
 import { PDFDocument } from "pdf-lib";
 import { PageOptions, PageOptionsOperation } from "../inputs";
-import { SplitPdf } from "./splitPdf";
 import { MindeeError } from "../errors";
+
+export interface SplitPdf {
+  file: Buffer;
+  totalPagesRemoved: number;
+}
 
 /**
  * Cut pages from a pdf file. If pages index are out of bound, it will throw an error.
@@ -10,7 +14,7 @@ import { MindeeError } from "../errors";
  * @param pageOptions
  * @returns the new cutted pdf file.
  */
-export async function cutPdf(
+export async function extractPages(
   file: Buffer,
   pageOptions: PageOptions
 ): Promise<SplitPdf> {
@@ -29,7 +33,7 @@ export async function cutPdf(
   }
 
   if (currentPdf.getPageCount() < pageOptions.onMinPages) {
-    return { file: await newPdf.save(), totalPagesRemoved: 0 };
+    return { file: file, totalPagesRemoved: 0 };
   }
 
   const pageIndexes: number[] = [];
@@ -46,27 +50,36 @@ export async function cutPdf(
       new MindeeError(
         `Some indexes pages
         (${pageIndexes.join(",")})
-        are not existing in the file
-        (${currentPdf.getPageIndices().join(",")})`
+        don't exist in the file
+        (${currentPdf.getPageIndices().join(", ")})`
       )
     );
   }
 
   if (pageOptions.operation === PageOptionsOperation.KeepOnly) {
     const keptPages = await newPdf.copyPages(currentPdf, pageIndexes);
-    keptPages.forEach((keptPage) => newPdf.addPage(keptPage));
+    keptPages.forEach((keptPage) => {
+      newPdf.addPage(keptPage);
+    });
   } else if (pageOptions.operation === PageOptionsOperation.Remove) {
     const pagesToKeep = currentPdf
       .getPageIndices()
       .filter((v) => !pageIndexes.includes(v));
-
     const keptPages = await newPdf.copyPages(currentPdf, pagesToKeep);
-    keptPages.forEach((keptPage) => newPdf.addPage(keptPage));
+    keptPages.forEach((keptPage) => {
+      newPdf.addPage(keptPage);
+    });
   } else {
-    errorHandler.throw(new MindeeError("This operation is not available."));
+    throw new Error(`The operation ${pageOptions.operation} is not available.`);
   }
-
   const sumRemovedPages = currentPdf.getPageCount() - newPdf.getPageCount();
+  const fileBuffer = Buffer.from(await newPdf.save());
+  return { file: fileBuffer, totalPagesRemoved: sumRemovedPages };
+}
 
-  return { file: await newPdf.save(), totalPagesRemoved: sumRemovedPages };
+export async function countPages(file: Buffer): Promise<number> {
+  const currentPdf = await PDFDocument.load(file, {
+    ignoreEncryption: true,
+  });
+  return currentPdf.getPageCount();
 }

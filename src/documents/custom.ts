@@ -2,14 +2,9 @@ import { Document, DocumentConstructorProps } from "./document";
 import { ClassificationField, ListField } from "../fields";
 import { stringDict } from "../fields";
 
-export interface CustomDocConstructorProps extends DocumentConstructorProps {
-  documentType: string;
-}
-
-export class CustomDocument extends Document {
+export class CustomV1 extends Document {
   fields: Map<string, ListField> = new Map();
   classifications: Map<string, ClassificationField> = new Map();
-  readonly documentType: string;
 
   constructor({
     inputSource,
@@ -18,9 +13,14 @@ export class CustomDocument extends Document {
     orientation = undefined,
     pageId,
     documentType,
-  }: CustomDocConstructorProps) {
-    super({ inputSource: inputSource, pageId, orientation, extras });
-    this.documentType = documentType;
+  }: DocumentConstructorProps) {
+    super({
+      inputSource: inputSource,
+      pageId: pageId,
+      orientation: orientation,
+      extras: extras,
+      documentType: documentType,
+    });
 
     Object.keys(prediction).forEach((fieldName) => {
       this.setField(fieldName, prediction, pageId);
@@ -58,7 +58,7 @@ export class CustomDocument extends Document {
   }
 
   toString(): string {
-    let outStr = `----- ${this.documentType} -----`;
+    let outStr = `----- ${this.docType} -----`;
     outStr += `\nFilename: ${this.filename}`.trimEnd();
     this.classifications.forEach((fieldData, name) => {
       outStr += `\n${name}: ${fieldData}`.trimEnd();

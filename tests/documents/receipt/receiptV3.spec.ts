@@ -1,4 +1,4 @@
-import { ReceiptV3 } from "../../../src/documents";
+import { ReceiptV3 } from "../../../src";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";

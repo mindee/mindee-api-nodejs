@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { dataPath } from "../../apiPaths";
-import { FinancialDocumentV1 } from "../../../src/documents";
+import {CropperV1, FinancialDocumentV1} from "../../../src/documents";
 import {
   Amount,
   DateField,

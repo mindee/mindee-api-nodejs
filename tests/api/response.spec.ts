@@ -1,6 +1,13 @@
 import { expect } from "chai";
-import {CustomResponse, InvoiceV3Response, PassportV1Response, ReceiptV3Response} from "../../src/api";
-import {DOC_TYPE_INVOICE_V3, DOC_TYPE_RECEIPT_V3} from "../../src/documents";
+import {Response} from "../../src/api";
+import {
+  CustomV1,
+  DOC_TYPE_INVOICE_V3,
+  DOC_TYPE_RECEIPT_V3,
+  InvoiceV3,
+  PassportV1,
+  ReceiptV3,
+} from "../../src/documents";
 import { promises as fs } from "fs";
 import path from "path";
 import { dataPath } from "../apiPaths";
@@ -12,9 +19,8 @@ describe("API response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new ReceiptV3Response({
+    const response = new Response<ReceiptV3>(ReceiptV3, {
       httpResponse: httpResponse,
-      documentType: DOC_TYPE_RECEIPT_V3,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
@@ -31,9 +37,8 @@ describe("API response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new InvoiceV3Response({
+    const response = new Response<InvoiceV3>(InvoiceV3, {
       httpResponse: httpResponse,
-      documentType: DOC_TYPE_INVOICE_V3,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
@@ -50,9 +55,8 @@ describe("API response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new PassportV1Response({
+    const response = new Response<PassportV1>(PassportV1, {
       httpResponse: httpResponse,
-      documentType: DOC_TYPE_INVOICE_V3,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
@@ -68,14 +72,13 @@ describe("API response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new CustomResponse({
+    const response = new Response<CustomV1>(CustomV1, {
       httpResponse: httpResponse,
       documentType: "field_test",
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
     });
     expect(response.document).to.not.be.undefined;
-    expect(response.documentType).to.be.equals("field_test");
     expect(response.pages.length).to.be.equals(2);
     response.pages.forEach((page, idx) => {
       expect(page.pageId).to.be.equals(idx);

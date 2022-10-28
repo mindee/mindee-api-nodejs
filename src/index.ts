@@ -1,10 +1,11 @@
 export {
-  CustomResponse,
-  FinancialDocV1Response,
-  InvoiceV3Response,
-  PassportV1Response,
-  ReceiptV3Response,
-  ReceiptV4Response,
-  CropperV1Response,
-} from "./api";
+  CustomV1,
+  FinancialDocumentV1,
+  InvoiceV3,
+  PassportV1,
+  ReceiptV3,
+  ReceiptV4,
+  CropperV1,
+} from "./documents";
 export { Client } from "./client";
+export { PageOptionsOperation } from "./inputs";

@@ -119,7 +119,7 @@ describe("Test different types of input", () => {
     await inputDoc.init();
     await inputDoc.cutPdf({
       operation: PageOptionsOperation.KeepOnly,
-      pageIndexes: [0, 10, 11],
+      pageIndexes: [0, -2, -1],
       onMinPages: 5,
     });
     expect(inputDoc.inputType).to.equals("path");
@@ -136,8 +136,8 @@ describe("Test different types of input", () => {
     );
 
     const expectedLengths = expectedResult.match(lengthRE);
-    const inputDocLengths =
-      inputDoc.fileObject.toString("utf-8").match(lengthRE) || [];
+    const inputDocLengths = inputDoc.fileObject.toString("utf-8")
+      .match(lengthRE) || [];
     expect(expectedLengths).to.have.ordered.members(inputDocLengths);
   });
 

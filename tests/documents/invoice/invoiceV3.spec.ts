@@ -1,4 +1,4 @@
-import { InvoiceV3 } from "../../../src/documents";
+import {FinancialDocumentV1, InvoiceV3} from "../../../src/documents";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
@@ -18,6 +18,7 @@ describe("Invoice Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new InvoiceV3({
       prediction: response.document.inference.pages[0].prediction,
+
     });
     expect(doc.locale.value).to.be.undefined;
     expect(doc.totalIncl.value).to.be.undefined;
@@ -49,6 +50,7 @@ describe("Invoice Object initialization", async () => {
     const prediction = response.document.inference.prediction;
     const doc = new InvoiceV3({
       prediction: prediction,
+
     });
     const docString = await fs.readFile(path.join(dataPath.invoiceV3.docString));
     expect(doc.orientation).to.be.undefined;
@@ -65,6 +67,7 @@ describe("Invoice Object initialization", async () => {
       pageId: pageData.id,
       orientation: pageData.orientation,
       extras: pageData.extras,
+
     });
     const docString = await fs.readFile(
       path.join(dataPath.invoiceV3.page0String)
@@ -83,6 +86,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: 240.5, confidence: 0.9 },
         taxes: [],
       },
+
     });
     expect(doc.totalIncl.value).to.be.undefined;
   });
@@ -95,6 +99,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: "N/A", confidence: 0.0 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
+
     });
     expect(doc.totalIncl.value).to.be.undefined;
   });
@@ -107,6 +112,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: 240.5, confidence: 0.9 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
+
     });
     expect(doc.totalIncl.value).to.be.equal(260);
     expect(doc.totalIncl.confidence).to.be.equal(0.4);
@@ -120,6 +126,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: 240.5, confidence: 0.9 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
+
     });
     expect(doc.totalIncl.value).to.be.equal(250);
     expect(doc.totalIncl.confidence).to.be.equal(0.81);
@@ -133,6 +140,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: "N/A", confidence: 0.0 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
+
     });
     expect(doc.totalExcl.value).to.be.undefined;
   });
@@ -145,6 +153,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: "N/A", confidence: 0.0 },
         taxes: [],
       },
+
     });
     expect(doc.totalExcl.value).to.be.undefined;
   });
@@ -157,6 +166,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: 1050.0, confidence: 0.4 },
         taxes: [],
       },
+
     });
     expect(doc.totalExcl.value).to.be.equal(1050.0);
     expect(doc.totalExcl.confidence).to.be.equal(0.4);
@@ -173,6 +183,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.0, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.totalExcl.value).to.be.equal(1100);
     expect(doc.totalExcl.confidence).to.be.equal(0.03);
@@ -184,6 +195,7 @@ describe("Invoice Object initialization", async () => {
         ...this.basePrediction,
         taxes: [],
       },
+
     });
     expect(doc.totalTax.value).to.be.undefined;
   });
@@ -197,6 +209,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.0, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.totalTax.value).to.be.equal(50.2);
     expect(doc.totalTax.confidence).to.be.equal(0.05);
@@ -212,6 +225,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.12, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.checklist.taxesMatchTotalIncl).to.be.true;
     expect(doc.totalIncl.confidence).to.be.equal(1.0);
@@ -230,6 +244,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.12, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.checklist.taxesMatchTotalIncl).to.be.false;
   });
@@ -241,6 +256,7 @@ describe("Invoice Object initialization", async () => {
         total_incl: { value: 507.25, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0.0, confidence: 0.5 }],
       },
+
     });
     expect(doc.checklist.taxesMatchTotalIncl).to.be.false;
   });
@@ -255,6 +271,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.12, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.checklist.taxesMatchTotalExcl).to.be.true;
     expect(doc.totalExcl.confidence).to.be.equal(1.0);
@@ -273,6 +290,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.12, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.checklist.taxesMatchTotalExcl).to.be.false;
   });
@@ -284,6 +302,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: 507.25, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0.0, confidence: 0.5 }],
       },
+
     });
     expect(doc.checklist.taxesMatchTotalExcl).to.be.false;
   });
@@ -299,6 +318,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.12, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.checklist.taxesAndTotalExclMatchTotalIncl).to.be.true;
     expect(doc.totalIncl.confidence).to.be.equal(1.0);
@@ -319,6 +339,7 @@ describe("Invoice Object initialization", async () => {
           { rate: 10, value: 40.12, confidence: 0.1 },
         ],
       },
+
     });
     expect(doc.checklist.taxesAndTotalExclMatchTotalIncl).to.be.false;
   });
@@ -331,6 +352,7 @@ describe("Invoice Object initialization", async () => {
         total_excl: { value: 456.15, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0, confidence: 0.5 }],
       },
+
     });
     expect(doc.checklist.taxesAndTotalExclMatchTotalIncl).to.be.false;
   });
