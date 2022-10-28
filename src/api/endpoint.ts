@@ -44,21 +44,21 @@ export class Endpoint {
    */
   predictRequest(input: Input, includeWords = false, cropper = false) {
     return new Promise((resolve, reject) => {
-      const form = new FormData();
-      let body;
       let headers: { [key: string]: string | number } = {
         "User-Agent": USER_AGENT,
         Authorization: `Token ${this.apiKey}`,
       };
-
       const uri = new URL(`${this.urlRoot}/predict`);
+      if (cropper) {
+        uri.searchParams.append("cropper", "true");
+      }
+      logger.debug(`Prediction request: ${uri}`);
+
+      const form = new FormData();
       const fileParams = { filename: input.filename };
       form.append("document", input.fileObject, fileParams);
       if (includeWords) {
         form.append("include_mvision", "true");
-      }
-      if (cropper) {
-        uri.searchParams.append("cropper", "true");
       }
       headers = { ...headers, ...form.getHeaders() };
 
@@ -68,8 +68,6 @@ export class Endpoint {
         hostname: uri.hostname,
         path: `${uri.pathname}${uri.search}`,
       };
-
-      logger.debug(`Prediction request: ${uri}`);
       const req = https.request(options, function (res: IncomingMessage) {
         // when the encoding is set, data chunks will be strings
         res.setEncoding("utf-8");
@@ -91,18 +89,11 @@ export class Endpoint {
         });
       });
 
+      form.pipe(req);
+
       req.on("error", (err: any) => {
         reject(err);
       });
-
-      if (["path", "stream"].includes(input.inputType)) {
-        form.pipe(req);
-      }
-
-      if (input.inputType === "base64") {
-        req.write(body);
-        req.end();
-      }
     });
   }
 
