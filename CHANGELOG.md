@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v2.1.1 - 2022-10-28
+### Fixes
+* :bug: fix for sending base64 documents.
+
 ## v2.1.0 - 2022-10-19
 ### Changes
 * :sparkles: add cropper support to predict requests
