@@ -1,5 +1,17 @@
 # CHANGELOG
 
+## v3.0.0 - 2022-10-31
+### ¡Breaking Changes!
+* :sparkles: New PDF cut system, which allows specifying exactly which pages to keep or remove.
+* :recycle: PDF documents are no longer cut by default, use the `pageOptions` parameter in the `parse` method.
+* :sparkles: Document (endpoints) are now versioned, providing better backward-compatible support.
+* :recycle: Pass the document class instead of the response class to the `parse` method.
+* :recycle: Some methods and parameters renamed for better clarity.
+
+### Changes
+* :sparkles: New URL input source, `docFromUrl`.
+* :sparkles: Add support for expense receipts V4
+
 ## v2.1.1 - 2022-10-28
 ### Fixes
 * :bug: fix for sending base64 documents.
