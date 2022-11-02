@@ -39,13 +39,17 @@ describe("Receipt Object V3 initialization", async () => {
   });
 
   it("should load a complete document prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
+    const jsonData = await fs.readFile(
+      path.resolve(dataPath.receiptV3.complete)
+    );
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
     const doc = new ReceiptV3({
       prediction: prediction,
     });
-    const docString = await fs.readFile(path.join(dataPath.receiptV3.docString));
+    const docString = await fs.readFile(
+      path.join(dataPath.receiptV3.docString)
+    );
     expect(doc.toString()).to.be.equals(docString.toString());
     for (const key in doc.checklist) {
       expect(doc.checklist[key]).to.be.true;
@@ -53,7 +57,9 @@ describe("Receipt Object V3 initialization", async () => {
   });
 
   it("should load a complete page 0 prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
+    const jsonData = await fs.readFile(
+      path.resolve(dataPath.receiptV3.complete)
+    );
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
     const doc = new ReceiptV3({

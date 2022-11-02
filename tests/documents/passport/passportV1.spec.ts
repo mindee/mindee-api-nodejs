@@ -1,16 +1,17 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import {InvoiceV3, PassportV1} from "../../../src/documents";
+import { PassportV1 } from "../../../src";
 import { expect } from "chai";
 import { dataPath } from "../../apiPaths";
 
 describe("Passport Object initialization", async () => {
   it("should load an empty document prediction", async () => {
-    const jsonDataNA = await fs.readFile(path.resolve(dataPath.passportV1.empty));
+    const jsonDataNA = await fs.readFile(
+      path.resolve(dataPath.passportV1.empty)
+    );
     const response = JSON.parse(jsonDataNA.toString());
     const doc = new PassportV1({
       prediction: response.document.inference.pages[0].prediction,
-
     });
     expect(doc.birthDate.value).to.be.undefined;
     expect(doc.isExpired()).to.be.true;
@@ -27,9 +28,10 @@ describe("Passport Object initialization", async () => {
     const prediction = response.document.inference.prediction;
     const doc = new PassportV1({
       prediction: prediction,
-
     });
-    const docString = await fs.readFile(path.join(dataPath.passportV1.docString));
+    const docString = await fs.readFile(
+      path.join(dataPath.passportV1.docString)
+    );
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.isExpired()).to.be.false;
 
@@ -53,7 +55,6 @@ describe("Passport Object initialization", async () => {
       pageId: pageData.id,
       orientation: pageData.orientation,
       extras: pageData.extras,
-
     });
     const docString = await fs.readFile(
       path.join(dataPath.passportV1.page0String)

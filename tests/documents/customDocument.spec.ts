@@ -27,10 +27,14 @@ describe("Custom Document Object initialization", async () => {
       documentType: "field_test",
     });
     const stringAll = doc.fields.get("string_all");
-    expect(stringAll).to.have.property('values');
+    expect(stringAll).to.have.property("values");
     expect(stringAll?.contentsString("-")).to.equals("Mindee-is-awesome");
-    expect(stringAll?.contentsList()).to.have.members(["Mindee", "is", "awesome"]);
-    expect(doc.classifications.get("doc_type")).to.have.property('value');
+    expect(stringAll?.contentsList()).to.have.members([
+      "Mindee",
+      "is",
+      "awesome",
+    ]);
+    expect(doc.classifications.get("doc_type")).to.have.property("value");
     expect(doc.fields.size).to.be.equals(10);
     expect(doc.classifications.size).to.be.equals(1);
     const docString = await fs.readFile(path.join(dataPath.custom.docString));

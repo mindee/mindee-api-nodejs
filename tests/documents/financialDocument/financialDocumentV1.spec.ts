@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { dataPath } from "../../apiPaths";
-import {CropperV1, FinancialDocumentV1} from "../../../src/documents";
+import { FinancialDocumentV1 } from "../../../src";
 import {
   Amount,
   DateField,
@@ -28,7 +28,9 @@ describe("Financial Document Object initialization", async () => {
   });
 
   it("should initialize from an invoice object", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3.complete));
+    const jsonData = await fs.readFile(
+      path.resolve(dataPath.invoiceV3.complete)
+    );
     const response = JSON.parse(jsonData.toString());
     const doc = new FinancialDocumentV1({
       prediction: response.document.inference.prediction,
@@ -40,7 +42,9 @@ describe("Financial Document Object initialization", async () => {
   });
 
   it("should initialize from a receipt object", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
+    const jsonData = await fs.readFile(
+      path.resolve(dataPath.receiptV3.complete)
+    );
     const response = JSON.parse(jsonData.toString());
     const doc = new FinancialDocumentV1({
       prediction: response.document.inference.pages[0].prediction,
