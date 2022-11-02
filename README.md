@@ -30,7 +30,19 @@ const invoiceResponse = mindeeClient
 
 // Print a brief summary of the parsed data
 invoiceResponse.then((resp) => {
+
+    // The document property can be undefined:
+    // * TypeScript will throw an error without this guard clause
+    //   (or consider using the '?' notation)
+    // * JavaScript will be very happy to produce subtle bugs
+    //   without this guard clause
+    if (resp.document === undefined) return;
+
+    // full object
     console.log(resp.document);
+
+    // string summary
+    console.log(resp.document.toString());
 });
 ```
 
@@ -55,7 +67,14 @@ const customResponse = mindeeClient
 
 // Print a brief summary of the parsed data
 customResponse.then((resp) => {
+
+    if (resp.document === undefined) return;
+    
+    // full object
     console.log(resp.document);
+
+    // string summary
+    console.log(resp.document.toString());
 });
 ```
 

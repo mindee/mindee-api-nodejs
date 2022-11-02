@@ -3,16 +3,25 @@ import { Amount, DateField, Field, Locale, TaxField } from "../../fields";
 import { ReceiptTaxField } from "./tax";
 
 export class ReceiptV4 extends Document {
+  /** Where the purchase was made, the language, and the currency. */
   locale!: Locale;
+  /** The purchase date. */
   date!: DateField;
-  /** Receipt category as seen on the receipt. */
+  /** The type of purchase. */
   category!: Field;
-  merchantName!: Field;
+  /** Merchant's name as seen on the receipt. */
+  supplier!: Field;
+  /** Time as seen on the receipt in HH:MM format. */
   time!: Field;
+  /** List of taxes detected on the receipt. */
   taxes: TaxField[] = [];
+  /** Total amount of tip and gratuity. */
   tip!: Amount;
+  /** total spent including taxes, discounts, fees, tips, and gratuity. */
   totalAmount!: Amount;
+  /** Total amount of the purchase excluding taxes. */
   totalNet!: Amount;
+  /** Total tax amount of the purchase. */
   totalTax!: Amount;
 
   constructor({
@@ -66,7 +75,7 @@ export class ReceiptV4 extends Document {
       prediction: apiPrediction.category,
       pageId: pageId,
     });
-    this.merchantName = new Field({
+    this.supplier = new Field({
       prediction: apiPrediction.supplier,
       pageId: pageId,
     });
@@ -98,7 +107,7 @@ Tip: ${this.tip}
 Date: ${this.date}
 Category: ${this.category}
 Time: ${this.time}
-Supplier name: ${this.merchantName}
+Supplier name: ${this.supplier}
 Taxes: ${taxes}
 Total taxes: ${this.totalTax}
 Locale: ${this.locale}
