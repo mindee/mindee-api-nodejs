@@ -26,7 +26,7 @@ describe("Receipt Object V4 initialization", async () => {
     expect((doc.taxes as TaxField[]).length).to.be.equal(0);
     expect((doc.date as DateField).value).to.be.undefined;
     expect((doc.time as Field).value).to.be.undefined;
-    expect((doc.merchantName as Field).value).to.be.undefined;
+    expect((doc.supplier as Field).value).to.be.undefined;
   });
 
   it("should load a complete document prediction", async () => {
