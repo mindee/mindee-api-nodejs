@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.0.1 - 2022-11-02
+### Fixes
+* :bug: Fix for `supplier` property name in `ReceiptV4` document.
+
 ## v3.0.0 - 2022-10-31
 ### ¡Breaking Changes!
 * :sparkles: New PDF cut system, which allows specifying exactly which pages to keep or remove.
