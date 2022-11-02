@@ -1,4 +1,4 @@
-import * as pdf from "../../src/pdf"
+import * as pdf from "../../src/pdf";
 import * as path from "path";
 import * as fs from "fs";
 import { expect } from "chai";
@@ -6,7 +6,6 @@ import { PathInput, PageOptions, PageOptionsOperation } from "../../src/inputs";
 
 describe("Test pdf operation", () => {
   it("should cut a PDF to get 2 pages", async () => {
-
     const inputDoc = new PathInput({
       inputPath: path.join(__dirname, "../data/pdf/multipage.pdf"),
     });
@@ -18,8 +17,7 @@ describe("Test pdf operation", () => {
       onMinPages: 1,
     };
     const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved)
-      .to.eq(10);
+    expect(splitPdf.totalPagesRemoved).to.eq(10);
     expect(await pdf.countPages(splitPdf.file)).to.eq(2);
   });
 
@@ -35,8 +33,7 @@ describe("Test pdf operation", () => {
       onMinPages: 1,
     };
     const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved)
-      .to.eq(11);
+    expect(splitPdf.totalPagesRemoved).to.eq(11);
     expect(await pdf.countPages(splitPdf.file)).to.eq(1);
   });
 
@@ -57,7 +54,6 @@ describe("Test pdf operation", () => {
       expect(error).to.be.an("error");
       expect(error.name).to.be.eq("MindeeError");
     }
-
   });
 
   it("should not cut a PDF but throw exception because too many indexes compare to the total of pages", async () => {
@@ -94,8 +90,7 @@ describe("Test pdf operation", () => {
 
     const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
 
-    expect(splitPdf.totalPagesRemoved)
-      .to.eq(3);
+    expect(splitPdf.totalPagesRemoved).to.eq(3);
     expect(await pdf.countPages(splitPdf.file)).to.eq(9);
   });
 
@@ -111,8 +106,7 @@ describe("Test pdf operation", () => {
       onMinPages: 5,
     };
     const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved)
-      .to.eq(0);
+    expect(splitPdf.totalPagesRemoved).to.eq(0);
     expect(await pdf.countPages(splitPdf.file)).to.eq(2);
   });
 
@@ -128,8 +122,7 @@ describe("Test pdf operation", () => {
       onMinPages: 12,
     };
     const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved)
-      .to.eq(0);
+    expect(splitPdf.totalPagesRemoved).to.eq(0);
     expect(await pdf.countPages(splitPdf.file)).to.eq(2);
   });
 
@@ -145,8 +138,7 @@ describe("Test pdf operation", () => {
       onMinPages: 0,
     };
     const newPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
-    expect(newPdf.totalPagesRemoved)
-      .to.eq(9);
+    expect(newPdf.totalPagesRemoved).to.eq(9);
     expect(await pdf.countPages(newPdf.file)).to.eq(3);
 
     // This is how the length of the word is set in the
@@ -160,8 +152,8 @@ describe("Test pdf operation", () => {
 
     inputDoc.fileObject = Buffer.from(newPdf.file);
     const expectedLengths = expectedResult.match(lengthRE);
-    const inputDocLengths = inputDoc.fileObject.toString("utf-8")
-      .match(lengthRE) || [];
+    const inputDocLengths =
+      inputDoc.fileObject.toString("utf-8").match(lengthRE) || [];
     expect(expectedLengths).to.have.ordered.members(inputDocLengths);
   });
 });

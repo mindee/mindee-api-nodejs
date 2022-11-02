@@ -49,7 +49,7 @@ describe("Test Cropper field", () => {
         [0.004, 0.998],
       ],
     };
-    const field = new CropperField({prediction, pageId: 0});
+    const field = new CropperField({ prediction, pageId: 0 });
     expect(field.value).to.be.equal(field.polygon);
     expect(field.boundingBox.length).to.be.equal(4);
     expect(field.polygon.length).to.be.equal(24);

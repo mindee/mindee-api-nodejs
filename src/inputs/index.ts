@@ -12,4 +12,5 @@ export {
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH,
   INPUT_TYPE_STREAM,
+  INPUT_TYPE_URL,
 } from "./base";

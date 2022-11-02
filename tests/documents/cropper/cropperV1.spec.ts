@@ -6,7 +6,9 @@ import { dataPath } from "../../apiPaths";
 
 describe("Cropper Object initialization", async () => {
   it("should load an empty document prediction", async () => {
-    const jsonDataNA = await fs.readFile(path.resolve(dataPath.cropperV1.empty));
+    const jsonDataNA = await fs.readFile(
+      path.resolve(dataPath.cropperV1.empty)
+    );
     const response = JSON.parse(jsonDataNA.toString());
     const doc = new CropperV1({
       prediction: response.document.inference.pages[0].prediction,
@@ -23,7 +25,9 @@ describe("Cropper Object initialization", async () => {
     const doc = new CropperV1({
       prediction: prediction,
     });
-    const docString = await fs.readFile(path.join(dataPath.cropperV1.docString));
+    const docString = await fs.readFile(
+      path.join(dataPath.cropperV1.docString)
+    );
     expect(doc.cropping.length).to.be.equals(0);
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
@@ -41,7 +45,7 @@ describe("Cropper Object initialization", async () => {
       orientation: pageData.orientation,
       extras: pageData.extras,
     });
-    console.log(doc.cropping.toString())
+    console.log(doc.cropping.toString());
     const docString = await fs.readFile(
       path.join(dataPath.cropperV1.page0String)
     );

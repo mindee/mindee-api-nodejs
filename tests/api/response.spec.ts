@@ -1,13 +1,6 @@
 import { expect } from "chai";
-import {Response} from "../../src/api";
-import {
-  CustomV1,
-  DOC_TYPE_INVOICE_V3,
-  DOC_TYPE_RECEIPT_V3,
-  InvoiceV3,
-  PassportV1,
-  ReceiptV3,
-} from "../../src/documents";
+import { Response } from "../../src/api";
+import { CustomV1, InvoiceV3, PassportV1, ReceiptV3 } from "../../src";
 import { promises as fs } from "fs";
 import path from "path";
 import { dataPath } from "../apiPaths";
@@ -15,7 +8,9 @@ import { InputSource, INPUT_TYPE_PATH } from "../../src/inputs";
 
 describe("API response", () => {
   it("should build a Receipt response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3.complete));
+    const jsonData = await fs.readFile(
+      path.resolve(dataPath.receiptV3.complete)
+    );
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
@@ -33,7 +28,9 @@ describe("API response", () => {
   });
 
   it("should build an Invoice response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3.complete));
+    const jsonData = await fs.readFile(
+      path.resolve(dataPath.invoiceV3.complete)
+    );
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
@@ -51,7 +48,9 @@ describe("API response", () => {
   });
 
   it("should build a Password response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.passportV1.complete));
+    const jsonData = await fs.readFile(
+      path.resolve(dataPath.passportV1.complete)
+    );
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
