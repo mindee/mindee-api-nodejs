@@ -21,7 +21,7 @@ const mindee = require("mindee");
 // import * as mindee from "mindee";
 
 // Init a new client
-const mindeeClient = new mindee.Client({apiKey: "my-api-key"});
+const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 
 // Load a file from disk and parse it
 const invoiceResponse = mindeeClient
@@ -54,7 +54,7 @@ const mindee = require("mindee");
 // import * as mindee from "mindee";
 
 // Init a new client and add your document endpoint
-const mindeeClient = new mindee.Client({apiKey: "my-api-key"})
+const mindeeClient = new mindee.Client({ apiKey: "my-api-key" })
     .addEndpoint({
         accountName: "john",
         endpointName: "wsnine",
