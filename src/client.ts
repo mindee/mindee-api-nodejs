@@ -6,6 +6,7 @@ import {
   StreamInput,
   PageOptions,
   UrlInput,
+  BufferInput,
 } from "./inputs";
 import { Response, STANDARD_API_OWNER, StandardEndpoint } from "./api";
 import {
@@ -257,6 +258,19 @@ export class Client {
   docFromUrl(url: string) {
     const doc = new UrlInput({
       url: url,
+    });
+    return new DocumentClient(doc, this.docConfigs);
+  }
+
+  /**
+   * Load an input document from a Buffer.
+   * @param buffer
+   * @param filename
+   */
+  docFromBuffer(buffer: Buffer, filename: string) {
+    const doc = new BufferInput({
+      buffer: buffer,
+      filename: filename,
     });
     return new DocumentClient(doc, this.docConfigs);
   }
