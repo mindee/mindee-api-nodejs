@@ -145,11 +145,4 @@ export class Field extends BaseField {
     }
     return total;
   }
-
-  toString(): string {
-    if (this.value !== undefined) {
-      return `${this.value}`;
-    }
-    return "";
-  }
 }
