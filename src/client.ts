@@ -17,6 +17,7 @@ import {
   PassportV1,
   InvoiceV3,
   FinancialDocumentV1,
+  IdCardV1,
 } from "./documents";
 import {
   CustomDocConfig,
@@ -173,6 +174,12 @@ export class Client {
       [STANDARD_API_OWNER, CropperV1.name],
       new DocumentConfig(CropperV1, [
         new StandardEndpoint("cropper", "1", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, IdCardV1.name],
+      new DocumentConfig(IdCardV1, [
+        new StandardEndpoint("idcard_fr", "1", this.apiKey),
       ])
     );
   }
