@@ -1,8 +1,9 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import { Field, DateField } from "../../../fields";
+import { Field, DateField, BaseField } from "../../../fields";
 
 export class IdCardV1 extends Document {
   authority: Field;
+  documentSide: BaseField;
   idNumber: Field;
   birthDate: DateField;
   expiryDate: DateField;
@@ -29,6 +30,10 @@ export class IdCardV1 extends Document {
     this.authority = new Field({
       prediction: prediction.authority,
       pageId: pageId,
+    });
+    console.log(prediction.document_side);
+    this.documentSide = new BaseField({
+      prediction: prediction.document_side,
     });
     this.idNumber = new Field({
       prediction: prediction.id_number,
@@ -75,6 +80,7 @@ export class IdCardV1 extends Document {
   toString(): string {
     const outStr = `-----FR Id card data-----
 Filename: ${this.filename}
+Document side: ${this.documentSide}
 Authority: ${this.authority}
 Given names: ${this.givenNames.map((name) => name.value).join(" ")}
 Surname: ${this.surname}
@@ -90,3 +96,4 @@ MRZ 2: ${this.mrz2}
     return IdCardV1.cleanOutString(outStr);
   }
 }
+

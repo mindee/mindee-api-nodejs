@@ -33,8 +33,12 @@ export class BaseField {
     reconstructed = false,
   }: BaseFieldConstructor) {
     this.reconstructed = reconstructed;
-
-    if (valueKey in prediction && prediction[valueKey] !== null) {
+    if (
+      prediction !== undefined &&
+      prediction !== null &&
+      valueKey in prediction &&
+      prediction[valueKey] !== null
+    ) {
       this.value = prediction[valueKey];
     }
   }
