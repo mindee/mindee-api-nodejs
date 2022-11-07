@@ -31,7 +31,6 @@ export class IdCardV1 extends Document {
       prediction: prediction.authority,
       pageId: pageId,
     });
-    console.log(prediction.document_side);
     this.documentSide = new BaseField({
       prediction: prediction.document_side,
     });
