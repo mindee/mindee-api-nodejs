@@ -95,4 +95,3 @@ MRZ 2: ${this.mrz2}
     return IdCardV1.cleanOutString(outStr);
   }
 }
-
