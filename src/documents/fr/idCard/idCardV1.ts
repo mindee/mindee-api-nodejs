@@ -77,7 +77,7 @@ export class IdCardV1 extends Document {
   }
 
   toString(): string {
-    const outStr = `-----FR ID Card V1-----
+    const outStr = `----- FR ID Card V1 -----
 Filename: ${this.filename}
 Document side: ${this.documentSide}
 Authority: ${this.authority}
