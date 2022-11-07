@@ -15,6 +15,7 @@ export const INPUT_TYPE_BASE64 = "base64";
 export const INPUT_TYPE_BYTES = "bytes";
 export const INPUT_TYPE_PATH = "path";
 export const INPUT_TYPE_URL = "URL";
+export const INPUT_TYPE_BUFFER = "buffer";
 
 const MIMETYPES = new Map<string, string>([
   [".pdf", "application/pdf"],
@@ -32,6 +33,7 @@ const ALLOWED_INPUT_TYPES = [
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH,
   INPUT_TYPE_URL,
+  INPUT_TYPE_BUFFER,
 ];
 
 export class InputSource {

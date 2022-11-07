@@ -5,6 +5,7 @@ export {
   PathInput,
   StreamInput,
   UrlInput,
+  BufferInput,
 } from "./sources";
 export {
   InputSource,
@@ -13,4 +14,5 @@ export {
   INPUT_TYPE_PATH,
   INPUT_TYPE_STREAM,
   INPUT_TYPE_URL,
+  INPUT_TYPE_BUFFER,
 } from "./base";

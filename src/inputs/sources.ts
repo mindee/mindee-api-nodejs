@@ -10,6 +10,7 @@ import {
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_URL,
+  INPUT_TYPE_BUFFER,
   InputSource,
 } from "./base";
 
@@ -158,6 +159,28 @@ export class UrlInput extends InputSource {
       errorHandler.throw(new Error("URL must be HTTPS"));
     }
     this.fileObject = this.url;
-    this.filename = "hello.jpg";
+  }
+}
+
+//
+// Buffer
+//
+
+interface BufferInputProps {
+  buffer: Buffer;
+  filename: string;
+}
+
+export class BufferInput extends InputSource {
+  constructor({ buffer, filename }: BufferInputProps) {
+    super({
+      inputType: INPUT_TYPE_BUFFER,
+    });
+    this.fileObject = buffer;
+    this.filename = filename;
+  }
+
+  async init(): Promise<void> {
+    this.mimeType = await this.checkMimetype();
   }
 }
