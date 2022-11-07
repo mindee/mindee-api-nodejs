@@ -22,7 +22,7 @@ const COMMAND_INVOICE = "invoice";
 const COMMAND_RECEIPT = "receipt";
 const COMMAND_PASSPORT = "passport";
 const COMMAND_FINANCIAL = "financial";
-const COMMAND_FR_ID_CARD = "fr_id_card";
+const COMMAND_FR_ID_CARD = "fr-id-card";
 const COMMAND_CUSTOM = "custom";
 
 interface ProductConfig {
