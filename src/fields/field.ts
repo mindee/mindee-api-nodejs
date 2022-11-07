@@ -38,6 +38,13 @@ export class BaseField {
       this.value = prediction[valueKey];
     }
   }
+
+  toString(): string {
+    if (this.value !== undefined) {
+      return `${this.value}`;
+    }
+    return "";
+  }
 }
 
 export class Field extends BaseField {
