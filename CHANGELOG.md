@@ -1,9 +1,14 @@
 # CHANGELOG
 
+## v3.1.1 - 2022-11-08
+### Changes
+* :bug: fix proper import and documentation of region-specific documents
+* 
 ## v3.1.0 - 2022-11-08
 ### Changes
 * :sparkles:  Add support for French ID cards.
 * :sparkles: add buffer input source
+* :recycle: fix proper import and documentation of region-specific documents
 
 ## v3.0.1 - 2022-11-02
 ### Fixes
