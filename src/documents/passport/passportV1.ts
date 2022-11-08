@@ -6,7 +6,7 @@ import * as MRZ from "mrz";
 export class PassportV1 extends Document {
   /** The country emeter of the document. */
   country: Field;
-  /** The id number of the passport. */
+  /** The passport number. */
   idNumber: Field;
   /** The birthdate of the person. */
   birthDate: DateField;
