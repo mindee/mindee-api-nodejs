@@ -8,7 +8,7 @@ export class PassportV1 extends Document {
   country: Field;
   /** The passport number. */
   idNumber: Field;
-  /** The birthdate of the person. */
+  /** The date of birth of the passport holder. */
   birthDate: DateField;
   /** The expiration date of the passport. */
   expiryDate: DateField;
