@@ -8,6 +8,7 @@ export function floatToString(value: number) {
 }
 
 export class Amount extends Field {
+  /** The value. */
   value: number | undefined;
 
   /**

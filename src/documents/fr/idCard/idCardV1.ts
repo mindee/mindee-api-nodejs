@@ -2,16 +2,27 @@ import { Document, DocumentConstructorProps } from "../../document";
 import { Field, DateField, BaseField } from "../../../fields";
 
 export class IdCardV1 extends Document {
+  /** The authority which has issued the card. */
   authority: Field;
+  /** Indicates if it is the recto, the verso or the both of it. */
   documentSide: BaseField;
+  /** The id number of the card. */
   idNumber: Field;
+  /** The birth date of the person. */
   birthDate: DateField;
+  /** The expiry date of the card. */
   expiryDate: DateField;
+  /** The birth place of the person. */
   birthPlace: Field;
+  /** The gender of the person. */
   gender: Field;
+  /** The first mrz value. */
   mrz1: Field;
+  /** The second mrz value. */
   mrz2: Field;
+  /** The surname of the person. */
   surname: Field;
+  /** The list of the names of the person. */
   givenNames: Field[] = [];
 
   constructor({

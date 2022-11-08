@@ -4,18 +4,31 @@ import { Field, DateField } from "../../fields";
 import * as MRZ from "mrz";
 
 export class PassportV1 extends Document {
+  /** The country of issue. */
   country: Field;
+  /** The passport number. */
   idNumber: Field;
+  /** The date of birth of the passport holder. */
   birthDate: DateField;
+  /** The expiration date of the passport. */
   expiryDate: DateField;
+  /** The issuance date.*/
   issuanceDate: DateField;
+  /** The place of birth of the passport holder. */
   birthPlace: Field;
+  /** The sex or gender of the passport holder. */
   gender: Field;
+  /** The surname of the person. */
   surname: Field;
+  /** The value of the first mrz line. */
   mrz1: Field;
+  /** The value of the second mrz line. */
   mrz2: Field;
+  /** List of first (given) names of the passport holder. */
   givenNames: Field[] = [];
+  /** The full name of the passport holder. */
   fullName: Field;
+  /** All the mrz values combined. */
   mrz: Field;
 
   constructor({

@@ -12,9 +12,13 @@ interface PaymentDetailsConstructor {
 }
 
 export class PaymentDetails extends Field {
+  /** The account number. */
   accountNumber: number | undefined;
+  /** The account IBAN. */
   iban: string | undefined;
+  /** The routing number. */
   routingNumber: number | undefined;
+  /** The SWIFT value. */
   swift: number | undefined;
 
   /**

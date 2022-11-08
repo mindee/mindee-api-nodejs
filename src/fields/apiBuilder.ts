@@ -2,6 +2,7 @@ import { FieldConstructor, stringDict } from "./field";
 import { Polygon, getBboxAsPolygon } from "../geometry";
 
 export class ClassificationField {
+  /** The value for the classification. */
   value: string;
   /**
    * The confidence score of the prediction.
