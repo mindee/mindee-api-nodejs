@@ -16,7 +16,7 @@ export class PassportV1 extends Document {
   issuanceDate: DateField;
   /** The place of birth of the passport holder. */
   birthPlace: Field;
-  /** The gender of the person. */
+  /** The sex or gender of the passport holder. */
   gender: Field;
   /** The surname of the person. */
   surname: Field;
