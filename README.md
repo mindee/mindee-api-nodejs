@@ -13,8 +13,9 @@ npm install mindee
 
 Finally, Node.js away!
 
-### Off-the-Shelf Documents
+### Loading a File and Parsing It
 
+#### Global Documents
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -24,30 +25,27 @@ const mindee = require("mindee");
 const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 
 // Load a file from disk and parse it
-const invoiceResponse = mindeeClient
-    .docFromPath("/path/to/the/invoice.pdf")
+const apiResponse = mindeeClient
+    .docFromPath("/path/to/the/file.ext")
     .parse(mindee.InvoiceV3);
-
-// Print a brief summary of the parsed data
-invoiceResponse.then((resp) => {
-
-    // The document property can be undefined:
-    // * TypeScript will throw an error without this guard clause
-    //   (or consider using the '?' notation)
-    // * JavaScript will be very happy to produce subtle bugs
-    //   without this guard clause
-    if (resp.document === undefined) return;
-
-    // full object
-    console.log(resp.document);
-
-    // string summary
-    console.log(resp.document.toString());
-});
 ```
 
-### Custom Documents (API Builder)
+#### Region-Specific Documents
+```js
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
 
+// Init a new client
+const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+
+// Load a file from disk and parse it
+const apiResponse = mindeeClient
+    .docFromPath("/path/to/the/file.ext")
+    .parse(mindee.fr.IdCardV1);
+```
+
+#### Custom Documents (API Builder)
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -61,15 +59,23 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" })
     });
 
 // Load a file from disk and parse it
-const customResponse = mindeeClient
-    .docFromPath("/path/to/the/wsnine.jpg")
+const apiResponse = mindeeClient
+    .docFromPath("/path/to/the/file.ext")
     .parse(mindee.CustomV1, { endpointName: "wsnine" });
+```
 
+### Handling the Return
+```js
 // Print a brief summary of the parsed data
-customResponse.then((resp) => {
+invoiceResponse.then((resp) => {
 
+    // The document property can be undefined:
+    // * TypeScript will throw an error without this guard clause
+    //   (or consider using the '?' notation)
+    // * JavaScript will be very happy to produce subtle bugs
+    //   without this guard clause
     if (resp.document === undefined) return;
-    
+
     // full object
     console.log(resp.document);
 

@@ -1,18 +1,13 @@
 import { Command } from "commander";
 import {
-  DOC_TYPE_INVOICE_V3,
-  DOC_TYPE_PASSPORT_V1,
-  DOC_TYPE_FINANCIAL_V1,
-  DOC_TYPE_CUSTOM,
   InvoiceV3,
   ReceiptV4,
   FinancialDocumentV1,
   PassportV1,
   CustomV1,
-  DOC_TYPE_RECEIPT_V4,
-  DOC_TYPE_IDCARD_V1,
-  IdCardV1,
 } from "./documents";
+import { IdCardV1 } from "./documents/fr";
+
 import { STANDARD_API_OWNER } from "./api";
 import { Client } from "./client";
 
@@ -36,7 +31,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_INVOICE,
     {
       description: "Invoice V3",
-      docType: DOC_TYPE_INVOICE_V3,
+      docType: InvoiceV3.name,
       fullText: true,
     },
   ],
@@ -44,7 +39,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_RECEIPT,
     {
       description: "Expense Receipt V4",
-      docType: DOC_TYPE_RECEIPT_V4,
+      docType: ReceiptV4.name,
       fullText: true,
     },
   ],
@@ -52,7 +47,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_PASSPORT,
     {
       description: "Passport V1",
-      docType: DOC_TYPE_PASSPORT_V1,
+      docType: PassportV1.name,
       fullText: false,
     },
   ],
@@ -60,7 +55,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_FINANCIAL,
     {
       description: "Financial Document V1 (receipt or invoice)",
-      docType: DOC_TYPE_FINANCIAL_V1,
+      docType: FinancialDocumentV1.name,
       fullText: true,
     },
   ],
@@ -68,7 +63,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_FR_ID_CARD,
     {
       description: "FR ID Card V1",
-      docType: DOC_TYPE_IDCARD_V1,
+      docType: IdCardV1.name,
       fullText: false,
     },
   ],
@@ -76,7 +71,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_CUSTOM,
     {
       description: "A custom document",
-      docType: DOC_TYPE_CUSTOM,
+      docType: CustomV1.name,
       fullText: false,
     },
   ],
