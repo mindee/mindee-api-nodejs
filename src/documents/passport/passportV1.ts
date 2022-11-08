@@ -4,7 +4,7 @@ import { Field, DateField } from "../../fields";
 import * as MRZ from "mrz";
 
 export class PassportV1 extends Document {
-  /** The country emeter of the document. */
+  /** The country of issue. */
   country: Field;
   /** The passport number. */
   idNumber: Field;
