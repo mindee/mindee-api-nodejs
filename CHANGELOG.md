@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.1.0 - 2022-11-08
+### Changes
+* :sparkles:  Add support for French ID cards.
+* :sparkles: add buffer input source
+
 ## v3.0.1 - 2022-11-02
 ### Fixes
 * :bug: Fix for `supplier` property name in `ReceiptV4` document.
