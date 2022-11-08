@@ -18,7 +18,7 @@ import {
   PassportV1,
   InvoiceV3,
   FinancialDocumentV1,
-  IdCardV1,
+  fr,
 } from "./documents";
 import {
   CustomDocConfig,
@@ -178,8 +178,8 @@ export class Client {
       ])
     );
     this.docConfigs.set(
-      [STANDARD_API_OWNER, IdCardV1.name],
-      new DocumentConfig(IdCardV1, [
+      [STANDARD_API_OWNER, fr.IdCardV1.name],
+      new DocumentConfig(fr.IdCardV1, [
         new StandardEndpoint("idcard_fr", "1", this.apiKey),
       ])
     );
