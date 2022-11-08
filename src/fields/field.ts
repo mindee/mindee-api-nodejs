@@ -33,10 +33,21 @@ export class BaseField {
     reconstructed = false,
   }: BaseFieldConstructor) {
     this.reconstructed = reconstructed;
-
-    if (valueKey in prediction && prediction[valueKey] !== null) {
+    if (
+      prediction !== undefined &&
+      prediction !== null &&
+      valueKey in prediction &&
+      prediction[valueKey] !== null
+    ) {
       this.value = prediction[valueKey];
     }
+  }
+
+  toString(): string {
+    if (this.value !== undefined) {
+      return `${this.value}`;
+    }
+    return "";
   }
 }
 
@@ -133,12 +144,5 @@ export class Field extends BaseField {
       if (isNaN(total)) return 0.0;
     }
     return total;
-  }
-
-  toString(): string {
-    if (this.value !== undefined) {
-      return `${this.value}`;
-    }
-    return "";
   }
 }

@@ -29,6 +29,12 @@ export const dataPath = {
     docString: "tests/data/cropper/response_v1/doc_to_string.txt",
     page0String: "tests/data/cropper/response_v1/page0_to_string.txt",
   },
+  idCardV1: {
+    complete: "tests/data/fr/id_card/id_card_v1/complete.json",
+    empty: "tests/data/fr/id_card/id_card_v1/empty.json",
+    docString: "tests/data/fr/id_card/id_card_v1/doc_to_string.txt",
+    page0String: "tests/data/fr/id_card/id_card_v1/page0_to_string.txt",
+  },
   custom: {
     complete: "tests/data/custom/response_v1/complete.json",
     empty: "tests/data/custom/response_v1/empty.json",

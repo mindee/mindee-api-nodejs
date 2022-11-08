@@ -6,6 +6,7 @@ export {
   ReceiptV3,
   ReceiptV4,
   CropperV1,
+  IdCardV1,
 } from "./documents";
 export { Client } from "./client";
 export { PageOptionsOperation } from "./inputs";
