@@ -26,7 +26,7 @@ export class PassportV1 extends Document {
   mrz2: Field;
   /** The names of the person. */
   givenNames: Field[] = [];
-  /** The full name of the persone. */
+  /** The full name of the passport holder. */
   fullName: Field;
   /** All the mrz values combined. */
   mrz: Field;
