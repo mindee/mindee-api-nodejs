@@ -16,6 +16,7 @@ export interface BaseFieldConstructor {
 }
 
 export class BaseField {
+  /** The value. */
   value?: any = undefined;
   /**
    * True if the field was reconstructed or computed using other fields.

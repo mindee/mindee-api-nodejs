@@ -5,7 +5,9 @@ interface OrientationFieldConstructor extends BaseFieldConstructor {
 }
 
 export class OrientationField extends BaseField {
+  /* Degrees of the rotation. */
   value: number;
+  /* Page id. */
   pageId: number;
 
   /**

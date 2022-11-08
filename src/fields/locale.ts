@@ -1,8 +1,11 @@
 import { Field } from "./field";
 
 export class Locale extends Field {
+  /** The langage which has been detected */
   language: string | undefined;
+  /** The country which has been detected (ISO Alpha-2)*/
   country: string | undefined;
+  /** The currency which has been detected.*/
   currency: string | undefined;
 
   /**

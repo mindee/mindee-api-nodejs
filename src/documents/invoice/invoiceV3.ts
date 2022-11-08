@@ -12,22 +12,39 @@ import {
 } from "../../fields";
 
 export class InvoiceV3 extends Document {
+  /** Total amount with the tax amount of the purchase. */
   locale!: Locale;
+  /** The nature of the invoice. */
   documentType!: BaseField;
+  /** The total amount with tax included. */
   totalIncl!: Amount;
+  /** The creation date of the invoice. */
   date!: DateField;
+  /** The due date of the invoice. */
   dueDate!: DateField;
+  /** The created time of the invoice */
   time!: Field;
+  /** The total tax. */
   totalTax!: Amount;
+  /** The total amount without the tax value. */
   totalExcl!: Amount;
+  /** The supplier name. */
   supplier!: Field;
+  /** The supplier address. */
   supplierAddress!: Field;
+  /** The invoice number. */
   invoiceNumber!: Field;
+  /** The company regitration information. */
   companyRegistration: CompanyRegistration[] = [];
+  /** The name of the customer. */
   customerName!: Field;
+  /** The address of the customer. */
   customerAddress!: Field;
+  /** The list of the taxes. */
   taxes: TaxField[] = [];
+  /** The payment information. */
   paymentDetails: PaymentDetails[] = [];
+  /** The company registration information for the customer. */
   customerCompanyRegistration: CompanyRegistration[] = [];
 
   constructor({

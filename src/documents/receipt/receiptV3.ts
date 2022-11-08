@@ -2,15 +2,23 @@ import { Document, DocumentConstructorProps } from "../document";
 import { TaxField, Field, Amount, Locale, DateField } from "../../fields";
 
 export class ReceiptV3 extends Document {
+  /** Total amount with the tax amount of the purchase. */
   locale: Locale;
+  /** Where the purchase was made, the language, and the currency. */
   totalIncl!: Amount;
+  /** The purchase date. */
   date!: DateField;
-  /** Receipt category as seen on the receipt. */
+  /** The type of purchase. */
   category!: Field;
+  /** Merchant's name as seen on the receipt. */
   merchantName!: Field;
+  /** Time as seen on the receipt in HH:MM format. */
   time!: Field;
+  /** Total tax amount of the purchase. */
   totalTax: Amount;
+  /** Total amount without tax of the purchase. */
   totalExcl: Amount;
+  /** List of different taxe. */
   taxes: TaxField[] = [];
 
   constructor({
