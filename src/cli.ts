@@ -20,6 +20,7 @@ const COMMAND_PASSPORT = "passport";
 const COMMAND_FINANCIAL = "financial";
 const COMMAND_FR_ID_CARD = "fr-id-card";
 const COMMAND_FR_BANK_ACCOUNT_DETAILS = "fr-bank-account-details";
+const COMMAND_FR_CARTE_VITALE = "fr-carte-vitale";
 const COMMAND_US_BANK_CHECK = "us-bank-check";
 const COMMAND_CUSTOM = "custom";
 
@@ -75,6 +76,14 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       description: "FR Bank Account Details V1",
       docType: fr.BankAccountDetailsV1.name,
+      fullText: false,
+    },
+  ],
+  [
+    COMMAND_FR_CARTE_VITALE,
+    {
+      description: "FR Carte Vitale V1",
+      docType: fr.CarteVitaleV1.name,
       fullText: false,
     },
   ],
@@ -146,6 +155,9 @@ async function predictCall(command: string, inputPath: string, options: any) {
       break;
     case COMMAND_US_BANK_CHECK:
       response = await doc.parse(us.BankCheckV1, predictParams);
+      break;
+    case COMMAND_FR_CARTE_VITALE:
+      response = await doc.parse(fr.CarteVitaleV1, predictParams);
       break;
     case COMMAND_CUSTOM:
       response = await doc.parse(CustomV1, predictParams);

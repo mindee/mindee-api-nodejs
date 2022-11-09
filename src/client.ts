@@ -232,6 +232,12 @@ export class Client {
         new StandardEndpoint("bank_account_details", "1", this.apiKey),
       ])
     );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, fr.CarteVitaleV1.name],
+      new DocumentConfig(fr.CarteVitaleV1, [
+        new StandardEndpoint("carte_vitale", "1", this.apiKey),
+      ])
+    );
   }
 
   /**
