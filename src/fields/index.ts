@@ -9,3 +9,4 @@ export { ListField, ListFieldValue, ClassificationField } from "./apiBuilder";
 export { FullText } from "./fullText";
 export { CompanyRegistration } from "./companyRegistration";
 export { CropperField } from "./cropper";
+export { Position } from "./position";
