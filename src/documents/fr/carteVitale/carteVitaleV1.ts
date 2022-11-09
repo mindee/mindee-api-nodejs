@@ -6,7 +6,7 @@ export class CarteVitaleV1 extends Document {
   givenNames: Field[] = [];
   /** The surname of the person. */
   surname: Field;
-  /** The id number of the card. */
+  /** The ID number of the card. */
   idNumber: Field;
   /** The issuance date of the card. */
   issuanceDate: DateField;
