@@ -9,6 +9,7 @@ import {
   CustomV1,
   fr,
   us,
+  eu,
 } from "./documents";
 
 import { STANDARD_API_OWNER } from "./api";
@@ -89,6 +90,14 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       description: "FR Carte Vitale V1",
       docClass: fr.CarteVitaleV1,
+      fullText: false,
+    },
+  ],
+  [
+    "eu-license-plate",
+    {
+      description: "EU License Plate V1",
+      docType: eu.LicensePlateV1.name,
       fullText: false,
     },
   ],

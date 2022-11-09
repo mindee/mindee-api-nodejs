@@ -8,3 +8,4 @@ export { CropperV1 } from "./cropper/cropperV1";
 export { Document, DocumentConstructorProps, DocumentSig } from "./document";
 export * as fr from "./fr";
 export * as us from "./us";
+export * as eu from "./eu";
