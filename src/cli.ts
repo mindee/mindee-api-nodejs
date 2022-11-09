@@ -5,8 +5,9 @@ import {
   FinancialDocumentV1,
   PassportV1,
   CustomV1,
+  fr,
+  us,
 } from "./documents";
-import { IdCardV1 } from "./documents/fr";
 
 import { STANDARD_API_OWNER } from "./api";
 import { Client } from "./client";
@@ -18,6 +19,7 @@ const COMMAND_RECEIPT = "receipt";
 const COMMAND_PASSPORT = "passport";
 const COMMAND_FINANCIAL = "financial";
 const COMMAND_FR_ID_CARD = "fr-id-card";
+const COMMAND_US_BANK_CHECK = "us-bank-check";
 const COMMAND_CUSTOM = "custom";
 
 interface ProductConfig {
@@ -63,7 +65,15 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_FR_ID_CARD,
     {
       description: "FR ID Card V1",
-      docType: IdCardV1.name,
+      docType: fr.IdCardV1.name,
+      fullText: false,
+    },
+  ],
+  [
+    COMMAND_US_BANK_CHECK,
+    {
+      description: "US Bank Check V1",
+      docType: us.BankCheckV1.name,
       fullText: false,
     },
   ],
@@ -120,7 +130,10 @@ async function predictCall(command: string, inputPath: string, options: any) {
       response = await doc.parse(PassportV1, predictParams);
       break;
     case COMMAND_FR_ID_CARD:
-      response = await doc.parse(IdCardV1, predictParams);
+      response = await doc.parse(fr.IdCardV1, predictParams);
+      break;
+    case COMMAND_US_BANK_CHECK:
+      response = await doc.parse(us.BankCheckV1, predictParams);
       break;
     case COMMAND_CUSTOM:
       response = await doc.parse(CustomV1, predictParams);

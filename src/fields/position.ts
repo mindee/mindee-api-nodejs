@@ -1,7 +1,13 @@
-import { BaseField, FieldConstructor } from "./field";
+import { stringDict } from "./field";
 import { Polygon } from "../geometry";
 
-export class CropperField extends BaseField {
+export interface PositionFieldConstructor {
+  prediction: stringDict;
+  valueKey?: string;
+  pageId?: number | undefined;
+}
+
+export class PositionField {
   /** Straight rectangle. */
   boundingBox: Polygon;
   /** Free polygon with up to 30 vertices. */
@@ -13,8 +19,7 @@ export class CropperField extends BaseField {
   /** The document page on which the information was found. */
   pageId: number | undefined;
 
-  constructor({ prediction, valueKey = "polygon", pageId }: FieldConstructor) {
-    super({ prediction, valueKey });
+  constructor({ prediction, pageId }: PositionFieldConstructor) {
     this.pageId = pageId;
     this.boundingBox = prediction.bounding_box;
     this.polygon = prediction.polygon;

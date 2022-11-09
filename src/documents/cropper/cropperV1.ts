@@ -1,8 +1,8 @@
 import { Document, DocumentConstructorProps } from "../document";
-import { CropperField } from "../../fields";
+import { PositionField } from "../../fields";
 
 export class CropperV1 extends Document {
-  cropping: CropperField[] = [];
+  cropping: PositionField[] = [];
 
   constructor({
     prediction,
@@ -18,7 +18,7 @@ export class CropperV1 extends Document {
     if (pageId !== undefined) {
       prediction.cropping.forEach((crop: any) => {
         this.cropping.push(
-          new CropperField({
+          new PositionField({
             prediction: crop,
             pageId: pageId,
           })

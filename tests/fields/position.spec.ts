@@ -1,8 +1,8 @@
-import { CropperField } from "../../src/fields";
+import { PositionField } from "../../src/fields";
 import { expect } from "chai";
 
-describe("Test Cropper field", () => {
-  it("Should create a Cropper field", () => {
+describe("Test Position field", () => {
+  it("Should create a Position field", () => {
     const prediction = {
       bounding_box: [
         [0, 0],
@@ -49,8 +49,7 @@ describe("Test Cropper field", () => {
         [0.004, 0.998],
       ],
     };
-    const field = new CropperField({ prediction, pageId: 0 });
-    expect(field.value).to.be.equal(field.polygon);
+    const field = new PositionField({ prediction, pageId: 0 });
     expect(field.boundingBox.length).to.be.equal(4);
     expect(field.polygon.length).to.be.equal(24);
     expect(field.toString()).to.be.equal("Polygon with 24 points.");

@@ -8,4 +8,4 @@ export { BaseField, stringDict, Field } from "./field";
 export { ListField, ListFieldValue, ClassificationField } from "./apiBuilder";
 export { FullText } from "./fullText";
 export { CompanyRegistration } from "./companyRegistration";
-export { CropperField } from "./cropper";
+export { PositionField } from "./position";
