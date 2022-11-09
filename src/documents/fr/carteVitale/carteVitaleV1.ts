@@ -47,7 +47,7 @@ export class CarteVitaleV1 extends Document {
   }
 
   toString(): string {
-    const outStr = `----- FR Social Security Card V1 -----
+    const outStr = `----- FR Carte Vitale V1 -----
 Given names: ${this.givenNames.map((name) => name.value).join(" ")}
 Surname: ${this.surname}
 ID Number: ${this.idNumber}
