@@ -1,5 +1,7 @@
 import { Command } from "commander";
 import {
+  Document,
+  DocumentSig,
   InvoiceV3,
   ReceiptV4,
   FinancialDocumentV1,
@@ -14,92 +16,86 @@ import { Client } from "./client";
 
 const program = new Command();
 
-const COMMAND_INVOICE = "invoice";
-const COMMAND_RECEIPT = "receipt";
-const COMMAND_PASSPORT = "passport";
-const COMMAND_FINANCIAL = "financial";
-const COMMAND_FR_ID_CARD = "fr-id-card";
-const COMMAND_FR_BANK_ACCOUNT_DETAILS = "fr-bank-account-details";
-const COMMAND_FR_CARTE_VITALE = "fr-carte-vitale";
-const COMMAND_US_BANK_CHECK = "us-bank-check";
 const COMMAND_CUSTOM = "custom";
 
 interface ProductConfig {
   description: string;
-  docType: string;
+  docClass: DocumentSig<Document>;
   fullText: boolean;
 }
 
+// The Map's key is the command name as it will appear on the console.
+//
 const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
-  [
-    COMMAND_INVOICE,
-    {
-      description: "Invoice V3",
-      docType: InvoiceV3.name,
-      fullText: true,
-    },
-  ],
-  [
-    COMMAND_RECEIPT,
-    {
-      description: "Expense Receipt V4",
-      docType: ReceiptV4.name,
-      fullText: true,
-    },
-  ],
-  [
-    COMMAND_PASSPORT,
-    {
-      description: "Passport V1",
-      docType: PassportV1.name,
-      fullText: false,
-    },
-  ],
-  [
-    COMMAND_FINANCIAL,
-    {
-      description: "Financial Document V1 (receipt or invoice)",
-      docType: FinancialDocumentV1.name,
-      fullText: true,
-    },
-  ],
-  [
-    COMMAND_FR_ID_CARD,
-    {
-      description: "FR ID Card V1",
-      docType: fr.IdCardV1.name,
-      fullText: false,
-    },
-  ],
-  [
-    COMMAND_FR_BANK_ACCOUNT_DETAILS,
-    {
-      description: "FR Bank Account Details V1",
-      docType: fr.BankAccountDetailsV1.name,
-      fullText: false,
-    },
-  ],
-  [
-    COMMAND_FR_CARTE_VITALE,
-    {
-      description: "FR Carte Vitale V1",
-      docType: fr.CarteVitaleV1.name,
-      fullText: false,
-    },
-  ],
-  [
-    COMMAND_US_BANK_CHECK,
-    {
-      description: "US Bank Check V1",
-      docType: us.BankCheckV1.name,
-      fullText: false,
-    },
-  ],
   [
     COMMAND_CUSTOM,
     {
       description: "A custom document",
-      docType: CustomV1.name,
+      docClass: CustomV1,
+      fullText: false,
+    },
+  ],
+  [
+    "invoice",
+    {
+      description: "Invoice V3",
+      docClass: InvoiceV3,
+      fullText: true,
+    },
+  ],
+  [
+    "receipt",
+    {
+      description: "Expense Receipt V4",
+      docClass: ReceiptV4,
+      fullText: true,
+    },
+  ],
+  [
+    "passport",
+    {
+      description: "Passport V1",
+      docClass: PassportV1,
+      fullText: false,
+    },
+  ],
+  [
+    "financial",
+    {
+      description: "Financial Document V1 (receipt or invoice)",
+      docClass: FinancialDocumentV1,
+      fullText: true,
+    },
+  ],
+  [
+    "fr-id-card",
+    {
+      description: "FR ID Card V1",
+      docClass: fr.IdCardV1,
+      fullText: false,
+    },
+  ],
+  [
+    "fr-bank-account-details",
+    {
+      description: "FR Bank Account Details V1",
+      docClass: fr.BankAccountDetailsV1,
+      fullText: false,
+    },
+  ],
+  [
+    "fr-carte-vitale",
+    {
+      description: "FR Carte Vitale V1",
+      docClass: fr.CarteVitaleV1,
+      fullText: false,
+    },
+  ],
+  [
+    "us-bank-check",
+    {
+      description: "US Bank Check V1",
+      docClass: us.BankCheckV1,
       fullText: false,
     },
   ],
@@ -121,50 +117,16 @@ async function predictCall(command: string, inputPath: string, options: any) {
     });
   }
   const doc = mindeeClient.docFromPath(inputPath);
+
   const predictParams = {
-    docType: command === COMMAND_CUSTOM ? options.documentType : conf.docType,
-    username: command === COMMAND_CUSTOM ? options.user : STANDARD_API_OWNER,
+    endpointName: command === COMMAND_CUSTOM ? options.documentType : conf.docClass.name,
+    accountName: command === COMMAND_CUSTOM ? options.user : STANDARD_API_OWNER,
     cutPages: options.cutPages,
     fullText: options.fullText,
   };
-  // Tried setting the response by using the responseClass property in constants.PRODUCTS_CONFIG
-  // This compiled, but threw an exception:
-  //   TypeError: responseType is not a constructor
-  //
-  // So using a switch to explicitly set the response class parameter. Ugly, but works.
-  // Improvements welcome!
-  let response;
-  switch (command) {
-    case COMMAND_INVOICE:
-      response = await doc.parse(InvoiceV3, predictParams);
-      break;
-    case COMMAND_RECEIPT:
-      response = await doc.parse(ReceiptV4, predictParams);
-      break;
-    case COMMAND_FINANCIAL:
-      response = await doc.parse(FinancialDocumentV1, predictParams);
-      break;
-    case COMMAND_PASSPORT:
-      response = await doc.parse(PassportV1, predictParams);
-      break;
-    case COMMAND_FR_ID_CARD:
-      response = await doc.parse(fr.IdCardV1, predictParams);
-      break;
-    case COMMAND_FR_BANK_ACCOUNT_DETAILS:
-      response = await doc.parse(fr.BankAccountDetailsV1, predictParams);
-      break;
-    case COMMAND_US_BANK_CHECK:
-      response = await doc.parse(us.BankCheckV1, predictParams);
-      break;
-    case COMMAND_FR_CARTE_VITALE:
-      response = await doc.parse(fr.CarteVitaleV1, predictParams);
-      break;
-    case COMMAND_CUSTOM:
-      response = await doc.parse(CustomV1, predictParams);
-      break;
-    default:
-      throw `Unhandled command: ${command}`;
-  }
+
+  const response = await doc.parse(conf.docClass, predictParams);
+
   if (options.fullText) {
     response.pages.forEach((page) => {
       console.log(page.fullText?.toString());
@@ -189,7 +151,6 @@ export function cli() {
     prog.description(info.description);
 
     prog.option("-k, --api-key <api_key>", "API key for document endpoint");
-    prog.option("-C, --no-cut-pages", "Don't cut document pages");
     prog.option("-p, --pages", "Show pages content");
     if (info.fullText) {
       prog.option("-t, --full-text", "Include full document text in response");
