@@ -12,7 +12,8 @@ import {
 } from "./documents";
 
 import { STANDARD_API_OWNER } from "./api";
-import { Client } from "./client";
+import { Client, PredictOptions } from "./client";
+import { PageOptions, PageOptionsOperation } from "./inputs";
 
 const program = new Command();
 
@@ -118,11 +119,20 @@ async function predictCall(command: string, inputPath: string, options: any) {
   }
   const doc = mindeeClient.docFromPath(inputPath);
 
-  const predictParams = {
-    endpointName: command === COMMAND_CUSTOM ? options.documentType : conf.docClass.name,
+  let pageOptions: PageOptions | undefined = undefined;
+  if (options.cutPages) {
+    pageOptions = {
+      operation: PageOptionsOperation.KeepOnly,
+      pageIndexes: [0, 1, 2, 3, 4],
+      onMinPages: 5,
+    };
+  }
+  const predictParams: PredictOptions = {
+    endpointName:
+      command === COMMAND_CUSTOM ? options.documentType : conf.docClass.name,
     accountName: command === COMMAND_CUSTOM ? options.user : STANDARD_API_OWNER,
-    cutPages: options.cutPages,
     fullText: options.fullText,
+    pageOptions: pageOptions,
   };
 
   const response = await doc.parse(conf.docClass, predictParams);
@@ -151,6 +161,10 @@ export function cli() {
     prog.description(info.description);
 
     prog.option("-k, --api-key <api_key>", "API key for document endpoint");
+    prog.option(
+      "-c, --cut-pages",
+      "Keep only the first 5 pages of the document."
+    );
     prog.option("-p, --pages", "Show pages content");
     if (info.fullText) {
       prog.option("-t, --full-text", "Include full document text in response");
