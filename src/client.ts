@@ -32,11 +32,38 @@ import { ReadStream } from "fs";
 
 type DocConfigs = Map<string[], DocumentConfig<any>>;
 
-interface PredictOptions {
+export interface PredictOptions {
+  /**
+   * For custom endpoints, the "API name" field in the "Settings" page of the API Builder.
+   *
+   * Do not set for standard (off the shelf) endpoints.
+   */
   endpointName?: string;
+  /**
+   * For custom endpoints, your organization's username on the API Builder.
+   * This is normally not required unless you have a custom endpoint which has the
+   * same name as standard (off the shelf) endpoint.
+   *
+   * Do not set for standard (off the shelf) endpoints.
+   */
   accountName?: string;
+  /**
+   * Whether to include the full text for each page.
+   *
+   * This performs a full OCR operation on the server and will increase response time.
+   */
   fullText?: boolean;
+  /**
+   * Whether to include cropper results for each page.
+   *
+   * This performs a cropping operation on the server and will increase response time.
+   */
   cropper?: boolean;
+  /**
+   * If set, remove pages from the document as specified.
+   *
+   * This is done before sending the file to the server and is useful to avoid page limitations.
+   */
   pageOptions?: PageOptions;
 }
 
@@ -103,15 +130,24 @@ class DocumentClient {
   }
 }
 
-interface customConfigParams {
+export interface CustomConfigParams {
+  /** Your organization's username on the API Builder. */
   accountName: string;
+  /** The "API name" field in the "Settings" page of the API Builder. */
   endpointName: string;
+  /**
+   * If set, locks the version of the model to use.
+   * If not set, use the latest version of the model.
+   */
   version?: string;
 }
 
-interface ClientOptions {
+export interface ClientOptions {
+  /** Your API key for all endpoints. */
   apiKey?: string;
+  /** Raise an `Error` on errors. */
   throwOnError?: boolean;
+  /** Log debug messages. */
   debug?: boolean;
 }
 
@@ -125,13 +161,13 @@ export class Client {
   /**
    * @param options
    */
-  constructor(options?: ClientOptions) {
-    const throwOnError =
-      options?.throwOnError === undefined ? true : options.throwOnError;
-    const debug = options?.debug === undefined ? false : options.debug;
-    this.apiKey = options?.apiKey === undefined ? "" : options.apiKey;
+  constructor({
+    apiKey = "",
+    throwOnError = true,
+    debug = false,
+  }: ClientOptions) {
     this.docConfigs = new Map();
-
+    this.apiKey = apiKey;
     errorHandler.throwOnError = throwOnError;
     logger.level =
       debug ?? process.env.MINDEE_DEBUG
@@ -203,7 +239,7 @@ export class Client {
     accountName,
     endpointName,
     version = "1",
-  }: customConfigParams) {
+  }: CustomConfigParams) {
     this.docConfigs.set(
       [accountName, endpointName],
       new CustomDocConfig({
