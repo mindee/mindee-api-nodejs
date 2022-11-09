@@ -1,7 +1,7 @@
 import { stringDict } from "./field";
 import { Polygon } from "../geometry";
 
-export interface PositionConstructor {
+export interface PositionFieldConstructor {
   prediction: stringDict;
   valueKey?: string;
   pageId?: number | undefined;
@@ -19,7 +19,7 @@ export class PositionField {
   /** The document page on which the information was found. */
   pageId: number | undefined;
 
-  constructor({ prediction, pageId }: PositionConstructor) {
+  constructor({ prediction, pageId }: PositionFieldConstructor) {
     this.pageId = pageId;
     this.boundingBox = prediction.bounding_box;
     this.polygon = prediction.polygon;
