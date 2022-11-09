@@ -40,7 +40,7 @@ export class BankAccountDetailsV1 extends Document {
     const outStr = `----- FR Bank Account Details V1 -----
 IBAN: ${this.iban}
 Account holder name: ${this.accountHolderName}
-Swift: ${this.swift}
+SWIFT: ${this.swift}
 ----------------------
 `;
     return BankAccountDetailsV1.cleanOutString(outStr);
