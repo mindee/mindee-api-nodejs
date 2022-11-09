@@ -46,6 +46,12 @@ export const dataPath = {
     docString:
       "tests/data/fr/bank_account_details/response_v1/doc_to_string.txt",
   },
+  socialSecurityCardV1: {
+    complete: "tests/data/fr/social_security_card/response_v1/complete.json",
+    empty: "tests/data/fr/social_security_card/response_v1/empty.json",
+    docString:
+      "tests/data/fr/social_security_card/response_v1/doc_to_string.txt",
+  },
   custom: {
     complete: "tests/data/custom/response_v1/complete.json",
     empty: "tests/data/custom/response_v1/empty.json",
