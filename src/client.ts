@@ -19,6 +19,7 @@ import {
   InvoiceV3,
   FinancialDocumentV1,
   fr,
+  us,
 } from "./documents";
 import {
   CustomDocConfig,
@@ -181,6 +182,13 @@ export class Client {
       [STANDARD_API_OWNER, fr.IdCardV1.name],
       new DocumentConfig(fr.IdCardV1, [
         new StandardEndpoint("idcard_fr", "1", this.apiKey),
+      ])
+    );
+
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, us.BankCheckV1.name],
+      new DocumentConfig(us.BankCheckV1, [
+        new StandardEndpoint("bankCheck_v1", "1", this.apiKey),
       ])
     );
   }
