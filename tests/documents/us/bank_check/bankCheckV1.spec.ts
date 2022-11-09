@@ -5,7 +5,7 @@ import { dataPath } from "../../../apiPaths";
 import { BankCheckV1 } from "../../../../src/documents/us";
 
 describe("US Bank check V1 Object initialization", async () => {
-  it.only("should load an empty document prediction", async () => {
+  it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(
       path.resolve(dataPath.bankCheckV1.empty)
     );
@@ -20,7 +20,7 @@ describe("US Bank check V1 Object initialization", async () => {
     expect(doc.routingNumber.value).to.be.undefined;
   });
 
-  it.only("should load a complete document prediction", async () => {
+  it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(
       path.resolve(dataPath.bankCheckV1.complete)
     );

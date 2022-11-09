@@ -7,7 +7,7 @@ export interface PositionConstructor {
   pageId?: number | undefined;
 }
 
-export class Position {
+export class PositionField {
   /** Straight rectangle. */
   boundingBox: Polygon;
   /** Free polygon with up to 30 vertices. */

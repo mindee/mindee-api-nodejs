@@ -1,5 +1,5 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import { Field, DateField, Position, Amount } from "../../../fields";
+import { Field, DateField, PositionField, Amount } from "../../../fields";
 
 export class BankCheckV1 extends Document {
   /** Payer's bank account number. */
@@ -9,7 +9,7 @@ export class BankCheckV1 extends Document {
   /** Payer's bank account number. */
   checkNumber: Field;
   /** Check's position in the image. */
-  checkPosition: Position;
+  checkPosition: PositionField;
   /** Date the check was issued. */
   issuanceDate: DateField;
   /** List of payees (full name or company name). */
@@ -17,7 +17,7 @@ export class BankCheckV1 extends Document {
   /** Payer's bank account routing number. */
   routingNumber: Field;
   /** Signatures' positions in the image. */
-  signaturesPositions: Position;
+  signaturesPositions: PositionField;
 
   constructor({
     prediction,
@@ -45,7 +45,7 @@ export class BankCheckV1 extends Document {
       valueKey: "value",
       pageId: pageId,
     });
-    this.checkPosition = new Position({
+    this.checkPosition = new PositionField({
       prediction: prediction.check_position,
       pageId: pageId,
     });
@@ -65,7 +65,7 @@ export class BankCheckV1 extends Document {
       prediction: prediction.routing_number,
       pageId: pageId,
     });
-    this.signaturesPositions = new Position({
+    this.signaturesPositions = new PositionField({
       prediction: prediction.signatures_positions,
       pageId: pageId,
     });

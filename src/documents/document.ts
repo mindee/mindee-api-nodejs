@@ -1,6 +1,6 @@
 import { InputSource } from "../inputs";
 import {
-  CropperField,
+  PositionField,
   FullText,
   OrientationField,
   stringDict,
@@ -45,7 +45,7 @@ export class Document {
   fullText?: FullText;
   pageId?: number | undefined;
   orientation?: OrientationField;
-  cropper: CropperField[] = [];
+  cropper: PositionField[] = [];
   readonly docType: string;
 
   constructor({
@@ -74,7 +74,7 @@ export class Document {
       if (extras.cropper !== undefined) {
         extras.cropper.cropping.forEach((crop: any) => {
           this.cropper.push(
-            new CropperField({
+            new PositionField({
               prediction: crop,
               pageId: pageId,
             })
