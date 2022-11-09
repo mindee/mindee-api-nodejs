@@ -5,9 +5,9 @@ import {
   FinancialDocumentV1,
   PassportV1,
   CustomV1,
+  fr,
+  us,
 } from "./documents";
-import { fr } from "./documents";
-import { us } from "./documents";
 
 import { STANDARD_API_OWNER } from "./api";
 import { Client } from "./client";
