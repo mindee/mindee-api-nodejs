@@ -20,7 +20,7 @@ const COMMAND_PASSPORT = "passport";
 const COMMAND_FINANCIAL = "financial";
 const COMMAND_FR_ID_CARD = "fr-id-card";
 const COMMAND_FR_BANK_ACCOUNT_DETAILS = "fr-bank-account-details";
-const COMMAND_FR_SOCIAL_SECURITY_CARD = "fr-social-security-card";
+const COMMAND_FR_SOCIAL_SECURITY_CARD = "fr-carte-vitale";
 const COMMAND_US_BANK_CHECK = "us-bank-check";
 const COMMAND_CUSTOM = "custom";
 
@@ -82,8 +82,8 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     COMMAND_FR_SOCIAL_SECURITY_CARD,
     {
-      description: "FR Social Security Card V1",
-      docType: fr.SocialSecurityCardV1.name,
+      description: "FR Carte Vitale V1",
+      docType: fr.CarteVitaleV1.name,
       fullText: false,
     },
   ],
@@ -157,7 +157,7 @@ async function predictCall(command: string, inputPath: string, options: any) {
       response = await doc.parse(us.BankCheckV1, predictParams);
       break;
     case COMMAND_FR_SOCIAL_SECURITY_CARD:
-      response = await doc.parse(fr.SocialSecurityCardV1, predictParams);
+      response = await doc.parse(fr.CarteVitaleV1, predictParams);
       break;
     case COMMAND_CUSTOM:
       response = await doc.parse(CustomV1, predictParams);

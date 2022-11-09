@@ -1,7 +1,7 @@
 import { Document, DocumentConstructorProps } from "../../document";
 import { Field, DateField } from "../../../fields";
 
-export class SocialSecurityCardV1 extends Document {
+export class CarteVitaleV1 extends Document {
   /** The list of the names of the person. */
   givenNames: Field[] = [];
   /** The surname of the person. */
@@ -54,6 +54,6 @@ ID Number: ${this.idNumber}
 Issuance date: ${this.issuanceDate}
 ----------------------
 `;
-    return SocialSecurityCardV1.cleanOutString(outStr);
+    return CarteVitaleV1.cleanOutString(outStr);
   }
 }
