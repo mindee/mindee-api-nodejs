@@ -40,6 +40,12 @@ export const dataPath = {
     empty: "tests/data/us/bank_check/response_v1/empty.json",
     docString: "tests/data/us/bank_check/response_v1/doc_to_string.txt",
   },
+  bankAccountDetailsV1: {
+    complete: "tests/data/fr/bank_account_details/response_v1/complete.json",
+    empty: "tests/data/fr/bank_account_details/response_v1/empty.json",
+    docString:
+      "tests/data/fr/bank_account_details/response_v1/doc_to_string.txt",
+  },
   custom: {
     complete: "tests/data/custom/response_v1/complete.json",
     empty: "tests/data/custom/response_v1/empty.json",
