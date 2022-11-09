@@ -67,7 +67,7 @@ const apiResponse = mindeeClient
 ### Handling the Return
 ```js
 // Print a brief summary of the parsed data
-invoiceResponse.then((resp) => {
+apiResponse.then((resp) => {
 
     // The document property can be undefined:
     // * TypeScript will throw an error without this guard clause
