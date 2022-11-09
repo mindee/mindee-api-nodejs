@@ -1,8 +1,8 @@
 import { PositionField } from "../../src/fields";
 import { expect } from "chai";
 
-describe("Test Cropper field", () => {
-  it("Should create a Cropper field", () => {
+describe("Test Position field", () => {
+  it("Should create a Position field", () => {
     const prediction = {
       bounding_box: [
         [0, 0],
