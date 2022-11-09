@@ -38,7 +38,7 @@ export class BankAccountDetailsV1 extends Document {
 
   toString(): string {
     const outStr = `----- FR Bank Account Details V1 -----
-Iban: ${this.iban}
+IBAN: ${this.iban}
 Account holder name: ${this.accountHolderName}
 Swift: ${this.swift}
 ----------------------
