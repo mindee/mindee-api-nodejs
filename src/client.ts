@@ -18,6 +18,7 @@ import {
   PassportV1,
   InvoiceV3,
   FinancialDocumentV1,
+  ShippingContainerV1,
   fr,
   us,
   eu,
@@ -243,6 +244,12 @@ export class Client {
       [STANDARD_API_OWNER, eu.LicensePlateV1.name],
       new DocumentConfig(eu.LicensePlateV1, [
         new StandardEndpoint("license_plates", "1", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, ShippingContainerV1.name],
+      new DocumentConfig(ShippingContainerV1, [
+        new StandardEndpoint("shipping_containers", "1", this.apiKey),
       ])
     );
   }

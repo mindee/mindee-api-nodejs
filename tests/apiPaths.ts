@@ -56,6 +56,11 @@ export const dataPath = {
     empty: "tests/data/eu/license_plate/response_v1/empty.json",
     docString: "tests/data/eu/license_plate/response_v1/doc_to_string.txt",
   },
+  shippingContainerV1: {
+    complete: "tests/data/shipping_container/response_v1/complete.json",
+    empty: "tests/data/shipping_container/response_v1/empty.json",
+    docString: "tests/data/shipping_container/response_v1/doc_to_string.txt",
+  },
   custom: {
     complete: "tests/data/custom/response_v1/complete.json",
     empty: "tests/data/custom/response_v1/empty.json",
