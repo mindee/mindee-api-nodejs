@@ -38,9 +38,9 @@ export class ShippingContainerV1 extends Document {
 
   toString(): string {
     const outStr = `----- Shipping Container V1 -----
-Owner : ${this.owner}
-Serial number : ${this.serialNumber}
-Size type : ${this.sizeType}
+Owner: ${this.owner}
+Serial number: ${this.serialNumber}
+Size and type: ${this.sizeType}
 ----------------------
 `;
     return ShippingContainerV1.cleanOutString(outStr);

@@ -5,7 +5,7 @@ import { dataPath } from "../../apiPaths";
 import { ShippingContainerV1 } from "../../../src/documents";
 
 describe("Shipping container V1 Object initialization", async () => {
-  it.only("should load an empty document prediction", async () => {
+  it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(
       path.resolve(dataPath.shippingContainerV1.empty)
     );
@@ -18,7 +18,7 @@ describe("Shipping container V1 Object initialization", async () => {
     expect(doc.sizeType.value).to.be.undefined;
   });
 
-  it.only("should load a complete document prediction", async () => {
+  it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(
       path.resolve(dataPath.shippingContainerV1.complete)
     );
