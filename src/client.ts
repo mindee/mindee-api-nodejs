@@ -20,6 +20,7 @@ import {
   FinancialDocumentV1,
   fr,
   us,
+  eu,
 } from "./documents";
 import {
   CustomDocConfig,
@@ -236,6 +237,12 @@ export class Client {
       [STANDARD_API_OWNER, fr.CarteVitaleV1.name],
       new DocumentConfig(fr.CarteVitaleV1, [
         new StandardEndpoint("carte_vitale", "1", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, eu.LicensePlateV1.name],
+      new DocumentConfig(eu.LicensePlateV1, [
+        new StandardEndpoint("license_plates", "1", this.apiKey),
       ])
     );
   }

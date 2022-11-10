@@ -8,6 +8,7 @@ export {
   CropperV1,
   fr,
   us,
+  eu,
 } from "./documents";
 export { Client } from "./client";
 export { PageOptionsOperation } from "./inputs";
