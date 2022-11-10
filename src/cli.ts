@@ -10,6 +10,7 @@ import {
   fr,
   us,
   eu,
+  ShippingContainerV1,
 } from "./documents";
 
 import { STANDARD_API_OWNER } from "./api";
@@ -106,6 +107,14 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       description: "US Bank Check V1",
       docClass: us.BankCheckV1,
+      fullText: false,
+    },
+  ],
+  [
+    "shipping-container",
+    {
+      description: "Shipping container V1",
+      docClass: ShippingContainerV1,
       fullText: false,
     },
   ],

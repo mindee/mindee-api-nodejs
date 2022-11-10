@@ -6,6 +6,7 @@ export {
   ReceiptV3,
   ReceiptV4,
   CropperV1,
+  ShippingContainerV1,
   fr,
   us,
   eu,
