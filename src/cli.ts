@@ -97,7 +97,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     "eu-license-plate",
     {
       description: "EU License Plate V1",
-      docType: eu.LicensePlateV1.name,
+      docClass: eu.LicensePlateV1,
       fullText: false,
     },
   ],
