@@ -5,7 +5,6 @@
 * :sparkles: Add support for shipping container API V1
 * :sparkles: Add support for EU license plate V1
 * :bug: Fix page removal in CLI
-* :recycle: Simplify adding documents to CLI
 * :sparkles: Add support for Carte Vitale V1
 * :sparkles: Add support for FR Bank Account Details V1
 * :memo: Export and add comments for method parameters.
