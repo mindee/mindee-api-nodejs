@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v3.2.0 - 2022-11-14
+### Changes
+* :sparkles: Add support for shipping container API V1
+* :sparkles: Add support for EU license plate V1
+* :bug: Fix page removal in CLI
+* :recycle: Aimplify adding documents to CLI
+* :sparkles: Add support for Carte Vitale V1
+* :sparkles: Add support for FR Bank Account Details V1
+* :memo: Export and add comments for method parameters.
+* :sparkles: Add support for US Bank Check V1
+
 ## v3.1.1 - 2022-11-08
 ### Changes
 * :bug: fix proper import and documentation of region-specific documents
