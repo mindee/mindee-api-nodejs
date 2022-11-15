@@ -9,11 +9,65 @@ describe("Words functions", () => {
     expect(result).to.be.true;
   });
 
-  it.only("should found a list of fuzzy words", () => {
-    const words = ["ESP"];
-    const result = wordResearch.isMyWordFound("Espèces", words);
+  it.only("should found through a list of fuzzy words to found the payment type in an expense receipt", () => {
+    const words = ["Règlement espèces"];
+    const result1 = wordResearch.isMyWordFound("ESP", words);
+    const result2 = wordResearch.isMyWordFound("Espèces", words);
+    const result3 = wordResearch.isMyWordFound("ESPECES", words);
+    const result4 = wordResearch.isMyWordFound("Espèce", words);
+    const result5 = wordResearch.isMyWordFound("ESPECE", words);
+    const result6 = wordResearch.isMyWordFound("En espèce", words);
+    const result7 = wordResearch.isMyWordFound("Règlement espèces", words);
+    const result8 = wordResearch.isMyWordFound("Règlement en espèce", words);
+    const result9 = wordResearch.isMyWordFound("Réglé en espèces", words);
+    const result10 = wordResearch.isMyWordFound("Réglé en espèce", words);
 
-    expect(result).to.be.true;
+    expect(result1).to.be.true;
+    expect(result2).to.be.true;
+    expect(result3).to.be.true;
+    expect(result4).to.be.true;
+    expect(result5).to.be.true;
+    expect(result6).to.be.true;
+    expect(result7).to.be.true;
+    expect(result8).to.be.true;
+    expect(result9).to.be.true;
+    expect(result10).to.be.true;
+  });
+
+  it.only("should found through a list of fuzzy words to found the payment type in an banking receipt", () => {
+    const words = ["Carte bancaire"];
+    const result1 = wordResearch.isMyWordFound("Carte Bancaire", words);
+    const result2 = wordResearch.isMyWordFound("Cartes Bancaires", words);
+    const result3 = wordResearch.isMyWordFound("Carte de Crédit", words);
+    const result4 = wordResearch.isMyWordFound("Carte", words);
+    const result5 = wordResearch.isMyWordFound("Cartes", words);
+    const result6 = wordResearch.isMyWordFound("Carte bleue", words);
+    const result8 = wordResearch.isMyWordFound("CB", words);
+
+    expect(result1).to.be.true;
+    expect(result2).to.be.true;
+    expect(result3).to.be.true;
+    expect(result4).to.be.true;
+    expect(result5).to.be.true;
+    expect(result6).to.be.true;
+    expect(result8).to.be.true;
+  });
+
+  it.only("should found through a list of fuzzy words to found the payment type in an banking receipt", () => {
+    const words = ["SP95-E10 PRODUIT= EUR/L 2.019 PU= L 29,84 QUANTITE= (20.00% EUR 10.04 TVA="
+      + "L'ETAT PAR CONTROLEES NON INDICATIONS A CONSERVER TICKET DEBIT EUR 60.25 MONTANT REEL"
+      + " C 2 904 26147 2228 BA6DBCC8DD155065 ************5866 11899 95040592800108 0197901 "
+      + "26000 VALENCE ESSFLOREALYG859 le : a : 06/07/22 13:57:52 CB 1 1 ADODOD A C"];
+
+    const result7 = wordResearch.isMyWordFound("Débit", words);
+    const result8 = wordResearch.isMyWordFound("CB", words);
+    const result9 = wordResearch.isMyWordFound("CB Ingenico", words);
+    const result10 = wordResearch.isMyWordFound("CB Sans contact", words);
+
+    expect(result7).to.be.true;
+    expect(result8).to.be.true;
+    expect(result9).to.be.true;
+    expect(result10).to.be.true;
   });
 
   it.only("should not found a word", () => {
