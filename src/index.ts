@@ -13,3 +13,4 @@ export {
 } from "./documents";
 export { Client } from "./client";
 export { PageOptionsOperation } from "./inputs";
+export { isMyWordFound } from "./wordResearch";
