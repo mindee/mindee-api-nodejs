@@ -66,11 +66,11 @@ const apiResponse = mindeeClient
 
 ### Handling the Return
 ```js
-// Print a brief summary of the parsed data
+// Handle the response Promise
 apiResponse.then((resp) => {
 
-    // The document property can be undefined:
-    // * TypeScript will throw an error without this guard clause
+    // The `document` property can be undefined:
+    // * TypeScript will not compile without this guard clause
     //   (or consider using the '?' notation)
     // * JavaScript will be very happy to produce subtle bugs
     //   without this guard clause
