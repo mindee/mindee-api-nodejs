@@ -42,7 +42,7 @@ export interface PredictOptions {
    */
   endpointName?: string;
   /**
-   * For custom endpoints, your organization's username on the API Builder.
+   * For custom endpoints, your account or organization's username on the API Builder.
    * This is normally not required unless you have a custom endpoint which has the
    * same name as standard (off the shelf) endpoint.
    *
