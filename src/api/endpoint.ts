@@ -8,13 +8,14 @@ import { InputSource } from "../inputs";
 import { logger } from "../logger";
 import { IncomingMessage } from "http";
 
-const MINDEE_API_URL = "https://api.mindee.net/v1";
+const DEFAULT_MINDEE_API_URL = "https://api.mindee.net/v1";
 const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${
   process.version
 } ${os.type().toLowerCase()}`;
 
 export const STANDARD_API_OWNER = "mindee";
 export const API_KEY_ENVVAR_NAME = "MINDEE_API_KEY";
+export const API_BASE_URL_ENVVAR_NAME = "MINDEE_BASE_URL";
 
 export interface predictResponse {
   messageObj: IncomingMessage;
@@ -34,7 +35,7 @@ export class Endpoint {
     this.urlName = urlName;
     this.version = version;
     this.apiKey = apiKey || this.apiKeyFromEnv();
-    this.urlRoot = `${MINDEE_API_URL}/products/${owner}/${urlName}/v${version}`;
+    this.urlRoot = `${this.baseUrlFromEnv()}/products/${owner}/${urlName}/v${version}`;
     this.baseHeaders = {
       "User-Agent": USER_AGENT,
       Authorization: `Token ${this.apiKey}`,
@@ -116,6 +117,15 @@ export class Endpoint {
       return envVarValue;
     }
     return "";
+  }
+
+  protected baseUrlFromEnv(): string {
+    const envVarValue = process.env[API_BASE_URL_ENVVAR_NAME];
+    if (envVarValue) {
+      logger.debug(`Set the API base URL to ${envVarValue}`);
+      return envVarValue;
+    }
+    return DEFAULT_MINDEE_API_URL;
   }
 }
 
