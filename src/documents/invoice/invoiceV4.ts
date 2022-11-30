@@ -211,7 +211,7 @@ Supplier payment details: ${paymentDetails}
 Customer name: ${this.customerName}
 Customer company registrations: ${customerCompanyRegistration}
 Customer address: ${this.customerAddress}
-Line items: ${lineItems}
+Line Items: ${lineItems}
 Taxes: ${taxes}
 Total taxes: ${this.totalTax}
 Total amount excluding taxes: ${this.totalExcl}
