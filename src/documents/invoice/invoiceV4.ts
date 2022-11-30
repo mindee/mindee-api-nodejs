@@ -205,7 +205,7 @@ Invoice number: ${this.invoiceNumber}
 Invoice date: ${this.date}
 Invoice due date: ${this.dueDate}
 Supplier name: ${this.supplierName}
-Supplier companyregistrations: ${companyRegistration}
+Supplier company registrations: ${companyRegistration}
 Supplier address: ${this.supplierAddress}
 Supplier payment details: ${paymentDetails}
 Customer name: ${this.customerName}
