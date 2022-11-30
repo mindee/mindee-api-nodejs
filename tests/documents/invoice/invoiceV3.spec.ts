@@ -5,7 +5,7 @@ import { expect } from "chai";
 import { dataPath } from "../../apiPaths";
 import { TaxField } from "../../../src/fields";
 
-describe("Invoice Object initialization", async () => {
+describe("Invoice V3 Object initialization", async () => {
   before(async function () {
     const jsonDataNA = await fs.readFile(
       path.resolve(dataPath.invoiceV3.empty)
