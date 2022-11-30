@@ -5,6 +5,12 @@ export const dataPath = {
     docString: "tests/data/invoice/response_v3/doc_to_string.txt",
     page0String: "tests/data/invoice/response_v3/page0_to_string.txt",
   },
+  invoiceV4: {
+    complete: "tests/data/invoice/response_v4/complete.json",
+    empty: "tests/data/invoice/response_v4/empty.json",
+    docString: "tests/data/invoice/response_v4/doc_to_string.txt",
+    page0String: "tests/data/invoice/response_v4/page0_to_string.txt",
+  },
   receiptV3: {
     complete: "tests/data/receipt/response_v3/complete.json",
     empty: "tests/data/receipt/response_v3/empty.json",
@@ -30,10 +36,10 @@ export const dataPath = {
     page0String: "tests/data/cropper/response_v1/page0_to_string.txt",
   },
   idCardV1: {
-    complete: "tests/data/fr/id_card/id_card_v1/complete.json",
-    empty: "tests/data/fr/id_card/id_card_v1/empty.json",
-    docString: "tests/data/fr/id_card/id_card_v1/doc_to_string.txt",
-    page0String: "tests/data/fr/id_card/id_card_v1/page0_to_string.txt",
+    complete: "tests/data/fr/id_card/response_v1/complete.json",
+    empty: "tests/data/fr/id_card/response_v1/empty.json",
+    docString: "tests/data/fr/id_card/respo  nse_v1/doc_to_string.txt",
+    page0String: "tests/data/fr/id_card/response_v1/page0_to_string.txt",
   },
   bankCheckV1: {
     complete: "tests/data/us/bank_check/response_v1/complete.json",

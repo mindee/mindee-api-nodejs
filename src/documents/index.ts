@@ -1,4 +1,5 @@
 export { InvoiceV3 } from "./invoice/invoiceV3";
+export { InvoiceV4 } from "./invoice/invoiceV4";
 export { ReceiptV3 } from "./receipt/receiptV3";
 export { ReceiptV4 } from "./receipt/receiptV4";
 export { PassportV1 } from "./passport/passportV1";
