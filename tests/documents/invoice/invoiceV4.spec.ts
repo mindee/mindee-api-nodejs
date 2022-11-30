@@ -15,7 +15,7 @@ describe("Invoice Object initialization", async () => {
     ).document.inference.pages[0].prediction;
   });
 
-  it.only("should initialize from a N/A prediction object", async () => {
+  it("should initialize from a N/A prediction object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV4.empty));
     const response = JSON.parse(jsonData.toString());
     const doc = new InvoiceV4({
@@ -45,7 +45,7 @@ describe("Invoice Object initialization", async () => {
     ]);
   });
 
-  it.only("should load a complete document prediction", async () => {
+  it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(
       path.resolve(dataPath.invoiceV4.complete)
     );
@@ -62,7 +62,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.checkAll()).to.be.true;
   });
 
-  it.only("should load a complete page 0 prediction", async () => {
+  it("should load a complete page 0 prediction", async () => {
     const jsonData = await fs.readFile(
       path.resolve(dataPath.invoiceV4.complete)
     );
@@ -83,7 +83,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.checkAll()).to.be.true;
   });
 
-  it.only("should not reconstruct totalIncl without taxes", function () {
+  it("should not reconstruct totalIncl without taxes", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -95,7 +95,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalIncl.value).to.be.undefined;
   });
 
-  it.only("should not reconstruct totalIncl without totalExcl", function () {
+  it("should not reconstruct totalIncl without totalExcl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -107,7 +107,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalIncl.value).to.be.undefined;
   });
 
-  it.only("should not reconstruct totalIncl with totalIncl already set", function () {
+  it("should not reconstruct totalIncl with totalIncl already set", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -120,7 +120,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalIncl.confidence).to.be.equal(0.4);
   });
 
-  it.only("should reconstruct totalIncl", function () {
+  it("should reconstruct totalIncl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -133,7 +133,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalIncl.confidence).to.be.equal(0.81);
   });
 
-  it.only("should not reconstruct totalExcl without totalIncl", function () {
+  it("should not reconstruct totalExcl without totalIncl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -145,7 +145,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalExcl.value).to.be.undefined;
   });
 
-  it.only("should not reconstruct totalExcl without taxes", function () {
+  it("should not reconstruct totalExcl without taxes", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -157,7 +157,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalExcl.value).to.be.undefined;
   });
 
-  it.only("should not reconstruct totalExcl with totalExcl already set", function () {
+  it("should not reconstruct totalExcl with totalExcl already set", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -170,7 +170,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalExcl.confidence).to.be.equal(0.4);
   });
 
-  it.only("should reconstruct totalExcl", function () {
+  it("should reconstruct totalExcl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -186,7 +186,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalExcl.confidence).to.be.equal(0.03);
   });
 
-  it.only("should not reconstruct totalTax without taxes", function () {
+  it("should not reconstruct totalTax without taxes", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -196,7 +196,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalTax.value).to.be.undefined;
   });
 
-  it.only("should reconstruct totalTax", function () {
+  it("should reconstruct totalTax", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -210,7 +210,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.totalTax.confidence).to.be.equal(0.05);
   });
 
-  it.only("should match on totalIncl", function () {
+  it("should match on totalIncl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -228,7 +228,7 @@ describe("Invoice Object initialization", async () => {
     );
   });
 
-  it.only("should not match on totalIncl", function () {
+  it("should not match on totalIncl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -242,7 +242,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.checklist.taxesMatchTotalIncl).to.be.false;
   });
 
-  it.only("should not match on totalIncl 2", function () {
+  it("should not match on totalIncl 2", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -253,7 +253,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.checklist.taxesMatchTotalIncl).to.be.false;
   });
 
-  it.only("should match on totalExcl", function () {
+  it("should match on totalExcl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -271,7 +271,7 @@ describe("Invoice Object initialization", async () => {
     );
   });
 
-  it.only("should not match on totalExcl", function () {
+  it("should not match on totalExcl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -285,7 +285,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.checklist.taxesMatchTotalExcl).to.be.false;
   });
 
-  it.only("should not match on totalExcl 2", function () {
+  it("should not match on totalExcl 2", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -296,7 +296,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.checklist.taxesMatchTotalExcl).to.be.false;
   });
 
-  it.only("should match on Taxes + totalExcl = totalIncl", function () {
+  it("should match on Taxes + totalExcl = totalIncl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -316,7 +316,7 @@ describe("Invoice Object initialization", async () => {
     );
   });
 
-  it.only("should not match on Taxes + totalExcl = totalIncl", function () {
+  it("should not match on Taxes + totalExcl = totalIncl", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
@@ -331,7 +331,7 @@ describe("Invoice Object initialization", async () => {
     expect(doc.checklist.taxesAndTotalExclMatchTotalIncl).to.be.false;
   });
 
-  it.only("should not match on Taxes + totalExcl = totalIncl 2", function () {
+  it("should not match on Taxes + totalExcl = totalIncl 2", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,

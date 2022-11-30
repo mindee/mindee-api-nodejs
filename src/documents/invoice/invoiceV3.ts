@@ -10,6 +10,11 @@ import {
   DateField,
   CompanyRegistration,
 } from "../../fields";
+import {
+  taxesAndTotalExclMatchTotalIncl,
+  taxesMatchTotalExcl,
+  taxesMatchTotalIncl,
+} from "./checks";
 
 export class InvoiceV3 extends Document {
   /** Total amount with the tax amount of the purchase. */
@@ -193,9 +198,9 @@ Locale: ${this.locale}
 
   #checklist() {
     this.checklist = {
-      taxesMatchTotalIncl: this.taxesMatchTotalIncl(),
-      taxesMatchTotalExcl: this.taxesMatchTotalExcl(),
-      taxesAndTotalExclMatchTotalIncl: this.taxesAndTotalExclMatchTotalIncl(),
+      taxesMatchTotalIncl: taxesMatchTotalIncl(this),
+      taxesMatchTotalExcl: taxesMatchTotalExcl(this),
+      taxesAndTotalExclMatchTotalIncl: taxesAndTotalExclMatchTotalIncl(this),
     };
   }
 
@@ -204,107 +209,6 @@ Locale: ${this.locale}
     this.#reconstructTotalExcl();
     this.#reconstructTotalIncl();
     this.#reconstructTotalTaxFromTotals();
-  }
-
-  private taxesMatchTotalIncl(): boolean {
-    // Check taxes and total include exist
-    if (this.taxes.length === 0 || this.totalIncl.value === undefined)
-      return false;
-
-    // Reconstruct totalIncl from taxes
-    let totalVat = 0;
-    let reconstructedTotal = 0;
-    this.taxes.forEach((tax) => {
-      if (tax.value === undefined || !tax.rate) return false;
-      totalVat += tax.value;
-      reconstructedTotal += tax.value + (100 * tax.value) / tax.rate;
-    });
-
-    // Sanity check
-    if (totalVat <= 0) return false;
-
-    // Crate epsilon
-    const eps = 1 / (100 * totalVat);
-
-    if (
-      this.totalIncl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
-      reconstructedTotal <= this.totalIncl.value * (1 + eps) + 0.02
-    ) {
-      this.taxes.forEach((tax) => {
-        tax.confidence = 1.0;
-      });
-      this.totalTax.confidence = 1.0;
-      this.totalIncl.confidence = 1.0;
-      return true;
-    }
-    return false;
-  }
-
-  /**
-   *
-   */
-  private taxesMatchTotalExcl(): boolean {
-    // Check taxes and total amount exist
-    if (this.taxes.length === 0 || this.totalExcl.value === undefined) {
-      return false;
-    }
-
-    // Reconstruct total_incl from taxes
-    let totalVat = 0;
-    let reconstructedTotal = 0;
-    this.taxes.forEach((tax) => {
-      if (tax.value === undefined || !tax.rate) {
-        return false;
-      }
-      totalVat += tax.value;
-      reconstructedTotal += (100 * tax.value) / tax.rate;
-    });
-
-    // Sanity check
-    if (totalVat <= 0) return false;
-
-    // Crate epsilon
-    const eps = 1 / (100 * totalVat);
-
-    if (
-      this.totalExcl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
-      reconstructedTotal <= this.totalExcl.value * (1 + eps) + 0.02
-    ) {
-      this.taxes.forEach((tax) => {
-        tax.confidence = 1.0;
-      });
-      this.totalTax.confidence = 1.0;
-      this.totalExcl.confidence = 1.0;
-      return true;
-    }
-    return false;
-  }
-
-  private taxesAndTotalExclMatchTotalIncl(): boolean {
-    if (
-      this.totalExcl.value === undefined ||
-      this.taxes.length === 0 ||
-      this.totalIncl.value === undefined
-    )
-      return false;
-    let totalVat = 0;
-    this.taxes.forEach((tax) => (totalVat += tax.value || 0));
-    const reconstructedTotal = totalVat + this.totalExcl.value;
-
-    if (totalVat <= 0) return false;
-
-    if (
-      this.totalIncl.value - 0.01 <= reconstructedTotal &&
-      reconstructedTotal <= this.totalIncl.value + 0.01
-    ) {
-      this.taxes.forEach((tax) => {
-        tax.confidence = 1.0;
-      });
-      this.totalTax.confidence = 1.0;
-      this.totalIncl.confidence = 1.0;
-      return true;
-    }
-    return false;
   }
 
   #reconstructTotalTax() {
