@@ -16,6 +16,12 @@ import {
   taxesMatchTotalExcl,
   taxesMatchTotalIncl,
 } from "./checks";
+import {
+  reconstructTotalExcl,
+  reconstructTotalIncl,
+  reconstructTotalTax,
+  reconstructTotalTaxFromTotals,
+} from "./reconstruction";
 
 export class InvoiceV4 extends Document {
   /** Locale information. */
@@ -224,93 +230,9 @@ Total amount including taxes: ${this.totalIncl}
   }
 
   #reconstruct() {
-    this.#reconstructTotalTax();
-    this.#reconstructTotalExcl();
-    this.#reconstructTotalIncl();
-    this.#reconstructTotalTaxFromTotals();
-  }
-
-  #reconstructTotalTax() {
-    if (this.taxes.length > 0) {
-      const totalTax = {
-        value: this.taxes.reduce((acc, tax) => {
-          return tax.value !== undefined ? acc + tax.value : acc;
-        }, 0),
-        confidence: Field.arrayConfidence(this.taxes),
-      };
-      if (totalTax.value > 0)
-        this.totalTax = new Amount({
-          prediction: totalTax,
-          valueKey: "value",
-          reconstructed: true,
-        });
-    }
-  }
-
-  #reconstructTotalTaxFromTotals() {
-    if (
-      this.totalTax.value !== undefined ||
-      this.totalExcl.value === undefined ||
-      this.totalIncl.value === undefined
-    ) {
-      return;
-    }
-    const totalTax = {
-      value: this.totalIncl.value - this.totalExcl.value,
-      confidence: this.totalIncl.confidence * this.totalExcl.confidence,
-    };
-    if (totalTax.value >= 0) {
-      this.totalTax = new Amount({
-        prediction: totalTax,
-        valueKey: "value",
-        reconstructed: true,
-      });
-    }
-  }
-
-  #reconstructTotalExcl() {
-    if (
-      this.totalIncl.value === undefined ||
-      this.taxes.length === 0 ||
-      this.totalExcl.value !== undefined
-    ) {
-      return;
-    }
-    const totalExcl = {
-      value: this.totalIncl.value - Field.arraySum(this.taxes),
-      confidence:
-        Field.arrayConfidence(this.taxes) *
-        (this.totalIncl as Amount).confidence,
-    };
-    this.totalExcl = new Amount({
-      prediction: totalExcl,
-      valueKey: "value",
-      reconstructed: true,
-    });
-  }
-
-  #reconstructTotalIncl() {
-    if (
-      !(
-        this.totalExcl.value === undefined ||
-        this.taxes.length === 0 ||
-        this.totalIncl.value !== undefined
-      )
-    ) {
-      const totalIncl = {
-        value:
-          this.totalExcl.value +
-          (this.taxes as any[]).reduce((acc, tax) => {
-            return tax.value ? acc + tax.value : acc;
-          }, 0.0),
-        confidence:
-          Field.arrayConfidence(this.taxes) * this.totalExcl.confidence,
-      };
-      this.totalIncl = new Amount({
-        prediction: totalIncl,
-        valueKey: "value",
-        reconstructed: true,
-      });
-    }
+    reconstructTotalTax(this);
+    reconstructTotalExcl(this);
+    reconstructTotalIncl(this);
+    reconstructTotalTaxFromTotals(this);
   }
 }
