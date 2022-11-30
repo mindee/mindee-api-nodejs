@@ -38,7 +38,7 @@ export const dataPath = {
   idCardV1: {
     complete: "tests/data/fr/id_card/response_v1/complete.json",
     empty: "tests/data/fr/id_card/response_v1/empty.json",
-    docString: "tests/data/fr/id_card/respo  nse_v1/doc_to_string.txt",
+    docString: "tests/data/fr/id_card/response_v1/doc_to_string.txt",
     page0String: "tests/data/fr/id_card/response_v1/page0_to_string.txt",
   },
   bankCheckV1: {
