@@ -180,7 +180,7 @@ export class InvoiceV3 extends Document {
       .map((item) => item.toString())
       .join("; ");
 
-    const outStr = `-----Invoice data-----
+    const outStr = `-----Invoice V3-----
 Filename: ${this.filename}
 Invoice number: ${this.invoiceNumber}
 Total amount including taxes: ${this.totalIncl}

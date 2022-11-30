@@ -65,7 +65,7 @@ export class InvoiceLineItem {
     const totalAmount =
       this.totalAmount !== null ? floatToString(this.totalAmount) : "";
     let tax = this.taxAmount !== null ? floatToString(this.taxAmount) : "";
-    tax = this.taxRate !== null ? ` (${this.taxRate} %)` : "";
+    tax += this.taxRate !== null ? ` (${this.taxRate} %)` : "";
     let description = this.description ?? "";
     if (description.length > 32) {
       description = this.description.substring(0, 32) + "...";
