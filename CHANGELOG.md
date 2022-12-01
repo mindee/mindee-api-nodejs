@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.3.0 - 2022-12-01
+### Changes
+* :sparkles: Add Invoice V4 with line items
+* :sparkles: An env variable can be used to change the Mindee base API url
+
 ## v3.2.0 - 2022-11-14
 ### Changes
 * :sparkles: Add support for shipping container API V1
