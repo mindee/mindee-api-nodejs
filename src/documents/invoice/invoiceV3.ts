@@ -29,6 +29,8 @@ export class InvoiceV3 extends Document {
   documentType!: BaseField;
   /** The total amount with tax included. */
   totalIncl!: Amount;
+  /** The total amount with tax included. */
+  totalAmount!: Amount;
   /** The creation date of the invoice. */
   date!: DateField;
   /** The due date of the invoice. */
@@ -39,6 +41,8 @@ export class InvoiceV3 extends Document {
   totalTax!: Amount;
   /** The total amount without the tax value. */
   totalExcl!: Amount;
+  /** The total amount without the tax value. */
+  totalNet!: Amount;
   /** The supplier name. */
   supplier!: Field;
   /** The supplier address. */
@@ -92,6 +96,7 @@ export class InvoiceV3 extends Document {
       valueKey: "value",
       pageId: pageId,
     });
+    this.totalAmount = this.totalIncl;
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0.0 },
       valueKey: "value",
@@ -102,6 +107,7 @@ export class InvoiceV3 extends Document {
       valueKey: "value",
       pageId: pageId,
     });
+    this.totalNet = this.totalExcl;
     this.date = new DateField({
       prediction: apiPrediction.date,
       pageId,
