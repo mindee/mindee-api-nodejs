@@ -17,6 +17,7 @@ import {
   CropperV1,
   PassportV1,
   InvoiceV3,
+  InvoiceV4,
   FinancialDocumentV1,
   ShippingContainerV1,
   fr,
@@ -190,6 +191,12 @@ export class Client {
       [STANDARD_API_OWNER, InvoiceV3.name],
       new DocumentConfig(InvoiceV3, [
         new StandardEndpoint("invoices", "3", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, InvoiceV4.name],
+      new DocumentConfig(InvoiceV4, [
+        new StandardEndpoint("invoices", "4", this.apiKey),
       ])
     );
     this.docConfigs.set(

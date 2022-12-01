@@ -2,7 +2,7 @@ import { Command } from "commander";
 import {
   Document,
   DocumentSig,
-  InvoiceV3,
+  InvoiceV4,
   ReceiptV4,
   FinancialDocumentV1,
   PassportV1,
@@ -41,8 +41,8 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "invoice",
     {
-      description: "Invoice V3",
-      docClass: InvoiceV3,
+      description: "Invoice V4",
+      docClass: InvoiceV4,
       fullText: true,
     },
   ],
