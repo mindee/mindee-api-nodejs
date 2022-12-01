@@ -22,8 +22,8 @@ describe("Invoice V4 Object initialization", async () => {
       prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.locale.value).to.be.undefined;
-    expect(doc.totalIncl.value).to.be.undefined;
-    expect(doc.totalExcl.value).to.be.undefined;
+    expect(doc.totalAmount.value).to.be.undefined;
+    expect(doc.totalNet.value).to.be.undefined;
     expect(doc.totalTax.value).to.be.undefined;
     expect(doc.date.value).to.be.undefined;
     expect(doc.invoiceNumber.value).to.be.undefined;
@@ -83,107 +83,107 @@ describe("Invoice V4 Object initialization", async () => {
     expect(doc.checkAll()).to.be.true;
   });
 
-  it("should not reconstruct totalIncl without taxes", function () {
+  it("should not reconstruct total amount without taxes", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: "N/A", confidence: 0.0 },
-        total_excl: { value: 240.5, confidence: 0.9 },
+        total_amount: { value: "N/A", confidence: 0.0 },
+        total_net: { value: 240.5, confidence: 0.9 },
         taxes: [],
       },
     });
-    expect(doc.totalIncl.value).to.be.undefined;
+    expect(doc.totalAmount.value).to.be.undefined;
   });
 
-  it("should not reconstruct totalIncl without totalExcl", function () {
+  it("should not reconstruct totalAmount without totalNet", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: "N/A", confidence: 0.0 },
-        total_excl: { value: "N/A", confidence: 0.0 },
+        total_amount: { value: "N/A", confidence: 0.0 },
+        total_net: { value: "N/A", confidence: 0.0 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(doc.totalIncl.value).to.be.undefined;
+    expect(doc.totalAmount.value).to.be.undefined;
   });
 
-  it("should not reconstruct totalIncl with totalIncl already set", function () {
+  it("should not reconstruct totalAmount with totalNet already set", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 260, confidence: 0.4 },
-        total_excl: { value: 240.5, confidence: 0.9 },
+        total_amount: { value: 260, confidence: 0.4 },
+        total_net: { value: 240.5, confidence: 0.9 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(doc.totalIncl.value).to.be.equal(260);
-    expect(doc.totalIncl.confidence).to.be.equal(0.4);
+    expect(doc.totalAmount.value).to.be.equal(260);
+    expect(doc.totalAmount.confidence).to.be.equal(0.4);
   });
 
-  it("should reconstruct totalIncl", function () {
+  it("should reconstruct totalAmount", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: "N/A", confidence: 0.0 },
-        total_excl: { value: 240.5, confidence: 0.9 },
+        total_amount: { value: "N/A", confidence: 0.0 },
+        total_net: { value: 240.5, confidence: 0.9 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(doc.totalIncl.value).to.be.equal(250);
-    expect(doc.totalIncl.confidence).to.be.equal(0.81);
+    expect(doc.totalAmount.value).to.be.equal(250);
+    expect(doc.totalAmount.confidence).to.be.equal(0.81);
   });
 
-  it("should not reconstruct totalExcl without totalIncl", function () {
+  it("should not reconstruct totalNet without totalAmount", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: "N/A", confidence: 0.0 },
-        total_excl: { value: "N/A", confidence: 0.0 },
+        total_amount: { value: "N/A", confidence: 0.0 },
+        total_net: { value: "N/A", confidence: 0.0 },
         taxes: [{ rate: 20, value: 9.5, confidence: 0.9 }],
       },
     });
-    expect(doc.totalExcl.value).to.be.undefined;
+    expect(doc.totalNet.value).to.be.undefined;
   });
 
-  it("should not reconstruct totalExcl without taxes", function () {
+  it("should not reconstruct totalNet without taxes", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 1150.2, confidence: 0.7 },
-        total_excl: { value: "N/A", confidence: 0.0 },
+        total_amount: { value: 1150.2, confidence: 0.7 },
+        total_net: { value: "N/A", confidence: 0.0 },
         taxes: [],
       },
     });
-    expect(doc.totalExcl.value).to.be.undefined;
+    expect(doc.totalNet.value).to.be.undefined;
   });
 
-  it("should not reconstruct totalExcl with totalExcl already set", function () {
+  it("should not reconstruct totalNet with totalNet already set", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 1150.2, confidence: 0.7 },
-        total_excl: { value: 1050.0, confidence: 0.4 },
+        total_amount: { value: 1150.2, confidence: 0.7 },
+        total_net: { value: 1050.0, confidence: 0.4 },
         taxes: [],
       },
     });
-    expect(doc.totalExcl.value).to.be.equal(1050.0);
-    expect(doc.totalExcl.confidence).to.be.equal(0.4);
+    expect(doc.totalNet.value).to.be.equal(1050.0);
+    expect(doc.totalNet.confidence).to.be.equal(0.4);
   });
 
-  it("should reconstruct totalExcl", function () {
+  it("should reconstruct totalNet", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 1150.2, confidence: 0.6 },
-        total_excl: { value: "N/A", confidence: 0.0 },
+        total_amount: { value: 1150.2, confidence: 0.6 },
+        total_net: { value: "N/A", confidence: 0.0 },
         taxes: [
           { rate: 20, value: 10.2, confidence: 0.5 },
           { rate: 10, value: 40.0, confidence: 0.1 },
         ],
       },
     });
-    expect(doc.totalExcl.value).to.be.equal(1100);
-    expect(doc.totalExcl.confidence).to.be.equal(0.03);
+    expect(doc.totalNet.value).to.be.equal(1100);
+    expect(doc.totalNet.confidence).to.be.equal(0.03);
   });
 
   it("should not reconstruct totalTax without taxes", function () {
@@ -210,11 +210,11 @@ describe("Invoice V4 Object initialization", async () => {
     expect(doc.totalTax.confidence).to.be.equal(0.05);
   });
 
-  it("should match on totalIncl", function () {
+  it("should match on totalAmount", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 507.25, confidence: 0.6 },
+        total_amount: { value: 507.25, confidence: 0.6 },
         taxes: [
           { rate: 20, value: 10.99, confidence: 0.5 },
           { rate: 10, value: 40.12, confidence: 0.1 },
@@ -222,17 +222,17 @@ describe("Invoice V4 Object initialization", async () => {
       },
     });
     expect(doc.checklist.taxesMatchTotalIncl).to.be.true;
-    expect(doc.totalIncl.confidence).to.be.equal(1.0);
+    expect(doc.totalAmount.confidence).to.be.equal(1.0);
     (doc.taxes as TaxField[]).map((tax) =>
       expect(tax.confidence).to.be.equal(1.0)
     );
   });
 
-  it("should not match on totalIncl", function () {
+  it("should not match on totalAmount", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 507.25, confidence: 0.6 },
+        total_amount: { value: 507.25, confidence: 0.6 },
         taxes: [
           { rate: 20, value: 10.9, confidence: 0.5 },
           { rate: 10, value: 40.12, confidence: 0.1 },
@@ -242,22 +242,22 @@ describe("Invoice V4 Object initialization", async () => {
     expect(doc.checklist.taxesMatchTotalIncl).to.be.false;
   });
 
-  it("should not match on totalIncl 2", function () {
+  it("should not match on totalAmount 2", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 507.25, confidence: 0.6 },
+        total_amount: { value: 507.25, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0.0, confidence: 0.5 }],
       },
     });
     expect(doc.checklist.taxesMatchTotalIncl).to.be.false;
   });
 
-  it("should match on totalExcl", function () {
+  it("should match on totalNet", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_excl: { value: 456.15, confidence: 0.6 },
+        total_net: { value: 456.15, confidence: 0.6 },
         taxes: [
           { rate: 20, value: 10.99, confidence: 0.5 },
           { rate: 10, value: 40.12, confidence: 0.1 },
@@ -265,17 +265,17 @@ describe("Invoice V4 Object initialization", async () => {
       },
     });
     expect(doc.checklist.taxesMatchTotalExcl).to.be.true;
-    expect(doc.totalExcl.confidence).to.be.equal(1.0);
+    expect(doc.totalNet.confidence).to.be.equal(1.0);
     (doc.taxes as TaxField[]).map((tax) =>
       expect(tax.confidence).to.be.equal(1.0)
     );
   });
 
-  it("should not match on totalExcl", function () {
+  it("should not match on totalNet", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_excl: { value: 507.25, confidence: 0.6 },
+        total_net: { value: 507.25, confidence: 0.6 },
         taxes: [
           { rate: 20, value: 10.9, confidence: 0.5 },
           { rate: 10, value: 40.12, confidence: 0.1 },
@@ -285,23 +285,23 @@ describe("Invoice V4 Object initialization", async () => {
     expect(doc.checklist.taxesMatchTotalExcl).to.be.false;
   });
 
-  it("should not match on totalExcl 2", function () {
+  it("should not match on totalNet 2", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_excl: { value: 507.25, confidence: 0.6 },
+        total_net: { value: 507.25, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0.0, confidence: 0.5 }],
       },
     });
     expect(doc.checklist.taxesMatchTotalExcl).to.be.false;
   });
 
-  it("should match on Taxes + totalExcl = totalIncl", function () {
+  it("should match on Taxes + totalNet = totalAmount", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 507.25, confidence: 0.6 },
-        total_excl: { value: 456.15, confidence: 0.6 },
+        total_amount: { value: 507.25, confidence: 0.6 },
+        total_net: { value: 456.15, confidence: 0.6 },
         taxes: [
           { rate: 20, value: 10.99, confidence: 0.5 },
           { rate: 10, value: 40.12, confidence: 0.1 },
@@ -309,19 +309,19 @@ describe("Invoice V4 Object initialization", async () => {
       },
     });
     expect(doc.checklist.taxesAndTotalExclMatchTotalIncl).to.be.true;
-    expect(doc.totalIncl.confidence).to.be.equal(1.0);
-    expect(doc.totalExcl.confidence).to.be.equal(1.0);
+    expect(doc.totalAmount.confidence).to.be.equal(1.0);
+    expect(doc.totalNet.confidence).to.be.equal(1.0);
     (doc.taxes as TaxField[]).map((tax) =>
       expect(tax.confidence).to.be.equal(1.0)
     );
   });
 
-  it("should not match on Taxes + totalExcl = totalIncl", function () {
+  it("should not match on Taxes + totalNet = totalAmount", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 507.2, confidence: 0.6 },
-        total_excl: { value: 456.15, confidence: 0.6 },
+        total_amount: { value: 507.2, confidence: 0.6 },
+        total_net: { value: 456.15, confidence: 0.6 },
         taxes: [
           { rate: 20, value: 10.99, confidence: 0.5 },
           { rate: 10, value: 40.12, confidence: 0.1 },
@@ -331,12 +331,12 @@ describe("Invoice V4 Object initialization", async () => {
     expect(doc.checklist.taxesAndTotalExclMatchTotalIncl).to.be.false;
   });
 
-  it("should not match on Taxes + totalExcl = totalIncl 2", function () {
+  it("should not match on Taxes + totalNet = totalAmount 2", function () {
     const doc = new InvoiceV4({
       prediction: {
         ...this.basePrediction,
-        total_incl: { value: 507.25, confidence: 0.6 },
-        total_excl: { value: 456.15, confidence: 0.6 },
+        total_amount: { value: 507.25, confidence: 0.6 },
+        total_net: { value: 456.15, confidence: 0.6 },
         taxes: [{ rate: 20, value: 0, confidence: 0.5 }],
       },
     });
