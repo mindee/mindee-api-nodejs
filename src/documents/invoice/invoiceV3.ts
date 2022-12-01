@@ -27,9 +27,7 @@ export class InvoiceV3 extends Document {
   locale!: Locale;
   /** The nature of the invoice. */
   documentType!: BaseField;
-  /** The total amount with tax included. */
-  totalIncl!: Amount;
-  /** The total amount with tax included. */
+  /** The total amount with tax included. Same as totalIncl. */
   totalAmount!: Amount;
   /** The creation date of the invoice. */
   date!: DateField;
@@ -39,9 +37,7 @@ export class InvoiceV3 extends Document {
   time!: Field;
   /** The total tax. */
   totalTax!: Amount;
-  /** The total amount without the tax value. */
-  totalExcl!: Amount;
-  /** The total amount without the tax value. */
+  /** The total amount without the tax value. Same as totalExcl. */
   totalNet!: Amount;
   /** The supplier name. */
   supplier!: Field;
@@ -61,6 +57,23 @@ export class InvoiceV3 extends Document {
   paymentDetails: PaymentDetails[] = [];
   /** The company registration information for the customer. */
   customerCompanyRegistration: CompanyRegistration[] = [];
+
+  /** The total amount without the tax value. */
+  public get totalExcl(): Amount {
+    return this.totalNet;
+  }
+  /** The total amount without the tax value. */
+  public set totalExcl(value: Amount) {
+    this.totalNet = value;
+  }
+  /** The total amount with tax included. */
+  public get totalIncl(): Amount {
+    return this.totalAmount;
+  }
+  /** The total amount with tax included. */
+  public set totalIncl(value: Amount) {
+    this.totalAmount = value;
+  }
 
   constructor({
     prediction,
@@ -102,12 +115,11 @@ export class InvoiceV3 extends Document {
       valueKey: "value",
       pageId: pageId,
     });
-    this.totalExcl = new Amount({
+    this.totalNet = new Amount({
       prediction: apiPrediction.total_excl,
       valueKey: "value",
       pageId: pageId,
     });
-    this.totalNet = this.totalExcl;
     this.date = new DateField({
       prediction: apiPrediction.date,
       pageId,
