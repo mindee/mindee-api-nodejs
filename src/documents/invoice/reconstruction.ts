@@ -22,14 +22,14 @@ export function reconstructTotalTax(document: InvoiceV3 | InvoiceV4) {
 export function reconstructTotalTaxFromTotals(document: InvoiceV3 | InvoiceV4) {
   if (
     document.totalTax.value !== undefined ||
-    document.totalExcl.value === undefined ||
-    document.totalIncl.value === undefined
+    document.totalNet.value === undefined ||
+    document.totalAmount.value === undefined
   ) {
     return;
   }
   const totalTax = {
-    value: document.totalIncl.value - document.totalExcl.value,
-    confidence: document.totalIncl.confidence * document.totalExcl.confidence,
+    value: document.totalAmount.value - document.totalNet.value,
+    confidence: document.totalAmount.confidence * document.totalNet.confidence,
   };
   if (totalTax.value >= 0) {
     document.totalTax = new Amount({
@@ -42,19 +42,19 @@ export function reconstructTotalTaxFromTotals(document: InvoiceV3 | InvoiceV4) {
 
 export function reconstructTotalExcl(document: InvoiceV3 | InvoiceV4) {
   if (
-    document.totalIncl.value === undefined ||
+    document.totalAmount.value === undefined ||
     document.taxes.length === 0 ||
-    document.totalExcl.value !== undefined
+    document.totalNet.value !== undefined
   ) {
     return;
   }
   const totalExcl = {
-    value: document.totalIncl.value - Field.arraySum(document.taxes),
+    value: document.totalAmount.value - Field.arraySum(document.taxes),
     confidence:
       Field.arrayConfidence(document.taxes) *
-      (document.totalIncl as Amount).confidence,
+      (document.totalAmount as Amount).confidence,
   };
-  document.totalExcl = new Amount({
+  document.totalNet = new Amount({
     prediction: totalExcl,
     valueKey: "value",
     reconstructed: true,
@@ -64,21 +64,21 @@ export function reconstructTotalExcl(document: InvoiceV3 | InvoiceV4) {
 export function reconstructTotalIncl(document: InvoiceV3 | InvoiceV4) {
   if (
     !(
-      document.totalExcl.value === undefined ||
+      document.totalNet.value === undefined ||
       document.taxes.length === 0 ||
-      document.totalIncl.value !== undefined
+      document.totalAmount.value !== undefined
     )
   ) {
     const totalIncl = {
       value:
-        document.totalExcl.value +
+        document.totalNet.value +
         (document.taxes as any[]).reduce((acc, tax) => {
           return tax.value ? acc + tax.value : acc;
         }, 0.0),
       confidence:
-        Field.arrayConfidence(document.taxes) * document.totalExcl.confidence,
+        Field.arrayConfidence(document.taxes) * document.totalNet.confidence,
     };
-    document.totalIncl = new Amount({
+    document.totalAmount = new Amount({
       prediction: totalIncl,
       valueKey: "value",
       reconstructed: true,

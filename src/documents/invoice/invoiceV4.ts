@@ -29,7 +29,7 @@ export class InvoiceV4 extends Document {
   /** The nature of the invoice. */
   documentType!: BaseField;
   /** The total amount with tax included. */
-  totalIncl!: Amount;
+  totalAmount!: Amount;
   /** The creation date of the invoice. */
   date!: DateField;
   /** The due date of the invoice. */
@@ -39,7 +39,7 @@ export class InvoiceV4 extends Document {
   /** The total tax. */
   totalTax!: Amount;
   /** The total amount without the tax value. */
-  totalExcl!: Amount;
+  totalNet!: Amount;
   /** The supplier name. */
   supplierName!: Field;
   /** The supplier address. */
@@ -90,8 +90,8 @@ export class InvoiceV4 extends Document {
       prediction: apiPrediction.document_type,
       valueKey: "value",
     });
-    this.totalIncl = new Amount({
-      prediction: apiPrediction.total_incl,
+    this.totalAmount = new Amount({
+      prediction: apiPrediction.total_amount,
       valueKey: "value",
       pageId: pageId,
     });
@@ -100,8 +100,8 @@ export class InvoiceV4 extends Document {
       valueKey: "value",
       pageId: pageId,
     });
-    this.totalExcl = new Amount({
-      prediction: apiPrediction.total_excl,
+    this.totalNet = new Amount({
+      prediction: apiPrediction.total_net,
       valueKey: "value",
       pageId: pageId,
     });
@@ -214,8 +214,8 @@ Customer address: ${this.customerAddress}
 Line Items: ${lineItems}
 Taxes: ${taxes}
 Total taxes: ${this.totalTax}
-Total amount excluding taxes: ${this.totalExcl}
-Total amount including taxes: ${this.totalIncl}
+Total amount excluding taxes: ${this.totalNet}
+Total amount including taxes: ${this.totalAmount}
 ----------------------
 `;
     return InvoiceV4.cleanOutString(outStr);

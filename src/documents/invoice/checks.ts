@@ -3,7 +3,7 @@ import { InvoiceV4 } from "./invoiceV4";
 
 export function taxesMatchTotalIncl(document: InvoiceV4 | InvoiceV3): boolean {
   // Check taxes and total include exist
-  if (document.taxes.length === 0 || document.totalIncl.value === undefined)
+  if (document.taxes.length === 0 || document.totalAmount.value === undefined)
     return false;
 
   // Reconstruct totalIncl from taxes
@@ -22,14 +22,14 @@ export function taxesMatchTotalIncl(document: InvoiceV4 | InvoiceV3): boolean {
   const eps = 1 / (100 * totalVat);
 
   if (
-    document.totalIncl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
-    reconstructedTotal <= document.totalIncl.value * (1 + eps) + 0.02
+    document.totalAmount.value * (1 - eps) - 0.02 <= reconstructedTotal &&
+    reconstructedTotal <= document.totalAmount.value * (1 + eps) + 0.02
   ) {
     document.taxes.forEach((tax) => {
       tax.confidence = 1.0;
     });
     document.totalTax.confidence = 1.0;
-    document.totalIncl.confidence = 1.0;
+    document.totalAmount.confidence = 1.0;
     return true;
   }
   return false;
@@ -37,7 +37,7 @@ export function taxesMatchTotalIncl(document: InvoiceV4 | InvoiceV3): boolean {
 
 export function taxesMatchTotalExcl(document: InvoiceV4 | InvoiceV3): boolean {
   // Check taxes and total amount exist
-  if (document.taxes.length === 0 || document.totalExcl.value === undefined) {
+  if (document.taxes.length === 0 || document.totalNet.value === undefined) {
     return false;
   }
 
@@ -59,14 +59,14 @@ export function taxesMatchTotalExcl(document: InvoiceV4 | InvoiceV3): boolean {
   const eps = 1 / (100 * totalVat);
 
   if (
-    document.totalExcl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
-    reconstructedTotal <= document.totalExcl.value * (1 + eps) + 0.02
+    document.totalNet.value * (1 - eps) - 0.02 <= reconstructedTotal &&
+    reconstructedTotal <= document.totalNet.value * (1 + eps) + 0.02
   ) {
     document.taxes.forEach((tax) => {
       tax.confidence = 1.0;
     });
     document.totalTax.confidence = 1.0;
-    document.totalExcl.confidence = 1.0;
+    document.totalNet.confidence = 1.0;
     return true;
   }
   return false;
@@ -76,26 +76,26 @@ export function taxesAndTotalExclMatchTotalIncl(
   document: InvoiceV4 | InvoiceV3
 ): boolean {
   if (
-    document.totalExcl.value === undefined ||
+    document.totalNet.value === undefined ||
     document.taxes.length === 0 ||
-    document.totalIncl.value === undefined
+    document.totalAmount.value === undefined
   )
     return false;
   let totalVat = 0;
   document.taxes.forEach((tax) => (totalVat += tax.value || 0));
-  const reconstructedTotal = totalVat + document.totalExcl.value;
+  const reconstructedTotal = totalVat + document.totalNet.value;
 
   if (totalVat <= 0) return false;
 
   if (
-    document.totalIncl.value - 0.01 <= reconstructedTotal &&
-    reconstructedTotal <= document.totalIncl.value + 0.01
+    document.totalAmount.value - 0.01 <= reconstructedTotal &&
+    reconstructedTotal <= document.totalAmount.value + 0.01
   ) {
     document.taxes.forEach((tax) => {
       tax.confidence = 1.0;
     });
     document.totalTax.confidence = 1.0;
-    document.totalIncl.confidence = 1.0;
+    document.totalAmount.confidence = 1.0;
     return true;
   }
   return false;
