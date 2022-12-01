@@ -1,7 +1,6 @@
 import { Document, DocumentConstructorProps } from "../document";
 
 import {
-  BaseField,
   TaxField,
   PaymentDetails,
   Locale,
@@ -9,7 +8,9 @@ import {
   Field,
   DateField,
   CompanyRegistration,
+  BaseField,
 } from "../../fields";
+import { InvoiceLineItem } from "./invoiceLineItem";
 import {
   taxesAndTotalExclMatchTotalIncl,
   taxesMatchTotalExcl,
@@ -22,12 +23,12 @@ import {
   reconstructTotalTaxFromTotals,
 } from "./reconstruction";
 
-export class InvoiceV3 extends Document {
-  /** Total amount with the tax amount of the purchase. */
+export class InvoiceV4 extends Document {
+  /** Locale information. */
   locale!: Locale;
   /** The nature of the invoice. */
   documentType!: BaseField;
-  /** The total amount with tax included. Same as totalIncl. */
+  /** The total amount with tax included. */
   totalAmount!: Amount;
   /** The creation date of the invoice. */
   date!: DateField;
@@ -37,43 +38,28 @@ export class InvoiceV3 extends Document {
   time!: Field;
   /** The total tax. */
   totalTax!: Amount;
-  /** The total amount without the tax value. Same as totalExcl. */
+  /** The total amount without the tax value. */
   totalNet!: Amount;
   /** The supplier name. */
-  supplier!: Field;
+  supplierName!: Field;
   /** The supplier address. */
   supplierAddress!: Field;
+  /** The payment information. */
+  supplierPaymentDetails: PaymentDetails[] = [];
+  /** The supplier company regitration information. */
+  supplierCompanyRegistrations: CompanyRegistration[] = [];
   /** The invoice number. */
   invoiceNumber!: Field;
-  /** The company regitration information. */
-  companyRegistration: CompanyRegistration[] = [];
   /** The name of the customer. */
   customerName!: Field;
   /** The address of the customer. */
   customerAddress!: Field;
+  /** The company registration information for the customer. */
+  customerCompanyRegistrations: CompanyRegistration[] = [];
   /** The list of the taxes. */
   taxes: TaxField[] = [];
-  /** The payment information. */
-  paymentDetails: PaymentDetails[] = [];
-  /** The company registration information for the customer. */
-  customerCompanyRegistration: CompanyRegistration[] = [];
-
-  /** The total amount without the tax value. */
-  public get totalExcl(): Amount {
-    return this.totalNet;
-  }
-  /** The total amount without the tax value. */
-  public set totalExcl(value: Amount) {
-    this.totalNet = value;
-  }
-  /** The total amount with tax included. */
-  public get totalIncl(): Amount {
-    return this.totalAmount;
-  }
-  /** The total amount with tax included. */
-  public set totalIncl(value: Amount) {
-    this.totalAmount = value;
-  }
+  /** Line items details. */
+  lineItems: InvoiceLineItem[] = [];
 
   constructor({
     prediction,
@@ -104,19 +90,18 @@ export class InvoiceV3 extends Document {
       prediction: apiPrediction.document_type,
       valueKey: "value",
     });
-    this.totalIncl = new Amount({
-      prediction: apiPrediction.total_incl,
+    this.totalAmount = new Amount({
+      prediction: apiPrediction.total_amount,
       valueKey: "value",
       pageId: pageId,
     });
-    this.totalAmount = this.totalIncl;
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0.0 },
       valueKey: "value",
       pageId: pageId,
     });
     this.totalNet = new Amount({
-      prediction: apiPrediction.total_excl,
+      prediction: apiPrediction.total_net,
       valueKey: "value",
       pageId: pageId,
     });
@@ -135,14 +120,15 @@ export class InvoiceV3 extends Document {
         })
       )
     );
-    this.companyRegistration = apiPrediction.company_registration.map(
-      function (prediction: { [index: string]: any }) {
+    this.supplierCompanyRegistrations =
+      apiPrediction.supplier_company_registrations.map(function (prediction: {
+        [index: string]: any;
+      }) {
         return new CompanyRegistration({
           prediction: prediction,
           pageId: pageId,
         });
-      }
-    );
+      });
     this.dueDate = new DateField({
       prediction: apiPrediction.due_date,
       pageId: pageId,
@@ -151,8 +137,8 @@ export class InvoiceV3 extends Document {
       prediction: apiPrediction.invoice_number,
       pageId: pageId,
     });
-    this.supplier = new Field({
-      prediction: apiPrediction.supplier,
+    this.supplierName = new Field({
+      prediction: apiPrediction.supplier_name,
       pageId: pageId,
     });
     this.supplierAddress = new Field({
@@ -160,27 +146,35 @@ export class InvoiceV3 extends Document {
       pageId: pageId,
     });
     this.customerName = new Field({
-      prediction: apiPrediction.customer,
+      prediction: apiPrediction.customer_name,
       pageId: pageId,
     });
     this.customerAddress = new Field({
       prediction: apiPrediction.customer_address,
       pageId: pageId,
     });
-    apiPrediction.customer_company_registration.map(
+    apiPrediction.customer_company_registrations.map(
       (prediction: { [index: string]: any }) =>
-        this.customerCompanyRegistration.push(
+        this.customerCompanyRegistrations.push(
           new CompanyRegistration({
             prediction: prediction,
             pageId: pageId,
           })
         )
     );
-    apiPrediction.payment_details.map((prediction: { [index: string]: any }) =>
-      this.paymentDetails.push(
-        new PaymentDetails({
+    apiPrediction.supplier_payment_details.map(
+      (prediction: { [index: string]: any }) =>
+        this.supplierPaymentDetails.push(
+          new PaymentDetails({
+            prediction: prediction,
+            pageId: pageId,
+          })
+        )
+    );
+    apiPrediction.line_items.map((prediction: { [index: string]: any }) =>
+      this.lineItems.push(
+        new InvoiceLineItem({
           prediction: prediction,
-          pageId: pageId,
         })
       )
     );
@@ -188,36 +182,43 @@ export class InvoiceV3 extends Document {
 
   toString(): string {
     const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
-    const paymentDetails = this.paymentDetails
+    const paymentDetails = this.supplierPaymentDetails
       .map((item) => item.toString())
       .join("\n                 ");
-    const customerCompanyRegistration = this.customerCompanyRegistration
+    const customerCompanyRegistration = this.customerCompanyRegistrations
       .map((item) => item.toString())
       .join("; ");
-    const companyRegistration = this.companyRegistration
+    const companyRegistration = this.supplierCompanyRegistrations
       .map((item) => item.toString())
       .join("; ");
+    let lineItems = "\n";
+    if (this.lineItems.length > 0) {
+      lineItems =
+        "\n  Code           | QTY    | Price   | Amount   | Tax (Rate)     | Description\n  ";
+      lineItems += this.lineItems.map((item) => item.toString()).join("\n  ");
+    }
 
-    const outStr = `----- Invoice V3 -----
+    const outStr = `----- Invoice V4 -----
 Filename: ${this.filename}
+Locale: ${this.locale}
 Invoice number: ${this.invoiceNumber}
-Total amount including taxes: ${this.totalIncl}
-Total amount excluding taxes: ${this.totalExcl}
 Invoice date: ${this.date}
 Invoice due date: ${this.dueDate}
-Supplier name: ${this.supplier}
+Supplier name: ${this.supplierName}
 Supplier address: ${this.supplierAddress}
+Supplier company registrations: ${companyRegistration}
+Supplier payment details: ${paymentDetails}
 Customer name: ${this.customerName}
-Customer company registration: ${customerCompanyRegistration}
+Customer company registrations: ${customerCompanyRegistration}
 Customer address: ${this.customerAddress}
-Payment details: ${paymentDetails}
-Company numbers: ${companyRegistration}
+Line Items: ${lineItems}
 Taxes: ${taxes}
 Total taxes: ${this.totalTax}
-Locale: ${this.locale}
+Total amount excluding taxes: ${this.totalNet}
+Total amount including taxes: ${this.totalAmount}
 ----------------------
 `;
-    return InvoiceV3.cleanOutString(outStr);
+    return InvoiceV4.cleanOutString(outStr);
   }
 
   #checklist() {
