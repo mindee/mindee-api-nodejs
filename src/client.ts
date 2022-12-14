@@ -31,7 +31,7 @@ import {
 } from "./documents/documentConfig";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
-import { ReadStream } from "fs";
+import { Readable } from "stream";
 
 type DocConfigs = Map<string[], DocumentConfig<any>>;
 
@@ -309,11 +309,11 @@ export class Client {
   }
 
   /**
-   * Load an input document from a `ReadStream`.
+   * Load an input document from a `stream.Readable` object.
    * @param inputStream
    * @param filename
    */
-  docFromStream(inputStream: ReadStream, filename: string) {
+  docFromStream(inputStream: Readable, filename: string) {
     const doc = new StreamInput({
       inputStream: inputStream,
       filename: filename,
