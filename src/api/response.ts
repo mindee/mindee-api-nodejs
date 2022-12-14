@@ -1,8 +1,6 @@
 import { Document, DocumentSig } from "../documents";
-import { FullText } from "../fields";
+import { FullText, StringDict } from "../fields";
 import { InputSource } from "../inputs";
-
-type stringDict = { [index: string]: any };
 
 export interface ResponseProps {
   httpResponse: any;
@@ -32,7 +30,7 @@ export class Response<DocType extends Document> {
 
   protected formatResponse(documentType?: string) {
     const httpDataDocument = this.httpResponse.data.document;
-    httpDataDocument.inference.pages.forEach((apiPage: stringDict) => {
+    httpDataDocument.inference.pages.forEach((apiPage: StringDict) => {
       const pageText = this.getPageText(httpDataDocument, apiPage.id);
       this.pages.push(
         new this.documentClass({
