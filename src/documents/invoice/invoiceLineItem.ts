@@ -1,4 +1,4 @@
-import { stringDict } from "../../fields";
+import { StringDict } from "../../fields";
 import { floatToString } from "../../fields/amount";
 import { Polygon } from "../../geometry";
 
@@ -27,7 +27,7 @@ export class InvoiceLineItem {
    */
   polygon: Polygon = [];
 
-  constructor({ prediction }: stringDict) {
+  constructor({ prediction }: StringDict) {
     this.productCode = prediction.product_code;
     this.description = prediction.description;
     this.quantity = +parseFloat(prediction.quantity).toFixed(3);

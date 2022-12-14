@@ -1,8 +1,8 @@
-import { stringDict } from "./field";
+import { StringDict } from "./field";
 import { Polygon } from "../geometry";
 
 export interface PositionFieldConstructor {
-  prediction: stringDict;
+  prediction: StringDict;
   valueKey?: string;
   pageId?: number | undefined;
 }

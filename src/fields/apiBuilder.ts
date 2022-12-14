@@ -1,4 +1,4 @@
-import { FieldConstructor, stringDict } from "./field";
+import { FieldConstructor, StringDict } from "./field";
 import { Polygon, getBboxAsPolygon } from "../geometry";
 
 export class ClassificationField {
@@ -10,7 +10,7 @@ export class ClassificationField {
    */
   confidence: number;
 
-  constructor({ prediction }: { prediction: stringDict }) {
+  constructor({ prediction }: { prediction: StringDict }) {
     this.value = prediction["value"];
     this.confidence = prediction["confidence"];
   }
@@ -38,7 +38,7 @@ export class ListFieldValue {
    */
   polygon: Polygon = [];
 
-  constructor(prediction: stringDict) {
+  constructor(prediction: StringDict) {
     this.content = prediction["content"];
     this.confidence = prediction["confidence"];
     if (prediction["polygon"]) {

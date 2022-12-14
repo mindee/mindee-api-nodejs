@@ -3,7 +3,7 @@ import {
   PositionField,
   FullText,
   OrientationField,
-  stringDict,
+  StringDict,
 } from "../fields";
 
 export type DocumentSig<DocType extends Document> = {
@@ -20,14 +20,14 @@ export type DocumentSig<DocType extends Document> = {
 
 export interface DocumentConstructorProps extends BaseDocumentConstructorProps {
   /** JSON parsed prediction from HTTP response */
-  prediction: stringDict;
+  prediction: StringDict;
 }
 
 interface BaseDocumentConstructorProps {
   /** Orientation JSON for page-level document */
-  orientation?: stringDict;
+  orientation?: StringDict;
   /** Extras JSON */
-  extras?: stringDict;
+  extras?: StringDict;
   /** input file given to parse the document */
   inputSource?: InputSource;
   /** Page ID for page-level document */

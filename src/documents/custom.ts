@@ -1,6 +1,6 @@
 import { Document, DocumentConstructorProps } from "./document";
 import { ClassificationField, ListField } from "../fields";
-import { stringDict } from "../fields";
+import { StringDict } from "../fields";
 
 export class CustomV1 extends Document {
   fields: Map<string, ListField> = new Map();
@@ -29,13 +29,13 @@ export class CustomV1 extends Document {
 
   protected setField(
     fieldName: string,
-    apiPrediction: stringDict,
+    apiPrediction: StringDict,
     pageId: number | undefined
   ) {
     // Currently, two types of fields possible in a custom API response:
     // fields having a list of values, and classification fields.
 
-    const fieldPrediction: stringDict = apiPrediction[fieldName];
+    const fieldPrediction: StringDict = apiPrediction[fieldName];
 
     if (fieldPrediction["values"] !== undefined) {
       // Only value lists have the 'values' attribute.
