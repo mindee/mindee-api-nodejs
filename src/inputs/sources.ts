@@ -1,8 +1,9 @@
-import { promises as fs, ReadStream } from "fs";
+import { promises as fs } from "fs";
+import { Readable } from "stream";
 import * as path from "path";
 
 import { errorHandler } from "../errors/handler";
-import { Buffer } from "node:buffer";
+import { Buffer } from "buffer";
 import { logger } from "../logger";
 import {
   INPUT_TYPE_PATH,
@@ -75,12 +76,12 @@ export class Base64Input extends InputSource {
 //
 
 interface StreamInputProps {
-  inputStream: ReadStream;
+  inputStream: Readable;
   filename: string;
 }
 
 export class StreamInput extends InputSource {
-  private readonly inputStream: ReadStream;
+  private readonly inputStream: Readable;
   fileObject: Buffer = Buffer.alloc(0);
 
   constructor({ inputStream, filename }: StreamInputProps) {
@@ -96,7 +97,7 @@ export class StreamInput extends InputSource {
     this.mimeType = await this.checkMimetype();
   }
 
-  async stream2buffer(stream: ReadStream): Promise<Buffer> {
+  async stream2buffer(stream: Readable): Promise<Buffer> {
     return new Promise<Buffer>((resolve, reject) => {
       const _buf = Array<any>();
       stream.on("data", (chunk) => _buf.push(chunk));
