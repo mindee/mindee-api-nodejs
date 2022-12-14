@@ -12,5 +12,5 @@ export {
   us,
   eu,
 } from "./documents";
-export { Client } from "./client";
+export { Client, ClientOptions } from "./client";
 export { PageOptionsOperation } from "./inputs";
