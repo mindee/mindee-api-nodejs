@@ -1,3 +1,5 @@
+import { Readable } from "stream";
+
 import {
   Base64Input,
   BytesInput,
@@ -31,7 +33,6 @@ import {
 } from "./documents/documentConfig";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
-import { Readable } from "stream";
 
 type DocConfigs = Map<string[], DocumentConfig<any>>;
 
