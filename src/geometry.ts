@@ -1,4 +1,4 @@
-type MinMax = { min: number; max: number };
+export type MinMax = { min: number; max: number };
 /** A point on the document defined by 2 coordinates: X, Y */
 export type Point = [number, number];
 /** A bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */

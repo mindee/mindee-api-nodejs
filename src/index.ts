@@ -12,5 +12,10 @@ export {
   us,
   eu,
 } from "./documents";
-export { Client, ClientOptions } from "./client";
+export {
+  Client,
+  ClientOptions,
+  CustomConfigParams,
+  PredictOptions,
+} from "./client";
 export { PageOptionsOperation } from "./inputs";
