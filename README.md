@@ -27,7 +27,7 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 // Load a file from disk and parse it
 const apiResponse = mindeeClient
     .docFromPath("/path/to/the/file.ext")
-    .parse(mindee.InvoiceV3);
+    .parse(mindee.InvoiceV4);
 ```
 
 #### Region-Specific Documents
