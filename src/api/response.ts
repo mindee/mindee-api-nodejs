@@ -9,6 +9,13 @@ export interface ResponseProps {
   error: boolean;
 }
 
+export type ResponseSig<DocType extends Document> = {
+  new (
+    documentClass: DocumentSig<DocType>,
+    params: ResponseProps
+  ): Response<DocType>;
+};
+
 /**
  * Base class for all responses.
  */
