@@ -1,4 +1,4 @@
-export { Response } from "./response";
+export { Response, ResponseSig } from "./response";
 export {
   Endpoint,
   CustomEndpoint,

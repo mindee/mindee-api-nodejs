@@ -1,5 +1,6 @@
 export {
   CustomV1,
+  Document,
   FinancialDocumentV1,
   InvoiceV3,
   InvoiceV4,
@@ -18,4 +19,5 @@ export {
   CustomConfigParams,
   PredictOptions,
 } from "./client";
+export { ResponseSig, Response } from "./api";
 export { PageOptionsOperation } from "./inputs";
