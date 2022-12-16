@@ -4,6 +4,7 @@ export function floatToString(value: number) {
   return value.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 3,
+    useGrouping: false,
   });
 }
 

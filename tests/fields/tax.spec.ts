@@ -20,7 +20,7 @@ describe("Test Tax field", () => {
     expect(tax.confidence).to.be.equal(0.1);
     expect(tax.rate).to.be.equal(0.2);
     expect(tax.bbox.length).to.be.equal(4);
-    expect(tax.toString()).to.be.equal("2.0 0.2% QST");
+    expect(tax.toString()).to.be.equal("2.00 0.20% QST");
   });
 
   it("should create a Tax with rate not valid", () => {
@@ -32,7 +32,7 @@ describe("Test Tax field", () => {
     const tax = new TaxField({ prediction });
     expect(tax.rate).to.be.undefined;
     expect(tax.bbox.length).to.be.equal(0);
-    expect(tax.toString()).to.be.equal("2.0");
+    expect(tax.toString()).to.be.equal("2.00");
   });
 
   it("should create a Tax with amount not valid", () => {

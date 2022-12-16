@@ -16,7 +16,7 @@ describe("Test Amount field", () => {
     const amount = new Amount({ prediction });
     expect(amount.value).to.be.equal(2);
     expect(amount.confidence).to.be.equal(0.1);
-    expect(amount.toString()).to.be.equal("2.0");
+    expect(amount.toString()).to.be.equal("2.00");
   });
 
   it("Should create an Amount field with a N/A value as input", () => {
