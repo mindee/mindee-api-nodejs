@@ -194,7 +194,7 @@ export class InvoiceV4 extends Document {
     let lineItems = "\n";
     if (this.lineItems.length > 0) {
       lineItems =
-        "\n  Code           | QTY    | Price   | Amount   | Tax (Rate)     | Description\n  ";
+        "\n  Code           | QTY    | Price   | Amount   | Tax (Rate)       | Description\n  ";
       lineItems += this.lineItems.map((item) => item.toString()).join("\n  ");
     }
 
