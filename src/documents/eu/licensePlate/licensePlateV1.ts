@@ -30,7 +30,7 @@ export class LicensePlateV1 extends Document {
 
   toString(): string {
     const outStr = `----- EU License plate V1 -----
-Licence plates: ${this.licensePlates.map((plate) => plate.value).join(", ")}
+License plates: ${this.licensePlates.map((plate) => plate.value).join(", ")}
 ----------------------
 `;
     return LicensePlateV1.cleanOutString(outStr);
