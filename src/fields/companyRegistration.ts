@@ -1,7 +1,9 @@
 import { Field, FieldConstructor } from "./field";
 
 export class CompanyRegistration extends Field {
-  /** Type of company registration number. */
+  /** Registration identifier. */
+  value?: string;
+  /** Type of company registration. */
   type: string;
 
   constructor({

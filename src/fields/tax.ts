@@ -1,8 +1,8 @@
-import { Field } from "./field";
+import { Field, StringDict } from "./field";
 import { floatToString } from "./amount";
 
 interface TaxConstructor {
-  prediction: any;
+  prediction: StringDict;
   valueKey?: string;
   rateKey?: string;
   codeKey?: string;

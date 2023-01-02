@@ -21,7 +21,8 @@ export class ClassificationField {
 }
 
 export class ListFieldValue {
-  content: any;
+  /** Extracted content of the prediction */
+  content: string | number;
   /**
    * The confidence score of the prediction.
    * Note: Score is calculated on **word selection**, not its textual content (OCR).
@@ -67,13 +68,13 @@ export class ListField {
     this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
 
     if (Object.prototype.hasOwnProperty.call(prediction, "values")) {
-      prediction["values"].forEach((field: any) => {
+      prediction["values"].forEach((field: StringDict) => {
         this.values.push(new ListFieldValue(field));
       });
     }
   }
 
-  contentsList(): Array<any> {
+  contentsList(): Array<string | number> {
     return this.values.map((item) => item.content);
   }
 

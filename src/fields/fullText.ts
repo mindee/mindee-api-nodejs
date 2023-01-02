@@ -12,24 +12,24 @@ export type Word = {
 
 type Line = Word[];
 
-function orderLines(fullText: Word[]): Array<Line> {
-  const lines: Array<Line> = [];
-  const idxs: Array<number> = [];
+function orderLines(fullText: Word[]): Line[] {
+  const lines: Line[] = [];
+  const indexes: number[] = [];
   let current: Word | undefined = undefined;
 
   fullText.forEach(() => {
     let line: Line = [];
     fullText.forEach((word, idx) => {
-      if (!idxs.includes(idx)) {
+      if (!indexes.includes(idx)) {
         if (current === undefined) {
           current = word;
-          idxs.push(idx);
+          indexes.push(idx);
           line = [current];
         } else {
           const centroid = geometry.getCentroid(word.polygon);
           if (geometry.isPointInPolygonY(centroid, current.polygon)) {
             line.push(word);
-            idxs.push(idx);
+            indexes.push(idx);
           }
         }
       }
@@ -58,7 +58,7 @@ export class FullText {
    * Order all text on a page into lines.
    * WARNING: This feature is experimental.
    */
-  toLines(): Array<Line> {
+  toLines(): Line[] {
     return orderLines(this.words);
   }
 
