@@ -48,31 +48,37 @@ export class PaymentDetails extends Field {
     this.routingNumber = undefined;
     this.swift = undefined;
 
-    this.#setKey(prediction[accountNumberKey], "accountNumber");
-    this.#setKey(prediction[ibanKey], "iban");
-    this.#setKey(prediction[routingNumberKey], "routingNumber");
-    this.#setKey(prediction[swiftKey], "swift");
+    if (PaymentDetails.#isKeySet(prediction[accountNumberKey])) {
+      this.accountNumber = prediction[accountNumberKey];
+    }
+    if (PaymentDetails.#isKeySet(prediction[ibanKey])) {
+      this.iban = prediction[ibanKey];
+    }
+    if (PaymentDetails.#isKeySet(prediction[routingNumberKey])) {
+      this.routingNumber = prediction[routingNumberKey];
+    }
+    if (PaymentDetails.#isKeySet(prediction[swiftKey])) {
+      this.swift = prediction[swiftKey];
+    }
   }
 
-  #setKey(value: any, key: string): void {
-    if (typeof value === "string" && value !== "N/A") {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this[key] = value;
-    } else {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      this[key] = undefined;
-    }
+  static #isKeySet(value: any): boolean {
+    return typeof value === "string" && value !== "N/A";
   }
 
   toString(): string {
     let str = "";
-    const keys = ["accountNumber", "iban", "routingNumber", "swift"];
-    for (const key of keys) {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      if (this[key]) str += `${this[key]}; `;
+    if (this.accountNumber !== undefined) {
+      str += `${this.accountNumber}; `;
+    }
+    if (this.iban !== undefined) {
+      str += `${this.iban}; `;
+    }
+    if (this.routingNumber !== undefined) {
+      str += `${this.routingNumber}; `;
+    }
+    if (this.swift !== undefined) {
+      str += `${this.swift}; `;
     }
     return str;
   }
