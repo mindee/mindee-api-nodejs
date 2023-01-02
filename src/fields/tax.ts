@@ -13,9 +13,9 @@ interface TaxConstructor {
 export class TaxField extends Field {
   /** The tax amount. */
   value?: number = undefined;
-  /**  The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..). */
-  rate?: number = undefined;
   /** The tax rate. */
+  rate?: number = undefined;
+  /**  The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..). */
   code?: string = undefined;
   /** The document page on which the information was found. */
   pageId!: number;
