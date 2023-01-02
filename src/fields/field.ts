@@ -17,10 +17,8 @@ export interface BaseFieldConstructor {
 
 export class BaseField {
   /** The value. */
-  value?: any = undefined;
-  /**
-   * True if the field was reconstructed or computed using other fields.
-   */
+  value?: string | number = undefined;
+  /** `true` when the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
 
   /**
@@ -64,7 +62,7 @@ export class Field extends BaseField {
    */
   polygon: Polygon = [];
   /** The document page on which the information was found. */
-  pageId: number | undefined;
+  pageId: number;
   /**
    * The confidence score of the prediction.
    */
@@ -95,15 +93,15 @@ export class Field extends BaseField {
   compare(other: Field) {
     if (this.value === null && other.value === null) return true;
     if (this.value === null || other.value === null) return false;
-    if (typeof this.value === "string") {
+    if (typeof this.value === "string" && typeof other.value === "string") {
       return this.value.toLowerCase() === other.value.toLowerCase();
     }
     return this.value === other.value;
   }
 
   /**
-  @param {Array<Field>} array1 - first Array of Fields
-  @param {Array<Field>} array2 - second Array of Fields
+  @param {Field[]} array1 - first Array of Fields
+  @param {Field[]} array2 - second Array of Fields
   @param {String} attr - Attribute to compare
   @returns {Boolean} - true if all elements in array1 exist in array2 and vice-versa, false otherwise
    */
@@ -122,10 +120,10 @@ export class Field extends BaseField {
   }
 
   /**
-   * @param {Array<Field>} array - Array of Fields
+   * @param {Field[]} array - Array of Fields
    * @returns {Number} product of all the fields probaility
    */
-  static arrayConfidence(array: any): number {
+  static arrayConfidence(array: Field[]): number {
     let total = 1.0;
     for (const field of array) {
       total *= field.confidence;
@@ -135,12 +133,13 @@ export class Field extends BaseField {
   }
 
   /**
-   * @param {Array<Field>} array - Array of Fields
+   * @param {Field[]} array - Array of Fields
    * @returns {Number} Sum of all the Fields values in the array
    */
-  static arraySum(array: any): number {
+  static arraySum(array: Field[]): number {
     let total = 0.0;
     for (const field of array) {
+      if (typeof field.value !== "number") return 0.0;
       total += field.value;
       if (isNaN(total)) return 0.0;
     }

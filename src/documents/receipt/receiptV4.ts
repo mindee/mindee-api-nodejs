@@ -49,7 +49,6 @@ export class ReceiptV4 extends Document {
   #initFromApiPrediction(apiPrediction: any, pageId?: number) {
     this.locale = new Locale({
       prediction: apiPrediction.locale,
-      pageId: pageId,
     });
     this.totalTax = new Amount({
       prediction: apiPrediction.total_tax,

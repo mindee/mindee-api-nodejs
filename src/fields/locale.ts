@@ -1,19 +1,25 @@
-import { Field } from "./field";
+import { BaseFieldConstructor, Field } from "./field";
 
 export class Locale extends Field {
-  /** The langage which has been detected */
-  language: string | undefined;
+  /** Locale in ISO format. */
+  value?: string;
+  /** The language which has been detected */
+  language?: string;
   /** The country which has been detected (ISO Alpha-2)*/
-  country: string | undefined;
+  country?: string;
   /** The currency which has been detected.*/
-  currency: string | undefined;
+  currency?: string;
 
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    */
-  constructor({ prediction, reconstructed = false, valueKey = "value" }: any) {
+  constructor({
+    prediction,
+    reconstructed = false,
+    valueKey = "value",
+  }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed });
 
     this.language = undefined;

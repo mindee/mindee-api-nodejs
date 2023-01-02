@@ -38,7 +38,6 @@ export class ReceiptV3 extends Document {
     });
     this.locale = new Locale({
       prediction: prediction.locale,
-      pageId: pageId,
     });
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0 },

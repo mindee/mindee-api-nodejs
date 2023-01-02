@@ -1,7 +1,7 @@
-import { Field } from "./field";
+import { Field, StringDict } from "./field";
 
 interface PaymentDetailsConstructor {
-  prediction: any;
+  prediction: StringDict;
   valueKey?: string;
   accountNumberKey?: string;
   ibanKey?: string;
@@ -12,6 +12,8 @@ interface PaymentDetailsConstructor {
 }
 
 export class PaymentDetails extends Field {
+  /** Synonym for the `iban` property */
+  value?: string | undefined;
   /** The account number. */
   accountNumber: number | undefined;
   /** The account IBAN. */

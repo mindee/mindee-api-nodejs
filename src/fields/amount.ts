@@ -10,7 +10,7 @@ export function floatToString(value: number) {
 
 export class Amount extends Field {
   /** The value. */
-  value: number | undefined;
+  value?: number;
 
   /**
    * @param {Object} prediction - Prediction object from HTTP response
