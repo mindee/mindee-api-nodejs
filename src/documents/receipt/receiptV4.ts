@@ -103,7 +103,7 @@ export class ReceiptV4 extends Document {
           valueKey: "value",
           rateKey: "rate",
           codeKey: "code",
-          basisKey: "basis",
+          baseKey: "base",
         })
       )
     );

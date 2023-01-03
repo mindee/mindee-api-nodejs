@@ -6,14 +6,14 @@ interface ReceiptTaxConstructor {
   valueKey?: string;
   rateKey?: string;
   codeKey?: string;
-  basisKey?: string;
+  baseKey?: string;
   reconstructed?: boolean;
   pageId?: number;
 }
 
 export class ReceiptTaxField extends TaxField {
   /**  The tax base */
-  basis?: number = undefined;
+  base?: number = undefined;
 
   /**
    * @param {Object} prediction - Prediction object from HTTP response
@@ -28,14 +28,14 @@ export class ReceiptTaxField extends TaxField {
     valueKey = "value",
     rateKey = "rate",
     codeKey = "code",
-    basisKey = "base",
+    baseKey = "base",
     reconstructed = false,
     pageId = undefined,
   }: ReceiptTaxConstructor) {
     super({ prediction, valueKey, rateKey, codeKey, reconstructed, pageId });
 
-    this.basis = parseFloat(prediction[basisKey]);
-    if (isNaN(this.basis)) this.basis = undefined;
+    this.base = parseFloat(prediction[baseKey]);
+    if (isNaN(this.base)) this.base = undefined;
   }
 
   toString(): string {
@@ -49,8 +49,8 @@ export class ReceiptTaxField extends TaxField {
     if (this.code !== undefined) {
       outStr += ` ${this.code}`;
     }
-    if (this.basis !== undefined) {
-      outStr += ` ${this.basis}`;
+    if (this.base !== undefined) {
+      outStr += ` ${this.base}`;
     }
     return outStr.trim();
   }
