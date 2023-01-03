@@ -31,7 +31,7 @@ export class CropperV1 extends Document {
     const cropping = this.cropping
       .map((crop) => crop.toString())
       .join("\n          ");
-    const outStr = `----- Cropper V1 -----
+    const outStr = `----- Cropper Data -----
 Filename: ${this.filename}
 Cropping: ${cropping}
 ------------------------
