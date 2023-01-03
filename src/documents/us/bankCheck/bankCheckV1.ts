@@ -1,21 +1,21 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import { Field, DateField, PositionField, Amount } from "../../../fields";
+import { TextField, DateField, PositionField, Amount } from "../../../fields";
 
 export class BankCheckV1 extends Document {
   /** Payer's bank account number. */
-  accountNumber: Field;
+  accountNumber: TextField;
   /** Total including taxes. */
   amount: Amount;
   /** Payer's bank account number. */
-  checkNumber: Field;
+  checkNumber: TextField;
   /** Check's position in the image. */
   checkPosition: PositionField;
   /** Date the check was issued. */
   issuanceDate: DateField;
   /** List of payees (full name or company name). */
-  payees: Field[] = [];
+  payees: TextField[] = [];
   /** Payer's bank account routing number. */
-  routingNumber: Field;
+  routingNumber: TextField;
   /** Signatures' positions in the image. */
   signaturesPositions: PositionField;
 
@@ -32,11 +32,11 @@ export class BankCheckV1 extends Document {
       orientation: orientation,
       extras: extras,
     });
-    this.accountNumber = new Field({
+    this.accountNumber = new TextField({
       prediction: prediction.account_number,
       pageId: pageId,
     });
-    this.checkNumber = new Field({
+    this.checkNumber = new TextField({
       prediction: prediction.check_number,
       pageId: pageId,
     });
@@ -55,13 +55,13 @@ export class BankCheckV1 extends Document {
     });
     prediction.payees.map((prediction: { [index: string]: any }) =>
       this.payees.push(
-        new Field({
+        new TextField({
           prediction: prediction,
           pageId: pageId,
         })
       )
     );
-    this.routingNumber = new Field({
+    this.routingNumber = new TextField({
       prediction: prediction.routing_number,
       pageId: pageId,
     });

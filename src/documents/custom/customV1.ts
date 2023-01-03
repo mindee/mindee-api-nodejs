@@ -1,6 +1,6 @@
-import { Document, DocumentConstructorProps } from "./document";
-import { ClassificationField, ListField } from "../fields";
-import { StringDict } from "../fields";
+import { Document, DocumentConstructorProps } from "../document";
+import { ClassificationField, ListField } from "./fields";
+import { StringDict } from "../../fields";
 
 export class CustomV1 extends Document {
   fields: Map<string, ListField> = new Map();

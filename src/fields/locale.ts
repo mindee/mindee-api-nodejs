@@ -1,13 +1,15 @@
-import { BaseFieldConstructor, Field } from "./field";
+import { BaseField, BaseFieldConstructor } from "./base";
 
-export class Locale extends Field {
+export class Locale extends BaseField {
   /** Locale in ISO format. */
   value?: string;
-  /** The language which has been detected */
+  /** The confidence score of the prediction. */
+  confidence: number;
+  /** ISO 639-1 language code */
   language?: string;
-  /** The country which has been detected (ISO Alpha-2)*/
+  /** ISO 3166-1 alpha-2 country code */
   country?: string;
-  /** The currency which has been detected.*/
+  /** ISO 4217 currency code */
   currency?: string;
 
   /**
@@ -22,6 +24,7 @@ export class Locale extends Field {
   }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed });
 
+    this.confidence = prediction.confidence ? prediction.confidence : 0.0;
     this.language = undefined;
     this.country = undefined;
     this.currency = undefined;

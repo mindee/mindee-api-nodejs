@@ -1,5 +1,5 @@
 import { Document, DocumentConstructorProps } from "../document";
-import { TaxField, Field, Amount, Locale, DateField } from "../../fields";
+import { TaxField, TextField, Amount, Locale, DateField } from "../../fields";
 
 export class ReceiptV3 extends Document {
   /** Total amount with the tax amount of the purchase. */
@@ -9,11 +9,11 @@ export class ReceiptV3 extends Document {
   /** The purchase date. */
   date!: DateField;
   /** The type of purchase. */
-  category!: Field;
+  category!: TextField;
   /** Merchant's name as seen on the receipt. */
-  merchantName!: Field;
+  merchantName!: TextField;
   /** Time as seen on the receipt in HH:MM format. */
-  time!: Field;
+  time!: TextField;
   /** Total tax amount of the purchase. */
   totalTax: Amount;
   /** Total amount without tax of the purchase. */
@@ -65,15 +65,15 @@ export class ReceiptV3 extends Document {
       prediction: apiPrediction.date,
       pageId: pageId,
     });
-    this.category = new Field({
+    this.category = new TextField({
       prediction: apiPrediction.category,
       pageId: pageId,
     });
-    this.merchantName = new Field({
+    this.merchantName = new TextField({
       prediction: apiPrediction.supplier,
       pageId: pageId,
     });
-    this.time = new Field({
+    this.time = new TextField({
       prediction: apiPrediction.time,
       pageId: pageId,
     });
@@ -167,9 +167,9 @@ Locale: ${this.locale}
   #reconstructTotalExclFromTCCAndTaxes() {
     if (this.taxes.length && this.totalIncl.value !== undefined) {
       const totalExcl = {
-        value: this.totalIncl.value - Field.arraySum(this.taxes),
+        value: this.totalIncl.value - TextField.arraySum(this.taxes),
         confidence:
-          Field.arrayConfidence(this.taxes) *
+          TextField.arrayConfidence(this.taxes) *
           (this.totalIncl as Amount).confidence,
       };
       this.totalExcl = new Amount({
@@ -191,7 +191,7 @@ Locale: ${this.locale}
         value: this.taxes
           .map((tax) => tax.value || 0)
           .reduce((a: any, b: any) => a + b, 0),
-        confidence: Field.arrayConfidence(this.taxes),
+        confidence: TextField.arrayConfidence(this.taxes),
       };
       if (totalTax.value > 0)
         this.totalTax = new Amount({

@@ -1,9 +1,9 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import { Field } from "../../../fields";
+import { TextField } from "../../../fields";
 
 export class LicensePlateV1 extends Document {
   /** A list of license plates values. */
-  licensePlates: Field[] = [];
+  licensePlates: TextField[] = [];
 
   constructor({
     prediction,
@@ -20,7 +20,7 @@ export class LicensePlateV1 extends Document {
     });
     prediction.license_plates.map((prediction: { [index: string]: any }) =>
       this.licensePlates.push(
-        new Field({
+        new TextField({
           prediction: prediction,
           pageId: pageId,
         })

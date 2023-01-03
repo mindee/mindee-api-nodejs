@@ -5,11 +5,11 @@ import {
   PaymentDetails,
   Locale,
   Amount,
-  Field,
+  TextField,
   DateField,
   CompanyRegistration,
   BaseField,
-  stringDict,
+  StringDict,
 } from "../../fields";
 import { InvoiceLineItem } from "./invoiceLineItem";
 import {
@@ -30,33 +30,31 @@ export class InvoiceV4 extends Document {
   /** The nature of the invoice. */
   documentType!: BaseField;
   /** List of Reference numbers including PO number. */
-  referenceNumbers: Field[] = [];
+  referenceNumbers: TextField[] = [];
   /** The total amount with tax included. */
   totalAmount!: Amount;
   /** The creation date of the invoice. */
   date!: DateField;
   /** The due date of the invoice. */
   dueDate!: DateField;
-  /** The created time of the invoice */
-  time!: Field;
   /** The total tax. */
   totalTax!: Amount;
   /** The total amount without the tax value. */
   totalNet!: Amount;
   /** The supplier name. */
-  supplierName!: Field;
+  supplierName!: TextField;
   /** The supplier address. */
-  supplierAddress!: Field;
+  supplierAddress!: TextField;
   /** The payment information. */
   supplierPaymentDetails: PaymentDetails[] = [];
   /** The supplier company regitration information. */
   supplierCompanyRegistrations: CompanyRegistration[] = [];
   /** The invoice number. */
-  invoiceNumber!: Field;
+  invoiceNumber!: TextField;
   /** The name of the customer. */
-  customerName!: Field;
+  customerName!: TextField;
   /** The address of the customer. */
-  customerAddress!: Field;
+  customerAddress!: TextField;
   /** The company registration information for the customer. */
   customerCompanyRegistrations: CompanyRegistration[] = [];
   /** The list of the taxes. */
@@ -94,9 +92,9 @@ export class InvoiceV4 extends Document {
       valueKey: "value",
     });
     this.referenceNumbers = apiPrediction.reference_numbers.map(function (
-      prediction: stringDict
+      prediction: StringDict
     ) {
-      return new Field({
+      return new TextField({
         prediction: prediction,
         pageId: pageId,
       });
@@ -120,7 +118,7 @@ export class InvoiceV4 extends Document {
       prediction: apiPrediction.date,
       pageId,
     });
-    apiPrediction.taxes.map((prediction: stringDict) =>
+    apiPrediction.taxes.map((prediction: StringDict) =>
       this.taxes.push(
         new TaxField({
           prediction: prediction,
@@ -144,27 +142,27 @@ export class InvoiceV4 extends Document {
       prediction: apiPrediction.due_date,
       pageId: pageId,
     });
-    this.invoiceNumber = new Field({
+    this.invoiceNumber = new TextField({
       prediction: apiPrediction.invoice_number,
       pageId: pageId,
     });
-    this.supplierName = new Field({
+    this.supplierName = new TextField({
       prediction: apiPrediction.supplier_name,
       pageId: pageId,
     });
-    this.supplierAddress = new Field({
+    this.supplierAddress = new TextField({
       prediction: apiPrediction.supplier_address,
       pageId: pageId,
     });
-    this.customerName = new Field({
+    this.customerName = new TextField({
       prediction: apiPrediction.customer_name,
       pageId: pageId,
     });
-    this.customerAddress = new Field({
+    this.customerAddress = new TextField({
       prediction: apiPrediction.customer_address,
       pageId: pageId,
     });
-    apiPrediction.customer_company_registrations.map((prediction: stringDict) =>
+    apiPrediction.customer_company_registrations.map((prediction: StringDict) =>
       this.customerCompanyRegistrations.push(
         new CompanyRegistration({
           prediction: prediction,
@@ -172,7 +170,7 @@ export class InvoiceV4 extends Document {
         })
       )
     );
-    apiPrediction.supplier_payment_details.map((prediction: stringDict) =>
+    apiPrediction.supplier_payment_details.map((prediction: StringDict) =>
       this.supplierPaymentDetails.push(
         new PaymentDetails({
           prediction: prediction,
@@ -180,7 +178,7 @@ export class InvoiceV4 extends Document {
         })
       )
     );
-    apiPrediction.line_items.map((prediction: stringDict) =>
+    apiPrediction.line_items.map((prediction: StringDict) =>
       this.lineItems.push(
         new InvoiceLineItem({
           prediction: prediction,

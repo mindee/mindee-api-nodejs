@@ -3,7 +3,7 @@ import * as path from "path";
 import { eu } from "../../../../src";
 import { expect } from "chai";
 import { dataPath } from "../../../apiPaths";
-import { Field } from "../../../../src/fields";
+import { TextField } from "../../../../src/fields";
 
 describe("EU License plate V1 Object initialization", async () => {
   it("should load an empty document prediction", async () => {
@@ -15,7 +15,7 @@ describe("EU License plate V1 Object initialization", async () => {
       prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.licensePlates[0].value).to.be.undefined;
-    expect((doc.licensePlates as Field[]).length).to.be.equal(2);
+    expect((doc.licensePlates as TextField[]).length).to.be.equal(2);
   });
 
   it("should load a complete document prediction", async () => {

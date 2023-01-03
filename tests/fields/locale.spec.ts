@@ -15,9 +15,25 @@ describe("Test Locale field", () => {
     expect(locale.language).to.be.equal("en");
     expect(locale.country).to.be.equal("uk");
     expect(locale.currency).to.be.equal("GBP");
+    expect(locale.confidence).to.be.equal(0.1);
   });
 
-  it("Should create a Locale with some empty fields", () => {
+  it("Should create a Locale without the value property", () => {
+    const prediction = {
+      language: "fr",
+      country: "fr",
+      currency: "EUR",
+      confidence: 0.15,
+    };
+    const locale = new Locale({ prediction });
+    expect(locale.value).to.be.undefined;
+    expect(locale.language).to.be.equal("fr");
+    expect(locale.country).to.be.equal("fr");
+    expect(locale.currency).to.be.equal("EUR");
+    expect(locale.confidence).to.be.equal(0.15);
+  });
+
+  it("Should create a Locale with mainly empty fields", () => {
     const prediction = {
       value: "en-EN",
       confidence: 0.1,

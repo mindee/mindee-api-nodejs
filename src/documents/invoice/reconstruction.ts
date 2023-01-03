@@ -1,4 +1,4 @@
-import { Amount, Field } from "../../fields";
+import { Amount, TextField } from "../../fields";
 import { InvoiceV3 } from "./invoiceV3";
 import { InvoiceV4 } from "./invoiceV4";
 
@@ -8,7 +8,7 @@ export function reconstructTotalTax(document: InvoiceV3 | InvoiceV4) {
       value: document.taxes.reduce((acc, tax) => {
         return tax.value !== undefined ? acc + tax.value : acc;
       }, 0),
-      confidence: Field.arrayConfidence(document.taxes),
+      confidence: TextField.arrayConfidence(document.taxes),
     };
     if (totalTax.value > 0)
       document.totalTax = new Amount({
@@ -49,9 +49,9 @@ export function reconstructTotalExcl(document: InvoiceV3 | InvoiceV4) {
     return;
   }
   const totalExcl = {
-    value: document.totalAmount.value - Field.arraySum(document.taxes),
+    value: document.totalAmount.value - TextField.arraySum(document.taxes),
     confidence:
-      Field.arrayConfidence(document.taxes) *
+      TextField.arrayConfidence(document.taxes) *
       (document.totalAmount as Amount).confidence,
   };
   document.totalNet = new Amount({
@@ -76,7 +76,8 @@ export function reconstructTotalIncl(document: InvoiceV3 | InvoiceV4) {
           return tax.value ? acc + tax.value : acc;
         }, 0.0),
       confidence:
-        Field.arrayConfidence(document.taxes) * document.totalNet.confidence,
+        TextField.arrayConfidence(document.taxes) *
+        document.totalNet.confidence,
     };
     document.totalAmount = new Amount({
       prediction: totalIncl,

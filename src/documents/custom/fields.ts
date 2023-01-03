@@ -1,5 +1,6 @@
-import { FieldConstructor, StringDict } from "./field";
-import { Polygon, getBboxAsPolygon } from "../geometry";
+import { StringDict } from "../../fields/base";
+import { FieldConstructor } from "../../fields/field";
+import { Polygon, getBboxAsPolygon } from "../../geometry";
 
 export class ClassificationField {
   /** The value for the classification. */

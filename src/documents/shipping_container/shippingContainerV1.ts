@@ -1,13 +1,13 @@
 import { Document, DocumentConstructorProps } from "../document";
-import { Field } from "../../fields";
+import { TextField } from "../../fields";
 
 export class ShippingContainerV1 extends Document {
   /** ISO 6346 code for container owner prefix + equipment identifier. */
-  owner: Field;
+  owner: TextField;
   /** ISO 6346 code for container serial number (6+1 digits). */
-  serialNumber: Field;
+  serialNumber: TextField;
   /** ISO 6346 code for container length, height and type. */
-  sizeType: Field;
+  sizeType: TextField;
 
   constructor({
     prediction,
@@ -22,15 +22,15 @@ export class ShippingContainerV1 extends Document {
       orientation: orientation,
       extras: extras,
     });
-    this.owner = new Field({
+    this.owner = new TextField({
       prediction: prediction.owner,
       pageId: pageId,
     });
-    this.serialNumber = new Field({
+    this.serialNumber = new TextField({
       prediction: prediction.serial_number,
       pageId: pageId,
     });
-    this.sizeType = new Field({
+    this.sizeType = new TextField({
       prediction: prediction.size_type,
       pageId: pageId,
     });

@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import { Field } from "../../src/fields";
+import { Field } from "../../src/fields/field";
 
-describe("Test differents init of Field", () => {
+describe("Test different inits of Field", () => {
   it("Should create a Field", () => {
     const prediction = {
       value: "test",

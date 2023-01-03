@@ -20,4 +20,4 @@ export {
   PredictOptions,
 } from "./client";
 export { ResponseSig, Response } from "./api";
-export { PageOptionsOperation } from "./inputs";
+export { InputSource, PageOptionsOperation } from "./inputs";

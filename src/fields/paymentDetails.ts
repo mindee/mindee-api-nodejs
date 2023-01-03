@@ -1,4 +1,5 @@
-import { Field, StringDict } from "./field";
+import { StringDict } from "./base";
+import { Field } from "./field";
 
 interface PaymentDetailsConstructor {
   prediction: StringDict;

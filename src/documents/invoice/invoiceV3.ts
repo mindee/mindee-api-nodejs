@@ -6,7 +6,7 @@ import {
   PaymentDetails,
   Locale,
   Amount,
-  Field,
+  TextField,
   DateField,
   CompanyRegistration,
 } from "../../fields";
@@ -34,23 +34,23 @@ export class InvoiceV3 extends Document {
   /** The due date of the invoice. */
   dueDate!: DateField;
   /** The created time of the invoice */
-  time!: Field;
+  time!: TextField;
   /** The total tax. */
   totalTax!: Amount;
   /** The total amount without the tax value. Same as totalExcl. */
   totalNet!: Amount;
   /** The supplier name. */
-  supplier!: Field;
+  supplier!: TextField;
   /** The supplier address. */
-  supplierAddress!: Field;
+  supplierAddress!: TextField;
   /** The invoice number. */
-  invoiceNumber!: Field;
+  invoiceNumber!: TextField;
   /** The company regitration information. */
   companyRegistration: CompanyRegistration[] = [];
   /** The name of the customer. */
-  customerName!: Field;
+  customerName!: TextField;
   /** The address of the customer. */
-  customerAddress!: Field;
+  customerAddress!: TextField;
   /** The list of the taxes. */
   taxes: TaxField[] = [];
   /** The payment information. */
@@ -147,23 +147,23 @@ export class InvoiceV3 extends Document {
       prediction: apiPrediction.due_date,
       pageId: pageId,
     });
-    this.invoiceNumber = new Field({
+    this.invoiceNumber = new TextField({
       prediction: apiPrediction.invoice_number,
       pageId: pageId,
     });
-    this.supplier = new Field({
+    this.supplier = new TextField({
       prediction: apiPrediction.supplier,
       pageId: pageId,
     });
-    this.supplierAddress = new Field({
+    this.supplierAddress = new TextField({
       prediction: apiPrediction.supplier_address,
       pageId: pageId,
     });
-    this.customerName = new Field({
+    this.customerName = new TextField({
       prediction: apiPrediction.customer,
       pageId: pageId,
     });
-    this.customerAddress = new Field({
+    this.customerAddress = new TextField({
       prediction: apiPrediction.customer_address,
       pageId: pageId,
     });
