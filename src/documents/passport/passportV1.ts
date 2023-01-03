@@ -1,13 +1,13 @@
 import { Document, DocumentConstructorProps } from "../document";
-import { Field, DateField } from "../../fields";
+import { DateField, TextField, StringDict } from "../../fields";
 // @ts-ignore
 import * as MRZ from "mrz";
 
 export class PassportV1 extends Document {
   /** The country of issue. */
-  country: Field;
+  country: TextField;
   /** The passport number. */
-  idNumber: Field;
+  idNumber: TextField;
   /** The date of birth of the passport holder. */
   birthDate: DateField;
   /** The expiration date of the passport. */
@@ -15,21 +15,21 @@ export class PassportV1 extends Document {
   /** The issuance date.*/
   issuanceDate: DateField;
   /** The place of birth of the passport holder. */
-  birthPlace: Field;
+  birthPlace: TextField;
   /** The sex or gender of the passport holder. */
-  gender: Field;
+  gender: TextField;
   /** The surname of the person. */
-  surname: Field;
+  surname: TextField;
   /** The value of the first mrz line. */
-  mrz1: Field;
+  mrz1: TextField;
   /** The value of the second mrz line. */
-  mrz2: Field;
+  mrz2: TextField;
   /** List of first (given) names of the passport holder. */
-  givenNames: Field[] = [];
+  givenNames: TextField[] = [];
   /** The full name of the passport holder. */
-  fullName: Field;
+  fullName: TextField;
   /** All the mrz values combined. */
-  mrz: Field;
+  mrz: TextField;
 
   constructor({
     prediction,
@@ -44,11 +44,11 @@ export class PassportV1 extends Document {
       orientation: orientation,
       extras: extras,
     });
-    this.country = new Field({
+    this.country = new TextField({
       prediction: prediction.country,
       pageId: pageId,
     });
-    this.idNumber = new Field({
+    this.idNumber = new TextField({
       prediction: prediction.id_number,
       pageId: pageId,
     });
@@ -64,36 +64,36 @@ export class PassportV1 extends Document {
       prediction: prediction.issuance_date,
       pageId: pageId,
     });
-    this.birthPlace = new Field({
+    this.birthPlace = new TextField({
       prediction: prediction.birth_place,
       pageId: pageId,
     });
-    this.gender = new Field({
+    this.gender = new TextField({
       prediction: prediction.gender,
       pageId: pageId,
     });
-    this.surname = new Field({
+    this.surname = new TextField({
       prediction: prediction.surname,
       pageId: pageId,
     });
-    this.mrz1 = new Field({
+    this.mrz1 = new TextField({
       prediction: prediction.mrz1,
       pageId: pageId,
     });
-    this.mrz2 = new Field({
+    this.mrz2 = new TextField({
       prediction: prediction.mrz2,
       pageId: pageId,
     });
-    prediction.given_names.map((prediction: { [index: string]: any }) =>
+    prediction.given_names.map((prediction: StringDict) =>
       this.givenNames.push(
-        new Field({
+        new TextField({
           prediction: prediction,
           pageId: pageId,
         })
       )
     );
-    this.fullName = this.constructFullName(pageId) as Field;
-    this.mrz = this.constructMRZ(pageId) as Field;
+    this.fullName = this.constructFullName(pageId) as TextField;
+    this.mrz = this.constructMRZ(pageId) as TextField;
     this.#checklist();
   }
 
@@ -204,7 +204,7 @@ MRZ: ${this.mrz}
     return check;
   }
 
-  private constructFullName(pageNumber?: number): Field | undefined {
+  private constructFullName(pageNumber?: number): TextField | undefined {
     if (
       this.surname &&
       this.givenNames.length > 0 &&
@@ -212,9 +212,12 @@ MRZ: ${this.mrz}
     ) {
       const fullName = {
         value: `${this.givenNames[0].value} ${this.surname.value}`,
-        confidence: Field.arrayConfidence([this.surname, this.givenNames[0]]),
+        confidence: TextField.arrayConfidence([
+          this.surname,
+          this.givenNames[0],
+        ]),
       };
-      return new Field({
+      return new TextField({
         prediction: fullName,
         pageId: pageNumber,
         reconstructed: true,
@@ -222,13 +225,13 @@ MRZ: ${this.mrz}
     }
   }
 
-  private constructMRZ(pageNumber?: number): Field | undefined {
+  private constructMRZ(pageNumber?: number): TextField | undefined {
     if (this.mrz1.value && this.mrz2.value) {
       const mrz = {
         value: `${this.mrz1.value}${this.mrz2.value}`,
-        confidence: Field.arrayConfidence([this.mrz1, this.mrz2]),
+        confidence: TextField.arrayConfidence([this.mrz1, this.mrz2]),
       };
-      return new Field({
+      return new TextField({
         prediction: mrz,
         pageId: pageNumber,
         reconstructed: true,

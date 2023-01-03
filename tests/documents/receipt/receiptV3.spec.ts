@@ -6,7 +6,7 @@ import { dataPath } from "../../apiPaths";
 import {
   Amount,
   DateField,
-  Field,
+  TextField,
   Locale,
   TaxField,
 } from "../../../src/fields";
@@ -30,8 +30,8 @@ describe("Receipt Object V3 initialization", async () => {
     expect((doc.totalTax as Amount).value).to.be.undefined;
     expect((doc.taxes as TaxField[]).length).to.be.equal(0);
     expect((doc.date as DateField).value).to.be.undefined;
-    expect((doc.time as Field).value).to.be.undefined;
-    expect((doc.merchantName as Field).value).to.be.undefined;
+    expect((doc.time as TextField).value).to.be.undefined;
+    expect((doc.merchantName as TextField).value).to.be.undefined;
     for (const key in doc.checklist) {
       expect(doc.checklist[key]).to.be.false;
     }

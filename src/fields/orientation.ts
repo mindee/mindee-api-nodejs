@@ -1,4 +1,4 @@
-import { BaseField, BaseFieldConstructor } from "./field";
+import { BaseField, BaseFieldConstructor } from "./base";
 
 interface OrientationFieldConstructor extends BaseFieldConstructor {
   pageId: number;

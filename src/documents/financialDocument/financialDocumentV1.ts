@@ -3,7 +3,7 @@ import { InvoiceV3 } from "../invoice/invoiceV3";
 import { ReceiptV3 } from "../receipt/receiptV3";
 import {
   TaxField,
-  Field,
+  TextField,
   Amount,
   Locale,
   DateField as Date,
@@ -16,18 +16,18 @@ export class FinancialDocumentV1 extends Document {
   totalIncl!: Amount;
   date!: Date;
   dueDate!: Date;
-  category!: Field;
-  time!: Field;
+  category!: TextField;
+  time!: TextField;
   taxes: TaxField[] = [];
   totalTax!: Amount;
   totalExcl!: Amount;
-  supplier!: Field;
-  supplierAddress!: Field;
-  invoiceNumber!: Field;
+  supplier!: TextField;
+  supplierAddress!: TextField;
+  invoiceNumber!: TextField;
   companyRegistration: CompanyRegistration[] = [];
-  customerName!: Field;
-  customerAddress!: Field;
-  paymentDetails: Field[] = [];
+  customerName!: TextField;
+  customerAddress!: TextField;
+  paymentDetails: TextField[] = [];
   customerCompanyRegistration: CompanyRegistration[] = [];
 
   constructor({
@@ -83,7 +83,7 @@ export class FinancialDocumentV1 extends Document {
       this.companyRegistration = invoice.customerCompanyRegistration;
       this.orientation = invoice.orientation;
       this.totalTax = invoice.totalTax;
-      this.time = new Field({
+      this.time = new TextField({
         prediction: { value: undefined, confidence: 0.0 },
       });
       this.customerName = invoice.customerName;
@@ -105,18 +105,18 @@ export class FinancialDocumentV1 extends Document {
       this.totalIncl = receipt.totalIncl;
       this.totalExcl = receipt.totalExcl;
       this.supplier = receipt.merchantName;
-      this.supplierAddress = new Field({
+      this.supplierAddress = new TextField({
         prediction: { value: undefined, confidence: 0.0 },
       });
       this.time = receipt.time;
       this.totalTax = receipt.totalTax;
-      this.invoiceNumber = new Field({
+      this.invoiceNumber = new TextField({
         prediction: { value: undefined, confidence: 0.0 },
       });
-      this.customerName = new Field({
+      this.customerName = new TextField({
         prediction: { value: undefined, confidence: 0.0 },
       });
-      this.customerAddress = new Field({
+      this.customerAddress = new TextField({
         prediction: { value: undefined, confidence: 0.0 },
       });
     }
@@ -127,7 +127,7 @@ export class FinancialDocumentV1 extends Document {
 Filename: ${this.filename}
 Total amount: ${(this.totalIncl as Amount).value}
 Date: ${(this.date as Date).value}
-Supplier: ${(this.supplier as Field).value}
+Supplier: ${(this.supplier as TextField).value}
 Total taxes: ${(this.totalTax as Amount).value}
 ----------------------
 `;

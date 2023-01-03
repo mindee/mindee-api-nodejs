@@ -1,13 +1,13 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import { Field, DateField } from "../../../fields";
+import { TextField, DateField } from "../../../fields";
 
 export class CarteVitaleV1 extends Document {
   /** The list of the names of the person. */
-  givenNames: Field[] = [];
+  givenNames: TextField[] = [];
   /** The surname of the person. */
-  surname: Field;
+  surname: TextField;
   /** The ID number of the card. */
-  idNumber: Field;
+  idNumber: TextField;
   /** The issuance date of the card. */
   issuanceDate: DateField;
 
@@ -24,7 +24,7 @@ export class CarteVitaleV1 extends Document {
       orientation: orientation,
       extras: extras,
     });
-    this.idNumber = new Field({
+    this.idNumber = new TextField({
       prediction: prediction.social_security,
       pageId: pageId,
     });
@@ -32,13 +32,13 @@ export class CarteVitaleV1 extends Document {
       prediction: prediction.issuance_date,
       pageId: pageId,
     });
-    this.surname = new Field({
+    this.surname = new TextField({
       prediction: prediction.surname,
       pageId: pageId,
     });
     prediction.given_names.map((prediction: { [index: string]: any }) =>
       this.givenNames.push(
-        new Field({
+        new TextField({
           prediction: prediction,
           pageId: pageId,
         })

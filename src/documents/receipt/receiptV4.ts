@@ -1,5 +1,12 @@
 import { Document, DocumentConstructorProps } from "../document";
-import { Amount, DateField, Field, Locale, TaxField } from "../../fields";
+import {
+  Amount,
+  DateField,
+  TextField,
+  Locale,
+  TaxField,
+  StringDict,
+} from "../../fields";
 import { ReceiptTaxField } from "./tax";
 
 export class ReceiptV4 extends Document {
@@ -8,15 +15,15 @@ export class ReceiptV4 extends Document {
   /** The purchase date. */
   date!: DateField;
   /** The type of purchase. */
-  category!: Field;
+  category!: TextField;
   /** The receipt sub category among predefined classes. */
-  subCategory!: Field;
+  subCategory!: TextField;
   /** The receipt document type provdes the information whether the document is an expense receipt or a credit card receipt. */
-  documentType!: Field;
+  documentType!: TextField;
   /** Merchant's name as seen on the receipt. */
-  supplier!: Field;
+  supplier!: TextField;
   /** Time as seen on the receipt in HH:MM format. */
-  time!: Field;
+  time!: TextField;
   /** List of taxes detected on the receipt. */
   taxes: TaxField[] = [];
   /** Total amount of tip and gratuity. */
@@ -74,27 +81,27 @@ export class ReceiptV4 extends Document {
       prediction: apiPrediction.date,
       pageId: pageId,
     });
-    this.category = new Field({
+    this.category = new TextField({
       prediction: apiPrediction.category,
       pageId: pageId,
     });
-    this.subCategory = new Field({
+    this.subCategory = new TextField({
       prediction: apiPrediction.subcategory,
       pageId: pageId,
     });
-    this.documentType = new Field({
+    this.documentType = new TextField({
       prediction: apiPrediction.document_type,
       pageId: pageId,
     });
-    this.supplier = new Field({
+    this.supplier = new TextField({
       prediction: apiPrediction.supplier,
       pageId: pageId,
     });
-    this.time = new Field({
+    this.time = new TextField({
       prediction: apiPrediction.time,
       pageId: pageId,
     });
-    apiPrediction.taxes.map((taxPrediction: { [index: string]: any }) =>
+    apiPrediction.taxes.map((taxPrediction: StringDict) =>
       this.taxes.push(
         new ReceiptTaxField({
           prediction: taxPrediction,

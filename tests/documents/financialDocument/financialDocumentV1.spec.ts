@@ -6,7 +6,7 @@ import { FinancialDocumentV1 } from "../../../src";
 import {
   Amount,
   DateField,
-  Field,
+  TextField,
   Locale,
   TaxField,
 } from "../../../src/fields";
@@ -38,7 +38,7 @@ describe("Financial Document Object initialization", async () => {
     expect((doc.date as DateField).value).to.be.equal("2020-02-17");
     expect((doc.totalTax as TaxField).value).to.be.equal(97.98);
     expect(typeof doc.toString()).to.be.equal("string");
-    expect((doc.supplier as Field).value).to.be.equal("TURNPIKE DESIGNS CO.");
+    expect((doc.supplier as TextField).value).to.be.equal("TURNPIKE DESIGNS CO.");
   });
 
   it("should initialize from a receipt object", async () => {
@@ -51,13 +51,13 @@ describe("Financial Document Object initialization", async () => {
     });
     expect((doc.date as DateField).value).to.be.equal("2016-02-26");
     expect((doc.totalTax as TaxField).value).to.be.equal(1.7);
-    expect((doc.supplier as Field).value).to.be.equal("CLACHAN");
+    expect((doc.supplier as TextField).value).to.be.equal("CLACHAN");
     expect(doc.checklist.taxesMatchTotalIncl).to.be.true;
     expect(typeof doc.toString()).to.be.equal("string");
     for (const key in doc.checklist) {
       expect(doc.checklist[key]).to.be.true;
     }
-    expect((doc.invoiceNumber as Field).value).to.be.undefined;
+    expect((doc.invoiceNumber as TextField).value).to.be.undefined;
   });
 
   it("should initialize from a N/A receipt", async function () {
@@ -69,8 +69,8 @@ describe("Financial Document Object initialization", async () => {
     expect((doc.totalTax as Amount).value).to.be.undefined;
     expect(doc.taxes.length).to.be.equal(0);
     expect((doc.date as DateField).value).to.be.undefined;
-    expect((doc.time as Field).value).to.be.undefined;
-    expect((doc.supplier as Field).value).to.be.undefined;
+    expect((doc.time as TextField).value).to.be.undefined;
+    expect((doc.supplier as TextField).value).to.be.undefined;
     for (const key in doc.checklist) {
       expect(doc.checklist[key]).to.be.false;
     }
@@ -84,9 +84,9 @@ describe("Financial Document Object initialization", async () => {
     expect((doc.totalIncl as Amount).value).to.be.undefined;
     expect((doc.totalTax as Amount).value).to.be.undefined;
     expect((doc.date as DateField).value).to.be.undefined;
-    expect((doc.invoiceNumber as Field).value).to.be.undefined;
+    expect((doc.invoiceNumber as TextField).value).to.be.undefined;
     expect((doc.dueDate as DateField).value).to.be.undefined;
-    expect((doc.supplier as Field).value).to.be.undefined;
+    expect((doc.supplier as TextField).value).to.be.undefined;
     expect(doc.taxes.length).to.be.equal(0);
     expect((doc.paymentDetails as any).length).to.be.equal(0);
     expect((doc.companyRegistration as any).length).to.be.equal(0);

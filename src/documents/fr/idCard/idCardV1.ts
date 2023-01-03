@@ -1,29 +1,29 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import { Field, DateField, BaseField } from "../../../fields";
+import { TextField, DateField, BaseField } from "../../../fields";
 
 export class IdCardV1 extends Document {
   /** The authority which has issued the card. */
-  authority: Field;
+  authority: TextField;
   /** Indicates if it is the recto, the verso or the both of it. */
   documentSide: BaseField;
   /** The id number of the card. */
-  idNumber: Field;
+  idNumber: TextField;
   /** The birth date of the person. */
   birthDate: DateField;
   /** The expiry date of the card. */
   expiryDate: DateField;
   /** The birth place of the person. */
-  birthPlace: Field;
+  birthPlace: TextField;
   /** The gender of the person. */
-  gender: Field;
+  gender: TextField;
   /** The first mrz value. */
-  mrz1: Field;
+  mrz1: TextField;
   /** The second mrz value. */
-  mrz2: Field;
+  mrz2: TextField;
   /** The surname of the person. */
-  surname: Field;
+  surname: TextField;
   /** The list of the names of the person. */
-  givenNames: Field[] = [];
+  givenNames: TextField[] = [];
 
   constructor({
     prediction,
@@ -38,14 +38,14 @@ export class IdCardV1 extends Document {
       orientation: orientation,
       extras: extras,
     });
-    this.authority = new Field({
+    this.authority = new TextField({
       prediction: prediction.authority,
       pageId: pageId,
     });
     this.documentSide = new BaseField({
       prediction: prediction.document_side,
     });
-    this.idNumber = new Field({
+    this.idNumber = new TextField({
       prediction: prediction.id_number,
       pageId: pageId,
     });
@@ -57,29 +57,29 @@ export class IdCardV1 extends Document {
       prediction: prediction.expiry_date,
       pageId: pageId,
     });
-    this.birthPlace = new Field({
+    this.birthPlace = new TextField({
       prediction: prediction.birth_place,
       pageId: pageId,
     });
-    this.gender = new Field({
+    this.gender = new TextField({
       prediction: prediction.gender,
       pageId: pageId,
     });
-    this.surname = new Field({
+    this.surname = new TextField({
       prediction: prediction.surname,
       pageId: pageId,
     });
-    this.mrz1 = new Field({
+    this.mrz1 = new TextField({
       prediction: prediction.mrz1,
       pageId: pageId,
     });
-    this.mrz2 = new Field({
+    this.mrz2 = new TextField({
       prediction: prediction.mrz2,
       pageId: pageId,
     });
     prediction.given_names.map((prediction: { [index: string]: any }) =>
       this.givenNames.push(
-        new Field({
+        new TextField({
           prediction: prediction,
           pageId: pageId,
         })

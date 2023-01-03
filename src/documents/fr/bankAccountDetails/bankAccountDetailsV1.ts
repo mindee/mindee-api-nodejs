@@ -1,13 +1,13 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import { Field } from "../../../fields";
+import { TextField } from "../../../fields";
 
 export class BankAccountDetailsV1 extends Document {
   /** The IBAN number. */
-  iban: Field;
+  iban: TextField;
   /** The account holder name. */
-  accountHolderName: Field;
+  accountHolderName: TextField;
   /** The SWIFT value. */
-  swift: Field;
+  swift: TextField;
 
   constructor({
     prediction,
@@ -22,15 +22,15 @@ export class BankAccountDetailsV1 extends Document {
       orientation: orientation,
       extras: extras,
     });
-    this.iban = new Field({
+    this.iban = new TextField({
       prediction: prediction.iban,
       pageId: pageId,
     });
-    this.accountHolderName = new Field({
+    this.accountHolderName = new TextField({
       prediction: prediction.account_holder_name,
       pageId: pageId,
     });
-    this.swift = new Field({
+    this.swift = new TextField({
       prediction: prediction.swift,
       pageId: pageId,
     });
