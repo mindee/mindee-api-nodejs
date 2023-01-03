@@ -1,10 +1,11 @@
 import { Field, FieldConstructor } from "./field";
 
 export function floatToString(value: number) {
-  if (Number.isInteger(value)) {
-    return `${value}.0`;
-  }
-  return value.toString();
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 3,
+    useGrouping: false,
+  });
 }
 
 export class Amount extends Field {

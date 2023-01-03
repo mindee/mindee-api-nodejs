@@ -38,6 +38,7 @@ export class ShippingContainerV1 extends Document {
 
   toString(): string {
     const outStr = `----- Shipping Container V1 -----
+Filename: ${this.filename}
 Owner: ${this.owner}
 Serial number: ${this.serialNumber}
 Size and type: ${this.sizeType}

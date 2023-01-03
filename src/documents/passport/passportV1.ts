@@ -121,7 +121,7 @@ export class PassportV1 extends Document {
   }
 
   toString(): string {
-    const outStr = `-----Passport data-----
+    const outStr = `----- Passport V1 -----
 Filename: ${this.filename}
 Full name: ${this.fullName}
 Given names: ${this.givenNames.map((name) => name.value).join(" ")}
