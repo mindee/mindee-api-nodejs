@@ -28,7 +28,7 @@ export class ReceiptTaxField extends TaxField {
     valueKey = "value",
     rateKey = "rate",
     codeKey = "code",
-    basisKey = "basis",
+    basisKey = "base",
     reconstructed = false,
     pageId = undefined,
   }: ReceiptTaxConstructor) {
