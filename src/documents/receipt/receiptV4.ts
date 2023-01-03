@@ -118,7 +118,7 @@ Total net: ${this.totalNet}
 Tip: ${this.tip}
 Date: ${this.date}
 Category: ${this.category}
-Sub category: ${this.subCategory}
+Subcategory: ${this.subCategory}
 Document type: ${this.documentType}
 Time: ${this.time}
 Supplier name: ${this.supplier}
