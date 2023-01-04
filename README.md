@@ -1,3 +1,8 @@
+[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-nodejs)](https://opensource.org/licenses/MIT)
+[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mindee/mindee-api-nodejs/test.yml)](https://github.com/mindee/mindee-api-nodejs)
+[![NPM Version](https://img.shields.io/npm/v/mindee)](https://www.npmjs.com/package/mindee)
+[![Downloads](https://img.shields.io/npm/dm/mindee)](https://www.npmjs.com/package/mindee)
+
 # Mindee API Helper Library for Node.js
 Quickly and easily connect to Mindee's API services using Node.js.
 
