@@ -9,6 +9,7 @@ import {
   DateField,
   CompanyRegistration,
   BaseField,
+  stringDict,
 } from "../../fields";
 import { InvoiceLineItem } from "./invoiceLineItem";
 import {
@@ -92,14 +93,14 @@ export class InvoiceV4 extends Document {
       prediction: apiPrediction.document_type,
       valueKey: "value",
     });
-    this.referenceNumbers = apiPrediction.reference_numbers.map(
-      function (prediction: { [index: string]: any }) {
-        return new Field({
-          prediction: prediction,
-          pageId: pageId,
-        });
-      }
-    );
+    this.referenceNumbers = apiPrediction.reference_numbers.map(function (
+      prediction: stringDict
+    ) {
+      return new Field({
+        prediction: prediction,
+        pageId: pageId,
+      });
+    });
     this.totalAmount = new Amount({
       prediction: apiPrediction.total_amount,
       valueKey: "value",
@@ -119,7 +120,7 @@ export class InvoiceV4 extends Document {
       prediction: apiPrediction.date,
       pageId,
     });
-    apiPrediction.taxes.map((prediction: { [index: string]: any }) =>
+    apiPrediction.taxes.map((prediction: stringDict) =>
       this.taxes.push(
         new TaxField({
           prediction: prediction,
@@ -163,25 +164,23 @@ export class InvoiceV4 extends Document {
       prediction: apiPrediction.customer_address,
       pageId: pageId,
     });
-    apiPrediction.customer_company_registrations.map(
-      (prediction: { [index: string]: any }) =>
-        this.customerCompanyRegistrations.push(
-          new CompanyRegistration({
-            prediction: prediction,
-            pageId: pageId,
-          })
-        )
+    apiPrediction.customer_company_registrations.map((prediction: stringDict) =>
+      this.customerCompanyRegistrations.push(
+        new CompanyRegistration({
+          prediction: prediction,
+          pageId: pageId,
+        })
+      )
     );
-    apiPrediction.supplier_payment_details.map(
-      (prediction: { [index: string]: any }) =>
-        this.supplierPaymentDetails.push(
-          new PaymentDetails({
-            prediction: prediction,
-            pageId: pageId,
-          })
-        )
+    apiPrediction.supplier_payment_details.map((prediction: stringDict) =>
+      this.supplierPaymentDetails.push(
+        new PaymentDetails({
+          prediction: prediction,
+          pageId: pageId,
+        })
+      )
     );
-    apiPrediction.line_items.map((prediction: { [index: string]: any }) =>
+    apiPrediction.line_items.map((prediction: stringDict) =>
       this.lineItems.push(
         new InvoiceLineItem({
           prediction: prediction,
