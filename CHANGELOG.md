@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.4.0 - 2023-01-04
+### Changes
+* :sparkles: Support Receipt V4.1
+* :sparkles: Support Invoice V4.1
+
 ## v3.3.0 - 2022-12-01
 ### Changes
 * :sparkles: Add Invoice V4 with line items
