@@ -9,6 +9,10 @@ export class ReceiptV4 extends Document {
   date!: DateField;
   /** The type of purchase. */
   category!: Field;
+  /** The receipt sub category among predefined classes. */
+  subCategory!: Field;
+  /** The receipt document type provdes the information whether the document is an expense receipt or a credit card receipt. */
+  documentType!: Field;
   /** Merchant's name as seen on the receipt. */
   supplier!: Field;
   /** Time as seen on the receipt in HH:MM format. */
@@ -75,6 +79,14 @@ export class ReceiptV4 extends Document {
       prediction: apiPrediction.category,
       pageId: pageId,
     });
+    this.subCategory = new Field({
+      prediction: apiPrediction.subcategory,
+      pageId: pageId,
+    });
+    this.documentType = new Field({
+      prediction: apiPrediction.document_type,
+      pageId: pageId,
+    });
     this.supplier = new Field({
       prediction: apiPrediction.supplier,
       pageId: pageId,
@@ -91,7 +103,7 @@ export class ReceiptV4 extends Document {
           valueKey: "value",
           rateKey: "rate",
           codeKey: "code",
-          basisKey: "basis",
+          baseKey: "base",
         })
       )
     );
@@ -106,6 +118,8 @@ Total net: ${this.totalNet}
 Tip: ${this.tip}
 Date: ${this.date}
 Category: ${this.category}
+Subcategory: ${this.subCategory}
+Document type: ${this.documentType}
 Time: ${this.time}
 Supplier name: ${this.supplier}
 Taxes: ${taxes}
