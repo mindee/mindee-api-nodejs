@@ -28,6 +28,8 @@ export class InvoiceV4 extends Document {
   locale!: Locale;
   /** The nature of the invoice. */
   documentType!: BaseField;
+  /** List of Reference numbers including PO number. */
+  referenceNumbers: Field[] = [];
   /** The total amount with tax included. */
   totalAmount!: Amount;
   /** The creation date of the invoice. */
@@ -90,6 +92,14 @@ export class InvoiceV4 extends Document {
       prediction: apiPrediction.document_type,
       valueKey: "value",
     });
+    this.referenceNumbers = apiPrediction.reference_numbers.map(
+      function (prediction: { [index: string]: any }) {
+        return new Field({
+          prediction: prediction,
+          pageId: pageId,
+        });
+      }
+    );
     this.totalAmount = new Amount({
       prediction: apiPrediction.total_amount,
       valueKey: "value",
@@ -182,6 +192,9 @@ export class InvoiceV4 extends Document {
 
   toString(): string {
     const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
+    const referenceNumbers = this.referenceNumbers
+      .map((item) => item.toString())
+      .join(", ");
     const paymentDetails = this.supplierPaymentDetails
       .map((item) => item.toString())
       .join("\n                 ");
@@ -202,6 +215,7 @@ export class InvoiceV4 extends Document {
 Filename: ${this.filename}
 Locale: ${this.locale}
 Invoice number: ${this.invoiceNumber}
+Reference numbers: ${referenceNumbers}
 Invoice date: ${this.date}
 Invoice due date: ${this.dueDate}
 Supplier name: ${this.supplierName}

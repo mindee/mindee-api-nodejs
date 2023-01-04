@@ -10,6 +10,7 @@ export const dataPath = {
     empty: "tests/data/invoice/response_v4/empty.json",
     docString: "tests/data/invoice/response_v4/doc_to_string.txt",
     page0String: "tests/data/invoice/response_v4/page0_to_string.txt",
+    page1String: "tests/data/invoice/response_v4/page1_to_string.txt",
   },
   receiptV3: {
     complete: "tests/data/receipt/response_v3/complete.json",
