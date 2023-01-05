@@ -1,6 +1,5 @@
 import { Document, DocumentConstructorProps } from "../document";
 import { DateField, TextField, StringDict } from "../../fields";
-// @ts-ignore
 import * as MRZ from "mrz";
 
 export class PassportV1 extends Document {
