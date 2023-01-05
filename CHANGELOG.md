@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v3.4.1 - 2023-01-05
+### Changes
+* :label: Added typing information, get rid of `any` type in various places
+* :recycle: Use a specific `TextField` class for fields we know are textual
+* :arrow_up: update dependencies
+
+### Fixes
+* :bug: Expose various class and type definitions to improve developer experience
+
 ## v3.4.0 - 2023-01-04
 ### Changes
 * :sparkles: Support Receipt V4.1
