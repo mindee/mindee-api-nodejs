@@ -194,7 +194,7 @@ export function cli() {
       );
       prog.option(
         "-v, --version <version>",
-        "API account name for the endpoint"
+        "Version for the endpoint, use the latest version if not specified."
       );
       prog.argument("<endpoint_name>", "API endpoint name");
     }
