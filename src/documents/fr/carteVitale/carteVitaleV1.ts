@@ -2,12 +2,12 @@ import { Document, DocumentConstructorProps } from "../../document";
 import { TextField, DateField } from "../../../fields";
 
 export class CarteVitaleV1 extends Document {
-  /** The list of the names of the person. */
+  /** List of given (first) names of the cardholder. */
   givenNames: TextField[] = [];
   /** The surname of the person. */
   surname: TextField;
-  /** The ID number of the card. */
-  idNumber: TextField;
+  /** The social security number of the cardholder. */
+  socialSecurity: TextField;
   /** The issuance date of the card. */
   issuanceDate: DateField;
 
@@ -24,7 +24,7 @@ export class CarteVitaleV1 extends Document {
       orientation: orientation,
       extras: extras,
     });
-    this.idNumber = new TextField({
+    this.socialSecurity = new TextField({
       prediction: prediction.social_security,
       pageId: pageId,
     });
@@ -51,7 +51,7 @@ export class CarteVitaleV1 extends Document {
 Filename: ${this.filename}
 Given names: ${this.givenNames.map((name) => name.value).join(" ")}
 Surname: ${this.surname}
-ID Number: ${this.idNumber}
+Social Security Number: ${this.socialSecurity}
 Issuance date: ${this.issuanceDate}
 ----------------------
 `;
