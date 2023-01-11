@@ -11,23 +11,23 @@ export class PassportV1 extends Document {
   birthDate: DateField;
   /** The expiration date of the passport. */
   expiryDate: DateField;
-  /** The issuance date.*/
+  /** The issuance date of the passport. */
   issuanceDate: DateField;
   /** The place of birth of the passport holder. */
   birthPlace: TextField;
   /** The sex or gender of the passport holder. */
   gender: TextField;
-  /** The surname of the person. */
+  /** The surname (last name) of the passport holder. */
   surname: TextField;
-  /** The value of the first mrz line. */
+  /** The value of the first MRZ line. */
   mrz1: TextField;
-  /** The value of the second mrz line. */
+  /** The value of the second MRZ line. */
   mrz2: TextField;
   /** List of first (given) names of the passport holder. */
   givenNames: TextField[] = [];
   /** The full name of the passport holder. */
   fullName: TextField;
-  /** All the mrz values combined. */
+  /** All the MRZ values combined. */
   mrz: TextField;
 
   constructor({

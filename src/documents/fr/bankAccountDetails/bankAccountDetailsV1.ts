@@ -1,12 +1,13 @@
 import { Document, DocumentConstructorProps } from "../../document";
 import { TextField } from "../../../fields";
 
+/** French bank account information (RIB) */
 export class BankAccountDetailsV1 extends Document {
-  /** The IBAN number. */
+  /** The account's IBAN. */
   iban: TextField;
-  /** The account holder name. */
+  /** The account holder's name. */
   accountHolderName: TextField;
-  /** The SWIFT value. */
+  /** The bank's SWIFT code. */
   swift: TextField;
 
   constructor({

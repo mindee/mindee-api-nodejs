@@ -4,7 +4,7 @@ import { TextField, DateField, BaseField } from "../../../fields";
 export class IdCardV1 extends Document {
   /** The authority which has issued the card. */
   authority: TextField;
-  /** Indicates if it is the recto, the verso or the both of it. */
+  /** Indicates if it is the recto side, the verso side or both. */
   documentSide: BaseField;
   /** The id number of the card. */
   idNumber: TextField;

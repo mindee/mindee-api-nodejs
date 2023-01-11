@@ -14,13 +14,13 @@ export class ReceiptV4 extends Document {
   locale!: Locale;
   /** The purchase date. */
   date!: DateField;
-  /** The type of purchase. */
+  /** The receipt category among predefined classes. */
   category!: TextField;
-  /** The receipt sub category among predefined classes. */
+  /** The receipt sub-category among predefined classes. */
   subCategory!: TextField;
-  /** The receipt document type provdes the information whether the document is an expense receipt or a credit card receipt. */
+  /** Whether the document is an expense receipt or a credit card receipt. */
   documentType!: TextField;
-  /** Merchant's name as seen on the receipt. */
+  /** The name of the supplier or merchant, as seen on the receipt. */
   supplier!: TextField;
   /** Time as seen on the receipt in HH:MM format. */
   time!: TextField;

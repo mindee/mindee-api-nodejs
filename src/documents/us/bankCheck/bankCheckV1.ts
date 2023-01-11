@@ -4,9 +4,9 @@ import { TextField, DateField, PositionField, Amount } from "../../../fields";
 export class BankCheckV1 extends Document {
   /** Payer's bank account number. */
   accountNumber: TextField;
-  /** Total including taxes. */
+  /** Amount to be paid. */
   amount: Amount;
-  /** Payer's bank account number. */
+  /** The check number. */
   checkNumber: TextField;
   /** Check's position in the image. */
   checkPosition: PositionField;
@@ -16,7 +16,7 @@ export class BankCheckV1 extends Document {
   payees: TextField[] = [];
   /** Payer's bank account routing number. */
   routingNumber: TextField;
-  /** Signatures' positions in the image. */
+  /** The positions of the signatures on the image. */
   signaturesPositions: PositionField;
 
   constructor({

@@ -13,7 +13,7 @@ describe("FR Carte Vitale V1 Object initialization", async () => {
     const doc = new fr.CarteVitaleV1({
       prediction: response.document.inference.pages[0].prediction,
     });
-    expect(doc.idNumber.value).to.be.undefined;
+    expect(doc.socialSecurity.value).to.be.undefined;
     expect(doc.surname.value).to.be.undefined;
     expect(doc.issuanceDate.value).to.be.undefined;
   });
