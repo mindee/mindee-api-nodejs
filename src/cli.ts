@@ -3,6 +3,7 @@ import {
   Document,
   DocumentSig,
   InvoiceV4,
+  InvoiceSplitterV1,
   ReceiptV4,
   FinancialDocumentV1,
   PassportV1,
@@ -41,15 +42,23 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "invoice",
     {
-      description: "Invoice V4",
+      description: "Invoice",
       docClass: InvoiceV4,
       fullText: true,
     },
   ],
   [
+    "invoice-splitter",
+    {
+      description: "Invoice Splitter",
+      docClass: InvoiceSplitterV1,
+      fullText: false,
+    },
+  ],
+  [
     "receipt",
     {
-      description: "Expense Receipt V4",
+      description: "Expense Receipt",
       docClass: ReceiptV4,
       fullText: true,
     },
@@ -57,7 +66,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "passport",
     {
-      description: "Passport V1",
+      description: "Passport",
       docClass: PassportV1,
       fullText: false,
     },
@@ -65,7 +74,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "financial",
     {
-      description: "Financial Document V1 (receipt or invoice)",
+      description: "Financial Document (receipt or invoice)",
       docClass: FinancialDocumentV1,
       fullText: true,
     },
@@ -73,7 +82,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "fr-id-card",
     {
-      description: "FR ID Card V1",
+      description: "FR ID Card",
       docClass: fr.IdCardV1,
       fullText: false,
     },
@@ -81,7 +90,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "fr-bank-account-details",
     {
-      description: "FR Bank Account Details V1",
+      description: "FR Bank Account Details",
       docClass: fr.BankAccountDetailsV1,
       fullText: false,
     },
@@ -89,7 +98,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "fr-carte-vitale",
     {
-      description: "FR Carte Vitale V1",
+      description: "FR Carte Vitale",
       docClass: fr.CarteVitaleV1,
       fullText: false,
     },
@@ -97,7 +106,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "eu-license-plate",
     {
-      description: "EU License Plate V1",
+      description: "EU License Plate",
       docClass: eu.LicensePlateV1,
       fullText: false,
     },
@@ -105,7 +114,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "us-bank-check",
     {
-      description: "US Bank Check V1",
+      description: "US Bank Check",
       docClass: us.BankCheckV1,
       fullText: false,
     },
@@ -113,7 +122,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "shipping-container",
     {
-      description: "Shipping container V1",
+      description: "Shipping Container",
       docClass: ShippingContainerV1,
       fullText: false,
     },

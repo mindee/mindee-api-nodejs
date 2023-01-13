@@ -20,6 +20,7 @@ import {
   PassportV1,
   InvoiceV3,
   InvoiceV4,
+  InvoiceSplitterV1,
   FinancialDocumentV1,
   ShippingContainerV1,
   fr,
@@ -198,6 +199,12 @@ export class Client {
       [STANDARD_API_OWNER, InvoiceV4.name],
       new DocumentConfig(InvoiceV4, [
         new StandardEndpoint("invoices", "4", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, InvoiceSplitterV1.name],
+      new DocumentConfig(InvoiceSplitterV1, [
+        new StandardEndpoint("invoice_splitter_beta", "1", this.apiKey),
       ])
     );
     this.docConfigs.set(
