@@ -12,6 +12,11 @@ export const dataPath = {
     page0String: "tests/data/invoice/response_v4/page0_to_string.txt",
     page1String: "tests/data/invoice/response_v4/page1_to_string.txt",
   },
+  invoiceSplitterV1: {
+    complete: "tests/data/invoice_splitter/response_v1/complete.json",
+    empty: "tests/data/invoice_splitter/response_v1/empty.json",
+    docString: "tests/data/invoice_splitter/response_v1/doc_to_string.txt",
+  },
   receiptV3: {
     complete: "tests/data/receipt/response_v3/complete.json",
     empty: "tests/data/receipt/response_v3/empty.json",
