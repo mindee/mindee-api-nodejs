@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.5.0 - 2023-01-17
+### Changes
+* :memo: updates to class documentation
+* :sparkles: Add invoice splitter support (beta)
+
+### Fixes
+* :bug: fix for CLI command option description
+
 ## v3.4.1 - 2023-01-05
 ### Changes
 * :label: Added typing information, get rid of `any` type in various places
