@@ -102,7 +102,7 @@ export class ReceiptV4 extends Document {
     });
     apiPrediction.taxes.map((taxPrediction: StringDict) =>
       this.taxes.push(
-        new ReceiptTaxField({
+        new TaxField({
           prediction: taxPrediction,
           pageId: pageId,
           valueKey: "value",
