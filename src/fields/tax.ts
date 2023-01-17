@@ -7,6 +7,7 @@ interface TaxConstructor {
   valueKey?: string;
   rateKey?: string;
   codeKey?: string;
+  baseKey?: string;
   reconstructed?: boolean;
   pageId?: number;
 }
@@ -18,6 +19,8 @@ export class TaxField extends Field {
   rate?: number = undefined;
   /**  The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..). */
   code?: string = undefined;
+  /**  The tax base */
+  base?: number = undefined;
   /** The document page on which the information was found. */
   pageId!: number;
 
@@ -26,6 +29,7 @@ export class TaxField extends Field {
    * @param {String} valueKey - Key to use in the prediction dict to get the tax value
    * @param {String} rateKey - Key to use to get the tax rate in the prediction dict
    * @param {String} codeKey - Key to use to get the tax code in the prediction dict
+   * @param {String} baseKey - Key to use to get the base tax in the prediction dict
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    * @param {Integer} pageNumber - Page ID for multi-page document
    */
@@ -34,6 +38,7 @@ export class TaxField extends Field {
     valueKey = "value",
     rateKey = "rate",
     codeKey = "code",
+    baseKey = "base",
     reconstructed = false,
     pageId = undefined,
   }: TaxConstructor) {
@@ -52,6 +57,9 @@ export class TaxField extends Field {
       this.value = undefined;
       this.confidence = 0.0;
     }
+
+    this.base = parseFloat(prediction[baseKey]);
+    if (isNaN(this.base)) this.base = undefined;
   }
 
   toString(): string {
@@ -64,6 +72,9 @@ export class TaxField extends Field {
     }
     if (this.code !== undefined) {
       outStr += ` ${this.code}`;
+    }
+    if (this.base !== undefined) {
+      outStr += ` ${floatToString(this.base)}`;
     }
     return outStr.trim();
   }

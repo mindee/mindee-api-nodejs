@@ -7,7 +7,6 @@ import {
   TaxField,
   StringDict,
 } from "../../fields";
-import { ReceiptTaxField } from "./tax";
 
 export class ReceiptV4 extends Document {
   /** Where the purchase was made, the language, and the currency. */
