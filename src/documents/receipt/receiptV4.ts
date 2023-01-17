@@ -7,7 +7,6 @@ import {
   TaxField,
   StringDict,
 } from "../../fields";
-import { ReceiptTaxField } from "./tax";
 
 export class ReceiptV4 extends Document {
   /** Where the purchase was made, the language, and the currency. */
@@ -103,7 +102,7 @@ export class ReceiptV4 extends Document {
     });
     apiPrediction.taxes.map((taxPrediction: StringDict) =>
       this.taxes.push(
-        new ReceiptTaxField({
+        new TaxField({
           prediction: taxPrediction,
           pageId: pageId,
           valueKey: "value",
