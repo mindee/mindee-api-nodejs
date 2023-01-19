@@ -18,6 +18,7 @@ import {
   ReceiptV3,
   CropperV1,
   PassportV1,
+  MindeeVisionV1,
   InvoiceV3,
   InvoiceV4,
   InvoiceSplitterV1,
@@ -265,6 +266,12 @@ export class Client {
       [STANDARD_API_OWNER, ShippingContainerV1.name],
       new DocumentConfig(ShippingContainerV1, [
         new StandardEndpoint("shipping_containers", "1", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, MindeeVisionV1.name],
+      new DocumentConfig(MindeeVisionV1, [
+        new StandardEndpoint("mindee_vision", "1", this.apiKey),
       ])
     );
   }
