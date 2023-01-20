@@ -35,6 +35,10 @@ export const dataPath = {
     docString: "tests/data/passport/response_v1/doc_to_string.txt",
     page0String: "tests/data/passport/response_v1/page0_to_string.txt",
   },
+  mindeeVisionV1: {
+    complete: "tests/data/mindee_vision/response_v1/complete.json",
+    page0String: "tests/data/mindee_vision/response_v1/page0_to_string.txt",
+  },
   cropperV1: {
     complete: "tests/data/cropper/response_v1/complete.json",
     empty: "tests/data/cropper/response_v1/empty.json",

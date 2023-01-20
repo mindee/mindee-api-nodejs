@@ -7,6 +7,7 @@ import {
   ReceiptV4,
   FinancialDocumentV1,
   PassportV1,
+  MindeeVisionV1,
   CustomV1,
   fr,
   us,
@@ -124,6 +125,14 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       description: "Shipping Container",
       docClass: ShippingContainerV1,
+      fullText: false,
+    },
+  ],
+  [
+    "mvision",
+    {
+      description: "Mindee Vision",
+      docClass: MindeeVisionV1,
       fullText: false,
     },
   ],
