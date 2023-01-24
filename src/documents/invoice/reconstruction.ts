@@ -1,8 +1,10 @@
 import { Amount, TextField } from "../../fields";
 import { InvoiceV3 } from "./invoiceV3";
-import { InvoiceV4 } from "./invoiceV4";
+import { InvoiceV4, IsInvoiceV4 } from "./invoiceV4";
 
-export function reconstructTotalTax(document: InvoiceV3 | InvoiceV4) {
+export function reconstructTotalTax(
+  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+) {
   if (document.taxes.length > 0) {
     const totalTax = {
       value: document.taxes.reduce((acc, tax) => {
@@ -19,7 +21,9 @@ export function reconstructTotalTax(document: InvoiceV3 | InvoiceV4) {
   }
 }
 
-export function reconstructTotalTaxFromTotals(document: InvoiceV3 | InvoiceV4) {
+export function reconstructTotalTaxFromTotals(
+  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+) {
   if (
     document.totalTax.value !== undefined ||
     document.totalNet.value === undefined ||
@@ -40,7 +44,9 @@ export function reconstructTotalTaxFromTotals(document: InvoiceV3 | InvoiceV4) {
   }
 }
 
-export function reconstructTotalExcl(document: InvoiceV3 | InvoiceV4) {
+export function reconstructTotalExcl(
+  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+) {
   if (
     document.totalAmount.value === undefined ||
     document.taxes.length === 0 ||
@@ -61,7 +67,9 @@ export function reconstructTotalExcl(document: InvoiceV3 | InvoiceV4) {
   });
 }
 
-export function reconstructTotalIncl(document: InvoiceV3 | InvoiceV4) {
+export function reconstructTotalIncl(
+  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+) {
   if (
     !(
       document.totalNet.value === undefined ||

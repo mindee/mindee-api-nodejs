@@ -82,6 +82,11 @@ export const dataPath = {
     empty: "tests/data/proof_of_address/response_v1/empty.json",
     docString: "tests/data/proof_of_address/response_v1/doc_to_string.txt",
   },
+  financialDocumentV1: {
+    complete: "tests/data/financialDocument/response_v1/complete.json",
+    empty: "tests/data/financialDocument/response_v1/empty.json",
+    docString: "tests/data/financialDocument/response_v1/doc_to_string.txt",
+  },
   custom: {
     complete: "tests/data/custom/response_v1/complete.json",
     empty: "tests/data/custom/response_v1/empty.json",

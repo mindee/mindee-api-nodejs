@@ -11,7 +11,7 @@ import {
   TaxField,
 } from "../../../src/fields";
 
-describe("Financial Document Object initialization", async () => {
+describe("Financial Document V0 Object initialization", async () => {
   before(async function () {
     const invoiceJsonDataNA = await fs.readFile(
       path.resolve(dataPath.invoiceV3.empty)

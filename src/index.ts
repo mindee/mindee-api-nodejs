@@ -2,6 +2,7 @@ export {
   CustomV1,
   Document,
   FinancialDocumentV0,
+  FinancialDocumentV1,
   InvoiceV3,
   InvoiceV4,
   PassportV1,

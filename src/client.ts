@@ -28,6 +28,7 @@ import {
   us,
   eu,
   ProofOfAddressV1,
+  FinancialDocumentV1,
 } from "./documents";
 import {
   CustomDocConfig,
@@ -190,6 +191,12 @@ export class Client {
     this.docConfigs.set(
       [STANDARD_API_OWNER, FinancialDocumentV0.name],
       new FinancialDocV0Config(this.apiKey)
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, FinancialDocumentV1.name],
+      new DocumentConfig(FinancialDocumentV1, [
+        new StandardEndpoint("financial_document", "1", this.apiKey),
+      ])
     );
     this.docConfigs.set(
       [STANDARD_API_OWNER, InvoiceV3.name],
