@@ -22,7 +22,7 @@ import {
   InvoiceV3,
   InvoiceV4,
   InvoiceSplitterV1,
-  FinancialDocumentV1,
+  FinancialDocumentV0,
   ShippingContainerV1,
   fr,
   us,
@@ -32,7 +32,7 @@ import {
 import {
   CustomDocConfig,
   DocumentConfig,
-  FinancialDocV1Config,
+  FinancialDocV0Config,
 } from "./documents/documentConfig";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
@@ -188,8 +188,8 @@ export class Client {
   // TODO: init only those endpoints we actually need.
   protected addStandardEndpoints() {
     this.docConfigs.set(
-      [STANDARD_API_OWNER, FinancialDocumentV1.name],
-      new FinancialDocV1Config(this.apiKey)
+      [STANDARD_API_OWNER, FinancialDocumentV0.name],
+      new FinancialDocV0Config(this.apiKey)
     );
     this.docConfigs.set(
       [STANDARD_API_OWNER, InvoiceV3.name],

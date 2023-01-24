@@ -7,7 +7,7 @@ import {
   predictResponse,
   API_KEY_ENVVAR_NAME,
 } from "../api";
-import { Document, FinancialDocumentV1, CustomV1, DocumentSig } from "./index";
+import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
 import { PageOptions } from "../inputs";
 
@@ -123,13 +123,13 @@ export class CustomDocConfig extends DocumentConfig<CustomV1> {
   }
 }
 
-export class FinancialDocV1Config extends DocumentConfig<FinancialDocumentV1> {
+export class FinancialDocV0Config extends DocumentConfig<FinancialDocumentV0> {
   constructor(apiKey: string) {
     const endpoints = [
       new StandardEndpoint("invoices", "3", apiKey),
       new StandardEndpoint("expense_receipts", "3", apiKey),
     ];
-    super(FinancialDocumentV1, endpoints);
+    super(FinancialDocumentV0, endpoints);
   }
 
   protected async predictRequest(

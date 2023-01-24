@@ -5,7 +5,7 @@ import {
   InvoiceV4,
   InvoiceSplitterV1,
   ReceiptV4,
-  FinancialDocumentV1,
+  FinancialDocumentV0,
   PassportV1,
   MindeeVisionV1,
   CustomV1,
@@ -76,7 +76,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     "financial",
     {
       description: "Financial Document (receipt or invoice)",
-      docClass: FinancialDocumentV1,
+      docClass: FinancialDocumentV0,
       fullText: true,
     },
   ],
