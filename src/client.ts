@@ -27,6 +27,7 @@ import {
   fr,
   us,
   eu,
+  ProofOfAddressV1,
 } from "./documents";
 import {
   CustomDocConfig,
@@ -272,6 +273,12 @@ export class Client {
       [STANDARD_API_OWNER, MindeeVisionV1.name],
       new DocumentConfig(MindeeVisionV1, [
         new StandardEndpoint("mindee_vision", "1", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, ProofOfAddressV1.name],
+      new DocumentConfig(ProofOfAddressV1, [
+        new StandardEndpoint("proof_of_address", "1", this.apiKey),
       ])
     );
   }
