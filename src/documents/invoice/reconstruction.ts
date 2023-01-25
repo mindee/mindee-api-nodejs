@@ -1,9 +1,10 @@
 import { Amount, TextField } from "../../fields";
+import { IsFinancialDocumentBase } from "../common/financialDocument";
 import { InvoiceV3 } from "./invoiceV3";
-import { InvoiceV4, IsInvoiceV4 } from "./invoiceV4";
+import { InvoiceV4 } from "./invoiceV4";
 
 export function reconstructTotalTax(
-  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
 ) {
   if (document.taxes.length > 0) {
     const totalTax = {
@@ -22,7 +23,7 @@ export function reconstructTotalTax(
 }
 
 export function reconstructTotalTaxFromTotals(
-  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
 ) {
   if (
     document.totalTax.value !== undefined ||
@@ -45,7 +46,7 @@ export function reconstructTotalTaxFromTotals(
 }
 
 export function reconstructTotalExcl(
-  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
 ) {
   if (
     document.totalAmount.value === undefined ||
@@ -68,7 +69,7 @@ export function reconstructTotalExcl(
 }
 
 export function reconstructTotalIncl(
-  document: InvoiceV3 | InvoiceV4 | IsInvoiceV4
+  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
 ) {
   if (
     !(
