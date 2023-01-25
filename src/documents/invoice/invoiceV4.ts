@@ -23,8 +23,9 @@ import {
   reconstructTotalTax,
   reconstructTotalTaxFromTotals,
 } from "./reconstruction";
+import { IsFinancialDocumentBase } from "../common/financialDocument";
 
-export class InvoiceV4 extends Document {
+export class InvoiceV4 extends Document implements IsFinancialDocumentBase {
   /** Locale information. */
   locale!: Locale;
   /** The nature of the invoice. */

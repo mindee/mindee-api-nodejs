@@ -1,11 +1,7 @@
 import { Amount, TextField } from "../../fields";
 import { IsFinancialDocumentBase } from "../common/financialDocument";
-import { InvoiceV3 } from "./invoiceV3";
-import { InvoiceV4 } from "./invoiceV4";
 
-export function reconstructTotalTax(
-  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
-) {
+export function reconstructTotalTax(document: IsFinancialDocumentBase) {
   if (document.taxes.length > 0) {
     const totalTax = {
       value: document.taxes.reduce((acc, tax) => {
@@ -23,7 +19,7 @@ export function reconstructTotalTax(
 }
 
 export function reconstructTotalTaxFromTotals(
-  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
+  document: IsFinancialDocumentBase
 ) {
   if (
     document.totalTax.value !== undefined ||
@@ -45,9 +41,7 @@ export function reconstructTotalTaxFromTotals(
   }
 }
 
-export function reconstructTotalExcl(
-  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
-) {
+export function reconstructTotalExcl(document: IsFinancialDocumentBase) {
   if (
     document.totalAmount.value === undefined ||
     document.taxes.length === 0 ||
@@ -68,9 +62,7 @@ export function reconstructTotalExcl(
   });
 }
 
-export function reconstructTotalIncl(
-  document: InvoiceV3 | InvoiceV4 | IsFinancialDocumentBase
-) {
+export function reconstructTotalIncl(document: IsFinancialDocumentBase) {
   if (
     !(
       document.totalNet.value === undefined ||
