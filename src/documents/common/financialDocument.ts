@@ -1,4 +1,4 @@
-import { Amount, BaseField, DateField, Locale, TaxField } from "@mindee/fields";
+import { Amount, BaseField, DateField, Locale, TaxField } from "src/fields";
 
 export interface IsFinancialDocumentBase {
   /** Where the purchase was made, the language, and the currency. */
