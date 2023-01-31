@@ -7,9 +7,8 @@ import {
   TaxField,
   StringDict,
 } from "../../fields";
-import { IsFinancialDocumentBase } from "../common/financialDocument";
 
-export class ReceiptV4 extends Document implements IsFinancialDocumentBase {
+export class ReceiptV4 extends Document {
   /** Where the purchase was made, the language, and the currency. */
   locale!: Locale;
   /** The purchase date. */

@@ -15,10 +15,10 @@ describe("Proof of Address V1 Object initialization", async () => {
     });
     expect(doc.recipientName.value).to.be.undefined;
     expect(doc.recipientAddress.value).to.be.undefined;
-    expect(doc.recipientCompanyRegistrations.length).to.be.equals(0);
+    expect(doc.recipientCompanyRegistration.length).to.be.equals(0);
     expect(doc.issuerName.value).to.be.undefined;
     expect(doc.issuerAddress.value).to.be.undefined;
-    expect(doc.issuerCompanyRegistrations.length).to.be.equals(0);
+    expect(doc.issuerCompanyRegistration.length).to.be.equals(0);
   });
   it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(

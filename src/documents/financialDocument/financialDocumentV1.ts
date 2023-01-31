@@ -12,12 +12,8 @@ import {
   StringDict,
 } from "../../fields";
 import { InvoiceLineItem } from "../invoice/invoiceLineItem";
-import { IsFinancialDocumentBase } from "../common/financialDocument";
 
-export class FinancialDocumentV1
-  extends Document
-  implements IsFinancialDocumentBase
-{
+export class FinancialDocumentV1 extends Document {
   /** Locale information. */
   locale!: Locale;
   /** The nature of the document. */
@@ -33,8 +29,8 @@ export class FinancialDocumentV1
   /** The supplier address. */
   supplierAddress!: TextField;
   /** The payment information. */
-  paymentDetails: PaymentDetails[] = [];
-  /** The supplier company regitration information. */
+  supplierPaymentDetails: PaymentDetails[] = [];
+  /** The supplier company registration information. */
   supplierCompanyRegistrations: CompanyRegistration[] = [];
   /** The invoice number. */
   invoiceNumber!: TextField;
@@ -101,7 +97,7 @@ export class FinancialDocumentV1
       pageId: pageId,
     });
     this.totalTax = new Amount({
-      prediction: { value: undefined, confidence: 0.0 },
+      prediction: prediction.total_tax,
       valueKey: "value",
       pageId: pageId,
     });
@@ -114,17 +110,6 @@ export class FinancialDocumentV1
       prediction: prediction.date,
       pageId,
     });
-    prediction.taxes.map((prediction: StringDict) =>
-      this.taxes.push(
-        new TaxField({
-          prediction: prediction,
-          pageId: pageId,
-          valueKey: "value",
-          rateKey: "rate",
-          codeKey: "code",
-        })
-      )
-    );
     this.dueDate = new DateField({
       prediction: prediction.due_date,
       pageId: pageId,
@@ -142,7 +127,7 @@ export class FinancialDocumentV1
       pageId: pageId,
     });
     this.supplierCompanyRegistrations =
-      prediction.supplier_company_registration.map(function (prediction: {
+      prediction.supplier_company_registrations.map(function (prediction: {
         [index: string]: any;
       }) {
         return new CompanyRegistration({
@@ -158,7 +143,7 @@ export class FinancialDocumentV1
       prediction: prediction.customer_address,
       pageId: pageId,
     });
-    prediction.customer_company_registration.map((prediction: StringDict) =>
+    prediction.customer_company_registrations.map((prediction: StringDict) =>
       this.customerCompanyRegistrations.push(
         new CompanyRegistration({
           prediction: prediction,
@@ -166,8 +151,8 @@ export class FinancialDocumentV1
         })
       )
     );
-    prediction.payment_details.map((prediction: StringDict) =>
-      this.paymentDetails.push(
+    prediction.supplier_payment_details.map((prediction: StringDict) =>
+      this.supplierPaymentDetails.push(
         new PaymentDetails({
           prediction: prediction,
           pageId: pageId,
@@ -213,61 +198,52 @@ export class FinancialDocumentV1
   }
 
   toString(): string {
-    return FinancialDocumentV1.cleanOutString(getSummary(this));
-  }
-}
-
-function getSummary(financialDocument: FinancialDocumentV1): string {
-  const taxes = financialDocument.taxes
-    .map((item) => item.toString())
-    .join("\n       ");
-  const referenceNumbers = financialDocument.referenceNumbers
-    .map((item) => item.toString())
-    .join(", ");
-  const paymentDetails = financialDocument.paymentDetails
-    .map((item) => item.toString())
-    .join("\n                 ");
-  const customerCompanyRegistration =
-    financialDocument.customerCompanyRegistrations
+    const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
+    const referenceNumbers = this.referenceNumbers
+      .map((item) => item.toString())
+      .join(", ");
+    const paymentDetails = this.supplierPaymentDetails
+      .map((item) => item.toString())
+      .join("\n                 ");
+    const customerCompanyRegistration = this.customerCompanyRegistrations
       .map((item) => item.toString())
       .join("; ");
-  const supplierCompanyRegistration =
-    financialDocument.supplierCompanyRegistrations
+    const supplierCompanyRegistration = this.supplierCompanyRegistrations
       .map((item) => item.toString())
       .join("; ");
-  let lineItems = "\n";
-  if (financialDocument.lineItems.length > 0) {
-    lineItems =
-      "\n  Code           | QTY    | Price   | Amount   | Tax (Rate)       | Description\n  ";
-    lineItems += financialDocument.lineItems
-      .map((item) => item.toString())
-      .join("\n  ");
-  }
+    let lineItems = "";
+    if (this.lineItems.length > 0) {
+      lineItems =
+        "\n  Code           | QTY    | Price   | Amount   | Tax (Rate)       | Description\n  ";
+      lineItems += this.lineItems.map((item) => item.toString()).join("\n  ");
+    }
 
-  const outStr = `----- Financial V1 -----
-Document type: ${financialDocument.documentType}
-Category: ${financialDocument.category}
-Subcategory: ${financialDocument.subCategory}
-Locale: ${financialDocument.locale}
-Number: ${financialDocument.invoiceNumber}
+    const outStr = `----- Financial Document V1 -----
+Filename: ${this.filename}
+Document type: ${this.documentType}
+Category: ${this.category}
+Subcategory: ${this.subCategory}
+Locale: ${this.locale}
+Invoice number: ${this.invoiceNumber}
 Reference numbers: ${referenceNumbers}
-Date: ${financialDocument.date}
-Due date: ${financialDocument.dueDate}
-Time: ${financialDocument.time}
-Supplier name: ${financialDocument.supplierName}
-Supplier address: ${financialDocument.supplierAddress}
+Date: ${this.date}
+Due date: ${this.dueDate}
+Time: ${this.time}
+Supplier name: ${this.supplierName}
+Supplier address: ${this.supplierAddress}
 Supplier company registrations: ${supplierCompanyRegistration}
-Payment details: ${paymentDetails}
-Customer name: ${financialDocument.customerName}
+Supplier payment details: ${paymentDetails}
+Customer name: ${this.customerName}
+Customer address: ${this.customerAddress}
 Customer company registrations: ${customerCompanyRegistration}
-Customer address: ${financialDocument.customerAddress}
-Tip: ${financialDocument.tip}
+Tip: ${this.tip}
 Taxes: ${taxes}
-Total taxes: ${financialDocument.totalTax}
-Total net: ${financialDocument.totalNet}
-Total amount: ${financialDocument.totalAmount}
+Total tax: ${this.totalTax}
+Total net: ${this.totalNet}
+Total amount: ${this.totalAmount}
 Line Items: ${lineItems}
 ----------------------
 `;
-  return FinancialDocumentV1.cleanOutString(outStr);
+    return FinancialDocumentV1.cleanOutString(outStr);
+  }
 }

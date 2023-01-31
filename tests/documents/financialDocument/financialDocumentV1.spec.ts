@@ -31,10 +31,9 @@ describe("Financial Document V1 Object initialization", async () => {
     expect(doc.customerAddress.value).to.be.undefined;
     expect(doc.customerCompanyRegistrations.length).to.be.eq(0);
     expect(doc.taxes.length).to.be.equal(0);
-    expect(doc.paymentDetails.length).to.be.equal(0);
+    expect(doc.supplierPaymentDetails.length).to.be.equal(0);
     expect(doc.supplierCompanyRegistrations.length).to.be.equal(0);
     expect(doc.orientation).to.be.undefined;
-    expect((doc.locale as Locale).value).to.be.undefined;
     expect((doc.tip as Amount).value).to.be.undefined;
     expect((doc.totalAmount as Amount).value).to.be.undefined;
     expect((doc.totalNet as Amount).value).to.be.undefined;
