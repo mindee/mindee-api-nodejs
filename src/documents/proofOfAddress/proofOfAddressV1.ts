@@ -14,7 +14,7 @@ export class ProofOfAddressV1 extends Document {
   /** Address of the document's issuer. */
   issuerAddress: TextField;
   /** Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific. */
-  issuerCompanyRegistrations: CompanyRegistration[] = [];
+  issuerCompanyRegistration: CompanyRegistration[] = [];
   /** Name of the person or company issuing the document. */
   issuerName: TextField;
   /** ISO 639-1 code, works best with ca, de, en, es, fr, it, nl and pt. */
@@ -22,7 +22,7 @@ export class ProofOfAddressV1 extends Document {
   /** Address of supplier. */
   recipientAddress: TextField;
   /** Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific. */
-  recipientCompanyRegistrations: CompanyRegistration[] = [];
+  recipientCompanyRegistration: CompanyRegistration[] = [];
   /** Name of the document's recipient. */
   recipientName: TextField;
 
@@ -61,7 +61,7 @@ export class ProofOfAddressV1 extends Document {
     });
     prediction.issuer_company_registration.map(
       (prediction: { [index: string]: any }) =>
-        this.issuerCompanyRegistrations.push(
+        this.issuerCompanyRegistration.push(
           new CompanyRegistration({
             prediction: prediction,
             pageId: pageId,
@@ -74,7 +74,7 @@ export class ProofOfAddressV1 extends Document {
     });
     prediction.recipient_company_registration.map(
       (prediction: { [index: string]: any }) =>
-        this.recipientCompanyRegistrations.push(
+        this.recipientCompanyRegistration.push(
           new CompanyRegistration({
             prediction: prediction,
             pageId: pageId,
@@ -93,15 +93,16 @@ export class ProofOfAddressV1 extends Document {
 
   toString(): string {
     const outStr = `----- Proof of Address V1 -----
+Filename: ${this.filename}
 Locale: ${this.locale}
 Issuer name: ${this.issuerName}
 Issuer Address: ${this.issuerAddress}
-Issuer Company Registrations: ${this.issuerCompanyRegistrations
+Issuer Company Registrations: ${this.issuerCompanyRegistration
       .map((icr) => icr.value)
       .join(", ")}
 Recipient name: ${this.recipientName}
 Recipient Address: ${this.recipientAddress}
-Recipient Company Registrations: ${this.recipientCompanyRegistrations
+Recipient Company Registrations: ${this.recipientCompanyRegistration
       .map((rcr) => rcr.value)
       .join(", ")}
 Issuance Date: ${this.issuanceDate}

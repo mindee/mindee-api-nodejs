@@ -1,34 +1,63 @@
 import { Document, DocumentConstructorProps } from "../document";
-import { InvoiceV3 } from "../invoice/invoiceV3";
-import { ReceiptV3 } from "../receipt/receiptV3";
+
 import {
   TaxField,
-  TextField,
-  Amount,
+  PaymentDetails,
   Locale,
-  DateField as Date,
+  Amount,
+  TextField,
+  DateField,
   CompanyRegistration,
+  BaseField,
+  StringDict,
 } from "../../fields";
+import { InvoiceLineItem } from "../invoice/invoiceLineItem";
 
 export class FinancialDocumentV1 extends Document {
-  pageId: number | undefined;
+  /** Locale information. */
   locale!: Locale;
-  totalIncl!: Amount;
-  date!: Date;
-  dueDate!: Date;
-  category!: TextField;
-  time!: TextField;
-  taxes: TaxField[] = [];
-  totalTax!: Amount;
-  totalExcl!: Amount;
-  supplier!: TextField;
+  /** The nature of the document. */
+  documentType!: BaseField;
+  /** List of Reference numbers including PO number. */
+  referenceNumbers: TextField[] = [];
+  /** The creation date of the invoice or the purchase date. */
+  date!: DateField;
+  /** The due date of the invoice. */
+  dueDate!: DateField;
+  /** The supplier name. */
+  supplierName!: TextField;
+  /** The supplier address. */
   supplierAddress!: TextField;
+  /** The payment information. */
+  supplierPaymentDetails: PaymentDetails[] = [];
+  /** The supplier company registration information. */
+  supplierCompanyRegistrations: CompanyRegistration[] = [];
+  /** The invoice number. */
   invoiceNumber!: TextField;
-  companyRegistration: CompanyRegistration[] = [];
+  /** The name of the customer. */
   customerName!: TextField;
+  /** The address of the customer. */
   customerAddress!: TextField;
-  paymentDetails: TextField[] = [];
-  customerCompanyRegistration: CompanyRegistration[] = [];
+  /** The company registration information for the customer. */
+  customerCompanyRegistrations: CompanyRegistration[] = [];
+  /** The list of the taxes. */
+  taxes: TaxField[] = [];
+  /** Line items details. */
+  lineItems: InvoiceLineItem[] = [];
+  /** The receipt category among predefined classes. */
+  category!: TextField;
+  /** The receipt sub-category among predefined classes. */
+  subCategory!: TextField;
+  /** Time as seen on the receipt in HH:MM format. */
+  time!: TextField;
+  /** Total amount of tip and gratuity. */
+  tip!: Amount;
+  /** total spent including taxes, discounts, fees, tips, and gratuity. */
+  totalAmount!: Amount;
+  /** Total amount of the purchase excluding taxes. */
+  totalNet!: Amount;
+  /** Total tax amount of the purchase. */
+  totalTax!: Amount;
 
   constructor({
     prediction,
@@ -45,133 +74,176 @@ export class FinancialDocumentV1 extends Document {
       fullText: fullText,
       extras: extras,
     });
-    this.#initFromApiPrediction(
-      prediction,
-      inputSource,
-      pageId,
-      orientation,
-      extras
-    );
-    this.#checklist();
-  }
 
-  #initFromApiPrediction(
-    prediction: any,
-    inputFile: any,
-    pageNumber: number | undefined,
-    orientation: any,
-    extras: any
-  ) {
-    if (Object.keys(prediction).includes("invoice_number")) {
-      const invoice = new InvoiceV3({
+    this.locale = new Locale({
+      prediction: prediction.locale,
+      valueKey: "language",
+    });
+    this.documentType = new BaseField({
+      prediction: prediction.document_type,
+      valueKey: "value",
+    });
+    this.referenceNumbers = prediction.reference_numbers.map(function (
+      prediction: StringDict
+    ) {
+      return new TextField({
         prediction: prediction,
-        inputSource: inputFile,
-        pageId: pageNumber,
-        orientation: orientation,
-        extras: extras,
+        pageId: pageId,
       });
-      this.locale = invoice.locale;
-      this.totalIncl = invoice.totalIncl;
-      this.totalExcl = invoice.totalExcl;
-      this.date = invoice.date;
-      this.invoiceNumber = invoice.invoiceNumber;
-      this.dueDate = invoice.dueDate;
-      this.taxes = invoice.taxes;
-      this.supplier = invoice.supplier;
-      this.supplierAddress = invoice.supplierAddress;
-      this.paymentDetails = invoice.paymentDetails;
-      this.companyRegistration = invoice.customerCompanyRegistration;
-      this.orientation = invoice.orientation;
-      this.totalTax = invoice.totalTax;
-      this.time = new TextField({
-        prediction: { value: undefined, confidence: 0.0 },
+    });
+    this.totalAmount = new Amount({
+      prediction: prediction.total_amount,
+      valueKey: "value",
+      pageId: pageId,
+    });
+    this.totalTax = new Amount({
+      prediction: prediction.total_tax,
+      valueKey: "value",
+      pageId: pageId,
+    });
+    this.totalNet = new Amount({
+      prediction: prediction.total_net,
+      valueKey: "value",
+      pageId: pageId,
+    });
+    this.date = new DateField({
+      prediction: prediction.date,
+      pageId,
+    });
+    this.dueDate = new DateField({
+      prediction: prediction.due_date,
+      pageId: pageId,
+    });
+    this.invoiceNumber = new TextField({
+      prediction: prediction.invoice_number,
+      pageId: pageId,
+    });
+    this.supplierName = new TextField({
+      prediction: prediction.supplier_name,
+      pageId: pageId,
+    });
+    this.supplierAddress = new TextField({
+      prediction: prediction.supplier_address,
+      pageId: pageId,
+    });
+    this.supplierCompanyRegistrations =
+      prediction.supplier_company_registrations.map(function (prediction: {
+        [index: string]: any;
+      }) {
+        return new CompanyRegistration({
+          prediction: prediction,
+          pageId: pageId,
+        });
       });
-      this.customerName = invoice.customerName;
-      this.customerAddress = invoice.customerAddress;
-      this.customerCompanyRegistration = invoice.customerCompanyRegistration;
-    } else {
-      const receipt = new ReceiptV3({
-        prediction: prediction,
-        inputSource: inputFile,
-        pageId: pageNumber,
-        orientation: orientation,
-        extras: extras,
-      });
-      this.orientation = receipt.orientation;
-      this.date = receipt.date;
-      this.dueDate = receipt.date;
-      this.taxes = receipt.taxes;
-      this.locale = receipt.locale;
-      this.totalIncl = receipt.totalIncl;
-      this.totalExcl = receipt.totalExcl;
-      this.supplier = receipt.merchantName;
-      this.supplierAddress = new TextField({
-        prediction: { value: undefined, confidence: 0.0 },
-      });
-      this.time = receipt.time;
-      this.totalTax = receipt.totalTax;
-      this.invoiceNumber = new TextField({
-        prediction: { value: undefined, confidence: 0.0 },
-      });
-      this.customerName = new TextField({
-        prediction: { value: undefined, confidence: 0.0 },
-      });
-      this.customerAddress = new TextField({
-        prediction: { value: undefined, confidence: 0.0 },
-      });
-    }
+    this.customerName = new TextField({
+      prediction: prediction.customer_name,
+      pageId: pageId,
+    });
+    this.customerAddress = new TextField({
+      prediction: prediction.customer_address,
+      pageId: pageId,
+    });
+    prediction.customer_company_registrations.map((prediction: StringDict) =>
+      this.customerCompanyRegistrations.push(
+        new CompanyRegistration({
+          prediction: prediction,
+          pageId: pageId,
+        })
+      )
+    );
+    prediction.supplier_payment_details.map((prediction: StringDict) =>
+      this.supplierPaymentDetails.push(
+        new PaymentDetails({
+          prediction: prediction,
+          pageId: pageId,
+        })
+      )
+    );
+    prediction.line_items.map((prediction: StringDict) =>
+      this.lineItems.push(
+        new InvoiceLineItem({
+          prediction: prediction,
+        })
+      )
+    );
+    this.tip = new Amount({
+      prediction: prediction.tip,
+      valueKey: "value",
+      pageId: pageId,
+    });
+    this.category = new TextField({
+      prediction: prediction.category,
+      pageId: pageId,
+    });
+    this.subCategory = new TextField({
+      prediction: prediction.subcategory,
+      pageId: pageId,
+    });
+    this.time = new TextField({
+      prediction: prediction.time,
+      pageId: pageId,
+    });
+    prediction.taxes.map((taxPrediction: StringDict) =>
+      this.taxes.push(
+        new TaxField({
+          prediction: taxPrediction,
+          pageId: pageId,
+          valueKey: "value",
+          rateKey: "rate",
+          codeKey: "code",
+          baseKey: "base",
+        })
+      )
+    );
   }
 
   toString(): string {
-    const outStr = `-----Financial document-----
+    const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
+    const referenceNumbers = this.referenceNumbers
+      .map((item) => item.toString())
+      .join(", ");
+    const paymentDetails = this.supplierPaymentDetails
+      .map((item) => item.toString())
+      .join("\n                 ");
+    const customerCompanyRegistration = this.customerCompanyRegistrations
+      .map((item) => item.toString())
+      .join("; ");
+    const supplierCompanyRegistration = this.supplierCompanyRegistrations
+      .map((item) => item.toString())
+      .join("; ");
+    let lineItems = "";
+    if (this.lineItems.length > 0) {
+      lineItems =
+        "\n  Code           | QTY    | Price   | Amount   | Tax (Rate)       | Description\n  ";
+      lineItems += this.lineItems.map((item) => item.toString()).join("\n  ");
+    }
+
+    const outStr = `----- Financial Document V1 -----
 Filename: ${this.filename}
-Total amount: ${(this.totalIncl as Amount).value}
-Date: ${(this.date as Date).value}
-Supplier: ${(this.supplier as TextField).value}
-Total taxes: ${(this.totalTax as Amount).value}
+Document type: ${this.documentType}
+Category: ${this.category}
+Subcategory: ${this.subCategory}
+Locale: ${this.locale}
+Invoice number: ${this.invoiceNumber}
+Reference numbers: ${referenceNumbers}
+Date: ${this.date}
+Due date: ${this.dueDate}
+Time: ${this.time}
+Supplier name: ${this.supplierName}
+Supplier address: ${this.supplierAddress}
+Supplier company registrations: ${supplierCompanyRegistration}
+Supplier payment details: ${paymentDetails}
+Customer name: ${this.customerName}
+Customer address: ${this.customerAddress}
+Customer company registrations: ${customerCompanyRegistration}
+Tip: ${this.tip}
+Taxes: ${taxes}
+Total tax: ${this.totalTax}
+Total net: ${this.totalNet}
+Total amount: ${this.totalAmount}
+Line Items: ${lineItems}
 ----------------------
 `;
     return FinancialDocumentV1.cleanOutString(outStr);
-  }
-
-  #checklist() {
-    this.checklist = {
-      taxesMatchTotalIncl: this.#taxesMatchTotalIncl(),
-    };
-  }
-
-  #taxesMatchTotalIncl() {
-    // Check taxes and total include exist
-    if (this.taxes.length === 0 || this.totalIncl.value === undefined)
-      return false;
-
-    // Reconstruct totalIncl from taxes
-    let totalVat = 0;
-    let reconstructedTotal = 0;
-    this.taxes.forEach((tax) => {
-      if (tax.value === undefined || !tax.rate) return false;
-      totalVat += tax.value;
-      reconstructedTotal += tax.value + (100 * tax.value) / tax.rate;
-    });
-
-    // Sanity check
-    if (totalVat <= 0) return false;
-
-    // Crate epsilon
-    const eps = 1 / (100 * totalVat);
-
-    if (
-      this.totalIncl.value * (1 - eps) - 0.02 <= reconstructedTotal &&
-      reconstructedTotal <= this.totalIncl.value * (1 + eps) + 0.02
-    ) {
-      this.taxes = (this.taxes as any[]).map((tax: any) => ({
-        ...tax,
-        confidence: 1.0,
-      }));
-      this.totalTax.confidence = 1.0;
-      this.totalIncl.confidence = 1.0;
-      return true;
-    }
-    return false;
   }
 }
