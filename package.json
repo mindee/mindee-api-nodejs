@@ -12,7 +12,7 @@
     "test": "mocha 'tests/**/*.spec.ts'",
     "lint-fix": "eslint '**/*.ts' --fix",
     "lint": "eslint '**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
-    "docs": "jsdoc -r src -d docs"
+    "docs": "jsdoc -r dist/src -d docs"
   },
   "files": [
     "src/*",
@@ -47,7 +47,7 @@
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "jsdoc": "^3.6.11",
+    "jsdoc": "~4.0",
     "mocha": "^10.1.0",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
