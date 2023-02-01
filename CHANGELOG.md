@@ -1,5 +1,25 @@
 # CHANGELOG
 
+## v3.6.0 - 2023-02-01
+### Changes
+* :sparkles: Add support for the mindee_vision API (for internal testing)
+* :sparkles: support Proof of Address V1
+* :sparkles: Add support for: financial document v1
+* :arrow_up: update jsdoc
+
+### ¡Warning!
+The `FinancialDocumentV1` class now uses an actual API call to the new route `financial_document`.
+Previously, determining whether a document is an invoice or a receipt was done internally by this library.
+
+The API call way is **much** better, however some fields have been renamed compared to the internal handling.
+This was done so field names now match exactly `Invoice` and `Receipt` classes.
+
+As such, we encourage users to migrate to the new field structure.
+
+If this is problematic, it's possible to use the deprecated way.
+Simply pass `FinancialDocumentV0` to the `parse` method.
+Usage is otherwise identical.
+
 ## v3.5.0 - 2023-01-17
 ### Changes
 * :memo: updates to class documentation
