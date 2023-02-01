@@ -10,29 +10,29 @@ import {
 
 export class ReceiptV4 extends Document {
   /** Where the purchase was made, the language, and the currency. */
-  locale!: Locale;
+  locale: Locale;
   /** The purchase date. */
-  date!: DateField;
+  date: DateField;
   /** The receipt category among predefined classes. */
-  category!: TextField;
+  category: TextField;
   /** The receipt sub-category among predefined classes. */
-  subCategory!: TextField;
+  subCategory: TextField;
   /** Whether the document is an expense receipt or a credit card receipt. */
-  documentType!: TextField;
+  documentType: TextField;
   /** The name of the supplier or merchant, as seen on the receipt. */
-  supplier!: TextField;
+  supplier: TextField;
   /** Time as seen on the receipt in HH:MM format. */
-  time!: TextField;
+  time: TextField;
   /** List of taxes detected on the receipt. */
   taxes: TaxField[] = [];
   /** Total amount of tip and gratuity. */
-  tip!: Amount;
+  tip: Amount;
   /** total spent including taxes, discounts, fees, tips, and gratuity. */
-  totalAmount!: Amount;
+  totalAmount: Amount;
   /** Total amount of the purchase excluding taxes. */
-  totalNet!: Amount;
+  totalNet: Amount;
   /** Total tax amount of the purchase. */
-  totalTax!: Amount;
+  totalTax: Amount;
 
   constructor({
     prediction,
@@ -49,58 +49,55 @@ export class ReceiptV4 extends Document {
       extras: extras,
       fullText: fullText,
     });
-    this.#initFromApiPrediction(prediction, pageId);
-  }
 
-  #initFromApiPrediction(apiPrediction: any, pageId?: number) {
     this.locale = new Locale({
-      prediction: apiPrediction.locale,
+      prediction: prediction.locale,
     });
     this.totalTax = new Amount({
-      prediction: apiPrediction.total_tax,
+      prediction: prediction.total_tax,
       valueKey: "value",
       pageId: pageId,
     });
     this.totalAmount = new Amount({
-      prediction: apiPrediction.total_amount,
+      prediction: prediction.total_amount,
       valueKey: "value",
       pageId: pageId,
     });
     this.totalNet = new Amount({
-      prediction: apiPrediction.total_net,
+      prediction: prediction.total_net,
       valueKey: "value",
       pageId: pageId,
     });
     this.tip = new Amount({
-      prediction: apiPrediction.tip,
+      prediction: prediction.tip,
       valueKey: "value",
       pageId: pageId,
     });
     this.date = new DateField({
-      prediction: apiPrediction.date,
+      prediction: prediction.date,
       pageId: pageId,
     });
     this.category = new TextField({
-      prediction: apiPrediction.category,
+      prediction: prediction.category,
       pageId: pageId,
     });
     this.subCategory = new TextField({
-      prediction: apiPrediction.subcategory,
+      prediction: prediction.subcategory,
       pageId: pageId,
     });
     this.documentType = new TextField({
-      prediction: apiPrediction.document_type,
+      prediction: prediction.document_type,
       pageId: pageId,
     });
     this.supplier = new TextField({
-      prediction: apiPrediction.supplier,
+      prediction: prediction.supplier,
       pageId: pageId,
     });
     this.time = new TextField({
-      prediction: apiPrediction.time,
+      prediction: prediction.time,
       pageId: pageId,
     });
-    apiPrediction.taxes.map((taxPrediction: StringDict) =>
+    prediction.taxes.map((taxPrediction: StringDict) =>
       this.taxes.push(
         new TaxField({
           prediction: taxPrediction,

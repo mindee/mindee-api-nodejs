@@ -24,37 +24,38 @@ import {
   reconstructTotalTaxFromTotals,
 } from "./reconstruction";
 
+/** Invoice V4 */
 export class InvoiceV4 extends Document {
   /** Locale information. */
-  locale!: Locale;
+  locale: Locale;
   /** The nature of the invoice. */
-  documentType!: BaseField;
+  documentType: BaseField;
   /** List of Reference numbers including PO number. */
   referenceNumbers: TextField[] = [];
   /** The total amount with tax included. */
-  totalAmount!: Amount;
+  totalAmount: Amount;
   /** The creation date of the invoice. */
-  date!: DateField;
+  date: DateField;
   /** The due date of the invoice. */
-  dueDate!: DateField;
+  dueDate: DateField;
   /** The total tax. */
-  totalTax!: Amount;
+  totalTax: Amount;
   /** The total amount without the tax value. */
-  totalNet!: Amount;
+  totalNet: Amount;
   /** The supplier name. */
-  supplierName!: TextField;
+  supplierName: TextField;
   /** The supplier address. */
-  supplierAddress!: TextField;
+  supplierAddress: TextField;
   /** The payment information. */
   supplierPaymentDetails: PaymentDetails[] = [];
   /** The supplier company regitration information. */
   supplierCompanyRegistrations: CompanyRegistration[] = [];
   /** The invoice number. */
-  invoiceNumber!: TextField;
+  invoiceNumber: TextField;
   /** The name of the customer. */
-  customerName!: TextField;
+  customerName: TextField;
   /** The address of the customer. */
-  customerAddress!: TextField;
+  customerAddress: TextField;
   /** The company registration information for the customer. */
   customerCompanyRegistrations: CompanyRegistration[] = [];
   /** The list of the taxes. */
@@ -77,21 +78,16 @@ export class InvoiceV4 extends Document {
       fullText: fullText,
       extras: extras,
     });
-    this.#initFromApiPrediction(prediction, pageId);
-    this.#checklist();
-    this.#reconstruct();
-  }
 
-  #initFromApiPrediction(apiPrediction: any, pageId?: number) {
     this.locale = new Locale({
-      prediction: apiPrediction.locale,
+      prediction: prediction.locale,
       valueKey: "language",
     });
     this.documentType = new BaseField({
-      prediction: apiPrediction.document_type,
+      prediction: prediction.document_type,
       valueKey: "value",
     });
-    this.referenceNumbers = apiPrediction.reference_numbers.map(function (
+    this.referenceNumbers = prediction.reference_numbers.map(function (
       prediction: StringDict
     ) {
       return new TextField({
@@ -100,7 +96,7 @@ export class InvoiceV4 extends Document {
       });
     });
     this.totalAmount = new Amount({
-      prediction: apiPrediction.total_amount,
+      prediction: prediction.total_amount,
       valueKey: "value",
       pageId: pageId,
     });
@@ -110,15 +106,15 @@ export class InvoiceV4 extends Document {
       pageId: pageId,
     });
     this.totalNet = new Amount({
-      prediction: apiPrediction.total_net,
+      prediction: prediction.total_net,
       valueKey: "value",
       pageId: pageId,
     });
     this.date = new DateField({
-      prediction: apiPrediction.date,
+      prediction: prediction.date,
       pageId,
     });
-    apiPrediction.taxes.map((prediction: StringDict) =>
+    prediction.taxes.map((prediction: StringDict) =>
       this.taxes.push(
         new TaxField({
           prediction: prediction,
@@ -130,7 +126,7 @@ export class InvoiceV4 extends Document {
       )
     );
     this.supplierCompanyRegistrations =
-      apiPrediction.supplier_company_registrations.map(function (prediction: {
+      prediction.supplier_company_registrations.map(function (prediction: {
         [index: string]: any;
       }) {
         return new CompanyRegistration({
@@ -139,30 +135,30 @@ export class InvoiceV4 extends Document {
         });
       });
     this.dueDate = new DateField({
-      prediction: apiPrediction.due_date,
+      prediction: prediction.due_date,
       pageId: pageId,
     });
     this.invoiceNumber = new TextField({
-      prediction: apiPrediction.invoice_number,
+      prediction: prediction.invoice_number,
       pageId: pageId,
     });
     this.supplierName = new TextField({
-      prediction: apiPrediction.supplier_name,
+      prediction: prediction.supplier_name,
       pageId: pageId,
     });
     this.supplierAddress = new TextField({
-      prediction: apiPrediction.supplier_address,
+      prediction: prediction.supplier_address,
       pageId: pageId,
     });
     this.customerName = new TextField({
-      prediction: apiPrediction.customer_name,
+      prediction: prediction.customer_name,
       pageId: pageId,
     });
     this.customerAddress = new TextField({
-      prediction: apiPrediction.customer_address,
+      prediction: prediction.customer_address,
       pageId: pageId,
     });
-    apiPrediction.customer_company_registrations.map((prediction: StringDict) =>
+    prediction.customer_company_registrations.map((prediction: StringDict) =>
       this.customerCompanyRegistrations.push(
         new CompanyRegistration({
           prediction: prediction,
@@ -170,7 +166,7 @@ export class InvoiceV4 extends Document {
         })
       )
     );
-    apiPrediction.supplier_payment_details.map((prediction: StringDict) =>
+    prediction.supplier_payment_details.map((prediction: StringDict) =>
       this.supplierPaymentDetails.push(
         new PaymentDetails({
           prediction: prediction,
@@ -178,13 +174,15 @@ export class InvoiceV4 extends Document {
         })
       )
     );
-    apiPrediction.line_items.map((prediction: StringDict) =>
+    prediction.line_items.map((prediction: StringDict) =>
       this.lineItems.push(
         new InvoiceLineItem({
           prediction: prediction,
         })
       )
     );
+    this.#checklist();
+    this.#reconstruct();
   }
 
   toString(): string {

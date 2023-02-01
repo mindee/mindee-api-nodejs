@@ -13,31 +13,34 @@ import {
 } from "../../fields";
 import { InvoiceLineItem } from "../invoice/invoiceLineItem";
 
+/**
+ * Financial Document.
+ */
 export class FinancialDocumentV1 extends Document {
   /** Locale information. */
-  locale!: Locale;
+  locale: Locale;
   /** The nature of the document. */
-  documentType!: BaseField;
+  documentType: BaseField;
   /** List of Reference numbers including PO number. */
   referenceNumbers: TextField[] = [];
   /** The creation date of the invoice or the purchase date. */
-  date!: DateField;
+  date: DateField;
   /** The due date of the invoice. */
-  dueDate!: DateField;
+  dueDate: DateField;
   /** The supplier name. */
-  supplierName!: TextField;
+  supplierName: TextField;
   /** The supplier address. */
-  supplierAddress!: TextField;
+  supplierAddress: TextField;
   /** The payment information. */
   supplierPaymentDetails: PaymentDetails[] = [];
   /** The supplier company registration information. */
   supplierCompanyRegistrations: CompanyRegistration[] = [];
   /** The invoice number. */
-  invoiceNumber!: TextField;
+  invoiceNumber: TextField;
   /** The name of the customer. */
-  customerName!: TextField;
+  customerName: TextField;
   /** The address of the customer. */
-  customerAddress!: TextField;
+  customerAddress: TextField;
   /** The company registration information for the customer. */
   customerCompanyRegistrations: CompanyRegistration[] = [];
   /** The list of the taxes. */
@@ -45,17 +48,17 @@ export class FinancialDocumentV1 extends Document {
   /** Line items details. */
   lineItems: InvoiceLineItem[] = [];
   /** The receipt category among predefined classes. */
-  category!: TextField;
+  category: TextField;
   /** The receipt sub-category among predefined classes. */
-  subCategory!: TextField;
+  subCategory: TextField;
   /** Time as seen on the receipt in HH:MM format. */
-  time!: TextField;
+  time: TextField;
   /** Total amount of tip and gratuity. */
-  tip!: Amount;
+  tip: Amount;
   /** total spent including taxes, discounts, fees, tips, and gratuity. */
-  totalAmount!: Amount;
+  totalAmount: Amount;
   /** Total amount of the purchase excluding taxes. */
-  totalNet!: Amount;
+  totalNet: Amount;
   /** Total tax amount of the purchase. */
   totalTax!: Amount;
 
