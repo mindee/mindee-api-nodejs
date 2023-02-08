@@ -1,5 +1,5 @@
 import { StringDict, BaseField } from "./base";
-import { Polygon, getBboxAsPolygon } from "../geometry";
+import { Polygon, BoundingBox, getBoundingBox } from "../geometry";
 
 export interface FieldConstructor {
   prediction: StringDict;
@@ -13,7 +13,7 @@ export class Field extends BaseField {
    * Contains exactly 4 relative vertices coordinates (points) of a right
    * rectangle containing the field in the document.
    */
-  bbox: Polygon = [];
+  boundingBox: BoundingBox;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing
    * the field in the document.
@@ -42,8 +42,8 @@ export class Field extends BaseField {
     this.confidence = prediction.confidence ? prediction.confidence : 0.0;
     if (prediction.polygon) {
       this.polygon = prediction.polygon;
-      this.bbox = getBboxAsPolygon(prediction.polygon);
     }
+    this.boundingBox = getBoundingBox(this.polygon);
   }
 
   /**

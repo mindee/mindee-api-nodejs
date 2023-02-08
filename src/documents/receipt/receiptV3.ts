@@ -1,5 +1,12 @@
 import { Document, DocumentConstructorProps } from "../document";
-import { TaxField, TextField, Amount, Locale, DateField } from "../../fields";
+import {
+  ClassificationField,
+  TaxField,
+  TextField,
+  Amount,
+  Locale,
+  DateField,
+} from "../../fields";
 
 export class ReceiptV3 extends Document {
   /** Total amount with the tax amount of the purchase. */
@@ -9,7 +16,7 @@ export class ReceiptV3 extends Document {
   /** The purchase date. */
   date!: DateField;
   /** The type of purchase. */
-  category!: TextField;
+  category!: ClassificationField;
   /** Merchant's name as seen on the receipt. */
   merchantName!: TextField;
   /** Time as seen on the receipt in HH:MM format. */
@@ -65,9 +72,8 @@ export class ReceiptV3 extends Document {
       prediction: apiPrediction.date,
       pageId: pageId,
     });
-    this.category = new TextField({
+    this.category = new ClassificationField({
       prediction: apiPrediction.category,
-      pageId: pageId,
     });
     this.merchantName = new TextField({
       prediction: apiPrediction.supplier,

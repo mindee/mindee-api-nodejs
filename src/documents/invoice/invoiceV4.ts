@@ -1,6 +1,7 @@
 import { Document, DocumentConstructorProps } from "../document";
 
 import {
+  ClassificationField,
   TaxField,
   PaymentDetails,
   Locale,
@@ -8,7 +9,6 @@ import {
   TextField,
   DateField,
   CompanyRegistration,
-  BaseField,
   StringDict,
 } from "../../fields";
 import { InvoiceLineItem } from "./invoiceLineItem";
@@ -29,7 +29,7 @@ export class InvoiceV4 extends Document {
   /** Locale information. */
   locale: Locale;
   /** The nature of the invoice. */
-  documentType: BaseField;
+  documentType: ClassificationField;
   /** List of Reference numbers including PO number. */
   referenceNumbers: TextField[] = [];
   /** The total amount with tax included. */
@@ -83,7 +83,7 @@ export class InvoiceV4 extends Document {
       prediction: prediction.locale,
       valueKey: "language",
     });
-    this.documentType = new BaseField({
+    this.documentType = new ClassificationField({
       prediction: prediction.document_type,
       valueKey: "value",
     });

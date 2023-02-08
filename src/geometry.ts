@@ -1,15 +1,17 @@
 export type MinMax = { min: number; max: number };
 /** A point on the document defined by 2 coordinates: X, Y */
 export type Point = [number, number];
-/** A bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */
-export type BoundingBox = [number, number, number, number];
+/** A simple bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */
+export type BBox = [number, number, number, number];
+/** A bounding box defined by 4 points. */
+export type BoundingBox = [Point, Point, Point, Point];
 /** A polygon, composed of several Points. */
 export type Polygon = Array<Point>;
 
 /**
  * Given a Polygon, calculate a polygon that encompasses all points.
  */
-export function getBboxAsPolygon(polygon: Polygon): Polygon {
+export function getBoundingBox(polygon: Polygon): BoundingBox {
   const bbox = getBbox(polygon);
   return [
     [bbox[0], bbox[1]],
@@ -22,7 +24,7 @@ export function getBboxAsPolygon(polygon: Polygon): Polygon {
 /**
  * Given a Polygon, calculate a bounding box that encompasses all points.
  */
-export function getBbox(polygon: Polygon): BoundingBox {
+export function getBbox(polygon: Polygon): BBox {
   const allY = polygon.map((point) => point[1]);
   const allX = polygon.map((point) => point[0]);
   const yMin = Math.min(...allY);

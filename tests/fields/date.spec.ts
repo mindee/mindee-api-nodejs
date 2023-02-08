@@ -16,7 +16,7 @@ describe("Test Date field", () => {
     const date = new DateField({ prediction });
     expect(date.value).to.be.equal(prediction.value);
     expect(date.dateObject).to.be.deep.equal(new Date(prediction.value));
-    expect(date.bbox).to.have.deep.members(prediction.polygon);
+    expect(date.boundingBox).to.have.deep.members(prediction.polygon);
   });
   it("Should create a Date field with N/A value as input", () => {
     const prediction = {
@@ -26,6 +26,6 @@ describe("Test Date field", () => {
     const date = new DateField({ prediction });
     expect(date.value).to.be.equal(undefined);
     expect(date.dateObject).to.be.equal(undefined);
-    expect(date.bbox).to.be.empty;
+    expect(date.polygon).to.be.empty;
   });
 });

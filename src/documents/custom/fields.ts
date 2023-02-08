@@ -1,6 +1,6 @@
 import { StringDict } from "../../fields/base";
 import { FieldConstructor } from "../../fields/field";
-import { Polygon, getBboxAsPolygon } from "../../geometry";
+import { Polygon, getBoundingBox } from "../../geometry";
 
 export class ClassificationField {
   /** The value for the classification. */
@@ -45,7 +45,7 @@ export class ListFieldValue {
     this.confidence = prediction["confidence"];
     if (prediction["polygon"]) {
       this.polygon = prediction["polygon"];
-      this.bbox = getBboxAsPolygon(prediction.polygon);
+      this.bbox = getBoundingBox(prediction.polygon);
     }
   }
 

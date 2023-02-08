@@ -1,5 +1,6 @@
 import { Document, DocumentConstructorProps } from "../document";
 import {
+  ClassificationField,
   Amount,
   DateField,
   TextField,
@@ -14,9 +15,9 @@ export class ReceiptV4 extends Document {
   /** The purchase date. */
   date: DateField;
   /** The receipt category among predefined classes. */
-  category: TextField;
+  category: ClassificationField;
   /** The receipt sub-category among predefined classes. */
-  subCategory: TextField;
+  subCategory: ClassificationField;
   /** Whether the document is an expense receipt or a credit card receipt. */
   documentType: TextField;
   /** The name of the supplier or merchant, as seen on the receipt. */
@@ -77,13 +78,11 @@ export class ReceiptV4 extends Document {
       prediction: prediction.date,
       pageId: pageId,
     });
-    this.category = new TextField({
+    this.category = new ClassificationField({
       prediction: prediction.category,
-      pageId: pageId,
     });
-    this.subCategory = new TextField({
+    this.subCategory = new ClassificationField({
       prediction: prediction.subcategory,
-      pageId: pageId,
     });
     this.documentType = new TextField({
       prediction: prediction.document_type,

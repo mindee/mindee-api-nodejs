@@ -19,7 +19,7 @@ describe("Test Tax field", () => {
     expect(tax.value).to.be.equal(2);
     expect(tax.confidence).to.be.equal(0.1);
     expect(tax.rate).to.be.equal(0.2);
-    expect(tax.bbox.length).to.be.equal(4);
+    expect(tax.boundingBox.length).to.be.equal(4);
     expect(tax.toString()).to.be.equal("2.00 0.20% QST");
   });
 
@@ -31,7 +31,7 @@ describe("Test Tax field", () => {
     };
     const tax = new TaxField({ prediction });
     expect(tax.rate).to.be.undefined;
-    expect(tax.bbox.length).to.be.equal(0);
+    expect(tax.polygon.length).to.be.equal(0);
     expect(tax.toString()).to.be.equal("2.00");
   });
 

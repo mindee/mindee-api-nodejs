@@ -45,19 +45,19 @@ describe("Geometry functions", () => {
   });
 
   it("should get a polygon's bounding box polygon", () => {
-    expect(geometry.getBboxAsPolygon(polygonA())).to.deep.ordered.members([
+    expect(geometry.getBoundingBox(polygonA())).to.deep.ordered.members([
       [0.123, 0.53],
       [0.175, 0.53],
       [0.175, 0.546],
       [0.123, 0.546],
     ]);
-    expect(geometry.getBboxAsPolygon(polygonB())).to.deep.ordered.members([
+    expect(geometry.getBoundingBox(polygonB())).to.deep.ordered.members([
       [0.124, 0.535],
       [0.19, 0.535],
       [0.19, 0.546],
       [0.124, 0.546],
     ]);
-    expect(geometry.getBboxAsPolygon(polygonC())).to.deep.ordered.members([
+    expect(geometry.getBoundingBox(polygonC())).to.deep.ordered.members([
       [0.205, 0.407],
       [0.381, 0.407],
       [0.381, 0.43],
