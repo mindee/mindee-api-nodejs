@@ -1,0 +1,15 @@
+import { BaseField, BaseFieldConstructor } from "./base";
+
+export class ClassificationField extends BaseField {
+  /** The confidence score of the prediction. */
+  confidence: number;
+
+  constructor({
+    prediction,
+    valueKey = "value",
+    reconstructed = false,
+  }: BaseFieldConstructor) {
+    super({ prediction, valueKey, reconstructed });
+    this.confidence = prediction.confidence ? prediction.confidence : 0.0;
+  }
+}

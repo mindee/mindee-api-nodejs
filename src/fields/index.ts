@@ -1,3 +1,4 @@
+export { ClassificationField } from "./classification";
 export { TaxField } from "./tax";
 export { PaymentDetails } from "./paymentDetails";
 export { OrientationField } from "./orientation";

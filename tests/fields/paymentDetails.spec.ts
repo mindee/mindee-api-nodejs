@@ -55,7 +55,7 @@ describe("Test PaymentDetails field", () => {
       routing_number: {},
       swift: {},
       confidence: 0.1,
-      bounding_box: [
+      polygon: [
         [0.016, 0.707],
         [0.414, 0.707],
         [0.414, 0.831],

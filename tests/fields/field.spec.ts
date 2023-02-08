@@ -17,16 +17,16 @@ describe("Test different inits of Field", () => {
     // const field = new Field({ prediction });
     expect(field.value).to.equals("test");
     expect(field.confidence).to.equals(0.1);
-    expect(field.bbox.length).to.satisfy((length: number) => length > 0);
+    expect(field.boundingBox.length).to.satisfy((length: number) => length > 0);
   });
 
-  it("should not create a bbox", () => {
+  it("should not fail if no polygon given", () => {
     const prediction = {
       value: "test",
       confidence: 0.1,
     };
     const field = new Field({ prediction });
-    expect(field.bbox.length).to.equals(0);
+    expect(field.polygon.length).to.equals(0);
   });
 
   it("should be equal to itself only", () => {
