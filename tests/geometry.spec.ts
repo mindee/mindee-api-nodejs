@@ -100,4 +100,16 @@ describe("Geometry functions", () => {
     expect(geometry.isPointInPolygonX(pointB, polygonB())).to.be.false;
     expect(geometry.isPointInPolygonX(pointB, polygonC())).to.be.true;
   });
+
+  it("should merge two Bbox", () => {
+    const firsBBox: geometry.BBox = [0.081, 0.442, 0.15, 0.451];
+    const secondBBox: geometry.BBox = [0.157, 0.442, 0.26, 0.451];
+
+    const mergedBbox = geometry.mergeBbox(firsBBox, secondBBox);
+
+    expect(mergedBbox[0]).to.be.eq(0.081);
+    expect(mergedBbox[1]).to.be.eq(0.442);
+    expect(mergedBbox[2]).to.be.eq(0.26);
+    expect(mergedBbox[3]).to.be.eq(0.451);
+  });
 });
