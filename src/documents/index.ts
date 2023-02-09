@@ -10,6 +10,7 @@ export { PassportV1 } from "./passport/passportV1";
 export { FinancialDocumentV0 } from "./financialDocument/financialDocumentV0";
 export { FinancialDocumentV1 } from "./financialDocument/financialDocumentV1";
 export { CustomV1 } from "./custom/customV1";
+export { getLineItems } from "./custom/lineitems";
 export { CropperV1 } from "./cropper/cropperV1";
 export { MindeeVisionV1 } from "./mindeeVision/mindeeVisionV1";
 export { ProofOfAddressV1 } from "./proofOfAddress/proofOfAddressV1";
