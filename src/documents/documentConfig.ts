@@ -101,7 +101,7 @@ export class DocumentConfig<DocType extends Document> {
     this.endpoints.forEach((endpoint) => {
       if (!endpoint.apiKey) {
         throw new Error(
-          `Missing API key for '${this.documentType}', check your Client configuration.
+          `Missing API key for '${endpoint.urlName} ${endpoint.version}', check your Client configuration.
 You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
         );
       }
