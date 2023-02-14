@@ -49,10 +49,10 @@ export class CarteVitaleV1 extends Document {
   toString(): string {
     const outStr = `----- FR Carte Vitale V1 -----
 Filename: ${this.filename}
-Given names: ${this.givenNames.map((name) => name.value).join(" ")}
+Given Name(s): ${this.givenNames.map((name) => name.value).join(" ")}
 Surname: ${this.surname}
 Social Security Number: ${this.socialSecurity}
-Issuance date: ${this.issuanceDate}
+Issuance Date: ${this.issuanceDate}
 ----------------------
 `;
     return CarteVitaleV1.cleanOutString(outStr);

@@ -88,19 +88,19 @@ export class IdCardV1 extends Document {
   }
 
   toString(): string {
-    const outStr = `----- FR ID Card V1 -----
+    const outStr = `----- FR Carte Nationale d'Identité V1 -----
 Filename: ${this.filename}
-Document side: ${this.documentSide}
-Authority: ${this.authority}
-Given names: ${this.givenNames.map((name) => name.value).join(" ")}
+Document Side: ${this.documentSide}
+Identity Number: ${this.idNumber}
+Given Name(s): ${this.givenNames.map((name) => name.value).join(" ")}
 Surname: ${this.surname}
+Date of Birth: ${this.birthDate}
+Place of Birth: ${this.birthPlace}
+Expiry Date: ${this.expiryDate}
+Issuing Authority: ${this.authority}
 Gender: ${this.gender}
-ID Number: ${this.idNumber}
-Birth date: ${this.birthDate}
-Birth place: ${this.birthPlace}
-Expiry date: ${this.expiryDate}
-MRZ 1: ${this.mrz1}
-MRZ 2: ${this.mrz2}
+MRZ Line 1: ${this.mrz1}
+MRZ Line 2: ${this.mrz2}
 ----------------------
 `;
     return IdCardV1.cleanOutString(outStr);
