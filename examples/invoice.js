@@ -7,7 +7,7 @@ const mindeeClient = new mindee.Client({apiKey: "my-api-key"});
 // parsing invoice from PDF
 const pathDoc = mindeeClient.docFromPath("./documents/invoices/invoice.pdf");
 pathDoc
-  .parse(mindee.InvoiceV3)
+  .parse(mindee.InvoiceV4)
   .then((res) => {
     console.log("Success!");
     console.log(res.pages);
@@ -24,7 +24,7 @@ const base64 = fs.readFileSync("./documents/invoices/credit_note.pdf", {
 });
 const base64Doc = mindeeClient.docFromBase64(base64.toString(), "credit_note.pdf");
 base64Doc
-  .parse(mindee.InvoiceV3)
+  .parse(mindee.InvoiceV4)
   .then((res) => {
     console.log("Success!");
     console.log(res.pages);
@@ -39,7 +39,7 @@ base64Doc
 const stream = fs.createReadStream("./documents/invoices/invoice_10p.pdf");
 const streamDoc = mindeeClient.docFromStream(stream, "invoice_10p.pdf");
 streamDoc
-  .parse(mindee.InvoiceV3, {
+  .parse(mindee.InvoiceV4, {
     pageOptions: {
       operation: mindee.PageOptionsOperation.KeepOnly,
       pageIndexes: [0, -2, -1],
