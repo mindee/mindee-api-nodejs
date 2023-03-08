@@ -108,6 +108,72 @@ export class Endpoint {
     });
   }
 
+  /**
+   * Make a request to POST a document for async prediction.
+   * @param input
+   * @param includeWords
+   * @param cropper
+   */
+  predictAsyncReqPost(
+    input: InputSource,
+    includeWords = false,
+    cropper = false
+  ): Promise<predictResponse> {
+    return new Promise((resolve, reject) => {
+      const uri = new URL(`${this.urlRoot}/predict_async`);
+      if (cropper) {
+        uri.searchParams.append("cropper", "true");
+      }
+      logger.debug(`Request URI: ${uri}`);
+
+      const form = new FormData();
+
+      if (input.fileObject instanceof Buffer) {
+        form.append("document", input.fileObject, { filename: input.filename });
+      } else {
+        form.append("document", input.fileObject);
+      }
+
+      if (includeWords) {
+        form.append("include_mvision", "true");
+      }
+      const headers = { ...this.baseHeaders, ...form.getHeaders() };
+
+      const options = {
+        method: "POST",
+        headers: headers,
+        hostname: uri.hostname,
+        path: `${uri.pathname}${uri.search}`,
+      };
+      const req = https.request(options, function (res: IncomingMessage) {
+        // when the encoding is set, data chunks will be strings
+        res.setEncoding("utf-8");
+
+        let responseBody = "";
+        res.on("data", function (chunk: string) {
+          responseBody += chunk;
+        });
+
+        res.on("end", function () {
+          try {
+            resolve({
+              messageObj: res,
+              data: JSON.parse(responseBody),
+            });
+          } catch (error) {
+            reject(error);
+          }
+        });
+      });
+
+      form.pipe(req);
+
+      req.on("error", (err: any) => {
+        reject(err);
+      });
+    });
+  }
+
   protected apiKeyFromEnv(): string {
     const envVarValue = process.env[API_KEY_ENVVAR_NAME];
     if (envVarValue) {

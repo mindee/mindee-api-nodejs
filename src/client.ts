@@ -136,6 +136,59 @@ class DocumentClient {
       cropper: cropper,
     });
   }
+
+  /**
+   * To enqueue the parsing of a document.
+   * @param documentClass
+   * @param params
+   */
+  async enqueueParsing<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
+    params: PredictOptions = {
+      endpointName: "",
+      accountName: "",
+      fullText: false,
+      cropper: false,
+      pageOptions: undefined,
+    }
+  ): Promise<Response<DocType>> {
+    // seems like there should be a better way of doing this
+    const fullText = params?.fullText !== undefined ? params.fullText : false;
+    const cropper = params?.cropper !== undefined ? params.cropper : false;
+    const docType: string =
+      params.endpointName === undefined || params.endpointName === ""
+        ? documentClass.name
+        : params.endpointName;
+
+    const found: Array<string[]> = [];
+    this.docConfigs.forEach((config, configKey) => {
+      if (configKey[1] === docType) {
+        found.push(configKey);
+      }
+    });
+    if (found.length === 0) {
+      throw `Document type not configured: '${docType}'`;
+    }
+
+    let configKey: string[] = [];
+    if (found.length === 1) {
+      configKey = found[0];
+    } else if (params.accountName) {
+      configKey = [params.accountName, docType];
+    }
+    const docConfig = this.docConfigs.get(configKey);
+    if (docConfig === undefined) {
+      // TODO: raise error printing all usernames
+      throw `Couldn't find the config '${configKey}'`;
+    }
+
+    return await docConfig.predict({
+      inputDoc: this.inputSource,
+      includeWords: fullText,
+      pageOptions: params.pageOptions,
+      cropper: cropper,
+    });
+  }
 }
 
 export interface CustomConfigParams {
