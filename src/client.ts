@@ -10,7 +10,12 @@ import {
   UrlInput,
   BufferInput,
 } from "./inputs";
-import { Response, STANDARD_API_OWNER, StandardEndpoint } from "./api";
+import {
+  PredictEnqueueResponse,
+  Response,
+  STANDARD_API_OWNER,
+  StandardEndpoint,
+} from "./api";
 import {
   Document,
   DocumentSig,
@@ -151,7 +156,7 @@ class DocumentClient {
       cropper: false,
       pageOptions: undefined,
     }
-  ): Promise<Response<DocType>> {
+  ): Promise<PredictEnqueueResponse> {
     // seems like there should be a better way of doing this
     const fullText = params?.fullText !== undefined ? params.fullText : false;
     const cropper = params?.cropper !== undefined ? params.cropper : false;
@@ -182,7 +187,7 @@ class DocumentClient {
       throw `Couldn't find the config '${configKey}'`;
     }
 
-    return await docConfig.predict({
+    return await docConfig.enqueuePredict({
       inputDoc: this.inputSource,
       includeWords: fullText,
       pageOptions: params.pageOptions,

@@ -10,6 +10,7 @@ import {
 import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
 import { PageOptions } from "../inputs";
+import { PredictEnqueueResponse } from "@mindee/api/predictEnqueueResponse";
 
 interface CustomDocConstructor {
   endpointName: string;
@@ -89,6 +90,52 @@ export class DocumentConfig<DocType extends Document> {
       params.cropper
     );
     return this.buildResult(params.inputDoc, response);
+  }
+
+  async enqueuePredict(params: {
+    inputDoc: InputSource;
+    includeWords: boolean;
+    pageOptions?: PageOptions;
+    cropper: boolean;
+  }): Promise<PredictEnqueueResponse> {
+    this.checkApiKeys();
+    await params.inputDoc.init();
+    if (params.pageOptions !== undefined) {
+      await this.cutDocPages(params.inputDoc, params.pageOptions);
+    }
+    const response = await this.enqueuePredictRequest(
+      params.inputDoc,
+      params.includeWords,
+      params.cropper
+    );
+
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode > 201) {
+      const errorMessage = JSON.stringify(response.data, null, 2);
+      errorHandler.throw(
+        new Error(
+          `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
+        )
+      );
+    }
+
+    return new PredictEnqueueResponse({
+      id: response.data.job.id,
+      issuedAt: response.data.job.issued_at,
+      availableAt: response.data.available_at,
+    });
+  }
+
+  protected async enqueuePredictRequest(
+    inputDoc: InputSource,
+    includeWords: boolean,
+    cropping: boolean
+  ) {
+    return await this.endpoints[0].predictAsyncReqPost(
+      inputDoc,
+      includeWords,
+      cropping
+    );
   }
 
   async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {

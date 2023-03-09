@@ -171,20 +171,26 @@ async function predictCall(command: string, inputPath: string, options: any) {
     pageOptions: pageOptions,
   };
 
-  const response = await doc.parse(conf.docClass, predictParams);
+  let response;
+  if (options.async) {
+    response = await doc.enqueueParsing(conf.docClass, predictParams);
+    console.log(response);
+  } else {
+    response = await doc.parse(conf.docClass, predictParams);
 
-  if (options.fullText) {
-    response.pages.forEach((page) => {
-      console.log(page.fullText?.toString());
-    });
-  }
-  if (options.pages) {
-    response.pages.forEach((page) => {
-      console.log(`\n${page}`);
-    });
-  }
-  if (response.document) {
-    console.log(`\n${response.document}`);
+    if (options.fullText) {
+      response.pages.forEach((page) => {
+        console.log(page.fullText?.toString());
+      });
+    }
+    if (options.pages) {
+      response.pages.forEach((page) => {
+        console.log(`\n${page}`);
+      });
+    }
+    if (response.document) {
+      console.log(`\n${response.document}`);
+    }
   }
 }
 
@@ -202,6 +208,7 @@ export function cli() {
       "Keep only the first 5 pages of the document."
     );
     prog.option("-p, --pages", "Show pages content");
+    prog.option("--async", "Async prediction.");
     if (info.fullText) {
       prog.option("-t, --full-text", "Include full document text in response");
     }
