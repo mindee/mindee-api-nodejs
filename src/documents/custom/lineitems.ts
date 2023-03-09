@@ -57,10 +57,7 @@ export class Line {
    * Check if the bbox fits the current line.
    */
   contains(bbox: BBox): boolean {
-    if (precisionEquals(this.bbox[1], bbox[1], this.heightTolerance)) {
-      return true;
-    }
-    return false;
+    return precisionEquals(this.bbox[1], bbox[1], this.heightTolerance);
   }
 
   updateField(name: string, fieldValue: ListFieldValue): void {
