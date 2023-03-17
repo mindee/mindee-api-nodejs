@@ -5,12 +5,12 @@ import {
   CustomEndpoint,
   StandardEndpoint,
   predictResponse,
+  PredictEnqueueResponse,
   API_KEY_ENVVAR_NAME,
 } from "../api";
 import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
 import { PageOptions } from "../inputs";
-import { PredictEnqueueResponse } from "@mindee/api/predictEnqueueResponse";
 
 interface CustomDocConstructor {
   endpointName: string;

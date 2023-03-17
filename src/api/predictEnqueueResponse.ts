@@ -1,4 +1,9 @@
-import { Job } from "./common";
+export interface Job {
+  issuedAt: Date;
+  availableAt?: any;
+  id?: any;
+  status?: any;
+}
 
 export class PredictEnqueueResponse {
   job: Job;
