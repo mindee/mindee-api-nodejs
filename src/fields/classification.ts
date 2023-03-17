@@ -3,6 +3,8 @@ import { BaseField, BaseFieldConstructor } from "./base";
 export class ClassificationField extends BaseField {
   /** The confidence score of the prediction. */
   confidence: number;
+  /** The classification. */
+  value?: string
 
   constructor({
     prediction,
