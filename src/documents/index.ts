@@ -14,7 +14,7 @@ export { getLineItems } from "./custom/lineitems";
 export { CropperV1 } from "./cropper/cropperV1";
 export { MindeeVisionV1 } from "./mindeeVision/mindeeVisionV1";
 export { ProofOfAddressV1 } from "./proofOfAddress/proofOfAddressV1";
-export { ShippingContainerV1 } from "./shipping_container/shippingContainerV1";
+export { ShippingContainerV1 } from "./shippingContainer/shippingContainerV1";
 export { Document, DocumentConstructorProps, DocumentSig } from "./document";
 export * as fr from "./fr";
 export * as us from "./us";
