@@ -99,5 +99,9 @@ export const dataPath = {
     docString: "tests/data/custom/response_v1/doc_to_string.txt",
     page0String: "tests/data/custom/response_v1/page0_to_string.txt",
     page1String: "tests/data/custom/response_v1/page1_to_string.txt",
+    lineItems: {
+      singleTable01:
+        "tests/data/custom/response_v1/line_items/single_table_01.json",
+    },
   },
 };

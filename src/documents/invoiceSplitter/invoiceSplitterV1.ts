@@ -3,9 +3,11 @@ import { StringDict } from "../../fields";
 
 export class PageGroup {
   pageIndexes: number[] = [];
+  confidence: number;
 
-  constructor(prediction: { [index: string]: number[] }) {
+  constructor(prediction: StringDict) {
     this.pageIndexes = prediction.page_indexes;
+    this.confidence = prediction.confidence;
   }
 
   toString(): string {

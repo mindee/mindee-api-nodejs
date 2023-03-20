@@ -40,8 +40,8 @@ export class ShippingContainerV1 extends Document {
     const outStr = `----- Shipping Container V1 -----
 Filename: ${this.filename}
 Owner: ${this.owner}
-Serial number: ${this.serialNumber}
-Size and type: ${this.sizeType}
+Serial Number: ${this.serialNumber}
+Size and Type: ${this.sizeType}
 ----------------------
 `;
     return ShippingContainerV1.cleanOutString(outStr);

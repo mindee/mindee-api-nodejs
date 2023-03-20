@@ -29,6 +29,8 @@ describe("InvoiceSplitter Object initialization", async () => {
       path.join(dataPath.invoiceSplitterV1.docString)
     );
     expect(doc.invoicePageGroups.length).to.be.equals(3);
+    expect(doc.invoicePageGroups[0].confidence).to.be.equals(1);
+    expect(doc.invoicePageGroups[2].confidence).to.be.equals(0);
     expect(doc.toString()).to.be.equals(docString.toString());
   });
 

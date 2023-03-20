@@ -1,13 +1,11 @@
 import { promises as fs } from "fs";
-import * as path from "path";
 import { CustomV1, getLineItems } from "../../../src/documents";
+import { dataPath } from "../../apiPaths";
 import { expect } from "chai";
 
 describe("Custom Document Line Items", async () => {
     it("with valid custom document V1 must build 3 lines", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve(path.join(__dirname, "../../data/custom/response_v1/line_items/with_defined_anchor_3_expected_lines.json"))
-    );
+    const jsonData = await fs.readFile(dataPath.custom.lineItems.singleTable01);
 
     const response = JSON.parse(jsonData.toString());
     const doc = new CustomV1({
@@ -34,7 +32,7 @@ describe("Custom Document Line Items", async () => {
     expect(firstLine.fields.has("beneficiary_number")).to.be.true;
     expect(firstLine.fields.has("beneficiary_name")).to.be.true;
     expect(firstLine.fields.has("beneficiary_rank")).to.be.true;
-    expect(lineItems.rows[1].fields.get("beneficiary_number")?.confidence).to.be.eq(0.495);
+    expect(lineItems.rows[1].fields.get("beneficiary_number")?.confidence).to.be.eq(0.5);
     expect(lineItems.rows[1].fields.get("beneficiary_birth_date")?.content).to.be.eq("2010-07-18");
     expect(lineItems.rows[2].fields.size).to.be.eq(4);
     expect(lineItems.rows[2].fields.get("beneficiary_rank")?.content).to.be.eq("3");
