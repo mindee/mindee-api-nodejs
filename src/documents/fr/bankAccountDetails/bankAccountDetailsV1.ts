@@ -39,9 +39,10 @@ export class BankAccountDetailsV1 extends Document {
 
   toString(): string {
     const outStr = `----- FR Bank Account Details V1 -----
+Filename: ${this.filename}
 IBAN: ${this.iban}
-Account holder name: ${this.accountHolderName}
-SWIFT: ${this.swift}
+Account Holder's Name: ${this.accountHolderName}
+SWIFT Code: ${this.swift}
 ----------------------
 `;
     return BankAccountDetailsV1.cleanOutString(outStr);

@@ -41,7 +41,6 @@ export class ProofOfAddressV1 extends Document {
     });
     this.locale = new Locale({
       prediction: prediction.locale,
-      valueKey: "language",
     });
     this.issuanceDate = new DateField({
       prediction: prediction.date,
@@ -95,18 +94,18 @@ export class ProofOfAddressV1 extends Document {
     const outStr = `----- Proof of Address V1 -----
 Filename: ${this.filename}
 Locale: ${this.locale}
-Issuer name: ${this.issuerName}
-Issuer Address: ${this.issuerAddress}
+Issuer Name: ${this.issuerName}
 Issuer Company Registrations: ${this.issuerCompanyRegistration
       .map((icr) => icr.value)
       .join(", ")}
-Recipient name: ${this.recipientName}
-Recipient Address: ${this.recipientAddress}
+Issuer Address: ${this.issuerAddress}
+Recipient Name: ${this.recipientName}
 Recipient Company Registrations: ${this.recipientCompanyRegistration
       .map((rcr) => rcr.value)
       .join(", ")}
-Issuance Date: ${this.issuanceDate}
+Recipient Address: ${this.recipientAddress}
 Dates: ${this.dates.map((rcr) => rcr.value).join("\n       ")}
+Date of Issue: ${this.issuanceDate}
 ----------------------
 `;
     return ProofOfAddressV1.cleanOutString(outStr);
