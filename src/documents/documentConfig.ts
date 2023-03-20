@@ -119,11 +119,10 @@ export class DocumentConfig<DocType extends Document> {
       );
     }
 
-    return new PredictEnqueueResponse({
-      id: response.data.job.id,
-      issuedAt: response.data.job.issued_at,
-      availableAt: response.data.available_at,
-    });
+    return new PredictEnqueueResponse(
+      response.data["api_request"],
+      response.data["job"]
+    );
   }
 
   protected async enqueuePredictRequest(

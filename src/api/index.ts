@@ -7,4 +7,8 @@ export {
   STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,
 } from "./endpoint";
-export { PredictEnqueueResponse } from "./predictEnqueueResponse";
+export {
+  PredictEnqueueResponse,
+  ApiRequest,
+  Job,
+} from "./predictEnqueueResponse";

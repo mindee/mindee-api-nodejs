@@ -6,7 +6,7 @@ import path from "path";
 import { dataPath } from "../apiPaths";
 import { InputSource, INPUT_TYPE_PATH } from "../../src/inputs";
 
-describe("API response", () => {
+describe("Synchronous API predict response", () => {
   it("should build a Receipt response", async () => {
     const jsonData = await fs.readFile(
       path.resolve(dataPath.receiptV3.complete)

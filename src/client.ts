@@ -104,41 +104,13 @@ class DocumentClient {
       pageOptions: undefined,
     }
   ): Promise<Response<DocType>> {
-    // seems like there should be a better way of doing this
-    const fullText = params?.fullText !== undefined ? params.fullText : false;
-    const cropper = params?.cropper !== undefined ? params.cropper : false;
-    const docType: string =
-      params.endpointName === undefined || params.endpointName === ""
-        ? documentClass.name
-        : params.endpointName;
+    const parsedParams = this.parsePredictParams(documentClass, params);
 
-    const found: Array<string[]> = [];
-    this.docConfigs.forEach((config, configKey) => {
-      if (configKey[1] === docType) {
-        found.push(configKey);
-      }
-    });
-    if (found.length === 0) {
-      throw `Document type not configured: '${docType}'`;
-    }
-
-    let configKey: string[] = [];
-    if (found.length === 1) {
-      configKey = found[0];
-    } else if (params.accountName) {
-      configKey = [params.accountName, docType];
-    }
-    const docConfig = this.docConfigs.get(configKey);
-    if (docConfig === undefined) {
-      // TODO: raise error printing all usernames
-      throw `Couldn't find the config '${configKey}'`;
-    }
-
-    return await docConfig.predict({
+    return await parsedParams.docConfig.predict({
       inputDoc: this.inputSource,
-      includeWords: fullText,
+      includeWords: parsedParams.fullText,
       pageOptions: params.pageOptions,
-      cropper: cropper,
+      cropper: parsedParams.cropper,
     });
   }
 
@@ -157,6 +129,23 @@ class DocumentClient {
       pageOptions: undefined,
     }
   ): Promise<PredictEnqueueResponse> {
+    const parsedParams = this.parsePredictParams(documentClass, params);
+    return await parsedParams.docConfig.enqueuePredict({
+      inputDoc: this.inputSource,
+      includeWords: parsedParams.fullText,
+      pageOptions: params.pageOptions,
+      cropper: parsedParams.cropper,
+    });
+  }
+
+  protected parsePredictParams<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
+    params: PredictOptions
+  ): {
+    docConfig: DocumentConfig<any>;
+    fullText: boolean;
+    cropper: boolean;
+  } {
     // seems like there should be a better way of doing this
     const fullText = params?.fullText !== undefined ? params.fullText : false;
     const cropper = params?.cropper !== undefined ? params.cropper : false;
@@ -186,13 +175,11 @@ class DocumentClient {
       // TODO: raise error printing all usernames
       throw `Couldn't find the config '${configKey}'`;
     }
-
-    return await docConfig.enqueuePredict({
-      inputDoc: this.inputSource,
-      includeWords: fullText,
-      pageOptions: params.pageOptions,
+    return {
+      docConfig: docConfig,
+      fullText: fullText,
       cropper: cropper,
-    });
+    };
   }
 }
 
