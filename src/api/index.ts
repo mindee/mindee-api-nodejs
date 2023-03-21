@@ -1,4 +1,4 @@
-export { Response, ResponseSig } from "./response";
+export { Response, ResponseSig } from "./predictResponse";
 export {
   Endpoint,
   CustomEndpoint,
@@ -7,8 +7,4 @@ export {
   STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,
 } from "./endpoint";
-export {
-  PredictEnqueueResponse,
-  ApiRequest,
-  Job,
-} from "./predictEnqueueResponse";
+export { AsyncPredictResponse, ApiRequest, Job } from "./asyncPredictResponse";

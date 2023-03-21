@@ -5,7 +5,7 @@ import {
   CustomEndpoint,
   StandardEndpoint,
   predictResponse,
-  PredictEnqueueResponse,
+  AsyncPredictResponse,
   API_KEY_ENVVAR_NAME,
 } from "../api";
 import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
@@ -32,18 +32,6 @@ export class DocumentConfig<DocType extends Document> {
     this.documentType = documentType;
     this.endpoints = endpoints;
     this.documentClass = documentClass;
-  }
-
-  protected async predictRequest(
-    inputDoc: InputSource,
-    includeWords: boolean,
-    cropping: boolean
-  ) {
-    return await this.endpoints[0].predictReqPost(
-      inputDoc,
-      includeWords,
-      cropping
-    );
   }
 
   buildResult(
@@ -73,6 +61,18 @@ export class DocumentConfig<DocType extends Document> {
     });
   }
 
+  protected async predictRequest(
+    inputDoc: InputSource,
+    includeWords: boolean,
+    cropping: boolean
+  ) {
+    return await this.endpoints[0].predictReqPost(
+      inputDoc,
+      includeWords,
+      cropping
+    );
+  }
+
   async predict(params: {
     inputDoc: InputSource;
     includeWords: boolean;
@@ -92,23 +92,34 @@ export class DocumentConfig<DocType extends Document> {
     return this.buildResult(params.inputDoc, response);
   }
 
-  async enqueuePredict(params: {
+  protected async asyncPredictRequest(
+    inputDoc: InputSource,
+    includeWords: boolean,
+    cropping: boolean
+  ) {
+    return await this.endpoints[0].predictAsyncReqPost(
+      inputDoc,
+      includeWords,
+      cropping
+    );
+  }
+
+  async asyncPredict(params: {
     inputDoc: InputSource;
     includeWords: boolean;
     pageOptions?: PageOptions;
     cropper: boolean;
-  }): Promise<PredictEnqueueResponse> {
+  }): Promise<AsyncPredictResponse> {
     this.checkApiKeys();
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
       await this.cutDocPages(params.inputDoc, params.pageOptions);
     }
-    const response = await this.enqueuePredictRequest(
+    const response = await this.asyncPredictRequest(
       params.inputDoc,
       params.includeWords,
       params.cropper
     );
-
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode > 201) {
       const errorMessage = JSON.stringify(response.data, null, 2);
@@ -118,22 +129,9 @@ export class DocumentConfig<DocType extends Document> {
         )
       );
     }
-
-    return new PredictEnqueueResponse(
+    return new AsyncPredictResponse(
       response.data["api_request"],
       response.data["job"]
-    );
-  }
-
-  protected async enqueuePredictRequest(
-    inputDoc: InputSource,
-    includeWords: boolean,
-    cropping: boolean
-  ) {
-    return await this.endpoints[0].predictAsyncReqPost(
-      inputDoc,
-      includeWords,
-      cropping
     );
   }
 

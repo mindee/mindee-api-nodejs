@@ -46,7 +46,7 @@ export class ApiRequest {
   }
 }
 
-export class PredictEnqueueResponse {
+export class AsyncPredictResponse {
   job: Job;
   apiRequest: ApiRequest;
 

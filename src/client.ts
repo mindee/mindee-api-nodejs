@@ -11,7 +11,7 @@ import {
   BufferInput,
 } from "./inputs";
 import {
-  PredictEnqueueResponse,
+  AsyncPredictResponse,
   Response,
   STANDARD_API_OWNER,
   StandardEndpoint,
@@ -90,7 +90,7 @@ class DocumentClient {
   }
 
   /**
-   * Send a document to an endpoint and parse the predictions.
+   * Send a document to a synchronous endpoint and parse the predictions.
    * @param documentClass
    * @param params
    */
@@ -115,11 +115,11 @@ class DocumentClient {
   }
 
   /**
-   * To enqueue the parsing of a document.
+   * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param documentClass
    * @param params
    */
-  async enqueueParsing<DocType extends Document>(
+  async enqueue<DocType extends Document>(
     documentClass: DocumentSig<DocType>,
     params: PredictOptions = {
       endpointName: "",
@@ -128,15 +128,22 @@ class DocumentClient {
       cropper: false,
       pageOptions: undefined,
     }
-  ): Promise<PredictEnqueueResponse> {
+  ): Promise<AsyncPredictResponse> {
     const parsedParams = this.parsePredictParams(documentClass, params);
-    return await parsedParams.docConfig.enqueuePredict({
+    return await parsedParams.docConfig.asyncPredict({
       inputDoc: this.inputSource,
       includeWords: parsedParams.fullText,
       pageOptions: params.pageOptions,
       cropper: parsedParams.cropper,
     });
   }
+
+  // async parseQueued<DocType extends Document>(
+  //   documentClass: DocumentSig<DocType>,
+  //   queueId: string
+  // ): Promise<Response<DocType>> {
+  //   const parsedParams = this.parsePredictParams(documentClass);
+  // }
 
   protected parsePredictParams<DocType extends Document>(
     documentClass: DocumentSig<DocType>,

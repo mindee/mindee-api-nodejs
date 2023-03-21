@@ -173,7 +173,7 @@ async function predictCall(command: string, inputPath: string, options: any) {
 
   let response;
   if (options.async) {
-    response = await doc.enqueueParsing(conf.docClass, predictParams);
+    response = await doc.enqueue(conf.docClass, predictParams);
     console.log(response);
   } else {
     response = await doc.parse(conf.docClass, predictParams);

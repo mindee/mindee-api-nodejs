@@ -20,5 +20,5 @@ export {
   CustomConfigParams,
   PredictOptions,
 } from "./client";
-export { ResponseSig, Response, PredictEnqueueResponse } from "./api";
+export { ResponseSig, Response, AsyncPredictResponse } from "./api";
 export { InputSource, PageOptionsOperation } from "./inputs";
