@@ -7,15 +7,25 @@ export class Job {
   status?: string;
 
   constructor(jsonResponse: StringDict) {
-    this.issuedAt = new Date(jsonResponse["issued_at"]);
+    this.issuedAt = this.datetimeWithTimezone(jsonResponse["issued_at"]);
     if (
       jsonResponse["available_at"] !== undefined &&
       jsonResponse["available_at"] !== null
     ) {
-      this.availableAt = new Date(jsonResponse["available_at"]);
+      this.availableAt = this.datetimeWithTimezone(
+        jsonResponse["available_at"]
+      );
     }
     this.id = jsonResponse["id"];
     this.status = jsonResponse["status"];
+  }
+
+  /** Hideous thing to make sure dates sent back by the server are parsed correctly in UTC. */
+  protected datetimeWithTimezone(date: string): Date {
+    if (date.search(/\+[0-9]{2}:[0-9]{2}$/) === -1) {
+      date += "+00:00";
+    }
+    return new Date(date);
   }
 }
 

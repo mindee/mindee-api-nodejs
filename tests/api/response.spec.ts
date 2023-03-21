@@ -47,7 +47,7 @@ describe("Synchronous API predict response", () => {
     });
   });
 
-  it("should build a Password response", async () => {
+  it("should build a Passport response", async () => {
     const jsonData = await fs.readFile(
       path.resolve(dataPath.passportV1.complete)
     );

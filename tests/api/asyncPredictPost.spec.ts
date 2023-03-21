@@ -18,9 +18,7 @@ describe("Asynchronous API predict response", () => {
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-02-16T12:33:49.602Z"
     );
-    expect(response.job.availableAt?.toISOString()).to.be.equals(
-      "2023-02-16T11:14:27.931Z"
-    );
+    expect(response.job.availableAt?.toISOString()).to.be.undefined;
     expect(response.apiRequest.error).to.deep.equal({});
   });
 
@@ -38,5 +36,21 @@ describe("Asynchronous API predict response", () => {
     );
     expect(response.job.availableAt?.toISOString()).to.be.undefined;
     expect(response.apiRequest.error.code).to.equals("Forbidden");
+  });
+
+  it("should parse a job in progress ", async () => {
+    const jsonData = await fs.readFile(
+      path.resolve("tests/data/async/get_job_in_progress.json")
+    );
+    const httpResponse: StringDict = {
+      data: JSON.parse(jsonData.toString()),
+    };
+    const response = new PredictEnqueueResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
+    expect(response.job).to.not.be.undefined;
+    expect(response.job.issuedAt.toISOString()).to.be.equals(
+      "2023-03-16T12:33:49.602Z"
+    );
+    expect(response.job.availableAt?.toISOString()).to.be.undefined;
+    expect(response.apiRequest.error).to.deep.equal({});
   });
 });
