@@ -138,12 +138,21 @@ class DocumentClient {
     });
   }
 
-  // async parseQueued<DocType extends Document>(
-  //   documentClass: DocumentSig<DocType>,
-  //   queueId: string
-  // ): Promise<Response<DocType>> {
-  //   const parsedParams = this.parsePredictParams(documentClass);
-  // }
+  async parseQueued<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
+    params: PredictOptions = {
+      endpointName: "",
+      accountName: "",
+      fullText: false,
+      cropper: false,
+      pageOptions: undefined,
+    },
+    queueId: string
+  //): Promise<Response<DocType> | AsyncPredictResponse> {
+  ): Promise<any> {
+    const parsedParams = this.parsePredictParams(documentClass, params);
+    return await parsedParams.docConfig.getQueued(queueId);
+  }
 
   protected parsePredictParams<DocType extends Document>(
     documentClass: DocumentSig<DocType>,

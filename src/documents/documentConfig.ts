@@ -4,7 +4,7 @@ import {
   Endpoint,
   CustomEndpoint,
   StandardEndpoint,
-  predictResponse,
+  EndpointResponse,
   AsyncPredictResponse,
   API_KEY_ENVVAR_NAME,
 } from "../api";
@@ -34,9 +34,9 @@ export class DocumentConfig<DocType extends Document> {
     this.documentClass = documentClass;
   }
 
-  buildResult(
+  protected buildResult(
     inputFile: InputSource,
-    response: predictResponse
+    response: EndpointResponse
   ): Response<DocType> {
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode > 201) {
@@ -61,6 +61,7 @@ export class DocumentConfig<DocType extends Document> {
     });
   }
 
+  // this is only a separate function because of financial docs
   protected async predictRequest(
     inputDoc: InputSource,
     includeWords: boolean,
@@ -92,18 +93,6 @@ export class DocumentConfig<DocType extends Document> {
     return this.buildResult(params.inputDoc, response);
   }
 
-  protected async asyncPredictRequest(
-    inputDoc: InputSource,
-    includeWords: boolean,
-    cropping: boolean
-  ) {
-    return await this.endpoints[0].predictAsyncReqPost(
-      inputDoc,
-      includeWords,
-      cropping
-    );
-  }
-
   async asyncPredict(params: {
     inputDoc: InputSource;
     includeWords: boolean;
@@ -115,13 +104,13 @@ export class DocumentConfig<DocType extends Document> {
     if (params.pageOptions !== undefined) {
       await this.cutDocPages(params.inputDoc, params.pageOptions);
     }
-    const response = await this.asyncPredictRequest(
+    const response = await this.endpoints[0].predictAsyncReqPost(
       params.inputDoc,
       params.includeWords,
       params.cropper
     );
     const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode > 201) {
+    if (statusCode === undefined || statusCode >= 202) {
       const errorMessage = JSON.stringify(response.data, null, 2);
       errorHandler.throw(
         new Error(
@@ -133,6 +122,13 @@ export class DocumentConfig<DocType extends Document> {
       response.data["api_request"],
       response.data["job"]
     );
+  }
+
+  async getQueued(queuId: string) {
+    this.checkApiKeys();
+    const response = await this.endpoints[0].documentQueueGet(queuId);
+    const statusCode = response.messageObj.statusCode;
+
   }
 
   async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {

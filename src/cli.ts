@@ -18,6 +18,7 @@ import {
 import { STANDARD_API_OWNER } from "./api";
 import { Client, PredictOptions } from "./client";
 import { PageOptions, PageOptionsOperation } from "./inputs";
+import * as console from "console";
 
 const program = new Command();
 
@@ -27,6 +28,7 @@ interface ProductConfig {
   description: string;
   docClass: DocumentSig<Document>;
   fullText: boolean;
+  async: boolean;
 }
 
 // The Map's key is the command name as it will appear on the console.
@@ -38,6 +40,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "A custom document",
       docClass: CustomV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -46,6 +49,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "Invoice",
       docClass: InvoiceV4,
       fullText: true,
+      async: false,
     },
   ],
   [
@@ -54,6 +58,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "Invoice Splitter",
       docClass: InvoiceSplitterV1,
       fullText: false,
+      async: true,
     },
   ],
   [
@@ -62,6 +67,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "Expense Receipt",
       docClass: ReceiptV4,
       fullText: true,
+      async: false,
     },
   ],
   [
@@ -70,6 +76,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "Passport",
       docClass: PassportV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -78,6 +85,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "Financial Document",
       docClass: FinancialDocumentV1,
       fullText: true,
+      async: false,
     },
   ],
   [
@@ -86,6 +94,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "FR ID Card",
       docClass: fr.IdCardV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -94,6 +103,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "FR Bank Account Details",
       docClass: fr.BankAccountDetailsV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -102,6 +112,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "FR Carte Vitale",
       docClass: fr.CarteVitaleV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -110,6 +121,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "EU License Plate",
       docClass: eu.LicensePlateV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -118,6 +130,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "US Bank Check",
       docClass: us.BankCheckV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -126,6 +139,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "Shipping Container",
       docClass: ShippingContainerV1,
       fullText: false,
+      async: false,
     },
   ],
   [
@@ -134,6 +148,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       description: "Mindee Vision",
       docClass: MindeeVisionV1,
       fullText: false,
+      async: false,
     },
   ],
 ]);
@@ -172,8 +187,11 @@ async function predictCall(command: string, inputPath: string, options: any) {
   };
 
   let response;
-  if (options.async) {
+  if (options.asyncPost) {
     response = await doc.enqueue(conf.docClass, predictParams);
+    console.log(response);
+  } else if (options.asyncGet) {
+    response = await doc.parseQueued(conf.docClass, predictParams, options.asyncGet);
     console.log(response);
   } else {
     response = await doc.parse(conf.docClass, predictParams);
@@ -208,7 +226,13 @@ export function cli() {
       "Keep only the first 5 pages of the document."
     );
     prog.option("-p, --pages", "Show pages content");
-    prog.option("--async", "Async prediction.");
+    if (info.async) {
+      prog.option("--async-post", "Post the document asynchronously");
+      prog.option(
+        "--async-get <queue_id>",
+        "Get the document from the asynchronous queue"
+      );
+    }
     if (info.fullText) {
       prog.option("-t, --full-text", "Include full document text in response");
     }
@@ -224,6 +248,7 @@ export function cli() {
       prog.argument("<endpoint_name>", "API endpoint name");
     }
     prog.argument("<input_path>", "Full path to the file");
+
     if (name === COMMAND_CUSTOM) {
       prog.action(
         (
