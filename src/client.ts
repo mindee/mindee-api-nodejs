@@ -10,12 +10,7 @@ import {
   UrlInput,
   BufferInput,
 } from "./inputs";
-import {
-  AsyncPredictResponse,
-  Response,
-  STANDARD_API_OWNER,
-  StandardEndpoint,
-} from "./api";
+import { Job, Response, STANDARD_API_OWNER, StandardEndpoint } from "./api";
 import {
   Document,
   DocumentSig,
@@ -128,7 +123,7 @@ class DocumentClient {
       cropper: false,
       pageOptions: undefined,
     }
-  ): Promise<AsyncPredictResponse> {
+  ): Promise<Job> {
     const parsedParams = this.parsePredictParams(documentClass, params);
     return await parsedParams.docConfig.asyncPredict({
       inputDoc: this.inputSource,
@@ -136,6 +131,21 @@ class DocumentClient {
       pageOptions: params.pageOptions,
       cropper: parsedParams.cropper,
     });
+  }
+
+  async getQueuedStatus<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
+    params: PredictOptions = {
+      endpointName: "",
+      accountName: "",
+      fullText: false,
+      cropper: false,
+      pageOptions: undefined,
+    },
+    queueId: string
+  ): Promise<Job> {
+    const parsedParams = this.parsePredictParams(documentClass, params);
+    return await parsedParams.docConfig.getQueuedDocumentStatus(queueId);
   }
 
   async parseQueued<DocType extends Document>(
@@ -148,10 +158,9 @@ class DocumentClient {
       pageOptions: undefined,
     },
     queueId: string
-  //): Promise<Response<DocType> | AsyncPredictResponse> {
-  ): Promise<any> {
+  ): Promise<Job | Response<DocType>> {
     const parsedParams = this.parsePredictParams(documentClass, params);
-    return await parsedParams.docConfig.getQueued(queueId);
+    return await parsedParams.docConfig.getQueuedDocument(queueId);
   }
 
   protected parsePredictParams<DocType extends Document>(
@@ -274,7 +283,7 @@ export class Client {
     this.docConfigs.set(
       [STANDARD_API_OWNER, InvoiceSplitterV1.name],
       new DocumentConfig(InvoiceSplitterV1, [
-        new StandardEndpoint("invoice_splitter_beta", "1", this.apiKey),
+        new StandardEndpoint("invoice_splitter_async_beta", "1", this.apiKey),
       ])
     );
     this.docConfigs.set(

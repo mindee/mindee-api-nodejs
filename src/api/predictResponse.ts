@@ -5,7 +5,7 @@ import { InputSource } from "../inputs";
 export interface ResponseProps {
   httpResponse: any;
   documentType?: string;
-  input: InputSource;
+  input?: InputSource;
   error: boolean;
 }
 
@@ -21,7 +21,7 @@ export type ResponseSig<DocType extends Document> = {
  */
 export class Response<DocType extends Document> {
   httpResponse: any;
-  inputFile: InputSource;
+  inputFile?: InputSource;
   document?: DocType;
   pages: Array<DocType> = [];
   readonly documentClass: DocumentSig<DocType>;

@@ -166,7 +166,9 @@ export class Endpoint {
     resolve: (value: EndpointResponse | PromiseLike<EndpointResponse>) => void,
     reject: (reason?: any) => void
   ): ClientRequest {
-    logger.debug(`${options.method}: https://${options.hostname}${options.path}`);
+    logger.debug(
+      `${options.method}: https://${options.hostname}${options.path}`
+    );
 
     const req = https.request(options, function (res: IncomingMessage) {
       // when the encoding is set, data chunks will be strings

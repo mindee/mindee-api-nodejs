@@ -11,10 +11,10 @@ export type DocumentSig<DocType extends Document> = {
     prediction,
     orientation,
     extras,
-    inputSource,
     pageId,
     fullText,
     documentType,
+    inputSource = undefined,
   }: DocumentConstructorProps): DocType;
 };
 

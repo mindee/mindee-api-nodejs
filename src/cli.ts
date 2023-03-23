@@ -191,8 +191,16 @@ async function predictCall(command: string, inputPath: string, options: any) {
     response = await doc.enqueue(conf.docClass, predictParams);
     console.log(response);
   } else if (options.asyncGet) {
-    response = await doc.parseQueued(conf.docClass, predictParams, options.asyncGet);
-    console.log(response);
+    response = await doc.getQueuedStatus(
+      conf.docClass,
+      predictParams,
+      options.asyncGet
+    );
+    if ("document" in response) {
+      console.log(response.document);
+    } else {
+      console.log(response);
+    }
   } else {
     response = await doc.parse(conf.docClass, predictParams);
 

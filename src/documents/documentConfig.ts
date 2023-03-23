@@ -5,7 +5,7 @@ import {
   CustomEndpoint,
   StandardEndpoint,
   EndpointResponse,
-  AsyncPredictResponse,
+  Job,
   API_KEY_ENVVAR_NAME,
 } from "../api";
 import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
@@ -34,46 +34,6 @@ export class DocumentConfig<DocType extends Document> {
     this.documentClass = documentClass;
   }
 
-  protected buildResult(
-    inputFile: InputSource,
-    response: EndpointResponse
-  ): Response<DocType> {
-    const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode > 201) {
-      const errorMessage = JSON.stringify(response.data, null, 2);
-      errorHandler.throw(
-        new Error(
-          `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
-        )
-      );
-      return new Response<DocType>(this.documentClass, {
-        httpResponse: response,
-        documentType: this.documentType,
-        input: inputFile,
-        error: true,
-      });
-    }
-    return new Response<DocType>(this.documentClass, {
-      httpResponse: response,
-      documentType: this.documentType,
-      input: inputFile,
-      error: false,
-    });
-  }
-
-  // this is only a separate function because of financial docs
-  protected async predictRequest(
-    inputDoc: InputSource,
-    includeWords: boolean,
-    cropping: boolean
-  ) {
-    return await this.endpoints[0].predictReqPost(
-      inputDoc,
-      includeWords,
-      cropping
-    );
-  }
-
   async predict(params: {
     inputDoc: InputSource;
     includeWords: boolean;
@@ -90,7 +50,7 @@ export class DocumentConfig<DocType extends Document> {
       params.includeWords,
       params.cropper
     );
-    return this.buildResult(params.inputDoc, response);
+    return this.buildResult(response, params.inputDoc);
   }
 
   async asyncPredict(params: {
@@ -98,7 +58,7 @@ export class DocumentConfig<DocType extends Document> {
     includeWords: boolean;
     pageOptions?: PageOptions;
     cropper: boolean;
-  }): Promise<AsyncPredictResponse> {
+  }): Promise<Job> {
     this.checkApiKeys();
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
@@ -118,23 +78,85 @@ export class DocumentConfig<DocType extends Document> {
         )
       );
     }
-    return new AsyncPredictResponse(
-      response.data["api_request"],
-      response.data["job"]
-    );
+    return new Job(response.data["job"]);
   }
 
-  async getQueued(queuId: string) {
+  async getQueuedDocumentStatus(queuId: string): Promise<Job> {
     this.checkApiKeys();
-    const response = await this.endpoints[0].documentQueueGet(queuId);
-    const statusCode = response.messageObj.statusCode;
+    const queueResponse = await this.endpoints[0].documentQueueReqGet(queuId);
+    if (
+      queueResponse.messageObj.statusCode === 302 &&
+      queueResponse.messageObj.headers.location !== undefined
+    ) {
+      const docId = queueResponse.messageObj.headers.location.split("/").pop();
+      if (docId !== undefined) {
+        const docResponse = await this.endpoints[0].documentGetReq(docId);
+        return new Job(docResponse.data["job"]);
+      }
+    }
+    return new Job(queueResponse.data["job"]);
+  }
 
+  async getQueuedDocument(queuId: string): Promise<Job | Response<DocType>> {
+    this.checkApiKeys();
+    const queueResponse = await this.endpoints[0].documentQueueReqGet(queuId);
+    if (
+      queueResponse.messageObj.statusCode === 302 &&
+      queueResponse.messageObj.headers.location !== undefined
+    ) {
+      const docId = queueResponse.messageObj.headers.location.split("/").pop();
+      if (docId !== undefined) {
+        const docResponse = await this.endpoints[0].documentGetReq(docId);
+        return this.buildResult(docResponse);
+      }
+    }
+    return new Job(queueResponse.data["job"]);
   }
 
   async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc.isPdf()) {
       await inputDoc.cutPdf(pageOptions);
     }
+  }
+
+  // this is only a separate function because of financial docs
+  protected async predictRequest(
+    inputDoc: InputSource,
+    includeWords: boolean,
+    cropping: boolean
+  ) {
+    return await this.endpoints[0].predictReqPost(
+      inputDoc,
+      includeWords,
+      cropping
+    );
+  }
+
+  protected buildResult(
+    response: EndpointResponse,
+    inputFile?: InputSource
+  ): Response<DocType> {
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode > 201) {
+      const errorMessage = JSON.stringify(response.data, null, 2);
+      errorHandler.throw(
+        new Error(
+          `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
+        )
+      );
+      return new Response<DocType>(this.documentClass, {
+        httpResponse: response,
+        documentType: this.documentType,
+        error: true,
+        input: inputFile,
+      });
+    }
+    return new Response<DocType>(this.documentClass, {
+      httpResponse: response,
+      documentType: this.documentType,
+      error: false,
+      input: inputFile,
+    });
   }
 
   protected checkApiKeys() {
