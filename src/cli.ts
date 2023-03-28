@@ -15,7 +15,7 @@ import {
   FinancialDocumentV1,
 } from "./documents";
 
-import { STANDARD_API_OWNER } from "./api";
+import { Response, STANDARD_API_OWNER, Job } from "./api";
 import { Client, PredictOptions } from "./client";
 import { PageOptions, PageOptionsOperation } from "./inputs";
 import * as console from "console";
@@ -186,17 +186,17 @@ async function predictCall(command: string, inputPath: string, options: any) {
     pageOptions: pageOptions,
   };
 
-  let response;
+  let response: Response<Document> | Job;
   if (options.asyncPost) {
     response = await doc.enqueue(conf.docClass, predictParams);
     console.log(response);
   } else if (options.asyncGet) {
-    response = await doc.getQueuedStatus(
+    response = await doc.parseQueued(
       conf.docClass,
       predictParams,
       options.asyncGet
     );
-    if ("document" in response) {
+    if ("document" in response && response.document !== undefined) {
       console.log(response.document);
     } else {
       console.log(response);
