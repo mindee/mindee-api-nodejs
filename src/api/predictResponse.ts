@@ -6,7 +6,11 @@ export class Job {
   issuedAt: Date;
   availableAt?: Date;
   id?: string;
-  status?: "processing" | "waiting";
+  status?: "waiting" | "processing" | "completed";
+  /**
+   * The time taken to process the job, in milliseconds.
+   */
+  milliSecsTaken?: number;
 
   constructor(jsonResponse: StringDict) {
     this.issuedAt = this.datetimeWithTimezone(jsonResponse["issued_at"]);
@@ -20,9 +24,13 @@ export class Job {
     }
     this.id = jsonResponse["id"];
     this.status = jsonResponse["status"];
+    if (this.availableAt !== undefined) {
+      this.milliSecsTaken =
+        this.availableAt.getTime() - this.issuedAt.getTime();
+    }
   }
 
-  /** Hideous thing to make sure dates sent back by the server are parsed correctly in UTC. */
+  // Hideous thing to make sure dates sent back by the server are parsed correctly in UTC.
   protected datetimeWithTimezone(date: string): Date {
     if (date.search(/\+[0-9]{2}:[0-9]{2}$/) === -1) {
       date += "+00:00";
@@ -50,7 +58,7 @@ export class ApiRequest {
 
 // For upcoming v4, use this as the base for all responses.
 // To not break compatibility, in v3.x, we will only use it as the base for async responses.
-export class BasePredictResponse<DocType extends Document> {
+export class BasePredictResponse {
   apiRequest: ApiRequest;
 
   constructor(serverResponse: StringDict) {
@@ -58,7 +66,9 @@ export class BasePredictResponse<DocType extends Document> {
   }
 }
 
-export class AsyncPredictResponse<DocType extends Document> extends BasePredictResponse<DocType> {
+export class AsyncPredictResponse<
+  DocType extends Document
+> extends BasePredictResponse {
   job: Job;
   document?: Response<DocType>;
 

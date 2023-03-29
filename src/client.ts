@@ -1,5 +1,4 @@
 import { Readable } from "stream";
-
 import {
   Base64Input,
   BytesInput,
@@ -10,7 +9,12 @@ import {
   UrlInput,
   BufferInput,
 } from "./inputs";
-import { Response, STANDARD_API_OWNER, StandardEndpoint, AsyncPredictResponse } from "./api";
+import {
+  Response,
+  STANDARD_API_OWNER,
+  StandardEndpoint,
+  AsyncPredictResponse,
+} from "./api";
 import {
   Document,
   DocumentSig,
@@ -99,13 +103,16 @@ class DocumentClient {
       pageOptions: undefined,
     }
   ): Promise<Response<DocType>> {
-    const parsedParams = this.parsePredictParams(documentClass, params);
-
-    return await parsedParams.docConfig.predict({
+    const docConfig = this.getDocConfig(
+      documentClass,
+      params.endpointName,
+      params.accountName
+    );
+    return await docConfig.predict({
       inputDoc: this.inputSource,
-      includeWords: parsedParams.fullText,
+      includeWords: this.getBooleanParam(params.fullText),
       pageOptions: params.pageOptions,
-      cropper: parsedParams.cropper,
+      cropper: this.getBooleanParam(params.cropper),
     });
   }
 
@@ -124,42 +131,51 @@ class DocumentClient {
       pageOptions: undefined,
     }
   ): Promise<AsyncPredictResponse<DocType>> {
-    const parsedParams = this.parsePredictParams(documentClass, params);
-    return await parsedParams.docConfig.asyncPredict({
+    const docConfig = this.getDocConfig(
+      documentClass,
+      params.endpointName,
+      params.accountName
+    );
+    return await docConfig.asyncPredict({
       inputDoc: this.inputSource,
-      includeWords: parsedParams.fullText,
+      includeWords: this.getBooleanParam(params.fullText),
       pageOptions: params.pageOptions,
-      cropper: parsedParams.cropper,
+      cropper: this.getBooleanParam(params.cropper),
     });
   }
 
   async parseQueued<DocType extends Document>(
     documentClass: DocumentSig<DocType>,
-    params: PredictOptions = {
+    params: {
+      endpointName?: string;
+      accountName?: string;
+    } = {
       endpointName: "",
       accountName: "",
     },
     queueId: string
   ): Promise<AsyncPredictResponse<DocType>> {
-    const parsedParams = this.parsePredictParams(documentClass, params);
-    return await parsedParams.docConfig.getQueuedDocument(queueId);
+    const docConfig = this.getDocConfig(
+      documentClass,
+      params.endpointName,
+      params.accountName
+    );
+    return await docConfig.getQueuedDocument(queueId);
   }
 
-  protected parsePredictParams<DocType extends Document>(
+  protected getBooleanParam(param?: boolean): boolean {
+    return param !== undefined ? param : false;
+  }
+
+  protected getDocConfig<DocType extends Document>(
     documentClass: DocumentSig<DocType>,
-    params: PredictOptions
-  ): {
-    docConfig: DocumentConfig<any>;
-    fullText: boolean;
-    cropper: boolean;
-  } {
-    // seems like there should be a better way of doing this
-    const fullText = params?.fullText !== undefined ? params.fullText : false;
-    const cropper = params?.cropper !== undefined ? params.cropper : false;
+    endpointName?: string,
+    accountName?: string
+  ): DocumentConfig<DocType> {
     const docType: string =
-      params.endpointName === undefined || params.endpointName === ""
+      endpointName === undefined || endpointName === ""
         ? documentClass.name
-        : params.endpointName;
+        : endpointName;
 
     const found: Array<string[]> = [];
     this.docConfigs.forEach((config, configKey) => {
@@ -174,19 +190,15 @@ class DocumentClient {
     let configKey: string[] = [];
     if (found.length === 1) {
       configKey = found[0];
-    } else if (params.accountName) {
-      configKey = [params.accountName, docType];
+    } else if (accountName) {
+      configKey = [accountName, docType];
     }
     const docConfig = this.docConfigs.get(configKey);
     if (docConfig === undefined) {
       // TODO: raise error printing all usernames
       throw `Couldn't find the config '${configKey}'`;
     }
-    return {
-      docConfig: docConfig,
-      fullText: fullText,
-      cropper: cropper,
-    };
+    return docConfig;
   }
 }
 

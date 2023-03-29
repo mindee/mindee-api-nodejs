@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { BasePredictResponse } from "../../src";
+import { AsyncPredictResponse } from "../../src";
 import { promises as fs } from "fs";
 import path from "path";
 import { StringDict } from "../../src/fields";
@@ -8,12 +8,12 @@ import { StringDict } from "../../src/fields";
 describe("Asynchronous API predict response", () => {
   it("should parse a successful enqueue", async () => {
     const jsonData = await fs.readFile(
-      path.resolve("tests/data/async/enqueue_success_response.json")
+      path.resolve("tests/data/async/post_success.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new BasePredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
+    const response = new AsyncPredictResponse(httpResponse.data);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-02-16T12:33:49.602Z"
@@ -24,12 +24,12 @@ describe("Asynchronous API predict response", () => {
 
   it("should parse a failed enqueue", async () => {
     const jsonData = await fs.readFile(
-      path.resolve("tests/data/async/enqueue_fail_async_forbidden.json")
+      path.resolve("tests/data/async/post_fail_forbidden.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new BasePredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
+    const response = new AsyncPredictResponse(httpResponse.data);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-01-01T00:00:00.000Z"
@@ -38,19 +38,38 @@ describe("Asynchronous API predict response", () => {
     expect(response.apiRequest.error.code).to.equals("Forbidden");
   });
 
-  it("should parse a job in progress ", async () => {
+  it("should parse a job in progress", async () => {
     const jsonData = await fs.readFile(
-      path.resolve("tests/data/async/get_job_in_progress.json")
+      path.resolve("tests/data/async/get_processing.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new BasePredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
+    const response = new AsyncPredictResponse(httpResponse.data);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-03-16T12:33:49.602Z"
     );
     expect(response.job.availableAt?.toISOString()).to.be.undefined;
+    expect(response.apiRequest.error).to.deep.equal({});
+  });
+
+  it("should parse a completed job", async () => {
+    const jsonData = await fs.readFile(
+      path.resolve("tests/data/async/get_completed.json")
+    );
+    const httpResponse: StringDict = {
+      data: JSON.parse(jsonData.toString()),
+    };
+    const response = new AsyncPredictResponse(httpResponse.data);
+    expect(response.job).to.not.be.undefined;
+    expect(response.job.issuedAt.toISOString()).to.be.equals(
+      "2023-03-21T13:52:56.326Z"
+    );
+    expect(response.job.availableAt?.toISOString()).to.be.equals(
+      "2023-03-21T13:53:00.990Z"
+    );
+    expect(response.job.milliSecsTaken)?.to.equal(4664);
     expect(response.apiRequest.error).to.deep.equal({});
   });
 });

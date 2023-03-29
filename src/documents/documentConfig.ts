@@ -81,7 +81,9 @@ export class DocumentConfig<DocType extends Document> {
     return new AsyncPredictResponse(response.data);
   }
 
-  async getQueuedDocument(queuId: string): Promise<AsyncPredictResponse<DocType>> {
+  async getQueuedDocument(
+    queuId: string
+  ): Promise<AsyncPredictResponse<DocType>> {
     this.checkApiKeys();
     const queueResponse = await this.endpoints[0].documentQueueReqGet(queuId);
     if (
