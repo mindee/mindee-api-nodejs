@@ -10,7 +10,7 @@ import {
   UrlInput,
   BufferInput,
 } from "./inputs";
-import { Job, Response, STANDARD_API_OWNER, StandardEndpoint } from "./api";
+import {AsyncPredictResponse, Job, Response, STANDARD_API_OWNER, StandardEndpoint} from "./api";
 import {
   Document,
   DocumentSig,
@@ -133,29 +133,11 @@ class DocumentClient {
     });
   }
 
-  async getQueuedStatus<DocType extends Document>(
-    documentClass: DocumentSig<DocType>,
-    params: PredictOptions = {
-      endpointName: "",
-      accountName: "",
-      fullText: false,
-      cropper: false,
-      pageOptions: undefined,
-    },
-    queueId: string
-  ): Promise<Job> {
-    const parsedParams = this.parsePredictParams(documentClass, params);
-    return await parsedParams.docConfig.getQueuedDocumentStatus(queueId);
-  }
-
   async parseQueued<DocType extends Document>(
     documentClass: DocumentSig<DocType>,
     params: PredictOptions = {
       endpointName: "",
       accountName: "",
-      fullText: false,
-      cropper: false,
-      pageOptions: undefined,
     },
     queueId: string
   ): Promise<Job | Response<DocType>> {
