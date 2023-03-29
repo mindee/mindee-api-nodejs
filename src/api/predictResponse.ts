@@ -1,74 +1,70 @@
-import { Document, DocumentSig } from "../documents";
-import { FullText, StringDict } from "../fields";
-import { InputSource } from "../inputs";
+import { StringDict } from "../fields";
+import { Document } from "../documents";
+import { Response } from "./documentResponse";
 
-export interface ResponseProps {
-  httpResponse: any;
-  documentType?: string;
-  input?: InputSource;
-  error: boolean;
+export class Job {
+  issuedAt: Date;
+  availableAt?: Date;
+  id?: string;
+  status?: "processing" | "waiting";
+
+  constructor(jsonResponse: StringDict) {
+    this.issuedAt = this.datetimeWithTimezone(jsonResponse["issued_at"]);
+    if (
+      jsonResponse["available_at"] !== undefined &&
+      jsonResponse["available_at"] !== null
+    ) {
+      this.availableAt = this.datetimeWithTimezone(
+        jsonResponse["available_at"]
+      );
+    }
+    this.id = jsonResponse["id"];
+    this.status = jsonResponse["status"];
+  }
+
+  /** Hideous thing to make sure dates sent back by the server are parsed correctly in UTC. */
+  protected datetimeWithTimezone(date: string): Date {
+    if (date.search(/\+[0-9]{2}:[0-9]{2}$/) === -1) {
+      date += "+00:00";
+    }
+    return new Date(date);
+  }
 }
 
-export type ResponseSig<DocType extends Document> = {
-  new (
-    documentClass: DocumentSig<DocType>,
-    params: ResponseProps
-  ): Response<DocType>;
-};
+export class ApiRequest {
+  error: StringDict;
+  resources: string[];
+  status: "failure" | "success";
+  /** HTTP status code */
+  statusCode: number;
+  url: string;
 
-/**
- * Base class for all responses.
- */
-export class Response<DocType extends Document> {
-  httpResponse: any;
-  inputFile?: InputSource;
-  document?: DocType;
-  pages: Array<DocType> = [];
-  readonly documentClass: DocumentSig<DocType>;
-
-  constructor(documentClass: DocumentSig<DocType>, params: ResponseProps) {
-    this.documentClass = documentClass;
-    this.httpResponse = params.httpResponse;
-    this.inputFile = params.input;
-    if (!params.error) {
-      this.formatResponse(params.documentType);
-    }
+  constructor(serverResponse: StringDict) {
+    this.error = serverResponse["error"];
+    this.resources = serverResponse["resources"];
+    this.status = serverResponse["status"];
+    this.statusCode = serverResponse["status_code"];
+    this.url = serverResponse["url"];
   }
+}
 
-  protected formatResponse(documentType?: string) {
-    const httpDataDocument = this.httpResponse.data.document;
-    httpDataDocument.inference.pages.forEach((apiPage: StringDict) => {
-      const pageText = this.getPageText(httpDataDocument, apiPage.id);
-      this.pages.push(
-        new this.documentClass({
-          documentType: documentType,
-          prediction: apiPage.prediction,
-          inputSource: this.inputFile,
-          pageId: apiPage.id,
-          orientation: apiPage.orientation,
-          extras: apiPage.extras,
-          fullText: pageText,
-        })
-      );
-    });
-    this.document = new this.documentClass({
-      documentType: documentType,
-      prediction: httpDataDocument.inference.prediction,
-      inputSource: this.inputFile,
-      orientation: {},
-      extras: {},
-    });
+// For upcoming v4, use this as the base for all responses.
+// To not break compatibility, in v3.x, we will only use it as the base for async responses.
+export class BasePredictResponse<DocType extends Document> {
+  apiRequest: ApiRequest;
+
+  constructor(serverResponse: StringDict) {
+    this.apiRequest = new ApiRequest(serverResponse["api_request"]);
   }
+}
 
-  protected getPageText(httpDataDocument: any, pageId: number): FullText {
-    const pageText = new FullText();
-    if (
-      "ocr" in httpDataDocument &&
-      Object.keys(httpDataDocument.ocr).length > 0
-    ) {
-      pageText.words =
-        httpDataDocument.ocr["mvision-v1"].pages[pageId].all_words;
-    }
-    return pageText;
+export class AsyncPredictResponse<DocType extends Document> extends BasePredictResponse<DocType> {
+  job: Job;
+  document?: Response<DocType>;
+
+  constructor(serverResponse: StringDict, document?: Response<DocType>) {
+    super(serverResponse);
+    this.job = new Job(serverResponse["job"]);
+    this.document = document;
   }
 }

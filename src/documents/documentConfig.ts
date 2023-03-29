@@ -5,8 +5,8 @@ import {
   CustomEndpoint,
   StandardEndpoint,
   EndpointResponse,
-  Job,
   API_KEY_ENVVAR_NAME,
+  AsyncPredictResponse,
 } from "../api";
 import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
@@ -58,7 +58,7 @@ export class DocumentConfig<DocType extends Document> {
     includeWords: boolean;
     pageOptions?: PageOptions;
     cropper: boolean;
-  }): Promise<Job> {
+  }): Promise<AsyncPredictResponse<DocType>> {
     this.checkApiKeys();
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
@@ -78,10 +78,10 @@ export class DocumentConfig<DocType extends Document> {
         )
       );
     }
-    return new Job(response.data["job"]);
+    return new AsyncPredictResponse(response.data);
   }
 
-  async getQueuedDocumentStatus(queuId: string): Promise<Job> {
+  async getQueuedDocument(queuId: string): Promise<AsyncPredictResponse<DocType>> {
     this.checkApiKeys();
     const queueResponse = await this.endpoints[0].documentQueueReqGet(queuId);
     if (
@@ -91,26 +91,11 @@ export class DocumentConfig<DocType extends Document> {
       const docId = queueResponse.messageObj.headers.location.split("/").pop();
       if (docId !== undefined) {
         const docResponse = await this.endpoints[0].documentGetReq(docId);
-        return new Job(docResponse.data["job"]);
+        const document = this.buildResult(docResponse);
+        return new AsyncPredictResponse(docResponse.data, document);
       }
     }
-    return new Job(queueResponse.data["job"]);
-  }
-
-  async getQueuedDocument(queuId: string): Promise<Job | Response<DocType>> {
-    this.checkApiKeys();
-    const queueResponse = await this.endpoints[0].documentQueueReqGet(queuId);
-    if (
-      queueResponse.messageObj.statusCode === 302 &&
-      queueResponse.messageObj.headers.location !== undefined
-    ) {
-      const docId = queueResponse.messageObj.headers.location.split("/").pop();
-      if (docId !== undefined) {
-        const docResponse = await this.endpoints[0].documentGetReq(docId);
-        return this.buildResult(docResponse);
-      }
-    }
-    return new Job(queueResponse.data["job"]);
+    return new AsyncPredictResponse(queueResponse.data);
   }
 
   async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {

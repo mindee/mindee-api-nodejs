@@ -10,7 +10,7 @@ import {
   UrlInput,
   BufferInput,
 } from "./inputs";
-import {AsyncPredictResponse, Job, Response, STANDARD_API_OWNER, StandardEndpoint} from "./api";
+import { Response, STANDARD_API_OWNER, StandardEndpoint, AsyncPredictResponse } from "./api";
 import {
   Document,
   DocumentSig,
@@ -123,7 +123,7 @@ class DocumentClient {
       cropper: false,
       pageOptions: undefined,
     }
-  ): Promise<Job> {
+  ): Promise<AsyncPredictResponse<DocType>> {
     const parsedParams = this.parsePredictParams(documentClass, params);
     return await parsedParams.docConfig.asyncPredict({
       inputDoc: this.inputSource,
@@ -140,7 +140,7 @@ class DocumentClient {
       accountName: "",
     },
     queueId: string
-  ): Promise<Job | Response<DocType>> {
+  ): Promise<AsyncPredictResponse<DocType>> {
     const parsedParams = this.parsePredictParams(documentClass, params);
     return await parsedParams.docConfig.getQueuedDocument(queueId);
   }

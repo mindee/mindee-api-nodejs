@@ -15,7 +15,7 @@ import {
   FinancialDocumentV1,
 } from "./documents";
 
-import { Response, STANDARD_API_OWNER, Job } from "./api";
+import { Response, STANDARD_API_OWNER } from "./api";
 import { Client, PredictOptions } from "./client";
 import { PageOptions, PageOptionsOperation } from "./inputs";
 import * as console from "console";
@@ -186,36 +186,38 @@ async function predictCall(command: string, inputPath: string, options: any) {
     pageOptions: pageOptions,
   };
 
-  let response: Response<Document> | Job;
+  let docResponse: Response<Document> | undefined;
   if (options.asyncPost) {
-    response = await doc.enqueue(conf.docClass, predictParams);
-    console.log(response);
+    const asyncResponse = await doc.enqueue(conf.docClass, predictParams);
+    console.log(asyncResponse.job);
   } else if (options.asyncGet) {
-    response = await doc.parseQueued(
+    const asyncResponse = await doc.parseQueued(
       conf.docClass,
       predictParams,
       options.asyncGet
     );
-    if ("document" in response && response.document !== undefined) {
-      console.log(response.document);
+    if (asyncResponse.document !== undefined) {
+      docResponse = asyncResponse.document;
     } else {
-      console.log(response);
+      console.log(asyncResponse);
     }
   } else {
-    response = await doc.parse(conf.docClass, predictParams);
+    docResponse = await doc.parse(conf.docClass, predictParams);
+  }
 
+  if (docResponse !== undefined) {
     if (options.fullText) {
-      response.pages.forEach((page) => {
+      docResponse.pages.forEach((page) => {
         console.log(page.fullText?.toString());
       });
     }
     if (options.pages) {
-      response.pages.forEach((page) => {
+      docResponse.pages.forEach((page) => {
         console.log(`\n${page}`);
       });
     }
-    if (response.document) {
-      console.log(`\n${response.document}`);
+    if (docResponse.document) {
+      console.log(`\n${docResponse.document}`);
     }
   }
 }

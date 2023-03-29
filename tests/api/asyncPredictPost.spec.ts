@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { AsyncPredictResponse } from "../../src";
+import { BasePredictResponse } from "../../src";
 import { promises as fs } from "fs";
 import path from "path";
 import { StringDict } from "../../src/fields";
@@ -13,7 +13,7 @@ describe("Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new AsyncPredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
+    const response = new BasePredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-02-16T12:33:49.602Z"
@@ -29,7 +29,7 @@ describe("Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new AsyncPredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
+    const response = new BasePredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-01-01T00:00:00.000Z"
@@ -45,7 +45,7 @@ describe("Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new AsyncPredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
+    const response = new BasePredictResponse(httpResponse.data["api_request"], httpResponse.data["job"]);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-03-16T12:33:49.602Z"
