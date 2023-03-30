@@ -80,10 +80,10 @@ export interface PredictOptions {
 }
 
 class DocumentClient {
-  inputSource: InputSource;
   docConfigs: DocConfigs;
+  inputSource?: InputSource;
 
-  constructor(inputSource: InputSource, docConfigs: DocConfigs) {
+  constructor(docConfigs: DocConfigs, inputSource?: InputSource) {
     this.inputSource = inputSource;
     this.docConfigs = docConfigs;
   }
@@ -108,6 +108,9 @@ class DocumentClient {
       params.endpointName,
       params.accountName
     );
+    if (this.inputSource === undefined) {
+      throw new Error("The 'parse' function requires an input document.");
+    }
     return await docConfig.predict({
       inputDoc: this.inputSource,
       includeWords: this.getBooleanParam(params.fullText),
@@ -136,6 +139,9 @@ class DocumentClient {
       params.endpointName,
       params.accountName
     );
+    if (this.inputSource === undefined) {
+      throw new Error("The 'enqueue' function requires an input document.");
+    }
     return await docConfig.asyncPredict({
       inputDoc: this.inputSource,
       includeWords: this.getBooleanParam(params.fullText),
@@ -385,7 +391,7 @@ export class Client {
     const doc = new PathInput({
       inputPath: inputPath,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -398,7 +404,7 @@ export class Client {
       inputString: inputString,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -411,7 +417,7 @@ export class Client {
       inputStream: inputStream,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -424,7 +430,7 @@ export class Client {
       inputBytes: inputBytes,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -435,7 +441,7 @@ export class Client {
     const doc = new UrlInput({
       url: url,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -448,6 +454,13 @@ export class Client {
       buffer: buffer,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
+  }
+
+  /**
+   * Load an empty input document from an asynchronous call.
+   */
+  docForAsync() {
+    return new DocumentClient(this.docConfigs);
   }
 }

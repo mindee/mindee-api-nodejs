@@ -71,12 +71,7 @@ export class DocumentConfig<DocType extends Document> {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 202) {
-      const errorMessage = JSON.stringify(response.data, null, 2);
-      errorHandler.throw(
-        new Error(
-          `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
-        )
-      );
+      this.handleError(response, statusCode);
     }
     return new AsyncPredictResponse(response.data);
   }
@@ -86,8 +81,16 @@ export class DocumentConfig<DocType extends Document> {
   ): Promise<AsyncPredictResponse<DocType>> {
     this.checkApiKeys();
     const queueResponse = await this.endpoints[0].documentQueueReqGet(queuId);
+    const queueStatusCode = queueResponse.messageObj.statusCode;
     if (
-      queueResponse.messageObj.statusCode === 302 &&
+      queueStatusCode === undefined ||
+      queueStatusCode < 200 ||
+      queueStatusCode > 302
+    ) {
+      this.handleError(queueResponse, queueStatusCode);
+    }
+    if (
+      queueStatusCode === 302 &&
       queueResponse.messageObj.headers.location !== undefined
     ) {
       const docId = queueResponse.messageObj.headers.location.split("/").pop();
@@ -119,24 +122,22 @@ export class DocumentConfig<DocType extends Document> {
     );
   }
 
+  protected handleError(response: EndpointResponse, statusCode?: number) {
+    const errorMessage = JSON.stringify(response.data, null, 2);
+    errorHandler.throw(
+      new Error(
+        `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
+      )
+    );
+  }
+
   protected buildResult(
     response: EndpointResponse,
     inputFile?: InputSource
   ): Response<DocType> {
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode > 201) {
-      const errorMessage = JSON.stringify(response.data, null, 2);
-      errorHandler.throw(
-        new Error(
-          `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
-        )
-      );
-      return new Response<DocType>(this.documentClass, {
-        httpResponse: response,
-        documentType: this.documentType,
-        error: true,
-        input: inputFile,
-      });
+      this.handleError(response, statusCode);
     }
     return new Response<DocType>(this.documentClass, {
       httpResponse: response,
