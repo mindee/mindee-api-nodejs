@@ -152,14 +152,14 @@ class DocumentClient {
 
   async parseQueued<DocType extends Document>(
     documentClass: DocumentSig<DocType>,
+    queueId: string,
     params: {
       endpointName?: string;
       accountName?: string;
     } = {
       endpointName: "",
       accountName: "",
-    },
-    queueId: string
+    }
   ): Promise<AsyncPredictResponse<DocType>> {
     const docConfig = this.getDocConfig(
       documentClass,

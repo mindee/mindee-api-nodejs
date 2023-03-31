@@ -1,7 +1,6 @@
 import { Command, OptionValues } from "commander";
 import {
   Document,
-  DocumentSig,
   InvoiceV4,
   InvoiceSplitterV1,
   ReceiptV4,
@@ -13,7 +12,8 @@ import {
   eu,
   ShippingContainerV1,
   FinancialDocumentV1,
-} from "./documents";
+} from "./";
+import { DocumentSig } from "./documents";
 
 import { Response, STANDARD_API_OWNER } from "./api";
 import { Client, PredictOptions } from "./client";
@@ -234,21 +234,13 @@ async function callEnqueue(command: string, inputPath: string, options: any) {
   console.log(response.job);
 }
 
-async function callParseQueued(
-  command: string,
-  inputPath: string,
-  options: any
-) {
+async function callParseQueued(command: string, queueId: string, options: any) {
   const conf = getConfig(command);
   const mindeeClient = initClient(command, options);
   const predictParams = getPredictParams(command, options, conf);
   const doc = mindeeClient.docForAsync();
 
-  const response = await doc.parseQueued(
-    conf.docClass,
-    predictParams,
-    inputPath
-  );
+  const response = await doc.parseQueued(conf.docClass, queueId, predictParams);
 
   if (response.document !== undefined) {
     printResponse(response.document, options);
