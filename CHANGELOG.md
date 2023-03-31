@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v3.7.1 - 2023-03-31
+### Fixes
+* :bug: make sure all documents are exported properly
+
+
 ## v3.7.0 - 2023-03-31
 ### Changes
 * :sparkles: add support for asynchronous predictions
