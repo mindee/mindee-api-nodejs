@@ -1,5 +1,4 @@
 import { Readable } from "stream";
-
 import {
   Base64Input,
   BytesInput,
@@ -10,7 +9,12 @@ import {
   UrlInput,
   BufferInput,
 } from "./inputs";
-import { Response, STANDARD_API_OWNER, StandardEndpoint } from "./api";
+import {
+  Response,
+  STANDARD_API_OWNER,
+  StandardEndpoint,
+  AsyncPredictResponse,
+} from "./api";
 import {
   Document,
   DocumentSig,
@@ -76,16 +80,16 @@ export interface PredictOptions {
 }
 
 class DocumentClient {
-  inputSource: InputSource;
   docConfigs: DocConfigs;
+  inputSource?: InputSource;
 
-  constructor(inputSource: InputSource, docConfigs: DocConfigs) {
+  constructor(docConfigs: DocConfigs, inputSource?: InputSource) {
     this.inputSource = inputSource;
     this.docConfigs = docConfigs;
   }
 
   /**
-   * Send a document to an endpoint and parse the predictions.
+   * Send a document to a synchronous endpoint and parse the predictions.
    * @param documentClass
    * @param params
    */
@@ -99,13 +103,85 @@ class DocumentClient {
       pageOptions: undefined,
     }
   ): Promise<Response<DocType>> {
-    // seems like there should be a better way of doing this
-    const fullText = params?.fullText !== undefined ? params.fullText : false;
-    const cropper = params?.cropper !== undefined ? params.cropper : false;
+    const docConfig = this.getDocConfig(
+      documentClass,
+      params.endpointName,
+      params.accountName
+    );
+    if (this.inputSource === undefined) {
+      throw new Error("The 'parse' function requires an input document.");
+    }
+    return await docConfig.predict({
+      inputDoc: this.inputSource,
+      includeWords: this.getBooleanParam(params.fullText),
+      pageOptions: params.pageOptions,
+      cropper: this.getBooleanParam(params.cropper),
+    });
+  }
+
+  /**
+   * Send the document to an asynchronous endpoint and return its ID in the queue.
+   * @param documentClass
+   * @param params
+   */
+  async enqueue<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
+    params: PredictOptions = {
+      endpointName: "",
+      accountName: "",
+      fullText: false,
+      cropper: false,
+      pageOptions: undefined,
+    }
+  ): Promise<AsyncPredictResponse<DocType>> {
+    const docConfig = this.getDocConfig(
+      documentClass,
+      params.endpointName,
+      params.accountName
+    );
+    if (this.inputSource === undefined) {
+      throw new Error("The 'enqueue' function requires an input document.");
+    }
+    return await docConfig.asyncPredict({
+      inputDoc: this.inputSource,
+      includeWords: this.getBooleanParam(params.fullText),
+      pageOptions: params.pageOptions,
+      cropper: this.getBooleanParam(params.cropper),
+    });
+  }
+
+  async parseQueued<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
+    params: {
+      endpointName?: string;
+      accountName?: string;
+    } = {
+      endpointName: "",
+      accountName: "",
+    },
+    queueId: string
+  ): Promise<AsyncPredictResponse<DocType>> {
+    const docConfig = this.getDocConfig(
+      documentClass,
+      params.endpointName,
+      params.accountName
+    );
+    return await docConfig.getQueuedDocument(queueId);
+  }
+
+  protected getBooleanParam(param?: boolean): boolean {
+    return param !== undefined ? param : false;
+  }
+
+  protected getDocConfig<DocType extends Document>(
+    documentClass: DocumentSig<DocType>,
+    endpointName?: string,
+    accountName?: string
+  ): DocumentConfig<DocType> {
     const docType: string =
-      params.endpointName === undefined || params.endpointName === ""
+      endpointName === undefined || endpointName === ""
         ? documentClass.name
-        : params.endpointName;
+        : endpointName;
 
     const found: Array<string[]> = [];
     this.docConfigs.forEach((config, configKey) => {
@@ -120,21 +196,15 @@ class DocumentClient {
     let configKey: string[] = [];
     if (found.length === 1) {
       configKey = found[0];
-    } else if (params.accountName) {
-      configKey = [params.accountName, docType];
+    } else if (accountName) {
+      configKey = [accountName, docType];
     }
     const docConfig = this.docConfigs.get(configKey);
     if (docConfig === undefined) {
       // TODO: raise error printing all usernames
       throw `Couldn't find the config '${configKey}'`;
     }
-
-    return await docConfig.predict({
-      inputDoc: this.inputSource,
-      includeWords: fullText,
-      pageOptions: params.pageOptions,
-      cropper: cropper,
-    });
+    return docConfig;
   }
 }
 
@@ -213,7 +283,7 @@ export class Client {
     this.docConfigs.set(
       [STANDARD_API_OWNER, InvoiceSplitterV1.name],
       new DocumentConfig(InvoiceSplitterV1, [
-        new StandardEndpoint("invoice_splitter_beta", "1", this.apiKey),
+        new StandardEndpoint("invoice_splitter_async_beta", "1", this.apiKey),
       ])
     );
     this.docConfigs.set(
@@ -321,7 +391,7 @@ export class Client {
     const doc = new PathInput({
       inputPath: inputPath,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -334,7 +404,7 @@ export class Client {
       inputString: inputString,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -347,7 +417,7 @@ export class Client {
       inputStream: inputStream,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -360,7 +430,7 @@ export class Client {
       inputBytes: inputBytes,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -371,7 +441,7 @@ export class Client {
     const doc = new UrlInput({
       url: url,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -384,6 +454,13 @@ export class Client {
       buffer: buffer,
       filename: filename,
     });
-    return new DocumentClient(doc, this.docConfigs);
+    return new DocumentClient(this.docConfigs, doc);
+  }
+
+  /**
+   * Load an empty input document from an asynchronous call.
+   */
+  docForAsync() {
+    return new DocumentClient(this.docConfigs);
   }
 }

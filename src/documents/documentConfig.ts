@@ -4,8 +4,9 @@ import {
   Endpoint,
   CustomEndpoint,
   StandardEndpoint,
-  predictResponse,
+  EndpointResponse,
   API_KEY_ENVVAR_NAME,
+  AsyncPredictResponse,
 } from "../api";
 import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
@@ -33,45 +34,6 @@ export class DocumentConfig<DocType extends Document> {
     this.documentClass = documentClass;
   }
 
-  protected async predictRequest(
-    inputDoc: InputSource,
-    includeWords: boolean,
-    cropping: boolean
-  ) {
-    return await this.endpoints[0].predictReqPost(
-      inputDoc,
-      includeWords,
-      cropping
-    );
-  }
-
-  buildResult(
-    inputFile: InputSource,
-    response: predictResponse
-  ): Response<DocType> {
-    const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode > 201) {
-      const errorMessage = JSON.stringify(response.data, null, 2);
-      errorHandler.throw(
-        new Error(
-          `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
-        )
-      );
-      return new Response<DocType>(this.documentClass, {
-        httpResponse: response,
-        documentType: this.documentType,
-        input: inputFile,
-        error: true,
-      });
-    }
-    return new Response<DocType>(this.documentClass, {
-      httpResponse: response,
-      documentType: this.documentType,
-      input: inputFile,
-      error: false,
-    });
-  }
-
   async predict(params: {
     inputDoc: InputSource;
     includeWords: boolean;
@@ -88,13 +50,101 @@ export class DocumentConfig<DocType extends Document> {
       params.includeWords,
       params.cropper
     );
-    return this.buildResult(params.inputDoc, response);
+    return this.buildResult(response, params.inputDoc);
+  }
+
+  async asyncPredict(params: {
+    inputDoc: InputSource;
+    includeWords: boolean;
+    pageOptions?: PageOptions;
+    cropper: boolean;
+  }): Promise<AsyncPredictResponse<DocType>> {
+    this.checkApiKeys();
+    await params.inputDoc.init();
+    if (params.pageOptions !== undefined) {
+      await this.cutDocPages(params.inputDoc, params.pageOptions);
+    }
+    const response = await this.endpoints[0].predictAsyncReqPost(
+      params.inputDoc,
+      params.includeWords,
+      params.cropper
+    );
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode >= 202) {
+      this.handleError(response, statusCode);
+    }
+    return new AsyncPredictResponse(response.data);
+  }
+
+  async getQueuedDocument(
+    queuId: string
+  ): Promise<AsyncPredictResponse<DocType>> {
+    this.checkApiKeys();
+    const queueResponse = await this.endpoints[0].documentQueueReqGet(queuId);
+    const queueStatusCode = queueResponse.messageObj.statusCode;
+    if (
+      queueStatusCode === undefined ||
+      queueStatusCode < 200 ||
+      queueStatusCode > 302
+    ) {
+      this.handleError(queueResponse, queueStatusCode);
+    }
+    if (
+      queueStatusCode === 302 &&
+      queueResponse.messageObj.headers.location !== undefined
+    ) {
+      const docId = queueResponse.messageObj.headers.location.split("/").pop();
+      if (docId !== undefined) {
+        const docResponse = await this.endpoints[0].documentGetReq(docId);
+        const document = this.buildResult(docResponse);
+        return new AsyncPredictResponse(docResponse.data, document);
+      }
+    }
+    return new AsyncPredictResponse(queueResponse.data);
   }
 
   async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc.isPdf()) {
       await inputDoc.cutPdf(pageOptions);
     }
+  }
+
+  // this is only a separate function because of financial docs
+  protected async predictRequest(
+    inputDoc: InputSource,
+    includeWords: boolean,
+    cropping: boolean
+  ) {
+    return await this.endpoints[0].predictReqPost(
+      inputDoc,
+      includeWords,
+      cropping
+    );
+  }
+
+  protected handleError(response: EndpointResponse, statusCode?: number) {
+    const errorMessage = JSON.stringify(response.data, null, 2);
+    errorHandler.throw(
+      new Error(
+        `${this.endpoints[0].urlName} API ${statusCode} HTTP error: ${errorMessage}`
+      )
+    );
+  }
+
+  protected buildResult(
+    response: EndpointResponse,
+    inputFile?: InputSource
+  ): Response<DocType> {
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode > 201) {
+      this.handleError(response, statusCode);
+    }
+    return new Response<DocType>(this.documentClass, {
+      httpResponse: response,
+      documentType: this.documentType,
+      error: false,
+      input: inputFile,
+    });
   }
 
   protected checkApiKeys() {
