@@ -245,7 +245,7 @@ async function callParseQueued(command: string, queueId: string, options: any) {
   if (response.document !== undefined) {
     printResponse(response.document, options);
   } else {
-    console.log(response);
+    console.log(response.job);
   }
 }
 
