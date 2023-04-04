@@ -79,7 +79,7 @@ export interface PredictOptions {
   pageOptions?: PageOptions;
 }
 
-class DocumentClient {
+export class DocumentClient {
   docConfigs: DocConfigs;
   inputSource?: InputSource;
 

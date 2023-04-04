@@ -20,6 +20,7 @@ export {
   Client,
   ClientOptions,
   CustomConfigParams,
+  DocumentClient,
   PredictOptions,
 } from "./client";
 export { ResponseSig, Response, AsyncPredictResponse } from "./api";
