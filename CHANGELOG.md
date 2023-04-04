@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v3.7.2 - 2023-04-04
+### Fixes
+* :bug: export DocumentClient class for easier 3rd party integration
+* :bug: only display the job info when CLI parse-queued is processing
+
+
 ## v3.7.1 - 2023-03-31
 ### Fixes
 * :bug: make sure all documents are exported properly
