@@ -8,11 +8,11 @@
   "scripts": {
     "build": "tsc --build",
     "build-for-publish": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
-    "clean": "rm -rf ./dist",
+    "clean": "rm -rf ./dist ./docs/_build",
     "test": "mocha 'tests/**/*.spec.ts'",
     "lint-fix": "eslint './src/**/*.ts' --fix",
     "lint": "eslint  './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
-    "docs": "jsdoc -r dist/src -d docs"
+    "docs": "typedoc --out docs/_build ./src/index.ts"
   },
   "files": [
     "src/*",
@@ -47,7 +47,7 @@
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "jsdoc": "~4.0",
+    "typedoc": "~0.23",
     "mocha": "^10.1.0",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
