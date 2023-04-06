@@ -17,11 +17,13 @@ export const LOG_LEVELS: LoggerLevels = {
 };
 
 class Logger implements LoggerInterface {
-  constructor(public level: string | number = "warn") {
-    if (!(level in LOG_LEVELS)) {
-      this.level = "debug";
+  level: number;
+
+  constructor(public levelToSet: string = "warn") {
+    if (!(levelToSet in LOG_LEVELS)) {
+      this.level = LOG_LEVELS["debug"];
     }
-    this.level = LOG_LEVELS[level];
+    this.level = LOG_LEVELS[levelToSet];
   }
 
   debug(...args: any[]) {
