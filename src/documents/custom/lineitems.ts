@@ -28,7 +28,7 @@ export class Line {
   bbox!: BBox;
   /**
    * The height tolerance used to build the line.
-   * It helps when the higth of an expected line can vary.
+   * It helps when the height of an expected line can vary.
    */
   heightTolerance: number;
 
@@ -174,10 +174,11 @@ function prepare(
 
   let currentLineNumber: number = 1;
   let currentLine = new Line(currentLineNumber, heigthLineTolerance);
-  let currentValue = anchorField!.values[0];
-  currentLine.extendWith(currentValue.polygon);
 
   if (anchorField !== undefined) {
+    let currentValue = anchorField.values[0];
+    currentLine.extendWith(currentValue.polygon);
+
     for (let index = 1; index < anchorField.values.length; index++) {
       currentValue = anchorField.values[index];
       const currentFieldBbox = getBbox(currentValue.polygon);
