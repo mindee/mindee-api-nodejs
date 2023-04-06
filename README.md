@@ -59,14 +59,14 @@ const mindee = require("mindee");
 // Init a new client and add your document endpoint
 const mindeeClient = new mindee.Client({ apiKey: "my-api-key" })
     .addEndpoint({
-        accountName: "john",
-        endpointName: "wsnine",
+        accountName: "my-account",
+        endpointName: "my-endpoint",
     });
 
 // Load a file from disk and parse it
 const apiResponse = mindeeClient
     .docFromPath("/path/to/the/file.ext")
-    .parse(mindee.CustomV1, { endpointName: "wsnine" });
+    .parse(mindee.CustomV1, { endpointName: "my-endpoint" });
 ```
 
 ### Handling the Return
