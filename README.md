@@ -96,7 +96,13 @@ customize the experience.
 All the juicy details are described in the
 **[Official Guide](https://developers.mindee.com/docs/nodejs-sdk)**.
 
+You can also take a look at the
+**[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**.
+
 ## License
 Copyright © Mindee
 
 Available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Questions?
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)
