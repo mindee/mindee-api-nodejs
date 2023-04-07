@@ -7,7 +7,7 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc --build",
-    "build-for-publish": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
+    "build-for-dist": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
     "clean": "rm -rf ./dist ./docs/_build",
     "test": "mocha 'tests/**/*.spec.ts'",
     "lint-fix": "eslint './src/**/*.ts' --fix",

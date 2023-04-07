@@ -12,6 +12,7 @@ export {
   CropperV1,
   ShippingContainerV1,
   MindeeVisionV1,
+  ProofOfAddressV1,
   fr,
   us,
   eu,
