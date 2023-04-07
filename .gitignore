@@ -110,7 +110,7 @@ dist
 
 lib/
 
-docs/
+docs/_build
 
 # macOS files
 .DS_Store
