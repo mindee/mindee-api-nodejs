@@ -283,7 +283,7 @@ export class Client {
     this.docConfigs.set(
       [STANDARD_API_OWNER, InvoiceSplitterV1.name],
       new DocumentConfig(InvoiceSplitterV1, [
-        new StandardEndpoint("invoice_splitter_async_beta", "1", this.apiKey),
+        new StandardEndpoint("invoice_splitter", "1", this.apiKey),
       ])
     );
     this.docConfigs.set(
