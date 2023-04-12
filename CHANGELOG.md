@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v3.7.3 - 2023-04-11
+### Changes
+* :arrow_up: upgrade to TypeScript 5.0.3
+* :safety_vest: ban-ts-comment should be an error
+* :white_check_mark: Add docs with code samples and use them for testing
+
+
 ## v3.7.2 - 2023-04-04
 ### Fixes
 * :bug: export DocumentClient class for easier 3rd party integration
