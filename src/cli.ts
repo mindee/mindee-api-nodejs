@@ -329,7 +329,9 @@ function addAction(prog: Command) {
       command: Command
     ) {
       const allOptions = {
-        ...program.opts(),
+        ...prog.parent?.parent?.opts(),
+        ...prog.parent?.opts(),
+        ...prog.opts(),
         ...options,
       };
       return routeSwitchboard(command, inputPath, allOptions);
@@ -341,7 +343,9 @@ function addAction(prog: Command) {
       command: Command
     ) {
       const allOptions = {
-        ...program.opts(),
+        ...prog.parent?.parent?.opts(),
+        ...prog.parent?.opts(),
+        ...prog.opts(),
         ...options,
       };
       return routeSwitchboard(command, inputPath, allOptions);
