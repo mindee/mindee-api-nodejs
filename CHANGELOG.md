@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.7.4 - 2023-04-20
+### Changes
+* :white_check_mark: minor improvements to tests
+
+### Fixes
+* :bug: fix for options not being passed properly in the CLI tool
+
+
 ## v3.7.3 - 2023-04-11
 ### Changes
 * :arrow_up: upgrade to TypeScript 5.0.3
