@@ -1,24 +1,29 @@
-import { InvoiceV4 } from "../../../src";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { dataPath } from "../../apiPaths";
 import { TaxField } from "../../../src/fields";
+import * as mindee from "../../../src";
+
+const dataPath = {
+  complete: "tests/data/invoice/response_v4/complete.json",
+  empty: "tests/data/invoice/response_v4/empty.json",
+  docString: "tests/data/invoice/response_v4/doc_to_string.txt",
+  page0String: "tests/data/invoice/response_v4/page0_to_string.txt",
+  page1String: "tests/data/invoice/response_v4/page1_to_string.txt",
+};
 
 describe("Invoice V4 Object initialization", async () => {
   before(async function () {
-    const jsonDataNA = await fs.readFile(
-      path.resolve(dataPath.invoiceV4.empty)
-    );
+    const jsonDataNA = await fs.readFile(path.resolve(dataPath.empty));
     this.basePrediction = JSON.parse(
       jsonDataNA.toString()
     ).document.inference.pages[0].prediction;
   });
 
   it("should initialize from a N/A prediction object", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV4.empty));
+    const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.locale.value).to.be.undefined;
@@ -46,37 +51,29 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should load a complete document prediction", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve(dataPath.invoiceV4.complete)
-    );
+    const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: prediction,
     });
-    const docString = await fs.readFile(
-      path.join(dataPath.invoiceV4.docString)
-    );
+    const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.orientation).to.be.undefined;
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(doc.checkAll()).to.be.true;
   });
 
   it("should load a complete page 0 prediction", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve(dataPath.invoiceV4.complete)
-    );
+    const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,
       extras: pageData.extras,
     });
-    const docString = await fs.readFile(
-      path.join(dataPath.invoiceV4.page0String)
-    );
+    const docString = await fs.readFile(path.join(dataPath.page0String));
     expect(doc.documentType.value).to.be.equal("INVOICE");
     expect(doc.orientation?.value).to.be.equals(0);
     expect(doc.toString()).to.be.equals(docString.toString());
@@ -84,7 +81,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct total amount without taxes", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -96,7 +93,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalAmount without totalNet", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -108,7 +105,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalAmount with totalNet already set", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 260, confidence: 0.4 },
@@ -121,7 +118,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should reconstruct totalAmount", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -134,7 +131,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalNet without totalAmount", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -146,7 +143,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalNet without taxes", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 1150.2, confidence: 0.7 },
@@ -158,7 +155,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalNet with totalNet already set", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 1150.2, confidence: 0.7 },
@@ -171,7 +168,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should reconstruct totalNet", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 1150.2, confidence: 0.6 },
@@ -187,7 +184,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalTax without taxes", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         taxes: [],
@@ -197,7 +194,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should reconstruct totalTax", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         taxes: [
@@ -211,7 +208,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should match on totalAmount", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -229,7 +226,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalAmount", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -243,7 +240,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalAmount 2", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -254,7 +251,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should match on totalNet", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_net: { value: 456.15, confidence: 0.6 },
@@ -272,7 +269,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalNet", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_net: { value: 507.25, confidence: 0.6 },
@@ -286,7 +283,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalNet 2", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_net: { value: 507.25, confidence: 0.6 },
@@ -297,7 +294,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should match on Taxes + totalNet = totalAmount", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -317,7 +314,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on Taxes + totalNet = totalAmount", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.2, confidence: 0.6 },
@@ -332,7 +329,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on Taxes + totalNet = totalAmount 2", function () {
-    const doc = new InvoiceV4({
+    const doc = new mindee.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
