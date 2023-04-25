@@ -142,7 +142,7 @@ export class DocumentClient {
     if (this.inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
     }
-    return await docConfig.asyncPredict({
+    return await docConfig.predictAsync({
       inputDoc: this.inputSource,
       includeWords: this.getBooleanParam(params.fullText),
       pageOptions: params.pageOptions,

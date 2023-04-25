@@ -53,7 +53,7 @@ export class DocumentConfig<DocType extends Document> {
     return this.buildResult(response, params.inputDoc);
   }
 
-  async asyncPredict(params: {
+  async predictAsync(params: {
     inputDoc: InputSource;
     includeWords: boolean;
     pageOptions?: PageOptions;
