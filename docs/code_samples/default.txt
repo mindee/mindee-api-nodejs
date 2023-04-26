@@ -15,7 +15,7 @@ async function makeRequest(filePath) {
     method: "POST",
     url: `https://api.mindee.net/v1/products/${account}/${endpoint}/v${version}/predict`,
     headers: {
-      "Authorization": `Token ${apiKey}`,
+      Authorization: `Token ${apiKey}`,
       ...data.getHeaders()
     },
     data
@@ -23,8 +23,9 @@ async function makeRequest(filePath) {
   try {
     let response = await axios(config)
     console.log(response.data);
-  } catch (error) {
-    console.log(error)
+  } catch (err) {
+    console.error(err);
+    process.exit(1);
   }
 }
 

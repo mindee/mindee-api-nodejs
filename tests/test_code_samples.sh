@@ -10,6 +10,7 @@ rm -fr ../test_code_samples
 mkdir ../test_code_samples
 
 cd ../test_code_samples
+npm install axios
 npm install ../mindee-api-nodejs/dist
 cd -
 
@@ -20,7 +21,7 @@ do
   echo "###############################################"
   echo
 
-  sed "s/my-api-key/$API_KEY/" > $OUTPUT_FILE
+  sed "s/my-api-key/$API_KEY/" "${f}" > $OUTPUT_FILE
   sed -i "s/\/path\/to\/the\/file.ext/..\/mindee-api-nodejs\/tests\/data\/pdf\/blank_1.pdf/" $OUTPUT_FILE
 
   if echo "$f" | grep -q "custom_v1.txt"
@@ -31,8 +32,8 @@ do
 
   if echo "${f}" | grep -q "default.txt"
   then
-    sed -i "s/my-endpoint/bank_account_details/" $OUTPUT_FILE
-    sed -i "s/my-account/mindee/" $OUTPUT_FILE
+    sed -i "s/my-account/$ACCOUNT/" $OUTPUT_FILE
+    sed -i "s/my-endpoint/$ENDPOINT/" $OUTPUT_FILE
     sed -i "s/my-version/1/" $OUTPUT_FILE
   fi
 

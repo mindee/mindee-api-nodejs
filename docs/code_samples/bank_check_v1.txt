@@ -20,9 +20,9 @@ apiResponse.then((resp) => {
   //   without this guard clause
   if (resp.document === undefined) return;
 
-  // full object
-  console.log(resp.document);
+  // print the full object
+  // console.log(resp.document);
 
-  // string summary
+  // print a string summary
   console.log(resp.document.toString());
 });
