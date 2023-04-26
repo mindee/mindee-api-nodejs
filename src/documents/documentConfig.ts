@@ -70,7 +70,7 @@ export class DocumentConfig<DocType extends Document> {
       params.cropper
     );
     const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode >= 202) {
+    if (statusCode === undefined || statusCode >= 300) {
       this.handleError(response, statusCode);
     }
     return new AsyncPredictResponse(response.data);
@@ -85,7 +85,7 @@ export class DocumentConfig<DocType extends Document> {
     if (
       queueStatusCode === undefined ||
       queueStatusCode < 200 ||
-      queueStatusCode > 302
+      queueStatusCode >= 400
     ) {
       this.handleError(queueResponse, queueStatusCode);
     }
