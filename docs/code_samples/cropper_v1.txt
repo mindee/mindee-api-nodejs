@@ -7,22 +7,22 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 
 // Load a file from disk and parse it
 const apiResponse = mindeeClient
-    .docFromPath("/path/to/the/file.ext")
-    .parse(mindee.CropperV1);
+  .docFromPath("/path/to/the/file.ext")
+  .parse(mindee.CropperV1);
 
 // Handle the response Promise
 apiResponse.then((resp) => {
 
-    // The `document` property can be undefined:
-    // * TypeScript will not compile without this guard clause
-    //   (or consider using the '?' notation)
-    // * JavaScript will be very happy to produce subtle bugs
-    //   without this guard clause
-    if (resp.document === undefined) return;
+  // The `document` property can be undefined:
+  // * TypeScript will not compile without this guard clause
+  //   (or consider using the '?' notation)
+  // * JavaScript will be very happy to produce subtle bugs
+  //   without this guard clause
+  if (resp.document === undefined) return;
 
-    // full object
-    console.log(resp.document);
+  // full object
+  console.log(resp.document);
 
-    // string summary
-    console.log(resp.document.toString());
+  // string summary
+  console.log(resp.document.toString());
 });

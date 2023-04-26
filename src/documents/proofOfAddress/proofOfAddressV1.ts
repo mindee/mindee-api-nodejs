@@ -8,7 +8,7 @@ import {
 
 export class ProofOfAddressV1 extends Document {
   /** ISO date yyyy-mm-dd. Works both for European and US dates. */
-  issuanceDate: DateField;
+  date: DateField;
   /** All extrated ISO date yyyy-mm-dd. Works both for European and US dates. */
   dates: DateField[] = [];
   /** Address of the document's issuer. */
@@ -42,7 +42,7 @@ export class ProofOfAddressV1 extends Document {
     this.locale = new Locale({
       prediction: prediction.locale,
     });
-    this.issuanceDate = new DateField({
+    this.date = new DateField({
       prediction: prediction.date,
       pageId: pageId,
     });
@@ -105,7 +105,7 @@ Recipient Company Registrations: ${this.recipientCompanyRegistration
       .join(", ")}
 Recipient Address: ${this.recipientAddress}
 Dates: ${this.dates.map((rcr) => rcr.value).join("\n       ")}
-Date of Issue: ${this.issuanceDate}
+Date of Issue: ${this.date}
 ----------------------
 `;
     return ProofOfAddressV1.cleanOutString(outStr);

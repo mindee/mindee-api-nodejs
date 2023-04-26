@@ -129,9 +129,11 @@ describe("Test different types of input", () => {
   });
 
   it("should accept a Buffer", async () => {
-    const filename = "invoice_01.pdf"
+    const filename = "invoice_01.pdf";
     const buffer = Buffer.from(
-      await fs.promises.readFile(path.join(__dirname, "../data/invoice/invoice_10p.pdf"))
+      await fs.promises.readFile(
+        path.join(__dirname, "../data/invoice/invoice_10p.pdf")
+      )
     );
     const input = new BufferInput({
       buffer: buffer,
@@ -143,5 +145,4 @@ describe("Test different types of input", () => {
     expect(input.isPdf()).to.be.true;
     expect(input.fileObject).to.be.instanceOf(Buffer);
   });
-
 });

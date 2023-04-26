@@ -1,16 +1,20 @@
-import { expect } from "chai";
-import { Response } from "../../src/api";
-import { CustomV1, InvoiceV3, PassportV1, ReceiptV3 } from "../../src";
 import { promises as fs } from "fs";
-import path from "path";
-import { dataPath } from "../apiPaths";
+import * as path from "path";
+import { expect } from "chai";
+import { Response } from "../../src";
+import { CustomV1, InvoiceV3, PassportV1, ReceiptV3 } from "../../src";
 import { InputSource, INPUT_TYPE_PATH } from "../../src/inputs";
+
+const dataPath = {
+  receiptV3: "tests/data/receipt/response_v3/complete.json",
+  invoiceV3: "tests/data/invoice/response_v3/complete.json",
+  passportV1: "tests/data/passport/response_v1/complete.json",
+  customV1: "tests/data/custom/response_v1/complete.json",
+};
 
 describe("Synchronous API predict response", () => {
   it("should build a Receipt response", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve(dataPath.receiptV3.complete)
-    );
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
@@ -28,9 +32,7 @@ describe("Synchronous API predict response", () => {
   });
 
   it("should build an Invoice response", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve(dataPath.invoiceV3.complete)
-    );
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
@@ -48,9 +50,7 @@ describe("Synchronous API predict response", () => {
   });
 
   it("should build a Passport response", async () => {
-    const jsonData = await fs.readFile(
-      path.resolve(dataPath.passportV1.complete)
-    );
+    const jsonData = await fs.readFile(path.resolve(dataPath.passportV1));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
@@ -67,7 +67,7 @@ describe("Synchronous API predict response", () => {
   });
 
   it("should build a Custom Doc response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.custom.complete));
+    const jsonData = await fs.readFile(path.resolve(dataPath.customV1));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
