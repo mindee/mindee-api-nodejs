@@ -29,5 +29,12 @@ do
     sed -i "s/my-endpoint/$ENDPOINT/g" $OUTPUT_FILE
   fi
 
+  if echo "${f}" | grep -q "default.txt"
+  then
+    sed -i "s/my-endpoint/bank_account_details/" $OUTPUT_FILE
+    sed -i "s/my-account/mindee/" $OUTPUT_FILE
+    sed -i "s/my-version/1/" $OUTPUT_FILE
+  fi
+
   node $OUTPUT_FILE
 done
