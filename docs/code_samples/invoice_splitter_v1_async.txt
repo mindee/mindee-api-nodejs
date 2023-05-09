@@ -1,0 +1,75 @@
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
+
+async function sampleAsyncApi() {
+  // Init a new client
+  const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+
+  // Specify the document class here to be DRY
+  const docClass = mindee.InvoiceSplitterV1;
+
+  // Load a file from disk and send it to the asynchronous queue
+  const enqueueResponse = await mindeeClient
+    .docFromPath("/path/to/the/file.ext")
+    .enqueue(docClass);
+
+  console.log(enqueueResponse.job);
+
+  // Don't try to get the document more than this many times
+  const MAX_RETRIES = 10;
+
+  // Wait this many seconds between each try
+  const INTERVAL_SECS = 6;
+
+  // Increment this counter each time we try to retrieve
+  // the document from the queue.
+  let timesTried = 1;
+
+  //
+  // Recursive function that tries to retrieve the completed document.
+  // If the document is not ready (processing), try again.
+  //
+  async function getDocFromAsyncQueue(queueId) {
+    setTimeout(async function () {
+      // This normally never happens, but otherwise TS will complain.
+      if (queueId === undefined) {
+        throw new Error("No queue ID provided.");
+      }
+
+      // Have we exceeded our retry count?
+      if (timesTried >= MAX_RETRIES) {
+        throw new Error(`Maximum retries reached: ${timesTried}`);
+      }
+
+      // increment the counter
+      timesTried++;
+
+      // Call the API endpoint
+      const parseAsyncResponse = await mindeeClient
+        .docForAsync()
+        .parseQueued(docClass, queueId);
+
+      //
+      // If the `document` property is set, it means the
+      // document is ready and has been retrieved successfully.
+      //
+      // Otherwise,we go around for another recursion.
+      //
+      if (parseAsyncResponse.document !== undefined) {
+        console.log(parseAsyncResponse.document.document);
+      } else {
+        console.log(parseAsyncResponse.job);
+        await getDocFromAsyncQueue(queueId);
+      }
+
+      // Set the timeout value
+    }, INTERVAL_SECS * 1000);
+  }
+
+  // Start the recursion ...
+  await getDocFromAsyncQueue(enqueueResponse.job.id);
+}
+
+// Run it!
+sampleAsyncApi();
