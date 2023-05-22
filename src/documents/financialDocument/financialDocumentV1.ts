@@ -5,6 +5,7 @@ import {
   PaymentDetails,
   Locale,
   Amount,
+  ClassificationField,
   TextField,
   DateField,
   CompanyRegistration,
@@ -82,9 +83,8 @@ export class FinancialDocumentV1 extends Document {
       prediction: prediction.locale,
       valueKey: "language",
     });
-    this.documentType = new BaseField({
+    this.documentType = new ClassificationField({
       prediction: prediction.document_type,
-      valueKey: "value",
     });
     this.referenceNumbers = prediction.reference_numbers.map(function (
       prediction: StringDict
@@ -96,17 +96,14 @@ export class FinancialDocumentV1 extends Document {
     });
     this.totalAmount = new Amount({
       prediction: prediction.total_amount,
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalTax = new Amount({
       prediction: prediction.total_tax,
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalNet = new Amount({
       prediction: prediction.total_net,
-      valueKey: "value",
       pageId: pageId,
     });
     this.date = new DateField({
@@ -171,7 +168,6 @@ export class FinancialDocumentV1 extends Document {
     );
     this.tip = new Amount({
       prediction: prediction.tip,
-      valueKey: "value",
       pageId: pageId,
     });
     this.category = new TextField({
@@ -191,10 +187,6 @@ export class FinancialDocumentV1 extends Document {
         new TaxField({
           prediction: taxPrediction,
           pageId: pageId,
-          valueKey: "value",
-          rateKey: "rate",
-          codeKey: "code",
-          baseKey: "base",
         })
       )
     );

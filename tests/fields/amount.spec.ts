@@ -4,7 +4,7 @@ import { expect } from "chai";
 describe("Test Amount field", () => {
   it("Should create an Amount field", () => {
     const prediction = {
-      amount: "2",
+      value: "2",
       confidence: 0.1,
       polygon: [
         [0.016, 0.707],

@@ -102,22 +102,18 @@ export class InvoiceV3 extends Document {
     });
     this.documentType = new BaseField({
       prediction: apiPrediction.document_type,
-      valueKey: "value",
     });
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalAmount = this.totalIncl;
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0.0 },
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalNet = new Amount({
       prediction: apiPrediction.total_excl,
-      valueKey: "value",
       pageId: pageId,
     });
     this.date = new DateField({
@@ -129,9 +125,6 @@ export class InvoiceV3 extends Document {
         new TaxField({
           prediction: prediction,
           pageId: pageId,
-          valueKey: "value",
-          rateKey: "rate",
-          codeKey: "code",
         })
       )
     );
