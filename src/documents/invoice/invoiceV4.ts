@@ -85,7 +85,6 @@ export class InvoiceV4 extends Document {
     });
     this.documentType = new ClassificationField({
       prediction: prediction.document_type,
-      valueKey: "value",
     });
     this.referenceNumbers = prediction.reference_numbers.map(function (
       prediction: StringDict
@@ -97,17 +96,14 @@ export class InvoiceV4 extends Document {
     });
     this.totalAmount = new Amount({
       prediction: prediction.total_amount,
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0.0 },
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalNet = new Amount({
       prediction: prediction.total_net,
-      valueKey: "value",
       pageId: pageId,
     });
     this.date = new DateField({
@@ -119,9 +115,6 @@ export class InvoiceV4 extends Document {
         new TaxField({
           prediction: prediction,
           pageId: pageId,
-          valueKey: "value",
-          rateKey: "rate",
-          codeKey: "code",
         })
       )
     );

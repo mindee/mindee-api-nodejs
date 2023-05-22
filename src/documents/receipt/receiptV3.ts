@@ -48,12 +48,10 @@ export class ReceiptV3 extends Document {
     });
     this.totalTax = new Amount({
       prediction: { value: undefined, confidence: 0 },
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalExcl = new Amount({
       prediction: { value: undefined, confidence: 0 },
-      valueKey: "value",
       pageId: pageId,
     });
 
@@ -65,7 +63,6 @@ export class ReceiptV3 extends Document {
   #initFromApiPrediction(apiPrediction: any, pageId?: number) {
     this.totalIncl = new Amount({
       prediction: apiPrediction.total_incl,
-      valueKey: "value",
       pageId: pageId,
     });
     this.date = new DateField({
@@ -88,9 +85,6 @@ export class ReceiptV3 extends Document {
         new TaxField({
           prediction: taxPrediction,
           pageId: pageId,
-          valueKey: "value",
-          rateKey: "rate",
-          codeKey: "code",
         })
       )
     );

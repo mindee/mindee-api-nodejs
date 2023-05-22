@@ -56,22 +56,18 @@ export class ReceiptV4 extends Document {
     });
     this.totalTax = new Amount({
       prediction: prediction.total_tax,
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalAmount = new Amount({
       prediction: prediction.total_amount,
-      valueKey: "value",
       pageId: pageId,
     });
     this.totalNet = new Amount({
       prediction: prediction.total_net,
-      valueKey: "value",
       pageId: pageId,
     });
     this.tip = new Amount({
       prediction: prediction.tip,
-      valueKey: "value",
       pageId: pageId,
     });
     this.date = new DateField({
@@ -101,10 +97,6 @@ export class ReceiptV4 extends Document {
         new TaxField({
           prediction: taxPrediction,
           pageId: pageId,
-          valueKey: "value",
-          rateKey: "rate",
-          codeKey: "code",
-          baseKey: "base",
         })
       )
     );

@@ -28,7 +28,7 @@
             }
         ],
         "camelcase": "error",
-        "comma-dangle": [2, "always-multiline"],
+        "comma-dangle": ["error", "always-multiline"],
         "eqeqeq": "error",
         "no-else-return": "error",
         "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],

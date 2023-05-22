@@ -20,7 +20,7 @@ export class Amount extends Field {
    */
   constructor({
     prediction,
-    valueKey = "amount",
+    valueKey = "value",
     reconstructed = false,
     pageId = undefined,
   }: FieldConstructor) {

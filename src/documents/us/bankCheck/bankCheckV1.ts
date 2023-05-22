@@ -42,7 +42,6 @@ export class BankCheckV1 extends Document {
     });
     this.amount = new Amount({
       prediction: prediction.amount,
-      valueKey: "value",
       pageId: pageId,
     });
     this.checkPosition = new PositionField({
