@@ -115,5 +115,6 @@ docs/_build
 # macOS files
 .DS_Store
 
+# Temporary test files
 local_test/
-
+test.js
