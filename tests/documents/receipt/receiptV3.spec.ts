@@ -2,19 +2,12 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../src";
-import {
-  Amount,
-  DateField,
-  TextField,
-  Locale,
-  TaxField,
-} from "../../../src/fields";
 
 const dataPath = {
   complete: "tests/data/receipt/response_v3/complete.json",
   empty: "tests/data/receipt/response_v3/empty.json",
-  docString: "tests/data/receipt/response_v3/doc_to_string.txt",
-  page0String: "tests/data/receipt/response_v3/page0_to_string.txt",
+  docString: "tests/data/receipt/response_v3/doc_to_string.rst",
+  page0String: "tests/data/receipt/response_v3/page0_to_string.rst",
 };
 
 describe("Receipt Object V3 initialization", async () => {
@@ -25,19 +18,20 @@ describe("Receipt Object V3 initialization", async () => {
     ).document.inference.pages[0].prediction;
   });
 
-  it("should initialize from a prediction object with N/A value", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.empty));
-    const response = JSON.parse(jsonData.toString());
+  it("should load an empty document prediction", async () => {
+    const jsonDataNA = await fs.readFile(path.resolve(dataPath.empty));
+    const response = JSON.parse(jsonDataNA.toString());
     const doc = new mindee.ReceiptV3({
-      prediction: response.document.inference.pages[0].prediction,
+      prediction: response.document.inference.prediction,
     });
-    expect((doc.locale as Locale).value).to.be.undefined;
-    expect((doc.totalIncl as Amount).value).to.be.undefined;
-    expect((doc.totalTax as Amount).value).to.be.undefined;
-    expect((doc.taxes as TaxField[]).length).to.be.equal(0);
-    expect((doc.date as DateField).value).to.be.undefined;
-    expect((doc.time as TextField).value).to.be.undefined;
-    expect((doc.merchantName as TextField).value).to.be.undefined;
+    expect(doc.locale.value).to.be.undefined;
+    expect(doc.date.value).to.be.undefined;
+    expect(doc.time.value).to.be.undefined;
+    expect(doc.totalExcl.value).to.be.undefined;
+    expect(doc.totalIncl.value).to.be.undefined;
+    expect(doc.totalTax.value).to.be.undefined;
+    expect(doc.taxes.length).to.be.equals(0);
+    expect(doc.merchantName.value).to.be.undefined;
     for (const key in doc.checklist) {
       expect(doc.checklist[key]).to.be.false;
     }

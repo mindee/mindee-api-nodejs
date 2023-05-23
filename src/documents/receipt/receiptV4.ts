@@ -6,7 +6,7 @@ import {
   TextField,
   Locale,
   TaxField,
-  StringDict,
+  Taxes,
 } from "../../fields";
 
 export class ReceiptV4 extends Document {
@@ -25,7 +25,7 @@ export class ReceiptV4 extends Document {
   /** Time as seen on the receipt in HH:MM format. */
   time: TextField;
   /** List of taxes detected on the receipt. */
-  taxes: TaxField[] = [];
+  taxes: TaxField[];
   /** Total amount of tip and gratuity. */
   tip: Amount;
   /** total spent including taxes, discounts, fees, tips, and gratuity. */
@@ -92,33 +92,25 @@ export class ReceiptV4 extends Document {
       prediction: prediction.time,
       pageId: pageId,
     });
-    prediction.taxes.map((taxPrediction: StringDict) =>
-      this.taxes.push(
-        new TaxField({
-          prediction: taxPrediction,
-          pageId: pageId,
-        })
-      )
-    );
+    this.taxes = new Taxes().init(prediction["taxes"], pageId);
   }
 
   toString(): string {
-    const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
-    const outStr = `----- Receipt V4 -----
-Filename: ${this.filename}
-Total amount: ${this.totalAmount}
-Total net: ${this.totalNet}
-Tip: ${this.tip}
-Date: ${this.date}
-Category: ${this.category}
-Subcategory: ${this.subCategory}
-Document type: ${this.documentType}
-Time: ${this.time}
-Supplier name: ${this.supplier}
-Taxes: ${taxes}
-Total taxes: ${this.totalTax}
-Locale: ${this.locale}
-----------------------
+    const outStr = `Receipt V4 Prediction
+=====================
+:Filename: ${this.filename}
+:Total amount: ${this.totalAmount}
+:Total net: ${this.totalNet}
+:Tip: ${this.tip}
+:Date: ${this.date}
+:Category: ${this.category}
+:Subcategory: ${this.subCategory}
+:Document type: ${this.documentType}
+:Time: ${this.time}
+:Supplier name: ${this.supplier}
+:Taxes: ${this.taxes}
+:Total tax: ${this.totalTax}
+:Locale: ${this.locale}
 `;
     return ReceiptV4.cleanOutString(outStr);
   }

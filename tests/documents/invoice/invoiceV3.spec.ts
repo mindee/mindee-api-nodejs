@@ -7,8 +7,8 @@ import * as mindee from "../../../src";
 const dataPath = {
   complete: "tests/data/invoice/response_v3/complete.json",
   empty: "tests/data/invoice/response_v3/empty.json",
-  docString: "tests/data/invoice/response_v3/doc_to_string.txt",
-  page0String: "tests/data/invoice/response_v3/page0_to_string.txt",
+  docString: "tests/data/invoice/response_v3/doc_to_string.rst",
+  page0String: "tests/data/invoice/response_v3/page0_to_string.rst",
 };
 
 describe("Invoice V3 Object initialization", async () => {
