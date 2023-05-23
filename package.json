@@ -48,10 +48,10 @@
     "eslint": "^8.32.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",
-    "typedoc": "~0.23",
     "mocha": "^10.1.0",
     "prettier": "^2.8.1",
     "ts-node": "^10.9.1",
+    "typedoc": "~0.23",
     "typescript": "^5.0.3"
   },
   "dependencies": {
