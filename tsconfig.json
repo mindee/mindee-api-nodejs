@@ -16,9 +16,6 @@
     "baseUrl": "./",
     "sourceMap": false,
     "newLine": "lf",
-    "paths": {
-      "@mindee/*": ["src/*"],
-    }
   },
   "include": ["./src/**/*", "./bin/**/*", "LICENSE"],
   "exclude": ["./node_modules/", "./dist/", "./tests/"]
