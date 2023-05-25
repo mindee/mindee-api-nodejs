@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v3.8.0 - 2023-05-25
+### Changes
+* :sparkles: add support for receipt v5
+* :sparkles: print taxes in table layout
+
+
 ## v3.7.4 - 2023-04-20
 ### Changes
 * :white_check_mark: minor improvements to tests
