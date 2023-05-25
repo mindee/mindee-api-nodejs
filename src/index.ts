@@ -9,6 +9,7 @@ export {
   PassportV1,
   ReceiptV3,
   ReceiptV4,
+  ReceiptV5,
   CropperV1,
   ShippingContainerV1,
   MindeeVisionV1,
