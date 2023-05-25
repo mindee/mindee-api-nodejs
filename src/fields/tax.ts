@@ -62,20 +62,75 @@ export class TaxField extends Field {
     if (isNaN(this.base)) this.base = undefined;
   }
 
+  #printableValues() {
+    return {
+      code: this.code ?? "",
+      base: this.base !== undefined ? floatToString(this.base) : "",
+      rate: this.rate !== undefined ? floatToString(this.rate) : "",
+      value: this.value !== undefined ? floatToString(this.value) : "",
+    };
+  }
+
+  toTableLine(): string {
+    const printable = this.#printableValues();
+    return (
+      "| " +
+      printable.base.padEnd(13) +
+      " | " +
+      printable.code.padEnd(6) +
+      " | " +
+      printable.rate.padEnd(8) +
+      " | " +
+      printable.value.padEnd(13) +
+      " |"
+    );
+  }
+
   toString(): string {
-    let outStr = "";
-    if (this.value !== undefined) {
-      outStr += `${floatToString(this.value)}`;
+    const printable = this.#printableValues();
+    return (
+      "Base: " +
+      printable.base +
+      ", Code: " +
+      printable.code +
+      ", Rate (%): " +
+      printable.rate +
+      ", Amount: " +
+      printable.value
+    ).trim();
+  }
+}
+
+export class Taxes extends Array<TaxField> {
+  init(prediction: StringDict[], pageId: number | undefined) {
+    for (const entry of prediction) {
+      this.push(
+        new TaxField({
+          prediction: entry,
+          pageId: pageId,
+        })
+      );
     }
-    if (this.rate !== undefined) {
-      outStr += ` ${floatToString(this.rate)}%`;
+    return this;
+  }
+
+  #lineSeparator(char: string) {
+    let outStr = "  ";
+    outStr += `+${char.repeat(15)}`;
+    outStr += `+${char.repeat(8)}`;
+    outStr += `+${char.repeat(10)}`;
+    outStr += `+${char.repeat(15)}`;
+    return outStr + "+";
+  }
+
+  toString(): string {
+    let outStr = `
+${this.#lineSeparator("-")}
+  | Base          | Code   | Rate (%) | Amount        |
+${this.#lineSeparator("=")}`;
+    for (const entry of this.entries()) {
+      outStr += `\n  ${entry[1].toTableLine()}\n${this.#lineSeparator("-")}`;
     }
-    if (this.code !== undefined) {
-      outStr += ` ${this.code}`;
-    }
-    if (this.base !== undefined) {
-      outStr += ` ${floatToString(this.base)}`;
-    }
-    return outStr.trim();
+    return outStr;
   }
 }

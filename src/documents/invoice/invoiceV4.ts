@@ -2,7 +2,7 @@ import { Document, DocumentConstructorProps } from "../document";
 
 import {
   ClassificationField,
-  TaxField,
+  Taxes,
   PaymentDetails,
   Locale,
   Amount,
@@ -59,7 +59,7 @@ export class InvoiceV4 extends Document {
   /** The company registration information for the customer. */
   customerCompanyRegistrations: CompanyRegistration[] = [];
   /** The list of the taxes. */
-  taxes: TaxField[] = [];
+  taxes: Taxes;
   /** Line items details. */
   lineItems: InvoiceLineItem[] = [];
 
@@ -110,14 +110,7 @@ export class InvoiceV4 extends Document {
       prediction: prediction.date,
       pageId,
     });
-    prediction.taxes.map((prediction: StringDict) =>
-      this.taxes.push(
-        new TaxField({
-          prediction: prediction,
-          pageId: pageId,
-        })
-      )
-    );
+    this.taxes = new Taxes().init(prediction["taxes"], pageId);
     this.supplierCompanyRegistrations =
       prediction.supplier_company_registrations.map(function (prediction: {
         [index: string]: any;
@@ -179,7 +172,6 @@ export class InvoiceV4 extends Document {
   }
 
   toString(): string {
-    const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
     const referenceNumbers = this.referenceNumbers
       .map((item) => item.toString())
       .join(", ");
@@ -199,26 +191,26 @@ export class InvoiceV4 extends Document {
       lineItems += this.lineItems.map((item) => item.toString()).join("\n  ");
     }
 
-    const outStr = `----- Invoice V4 -----
-Filename: ${this.filename}
-Locale: ${this.locale}
-Invoice number: ${this.invoiceNumber}
-Reference numbers: ${referenceNumbers}
-Invoice date: ${this.date}
-Invoice due date: ${this.dueDate}
-Supplier name: ${this.supplierName}
-Supplier address: ${this.supplierAddress}
-Supplier company registrations: ${companyRegistration}
-Supplier payment details: ${paymentDetails}
-Customer name: ${this.customerName}
-Customer company registrations: ${customerCompanyRegistration}
-Customer address: ${this.customerAddress}
-Line Items: ${lineItems}
-Taxes: ${taxes}
-Total taxes: ${this.totalTax}
-Total amount excluding taxes: ${this.totalNet}
-Total amount including taxes: ${this.totalAmount}
-----------------------
+    const outStr = `Invoice V4 Prediction
+=====================
+:Filename: ${this.filename}
+:Locale: ${this.locale}
+:Invoice number: ${this.invoiceNumber}
+:Reference numbers: ${referenceNumbers}
+:Invoice date: ${this.date}
+:Invoice due date: ${this.dueDate}
+:Supplier name: ${this.supplierName}
+:Supplier address: ${this.supplierAddress}
+:Supplier company registrations: ${companyRegistration}
+:Supplier payment details: ${paymentDetails}
+:Customer name: ${this.customerName}
+:Customer company registrations: ${customerCompanyRegistration}
+:Customer address: ${this.customerAddress}
+:Line Items: ${lineItems}
+:Taxes: ${this.taxes}
+:Total tax: ${this.totalTax}
+:Total net: ${this.totalNet}
+:Total amount: ${this.totalAmount}
 `;
     return InvoiceV4.cleanOutString(outStr);
   }

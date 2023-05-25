@@ -11,9 +11,9 @@ const dataPath = {
     "tests/data/financial_document/response_v1/complete_invoice.json",
   empty: "tests/data/financial_document/response_v1/empty.json",
   invoiceDocString:
-    "tests/data/financial_document/response_v1/invoice_to_string.txt",
+    "tests/data/financial_document/response_v1/invoice_to_string.rst",
   receiprDocString:
-    "tests/data/financial_document/response_v1/receipt_to_string.txt",
+    "tests/data/financial_document/response_v1/receipt_to_string.rst",
 };
 
 describe("Financial Document V1 Object initialization", async () => {

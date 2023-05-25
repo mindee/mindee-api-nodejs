@@ -7,8 +7,8 @@ import * as mindee from "../../../src";
 const dataPath = {
   complete: "tests/data/invoice/response_v4/complete.json",
   empty: "tests/data/invoice/response_v4/empty.json",
-  docString: "tests/data/invoice/response_v4/doc_to_string.txt",
-  page0String: "tests/data/invoice/response_v4/page0_to_string.txt",
+  docString: "tests/data/invoice/response_v4/doc_to_string.rst",
+  page0String: "tests/data/invoice/response_v4/page0_to_string.rst",
   page1String: "tests/data/invoice/response_v4/page1_to_string.txt",
 };
 

@@ -1,5 +1,5 @@
 export { ClassificationField } from "./classification";
-export { TaxField } from "./tax";
+export { Taxes, TaxField } from "./tax";
 export { PaymentDetails } from "./paymentDetails";
 export { OrientationField } from "./orientation";
 export { Locale } from "./locale";

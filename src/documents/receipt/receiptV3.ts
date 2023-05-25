@@ -2,6 +2,7 @@ import { Document, DocumentConstructorProps } from "../document";
 import {
   ClassificationField,
   TaxField,
+  Taxes,
   TextField,
   Amount,
   Locale,
@@ -14,19 +15,19 @@ export class ReceiptV3 extends Document {
   /** Where the purchase was made, the language, and the currency. */
   totalIncl!: Amount;
   /** The purchase date. */
-  date!: DateField;
+  date: DateField;
   /** The type of purchase. */
-  category!: ClassificationField;
+  category: ClassificationField;
   /** Merchant's name as seen on the receipt. */
   merchantName!: TextField;
   /** Time as seen on the receipt in HH:MM format. */
-  time!: TextField;
+  time: TextField;
   /** Total tax amount of the purchase. */
   totalTax: Amount;
   /** Total amount without tax of the purchase. */
   totalExcl: Amount;
-  /** List of different taxe. */
-  taxes: TaxField[] = [];
+  /** List of different taxes. */
+  taxes: TaxField[];
 
   constructor({
     prediction,
@@ -54,56 +55,44 @@ export class ReceiptV3 extends Document {
       prediction: { value: undefined, confidence: 0 },
       pageId: pageId,
     });
+    this.totalIncl = new Amount({
+      prediction: prediction.total_incl,
+      pageId: pageId,
+    });
+    this.date = new DateField({
+      prediction: prediction.date,
+      pageId: pageId,
+    });
+    this.category = new ClassificationField({
+      prediction: prediction.category,
+    });
+    this.merchantName = new TextField({
+      prediction: prediction.supplier,
+      pageId: pageId,
+    });
+    this.time = new TextField({
+      prediction: prediction.time,
+      pageId: pageId,
+    });
+    this.taxes = new Taxes().init(prediction["taxes"], pageId);
 
-    this.#initFromApiPrediction(prediction, pageId);
     this.#checklist();
     this.#reconstruct();
   }
 
-  #initFromApiPrediction(apiPrediction: any, pageId?: number) {
-    this.totalIncl = new Amount({
-      prediction: apiPrediction.total_incl,
-      pageId: pageId,
-    });
-    this.date = new DateField({
-      prediction: apiPrediction.date,
-      pageId: pageId,
-    });
-    this.category = new ClassificationField({
-      prediction: apiPrediction.category,
-    });
-    this.merchantName = new TextField({
-      prediction: apiPrediction.supplier,
-      pageId: pageId,
-    });
-    this.time = new TextField({
-      prediction: apiPrediction.time,
-      pageId: pageId,
-    });
-    apiPrediction.taxes.map((taxPrediction: { [index: string]: any }) =>
-      this.taxes.push(
-        new TaxField({
-          prediction: taxPrediction,
-          pageId: pageId,
-        })
-      )
-    );
-  }
-
   toString(): string {
-    const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
-    const outStr = `-----Receipt data-----
-Filename: ${this.filename}
-Total amount including taxes: ${this.totalIncl}
-Total amount excluding taxes: ${this.totalExcl}
-Date: ${this.date}
-Category: ${this.category}
-Time: ${this.time}
-Merchant name: ${this.merchantName}
-Taxes: ${taxes}
-Total taxes: ${this.totalTax}
-Locale: ${this.locale}
-----------------------
+    const outStr = `Receipt V3 Prediction
+=====================
+:Filename: ${this.filename}
+:Total amount: ${this.totalIncl}
+:Total net: ${this.totalExcl}
+:Date: ${this.date}
+:Category: ${this.category}
+:Time: ${this.time}
+:Merchant name: ${this.merchantName}
+:Taxes: ${this.taxes}
+:Total tax: ${this.totalTax}
+:Locale: ${this.locale}
 `;
     return ReceiptV3.cleanOutString(outStr);
   }

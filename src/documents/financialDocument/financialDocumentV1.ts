@@ -1,6 +1,7 @@
 import { Document, DocumentConstructorProps } from "../document";
 
 import {
+  Taxes,
   TaxField,
   PaymentDetails,
   Locale,
@@ -45,7 +46,7 @@ export class FinancialDocumentV1 extends Document {
   /** The company registration information for the customer. */
   customerCompanyRegistrations: CompanyRegistration[] = [];
   /** The list of the taxes. */
-  taxes: TaxField[] = [];
+  taxes: TaxField[];
   /** Line items details. */
   lineItems: InvoiceLineItem[] = [];
   /** The receipt category among predefined classes. */
@@ -182,18 +183,10 @@ export class FinancialDocumentV1 extends Document {
       prediction: prediction.time,
       pageId: pageId,
     });
-    prediction.taxes.map((taxPrediction: StringDict) =>
-      this.taxes.push(
-        new TaxField({
-          prediction: taxPrediction,
-          pageId: pageId,
-        })
-      )
-    );
+    this.taxes = new Taxes().init(prediction["taxes"], pageId);
   }
 
   toString(): string {
-    const taxes = this.taxes.map((item) => item.toString()).join("\n       ");
     const referenceNumbers = this.referenceNumbers
       .map((item) => item.toString())
       .join(", ");
@@ -213,31 +206,31 @@ export class FinancialDocumentV1 extends Document {
       lineItems += this.lineItems.map((item) => item.toString()).join("\n  ");
     }
 
-    const outStr = `----- Financial Document V1 -----
-Filename: ${this.filename}
-Document type: ${this.documentType}
-Category: ${this.category}
-Subcategory: ${this.subCategory}
-Locale: ${this.locale}
-Invoice number: ${this.invoiceNumber}
-Reference numbers: ${referenceNumbers}
-Date: ${this.date}
-Due date: ${this.dueDate}
-Time: ${this.time}
-Supplier name: ${this.supplierName}
-Supplier address: ${this.supplierAddress}
-Supplier company registrations: ${supplierCompanyRegistration}
-Supplier payment details: ${paymentDetails}
-Customer name: ${this.customerName}
-Customer address: ${this.customerAddress}
-Customer company registrations: ${customerCompanyRegistration}
-Tip: ${this.tip}
-Taxes: ${taxes}
-Total tax: ${this.totalTax}
-Total net: ${this.totalNet}
-Total amount: ${this.totalAmount}
-Line Items: ${lineItems}
-----------------------
+    const outStr = `Financial Document V1 Prediction
+================================
+:Filename: ${this.filename}
+:Document type: ${this.documentType}
+:Category: ${this.category}
+:Subcategory: ${this.subCategory}
+:Locale: ${this.locale}
+:Invoice number: ${this.invoiceNumber}
+:Reference numbers: ${referenceNumbers}
+:Date: ${this.date}
+:Due date: ${this.dueDate}
+:Time: ${this.time}
+:Supplier name: ${this.supplierName}
+:Supplier address: ${this.supplierAddress}
+:Supplier company registrations: ${supplierCompanyRegistration}
+:Supplier payment details: ${paymentDetails}
+:Customer name: ${this.customerName}
+:Customer address: ${this.customerAddress}
+:Customer company registrations: ${customerCompanyRegistration}
+:Tip: ${this.tip}
+:Taxes: ${this.taxes}
+:Total tax: ${this.totalTax}
+:Total net: ${this.totalNet}
+:Total amount: ${this.totalAmount}
+:Line Items: ${lineItems}
 `;
     return FinancialDocumentV1.cleanOutString(outStr);
   }
