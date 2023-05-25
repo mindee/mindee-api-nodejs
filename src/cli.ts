@@ -3,7 +3,7 @@ import {
   Document,
   InvoiceV4,
   InvoiceSplitterV1,
-  ReceiptV4,
+  ReceiptV5,
   PassportV1,
   MindeeVisionV1,
   CustomV1,
@@ -73,7 +73,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     "receipt",
     {
       displayName: "Expense Receipt",
-      docClass: ReceiptV4,
+      docClass: ReceiptV5,
       fullText: true,
       async: false,
       sync: true,

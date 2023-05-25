@@ -18,8 +18,9 @@ import {
 import {
   Document,
   DocumentSig,
-  ReceiptV4,
   ReceiptV3,
+  ReceiptV4,
+  ReceiptV5,
   CropperV1,
   PassportV1,
   MindeeVisionV1,
@@ -296,6 +297,12 @@ export class Client {
       [STANDARD_API_OWNER, ReceiptV4.name],
       new DocumentConfig(ReceiptV4, [
         new StandardEndpoint("expense_receipts", "4", this.apiKey),
+      ])
+    );
+    this.docConfigs.set(
+      [STANDARD_API_OWNER, ReceiptV5.name],
+      new DocumentConfig(ReceiptV5, [
+        new StandardEndpoint("expense_receipts", "5", this.apiKey),
       ])
     );
     this.docConfigs.set(
