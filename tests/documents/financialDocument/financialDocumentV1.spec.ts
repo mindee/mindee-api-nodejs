@@ -12,12 +12,12 @@ const dataPath = {
   empty: "tests/data/financial_document/response_v1/empty.json",
   invoiceDocString:
     "tests/data/financial_document/response_v1/invoice_to_string.rst",
-  receiprDocString:
+  receiptDocString:
     "tests/data/financial_document/response_v1/receipt_to_string.rst",
 };
 
 describe("Financial Document V1 Object initialization", async () => {
-  it("should initialize from a prediction object with N/A value", async () => {
+  it("should load an empty document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.FinancialDocumentV1({
@@ -48,6 +48,7 @@ describe("Financial Document V1 Object initialization", async () => {
     expect((doc.time as TextField).value).to.be.undefined;
     expect((doc.supplierName as TextField).value).to.be.undefined;
   });
+
   it("should initialize from an invoice object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoiceComplete));
     const response = JSON.parse(jsonData.toString());
@@ -57,13 +58,14 @@ describe("Financial Document V1 Object initialization", async () => {
     const docString = await fs.readFile(path.join(dataPath.invoiceDocString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
+
   it("should initialize from a receipt object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.receiptComplete));
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.FinancialDocumentV1({
       prediction: response.document.inference.pages[0].prediction,
     });
-    const docString = await fs.readFile(path.join(dataPath.receiprDocString));
+    const docString = await fs.readFile(path.join(dataPath.receiptDocString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
 });
