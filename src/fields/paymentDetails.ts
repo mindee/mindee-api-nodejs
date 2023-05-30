@@ -16,13 +16,13 @@ export class PaymentDetails extends Field {
   /** Synonym for the `iban` property */
   value?: string | undefined;
   /** The account number. */
-  accountNumber: number | undefined;
-  /** The account IBAN. */
+  accountNumber: string | undefined;
+  /** The International Bank Account Number (IBAN). */
   iban: string | undefined;
   /** The routing number. */
-  routingNumber: number | undefined;
-  /** The SWIFT value. */
-  swift: number | undefined;
+  routingNumber: string | undefined;
+  /** The bank's SWIFT Business Identifier Code (BIC). */
+  swift: string | undefined;
 
   /**
    * @param {Object} prediction - Prediction object from HTTP response
