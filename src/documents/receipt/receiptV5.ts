@@ -169,7 +169,7 @@ export class ReceiptV5 extends Document {
   }
 
   #lineItemsToString() {
-    if (!this.lineItems) {
+    if (this.lineItems.length === 0) {
       return "";
     }
 
