@@ -133,6 +133,9 @@ export class ReceiptV5 extends Document {
   }
 
   toString(): string {
+    const supplierCompanyRegistrations = this.supplierCompanyRegistrations
+      .map((item) => item.toString())
+      .join("; ");
     const outStr = `Receipt V5 Prediction
 =====================
 :Filename: ${this.filename}
@@ -148,9 +151,7 @@ export class ReceiptV5 extends Document {
 :Tip and Gratuity: ${this.tip}
 :Taxes: ${this.taxes}
 :Supplier Name: ${this.supplierName}
-:Supplier Company Registrations: ${this.supplierCompanyRegistrations.join(
-      `\n ${" ".repeat(32)}`
-    )}
+:Supplier Company Registrations: ${supplierCompanyRegistrations}
 :Supplier Address: ${this.supplierAddress}
 :Supplier Phone Number: ${this.supplierPhoneNumber}
 :Line Items: ${this.#lineItemsToString()}
@@ -173,14 +174,16 @@ export class ReceiptV5 extends Document {
     }
 
     const lines = this.lineItems
-      .map((item) => `${item}`)
+      .map((item) => item.toTableLine())
       .join(`\n${this.#lineItemsSeparator("-")}\n  `);
 
     let outStr = "";
-    outStr += `\n${this.#lineItemsSeparator("-")}`;
-    outStr +=
-      "\n  | Description                          | Quantity | Total Amount | Unit Price |";
-    outStr += `\n${this.#lineItemsSeparator("=")}`;
+    outStr += `\n${this.#lineItemsSeparator("-")}\n `;
+    outStr += " | Description                         ";
+    outStr += " | Quantity";
+    outStr += " | Total Amount";
+    outStr += " | Unit Price";
+    outStr += ` |\n${this.#lineItemsSeparator("=")}`;
     outStr += `\n  ${lines}`;
     outStr += `\n${this.#lineItemsSeparator("-")}`;
     return outStr;

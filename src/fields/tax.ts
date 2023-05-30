@@ -12,6 +12,9 @@ interface TaxConstructor {
   pageId?: number;
 }
 
+/**
+ * Represent a single tax line.
+ */
 export class TaxField extends Field {
   /** The tax amount. */
   value?: number = undefined;
@@ -71,6 +74,9 @@ export class TaxField extends Field {
     };
   }
 
+  /**
+   * Output in a format suitable for inclusion in an rST table.
+   */
   toTableLine(): string {
     const printable = this.#printableValues();
     return (
@@ -86,6 +92,9 @@ export class TaxField extends Field {
     );
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const printable = this.#printableValues();
     return (
@@ -101,6 +110,9 @@ export class TaxField extends Field {
   }
 }
 
+/**
+ * Represent all items.
+ */
 export class Taxes extends Array<TaxField> {
   init(prediction: StringDict[], pageId: number | undefined) {
     for (const entry of prediction) {

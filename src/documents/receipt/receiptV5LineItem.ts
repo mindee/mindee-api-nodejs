@@ -30,23 +30,47 @@ export class ReceiptV5LineItem {
     }
   }
 
-  toString() {
-    const description = this.description ?? "";
-    const quantity = this.quantity !== null ? floatToString(this.quantity) : "";
-    const totalAmount =
-      this.totalAmount !== null ? floatToString(this.totalAmount) : "";
-    const unitPrice =
-      this.unitPrice !== null ? floatToString(this.unitPrice) : "";
+  #printableValues() {
+    return {
+      description: this.description ?? "",
+      quantity: this.quantity !== null ? floatToString(this.quantity) : "",
+      totalAmount:
+        this.totalAmount !== null ? floatToString(this.totalAmount) : "",
+      unitPrice: this.unitPrice !== null ? floatToString(this.unitPrice) : "",
+    };
+  }
 
+  /**
+   * Default string representation.
+   */
+  toString() {
+    const printable = this.#printableValues();
+    return (
+      "Description: " +
+      printable.description +
+      "Quantity: " +
+      printable.quantity +
+      "Total Amount: " +
+      printable.totalAmount +
+      "Unit Price: " +
+      printable.unitPrice
+    ).trim();
+  }
+
+  /**
+   * Output in a format suitable for inclusion in an rST table.
+   */
+  toTableLine(): string {
+    const printable = this.#printableValues();
     return (
       "| " +
-      description.padEnd(36) +
+      printable.description.padEnd(36) +
       " | " +
-      quantity.padEnd(8) +
+      printable.quantity.padEnd(8) +
       " | " +
-      totalAmount.padEnd(12) +
+      printable.totalAmount.padEnd(12) +
       " | " +
-      unitPrice.padEnd(10) +
+      printable.unitPrice.padEnd(10) +
       " |"
     );
   }
