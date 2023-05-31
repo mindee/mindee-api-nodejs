@@ -17,11 +17,8 @@ export class Locale extends BaseField {
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    */
-  constructor({
-    prediction,
-    reconstructed = false,
-    valueKey = "value",
-  }: BaseFieldConstructor) {
+  constructor({ prediction, reconstructed = false }: BaseFieldConstructor) {
+    const valueKey = prediction.value !== undefined ? "value" : "language";
     super({ prediction, valueKey, reconstructed });
 
     this.confidence = prediction.confidence ? prediction.confidence : 0.0;

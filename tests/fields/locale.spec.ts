@@ -26,7 +26,7 @@ describe("Test Locale field", () => {
       confidence: 0.15,
     };
     const locale = new Locale({ prediction });
-    expect(locale.value).to.be.undefined;
+    expect(locale.value).to.be.be.equal("fr");
     expect(locale.language).to.be.equal("fr");
     expect(locale.country).to.be.equal("fr");
     expect(locale.currency).to.be.equal("EUR");
