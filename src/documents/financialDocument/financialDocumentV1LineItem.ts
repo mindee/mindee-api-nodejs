@@ -1,5 +1,6 @@
 import { floatToString } from "../../fields/amount";
 import { StringDict } from "../../fields";
+import { Polygon } from "../../geometry";
 
 /**
  * List of line item details.
@@ -19,6 +20,15 @@ export class FinancialDocumentV1LineItem {
   totalAmount: number | null;
   /** The item unit price. */
   unitPrice: number | null;
+  /** Confidence score */
+  confidence: number = 0.0;
+  /** The document page on which the information was found. */
+  pageId: number;
+  /**
+   * Contains the relative vertices coordinates (points) of a polygon containing
+   * the field in the document.
+   */
+  polygon: Polygon = [];
 
   constructor({ prediction }: StringDict) {
     this.description = prediction["description"];
@@ -42,6 +52,11 @@ export class FinancialDocumentV1LineItem {
     this.unitPrice = +parseFloat(prediction["unit_price"]).toFixed(3);
     if (isNaN(this.unitPrice)) {
       this.unitPrice = null;
+    }
+    this.pageId = prediction["page_id"];
+    this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;
+    if (prediction["polygon"]) {
+      this.polygon = prediction.polygon;
     }
   }
 
