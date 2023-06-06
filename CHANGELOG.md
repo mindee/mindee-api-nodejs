@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v3.9.0 - 2023-06-06
+### Changes
+* :sparkles: support for financial document v1.1
+* :recycle: change http status code handling for async requests
+
+### Fixes
+* :bug: fix typing in PaymentDetails
+* :bug: locale value should always be set
+* :bug: add missing class properties on new line items
+
+
 ## v3.8.0 - 2023-05-25
 ### Changes
 * :sparkles: add support for receipt v5
