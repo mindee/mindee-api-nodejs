@@ -3,12 +3,11 @@ import {
   Response,
   Endpoint,
   CustomEndpoint,
-  StandardEndpoint,
   EndpointResponse,
   API_KEY_ENVVAR_NAME,
   AsyncPredictResponse,
-} from "../api";
-import { Document, FinancialDocumentV0, CustomV1, DocumentSig } from "./index";
+} from "../http";
+import { Document, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
 import { PageOptions } from "../inputs";
 
@@ -173,26 +172,3 @@ export class CustomDocConfig extends DocumentConfig<CustomV1> {
   }
 }
 
-export class FinancialDocV0Config extends DocumentConfig<FinancialDocumentV0> {
-  constructor(apiKey: string) {
-    const endpoints = [
-      new StandardEndpoint("invoices", "3", apiKey),
-      new StandardEndpoint("expense_receipts", "3", apiKey),
-    ];
-    super(FinancialDocumentV0, endpoints);
-  }
-
-  protected async predictRequest(
-    inputDoc: InputSource,
-    includeWords: boolean,
-    cropping: boolean
-  ) {
-    let endpoint: Endpoint;
-    if (inputDoc.isPdf()) {
-      endpoint = this.endpoints[0];
-    } else {
-      endpoint = this.endpoints[1];
-    }
-    return await endpoint.predictReqPost(inputDoc, includeWords, cropping);
-  }
-}

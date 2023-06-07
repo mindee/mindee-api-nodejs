@@ -1,7 +1,6 @@
 export {
   CustomV1,
   Document,
-  FinancialDocumentV0,
   FinancialDocumentV1,
   InvoiceV3,
   InvoiceV4,
@@ -16,7 +15,7 @@ export {
   fr,
   us,
   eu,
-} from "./documents";
+} from "./parsing";
 export {
   Client,
   ClientOptions,
@@ -24,5 +23,5 @@ export {
   DocumentClient,
   PredictOptions,
 } from "./client";
-export { ResponseSig, Response, AsyncPredictResponse } from "./api";
+export { ResponseSig, Response, AsyncPredictResponse } from "./http";
 export { InputSource, PageOptionsOperation } from "./inputs";

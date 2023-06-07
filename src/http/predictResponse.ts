@@ -1,5 +1,5 @@
 import { StringDict } from "../fields";
-import { Document } from "../documents";
+import { Document } from "../parsing";
 import { Response } from "./documentResponse";
 
 export class Job {

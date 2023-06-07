@@ -1,4 +1,4 @@
-import { Document, DocumentSig } from "../documents";
+import { Document, DocumentSig } from "../parsing";
 import { FullText, StringDict } from "../fields";
 import { InputSource } from "../inputs";
 

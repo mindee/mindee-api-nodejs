@@ -12,9 +12,9 @@ import {
   eu,
   FinancialDocumentV1,
 } from "./";
-import { DocumentSig } from "./documents";
+import { DocumentSig } from "./parsing";
 
-import { Response, STANDARD_API_OWNER } from "./api";
+import { Response, STANDARD_API_OWNER } from "./http";
 import { Client, PredictOptions } from "./client";
 import { PageOptions, PageOptionsOperation } from "./inputs";
 import * as console from "console";
