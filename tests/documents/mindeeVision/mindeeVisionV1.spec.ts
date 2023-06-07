@@ -13,7 +13,7 @@ describe("MindeeVisionV1 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new mindee.MindeeVisionV1({
+    const doc = new mindee.product.MindeeVisionV1({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,

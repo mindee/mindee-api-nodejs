@@ -14,7 +14,7 @@ describe("LicensePlateV1 Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.eu.LicensePlateV1({
+    const doc = new mindee.product.eu.LicensePlateV1({
       prediction: response.document.inference.prediction,
     });
     expect(doc.licensePlates.length).to.be.equals(0);
@@ -24,7 +24,7 @@ describe("LicensePlateV1 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new mindee.eu.LicensePlateV1({
+    const doc = new mindee.product.eu.LicensePlateV1({
       prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.docString));
@@ -35,7 +35,7 @@ describe("LicensePlateV1 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new mindee.eu.LicensePlateV1({
+    const doc = new mindee.product.eu.LicensePlateV1({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,

@@ -8,16 +8,14 @@ import {
   PageOptions,
   UrlInput,
   BufferInput,
-} from "./inputs";
+} from "./input";
 import {
   Response,
   STANDARD_API_OWNER,
   StandardEndpoint,
   AsyncPredictResponse,
-} from "./api";
+} from "./http";
 import {
-  Document,
-  DocumentSig,
   ReceiptV3,
   ReceiptV4,
   ReceiptV5,
@@ -27,18 +25,14 @@ import {
   InvoiceV3,
   InvoiceV4,
   InvoiceSplitterV1,
-  FinancialDocumentV0,
   fr,
   us,
   eu,
   ProofOfAddressV1,
   FinancialDocumentV1,
-} from "./documents";
-import {
-  CustomDocConfig,
-  DocumentConfig,
-  FinancialDocV0Config,
-} from "./documents/documentConfig";
+} from "./product";
+import { Document, DocumentSig } from "./parsing/common";
+import { CustomDocConfig, DocumentConfig } from "./parsing/documentConfig";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 
@@ -258,10 +252,6 @@ export class Client {
 
   // TODO: init only those endpoints we actually need.
   protected addStandardEndpoints() {
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, FinancialDocumentV0.name],
-      new FinancialDocV0Config(this.apiKey)
-    );
     this.docConfigs.set(
       [STANDARD_API_OWNER, FinancialDocumentV1.name],
       new DocumentConfig(FinancialDocumentV1, [

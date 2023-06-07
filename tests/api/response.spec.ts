@@ -2,8 +2,8 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { Response } from "../../src";
-import { CustomV1, InvoiceV3, PassportV1, ReceiptV3 } from "../../src";
-import { InputSource, INPUT_TYPE_PATH } from "../../src/inputs";
+import * as product from "../../src/product";
+import { InputSource, INPUT_TYPE_PATH } from "../../src/input";
 
 const dataPath = {
   receiptV3: "tests/data/receipt/response_v3/complete.json",
@@ -18,7 +18,7 @@ describe("Synchronous API predict response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new Response<ReceiptV3>(ReceiptV3, {
+    const response = new Response<product.ReceiptV3>(product.ReceiptV3, {
       httpResponse: httpResponse,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
@@ -36,7 +36,7 @@ describe("Synchronous API predict response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new Response<InvoiceV3>(InvoiceV3, {
+    const response = new Response<product.InvoiceV3>(product.InvoiceV3, {
       httpResponse: httpResponse,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
@@ -54,7 +54,7 @@ describe("Synchronous API predict response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new Response<PassportV1>(PassportV1, {
+    const response = new Response<product.PassportV1>(product.PassportV1, {
       httpResponse: httpResponse,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
@@ -71,7 +71,7 @@ describe("Synchronous API predict response", () => {
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new Response<CustomV1>(CustomV1, {
+    const response = new Response<product.CustomV1>(product.CustomV1, {
       httpResponse: httpResponse,
       documentType: "field_test",
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),

@@ -1,6 +1,6 @@
 import { errorHandler } from "../errors/handler";
 import { PDFDocument } from "pdf-lib";
-import { PageOptions, PageOptionsOperation } from "../inputs";
+import { PageOptions, PageOptionsOperation } from "../input";
 import { MindeeError } from "../errors";
 
 export interface SplitPdf {

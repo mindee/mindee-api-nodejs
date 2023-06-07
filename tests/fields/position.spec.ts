@@ -1,4 +1,4 @@
-import { PositionField } from "../../src/fields";
+import { PositionField } from "../../src/parsing/standard";
 import { expect } from "chai";
 
 describe("Test Position field", () => {

@@ -15,7 +15,7 @@ describe("Custom Document Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.CustomV1({
+    const doc = new mindee.product.CustomV1({
       prediction: response.document.inference.prediction,
       documentType: "field_test",
     });
@@ -27,7 +27,7 @@ describe("Custom Document Object initialization", async () => {
   it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.CustomV1({
+    const doc = new mindee.product.CustomV1({
       prediction: response.document.inference.prediction,
       documentType: "field_test",
     });
@@ -50,7 +50,7 @@ describe("Custom Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new mindee.CustomV1({
+    const doc = new mindee.product.CustomV1({
       prediction: pageData.prediction,
       documentType: "field_test",
       pageId: pageData.id,
@@ -67,7 +67,7 @@ describe("Custom Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[1];
-    const doc = new mindee.CustomV1({
+    const doc = new mindee.product.CustomV1({
       prediction: pageData.prediction,
       documentType: "field_test",
       pageId: pageData.id,

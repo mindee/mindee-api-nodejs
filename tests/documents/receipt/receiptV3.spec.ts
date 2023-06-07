@@ -21,7 +21,7 @@ describe("Receipt Object V3 initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.ReceiptV3({
+    const doc = new mindee.product.ReceiptV3({
       prediction: response.document.inference.prediction,
     });
     expect(doc.locale.value).to.be.undefined;
@@ -42,7 +42,7 @@ describe("Receipt Object V3 initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new mindee.ReceiptV3({
+    const doc = new mindee.product.ReceiptV3({
       prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.docString));
@@ -56,7 +56,7 @@ describe("Receipt Object V3 initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new mindee.ReceiptV3({
+    const doc = new mindee.product.ReceiptV3({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,
@@ -68,7 +68,7 @@ describe("Receipt Object V3 initialization", async () => {
   });
 
   it("should reconstruct with N/A total", function () {
-    const doc = new mindee.ReceiptV3({
+    const doc = new mindee.product.ReceiptV3({
       prediction: {
         ...this.basePrediction,
         total_incl: { value: "N/A", confidence: 0.5 },
@@ -82,7 +82,7 @@ describe("Receipt Object V3 initialization", async () => {
   });
 
   it("should reconstruct with empty taxes", function () {
-    const doc = new mindee.ReceiptV3({
+    const doc = new mindee.product.ReceiptV3({
       prediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },
@@ -93,7 +93,7 @@ describe("Receipt Object V3 initialization", async () => {
   });
 
   it("should reconstruct with taxes", function () {
-    const doc = new mindee.ReceiptV3({
+    const doc = new mindee.product.ReceiptV3({
       prediction: {
         ...this.basePrediction,
         total_incl: { value: 12.54, confidence: 0.5 },

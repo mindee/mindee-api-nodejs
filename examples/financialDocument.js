@@ -6,7 +6,7 @@ const mindeeClient = new mindee.Client({apiKey: "my-api-key"});
 // parsing receipt from PDF, will return invoice info
 invoiceDoc = mindeeClient.docFromPath("./documents/invoices/invoice.pdf");
 invoiceDoc
-  .parse(mindee.FinancialDocumentV1)
+  .parse(mindee.product.FinancialDocumentV1)
   .then((res) => {
     console.log("Success!");
     console.log(res.pages);
@@ -20,7 +20,7 @@ invoiceDoc
 // parsing receipt from image, will return receipt info
 receiptDoc = mindeeClient.docFromPath("./documents/receipts/receipt.jpg");
 receiptDoc
-  .parse(mindee.FinancialDocumentV1)
+  .parse(mindee.product.FinancialDocumentV1)
   .then((res) => {
     console.log("Success!");
     console.log(res.pages);
