@@ -1,6 +1,7 @@
 import { promises as fs } from "fs";
 import { expect } from "chai";
-import { CustomV1, getLineItems } from "../../../src/documents";
+import { CustomV1 } from "../../../src/product";
+import { getLineItems } from "../../../src/parsing/custom";
 
 const dataPath = {
   singleTable01:

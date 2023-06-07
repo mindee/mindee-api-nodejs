@@ -12,7 +12,7 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" })
 // Load a file from disk and parse it
 const apiResponse = mindeeClient
   .docFromPath("/path/to/the/file.ext")
-  .parse(mindee.CustomV1, { endpointName: "my-endpoint" });
+  .parse(mindee.product.CustomV1, { endpointName: "my-endpoint" });
 
 // Handle the response Promise
 apiResponse.then((resp) => {

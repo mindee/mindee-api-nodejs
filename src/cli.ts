@@ -1,6 +1,5 @@
 import { Command, OptionValues } from "commander";
 import {
-  Document,
   InvoiceV4,
   InvoiceSplitterV1,
   ReceiptV5,
@@ -11,12 +10,12 @@ import {
   us,
   eu,
   FinancialDocumentV1,
-} from "./";
-import { DocumentSig } from "./documents";
+} from "./product";
+import { Document, DocumentSig } from "./parsing/common";
 
-import { Response, STANDARD_API_OWNER } from "./api";
+import { Response, STANDARD_API_OWNER } from "./http";
 import { Client, PredictOptions } from "./client";
-import { PageOptions, PageOptionsOperation } from "./inputs";
+import { PageOptions, PageOptionsOperation } from "./input";
 import * as console from "console";
 
 const program = new Command();
