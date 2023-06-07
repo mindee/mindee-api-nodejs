@@ -13,7 +13,7 @@ describe("US Bank check V1 Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.us.BankCheckV1({
+    const doc = new mindee.product.us.BankCheckV1({
       prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.accountNumber.value).to.be.undefined;
@@ -27,7 +27,7 @@ describe("US Bank check V1 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new mindee.us.BankCheckV1({
+    const doc = new mindee.product.us.BankCheckV1({
       prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.docString));

@@ -11,7 +11,7 @@ import {
   INPUT_TYPE_PATH,
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BUFFER,
-} from "../../src/inputs";
+} from "../../src/input";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
