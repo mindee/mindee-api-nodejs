@@ -2,7 +2,7 @@ import {
   PathInput,
   PageOptionsOperation,
   INPUT_TYPE_PATH,
-} from "../../src/inputs";
+} from "../../src/input";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";

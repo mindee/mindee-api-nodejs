@@ -24,4 +24,4 @@ export {
   PredictOptions,
 } from "./client";
 export { ResponseSig, Response, AsyncPredictResponse } from "./http";
-export { InputSource, PageOptionsOperation } from "./inputs";
+export { InputSource, PageOptionsOperation } from "./input";

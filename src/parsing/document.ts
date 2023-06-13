@@ -1,4 +1,4 @@
-import { InputSource } from "../inputs";
+import { InputSource } from "../input";
 import {
   PositionField,
   FullText,

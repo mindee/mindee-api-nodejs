@@ -56,10 +56,10 @@ export class Line {
    * Check if the bbox fits the current line.
    */
   contains(bbox: BBox): boolean {
-      if (Math.abs(bbox[1] - this.bbox[1]) <= this.heightTolerance) {
-        return true;
-      }
-      return Math.abs(this.bbox[1] - bbox[1]) <= this.heightTolerance;
+    if (Math.abs(bbox[1] - this.bbox[1]) <= this.heightTolerance) {
+      return true;
+    }
+    return Math.abs(this.bbox[1] - bbox[1]) <= this.heightTolerance;
   }
 
   updateField(name: string, fieldValue: ListFieldValue): void {

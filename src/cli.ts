@@ -16,7 +16,7 @@ import { DocumentSig } from "./parsing";
 
 import { Response, STANDARD_API_OWNER } from "./http";
 import { Client, PredictOptions } from "./client";
-import { PageOptions, PageOptionsOperation } from "./inputs";
+import { PageOptions, PageOptionsOperation } from "./input";
 import * as console from "console";
 
 const program = new Command();

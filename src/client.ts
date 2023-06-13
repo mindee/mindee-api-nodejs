@@ -8,7 +8,7 @@ import {
   PageOptions,
   UrlInput,
   BufferInput,
-} from "./inputs";
+} from "./input";
 import {
   Response,
   STANDARD_API_OWNER,
@@ -33,10 +33,7 @@ import {
   ProofOfAddressV1,
   FinancialDocumentV1,
 } from "./parsing";
-import {
-  CustomDocConfig,
-  DocumentConfig,
-} from "./parsing/documentConfig";
+import { CustomDocConfig, DocumentConfig } from "./parsing/documentConfig";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 

@@ -1,4 +1,4 @@
-import { InputSource } from "../inputs";
+import { InputSource } from "../input";
 import {
   Response,
   Endpoint,
@@ -9,7 +9,7 @@ import {
 } from "../http";
 import { Document, CustomV1, DocumentSig } from "./index";
 import { errorHandler } from "../errors/handler";
-import { PageOptions } from "../inputs";
+import { PageOptions } from "../input";
 
 interface CustomDocConstructor {
   endpointName: string;
@@ -171,4 +171,3 @@ export class CustomDocConfig extends DocumentConfig<CustomV1> {
     super(CustomV1, endpoints, endpointName);
   }
 }
-

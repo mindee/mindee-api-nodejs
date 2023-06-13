@@ -1,6 +1,6 @@
 import { Document, DocumentSig } from "../parsing";
 import { FullText, StringDict } from "../fields";
-import { InputSource } from "../inputs";
+import { InputSource } from "../input";
 
 export interface ResponseProps {
   httpResponse: any;

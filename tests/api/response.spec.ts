@@ -3,7 +3,7 @@ import * as path from "path";
 import { expect } from "chai";
 import { Response } from "../../src";
 import { CustomV1, InvoiceV3, PassportV1, ReceiptV3 } from "../../src";
-import { InputSource, INPUT_TYPE_PATH } from "../../src/inputs";
+import { InputSource, INPUT_TYPE_PATH } from "../../src/input";
 
 const dataPath = {
   receiptV3: "tests/data/receipt/response_v3/complete.json",

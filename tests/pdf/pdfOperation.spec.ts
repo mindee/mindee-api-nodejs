@@ -2,7 +2,7 @@ import * as pdf from "../../src/pdf";
 import * as path from "path";
 import * as fs from "fs";
 import { expect } from "chai";
-import { PathInput, PageOptions, PageOptionsOperation } from "../../src/inputs";
+import { PathInput, PageOptions, PageOptionsOperation } from "../../src/input";
 
 describe("Test pdf operation", () => {
   it("should cut a PDF to get 2 pages", async () => {

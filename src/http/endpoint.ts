@@ -4,7 +4,7 @@ import * as os from "os";
 import { version as sdkVersion } from "../../package.json";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { InputSource } from "../inputs";
+import { InputSource } from "../input";
 import { logger } from "../logger";
 import { IncomingMessage, RequestOptions, ClientRequest } from "http";
 
