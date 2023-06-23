@@ -10,7 +10,6 @@ import {
   fr,
   us,
   eu,
-  ShippingContainerV1,
   FinancialDocumentV1,
 } from "./";
 import { DocumentSig } from "./documents";
@@ -144,16 +143,6 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "US Bank Check",
       docClass: us.BankCheckV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "shipping-container",
-    {
-      displayName: "Shipping Container",
-      docClass: ShippingContainerV1,
       fullText: false,
       async: false,
       sync: true,
