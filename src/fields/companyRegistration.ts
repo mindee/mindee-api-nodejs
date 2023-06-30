@@ -1,5 +1,8 @@
 import { Field, FieldConstructor } from "./field";
 
+/**
+ * A company registration item.
+ */
 export class CompanyRegistration extends Field {
   /** Registration identifier. */
   value?: string;

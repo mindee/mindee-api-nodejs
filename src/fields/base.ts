@@ -6,6 +6,9 @@ export interface BaseFieldConstructor {
   reconstructed?: boolean;
 }
 
+/**
+ * Base class for most fields.
+ */
 export class BaseField {
   /** The value. */
   value?: string | number = undefined;

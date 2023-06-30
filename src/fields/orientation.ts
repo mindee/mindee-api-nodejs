@@ -4,6 +4,9 @@ interface OrientationFieldConstructor extends BaseFieldConstructor {
   pageId: number;
 }
 
+/**
+ * The clockwise rotation to apply (in degrees) to make the image upright.
+ */
 export class OrientationField extends BaseField {
   /** Degrees of the rotation. */
   value: number;

@@ -12,6 +12,9 @@ interface PaymentDetailsConstructor {
   pageId?: number;
 }
 
+/**
+ * Information on a single payment.
+ */
 export class PaymentDetails extends Field {
   /** Synonym for the `iban` property */
   value?: string | undefined;

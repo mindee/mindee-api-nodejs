@@ -8,6 +8,9 @@ export interface FieldConstructor {
   pageId?: number | undefined;
 }
 
+/**
+ * A basic field with position and page information.
+ */
 export class Field extends BaseField {
   /**
    * Contains exactly 4 relative vertices coordinates (points) of a right

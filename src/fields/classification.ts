@@ -1,5 +1,8 @@
 import { BaseField, BaseFieldConstructor } from "./base";
 
+/**
+ * Represents a classifier value.
+ */
 export class ClassificationField extends BaseField {
   /** The confidence score of the prediction. */
   confidence: number;

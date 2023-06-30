@@ -8,6 +8,9 @@ export interface FieldConstructor {
   pageId?: number | undefined;
 }
 
+/**
+ * A field containing a text value.
+ */
 export class TextField extends Field {
   /** The value. */
   value?: string;

@@ -7,6 +7,9 @@ export interface PositionFieldConstructor {
   pageId?: number | undefined;
 }
 
+/**
+ * A field indicating a position or area on the document.
+ */
 export class PositionField {
   /** Straight rectangle. */
   boundingBox: Polygon;

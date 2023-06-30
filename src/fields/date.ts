@@ -1,5 +1,8 @@
 import { Field, FieldConstructor } from "./field";
 
+/**
+ * A field containing a date value.
+ */
 export class DateField extends Field {
   /** Date string in ISO format. */
   value?: string;

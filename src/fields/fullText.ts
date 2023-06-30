@@ -51,6 +51,9 @@ function orderLines(fullText: Word[]): Line[] {
   return orderedLines;
 }
 
+/**
+ * OCR extraction from the entire document.
+ */
 export class FullText {
   words: Word[] = [];
 
