@@ -3,7 +3,7 @@ import { StringDict } from "../../fields";
 import { Polygon } from "../../geometry";
 
 /**
- * Full extraction of lines, including: description, quantity, unit price and total.
+ * List of line item details.
  */
 export class ReceiptV5LineItem {
   /** The item description. */
@@ -49,8 +49,7 @@ export class ReceiptV5LineItem {
     return {
       description: this.description ?? "",
       quantity: this.quantity !== null ? floatToString(this.quantity) : "",
-      totalAmount:
-        this.totalAmount !== null ? floatToString(this.totalAmount) : "",
+      totalAmount: this.totalAmount !== null ? floatToString(this.totalAmount) : "",
       unitPrice: this.unitPrice !== null ? floatToString(this.unitPrice) : "",
     };
   }
@@ -71,7 +70,6 @@ export class ReceiptV5LineItem {
       printable.unitPrice
     ).trim();
   }
-
   /**
    * Output in a format suitable for inclusion in an rST table.
    */
