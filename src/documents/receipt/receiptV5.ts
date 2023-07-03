@@ -6,8 +6,8 @@ import {
   DateField,
   Locale,
   StringDict,
-  TaxField,
   Taxes,
+  TaxField,
   TextField,
 } from "../../fields";
 import { ReceiptV5LineItem } from "./receiptV5LineItem";
@@ -92,13 +92,14 @@ export class ReceiptV5 extends Document {
       prediction: prediction["supplier_address"],
       pageId: pageId,
     });
-    prediction["supplier_company_registrations"].map((itemPrediction: StringDict) =>
-      this.supplierCompanyRegistrations.push(
-        new CompanyRegistration({
-          prediction: itemPrediction,
-          pageId: pageId,
-        })
-      )
+    prediction["supplier_company_registrations"].map(
+      (itemPrediction: StringDict) =>
+        this.supplierCompanyRegistrations.push(
+          new CompanyRegistration({
+            prediction: itemPrediction,
+            pageId: pageId,
+          })
+        )
     );
     this.supplierName = new TextField({
       prediction: prediction["supplier_name"],
@@ -147,7 +148,9 @@ export class ReceiptV5 extends Document {
 :Tip and Gratuity: ${this.tip}
 :Taxes: ${this.taxes}
 :Supplier Name: ${this.supplierName}
-:Supplier Company Registrations: ${this.supplierCompanyRegistrations.join(`\n ${" ".repeat(32)}`)}
+:Supplier Company Registrations: ${this.supplierCompanyRegistrations.join(
+      `${" ".repeat(32)}`
+    )}
 :Supplier Address: ${this.supplierAddress}
 :Supplier Phone Number: ${this.supplierPhoneNumber}
 :Line Items: ${this.#lineItemsToString()}

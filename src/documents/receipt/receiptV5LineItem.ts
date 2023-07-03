@@ -49,7 +49,8 @@ export class ReceiptV5LineItem {
     return {
       description: this.description ?? "",
       quantity: this.quantity !== null ? floatToString(this.quantity) : "",
-      totalAmount: this.totalAmount !== null ? floatToString(this.totalAmount) : "",
+      totalAmount:
+        this.totalAmount !== null ? floatToString(this.totalAmount) : "",
       unitPrice: this.unitPrice !== null ? floatToString(this.unitPrice) : "",
     };
   }

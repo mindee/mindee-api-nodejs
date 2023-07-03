@@ -1,7 +1,5 @@
 import { Document, DocumentConstructorProps } from "../../document";
-import {
-  TextField,
-} from "../../../fields";
+import { TextField } from "../../../fields";
 import { BankAccountDetailsV2Bban } from "./bankAccountDetailsV2Bban";
 
 /**
@@ -50,7 +48,8 @@ export class BankAccountDetailsV2 extends Document {
     });
   }
 
-  toString(): string {const outStr = `FR Bank Account Details V2 Prediction
+  toString(): string {
+    const outStr = `FR Bank Account Details V2 Prediction
 =====================================
 :Filename: ${this.filename}
 :Account Holder's Names: ${this.accountHoldersNames}

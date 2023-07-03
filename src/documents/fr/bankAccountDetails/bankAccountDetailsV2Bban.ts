@@ -1,4 +1,3 @@
-import { floatToString } from "../../../fields/amount";
 import { StringDict } from "../../../fields";
 import { Polygon } from "../../../geometry";
 
@@ -67,10 +66,14 @@ export class BankAccountDetailsV2Bban {
   toFieldList(): string {
     const printable = this.#printableValues();
     return (
-      "\n  :Bank Code: " + printable.bbanBankCode +
-      "\n  :Branch Code: " + printable.bbanBranchCode +
-      "\n  :Key: " + printable.bbanKey +
-      "\n  :Account Number: " + printable.bbanNumber
+      "\n  :Bank Code: " +
+      printable.bbanBankCode +
+      "\n  :Branch Code: " +
+      printable.bbanBranchCode +
+      "\n  :Key: " +
+      printable.bbanKey +
+      "\n  :Account Number: " +
+      printable.bbanNumber
     );
   }
 }
