@@ -11,7 +11,6 @@ export {
   ReceiptV4,
   ReceiptV5,
   CropperV1,
-  ShippingContainerV1,
   MindeeVisionV1,
   ProofOfAddressV1,
   fr,
