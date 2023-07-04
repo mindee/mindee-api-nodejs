@@ -1,9 +1,16 @@
 # CHANGELOG
 
+## v3.10.0 - 2023-07-04
+### Changes
+* :sparkles: add support for FR Bank Account Details V2
+* :recycle: update printing syntax & unit test for Receipt v5
+
+
 ## v3.9.0 - 2023-06-06
 ### Changes
 * :sparkles: support for financial document v1.1
 * :recycle: change http status code handling for async requests
+
 
 ### Fixes
 * :bug: fix typing in PaymentDetails
