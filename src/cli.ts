@@ -12,7 +12,7 @@ import {
   eu,
   FinancialDocumentV1,
 } from "./";
-import { DocumentSig } from "./parsing";
+import { DocumentSig } from "./product";
 
 import { Response, STANDARD_API_OWNER } from "./http";
 import { Client, PredictOptions } from "./client";

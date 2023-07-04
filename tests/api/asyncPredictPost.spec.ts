@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { AsyncPredictResponse } from "../../src";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { StringDict } from "../../src/fields";
+import { StringDict } from "../../src/parsing/standard";
 
 describe("Asynchronous API predict response", () => {
   it("should parse a successful enqueue", async () => {

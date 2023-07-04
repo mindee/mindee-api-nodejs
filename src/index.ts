@@ -1,6 +1,6 @@
 export {
   CustomV1,
-  Document,
+  CropperV1,
   FinancialDocumentV1,
   InvoiceV3,
   InvoiceV4,
@@ -9,13 +9,12 @@ export {
   ReceiptV3,
   ReceiptV4,
   ReceiptV5,
-  CropperV1,
   MindeeVisionV1,
   ProofOfAddressV1,
   fr,
   us,
   eu,
-} from "./parsing";
+} from "./product";
 export {
   Client,
   ClientOptions,

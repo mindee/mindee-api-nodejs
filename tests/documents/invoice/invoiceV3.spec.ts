@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { TaxField } from "../../../src/fields";
+import { TaxField } from "../../../src/parsing/standard";
 import * as mindee from "../../../src";
 
 const dataPath = {

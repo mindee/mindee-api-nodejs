@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../src";
-import { Amount, DateField, TextField, TaxField } from "../../../src/fields";
+import { Amount, DateField, TextField, TaxField } from "../../../src/parsing/standard";
 
 const dataPath = {
   receiptComplete:

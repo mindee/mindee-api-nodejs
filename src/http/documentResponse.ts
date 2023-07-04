@@ -1,5 +1,5 @@
-import { Document, DocumentSig } from "../parsing";
-import { FullText, StringDict } from "../fields";
+import { Document, DocumentSig } from "../parsing/common";
+import { FullText, StringDict } from "../parsing/standard";
 import { InputSource } from "../input";
 
 export interface ResponseProps {
