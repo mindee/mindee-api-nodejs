@@ -35,6 +35,9 @@ export class BankAccountDetailsV2Bban {
     }
   }
 
+  /**
+   * Collection of fields as representable strings.
+   */
   #printableValues() {
     return {
       bbanBankCode: this.bbanBankCode ?? "",
