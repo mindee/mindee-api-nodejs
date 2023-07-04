@@ -53,14 +53,10 @@ export class BankAccountDetailsV2 extends Document {
 =====================================
 :Filename: ${this.filename}
 :Account Holder's Names: ${this.accountHoldersNames}
-:Basic Bank Account Number: ${this.#bbanToString()}
+:Basic Bank Account Number: ${this.bban.toFieldList()}
 :IBAN: ${this.iban}
 :SWIFT Code: ${this.swiftCode}
 `;
     return BankAccountDetailsV2.cleanOutString(outStr);
-  }
-
-  #bbanToString() {
-    return this.bban.toFieldList();
   }
 }
