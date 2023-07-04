@@ -4,6 +4,7 @@
 ### Changes
 * :sparkles: add support for FR Bank Account Details V2
 * :recycle: update printing syntax & unit test for Receipt v5
+* :coffin: removed support for Shipping Container
 
 
 ## v3.9.0 - 2023-06-06
