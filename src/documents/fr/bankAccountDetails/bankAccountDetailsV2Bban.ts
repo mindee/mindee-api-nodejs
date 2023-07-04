@@ -47,33 +47,29 @@ export class BankAccountDetailsV2Bban {
   /**
    * Default string representation.
    */
-  toString() {
+  toString(): string {
     const printable = this.#printableValues();
     return (
       "Bank Code: " +
       printable.bbanBankCode +
-      "Branch Code: " +
+      ", Branch Code: " +
       printable.bbanBranchCode +
-      "Key: " +
+      ", Key: " +
       printable.bbanKey +
-      "Account Number: " +
+      ", Account Number: " +
       printable.bbanNumber
-    ).trim();
+    );
   }
+
   /**
    * Output in a format suitable for inclusion in a field list.
    */
   toFieldList(): string {
     const printable = this.#printableValues();
-    return (
-      "\n  :Bank Code: " +
-      printable.bbanBankCode +
-      "\n  :Branch Code: " +
-      printable.bbanBranchCode +
-      "\n  :Key: " +
-      printable.bbanKey +
-      "\n  :Account Number: " +
-      printable.bbanNumber
-    );
+    return `
+  :Bank Code: ${printable.bbanBankCode}
+  :Branch Code: ${printable.bbanBranchCode}
+  :Key: ${printable.bbanKey}
+  :Account Number: ${printable.bbanNumber}`.trimEnd();
   }
 }
