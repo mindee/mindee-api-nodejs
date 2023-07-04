@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v3.10.1 - 2023-07-04
+### Changes
+* :arrow_up: update dependencies
+
+### Fixes
+* :pencil2: added missing entry in changelog
+
+
 ## v3.10.0 - 2023-07-04
 ### Changes
 * :sparkles: add support for FR Bank Account Details V2
