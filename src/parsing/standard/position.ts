@@ -1,4 +1,4 @@
-import { StringDict } from "../common";
+import { StringDict } from "./base";
 import { Polygon } from "../../geometry";
 
 export interface PositionFieldConstructor {

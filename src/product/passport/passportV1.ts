@@ -1,9 +1,5 @@
-import {
-  Document,
-  DocumentConstructorProps,
-  StringDict,
-} from "../../parsing/common";
-import { DateField, TextField } from "../../parsing/standard";
+import { Document, DocumentConstructorProps } from "../../parsing/common";
+import { DateField, TextField, StringDict } from "../../parsing/standard";
 import * as MRZ from "mrz";
 
 export class PassportV1 extends Document {

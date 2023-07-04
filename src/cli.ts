@@ -10,7 +10,7 @@ import {
   us,
   eu,
   FinancialDocumentV1,
-} from "./product";
+} from "./";
 import { Document, DocumentSig } from "./parsing/common";
 
 import { Response, STANDARD_API_OWNER } from "./http";

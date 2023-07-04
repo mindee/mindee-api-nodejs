@@ -1,9 +1,6 @@
-import {
-  Document,
-  DocumentConstructorProps,
-  StringDict,
-} from "../../parsing/common";
+import { Document, DocumentConstructorProps } from "../../parsing/common";
 import { ClassificationField, ListField } from "../../parsing/custom";
+import { StringDict } from "../../parsing/standard";
 
 export class CustomV1 extends Document {
   fields: Map<string, ListField> = new Map();

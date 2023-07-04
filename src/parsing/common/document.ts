@@ -1,7 +1,10 @@
 import { InputSource } from "../../input";
-import { PositionField, FullText } from "../standard";
-
-import { OrientationField, StringDict } from "../common";
+import {
+  PositionField,
+  FullText,
+  OrientationField,
+  StringDict,
+} from "../standard";
 
 export type DocumentSig<DocType extends Document> = {
   new ({
