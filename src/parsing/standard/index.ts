@@ -1,11 +1,10 @@
 export { ClassificationField } from "./classification";
 export { Taxes, TaxField } from "./tax";
 export { PaymentDetails } from "./paymentDetails";
-export { OrientationField } from "./orientation";
 export { Locale } from "./locale";
 export { Amount, floatToString } from "./amount";
 export { DateField } from "./date";
-export { BaseField, StringDict } from "./base";
+export { BaseField, StringDict, BaseFieldConstructor } from "./base";
 export { FullText, Word } from "./fullText";
 export { CompanyRegistration } from "./companyRegistration";
 export { PositionField } from "./position";
