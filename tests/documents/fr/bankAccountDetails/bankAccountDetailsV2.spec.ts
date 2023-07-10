@@ -16,7 +16,7 @@ describe("BankAccountDetailsV2 Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.fr.BankAccountDetailsV2({
+    const doc = new mindee.product.fr.BankAccountDetailsV2({
       prediction: response.document.inference.prediction,
     });
     expect(doc.accountHoldersNames.value).to.be.undefined;
@@ -32,7 +32,7 @@ describe("BankAccountDetailsV2 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new mindee.fr.BankAccountDetailsV2({
+    const doc = new mindee.product.fr.BankAccountDetailsV2({
       prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.docString));
@@ -43,7 +43,7 @@ describe("BankAccountDetailsV2 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new mindee.fr.BankAccountDetailsV2({
+    const doc = new mindee.product.fr.BankAccountDetailsV2({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,

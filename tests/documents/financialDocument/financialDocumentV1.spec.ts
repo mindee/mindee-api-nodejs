@@ -20,7 +20,7 @@ describe("Financial Document V1 Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.FinancialDocumentV1({
+    const doc = new mindee.product.FinancialDocumentV1({
       prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.locale.value).to.be.undefined;
@@ -52,7 +52,7 @@ describe("Financial Document V1 Object initialization", async () => {
   it("should initialize from an invoice object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoiceComplete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.FinancialDocumentV1({
+    const doc = new mindee.product.FinancialDocumentV1({
       prediction: response.document.inference.prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.invoiceDocString));
@@ -62,7 +62,7 @@ describe("Financial Document V1 Object initialization", async () => {
   it("should initialize from a receipt object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.receiptComplete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.FinancialDocumentV1({
+    const doc = new mindee.product.FinancialDocumentV1({
       prediction: response.document.inference.pages[0].prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.receiptDocString));

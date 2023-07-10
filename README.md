@@ -32,7 +32,7 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 // Load a file from disk and parse it
 const apiResponse = mindeeClient
     .docFromPath("/path/to/the/file.ext")
-    .parse(mindee.InvoiceV4);
+    .parse(mindee.product.InvoiceV4);
 ```
 
 #### Region-Specific Documents
@@ -47,7 +47,7 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 // Load a file from disk and parse it
 const apiResponse = mindeeClient
     .docFromPath("/path/to/the/file.ext")
-    .parse(mindee.fr.IdCardV1);
+    .parse(mindee.product.fr.IdCardV1);
 ```
 
 #### Custom Documents (API Builder)
@@ -66,7 +66,7 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" })
 // Load a file from disk and parse it
 const apiResponse = mindeeClient
     .docFromPath("/path/to/the/file.ext")
-    .parse(mindee.CustomV1, { endpointName: "my-endpoint" });
+    .parse(mindee.product.CustomV1, { endpointName: "my-endpoint" });
 ```
 
 ### Handling the Return
