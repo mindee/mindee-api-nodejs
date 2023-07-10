@@ -7,7 +7,7 @@ async function sampleAsyncApi() {
   const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 
   // Specify the document class here to be DRY
-  const docClass = mindee.InvoiceSplitterV1;
+  const docClass = mindee.product.InvoiceSplitterV1;
 
   // Load a file from disk and send it to the asynchronous queue
   const enqueueResponse = await mindeeClient
