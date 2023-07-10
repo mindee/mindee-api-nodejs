@@ -1,8 +1,10 @@
-import { Document, DocumentConstructorProps } from "../../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../../parsing/common";
 import { TextField } from "../../../parsing/standard";
 
 /** French bank account information (RIB) */
-export class BankAccountDetailsV1 extends Document {
+export class BankAccountDetailsV1 extends Inference {
+  static endpointName ='bank_account_details';
+  static endpointVersion = '1';
   /** The account's IBAN. */
   iban: TextField;
   /** The account holder's name. */

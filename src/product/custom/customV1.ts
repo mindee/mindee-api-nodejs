@@ -1,8 +1,13 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import {
+  Inference,
+  DocumentConstructorProps,
+  StringDict,
+} from "../../parsing/common";
 import { ClassificationField, ListField } from "../../parsing/custom";
-import { StringDict } from "../../parsing/standard";
 
-export class CustomV1 extends Document {
+export class CustomV1 extends Inference {
+  static endpointName ='custom';
+  static endpointVersion = '1';
   fields: Map<string, ListField> = new Map();
   classifications: Map<string, ClassificationField> = new Map();
 

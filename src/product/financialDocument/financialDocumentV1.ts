@@ -1,4 +1,8 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import {
+  Inference,
+  DocumentConstructorProps,
+  StringDict,
+} from "../../parsing/common";
 import {
   Amount,
   ClassificationField,
@@ -15,7 +19,9 @@ import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
 /**
  * Document data for Financial Document, API version 1.
  */
-export class FinancialDocumentV1 extends Document {
+export class FinancialDocumentV1 extends Inference {
+  static endpointName ='financial_document';
+  static endpointVersion = '1';
   /** The locale detected on the document. */
   locale: Locale;
   /** The invoice number or identifier. */

@@ -7,4 +7,4 @@ export {
   STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,
 } from "./endpoint";
-export { AsyncPredictResponse } from "./predictResponse";
+export { handleError } from "./error";

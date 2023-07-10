@@ -1,4 +1,4 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../parsing/common";
 import {
   BaseField,
   Taxes,
@@ -21,7 +21,9 @@ import {
   reconstructTotalTaxFromTotals,
 } from "./reconstruction";
 
-export class InvoiceV3 extends Document {
+export class InvoiceV3 extends Inference {
+  static endpointName ='invoices';
+  static endpointVersion = '3';
   /** Total amount with the tax amount of the purchase. */
   locale: Locale;
   /** The nature of the invoice. */

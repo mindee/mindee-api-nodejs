@@ -1,8 +1,14 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
-import { DateField, TextField, StringDict } from "../../parsing/standard";
+import {
+  Inference,
+  DocumentConstructorProps,
+  StringDict,
+} from "../../parsing/common";
+import { DateField, TextField } from "../../parsing/standard";
 import * as MRZ from "mrz";
 
-export class PassportV1 extends Document {
+export class PassportV1 extends Inference {
+  static endpointName ='passport';
+  static endpointVersion = '1';
   /** The country of issue. */
   country: TextField;
   /** The passport number. */

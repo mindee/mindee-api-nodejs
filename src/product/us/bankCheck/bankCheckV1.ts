@@ -1,4 +1,4 @@
-import { Document, DocumentConstructorProps } from "../../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../../parsing/common";
 import {
   TextField,
   DateField,
@@ -6,7 +6,9 @@ import {
   Amount,
 } from "../../../parsing/standard";
 
-export class BankCheckV1 extends Document {
+export class BankCheckV1 extends Inference {
+  static endpointName ='bank_check';
+  static endpointVersion = '1';
   /** Payer's bank account number. */
   accountNumber: TextField;
   /** Amount to be paid. */

@@ -1,11 +1,13 @@
-import { Document, DocumentConstructorProps } from "../../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../../parsing/common";
 import { TextField } from "../../../parsing/standard";
 import { BankAccountDetailsV2Bban } from "./bankAccountDetailsV2Bban";
 
 /**
  * Document data for Bank Account Details, API version 2.
  */
-export class BankAccountDetailsV2 extends Document {
+export class BankAccountDetailsV2 extends Inference {
+  static endpointName ='bank_account_details';
+  static endpointVersion = '2';
   /** Full extraction of the account holders names. */
   accountHoldersNames: TextField;
   /** Full extraction of BBAN, including: branch code, bank code, account and key. */

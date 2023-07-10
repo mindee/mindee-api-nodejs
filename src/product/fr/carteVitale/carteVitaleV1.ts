@@ -1,7 +1,9 @@
-import { Document, DocumentConstructorProps } from "../../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../../parsing/common";
 import { TextField, DateField } from "../../../parsing/standard";
 
-export class CarteVitaleV1 extends Document {
+export class CarteVitaleV1 extends Inference {
+  static endpointName ='carte_vitale';
+  static endpointVersion = '1';
   /** List of given (first) names of the cardholder. */
   givenNames: TextField[] = [];
   /** The surname of the person. */

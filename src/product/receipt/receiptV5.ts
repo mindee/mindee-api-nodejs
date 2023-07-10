@@ -1,4 +1,8 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import {
+  Inference,
+  DocumentConstructorProps,
+  StringDict,
+} from "../../parsing/common";
 import {
   Amount,
   ClassificationField,
@@ -14,7 +18,9 @@ import { ReceiptV5LineItem } from "./receiptV5LineItem";
 /**
  * Document data for Expense Receipt, API version 5.
  */
-export class ReceiptV5 extends Document {
+export class ReceiptV5 extends Inference {
+  static endpointName ='expense_receipts';
+  static endpointVersion = '5';
   /** The purchase category among predefined classes. */
   category: ClassificationField;
   /** The date the purchase was made. */

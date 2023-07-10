@@ -1,14 +1,14 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../parsing/common";
 import { PositionField } from "../../parsing/standard";
 
-export class CropperV1 extends Document {
+export class CropperV1 extends Inference {
+  static endpointName ='cropper';
+  static endpointVersion = '1';
+
   cropping: PositionField[] = [];
 
   constructor({
     prediction,
-    orientation = undefined,
-    inputSource = undefined,
-    pageId = undefined,
   }: DocumentConstructorProps) {
     super({
       inputSource: inputSource,

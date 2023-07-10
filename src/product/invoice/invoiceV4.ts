@@ -1,4 +1,8 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import {
+  Inference,
+  DocumentConstructorProps,
+  StringDict,
+} from "../../parsing/common";
 import {
   ClassificationField,
   Taxes,
@@ -8,7 +12,6 @@ import {
   TextField,
   DateField,
   CompanyRegistration,
-  StringDict,
 } from "../../parsing/standard";
 import { InvoiceLineItem } from "./invoiceLineItem";
 import {
@@ -24,7 +27,9 @@ import {
 } from "./reconstruction";
 
 /** Invoice V4 */
-export class InvoiceV4 extends Document {
+export class InvoiceV4 extends Inference {
+  static endpointName ='invoices';
+  static endpointVersion = '4';
   /** Locale information. */
   locale: Locale;
   /** The nature of the invoice. */

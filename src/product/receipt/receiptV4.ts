@@ -1,4 +1,4 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../parsing/common";
 import {
   ClassificationField,
   Amount,
@@ -9,7 +9,9 @@ import {
   Taxes,
 } from "../../parsing/standard";
 
-export class ReceiptV4 extends Document {
+export class ReceiptV4 extends Inference {
+  static endpointName ='expense_receipts';
+  static endpointVersion = '4';
   /** Where the purchase was made, the language, and the currency. */
   locale: Locale;
   /** The purchase date. */

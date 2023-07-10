@@ -1,4 +1,4 @@
-import { StringDict } from "../standard";
+import { StringDict } from "../common";
 
 export class ClassificationField {
   /** The value for the classification. */

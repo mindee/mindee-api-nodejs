@@ -1,7 +1,9 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../parsing/common";
 import { Word, FullText } from "../../parsing/standard";
 
-export class MindeeVisionV1 extends Document {
+export class MindeeVisionV1 extends Inference {
+  static endpointName ='mindee_vision';
+  static endpointVersion = '1';
   /** List of words found on the page. */
   allWords: Word[] = [];
 

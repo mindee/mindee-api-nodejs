@@ -1,4 +1,4 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../parsing/common";
 import {
   CompanyRegistration,
   DateField,
@@ -6,7 +6,9 @@ import {
   TextField,
 } from "../../parsing/standard";
 
-export class ProofOfAddressV1 extends Document {
+export class ProofOfAddressV1 extends Inference {
+  static endpointName ='proof_of_address';
+  static endpointVersion = '1';
   /** ISO date yyyy-mm-dd. Works both for European and US dates. */
   date: DateField;
   /** All extrated ISO date yyyy-mm-dd. Works both for European and US dates. */

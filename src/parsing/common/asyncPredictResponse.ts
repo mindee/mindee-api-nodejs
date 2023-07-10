@@ -1,6 +1,9 @@
-import { StringDict } from "../parsing/standard";
-import { Document } from "../parsing/common";
-import { Response } from "./documentResponse";
+import { Response } from "src/http/documentResponse";
+import { ApiResponse } from "./apiResponse";
+import { StringDict } from "./stringDict";
+import { Inference } from "./inference";
+import { Document } from "./document";
+import { Prediction } from "./prediction";
 
 export class Job {
   issuedAt: Date;
@@ -39,40 +42,12 @@ export class Job {
   }
 }
 
-export class ApiRequest {
-  error: StringDict;
-  resources: string[];
-  status: "failure" | "success";
-  /** HTTP status code */
-  statusCode: number;
-  url: string;
 
-  constructor(serverResponse: StringDict) {
-    this.error = serverResponse["error"];
-    this.resources = serverResponse["resources"];
-    this.status = serverResponse["status"];
-    this.statusCode = serverResponse["status_code"];
-    this.url = serverResponse["url"];
-  }
-}
-
-// For upcoming v4, use this as the base for all responses.
-// To not break compatibility, in v3.x, we will only use it as the base for async responses.
-export class BasePredictResponse {
-  apiRequest: ApiRequest;
-
-  constructor(serverResponse: StringDict) {
-    this.apiRequest = new ApiRequest(serverResponse["api_request"]);
-  }
-}
-
-export class AsyncPredictResponse<
-  DocType extends Document
-> extends BasePredictResponse {
+export class AsyncPredictResponse<T extends Inference<Prediction, Prediction>> extends ApiResponse {
   job: Job;
-  document?: Response<DocType>;
+  document?: Document<T>;
 
-  constructor(serverResponse: StringDict, document?: Response<DocType>) {
+  constructor(serverResponse: StringDict, document?: Response<T>) {
     super(serverResponse);
     this.job = new Job(serverResponse["job"]);
     this.document = document;

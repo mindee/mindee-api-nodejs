@@ -1,5 +1,6 @@
-import { StringDict, BaseField } from "./base";
+import { BaseField } from "./base";
 import { Polygon, BoundingBox, getBoundingBox } from "../../geometry";
+import { StringDict } from "../common";
 
 export interface FieldConstructor {
   prediction: StringDict;

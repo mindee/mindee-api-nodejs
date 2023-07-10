@@ -1,7 +1,9 @@
-import { Document, DocumentConstructorProps } from "../../../parsing/common";
+import { Inference, DocumentConstructorProps } from "../../../parsing/common";
 import { TextField } from "../../../parsing/standard";
 
-export class LicensePlateV1 extends Document {
+export class LicensePlateV1 extends Inference {
+  static endpointName ='license_plates';
+  static endpointVersion = '1';
   /** A list of license plates. */
   licensePlates: TextField[] = [];
 

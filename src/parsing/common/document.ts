@@ -1,20 +1,15 @@
-import { InputSource } from "../../input";
-import {
-  PositionField,
-  FullText,
-  OrientationField,
-  StringDict,
-} from "../standard";
+import { CropperV1, MindeeVisionV1 } from "src/product";
+import { Extras } from "./extras";
+import { Inference } from "./inference";
+import { Prediction } from "./prediction";
+import { StringDict } from "./stringDict";
+import { OrientationField } from "./orientation";
 
 export type DocumentSig<DocType extends Document> = {
-  new ({
+  new({
     prediction,
-    orientation,
     extras,
-    pageId,
-    fullText,
     documentType,
-    inputSource = undefined,
   }: DocumentConstructorProps): DocType;
 };
 
@@ -24,72 +19,38 @@ export interface DocumentConstructorProps extends BaseDocumentConstructorProps {
 }
 
 interface BaseDocumentConstructorProps {
-  /** Orientation JSON for page-level document */
-  orientation?: StringDict;
-  /** Extras JSON */
-  extras?: StringDict;
-  /** input file given to parse the document */
-  inputSource?: InputSource;
-  /** Page ID for page-level document */
-  pageId?: number;
-  /** full OCR extracted text */
-  fullText?: FullText;
+  httpResponse: StringDict;
   documentType?: string;
+  extras?: Extras;
 }
 
-export class Document {
-  checklist: { [index: string]: boolean };
-  mimeType?: string;
+export abstract class Document<DocT extends Inference<Prediction, Prediction>> {
   filename: string = "";
-  filepath?: string;
-  fullText?: FullText;
-  pageId?: number | undefined;
-  orientation?: OrientationField;
-  cropper: PositionField[] = [];
-  readonly docType: string;
+  inference: DocT;
+  id: string;
+  extras?: Extras;
+  ocr?: MindeeVisionV1;// TODO: UPDATE TO OCR
 
   constructor({
-    orientation = undefined,
-    extras = undefined,
-    inputSource = undefined,
-    fullText = undefined,
-    pageId = undefined,
     documentType,
+    httpResponse
   }: BaseDocumentConstructorProps) {
-    this.filepath = undefined;
-    this.pageId = pageId;
-    if (documentType === undefined || documentType === "") {
-      this.docType = Object.getPrototypeOf(this).constructor.name;
-    } else {
-      this.docType = documentType;
-    }
-
-    if (pageId !== undefined && orientation !== undefined) {
-      this.orientation = new OrientationField({
-        prediction: orientation,
-        pageId: pageId,
+    this.id = httpResponse["id"];
+    this.inference = httpResponse["inference"];
+    this.ocr = httpResponse["ocr"] ?? undefined;
+    let extras:Extras = [];
+    if (httpResponse['extras'] && Object.keys(httpResponse['extras'].length > 0)) {
+      Object.entries(httpResponse['extras']).forEach(([extraKey, extraValue]: [string, any]) => {
+        switch (extraKey){
+          case "cropper":
+            const cropperPrediction = extraValue as StringDict;
+            extras.push(
+              new CropperV1({cropperPrediction})
+            );
+        }
       });
     }
-    if (extras !== undefined) {
-      if (extras.cropper !== undefined) {
-        extras.cropper.cropping.forEach((crop: any) => {
-          this.cropper.push(
-            new PositionField({
-              prediction: crop,
-              pageId: pageId,
-            })
-          );
-        });
-      }
-    }
-
-    if (inputSource !== undefined) {
-      this.filepath = inputSource.filepath;
-      this.filename = inputSource.filename;
-      this.mimeType = inputSource.mimeType;
-    }
-    this.fullText = fullText;
-    this.checklist = {};
+    this.extras = extras;
   }
 
   clone() {

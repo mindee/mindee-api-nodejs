@@ -1,4 +1,5 @@
-import { StringDict, floatToString } from "../../parsing/standard";
+import { floatToString } from "../../parsing/standard";
+import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**

@@ -1,4 +1,4 @@
-import * as https from "https";
+import { request, RequestOptions } from "https";
 import * as os from "os";
 
 import { version as sdkVersion } from "../../package.json";
@@ -6,12 +6,14 @@ import { URLSearchParams } from "url";
 import FormData from "form-data";
 import { InputSource } from "../input";
 import { logger } from "../logger";
-import { IncomingMessage, RequestOptions, ClientRequest } from "http";
+import { IncomingMessage, ClientRequest } from "http";
+import { PageOptions } from "../input";
+import { LocalInputSource } from "src/input/base";
+import { handleError } from "./error";
 
 const DEFAULT_MINDEE_API_HOST = "api.mindee.net";
-const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${
-  process.version
-} ${os.type().toLowerCase()}`;
+const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${process.version
+  } ${os.type().toLowerCase()}`;
 
 export const STANDARD_API_OWNER = "mindee";
 export const API_KEY_ENVVAR_NAME = "MINDEE_API_KEY";
@@ -44,73 +46,77 @@ export class Endpoint {
     };
   }
 
-  /**
-   * Make a request to POST a document for prediction.
-   * @param input
-   * @param includeWords
-   * @param cropper
-   */
-  predictReqPost(
-    input: InputSource,
-    includeWords = false,
-    cropper = false
-  ): Promise<EndpointResponse> {
-    return this.sendFileForPrediction(input, "predict", includeWords, cropper);
-  }
 
-  /**
-   * Make a request to POST a document for async prediction.
-   * @param input
-   * @param includeWords
-   * @param cropper
-   */
-  predictAsyncReqPost(
-    input: InputSource,
-    includeWords = false,
-    cropper = false
-  ): Promise<EndpointResponse> {
-    return this.sendFileForPrediction(
-      input,
-      "predict_async",
-      includeWords,
-      cropper
+  async predict(params: {
+    inputDoc: InputSource;
+    includeWords: boolean;
+    pageOptions?: PageOptions;
+    cropper: boolean;
+  }): Promise<EndpointResponse> {
+    this.checkApiKeys();
+    await params.inputDoc.init();
+    if (params.pageOptions !== undefined) {
+      await this.#cutDocPages(params.inputDoc, params.pageOptions);
+    }
+    const response = await this.#predictReqPost(
+      params.inputDoc,
+      params.includeWords,
+      params.cropper
     );
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode >= 400) {
+      handleError(this.urlName, response, statusCode);
+    }
+
+    return response;
   }
 
-  /**
-   * Make a request to GET the status of a document in the queue.
-   * @param queueId
-   */
-  documentQueueReqGet(queueId: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.baseHeaders,
-        hostname: this.hostname,
-        path: `${this.urlRoot}/documents/queue/${queueId}`,
-      };
-      const req = this.readResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async predictAsync(params: {
+    inputDoc: InputSource;
+    includeWords: boolean;
+    pageOptions?: PageOptions;
+    cropper: boolean;
+  }): Promise<EndpointResponse> {
+    this.checkApiKeys();
+    await params.inputDoc.init();
+    if (params.pageOptions !== undefined) {
+      await this.#cutDocPages(params.inputDoc, params.pageOptions);
+    }
+    const response = await this.#predictAsyncReqPost(
+      params.inputDoc,
+      params.includeWords,
+      params.cropper
+    );
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode >= 400) {
+      handleError(this.urlName, response, statusCode);
+    }
+    return response;
   }
 
-  /**
-   * Make a request to GET a document.
-   * @param documentId
-   */
-  documentGetReq(documentId: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.baseHeaders,
-        hostname: this.hostname,
-        path: `${this.urlRoot}/documents/${documentId}`,
-      };
-      const req = this.readResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async getQueuedDocument(
+    queueId: string
+  ): Promise<EndpointResponse> {
+    this.checkApiKeys();
+    const queueResponse = await this.#documentQueueReqGet(queueId);
+    const queueStatusCode = queueResponse.messageObj.statusCode;
+    if (
+      queueStatusCode === undefined ||
+      queueStatusCode < 200 ||
+      queueStatusCode >= 400
+    ) {
+      handleError(this.urlName, queueResponse, queueStatusCode);
+    }
+    if (
+      queueStatusCode === 302 &&
+      queueResponse.messageObj.headers.location !== undefined
+    ) {
+      const docId = queueResponse.messageObj.headers.location.split("/").pop();
+      if (docId !== undefined) {
+        return await this.#documentGetReq(docId);
+      }
+    }
+    return queueResponse;
   }
 
   /**
@@ -133,10 +139,12 @@ export class Endpoint {
       }
 
       const form = new FormData();
-      if (input.fileObject instanceof Buffer) {
-        form.append("document", input.fileObject, { filename: input.filename });
-      } else {
-        form.append("document", input.fileObject);
+      if (input instanceof LocalInputSource) {
+        if (input.fileObject instanceof Buffer) {
+          form.append("document", input.fileObject, { filename: input.filename });
+        } else {
+          form.append("document", input.fileObject);
+        }
       }
 
       if (includeWords) {
@@ -170,7 +178,7 @@ export class Endpoint {
       `${options.method}: https://${options.hostname}${options.path}`
     );
 
-    const req = https.request(options, function (res: IncomingMessage) {
+    const req = request(options, function (res: IncomingMessage) {
       // when the encoding is set, data chunks will be strings
       res.setEncoding("utf-8");
 
@@ -220,6 +228,90 @@ export class Endpoint {
     }
     return DEFAULT_MINDEE_API_HOST;
   }
+
+  async #cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
+    if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
+      await inputDoc.cutPdf(pageOptions);
+    }
+  }
+
+  /**
+   * Make a request to POST a document for prediction.
+   * @param input
+   * @param includeWords
+   * @param cropper
+   */
+  #predictReqPost(
+    input: InputSource,
+    includeWords = false,
+    cropper = false
+  ): Promise<EndpointResponse> {
+    return this.sendFileForPrediction(input, "predict", includeWords, cropper);
+  }
+
+  /**
+   * Make a request to POST a document for async prediction.
+   * @param input
+   * @param includeWords
+   * @param cropper
+   */
+  #predictAsyncReqPost(
+    input: InputSource,
+    includeWords = false,
+    cropper = false
+  ): Promise<EndpointResponse> {
+    return this.sendFileForPrediction(
+      input,
+      "predict_async",
+      includeWords,
+      cropper
+    );
+  }
+
+  /**
+   * Make a request to GET the status of a document in the queue.
+   * @param queueId
+   */
+  #documentQueueReqGet(queueId: string): Promise<EndpointResponse> {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: "GET",
+        headers: this.baseHeaders,
+        hostname: this.hostname,
+        path: `${this.urlRoot}/documents/queue/${queueId}`,
+      };
+      const req = this.readResponse(options, resolve, reject);
+      // potential ECONNRESET if we don't end the request.
+      req.end();
+    });
+  }
+
+  /**
+   * Make a request to GET a document.
+   * @param documentId
+   */
+  #documentGetReq(documentId: string): Promise<EndpointResponse> {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: "GET",
+        headers: this.baseHeaders,
+        hostname: this.hostname,
+        path: `${this.urlRoot}/documents/${documentId}`,
+      };
+      const req = this.readResponse(options, resolve, reject);
+      // potential ECONNRESET if we don't end the request.
+      req.end();
+    });
+  }
+
+  protected checkApiKeys() {
+    if (!this.apiKey) {
+      throw new Error(
+        `Missing API key for '${this.urlName} ${this.version}', check your Client configuration.
+You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
+      );
+    }
+  };
 }
 
 export class StandardEndpoint extends Endpoint {

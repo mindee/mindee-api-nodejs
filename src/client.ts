@@ -11,32 +11,15 @@ import {
 } from "./input";
 import {
   Response,
-  STANDARD_API_OWNER,
-  StandardEndpoint,
   AsyncPredictResponse,
+  EndpointResponse,
+  Endpoint
 } from "./http";
-import {
-  ReceiptV3,
-  ReceiptV4,
-  ReceiptV5,
-  CropperV1,
-  PassportV1,
-  MindeeVisionV1,
-  InvoiceV3,
-  InvoiceV4,
-  InvoiceSplitterV1,
-  fr,
-  us,
-  eu,
-  ProofOfAddressV1,
-  FinancialDocumentV1,
-} from "./product";
-import { Document, DocumentSig } from "./parsing/common";
-import { CustomDocConfig, DocumentConfig } from "./parsing/documentConfig";
+import { CustomV1 } from "./product";
+import { Document, DocumentSig, Inference } from "./parsing/common";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
-
-type DocConfigs = Map<string[], DocumentConfig<any>>;
+import { LocalInputSource } from "./input/base";
 
 export interface PredictOptions {
   /**
@@ -73,134 +56,6 @@ export interface PredictOptions {
   pageOptions?: PageOptions;
 }
 
-export class DocumentClient {
-  docConfigs: DocConfigs;
-  inputSource?: InputSource;
-
-  constructor(docConfigs: DocConfigs, inputSource?: InputSource) {
-    this.inputSource = inputSource;
-    this.docConfigs = docConfigs;
-  }
-
-  /**
-   * Send a document to a synchronous endpoint and parse the predictions.
-   * @param documentClass
-   * @param params
-   */
-  async parse<DocType extends Document>(
-    documentClass: DocumentSig<DocType>,
-    params: PredictOptions = {
-      endpointName: "",
-      accountName: "",
-      fullText: false,
-      cropper: false,
-      pageOptions: undefined,
-    }
-  ): Promise<Response<DocType>> {
-    const docConfig = this.getDocConfig(
-      documentClass,
-      params.endpointName,
-      params.accountName
-    );
-    if (this.inputSource === undefined) {
-      throw new Error("The 'parse' function requires an input document.");
-    }
-    return await docConfig.predict({
-      inputDoc: this.inputSource,
-      includeWords: this.getBooleanParam(params.fullText),
-      pageOptions: params.pageOptions,
-      cropper: this.getBooleanParam(params.cropper),
-    });
-  }
-
-  /**
-   * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param documentClass
-   * @param params
-   */
-  async enqueue<DocType extends Document>(
-    documentClass: DocumentSig<DocType>,
-    params: PredictOptions = {
-      endpointName: "",
-      accountName: "",
-      fullText: false,
-      cropper: false,
-      pageOptions: undefined,
-    }
-  ): Promise<AsyncPredictResponse<DocType>> {
-    const docConfig = this.getDocConfig(
-      documentClass,
-      params.endpointName,
-      params.accountName
-    );
-    if (this.inputSource === undefined) {
-      throw new Error("The 'enqueue' function requires an input document.");
-    }
-    return await docConfig.predictAsync({
-      inputDoc: this.inputSource,
-      includeWords: this.getBooleanParam(params.fullText),
-      pageOptions: params.pageOptions,
-      cropper: this.getBooleanParam(params.cropper),
-    });
-  }
-
-  async parseQueued<DocType extends Document>(
-    documentClass: DocumentSig<DocType>,
-    queueId: string,
-    params: {
-      endpointName?: string;
-      accountName?: string;
-    } = {
-      endpointName: "",
-      accountName: "",
-    }
-  ): Promise<AsyncPredictResponse<DocType>> {
-    const docConfig = this.getDocConfig(
-      documentClass,
-      params.endpointName,
-      params.accountName
-    );
-    return await docConfig.getQueuedDocument(queueId);
-  }
-
-  protected getBooleanParam(param?: boolean): boolean {
-    return param !== undefined ? param : false;
-  }
-
-  protected getDocConfig<DocType extends Document>(
-    documentClass: DocumentSig<DocType>,
-    endpointName?: string,
-    accountName?: string
-  ): DocumentConfig<DocType> {
-    const docType: string =
-      endpointName === undefined || endpointName === ""
-        ? documentClass.name
-        : endpointName;
-
-    const found: Array<string[]> = [];
-    this.docConfigs.forEach((config, configKey) => {
-      if (configKey[1] === docType) {
-        found.push(configKey);
-      }
-    });
-    if (found.length === 0) {
-      throw `Document type not configured: '${docType}'`;
-    }
-
-    let configKey: string[] = [];
-    if (found.length === 1) {
-      configKey = found[0];
-    } else if (accountName) {
-      configKey = [accountName, docType];
-    }
-    const docConfig = this.docConfigs.get(configKey);
-    if (docConfig === undefined) {
-      // TODO: raise error printing all usernames
-      throw `Couldn't find the config '${configKey}'`;
-    }
-    return docConfig;
-  }
-}
 
 export interface CustomConfigParams {
   /** Your organization's username on the API Builder. */
@@ -227,7 +82,6 @@ export interface ClientOptions {
  * Mindee Client
  */
 export class Client {
-  readonly docConfigs: DocConfigs;
   protected apiKey: string;
 
   /**
@@ -238,7 +92,6 @@ export class Client {
     throwOnError = true,
     debug = false,
   }: ClientOptions) {
-    this.docConfigs = new Map();
     this.apiKey = apiKey;
     errorHandler.throwOnError = throwOnError;
     logger.level =
@@ -246,148 +99,158 @@ export class Client {
         ? LOG_LEVELS["debug"]
         : LOG_LEVELS["warn"];
     logger.debug("Client initialized");
-
-    this.addStandardEndpoints();
-  }
-
-  // TODO: init only those endpoints we actually need.
-  protected addStandardEndpoints() {
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, FinancialDocumentV1.name],
-      new DocumentConfig(FinancialDocumentV1, [
-        new StandardEndpoint("financial_document", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, InvoiceV3.name],
-      new DocumentConfig(InvoiceV3, [
-        new StandardEndpoint("invoices", "3", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, InvoiceV4.name],
-      new DocumentConfig(InvoiceV4, [
-        new StandardEndpoint("invoices", "4", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, InvoiceSplitterV1.name],
-      new DocumentConfig(InvoiceSplitterV1, [
-        new StandardEndpoint("invoice_splitter", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, ReceiptV3.name],
-      new DocumentConfig(ReceiptV3, [
-        new StandardEndpoint("expense_receipts", "3", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, ReceiptV4.name],
-      new DocumentConfig(ReceiptV4, [
-        new StandardEndpoint("expense_receipts", "4", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, ReceiptV5.name],
-      new DocumentConfig(ReceiptV5, [
-        new StandardEndpoint("expense_receipts", "5", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, PassportV1.name],
-      new DocumentConfig(PassportV1, [
-        new StandardEndpoint("passport", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, CropperV1.name],
-      new DocumentConfig(CropperV1, [
-        new StandardEndpoint("cropper", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, fr.IdCardV1.name],
-      new DocumentConfig(fr.IdCardV1, [
-        new StandardEndpoint("idcard_fr", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, us.BankCheckV1.name],
-      new DocumentConfig(us.BankCheckV1, [
-        new StandardEndpoint("bank_check", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, fr.BankAccountDetailsV1.name],
-      new DocumentConfig(fr.BankAccountDetailsV1, [
-        new StandardEndpoint("bank_account_details", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, fr.BankAccountDetailsV2.name],
-      new DocumentConfig(fr.BankAccountDetailsV2, [
-        new StandardEndpoint("bank_account_details", "2", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, fr.CarteVitaleV1.name],
-      new DocumentConfig(fr.CarteVitaleV1, [
-        new StandardEndpoint("carte_vitale", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, eu.LicensePlateV1.name],
-      new DocumentConfig(eu.LicensePlateV1, [
-        new StandardEndpoint("license_plates", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, MindeeVisionV1.name],
-      new DocumentConfig(MindeeVisionV1, [
-        new StandardEndpoint("mindee_vision", "1", this.apiKey),
-      ])
-    );
-    this.docConfigs.set(
-      [STANDARD_API_OWNER, ProofOfAddressV1.name],
-      new DocumentConfig(ProofOfAddressV1, [
-        new StandardEndpoint("proof_of_address", "1", this.apiKey),
-      ])
-    );
   }
 
   /**
-   * Add a custom endpoint to the client.
-   * @param accountName
-   * @param endpointName
-   * @param version
+   * Send a document to a synchronous endpoint and parse the predictions.
+   * @param documentClass
+   * @param params
    */
-  addEndpoint({
-    accountName,
-    endpointName,
-    version = "1",
-  }: CustomConfigParams) {
-    this.docConfigs.set(
-      [accountName, endpointName],
-      new CustomDocConfig({
-        accountName: accountName,
-        endpointName: endpointName,
-        version: version,
-        apiKey: this.apiKey,
-      })
-    );
-    return this;
-  }
+    async parse<DocType extends Document>(
+      inputSource: InputSource,
+      documentClass: DocumentSig<DocType>,
+      params: PredictOptions = {
+        endpointName: "",
+        accountName: "",
+        fullText: false,
+        cropper: false,
+        pageOptions: undefined,
+      }
+    ): Promise<Response<DocType>> {
+      const docConfig = this.getDocConfig(
+        documentClass,
+        params.endpointName,
+        params.accountName
+      );
+      if (inputSource === undefined) {
+        throw new Error("The 'parse' function requires an input document.");
+      }
+      const rawPrediction = await docConfig.predict({
+        inputDoc: inputSource,
+        includeWords: this.getBooleanParam(params.fullText),
+        pageOptions: params.pageOptions,
+        cropper: this.getBooleanParam(params.cropper),
+      });
+  
+      return this.#buildResult(rawPrediction);
+    }
+  
+    /**
+     * Send the document to an asynchronous endpoint and return its ID in the queue.
+     * @param documentClass
+     * @param params
+     */
+    async enqueue<DocType extends Document>(
+      inputSource: InputSource,
+      documentClass: DocumentSig<DocType>,
+      params: PredictOptions = {
+        endpointName: "",
+        accountName: "",
+        fullText: false,
+        cropper: false,
+        pageOptions: undefined,
+      }
+    ): Promise<AsyncPredictResponse<DocType>> {
+      const docConfig = this.getDocConfig(
+        documentClass,
+        params.endpointName,
+        params.accountName
+      );
+      if (inputSource === undefined) {
+        throw new Error("The 'enqueue' function requires an input document.");
+      }
+      return await docConfig.predictAsync({
+        inputDoc: inputSource,
+        includeWords: this.getBooleanParam(params.fullText),
+        pageOptions: params.pageOptions,
+        cropper: this.getBooleanParam(params.cropper),
+      });
+    }
+  
+    async parseQueued<DocType extends Document>(
+      inputSource: InputSource,
+      documentClass: DocumentSig<DocType>,
+      queueId: string,
+      endpointIn?: Endpoint,
+    ): Promise<AsyncPredictResponse<DocType>> {
+      const endpoint: Endpoint = endpointIn ?? this.#initializeEndpoint(documentClass);
+      const docResponse = await endpoint.getQueuedDocument(queueId);
+      const document = this.buildResult(docResponse);
+      return new AsyncPredictResponse(docResponse.data, document);
+  
+      return;
+    }
+  
+    protected getBooleanParam(param?: boolean): boolean {
+      return param !== undefined ? param : false;
+    }
+  
+    protected getDocConfig<DocType extends Document>(
+      documentClass: DocumentSig<DocType>,
+      endpointName?: string,
+      accountName?: string
+    ): DocumentConfig<DocType> {
+      const docType: string =
+        endpointName === undefined || endpointName === ""
+          ? documentClass.name
+          : endpointName;
+  
+      const found: Array<string[]> = [];
+      this.docConfigs.forEach((config, configKey) => {
+        if (configKey[1] === docType) {
+          found.push(configKey);
+        }
+      });
+      if (found.length === 0) {
+        throw `Document type not configured: '${docType}'`;
+      }
+  
+      let configKey: string[] = [];
+      if (found.length === 1) {
+        configKey = found[0];
+      } else if (accountName) {
+        configKey = [accountName, docType];
+      }
+      const docConfig = this.docConfigs.get(configKey);
+      if (docConfig === undefined) {
+        // TODO: raise error printing all usernames
+        throw `Couldn't find the config '${configKey}'`;
+      }
+      return docConfig;
+    }
+  
+  
+    /**
+     * Creates an endpoint with the given values. Raises an error if the endpoint is invalid.
+     * @param documentClass
+     * @param endpointName
+     * @param accountName
+     * @param version
+     */
+    #initializeEndpoint(
+      documentClass: typeof Inference,
+      endpointName?: string,
+      accountName?: string,
+      version?: string
+    ): Endpoint {
+      if ((!endpointName || endpointName.length === 0) && documentClass.constructor.name === "custom") {
+        throw new Error("Missing argument endpointName when using a custom class");
+      }
+  
+      endpointName ??= documentClass.endpointName ;
+      endpointVersion ??= documentClass.endpointVersion;
+      
+      return endpoint
+    }
 
   /**
    * Load an input document from a local path.
    * @param inputPath
    */
-  docFromPath(inputPath: string) {
-    const doc = new PathInput({
+  docFromPath(inputPath: string): InputSource {
+    return new PathInput({
       inputPath: inputPath,
     });
-    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -395,12 +258,11 @@ export class Client {
    * @param inputString
    * @param filename
    */
-  docFromBase64(inputString: string, filename: string) {
-    const doc = new Base64Input({
+  docFromBase64(inputString: string, filename: string): InputSource {
+    return new Base64Input({
       inputString: inputString,
       filename: filename,
     });
-    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -408,12 +270,11 @@ export class Client {
    * @param inputStream
    * @param filename
    */
-  docFromStream(inputStream: Readable, filename: string) {
-    const doc = new StreamInput({
+  docFromStream(inputStream: Readable, filename: string): InputSource {
+    return new StreamInput({
       inputStream: inputStream,
       filename: filename,
     });
-    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -421,23 +282,21 @@ export class Client {
    * @param inputBytes
    * @param filename
    */
-  docFromBytes(inputBytes: string, filename: string) {
-    const doc = new BytesInput({
+  docFromBytes(inputBytes: string, filename: string): InputSource {
+    return new BytesInput({
       inputBytes: inputBytes,
       filename: filename,
     });
-    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
    * Load an input document from a URL.
    * @param url
    */
-  docFromUrl(url: string) {
-    const doc = new UrlInput({
+  docFromUrl(url: string): InputSource {
+    return new UrlInput({
       url: url,
     });
-    return new DocumentClient(this.docConfigs, doc);
   }
 
   /**
@@ -445,18 +304,24 @@ export class Client {
    * @param buffer
    * @param filename
    */
-  docFromBuffer(buffer: Buffer, filename: string) {
-    const doc = new BufferInput({
+  docFromBuffer(buffer: Buffer, filename: string): InputSource {
+    return new BufferInput({
       buffer: buffer,
       filename: filename,
     });
-    return new DocumentClient(this.docConfigs, doc);
   }
 
-  /**
-   * Load an empty input document from an asynchronous call.
-   */
-  docForAsync() {
-    return new DocumentClient(this.docConfigs);
+  #buildResult<DocType extends Document>(
+    documentClass:DocumentSig<DocType>,
+    response: EndpointResponse,
+    inputFile?: InputSource
+  ): Response<DocType> {
+    const statusCode = response.messageObj.statusCode;
+    return new Response<DocType>(documentClass, {
+      httpResponse: response,
+      documentType: documentType,
+      error: false,
+      input: inputFile,
+    });
   }
 }
