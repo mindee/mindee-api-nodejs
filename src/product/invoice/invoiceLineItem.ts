@@ -1,5 +1,6 @@
-import { StringDict, floatToString } from "../../parsing/standard";
+import { floatToString } from "../../parsing/standard";
 import { Polygon } from "../../geometry";
+import { StringDict } from "../../parsing/common";
 
 export class InvoiceLineItem {
   /** The product code referring to the item. */

@@ -1,4 +1,8 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
+import {
+  Document,
+  DocumentConstructorProps,
+  StringDict,
+} from "../../parsing/common";
 import {
   Amount,
   ClassificationField,
@@ -6,7 +10,6 @@ import {
   DateField,
   Locale,
   PaymentDetails,
-  StringDict,
   TaxField,
   Taxes,
   TextField,

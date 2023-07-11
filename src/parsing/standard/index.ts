@@ -4,7 +4,7 @@ export { PaymentDetails } from "./paymentDetails";
 export { Locale } from "./locale";
 export { Amount, floatToString } from "./amount";
 export { DateField } from "./date";
-export { BaseField, StringDict, BaseFieldConstructor } from "./base";
+export { BaseField, BaseFieldConstructor } from "./base";
 export { FullText, Word } from "./fullText";
 export { CompanyRegistration } from "./companyRegistration";
 export { PositionField } from "./position";

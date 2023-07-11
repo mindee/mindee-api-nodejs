@@ -1,4 +1,4 @@
-export type StringDict = { [index: string]: any };
+import { StringDict } from "../common";
 
 export interface BaseFieldConstructor {
   prediction: StringDict;

@@ -1,5 +1,6 @@
-import { StringDict, FieldConstructor } from "../standard";
+import { FieldConstructor } from "../standard";
 import { Polygon, getBoundingBox } from "../../geometry";
+import { StringDict } from "../common";
 
 export class ListFieldValue {
   /** Extracted content of the prediction */

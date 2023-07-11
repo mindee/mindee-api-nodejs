@@ -1,5 +1,8 @@
-import { Document, DocumentConstructorProps } from "../../parsing/common";
-import { StringDict } from "../../parsing/standard";
+import {
+  Document,
+  DocumentConstructorProps,
+  StringDict,
+} from "../../parsing/common";
 
 export class PageGroup {
   pageIndexes: number[] = [];
