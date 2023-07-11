@@ -16,8 +16,6 @@ import {
   AsyncPredictResponse,
 } from "./http";
 import {
-  Document,
-  DocumentSig,
   ReceiptV3,
   ReceiptV4,
   ReceiptV5,
@@ -32,7 +30,8 @@ import {
   eu,
   ProofOfAddressV1,
   FinancialDocumentV1,
-} from "./parsing";
+} from "./product";
+import { Document, DocumentSig } from "./parsing/common";
 import { CustomDocConfig, DocumentConfig } from "./parsing/documentConfig";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";

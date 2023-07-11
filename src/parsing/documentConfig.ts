@@ -7,9 +7,10 @@ import {
   API_KEY_ENVVAR_NAME,
   AsyncPredictResponse,
 } from "../http";
-import { Document, CustomV1, DocumentSig } from "./index";
+import { CustomV1 } from "../product";
 import { errorHandler } from "../errors/handler";
 import { PageOptions } from "../input";
+import { Document, DocumentSig } from "./common";
 
 interface CustomDocConstructor {
   endpointName: string;

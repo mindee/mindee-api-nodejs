@@ -1,6 +1,5 @@
 import { Command, OptionValues } from "commander";
 import {
-  Document,
   InvoiceV4,
   InvoiceSplitterV1,
   ReceiptV5,
@@ -11,8 +10,8 @@ import {
   us,
   eu,
   FinancialDocumentV1,
-} from "./";
-import { DocumentSig } from "./parsing";
+} from "./product";
+import { Document, DocumentSig } from "./parsing/common";
 
 import { Response, STANDARD_API_OWNER } from "./http";
 import { Client, PredictOptions } from "./client";

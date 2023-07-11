@@ -1,4 +1,4 @@
-import { Amount } from "../../src/fields";
+import { Amount } from "../../src/parsing/standard";
 import { expect } from "chai";
 
 describe("Test Amount field", () => {

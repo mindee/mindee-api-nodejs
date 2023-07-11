@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { TaxField } from "../../../src/fields";
+import { TaxField } from "../../../src/parsing/standard";
 import * as mindee from "../../../src";
 
 const dataPath = {
@@ -23,7 +23,7 @@ describe("Invoice V4 Object initialization", async () => {
   it("should initialize from a N/A prediction object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: response.document.inference.pages[0].prediction,
     });
     expect(doc.locale.value).to.be.undefined;
@@ -54,7 +54,7 @@ describe("Invoice V4 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const prediction = response.document.inference.prediction;
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: prediction,
     });
     const docString = await fs.readFile(path.join(dataPath.docString));
@@ -67,7 +67,7 @@ describe("Invoice V4 Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const pageData = response.document.inference.pages[0];
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: pageData.prediction,
       pageId: pageData.id,
       orientation: pageData.orientation,
@@ -81,7 +81,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct total amount without taxes", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -93,7 +93,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalAmount without totalNet", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -105,7 +105,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalAmount with totalNet already set", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 260, confidence: 0.4 },
@@ -118,7 +118,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should reconstruct totalAmount", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -131,7 +131,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalNet without totalAmount", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: "N/A", confidence: 0.0 },
@@ -143,7 +143,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalNet without taxes", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 1150.2, confidence: 0.7 },
@@ -155,7 +155,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalNet with totalNet already set", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 1150.2, confidence: 0.7 },
@@ -168,7 +168,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should reconstruct totalNet", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 1150.2, confidence: 0.6 },
@@ -184,7 +184,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not reconstruct totalTax without taxes", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         taxes: [],
@@ -194,7 +194,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should reconstruct totalTax", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         taxes: [
@@ -208,7 +208,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should match on totalAmount", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -226,7 +226,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalAmount", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -240,7 +240,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalAmount 2", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -251,7 +251,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should match on totalNet", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_net: { value: 456.15, confidence: 0.6 },
@@ -269,7 +269,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalNet", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_net: { value: 507.25, confidence: 0.6 },
@@ -283,7 +283,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on totalNet 2", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_net: { value: 507.25, confidence: 0.6 },
@@ -294,7 +294,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should match on Taxes + totalNet = totalAmount", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
@@ -314,7 +314,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on Taxes + totalNet = totalAmount", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.2, confidence: 0.6 },
@@ -329,7 +329,7 @@ describe("Invoice V4 Object initialization", async () => {
   });
 
   it("should not match on Taxes + totalNet = totalAmount 2", function () {
-    const doc = new mindee.InvoiceV4({
+    const doc = new mindee.product.InvoiceV4({
       prediction: {
         ...this.basePrediction,
         total_amount: { value: 507.25, confidence: 0.6 },
