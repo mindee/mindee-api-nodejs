@@ -1,13 +1,15 @@
 import { StringDict } from "../common";
 import { Page } from "./page";
-import { Prediction } from "./prediction";
+import type { Prediction } from "./prediction";
 import { Product } from "./product";
 
-export abstract class Inference<PageT extends Prediction, DocT extends Prediction> {
+export class Inference {
   isRotationApplied?: boolean;
   product: Product;
-  pages: Array<Page<PageT>> = [];
-  prediction?: DocT;
+  pages: Array<Page<Prediction>> = [];
+  prediction?: Prediction;
+  endpointName?:string;
+  endpointVersion?:string;
 
   constructor(
     rawPrediction: StringDict,
@@ -28,6 +30,11 @@ ${this.prediction?.toString() || ""}
 
 Page Predictions
 ================
-${this.pages.map((e: Page<PageT>) => e.toString() || "").join("\n")}`;
+${this.pages.map((e: Page<Prediction>) => e.toString() || "").join("\n")}`;
+  }
+
+  static cleanOutString(outStr: string): string {
+    const lines = / \n/gm;
+    return outStr.replace(lines, "\n");
   }
 }

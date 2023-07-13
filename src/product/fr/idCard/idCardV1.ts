@@ -2,8 +2,8 @@ import { Inference, DocumentConstructorProps } from "../../../parsing/common";
 import { TextField, DateField, BaseField } from "../../../parsing/standard";
 
 export class IdCardV1 extends Inference {
-  static endpointName ='idcard_fr';
-  static endpointVersion = '1';
+  endpointName ='idcard_fr';
+  endpointVersion = '1';
   /** The authority which has issued the card. */
   authority: TextField;
   /** Indicates if it is the recto side, the verso side or both. */

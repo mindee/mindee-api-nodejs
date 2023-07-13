@@ -1,41 +1,13 @@
-import { Inference, DocumentConstructorProps } from "../../parsing/common";
-import { PositionField } from "../../parsing/standard";
+import { Inference, StringDict } from "../../parsing/common";
+import { CropperV1Document } from "./cropperV1Document";
 
 export class CropperV1 extends Inference {
-  static endpointName ='cropper';
-  static endpointVersion = '1';
+  endpointName = 'cropper';
+  endpointVersion = '1';
+  prediction: CropperV1Document;
 
-  cropping: PositionField[] = [];
-
-  constructor({
-    prediction,
-  }: DocumentConstructorProps) {
-    super({
-      inputSource: inputSource,
-      pageId: pageId,
-      orientation: orientation,
-    });
-    if (pageId !== undefined) {
-      prediction.cropping.forEach((crop: any) => {
-        this.cropping.push(
-          new PositionField({
-            prediction: crop,
-            pageId: pageId,
-          })
-        );
-      });
-    }
-  }
-
-  toString(): string {
-    const cropping = this.cropping
-      .map((crop) => crop.toString())
-      .join("\n          ");
-    const outStr = `----- Cropper Data -----
-Filename: ${this.filename}
-Cropping: ${cropping}
-------------------------
-`;
-    return CropperV1.cleanOutString(outStr);
+  constructor(rawPrediction: StringDict) {
+    super(rawPrediction);
+    this.prediction = new CropperV1Document(rawPrediction['document']);
   }
 }

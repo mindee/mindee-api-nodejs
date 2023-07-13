@@ -7,8 +7,8 @@ import {
 } from "../../parsing/standard";
 
 export class ProofOfAddressV1 extends Inference {
-  static endpointName ='proof_of_address';
-  static endpointVersion = '1';
+  endpointName ='proof_of_address';
+  endpointVersion = '1';
   /** ISO date yyyy-mm-dd. Works both for European and US dates. */
   date: DateField;
   /** All extrated ISO date yyyy-mm-dd. Works both for European and US dates. */

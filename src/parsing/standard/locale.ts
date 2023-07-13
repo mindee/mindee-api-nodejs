@@ -25,15 +25,9 @@ export class Locale extends BaseField {
     super({ prediction, valueKey, reconstructed });
 
     this.confidence = prediction.confidence ? prediction.confidence : 0.0;
-    this.language = undefined;
-    this.country = undefined;
-    this.currency = undefined;
-    if ("language" in prediction && prediction.language !== "N/A")
-      this.language = prediction.language;
-    if ("country" in prediction && prediction.country !== "N/A")
-      this.country = prediction.country;
-    if ("currency" in prediction && prediction.currency !== "N/A")
-      this.currency = prediction.currency;
+    this.language = "language" in prediction ? prediction["language"] : undefined;
+    this.country = "country" in prediction ? prediction["country"] : undefined;
+    this.currency = "currency" in prediction ? prediction["currency"] : undefined;
   }
 
   toString(): string {

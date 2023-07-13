@@ -1,43 +1,18 @@
-import { Inference, DocumentConstructorProps } from "../../../parsing/common";
-import { TextField } from "../../../parsing/standard";
+import { Inference, StringDict, Page } from "../../../parsing/common";
+import { LicensePlateV1Document } from "./licensePlateV1Document";
+
+
 
 export class LicensePlateV1 extends Inference {
-  static endpointName ='license_plates';
-  static endpointVersion = '1';
-  /** A list of license plates. */
-  licensePlates: TextField[] = [];
+  endpointName = 'license_plates';
+  endpointVersion = '1';
+  prediction: LicensePlateV1Document;
 
-  constructor({
-    prediction,
-    orientation = undefined,
-    extras = undefined,
-    inputSource = undefined,
-    pageId = undefined,
-  }: DocumentConstructorProps) {
-    super({
-      inputSource: inputSource,
-      pageId: pageId,
-      orientation: orientation,
-      extras: extras,
-    });
-    prediction.license_plates.map((prediction: { [index: string]: any }) =>
-      this.licensePlates.push(
-        new TextField({
-          prediction: prediction,
-          pageId: pageId,
-        })
-      )
-    );
-  }
-
-  toString(): string {
-    const outStr = `----- EU License Plate V1 -----
-Filename: ${this.filename}
-License Plates: ${this.licensePlates
-      .map((plate) => plate.value)
-      .join("\n                ")}
-----------------------
-`;
-    return LicensePlateV1.cleanOutString(outStr);
+  constructor(rawPrediction: StringDict) {
+    super(rawPrediction);
+    this.prediction = new LicensePlateV1Document(rawPrediction["prediction"]) ?? undefined;
+    if ("pages" in rawPrediction) {
+      this.pages = rawPrediction["pages"].map((page: StringDict) => new Page<LicensePlateV1Document>(LicensePlateV1Document, page["prediction"], page["id"], page["orientation"]));
+    }
   }
 }

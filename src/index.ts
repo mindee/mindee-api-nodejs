@@ -5,5 +5,8 @@ export {
   CustomConfigParams,
   PredictOptions,
 } from "./client";
-export { ResponseSig, Response, AsyncPredictResponse } from "./http";
+export {
+  AsyncPredictResponse,
+  PredictResponse
+} from "./parsing/common";
 export { InputSource, PageOptionsOperation } from "./input";

@@ -28,8 +28,8 @@ import {
 
 /** Invoice V4 */
 export class InvoiceV4 extends Inference {
-  static endpointName ='invoices';
-  static endpointVersion = '4';
+  endpointName ='invoices';
+  endpointVersion = '4';
   /** Locale information. */
   locale: Locale;
   /** The nature of the invoice. */

@@ -10,8 +10,8 @@ import {
 } from "../../parsing/standard";
 
 export class ReceiptV4 extends Inference {
-  static endpointName ='expense_receipts';
-  static endpointVersion = '4';
+  endpointName ='expense_receipts';
+  endpointVersion = '4';
   /** Where the purchase was made, the language, and the currency. */
   locale: Locale;
   /** The purchase date. */

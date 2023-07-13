@@ -7,8 +7,8 @@ import {
 } from "../../../parsing/standard";
 
 export class BankCheckV1 extends Inference {
-  static endpointName ='bank_check';
-  static endpointVersion = '1';
+  endpointName ='bank_check';
+  endpointVersion = '1';
   /** Payer's bank account number. */
   accountNumber: TextField;
   /** Amount to be paid. */

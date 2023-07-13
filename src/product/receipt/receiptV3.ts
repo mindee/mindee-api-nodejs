@@ -10,8 +10,8 @@ import {
 } from "../../parsing/standard";
 
 export class ReceiptV3 extends Inference {
-  static endpointName ='expense_receipts';
-  static endpointVersion = '3';
+  endpointName ='expense_receipts';
+  endpointVersion = '3';
   /** Total amount with the tax amount of the purchase. */
   locale: Locale;
   /** Where the purchase was made, the language, and the currency. */

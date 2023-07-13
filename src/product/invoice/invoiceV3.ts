@@ -22,8 +22,8 @@ import {
 } from "./reconstruction";
 
 export class InvoiceV3 extends Inference {
-  static endpointName ='invoices';
-  static endpointVersion = '3';
+  endpointName ='invoices';
+  endpointVersion = '3';
   /** Total amount with the tax amount of the purchase. */
   locale: Locale;
   /** The nature of the invoice. */

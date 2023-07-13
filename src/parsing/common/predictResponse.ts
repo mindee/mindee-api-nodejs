@@ -1,20 +1,13 @@
-import { ApiResponse } from "./apiResponse";
-import { Document, StringDict } from ".";
-import { Response } from "../../http/documentResponse";
+import { BasePredictResponse } from "./basePredictResponse";
+import { Document, Inference, StringDict } from ".";
 
-export class ApiRequest {
-  error: StringDict;
-  resources: string[];
-  status: "failure" | "success";
-  /** HTTP status code */
-  statusCode: number;
-  url: string;
+export class PredictResponse<T extends Inference> extends BasePredictResponse {
+  document?: Document<T>;
 
-  constructor(serverResponse: StringDict) {
-    this.error = serverResponse["error"];
-    this.resources = serverResponse["resources"];
-    this.status = serverResponse["status"];
-    this.statusCode = serverResponse["status_code"];
-    this.url = serverResponse["url"];
+  constructor(
+    inferenceClass: new (rawPrediction: StringDict) => T,
+    rawPrediction: StringDict) {
+    super(rawPrediction);
+    this.document = new Document<T>(inferenceClass, rawPrediction["document"]);
   }
 }

@@ -1,7 +1,7 @@
-import { ApiRequest } from "./predictResponse";
+import { ApiRequest } from "./apiRequest";
 import { StringDict } from "./stringDict";
 
-export abstract class ApiResponse {
+export abstract class BasePredictResponse {
   apiRequest: ApiRequest;
 
   constructor(serverResponse: StringDict) {

@@ -1,4 +1,4 @@
-import { errorHandler } from "src/errors/handler";
+import { errorHandler } from "../errors/handler";
 import { EndpointResponse } from "./endpoint";
 
 export function handleError(url: string, response: EndpointResponse, statusCode?: number) {

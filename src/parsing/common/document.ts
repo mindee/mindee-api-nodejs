@@ -1,51 +1,42 @@
-import { CropperV1, MindeeVisionV1 } from "src/product";
+import { CropperV1, MindeeVisionV1 } from "../../product";
 import { Extras } from "./extras";
 import { Inference } from "./inference";
 import { Prediction } from "./prediction";
 import { StringDict } from "./stringDict";
-import { OrientationField } from "./orientation";
 
-export type DocumentSig<DocType extends Document> = {
-  new({
-    prediction,
-    extras,
-    documentType,
-  }: DocumentConstructorProps): DocType;
-};
-
-export interface DocumentConstructorProps extends BaseDocumentConstructorProps {
-  /** JSON parsed prediction from HTTP response */
-  prediction: StringDict;
+export interface DocumentConstructorProps<T extends Prediction> extends BaseDocumentConstructorProps<T> {
+  pageId?: number;
 }
 
-interface BaseDocumentConstructorProps {
+interface BaseDocumentConstructorProps<T extends Prediction> {
   httpResponse: StringDict;
-  documentType?: string;
+  documentType: new (httpResponse: StringDict) => Inference;
   extras?: Extras;
 }
 
-export abstract class Document<DocT extends Inference<Prediction, Prediction>> {
-  filename: string = "";
-  inference: DocT;
+export class Document<T extends Inference> {
+  filename: string;
+  inference?: Inference;
   id: string;
   extras?: Extras;
   ocr?: MindeeVisionV1;// TODO: UPDATE TO OCR
 
-  constructor({
-    documentType,
-    httpResponse
-  }: BaseDocumentConstructorProps) {
-    this.id = httpResponse["id"];
-    this.inference = httpResponse["inference"];
+  constructor(
+    inferenceClass: new (httpResponse: StringDict) => T,
+    httpResponse: StringDict
+  ) {
+    this.id = httpResponse["id"] ?? "";
+    this.filename = httpResponse["name"] ?? "";
     this.ocr = httpResponse["ocr"] ?? undefined;
-    let extras:Extras = [];
+    let extras: Extras = [];
+    this.inference = new inferenceClass(httpResponse['inference']);
     if (httpResponse['extras'] && Object.keys(httpResponse['extras'].length > 0)) {
       Object.entries(httpResponse['extras']).forEach(([extraKey, extraValue]: [string, any]) => {
-        switch (extraKey){
+        switch (extraKey) {
           case "cropper":
             const cropperPrediction = extraValue as StringDict;
             extras.push(
-              new CropperV1({cropperPrediction})
+              new CropperV1({ httpResponse: cropperPrediction, pageId: undefined })
             );
         }
       });
@@ -53,42 +44,10 @@ export abstract class Document<DocT extends Inference<Prediction, Prediction>> {
     this.extras = extras;
   }
 
-  clone() {
-    return JSON.parse(JSON.stringify(this));
-  }
-
-  /** return true if all checklist of the document if true */
-  checkAll() {
-    return Object.values(this.checklist).every((item) => item);
-  }
-
-  /**
-   * Takes a list of Documents and return one Document where
-   * each field is set with the maximum probability field
-   * @param {Array<Document>} documents - A list of Documents
-   */
-  static mergePages(documents: any) {
-    const finalDocument = documents[0].clone();
-    const attributes = Object.getOwnPropertyNames(finalDocument);
-    for (const document of documents) {
-      for (const attribute of attributes) {
-        if (Array.isArray(document?.[attribute])) {
-          finalDocument[attribute] = finalDocument[attribute]?.length
-            ? finalDocument[attribute]
-            : document?.[attribute];
-        } else if (
-          document?.[attribute]?.confidence >
-          finalDocument[attribute].confidence
-        ) {
-          finalDocument[attribute] = document?.[attribute];
-        }
-      }
-    }
-    return finalDocument;
-  }
-
-  static cleanOutString(outStr: string): string {
-    const lines = / \n/gm;
-    return outStr.replace(lines, "\n");
+  toString() {
+    return `########\nDocument\n########
+:Mindee ID: ${this.id}
+:Filename: ${this.filename}
+:Mindee ID: ${this.inference?.toString()}`;
   }
 }

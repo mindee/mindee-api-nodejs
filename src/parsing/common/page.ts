@@ -1,25 +1,18 @@
 import { OrientationField } from "./orientation";
 import { Prediction } from "./prediction";
+import { StringDict } from "./stringDict";
 
-interface PageConstructorProps<PredictionType extends Prediction> {
-  /** Prediction held by the page */
-  prediction: PredictionType;
-  /** Orientation JSON for page-level document */
-  orientation?: OrientationField;
-  /** Page ID for page-level document */
-  pageId?: number;
-}
-
-export abstract class Page<PredictionType extends Prediction> {
-  page_id: number | undefined;
+export class Page<PredictionType extends Prediction> {
+  id: number | undefined;
   orientation: OrientationField | undefined;
   prediction: PredictionType;
 
-  constructor({
-    prediction,
-    orientation = undefined,
-    pageId = undefined,
-  }: PageConstructorProps<PredictionType>) {
+  constructor(
+    predictionType: new (rawPrediction: StringDict) => PredictionType,
+    rawPrediction: StringDict,
+    pageId?: number,
+    orientation?: StringDict
+  ) {
     if (pageId !== undefined && orientation !== undefined) {
       this.orientation = new OrientationField({
         prediction: orientation,
@@ -28,7 +21,15 @@ export abstract class Page<PredictionType extends Prediction> {
     } else {
       orientation = undefined;
     }
-    pageId = pageId ?? undefined;
-    this.prediction = prediction;
+    this.id = pageId ?? undefined;
+    this.prediction = new predictionType(rawPrediction);
+  }
+
+  toString() {
+    const title = `Page ${this.id}`;
+    return `
+${title}
+${"-".repeat(title.length)}
+${this.prediction.toString()}`;
   }
 }

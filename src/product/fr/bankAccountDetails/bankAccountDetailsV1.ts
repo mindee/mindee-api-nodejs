@@ -3,8 +3,8 @@ import { TextField } from "../../../parsing/standard";
 
 /** French bank account information (RIB) */
 export class BankAccountDetailsV1 extends Inference {
-  static endpointName ='bank_account_details';
-  static endpointVersion = '1';
+  endpointName ='bank_account_details';
+  endpointVersion = '1';
   /** The account's IBAN. */
   iban: TextField;
   /** The account holder's name. */

@@ -19,8 +19,8 @@ export class PageGroup {
 }
 
 export class InvoiceSplitterV1 extends Inference {
-  static endpointName ='invoice_splitter';
-  static endpointVersion = '1';
+  endpointName ='invoice_splitter';
+  endpointVersion = '1';
   /** List of page indexes that belong to the same invoice in the PDF. */
   invoicePageGroups: PageGroup[] = [];
 

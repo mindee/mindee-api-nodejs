@@ -20,8 +20,8 @@ import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
  * Document data for Financial Document, API version 1.
  */
 export class FinancialDocumentV1 extends Inference {
-  static endpointName ='financial_document';
-  static endpointVersion = '1';
+  endpointName ='financial_document';
+  endpointVersion = '1';
   /** The locale detected on the document. */
   locale: Locale;
   /** The invoice number or identifier. */

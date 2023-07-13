@@ -1,5 +1,4 @@
-import { Response } from "src/http/documentResponse";
-import { ApiResponse } from "./apiResponse";
+import { BasePredictResponse } from "./basePredictResponse";
 import { StringDict } from "./stringDict";
 import { Inference } from "./inference";
 import { Document } from "./document";
@@ -42,14 +41,15 @@ export class Job {
   }
 }
 
-
-export class AsyncPredictResponse<T extends Inference<Prediction, Prediction>> extends ApiResponse {
+export class AsyncPredictResponse<T extends Inference> extends BasePredictResponse {
   job: Job;
   document?: Document<T>;
 
-  constructor(serverResponse: StringDict, document?: Response<T>) {
-    super(serverResponse);
-    this.job = new Job(serverResponse["job"]);
-    this.document = document;
+  constructor(
+    inferenceClass: new (httpResponse: StringDict) => T,
+    httpResponse: StringDict) {
+    super(httpResponse);
+    this.job = new Job(httpResponse["job"]);
+    this.document = "document" in httpResponse ? new Document<T>(inferenceClass, httpResponse["document"]) : undefined;
   }
 }

@@ -19,8 +19,8 @@ import { ReceiptV5LineItem } from "./receiptV5LineItem";
  * Document data for Expense Receipt, API version 5.
  */
 export class ReceiptV5 extends Inference {
-  static endpointName ='expense_receipts';
-  static endpointVersion = '5';
+  endpointName ='expense_receipts';
+  endpointVersion = '5';
   /** The purchase category among predefined classes. */
   category: ClassificationField;
   /** The date the purchase was made. */

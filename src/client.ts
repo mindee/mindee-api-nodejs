@@ -10,16 +10,31 @@ import {
   BufferInput,
 } from "./input";
 import {
-  Response,
-  AsyncPredictResponse,
-  EndpointResponse,
   Endpoint
 } from "./http";
-import { CustomV1 } from "./product";
-import { Document, DocumentSig, Inference } from "./parsing/common";
+import {
+  Inference,
+  AsyncPredictResponse,
+  StringDict,
+  PredictResponse
+} from "./parsing/common";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
-import { LocalInputSource } from "./input/base";
+
+/** Empty Product object to access properties on dynamic classes. */
+const dummyProduct = {
+  "document": {
+    "inference": {
+      "prediction": {}
+    }
+  },
+  "is_rotation_applied": null,
+  "product":
+  {
+    "name": "N/A",
+    "version": "N/A"
+  }
+};
 
 export interface PredictOptions {
   /**
@@ -36,6 +51,13 @@ export interface PredictOptions {
    * Do not set for standard (off the shelf) endpoints.
    */
   accountName?: string;
+  /**
+   * For custom endpoints, your product version.
+   * This should have a minimum value of '1', and should be left empty if you are not sure.
+   * 
+   * Do not set for standard (off the shelf) endpoints.
+   */
+  version?: string;
   /**
    * Whether to include the full text for each page.
    *
@@ -106,142 +128,111 @@ export class Client {
    * @param documentClass
    * @param params
    */
-    async parse<DocType extends Document>(
-      inputSource: InputSource,
-      documentClass: DocumentSig<DocType>,
-      params: PredictOptions = {
-        endpointName: "",
-        accountName: "",
-        fullText: false,
-        cropper: false,
-        pageOptions: undefined,
-      }
-    ): Promise<Response<DocType>> {
-      const docConfig = this.getDocConfig(
-        documentClass,
-        params.endpointName,
-        params.accountName
-      );
-      if (inputSource === undefined) {
-        throw new Error("The 'parse' function requires an input document.");
-      }
-      const rawPrediction = await docConfig.predict({
-        inputDoc: inputSource,
-        includeWords: this.getBooleanParam(params.fullText),
-        pageOptions: params.pageOptions,
-        cropper: this.getBooleanParam(params.cropper),
-      });
-  
-      return this.#buildResult(rawPrediction);
+  async parse<T extends Inference>(
+    inputSource: InputSource,
+    documentClass: new (httpResponse: StringDict) => T,
+    params: PredictOptions = {
+      endpointName: undefined,
+      accountName: undefined,
+      version: undefined,
+      fullText: undefined,
+      cropper: undefined,
+      pageOptions: undefined,
     }
-  
-    /**
-     * Send the document to an asynchronous endpoint and return its ID in the queue.
-     * @param documentClass
-     * @param params
-     */
-    async enqueue<DocType extends Document>(
-      inputSource: InputSource,
-      documentClass: DocumentSig<DocType>,
-      params: PredictOptions = {
-        endpointName: "",
-        accountName: "",
-        fullText: false,
-        cropper: false,
-        pageOptions: undefined,
-      }
-    ): Promise<AsyncPredictResponse<DocType>> {
-      const docConfig = this.getDocConfig(
-        documentClass,
-        params.endpointName,
-        params.accountName
-      );
-      if (inputSource === undefined) {
-        throw new Error("The 'enqueue' function requires an input document.");
-      }
-      return await docConfig.predictAsync({
-        inputDoc: inputSource,
-        includeWords: this.getBooleanParam(params.fullText),
-        pageOptions: params.pageOptions,
-        cropper: this.getBooleanParam(params.cropper),
-      });
+  ): Promise<PredictResponse<T>> {
+    const endpoint = this.#initializeEndpoint<T>(documentClass, params?.endpointName, params?.accountName, params?.version);
+    if (inputSource === undefined) {
+      throw new Error("The 'parse' function requires an input document.");
     }
-  
-    async parseQueued<DocType extends Document>(
-      inputSource: InputSource,
-      documentClass: DocumentSig<DocType>,
-      queueId: string,
-      endpointIn?: Endpoint,
-    ): Promise<AsyncPredictResponse<DocType>> {
-      const endpoint: Endpoint = endpointIn ?? this.#initializeEndpoint(documentClass);
-      const docResponse = await endpoint.getQueuedDocument(queueId);
-      const document = this.buildResult(docResponse);
-      return new AsyncPredictResponse(docResponse.data, document);
-  
-      return;
+    const rawPrediction = await endpoint.predict({
+      inputDoc: inputSource,
+      includeWords: this.getBooleanParam(params.fullText),
+      pageOptions: params.pageOptions,
+      cropper: this.getBooleanParam(params.cropper),
+    });
+    return new PredictResponse<T>(documentClass, rawPrediction.data);
+  }
+
+  /**
+   * Send the document to an asynchronous endpoint and return its ID in the queue.
+   * @param documentClass
+   * @param params
+   */
+  async enqueue<T extends Inference>(
+    inputSource: InputSource,
+    documentClass: new (httpResponse: StringDict) => T,
+    params: PredictOptions = {
+      endpointName: "",
+      accountName: "",
+      fullText: false,
+      cropper: false,
+      pageOptions: undefined,
     }
-  
-    protected getBooleanParam(param?: boolean): boolean {
-      return param !== undefined ? param : false;
+  ): Promise<AsyncPredictResponse<T>> {
+    const endpoint = this.#initializeEndpoint<T>(documentClass, params?.endpointName, params?.accountName, params?.version);
+    if (inputSource === undefined) {
+      throw new Error("The 'parse' function requires an input document.");
     }
-  
-    protected getDocConfig<DocType extends Document>(
-      documentClass: DocumentSig<DocType>,
-      endpointName?: string,
-      accountName?: string
-    ): DocumentConfig<DocType> {
-      const docType: string =
-        endpointName === undefined || endpointName === ""
-          ? documentClass.name
-          : endpointName;
-  
-      const found: Array<string[]> = [];
-      this.docConfigs.forEach((config, configKey) => {
-        if (configKey[1] === docType) {
-          found.push(configKey);
-        }
-      });
-      if (found.length === 0) {
-        throw `Document type not configured: '${docType}'`;
+    const rawResponse = await endpoint.predictAsync({
+      inputDoc: inputSource,
+      includeWords: this.getBooleanParam(params.fullText),
+      pageOptions: params.pageOptions,
+      cropper: this.getBooleanParam(params.cropper),
+    });
+
+    return new AsyncPredictResponse<T>(documentClass, rawResponse.data);
+  }
+
+  async parseQueued<T extends Inference>(
+    documentClass: new (httpResponse: StringDict) => T,
+    queueId: string,
+    endpointIn?: Endpoint,
+  ): Promise<AsyncPredictResponse<T>> {
+    const endpoint: Endpoint = endpointIn ?? this.#initializeEndpoint(documentClass);
+    const docResponse = await endpoint.getQueuedDocument(queueId);
+    return new AsyncPredictResponse<T>(documentClass, docResponse.data);
+
+  }
+
+  protected getBooleanParam(param?: boolean): boolean {
+    return param !== undefined ? param : false;
+  }
+
+  /**
+   * Creates an endpoint with the given values. Raises an error if the endpoint is invalid.
+   * @param documentClass
+   * @param endpointName
+   * @param accountName
+   * @param version
+   */
+  #initializeEndpoint<T extends Inference>(
+    documentClass: new (httpResponse: StringDict) => T,
+    endpointName?: string,
+    accountName?: string,
+    endpointVersion?: string
+  ): Endpoint {
+    [endpointName, accountName, endpointVersion] = this.#sanitizeEndpointParams<T>(documentClass, endpointName, accountName, endpointVersion);
+    return new Endpoint(accountName, endpointName, endpointVersion, this.apiKey);
+  }
+
+  #sanitizeEndpointParams<T extends Inference>(documentClass: new (httpResponse: StringDict) => T, endpointName?: string, accountName?: string, endpointVersion?: string) {
+    const dummyObject: T = (new documentClass(dummyProduct) as T);
+    if (dummyObject.endpointName !== "custom") {
+      if (endpointName) {
+        throw new Error(`Unknown product "${documentClass ? documentClass.name : ''}"`);
       }
-  
-      let configKey: string[] = [];
-      if (found.length === 1) {
-        configKey = found[0];
-      } else if (accountName) {
-        configKey = [accountName, docType];
-      }
-      const docConfig = this.docConfigs.get(configKey);
-      if (docConfig === undefined) {
-        // TODO: raise error printing all usernames
-        throw `Couldn't find the config '${configKey}'`;
-      }
-      return docConfig;
+      endpointName = dummyObject.endpointName;
+      endpointVersion = dummyObject.endpointVersion;
     }
-  
-  
-    /**
-     * Creates an endpoint with the given values. Raises an error if the endpoint is invalid.
-     * @param documentClass
-     * @param endpointName
-     * @param accountName
-     * @param version
-     */
-    #initializeEndpoint(
-      documentClass: typeof Inference,
-      endpointName?: string,
-      accountName?: string,
-      version?: string
-    ): Endpoint {
-      if ((!endpointName || endpointName.length === 0) && documentClass.constructor.name === "custom") {
-        throw new Error("Missing argument endpointName when using a custom class");
-      }
-  
-      endpointName ??= documentClass.endpointName ;
-      endpointVersion ??= documentClass.endpointVersion;
-      
-      return endpoint
+    endpointVersion ??= "1";
+    if ((!endpointName || endpointName.length === 0)) {
+      throw new Error("Missing argument endpointName when using a custom class");
     }
+    if (!accountName || accountName.length === 0) {
+      accountName = "mindee";
+    }
+    return [endpointName, accountName, endpointVersion];
+  }
 
   /**
    * Load an input document from a local path.
@@ -308,20 +299,6 @@ export class Client {
     return new BufferInput({
       buffer: buffer,
       filename: filename,
-    });
-  }
-
-  #buildResult<DocType extends Document>(
-    documentClass:DocumentSig<DocType>,
-    response: EndpointResponse,
-    inputFile?: InputSource
-  ): Response<DocType> {
-    const statusCode = response.messageObj.statusCode;
-    return new Response<DocType>(documentClass, {
-      httpResponse: response,
-      documentType: documentType,
-      error: false,
-      input: inputFile,
     });
   }
 }

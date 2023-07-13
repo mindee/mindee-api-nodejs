@@ -8,7 +8,7 @@ import { InputSource } from "../input";
 import { logger } from "../logger";
 import { IncomingMessage, ClientRequest } from "http";
 import { PageOptions } from "../input";
-import { LocalInputSource } from "src/input/base";
+import { LocalInputSource } from "../input/base";
 import { handleError } from "./error";
 
 const DEFAULT_MINDEE_API_HOST = "api.mindee.net";

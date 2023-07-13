@@ -1,4 +1,3 @@
-export { Response, ResponseSig } from "./documentResponse";
 export {
   Endpoint,
   CustomEndpoint,
