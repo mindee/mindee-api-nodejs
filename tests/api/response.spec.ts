@@ -6,19 +6,19 @@ import * as product from "../../src/product";
 import { InputSource, INPUT_TYPE_PATH } from "../../src/input";
 
 const dataPath = {
-  receiptV3: "tests/data/receipt/response_v3/complete.json",
-  invoiceV3: "tests/data/invoice/response_v3/complete.json",
+  receiptV5: "tests/data/receipt/response_v5/complete.json",
+  invoiceV4: "tests/data/invoice/response_v4/complete.json",
   passportV1: "tests/data/passport/response_v1/complete.json",
   customV1: "tests/data/custom/response_v1/complete.json",
 };
 
 describe("Synchronous API predict response", () => {
   it("should build a Receipt response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV3));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV5));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new Response<product.ReceiptV3>(product.ReceiptV3, {
+    const response = new Response<product.ReceiptV5>(product.ReceiptV5, {
       httpResponse: httpResponse,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,
@@ -32,11 +32,11 @@ describe("Synchronous API predict response", () => {
   });
 
   it("should build an Invoice response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV3));
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV4));
     const httpResponse = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new Response<product.InvoiceV3>(product.InvoiceV3, {
+    const response = new Response<product.InvoiceV4>(product.InvoiceV4, {
       httpResponse: httpResponse,
       input: new InputSource({ inputType: INPUT_TYPE_PATH }),
       error: false,

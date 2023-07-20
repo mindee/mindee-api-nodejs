@@ -11,7 +11,6 @@
 // export { FinancialDocumentV1 } from "./financialDocument/financialDocumentV1";
 export { CustomV1 } from "./custom/customV1";
 export { CropperV1 } from "./cropper/cropperV1";
-export { MindeeVisionV1 } from "./mindeeVision/mindeeVisionV1";
 // export { ProofOfAddressV1 } from "./proofOfAddress/proofOfAddressV1";
 // export * as fr from "./fr";
 // export * as us from "./us";

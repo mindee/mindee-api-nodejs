@@ -1,75 +1,6 @@
-export type MinMax = { min: number; max: number };
-/** A point on the document defined by 2 coordinates: X, Y */
-export type Point = [number, number];
-/** A simple bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */
-export type BBox = [number, number, number, number];
-/** A bounding box defined by 4 points. */
-export type BoundingBox = [Point, Point, Point, Point];
-/** A polygon, composed of several Points. */
-export type Polygon = Array<Point>;
-
-/**
- * Given a Polygon, calculate a polygon that encompasses all points.
- */
-export function getBoundingBox(polygon: Polygon): BoundingBox {
-  const bbox = getBbox(polygon);
-  return [
-    [bbox[0], bbox[1]],
-    [bbox[2], bbox[1]],
-    [bbox[2], bbox[3]],
-    [bbox[0], bbox[3]],
-  ];
-}
-
-/**
- * Given a BBox, generate the associated bounding box.
- */
-export function getBoundingBoxFromBBox(bbox: BBox): BoundingBox {
-  return [
-    [bbox[0], bbox[1]],
-    [bbox[2], bbox[1]],
-    [bbox[2], bbox[3]],
-    [bbox[0], bbox[3]],
-  ];
-}
-
-/**
- * Given 2 bbox, merge them.
- */
-export function mergeBbox(bbox1: BBox, bbox2: BBox): BBox {
-  return [
-    Math.min(bbox1[0], bbox2[0]),
-    Math.min(bbox1[1], bbox2[1]),
-    Math.max(bbox1[2], bbox2[2]),
-    Math.max(bbox1[3], bbox2[3]),
-  ];
-}
-
-/**
- * Given a Polygon, calculate a bounding box that encompasses all points.
- */
-export function getBbox(polygon: Polygon): BBox {
-  const allY = polygon.map((point) => point[1]);
-  const allX = polygon.map((point) => point[0]);
-  const yMin = Math.min(...allY);
-  const yMax = Math.max(...allY);
-  const xMin = Math.min(...allX);
-  const xMax = Math.max(...allX);
-  return [xMin, yMin, xMax, yMax];
-}
-
-/**
- * Given polygons, calculate a bounding box that encompasses all points.
- */
-export function getBBoxForPolygons(polygons: Polygon[]): BBox {
-  const allY = polygons.flatMap((polygon) => polygon.map((point) => point[1]));
-  const allX = polygons.flatMap((polygon) => polygon.map((point) => point[0]));
-  const yMin = Math.min(...allY);
-  const yMax = Math.max(...allY);
-  const xMin = Math.min(...allX);
-  const xMax = Math.max(...allX);
-  return [xMin, yMin, xMax, yMax];
-}
+import { MinMax } from "./minMax";
+import { Point } from "./point";
+import { Polygon } from "./polygon";
 
 /**
  * Get the central point (centroid) given a list of points.
@@ -161,4 +92,43 @@ export function relativeX(polygon: Polygon): number {
     .map((point) => point[0])
     .reduce((prev, cur) => prev + cur);
   return polygon.length * sum;
+}
+
+export function getMinYCoordinate(polygon: Polygon): number {
+  return polygon.sort((point1, point2) => {
+    if (point1[1] < point2[1]) {
+      return -1;
+    } else if (point1[1] > point2[1]) {
+      return 1;
+    }
+    return 0;
+  })[0][1];
+}
+
+export function getMinXCoordinate(polygon: Polygon): number {
+  return polygon.sort((point1, point2) => {
+    if (point1[0] < point2[0]) {
+      return -1;
+    } else if (point1[0] > point2[0]) {
+      return 1;
+    }
+    return 0;
+  })[0][0];
+}
+
+export function compareOnY(polygon1: Polygon, polygon2: Polygon): number {
+  const sort: number = getMinYCoordinate(polygon1) - getMinYCoordinate(polygon2);
+  if (sort === 0) {
+    return 0;
+  }
+  return sort < 0 ? -1 : 1;
+}
+
+
+export function compareOnX(polygon1: Polygon, polygon2: Polygon): number {
+  const sort: number = getMinXCoordinate(polygon1) - getMinXCoordinate(polygon2);
+  if (sort === 0) {
+    return 0;
+  }
+  return sort < 0 ? -1 : 1;
 }

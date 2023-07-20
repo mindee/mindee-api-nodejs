@@ -1,4 +1,4 @@
-export { Document, DocumentConstructorProps } from "./document";
+export { Document } from "./document";
 export { OrientationField } from "./orientation";
 export { StringDict } from "./stringDict";
 export { Inference } from "./inference";

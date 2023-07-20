@@ -12,11 +12,9 @@ export class CustomV1Document implements Prediction {
   classifications: Map<string, ClassificationField> = new Map();
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    if (rawPrediction) {
-      Object.entries(rawPrediction).forEach(([fieldName, fieldValue]: [string, any], idx: number) => {
-        this.setField(fieldName, fieldValue, pageId);
-      });
-    }
+    Object.entries(rawPrediction).forEach(([fieldName, fieldValue]: [string, any], idx: number) => {
+      this.setField(fieldName, fieldValue, pageId);
+    });
   }
 
   protected setField(

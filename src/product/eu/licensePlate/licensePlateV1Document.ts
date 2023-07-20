@@ -23,8 +23,7 @@ export class LicensePlateV1Document implements Prediction {
     const licensePlates = this.licensePlates
       .map((plate) => plate.value)
       .join("\n                ");
-    const outStr = `License Plates: ${licensePlates}
-`;
+    const outStr = `:License Plates: ${licensePlates}`;
     return cleanOutString(outStr);
   }
 }

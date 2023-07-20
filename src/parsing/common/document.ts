@@ -1,25 +1,16 @@
-import { CropperV1, MindeeVisionV1 } from "../../product";
+import { CropperV1 } from "../../product";
 import { Extras } from "./extras";
 import { Inference } from "./inference";
-import { Prediction } from "./prediction";
+import { Ocr } from "./ocr/ocr";
 import { StringDict } from "./stringDict";
 
-export interface DocumentConstructorProps<T extends Prediction> extends BaseDocumentConstructorProps<T> {
-  pageId?: number;
-}
-
-interface BaseDocumentConstructorProps<T extends Prediction> {
-  httpResponse: StringDict;
-  documentType: new (httpResponse: StringDict) => Inference;
-  extras?: Extras;
-}
 
 export class Document<T extends Inference> {
   filename: string;
   inference?: Inference;
   id: string;
   extras?: Extras;
-  ocr?: MindeeVisionV1;// TODO: UPDATE TO OCR
+  ocr?: Ocr;
 
   constructor(
     inferenceClass: new (httpResponse: StringDict) => T,

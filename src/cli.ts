@@ -4,7 +4,7 @@ import {
   InvoiceSplitterV1,
   ReceiptV5,
   PassportV1,
-  MindeeVisionV1,
+  Ocr,
   CustomV1,
   fr,
   us,
@@ -146,17 +146,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       async: false,
       sync: true,
     },
-  ],
-  [
-    "mvision",
-    {
-      displayName: "Mindee Vision",
-      docClass: MindeeVisionV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
+  ]
 ]);
 
 //

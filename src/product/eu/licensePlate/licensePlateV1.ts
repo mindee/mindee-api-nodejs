@@ -1,8 +1,6 @@
 import { Inference, StringDict, Page } from "../../../parsing/common";
 import { LicensePlateV1Document } from "./licensePlateV1Document";
 
-
-
 export class LicensePlateV1 extends Inference {
   endpointName = 'license_plates';
   endpointVersion = '1';
