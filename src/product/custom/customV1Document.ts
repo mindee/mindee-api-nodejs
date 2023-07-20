@@ -2,7 +2,6 @@ import { cleanOutString } from "../../parsing/common/summaryHelper";
 import {
   StringDict,
   Prediction,
-  PredictionConstructorProps,
 } from "../../parsing/common";
 import { ClassificationField, ListField } from "../../parsing/custom";
 
@@ -12,50 +11,49 @@ export class CustomV1Document implements Prediction {
   fields: Map<string, ListField> = new Map();
   classifications: Map<string, ClassificationField> = new Map();
 
-  constructor({ rawPrediction, pageId }: PredictionConstructorProps) {
-    Object.keys(rawPrediction).forEach((fieldName) => {
-      this.setField(fieldName, rawPrediction, pageId);
-    });
+  constructor(rawPrediction: StringDict, pageId?: number) {
+    if (rawPrediction) {
+      Object.entries(rawPrediction).forEach(([fieldName, fieldValue]: [string, any], idx: number) => {
+        this.setField(fieldName, fieldValue, pageId);
+      });
+    }
   }
 
   protected setField(
     fieldName: string,
-    apiPrediction: StringDict,
-    pageId: number | undefined
+    fieldValue: any,
+    pageId?: number
   ) {
     // Currently, two types of fields possible in a custom API response:
     // fields having a list of values, and classification fields.
-
-    const fieldPrediction: StringDict = apiPrediction[fieldName];
-
-    if (fieldPrediction["values"] !== undefined) {
+    if (fieldValue && fieldValue.hasOwnProperty("values")) {
       // Only value lists have the 'values' attribute.
       this.fields.set(
         fieldName,
         new ListField({
-          prediction: fieldPrediction,
+          prediction: fieldValue as StringDict,
           pageId: pageId,
         })
       );
-    } else if (fieldPrediction["value"] !== undefined) {
+    } else if (fieldValue && fieldValue.hasOwnProperty("value")) {
       // Only classifications have the 'value' attribute.
       this.classifications.set(
         fieldName,
-        new ClassificationField({ prediction: fieldPrediction })
+        new ClassificationField({ prediction: fieldValue })
       );
     } else {
-      throw "Unknown API field type";
+      throw new Error(`Unknown API field type for field ${fieldName} : ${fieldValue}`);
     }
   }
 
   toString(): string {
     let outStr = "";
     this.classifications.forEach((fieldData, name) => {
-      outStr += `\n${name}: ${fieldData}`.trimEnd();
+      outStr += `:${name}: ${fieldData}\n`;
     });
     this.fields.forEach((fieldData, name) => {
-      outStr += `\n${name}: ${fieldData}`.trimEnd();
+      outStr += `:${name}: ${fieldData}\n`;
     });
-    return cleanOutString(outStr);
+    return cleanOutString(outStr).trimEnd();
   }
 }

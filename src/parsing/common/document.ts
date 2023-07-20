@@ -48,6 +48,7 @@ export class Document<T extends Inference> {
     return `########\nDocument\n########
 :Mindee ID: ${this.id}
 :Filename: ${this.filename}
-:Mindee ID: ${this.inference?.toString()}`;
+
+${this.inference?.toString()}`;
   }
 }

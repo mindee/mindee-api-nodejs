@@ -20,21 +20,7 @@ import {
 } from "./parsing/common";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
-
-/** Empty Product object to access properties on dynamic classes. */
-const dummyProduct = {
-  "document": {
-    "inference": {
-      "prediction": {}
-    }
-  },
-  "is_rotation_applied": null,
-  "product":
-  {
-    "name": "N/A",
-    "version": "N/A"
-  }
-};
+import { InferenceFactory } from "./parsing/common/inference";
 
 export interface PredictOptions {
   /**
@@ -125,22 +111,22 @@ export class Client {
 
   /**
    * Send a document to a synchronous endpoint and parse the predictions.
-   * @param documentClass
+   * @param productClass
    * @param params
    */
   async parse<T extends Inference>(
     inputSource: InputSource,
-    documentClass: new (httpResponse: StringDict) => T,
+    productClass: new (httpResponse: StringDict) => T,
+    endpointName?: string,
+    accountName?: string,
+    endpointVersion?: string,
     params: PredictOptions = {
-      endpointName: undefined,
-      accountName: undefined,
-      version: undefined,
       fullText: undefined,
       cropper: undefined,
       pageOptions: undefined,
     }
   ): Promise<PredictResponse<T>> {
-    const endpoint = this.#initializeEndpoint<T>(documentClass, params?.endpointName, params?.accountName, params?.version);
+    const endpoint = this.#initializeEndpoint<T>(productClass, endpointName, accountName, endpointVersion);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
@@ -150,17 +136,17 @@ export class Client {
       pageOptions: params.pageOptions,
       cropper: this.getBooleanParam(params.cropper),
     });
-    return new PredictResponse<T>(documentClass, rawPrediction.data);
+    return new PredictResponse<T>(productClass, rawPrediction.data);
   }
 
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param documentClass
+   * @param productClass
    * @param params
    */
   async enqueue<T extends Inference>(
     inputSource: InputSource,
-    documentClass: new (httpResponse: StringDict) => T,
+    productClass: new (httpResponse: StringDict) => T,
     params: PredictOptions = {
       endpointName: "",
       accountName: "",
@@ -169,7 +155,7 @@ export class Client {
       pageOptions: undefined,
     }
   ): Promise<AsyncPredictResponse<T>> {
-    const endpoint = this.#initializeEndpoint<T>(documentClass, params?.endpointName, params?.accountName, params?.version);
+    const endpoint = this.#initializeEndpoint<T>(productClass, params?.endpointName, params?.accountName, params?.version);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
@@ -180,17 +166,17 @@ export class Client {
       cropper: this.getBooleanParam(params.cropper),
     });
 
-    return new AsyncPredictResponse<T>(documentClass, rawResponse.data);
+    return new AsyncPredictResponse<T>(productClass, rawResponse.data);
   }
 
   async parseQueued<T extends Inference>(
-    documentClass: new (httpResponse: StringDict) => T,
+    productClass: new (httpResponse: StringDict) => T,
     queueId: string,
     endpointIn?: Endpoint,
   ): Promise<AsyncPredictResponse<T>> {
-    const endpoint: Endpoint = endpointIn ?? this.#initializeEndpoint(documentClass);
+    const endpoint: Endpoint = endpointIn ?? this.#initializeEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
-    return new AsyncPredictResponse<T>(documentClass, docResponse.data);
+    return new AsyncPredictResponse<T>(productClass, docResponse.data);
 
   }
 
@@ -200,38 +186,80 @@ export class Client {
 
   /**
    * Creates an endpoint with the given values. Raises an error if the endpoint is invalid.
-   * @param documentClass
+   * @param productClass
    * @param endpointName
    * @param accountName
    * @param version
    */
   #initializeEndpoint<T extends Inference>(
-    documentClass: new (httpResponse: StringDict) => T,
+    productClass: new (httpResponse: StringDict) => T,
+    endpointName?: string,
+    accountName?: string,
+    endpointVersion?: string
+  ): Endpoint;
+
+  /**
+   * Creates an endpoint for an OTS app.
+   * @param productClass Class of the product
+   */
+  #initializeEndpoint<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T
+  ): Endpoint;
+
+  /**
+   * Creates an endpoint with the given values. Raises an error if the endpoint is invalid.
+   * @param productClass Class of the product
+   * @param endpointName Name of a custom Endpoint
+   * @param accountName Name of the account tied to the active Endpoint
+   * @param version Version of a custom Endpoint
+   */
+  #initializeEndpoint<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T,
     endpointName?: string,
     accountName?: string,
     endpointVersion?: string
   ): Endpoint {
-    [endpointName, accountName, endpointVersion] = this.#sanitizeEndpointParams<T>(documentClass, endpointName, accountName, endpointVersion);
-    return new Endpoint(accountName, endpointName, endpointVersion, this.apiKey);
+    const cleanAccountName = this.#cleanAccountName(productClass, accountName);
+    let cleanEndpointName, cleanEndpointVersion: string;
+    if (productClass.name === "CustomV1") {
+      if (!endpointName || endpointName.length === 0) {
+        throw new Error(`Missing parameter 'endpointName' for custom build!`);
+      }
+      if (!endpointVersion || endpointVersion.length === 0) {
+        console.warn("No version provided for a custom build, will attempt to poll version 1 by default.");
+        endpointVersion = "1";
+      }
+      [cleanEndpointName, cleanEndpointVersion] = [endpointName, endpointVersion];
+    } else {
+      [cleanEndpointName, cleanEndpointVersion] = this.#getEndpoint<T>(productClass);
+    }
+    return new Endpoint(cleanEndpointName, cleanAccountName, cleanEndpointVersion, this.apiKey);
   }
 
-  #sanitizeEndpointParams<T extends Inference>(documentClass: new (httpResponse: StringDict) => T, endpointName?: string, accountName?: string, endpointVersion?: string) {
-    const dummyObject: T = (new documentClass(dummyProduct) as T);
-    if (dummyObject.endpointName !== "custom") {
-      if (endpointName) {
-        throw new Error(`Unknown product "${documentClass ? documentClass.name : ''}"`);
+  /**
+   * Checks that an account name is provided for custom builds, and sets the default one otherwise.
+   * @param productClass Type of product
+   * @param accountName Account name. Only required on custom builds.
+   * @returns {string} The name of the account. Sends an error if one isn't provided for a custom build.
+   */
+  #cleanAccountName<T extends Inference>(productClass: new (httpResponse: StringDict) => T, accountName?: string): string {
+    if (productClass.name === "CustomV1"){
+      if ((!accountName || accountName.length === 0)) {
+        throw new Error(`Missing parameter 'accountName' for custom build!`);
       }
-      endpointName = dummyObject.endpointName;
-      endpointVersion = dummyObject.endpointVersion;
+      return accountName;
     }
-    endpointVersion ??= "1";
-    if ((!endpointName || endpointName.length === 0)) {
-      throw new Error("Missing argument endpointName when using a custom class");
-    }
-    if (!accountName || accountName.length === 0) {
-      accountName = "mindee";
-    }
-    return [endpointName, accountName, endpointVersion];
+    return "mindee";
+  }
+
+  /**
+   * Get the name and version of an OTS endpoint.
+   * @param productClass Type of product
+   * @returns {[string, string]} An endpoint's name and version
+   */
+  #getEndpoint<T extends Inference>(productClass: new (httpResponse: StringDict) => T): [string, string] {
+    const [endpointName, endpointVersion] = InferenceFactory.getEndpoint(productClass);
+    return [endpointName, endpointVersion];
   }
 
   /**

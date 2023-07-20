@@ -1,8 +1,7 @@
-import { BasePredictResponse } from "./basePredictResponse";
+import { ApiResponse } from "./apiResponse";
 import { StringDict } from "./stringDict";
 import { Inference } from "./inference";
 import { Document } from "./document";
-import { Prediction } from "./prediction";
 
 export class Job {
   issuedAt: Date;
@@ -41,7 +40,7 @@ export class Job {
   }
 }
 
-export class AsyncPredictResponse<T extends Inference> extends BasePredictResponse {
+export class AsyncPredictResponse<T extends Inference> extends ApiResponse {
   job: Job;
   document?: Document<T>;
 
@@ -50,6 +49,6 @@ export class AsyncPredictResponse<T extends Inference> extends BasePredictRespon
     httpResponse: StringDict) {
     super(httpResponse);
     this.job = new Job(httpResponse["job"]);
-    this.document = "document" in httpResponse ? new Document<T>(inferenceClass, httpResponse["document"]) : undefined;
+    this.document = httpResponse.hasOwnProperty("document") ? new Document<T>(inferenceClass, httpResponse["document"]) : undefined;
   }
 }

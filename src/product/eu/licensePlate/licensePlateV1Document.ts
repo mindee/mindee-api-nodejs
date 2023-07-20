@@ -9,18 +9,14 @@ export class LicensePlateV1Document implements Prediction {
   licensePlates: TextField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    if (rawPrediction) {
-      if ("license_plates" in rawPrediction) {
-        rawPrediction.license_plates.map((prediction: { [index: string]: any }) =>
-          this.licensePlates.push(
-            new TextField({
-              prediction: prediction,
-              pageId: pageId,
-            })
-          )
-        );
-      }
-    }
+    rawPrediction.hasOwnProperty("license_plates") && rawPrediction.license_plates.map((prediction: { [index: string]: any }) =>
+      this.licensePlates.push(
+        new TextField({
+          prediction: prediction,
+          pageId: pageId,
+        })
+      )
+    );
   }
 
   toString(): string {

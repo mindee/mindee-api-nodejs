@@ -33,7 +33,7 @@ export class Endpoint {
   urlRoot: string;
   private readonly baseHeaders: { [key: string]: string };
 
-  constructor(owner: string, urlName: string, version: string, apiKey: string) {
+  constructor(urlName: string, owner: string, version: string, apiKey: string) {
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;

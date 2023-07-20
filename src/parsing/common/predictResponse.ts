@@ -1,7 +1,7 @@
-import { BasePredictResponse } from "./basePredictResponse";
+import { ApiResponse } from "./apiResponse";
 import { Document, Inference, StringDict } from ".";
 
-export class PredictResponse<T extends Inference> extends BasePredictResponse {
+export class PredictResponse<T extends Inference> extends ApiResponse {
   document?: Document<T>;
 
   constructor(

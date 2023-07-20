@@ -2,13 +2,13 @@ import { OrientationField } from "./orientation";
 import { Prediction } from "./prediction";
 import { StringDict } from "./stringDict";
 
-export class Page<PredictionType extends Prediction> {
+export class Page<T extends Prediction> {
   id: number | undefined;
   orientation: OrientationField | undefined;
-  prediction: PredictionType;
+  prediction: T;
 
   constructor(
-    predictionType: new (rawPrediction: StringDict) => PredictionType,
+    predictionType: new (rawPrediction: StringDict, pageId?: number) => T,
     rawPrediction: StringDict,
     pageId?: number,
     orientation?: StringDict
@@ -22,7 +22,7 @@ export class Page<PredictionType extends Prediction> {
       orientation = undefined;
     }
     this.id = pageId ?? undefined;
-    this.prediction = new predictionType(rawPrediction);
+    this.prediction = new predictionType(rawPrediction, pageId);
   }
 
   toString() {
