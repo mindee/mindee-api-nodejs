@@ -1,18 +1,17 @@
 import {
   Inference,
-  DocumentConstructorProps,
   StringDict,
 } from "../../parsing/common";
 import {
-  Amount,
+  AmountField,
   ClassificationField,
   CompanyRegistration,
   DateField,
-  Locale,
-  PaymentDetails,
+  LocaleField,
+  PaymentDetailsField,
   TaxField,
   Taxes,
-  TextField,
+  StringField,
 } from "../../parsing/standard";
 import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
 
@@ -23,37 +22,37 @@ export class FinancialDocumentV1 extends Inference {
   endpointName ='financial_document';
   endpointVersion = '1';
   /** The locale detected on the document. */
-  locale: Locale;
+  locale: LocaleField;
   /** The invoice number or identifier. */
-  invoiceNumber: TextField;
+  invoiceNumber: StringField;
   /** List of Reference numbers, including PO number. */
-  referenceNumbers: TextField[] = [];
+  referenceNumbers: StringField[] = [];
   /** The date the purchase was made. */
   date: DateField;
   /** The date on which the payment is due. */
   dueDate: DateField;
   /** The net amount paid: does not include taxes, fees, and discounts. */
-  totalNet: Amount;
+  totalNet: AmountField;
   /** The total amount paid: includes taxes, tips, fees, and other charges. */
-  totalAmount: Amount;
+  totalAmount: AmountField;
   /** List of tax lines information. */
   taxes: TaxField[];
   /** List of payment details associated to the supplier. */
-  supplierPaymentDetails: PaymentDetails[] = [];
+  supplierPaymentDetails: PaymentDetailsField[] = [];
   /** The name of the supplier or merchant. */
-  supplierName: TextField;
+  supplierName: StringField;
   /** List of company registrations associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistration[] = [];
   /** The address of the supplier or merchant. */
-  supplierAddress: TextField;
+  supplierAddress: StringField;
   /** The phone number of the supplier or merchant. */
-  supplierPhoneNumber: TextField;
+  supplierPhoneNumber: StringField;
   /** The name of the customer. */
-  customerName: TextField;
+  customerName: StringField;
   /** List of company registrations associated to the customer. */
   customerCompanyRegistrations: CompanyRegistration[] = [];
   /** The address of the customer. */
-  customerAddress: TextField;
+  customerAddress: StringField;
   /** One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'. */
   documentType: ClassificationField;
   /** The purchase subcategory among predefined classes for transport and food. */
@@ -61,11 +60,11 @@ export class FinancialDocumentV1 extends Inference {
   /** The purchase category among predefined classes. */
   category: ClassificationField;
   /** The total amount of taxes. */
-  totalTax: Amount;
+  totalTax: AmountField;
   /** The total amount of tip and gratuity */
-  tip: Amount;
+  tip: AmountField;
   /** The time the purchase was made. */
-  time: TextField;
+  time: StringField;
   /** List of line item details. */
   lineItems: FinancialDocumentV1LineItem[] = [];
 
@@ -84,17 +83,17 @@ export class FinancialDocumentV1 extends Inference {
       extras: extras,
       fullText: fullText,
     });
-    this.locale = new Locale({
+    this.locale = new LocaleField({
       prediction: prediction["locale"],
       valueKey: "language",
     });
-    this.invoiceNumber = new TextField({
+    this.invoiceNumber = new StringField({
       prediction: prediction["invoice_number"],
       pageId: pageId,
     });
     prediction["reference_numbers"].map((itemPrediction: StringDict) =>
       this.referenceNumbers.push(
-        new TextField({
+        new StringField({
           prediction: itemPrediction,
           pageId: pageId,
         })
@@ -108,24 +107,24 @@ export class FinancialDocumentV1 extends Inference {
       prediction: prediction["due_date"],
       pageId: pageId,
     });
-    this.totalNet = new Amount({
+    this.totalNet = new AmountField({
       prediction: prediction["total_net"],
       pageId: pageId,
     });
-    this.totalAmount = new Amount({
+    this.totalAmount = new AmountField({
       prediction: prediction["total_amount"],
       pageId: pageId,
     });
     this.taxes = new Taxes().init(prediction["taxes"], pageId);
     prediction["supplier_payment_details"].map((itemPrediction: StringDict) =>
       this.supplierPaymentDetails.push(
-        new PaymentDetails({
+        new PaymentDetailsField({
           prediction: itemPrediction,
           pageId: pageId,
         })
       )
     );
-    this.supplierName = new TextField({
+    this.supplierName = new StringField({
       prediction: prediction["supplier_name"],
       pageId: pageId,
     });
@@ -138,15 +137,15 @@ export class FinancialDocumentV1 extends Inference {
           })
         )
     );
-    this.supplierAddress = new TextField({
+    this.supplierAddress = new StringField({
       prediction: prediction["supplier_address"],
       pageId: pageId,
     });
-    this.supplierPhoneNumber = new TextField({
+    this.supplierPhoneNumber = new StringField({
       prediction: prediction["supplier_phone_number"],
       pageId: pageId,
     });
-    this.customerName = new TextField({
+    this.customerName = new StringField({
       prediction: prediction["customer_name"],
       pageId: pageId,
     });
@@ -159,7 +158,7 @@ export class FinancialDocumentV1 extends Inference {
           })
         )
     );
-    this.customerAddress = new TextField({
+    this.customerAddress = new StringField({
       prediction: prediction["customer_address"],
       pageId: pageId,
     });
@@ -172,15 +171,15 @@ export class FinancialDocumentV1 extends Inference {
     this.category = new ClassificationField({
       prediction: prediction["category"],
     });
-    this.totalTax = new Amount({
+    this.totalTax = new AmountField({
       prediction: prediction["total_tax"],
       pageId: pageId,
     });
-    this.tip = new Amount({
+    this.tip = new AmountField({
       prediction: prediction["tip"],
       pageId: pageId,
     });
-    this.time = new TextField({
+    this.time = new StringField({
       prediction: prediction["time"],
       pageId: pageId,
     });
@@ -211,13 +210,13 @@ export class FinancialDocumentV1 extends Inference {
     const outStr = `Financial Document V1 Prediction
 ================================
 :Filename: ${this.filename}
-:Locale: ${this.locale}
+:LocaleField: ${this.locale}
 :Invoice Number: ${this.invoiceNumber}
 :Reference Numbers: ${referenceNumbers}
 :Purchase Date: ${this.date}
 :Due Date: ${this.dueDate}
 :Total Net: ${this.totalNet}
-:Total Amount: ${this.totalAmount}
+:Total AmountField: ${this.totalAmount}
 :Taxes: ${this.taxes}
 :Supplier Payment Details: ${supplierPaymentDetails}
 :Supplier name: ${this.supplierName}
@@ -264,9 +263,9 @@ export class FinancialDocumentV1 extends Inference {
     outStr += " | Description                         ";
     outStr += " | Product code";
     outStr += " | Quantity";
-    outStr += " | Tax Amount";
+    outStr += " | Tax AmountField";
     outStr += " | Tax Rate (%)";
-    outStr += " | Total Amount";
+    outStr += " | Total AmountField";
     outStr += " | Unit Price";
     outStr += ` |\n${this.#lineItemsSeparator("=")}`;
     outStr += `\n  ${lines}`;

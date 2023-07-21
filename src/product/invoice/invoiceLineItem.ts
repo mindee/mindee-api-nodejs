@@ -27,33 +27,33 @@ export class InvoiceLineItem {
    */
   polygon: Polygon = [];
 
-  constructor({ prediction }: StringDict) {
-    this.productCode = prediction.product_code;
-    this.description = prediction.description;
-    this.quantity = +parseFloat(prediction.quantity).toFixed(3);
+  constructor(rawPrediction: StringDict) {
+    this.productCode = rawPrediction.product_code;
+    this.description = rawPrediction.description;
+    this.quantity = +parseFloat(rawPrediction.quantity).toFixed(3);
     if (isNaN(this.quantity)) {
       this.quantity = null;
     }
-    this.unitPrice = +parseFloat(prediction.unit_price).toFixed(3);
+    this.unitPrice = +parseFloat(rawPrediction.unit_price).toFixed(3);
     if (isNaN(this.unitPrice)) {
       this.unitPrice = null;
     }
-    this.totalAmount = +parseFloat(prediction.total_amount).toFixed(3);
+    this.totalAmount = +parseFloat(rawPrediction.total_amount).toFixed(3);
     if (isNaN(this.totalAmount)) {
       this.totalAmount = null;
     }
-    this.taxRate = +parseFloat(prediction.tax_rate).toFixed(3);
+    this.taxRate = +parseFloat(rawPrediction.tax_rate).toFixed(3);
     if (isNaN(this.taxRate)) {
       this.taxRate = null;
     }
-    this.taxAmount = +parseFloat(prediction.tax_amount).toFixed(3);
+    this.taxAmount = +parseFloat(rawPrediction.tax_amount).toFixed(3);
     if (isNaN(this.taxAmount)) {
       this.taxAmount = null;
     }
-    this.pageId = prediction.page_id;
-    this.confidence = prediction.confidence ? prediction.confidence : 0.0;
-    if (prediction.polygon) {
-      this.polygon = prediction.polygon;
+    this.pageId = rawPrediction.page_id;
+    this.confidence = rawPrediction.confidence ? rawPrediction.confidence : 0.0;
+    if (rawPrediction.polygon) {
+      this.polygon = rawPrediction.polygon;
     }
   }
 

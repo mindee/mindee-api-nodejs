@@ -11,7 +11,7 @@ import {
   Locale,
   Taxes,
   TaxField,
-  TextField,
+  StringField,
 } from "../../parsing/standard";
 import { ReceiptV5LineItem } from "./receiptV5LineItem";
 
@@ -34,17 +34,17 @@ export class ReceiptV5 extends Inference {
   /** The purchase subcategory among predefined classes for transport and food. */
   subcategory: ClassificationField;
   /** The address of the supplier or merchant. */
-  supplierAddress: TextField;
+  supplierAddress: StringField;
   /** List of company registrations associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistration[] = [];
   /** The name of the supplier or merchant. */
-  supplierName: TextField;
+  supplierName: StringField;
   /** The phone number of the supplier or merchant. */
-  supplierPhoneNumber: TextField;
+  supplierPhoneNumber: StringField;
   /** List of tax lines information. */
   taxes: TaxField[];
   /** The time the purchase was made. */
-  time: TextField;
+  time: StringField;
   /** The total amount of tip and gratuity. */
   tip: Amount;
   /** The total amount paid: includes taxes, discounts, fees, tips, and gratuity. */
@@ -93,7 +93,7 @@ export class ReceiptV5 extends Inference {
     this.subcategory = new ClassificationField({
       prediction: prediction["subcategory"],
     });
-    this.supplierAddress = new TextField({
+    this.supplierAddress = new StringField({
       prediction: prediction["supplier_address"],
       pageId: pageId,
     });
@@ -106,16 +106,16 @@ export class ReceiptV5 extends Inference {
           })
         )
     );
-    this.supplierName = new TextField({
+    this.supplierName = new StringField({
       prediction: prediction["supplier_name"],
       pageId: pageId,
     });
-    this.supplierPhoneNumber = new TextField({
+    this.supplierPhoneNumber = new StringField({
       prediction: prediction["supplier_phone_number"],
       pageId: pageId,
     });
     this.taxes = new Taxes().init(prediction["taxes"], pageId);
-    this.time = new TextField({
+    this.time = new StringField({
       prediction: prediction["time"],
       pageId: pageId,
     });

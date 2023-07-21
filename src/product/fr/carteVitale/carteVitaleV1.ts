@@ -1,15 +1,15 @@
 import { Inference, DocumentConstructorProps } from "../../../parsing/common";
-import { TextField, DateField } from "../../../parsing/standard";
+import { StringField, DateField } from "../../../parsing/standard";
 
 export class CarteVitaleV1 extends Inference {
   endpointName ='carte_vitale';
   endpointVersion = '1';
   /** List of given (first) names of the cardholder. */
-  givenNames: TextField[] = [];
+  givenNames: StringField[] = [];
   /** The surname of the person. */
-  surname: TextField;
+  surname: StringField;
   /** The social security number of the cardholder. */
-  socialSecurity: TextField;
+  socialSecurity: StringField;
   /** The issuance date of the card. */
   issuanceDate: DateField;
 
@@ -26,7 +26,7 @@ export class CarteVitaleV1 extends Inference {
       orientation: orientation,
       extras: extras,
     });
-    this.socialSecurity = new TextField({
+    this.socialSecurity = new StringField({
       prediction: prediction.social_security,
       pageId: pageId,
     });
@@ -34,13 +34,13 @@ export class CarteVitaleV1 extends Inference {
       prediction: prediction.issuance_date,
       pageId: pageId,
     });
-    this.surname = new TextField({
+    this.surname = new StringField({
       prediction: prediction.surname,
       pageId: pageId,
     });
     prediction.given_names.map((prediction: { [index: string]: any }) =>
       this.givenNames.push(
-        new TextField({
+        new StringField({
           prediction: prediction,
           pageId: pageId,
         })

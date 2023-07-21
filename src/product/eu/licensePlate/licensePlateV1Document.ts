@@ -1,22 +1,27 @@
-import { cleanOutString } from "../../../parsing/common/summaryHelper";
-import { Prediction, StringDict } from "../../../parsing/common";
-import { TextField } from "../../../parsing/standard";
+import {
+  cleanOutString,
+  Prediction,
+  StringDict,
+} from "../../../parsing/common";
+import { StringField } from "../../../parsing/standard";
 
 export class LicensePlateV1Document implements Prediction {
   endpointName = 'license_plates';
   endpointVersion = '1';
   /** A list of license plates. */
-  licensePlates: TextField[] = [];
+  licensePlates: StringField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    rawPrediction.hasOwnProperty("license_plates") && rawPrediction.license_plates.map((prediction: { [index: string]: any }) =>
-      this.licensePlates.push(
-        new TextField({
-          prediction: prediction,
-          pageId: pageId,
-        })
-      )
-    );
+    rawPrediction.hasOwnProperty("license_plates") &&
+      rawPrediction.license_plates.map(
+        (itemPrediction: { [index: string]: any }) =>
+          this.licensePlates.push(
+            new StringField({
+              prediction: itemPrediction,
+              pageId: pageId,
+            })
+          )
+      );
   }
 
   toString(): string {

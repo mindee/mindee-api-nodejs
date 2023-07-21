@@ -11,7 +11,7 @@ export function floatToString(value: number) {
 /**
  * A field containing an amount value.
  */
-export class Amount extends Field {
+export class AmountField extends Field {
   /** The value. */
   value?: number = undefined;
 

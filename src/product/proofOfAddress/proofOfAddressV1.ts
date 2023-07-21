@@ -3,7 +3,7 @@ import {
   CompanyRegistration,
   DateField,
   Locale,
-  TextField,
+  StringField,
 } from "../../parsing/standard";
 
 export class ProofOfAddressV1 extends Inference {
@@ -14,19 +14,19 @@ export class ProofOfAddressV1 extends Inference {
   /** All extrated ISO date yyyy-mm-dd. Works both for European and US dates. */
   dates: DateField[] = [];
   /** Address of the document's issuer. */
-  issuerAddress: TextField;
+  issuerAddress: StringField;
   /** Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific. */
   issuerCompanyRegistration: CompanyRegistration[] = [];
   /** Name of the person or company issuing the document. */
-  issuerName: TextField;
+  issuerName: StringField;
   /** ISO 639-1 code, works best with ca, de, en, es, fr, it, nl and pt. */
   locale: Locale;
   /** Address of supplier. */
-  recipientAddress: TextField;
+  recipientAddress: StringField;
   /** Generic: VAT NUMBER, TAX ID, COMPANY REGISTRATION NUMBER or country specific. */
   recipientCompanyRegistration: CompanyRegistration[] = [];
   /** Name of the document's recipient. */
-  recipientName: TextField;
+  recipientName: StringField;
 
   constructor({
     prediction,
@@ -56,7 +56,7 @@ export class ProofOfAddressV1 extends Inference {
         })
       )
     );
-    this.issuerAddress = new TextField({
+    this.issuerAddress = new StringField({
       prediction: prediction.issuer_address,
       pageId: pageId,
     });
@@ -69,7 +69,7 @@ export class ProofOfAddressV1 extends Inference {
           })
         )
     );
-    this.issuerName = new TextField({
+    this.issuerName = new StringField({
       prediction: prediction.issuer_name,
       pageId: pageId,
     });
@@ -82,11 +82,11 @@ export class ProofOfAddressV1 extends Inference {
           })
         )
     );
-    this.recipientAddress = new TextField({
+    this.recipientAddress = new StringField({
       prediction: prediction.recipient_address,
       pageId: pageId,
     });
-    this.recipientName = new TextField({
+    this.recipientName = new StringField({
       prediction: prediction.recipient_name,
       pageId: pageId,
     });

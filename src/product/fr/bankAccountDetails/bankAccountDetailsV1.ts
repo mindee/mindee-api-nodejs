@@ -1,16 +1,16 @@
 import { Inference, DocumentConstructorProps } from "../../../parsing/common";
-import { TextField } from "../../../parsing/standard";
+import { StringField } from "../../../parsing/standard";
 
 /** French bank account information (RIB) */
 export class BankAccountDetailsV1 extends Inference {
   endpointName ='bank_account_details';
   endpointVersion = '1';
   /** The account's IBAN. */
-  iban: TextField;
+  iban: StringField;
   /** The account holder's name. */
-  accountHolderName: TextField;
+  accountHolderName: StringField;
   /** The bank's SWIFT code. */
-  swift: TextField;
+  swift: StringField;
 
   constructor({
     prediction,
@@ -25,15 +25,15 @@ export class BankAccountDetailsV1 extends Inference {
       orientation: orientation,
       extras: extras,
     });
-    this.iban = new TextField({
+    this.iban = new StringField({
       prediction: prediction.iban,
       pageId: pageId,
     });
-    this.accountHolderName = new TextField({
+    this.accountHolderName = new StringField({
       prediction: prediction.account_holder_name,
       pageId: pageId,
     });
-    this.swift = new TextField({
+    this.swift = new StringField({
       prediction: prediction.swift,
       pageId: pageId,
     });

@@ -1,5 +1,5 @@
 import { Inference, DocumentConstructorProps } from "../../../parsing/common";
-import { TextField } from "../../../parsing/standard";
+import { StringField } from "../../../parsing/standard";
 import { BankAccountDetailsV2Bban } from "./bankAccountDetailsV2Bban";
 
 /**
@@ -9,13 +9,13 @@ export class BankAccountDetailsV2 extends Inference {
   endpointName ='bank_account_details';
   endpointVersion = '2';
   /** Full extraction of the account holders names. */
-  accountHoldersNames: TextField;
+  accountHoldersNames: StringField;
   /** Full extraction of BBAN, including: branch code, bank code, account and key. */
   bban: BankAccountDetailsV2Bban;
   /** Full extraction of the IBAN number. */
-  iban: TextField;
+  iban: StringField;
   /** Full extraction of the SWIFT code. */
-  swiftCode: TextField;
+  swiftCode: StringField;
 
   constructor({
     prediction,
@@ -32,7 +32,7 @@ export class BankAccountDetailsV2 extends Inference {
       extras: extras,
       fullText: fullText,
     });
-    this.accountHoldersNames = new TextField({
+    this.accountHoldersNames = new StringField({
       prediction: prediction["account_holders_names"],
       pageId: pageId,
     });
@@ -40,11 +40,11 @@ export class BankAccountDetailsV2 extends Inference {
       prediction: prediction["bban"],
       pageId: pageId,
     });
-    this.iban = new TextField({
+    this.iban = new StringField({
       prediction: prediction["iban"],
       pageId: pageId,
     });
-    this.swiftCode = new TextField({
+    this.swiftCode = new StringField({
       prediction: prediction["swift_code"],
       pageId: pageId,
     });

@@ -6,3 +6,4 @@ export { AsyncPredictResponse } from "./asyncPredictResponse";
 export { PredictResponse } from "./predictResponse";
 export { Prediction, PredictionConstructorProps } from "./prediction";
 export { Page } from "./page";
+export { cleanOutString, lineSeparator } from "./summaryHelper";

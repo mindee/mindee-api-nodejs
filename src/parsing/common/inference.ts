@@ -6,7 +6,7 @@ import { Product } from "./product";
 export class Inference {
   isRotationApplied?: boolean;
   product: Product;
-  pages: Array<Page<Prediction>> = [];
+  pages: Page<Prediction>[] = [];
   prediction?: Prediction;
   endpointName?: string;
   endpointVersion?: string;

@@ -3,7 +3,7 @@ import { Field, FieldConstructor } from "./field";
 /**
  * A company registration item.
  */
-export class CompanyRegistration extends Field {
+export class CompanyRegistrationField extends Field {
   /** Registration identifier. */
   value?: string;
   /** Type of company registration. */

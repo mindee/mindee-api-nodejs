@@ -3,7 +3,7 @@ import { BaseField, BaseFieldConstructor } from "./base";
 /**
  * The locale detected on the document.
  */
-export class Locale extends BaseField {
+export class LocaleField extends BaseField {
   /** Locale in ISO format. */
   value?: string;
   /** The confidence score of the prediction. */

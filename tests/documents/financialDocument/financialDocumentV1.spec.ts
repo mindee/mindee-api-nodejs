@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../src";
-import { Amount, DateField, TextField, TaxField } from "../../../src/parsing/standard";
+import { Amount, DateField, StringField, TaxField } from "../../../src/parsing/standard";
 
 const dataPath = {
   receiptComplete:
@@ -45,8 +45,8 @@ describe("Financial Document V1 Object initialization", async () => {
     expect((doc.totalTax as Amount).value).to.be.undefined;
     expect((doc.taxes as TaxField[]).length).to.be.equal(0);
     expect((doc.date as DateField).value).to.be.undefined;
-    expect((doc.time as TextField).value).to.be.undefined;
-    expect((doc.supplierName as TextField).value).to.be.undefined;
+    expect((doc.time as StringField).value).to.be.undefined;
+    expect((doc.supplierName as StringField).value).to.be.undefined;
   });
 
   it("should initialize from an invoice object", async () => {

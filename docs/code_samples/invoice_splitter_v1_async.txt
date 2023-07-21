@@ -9,10 +9,11 @@ async function sampleAsyncApi() {
   // Specify the document class here to be DRY
   const docClass = mindee.product.InvoiceSplitterV1;
 
+  const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
+
   // Load a file from disk and send it to the asynchronous queue
   const enqueueResponse = await mindeeClient
-    .docFromPath("/path/to/the/file.ext")
-    .enqueue(docClass);
+    .enqueue(inputSource, docClass);
 
   console.log(enqueueResponse.job);
 

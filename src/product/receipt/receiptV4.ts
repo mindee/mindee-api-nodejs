@@ -3,7 +3,7 @@ import {
   ClassificationField,
   Amount,
   DateField,
-  TextField,
+  StringField,
   Locale,
   TaxField,
   Taxes,
@@ -21,11 +21,11 @@ export class ReceiptV4 extends Inference {
   /** The receipt sub-category among predefined classes. */
   subCategory: ClassificationField;
   /** Whether the document is an expense receipt or a credit card receipt. */
-  documentType: TextField;
+  documentType: StringField;
   /** The name of the supplier or merchant, as seen on the receipt. */
-  supplier: TextField;
+  supplier: StringField;
   /** Time as seen on the receipt in HH:MM format. */
-  time: TextField;
+  time: StringField;
   /** List of taxes detected on the receipt. */
   taxes: TaxField[];
   /** Total amount of tip and gratuity. */
@@ -82,15 +82,15 @@ export class ReceiptV4 extends Inference {
     this.subCategory = new ClassificationField({
       prediction: prediction.subcategory,
     });
-    this.documentType = new TextField({
+    this.documentType = new StringField({
       prediction: prediction.document_type,
       pageId: pageId,
     });
-    this.supplier = new TextField({
+    this.supplier = new StringField({
       prediction: prediction.supplier,
       pageId: pageId,
     });
-    this.time = new TextField({
+    this.time = new StringField({
       prediction: prediction.time,
       pageId: pageId,
     });

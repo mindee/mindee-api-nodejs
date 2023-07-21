@@ -3,16 +3,16 @@ import {
   DocumentConstructorProps,
   StringDict,
 } from "../../parsing/common";
-import { DateField, TextField } from "../../parsing/standard";
+import { DateField, StringField } from "../../parsing/standard";
 import * as MRZ from "mrz";
 
 export class PassportV1 extends Inference {
   endpointName ='passport';
   endpointVersion = '1';
   /** The country of issue. */
-  country: TextField;
+  country: StringField;
   /** The passport number. */
-  idNumber: TextField;
+  idNumber: StringField;
   /** The date of birth of the passport holder. */
   birthDate: DateField;
   /** The expiration date of the passport. */
@@ -20,21 +20,21 @@ export class PassportV1 extends Inference {
   /** The issuance date of the passport. */
   issuanceDate: DateField;
   /** The place of birth of the passport holder. */
-  birthPlace: TextField;
+  birthPlace: StringField;
   /** The sex or gender of the passport holder. */
-  gender: TextField;
+  gender: StringField;
   /** The surname (last name) of the passport holder. */
-  surname: TextField;
+  surname: StringField;
   /** The value of the first MRZ line. */
-  mrz1: TextField;
+  mrz1: StringField;
   /** The value of the second MRZ line. */
-  mrz2: TextField;
+  mrz2: StringField;
   /** List of first (given) names of the passport holder. */
-  givenNames: TextField[] = [];
+  givenNames: StringField[] = [];
   /** The full name of the passport holder. */
-  fullName: TextField;
+  fullName: StringField;
   /** All the MRZ values combined. */
-  mrz: TextField;
+  mrz: StringField;
 
   constructor({
     prediction,
@@ -49,11 +49,11 @@ export class PassportV1 extends Inference {
       orientation: orientation,
       extras: extras,
     });
-    this.country = new TextField({
+    this.country = new StringField({
       prediction: prediction.country,
       pageId: pageId,
     });
-    this.idNumber = new TextField({
+    this.idNumber = new StringField({
       prediction: prediction.id_number,
       pageId: pageId,
     });
@@ -69,36 +69,36 @@ export class PassportV1 extends Inference {
       prediction: prediction.issuance_date,
       pageId: pageId,
     });
-    this.birthPlace = new TextField({
+    this.birthPlace = new StringField({
       prediction: prediction.birth_place,
       pageId: pageId,
     });
-    this.gender = new TextField({
+    this.gender = new StringField({
       prediction: prediction.gender,
       pageId: pageId,
     });
-    this.surname = new TextField({
+    this.surname = new StringField({
       prediction: prediction.surname,
       pageId: pageId,
     });
-    this.mrz1 = new TextField({
+    this.mrz1 = new StringField({
       prediction: prediction.mrz1,
       pageId: pageId,
     });
-    this.mrz2 = new TextField({
+    this.mrz2 = new StringField({
       prediction: prediction.mrz2,
       pageId: pageId,
     });
     prediction.given_names.map((prediction: StringDict) =>
       this.givenNames.push(
-        new TextField({
+        new StringField({
           prediction: prediction,
           pageId: pageId,
         })
       )
     );
-    this.fullName = this.constructFullName(pageId) as TextField;
-    this.mrz = this.constructMRZ(pageId) as TextField;
+    this.fullName = this.constructFullName(pageId) as StringField;
+    this.mrz = this.constructMRZ(pageId) as StringField;
     this.#checklist();
   }
 
@@ -209,7 +209,7 @@ MRZ: ${this.mrz}
     return check;
   }
 
-  private constructFullName(pageNumber?: number): TextField | undefined {
+  private constructFullName(pageNumber?: number): StringField | undefined {
     if (
       this.surname &&
       this.givenNames.length > 0 &&
@@ -217,12 +217,12 @@ MRZ: ${this.mrz}
     ) {
       const fullName = {
         value: `${this.givenNames[0].value} ${this.surname.value}`,
-        confidence: TextField.arrayConfidence([
+        confidence: StringField.arrayConfidence([
           this.surname,
           this.givenNames[0],
         ]),
       };
-      return new TextField({
+      return new StringField({
         prediction: fullName,
         pageId: pageNumber,
         reconstructed: true,
@@ -230,13 +230,13 @@ MRZ: ${this.mrz}
     }
   }
 
-  private constructMRZ(pageNumber?: number): TextField | undefined {
+  private constructMRZ(pageNumber?: number): StringField | undefined {
     if (this.mrz1.value && this.mrz2.value) {
       const mrz = {
         value: `${this.mrz1.value}${this.mrz2.value}`,
-        confidence: TextField.arrayConfidence([this.mrz1, this.mrz2]),
+        confidence: StringField.arrayConfidence([this.mrz1, this.mrz2]),
       };
-      return new TextField({
+      return new StringField({
         prediction: mrz,
         pageId: pageNumber,
         reconstructed: true,

@@ -11,7 +11,7 @@ export interface FieldConstructor {
 /**
  * A field containing a text value.
  */
-export class TextField extends Field {
+export class StringField extends Field {
   /** The value. */
   value?: string;
 

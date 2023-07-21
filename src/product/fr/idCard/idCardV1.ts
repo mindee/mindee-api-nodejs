@@ -1,31 +1,31 @@
 import { Inference, DocumentConstructorProps } from "../../../parsing/common";
-import { TextField, DateField, BaseField } from "../../../parsing/standard";
+import { StringField, DateField, BaseField } from "../../../parsing/standard";
 
 export class IdCardV1 extends Inference {
   endpointName ='idcard_fr';
   endpointVersion = '1';
   /** The authority which has issued the card. */
-  authority: TextField;
+  authority: StringField;
   /** Indicates if it is the recto side, the verso side or both. */
   documentSide: BaseField;
   /** The id number of the card. */
-  idNumber: TextField;
+  idNumber: StringField;
   /** The birth date of the person. */
   birthDate: DateField;
   /** The expiry date of the card. */
   expiryDate: DateField;
   /** The birth place of the person. */
-  birthPlace: TextField;
+  birthPlace: StringField;
   /** The gender of the person. */
-  gender: TextField;
+  gender: StringField;
   /** The first mrz value. */
-  mrz1: TextField;
+  mrz1: StringField;
   /** The second mrz value. */
-  mrz2: TextField;
+  mrz2: StringField;
   /** The surname of the person. */
-  surname: TextField;
+  surname: StringField;
   /** The list of the names of the person. */
-  givenNames: TextField[] = [];
+  givenNames: StringField[] = [];
 
   constructor({
     prediction,
@@ -40,14 +40,14 @@ export class IdCardV1 extends Inference {
       orientation: orientation,
       extras: extras,
     });
-    this.authority = new TextField({
+    this.authority = new StringField({
       prediction: prediction.authority,
       pageId: pageId,
     });
     this.documentSide = new BaseField({
       prediction: prediction.document_side,
     });
-    this.idNumber = new TextField({
+    this.idNumber = new StringField({
       prediction: prediction.id_number,
       pageId: pageId,
     });
@@ -59,29 +59,29 @@ export class IdCardV1 extends Inference {
       prediction: prediction.expiry_date,
       pageId: pageId,
     });
-    this.birthPlace = new TextField({
+    this.birthPlace = new StringField({
       prediction: prediction.birth_place,
       pageId: pageId,
     });
-    this.gender = new TextField({
+    this.gender = new StringField({
       prediction: prediction.gender,
       pageId: pageId,
     });
-    this.surname = new TextField({
+    this.surname = new StringField({
       prediction: prediction.surname,
       pageId: pageId,
     });
-    this.mrz1 = new TextField({
+    this.mrz1 = new StringField({
       prediction: prediction.mrz1,
       pageId: pageId,
     });
-    this.mrz2 = new TextField({
+    this.mrz2 = new StringField({
       prediction: prediction.mrz2,
       pageId: pageId,
     });
     prediction.given_names.map((prediction: { [index: string]: any }) =>
       this.givenNames.push(
-        new TextField({
+        new StringField({
           prediction: prediction,
           pageId: pageId,
         })
