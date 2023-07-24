@@ -1,8 +1,8 @@
-import { cleanOutString } from "src/parsing/common/summaryHelper";
 import {
-  Prediction,
-  StringDict,
-} from "../../parsing/common";
+  cleanOutString,
+  lineSeparator,
+} from "../../parsing/common/summaryHelper";
+import { Prediction, StringDict } from "../../parsing/common";
 import {
   ClassificationField,
   Taxes,
@@ -13,7 +13,7 @@ import {
   DateField,
   CompanyRegistrationField,
 } from "../../parsing/standard";
-import { InvoiceLineItem } from "./invoiceLineItem";
+import { InvoiceV4LineItem } from "./invoiceV4LineItem";
 
 /** Invoice V4 */
 export class InvoiceV4Document implements Prediction {
@@ -52,97 +52,109 @@ export class InvoiceV4Document implements Prediction {
   /** The list of the taxes. */
   taxes: Taxes;
   /** Line items details. */
-  lineItems: InvoiceLineItem[] = [];
+  lineItems: InvoiceV4LineItem[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
     this.locale = new LocaleField({
-      prediction: rawPrediction.locale,
+      prediction: rawPrediction["locale"],
       valueKey: "language",
     });
     this.documentType = new ClassificationField({
-      prediction: rawPrediction.document_type,
+      prediction: rawPrediction["document_type"],
     });
-    this.referenceNumbers = rawPrediction.reference_numbers.map(function (
-      prediction: StringDict
-    ) {
-      return new StringField({
-        prediction: prediction,
-        pageId: pageId,
-      });
-    });
-    this.totalAmount = new AmountField({
-      prediction: rawPrediction.total_amount,
-      pageId: pageId,
-    });
-    this.totalTax = new AmountField({
-      prediction: { value: undefined, confidence: 0.0 },
-      pageId: pageId,
-    });
-    this.totalNet = new AmountField({
-      prediction: rawPrediction.total_net,
-      pageId: pageId,
-    });
-    this.date = new DateField({
-      prediction: rawPrediction.date,
-      pageId,
-    });
-    this.taxes = new Taxes().init(rawPrediction["taxes"], pageId);
-    this.supplierCompanyRegistrations =
-      rawPrediction.supplier_company_registrations.map(function (prediction: {
-        [index: string]: any;
-      }) {
-        return new CompanyRegistrationField({
+    this.referenceNumbers =
+      rawPrediction["reference_numbers"] &&
+      rawPrediction["reference_numbers"].map(function (prediction: StringDict) {
+        return new StringField({
           prediction: prediction,
           pageId: pageId,
         });
       });
+    this.totalAmount = new AmountField({
+      prediction: rawPrediction["total_amount"],
+      pageId: pageId,
+    });
+    this.totalTax = new AmountField({
+      prediction:
+        rawPrediction["taxes"] && rawPrediction["taxes"].length > 0
+          ? {
+              value: rawPrediction["taxes"].reduce(
+                (acc: number, tax: StringDict) => {
+                  return tax.value !== undefined ? acc + tax.value : acc;
+                },
+                0
+              ),
+              confidence: 1,
+            }
+          : { value: undefined, confidence: 0.0 },
+      pageId: pageId,
+    });
+    this.totalNet = new AmountField({
+      prediction: rawPrediction["total_net"],
+      pageId: pageId,
+    });
+    this.date = new DateField({
+      prediction: rawPrediction["date"],
+      pageId,
+    });
+    this.taxes = new Taxes().init(rawPrediction["taxes"], pageId);
+    this.supplierCompanyRegistrations =
+      rawPrediction["supplier_company_registrations"] &&
+      rawPrediction["supplier_company_registrations"].map(
+        function (prediction: { [index: string]: any }) {
+          return new CompanyRegistrationField({
+            prediction: prediction,
+            pageId: pageId,
+          });
+        }
+      );
     this.dueDate = new DateField({
-      prediction: rawPrediction.due_date,
+      prediction: rawPrediction["due_date"],
       pageId: pageId,
     });
     this.invoiceNumber = new StringField({
-      prediction: rawPrediction.invoice_number,
+      prediction: rawPrediction["invoice_number"],
       pageId: pageId,
     });
     this.supplierName = new StringField({
-      prediction: rawPrediction.supplier_name,
+      prediction: rawPrediction["supplier_name"],
       pageId: pageId,
     });
     this.supplierAddress = new StringField({
-      prediction: rawPrediction.supplier_address,
+      prediction: rawPrediction["supplier_address"],
       pageId: pageId,
     });
     this.customerName = new StringField({
-      prediction: rawPrediction.customer_name,
+      prediction: rawPrediction["customer_name"],
       pageId: pageId,
     });
     this.customerAddress = new StringField({
-      prediction: rawPrediction.customer_address,
+      prediction: rawPrediction["customer_address"],
       pageId: pageId,
     });
-    rawPrediction.customer_company_registrations.map((prediction: StringDict) =>
-      this.customerCompanyRegistrations.push(
-        new CompanyRegistrationField({
-          prediction: prediction,
-          pageId: pageId,
-        })
-      )
-    );
-    rawPrediction.supplier_payment_details.map((prediction: StringDict) =>
-      this.supplierPaymentDetails.push(
-        new PaymentDetailsField({
-          prediction: prediction,
-          pageId: pageId,
-        })
-      )
-    );
-    rawPrediction.line_items.map((prediction: StringDict) =>
-      this.lineItems.push(
-        new InvoiceLineItem({
-          prediction: prediction,
-        })
-      )
-    );
+    rawPrediction["customer_company_registrations"] &&
+      rawPrediction["customer_company_registrations"].map(
+        (prediction: StringDict) =>
+          this.customerCompanyRegistrations.push(
+            new CompanyRegistrationField({
+              prediction: prediction,
+              pageId: pageId,
+            })
+          )
+      );
+    rawPrediction["supplier_payment_details"] &&
+      rawPrediction["supplier_payment_details"].map((prediction: StringDict) =>
+        this.supplierPaymentDetails.push(
+          new PaymentDetailsField({
+            prediction: prediction,
+            pageId: pageId,
+          })
+        )
+      );
+    rawPrediction["line_items"] &&
+      rawPrediction["line_items"].map((prediction: StringDict) =>
+        this.lineItems.push(new InvoiceV4LineItem(prediction))
+      );
   }
 
   toString(): string {
@@ -160,13 +172,22 @@ export class InvoiceV4Document implements Prediction {
       .join("; ");
     let lineItems = "\n";
     if (this.lineItems.length > 0) {
-      lineItems =
-        "\n  Code           | QTY    | Price   | AmountField   | Tax (Rate)       | Description\n  ";
-      lineItems += this.lineItems.map((item) => item.toString()).join("\n  ");
+      lineItems += lineSeparator([22, 9, 9, 10, 18, 38], "-");
+      lineItems +=
+        "\n  | Code                 | QTY     | Price   | Amount   | Tax (Rate)       | Description                          |\n";
+      lineItems += lineSeparator([22, 9, 9, 10, 18, 38], "=") + "\n  ";
+      lineItems += this.lineItems
+        .map(
+          (item) =>
+            item.toTableLine() +
+            "\n" +
+            lineSeparator([22, 9, 9, 10, 18, 38], "-")
+        )
+        .join("\n  ");
     }
 
-    const outStr = `
-:LocaleField: ${this.locale}
+    const outStr = `:Locale: ${this.locale}
+:Document type: ${this.documentType}
 :Invoice number: ${this.invoiceNumber}
 :Reference numbers: ${referenceNumbers}
 :Invoice date: ${this.date}
@@ -176,14 +197,13 @@ export class InvoiceV4Document implements Prediction {
 :Supplier company registrations: ${companyRegistration}
 :Supplier payment details: ${paymentDetails}
 :Customer name: ${this.customerName}
-:Customer company registrations: ${customerCompanyRegistration}
 :Customer address: ${this.customerAddress}
-:Line Items: ${lineItems}
+:Customer company registrations: ${customerCompanyRegistration}
 :Taxes: ${this.taxes}
-:Total tax: ${this.totalTax}
 :Total net: ${this.totalNet}
+:Total tax: ${this.totalTax}
 :Total amount: ${this.totalAmount}
-`;
+:Line Items: ${lineItems}`;
     return cleanOutString(outStr);
   }
 }

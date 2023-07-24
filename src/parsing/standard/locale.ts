@@ -20,14 +20,20 @@ export class LocaleField extends BaseField {
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    */
-  constructor({ prediction, reconstructed = false }: BaseFieldConstructor) {
-    const valueKey = prediction.value !== undefined ? "value" : "language";
+  constructor({
+    prediction = {},
+    reconstructed = false,
+  }: BaseFieldConstructor) {
+    const valueKey = prediction["value"] !== undefined ? "value" : "language";
     super({ prediction, valueKey, reconstructed });
 
-    this.confidence = prediction.confidence ? prediction.confidence : 0.0;
-    this.language = prediction.hasOwnProperty("language") ? prediction["language"] : undefined;
-    this.country = prediction.hasOwnProperty("country") ? prediction["country"] : undefined;
-    this.currency = prediction.hasOwnProperty("currency") ? prediction["currency"] : undefined;
+    this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
+    this.language =
+      prediction["language"] !== undefined ? prediction["language"] : undefined;
+    this.country =
+      prediction["country"] !== undefined ? prediction["country"] : undefined;
+    this.currency =
+      prediction["currency"] !== undefined ? prediction["currency"] : undefined;
   }
 
   toString(): string {

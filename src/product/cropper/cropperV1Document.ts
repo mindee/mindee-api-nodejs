@@ -7,14 +7,15 @@ export class CropperV1Document implements Prediction {
   cropping: PositionField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    rawPrediction.hasOwnProperty("cropping") && rawPrediction.cropping.forEach((crop: any) => {
-      this.cropping.push(
-        new PositionField({
-          prediction: crop,
-          pageId: pageId,
-        })
-      );
-    });
+    rawPrediction["cropping"] &&
+      rawPrediction["cropping"].forEach((crop: any) => {
+        this.cropping.push(
+          new PositionField({
+            prediction: crop,
+            pageId: pageId,
+          })
+        );
+      });
   }
 
   toString(): string {

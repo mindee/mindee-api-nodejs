@@ -10,12 +10,12 @@ export class CompanyRegistrationField extends Field {
   type: string;
 
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId,
   }: FieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
-    this.type = prediction.type;
+    this.type = prediction["type"];
   }
 }

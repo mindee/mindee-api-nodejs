@@ -117,16 +117,17 @@ export function getMinXCoordinate(polygon: Polygon): number {
 }
 
 export function compareOnY(polygon1: Polygon, polygon2: Polygon): number {
-  const sort: number = getMinYCoordinate(polygon1) - getMinYCoordinate(polygon2);
+  const sort: number =
+    getMinYCoordinate(polygon1) - getMinYCoordinate(polygon2);
   if (sort === 0) {
     return 0;
   }
   return sort < 0 ? -1 : 1;
 }
 
-
 export function compareOnX(polygon1: Polygon, polygon2: Polygon): number {
-  const sort: number = getMinXCoordinate(polygon1) - getMinXCoordinate(polygon2);
+  const sort: number =
+    getMinXCoordinate(polygon1) - getMinXCoordinate(polygon2);
   if (sort === 0) {
     return 0;
   }

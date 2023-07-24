@@ -1,7 +1,5 @@
 import { request, RequestOptions } from "https";
-import * as os from "os";
 
-import { version as sdkVersion } from "../../package.json";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
 import { InputSource } from "../input";
@@ -10,14 +8,7 @@ import { IncomingMessage, ClientRequest } from "http";
 import { PageOptions } from "../input";
 import { LocalInputSource } from "../input/base";
 import { handleError } from "./error";
-
-const DEFAULT_MINDEE_API_HOST = "api.mindee.net";
-const USER_AGENT = `mindee-api-nodejs@v${sdkVersion} nodejs-${process.version
-  } ${os.type().toLowerCase()}`;
-
-export const STANDARD_API_OWNER = "mindee";
-export const API_KEY_ENVVAR_NAME = "MINDEE_API_KEY";
-export const API_HOST_ENVVAR_NAME = "MINDEE_API_HOST";
+import { MindeeApi } from "./mindeeApi";
 
 export interface EndpointResponse {
   messageObj: IncomingMessage;
@@ -25,27 +16,24 @@ export interface EndpointResponse {
 }
 
 export class Endpoint {
-  apiKey: string;
   urlName: string;
   owner: string;
   version: string;
-  hostname: string;
   urlRoot: string;
-  private readonly baseHeaders: { [key: string]: string };
+  settings: MindeeApi;
 
-  constructor(urlName: string, owner: string, version: string, apiKey: string) {
+  constructor(
+    urlName: string,
+    owner: string,
+    version: string,
+    settings: MindeeApi
+  ) {
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
-    this.apiKey = apiKey || this.apiKeyFromEnv();
-    this.hostname = this.hostnameFromEnv();
+    this.settings = settings;
     this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
-    this.baseHeaders = {
-      "User-Agent": USER_AGENT,
-      Authorization: `Token ${this.apiKey}`,
-    };
   }
-
 
   async predict(params: {
     inputDoc: InputSource;
@@ -53,7 +41,6 @@ export class Endpoint {
     pageOptions?: PageOptions;
     cropper: boolean;
   }): Promise<EndpointResponse> {
-    this.checkApiKeys();
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
       await this.#cutDocPages(params.inputDoc, params.pageOptions);
@@ -64,7 +51,7 @@ export class Endpoint {
       params.cropper
     );
     const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode >= 400) {
+    if (statusCode === undefined || statusCode > 400) {
       handleError(this.urlName, response, statusCode);
     }
 
@@ -77,7 +64,6 @@ export class Endpoint {
     pageOptions?: PageOptions;
     cropper: boolean;
   }): Promise<EndpointResponse> {
-    this.checkApiKeys();
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
       await this.#cutDocPages(params.inputDoc, params.pageOptions);
@@ -88,22 +74,19 @@ export class Endpoint {
       params.cropper
     );
     const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode >= 400) {
+    if (statusCode === undefined || statusCode > 400) {
       handleError(this.urlName, response, statusCode);
     }
     return response;
   }
 
-  async getQueuedDocument(
-    queueId: string
-  ): Promise<EndpointResponse> {
-    this.checkApiKeys();
+  async getQueuedDocument(queueId: string): Promise<EndpointResponse> {
     const queueResponse = await this.#documentQueueReqGet(queueId);
     const queueStatusCode = queueResponse.messageObj.statusCode;
     if (
       queueStatusCode === undefined ||
       queueStatusCode < 200 ||
-      queueStatusCode >= 400
+      queueStatusCode > 400
     ) {
       handleError(this.urlName, queueResponse, queueStatusCode);
     }
@@ -141,7 +124,9 @@ export class Endpoint {
       const form = new FormData();
       if (input instanceof LocalInputSource) {
         if (input.fileObject instanceof Buffer) {
-          form.append("document", input.fileObject, { filename: input.filename });
+          form.append("document", input.fileObject, {
+            filename: input.filename,
+          });
         } else {
           form.append("document", input.fileObject);
         }
@@ -150,7 +135,7 @@ export class Endpoint {
       if (includeWords) {
         form.append("include_mvision", "true");
       }
-      const headers = { ...this.baseHeaders, ...form.getHeaders() };
+      const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
 
       let path = `${this.urlRoot}/${predictUrl}`;
       if (searchParams.keys.length > 0) {
@@ -159,7 +144,7 @@ export class Endpoint {
       const options: RequestOptions = {
         method: "POST",
         headers: headers,
-        hostname: this.hostname,
+        hostname: this.settings.hostname,
         path: path,
       };
       const req = this.readResponse(options, resolve, reject);
@@ -209,26 +194,6 @@ export class Endpoint {
     return req;
   }
 
-  protected apiKeyFromEnv(): string {
-    const envVarValue = process.env[API_KEY_ENVVAR_NAME];
-    if (envVarValue) {
-      logger.debug(
-        `Set ${this.urlName} v${this.version} API key from environment: ${API_KEY_ENVVAR_NAME}`
-      );
-      return envVarValue;
-    }
-    return "";
-  }
-
-  protected hostnameFromEnv(): string {
-    const envVarValue = process.env[API_HOST_ENVVAR_NAME];
-    if (envVarValue) {
-      logger.debug(`Set the API hostname to ${envVarValue}`);
-      return envVarValue;
-    }
-    return DEFAULT_MINDEE_API_HOST;
-  }
-
   async #cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
       await inputDoc.cutPdf(pageOptions);
@@ -276,8 +241,8 @@ export class Endpoint {
     return new Promise((resolve, reject) => {
       const options = {
         method: "GET",
-        headers: this.baseHeaders,
-        hostname: this.hostname,
+        headers: this.settings.baseHeaders,
+        hostname: this.settings.hostname,
         path: `${this.urlRoot}/documents/queue/${queueId}`,
       };
       const req = this.readResponse(options, resolve, reject);
@@ -294,39 +259,13 @@ export class Endpoint {
     return new Promise((resolve, reject) => {
       const options = {
         method: "GET",
-        headers: this.baseHeaders,
-        hostname: this.hostname,
+        headers: this.settings.baseHeaders,
+        hostname: this.settings.hostname,
         path: `${this.urlRoot}/documents/${documentId}`,
       };
       const req = this.readResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.
       req.end();
     });
-  }
-
-  protected checkApiKeys() {
-    if (!this.apiKey) {
-      throw new Error(
-        `Missing API key for '${this.urlName} ${this.version}', check your Client configuration.
-You can set this using the '${API_KEY_ENVVAR_NAME}' environment variable.\n`
-      );
-    }
-  };
-}
-
-export class StandardEndpoint extends Endpoint {
-  constructor(endpointName: string, version: string, apiKey: string) {
-    super(STANDARD_API_OWNER, endpointName, version, apiKey);
-  }
-}
-
-export class CustomEndpoint extends Endpoint {
-  constructor(
-    endpointName: string,
-    accountName: string,
-    version: string,
-    apiKey: string
-  ) {
-    super(accountName, endpointName, version, apiKey);
   }
 }

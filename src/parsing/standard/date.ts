@@ -16,7 +16,7 @@ export class DateField extends Field {
    * @param {Integer} pageId - Page ID for multi-page document
    */
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId,

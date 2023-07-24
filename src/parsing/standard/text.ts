@@ -16,7 +16,7 @@ export class StringField extends Field {
   value?: string;
 
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId,

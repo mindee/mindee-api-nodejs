@@ -38,7 +38,7 @@ export class PaymentDetailsField extends Field {
    * @param {Integer} pageId - Page ID for multi-page document
    */
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "iban",
     accountNumberKey = "account_number",
     ibanKey = "iban",

@@ -1,7 +1,11 @@
-import { compareOnX, compareOnY, getCentroid, isPointInPolygonY } from "../../../geometry";
+import {
+  compareOnX,
+  compareOnY,
+  getCentroid,
+  isPointInPolygonY,
+} from "../../../geometry";
 import { Word } from "../../standard";
 import { StringDict } from "../stringDict";
-
 
 export class OcrPage {
   /** Flat list of all words read */
@@ -10,11 +14,14 @@ export class OcrPage {
   allLines: Word[][] = [];
 
   constructor(rawPrediction: StringDict) {
-    let allWords: Word[] = [];
-    rawPrediction.all_words.map((word: Word) => {
-      allWords.push(word);
-    });
-    this.allWords = allWords.sort((word1, word2) => compareOnY(word1.polygon, word2.polygon));
+    const allWords: Word[] = [];
+    rawPrediction["all_words"] &&
+      rawPrediction["all_words"].map((word: Word) => {
+        allWords.push(word);
+      });
+    this.allWords = allWords.sort((word1, word2) =>
+      compareOnY(word1.polygon, word2.polygon)
+    );
   }
 
   #areWordsOnSameLine(currentWord: Word, nextWord: Word) {
@@ -30,8 +37,8 @@ export class OcrPage {
   }
 
   #toLines2(): Word[][] {
-    let lines: Word[][] = [];
-    let lineIdx: number[] = [];
+    const lines: Word[][] = [];
+    const lineIdx: number[] = [];
     this.allWords.forEach((current: Word, idxCurrent: number) => {
       if (!lineIdx.includes(idxCurrent)) {
         lines.push([current]);
@@ -45,9 +52,13 @@ export class OcrPage {
           lineIdx.push(idxNext);
           lines[lines.length - 1].push(next);
         }
-      })
+      });
     });
-    lines.forEach((line) => line.sort((word1: Word, word2: Word) => compareOnX(word1.polygon, word2.polygon)));
+    lines.forEach((line) =>
+      line.sort((word1: Word, word2: Word) =>
+        compareOnX(word1.polygon, word2.polygon)
+      )
+    );
     return lines;
   }
 
@@ -57,8 +68,8 @@ export class OcrPage {
    */
   #toLines(): Word[][] {
     let current: Word | null = null;
-    let indexes: number[] = [];
-    let lines: Word[][] = [];
+    const indexes: number[] = [];
+    const lines: Word[][] = [];
 
     // We iterate for each words on our page
     this.allWords.forEach(() => {
@@ -80,7 +91,9 @@ export class OcrPage {
       });
       current = null;
       if (line.length !== 0) {
-        line.sort((word1: Word, word2: Word) => compareOnX(word1.polygon, word2.polygon));
+        line.sort((word1: Word, word2: Word) =>
+          compareOnX(word1.polygon, word2.polygon)
+        );
         lines.push(line);
       }
     });
@@ -98,6 +111,8 @@ export class OcrPage {
   }
 
   toString(): string {
-    return this.getAllLines().map((line: Word[]) => line.map((word: Word) => word.text).join(" ")).join("\n");
+    return this.getAllLines()
+      .map((line: Word[]) => line.map((word: Word) => word.text).join(" "))
+      .join("\n");
   }
 }

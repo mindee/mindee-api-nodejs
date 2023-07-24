@@ -8,7 +8,7 @@ export {
   relativeX,
   relativeY,
   getMinMaxX,
-  getMinMaxY
+  getMinMaxY,
 } from "./polygonUtils";
 export { BoundingBox, BBox } from "./boundingBox";
 export {
@@ -16,7 +16,7 @@ export {
   getBBoxForPolygons,
   getBoundingBox,
   getBoundingBoxFromBBox,
-  mergeBbox
+  mergeBbox,
 } from "./boundingBoxUtils";
 export { MinMax } from "./minMax";
 export { Point } from "./point";

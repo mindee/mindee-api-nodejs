@@ -7,11 +7,11 @@ export class MvisionV1 {
   pages: OcrPage[] = [];
 
   constructor(rawPrediction: StringDict) {
-    rawPrediction.pages.map((page: Word) => {
+    rawPrediction["pages"].map((page: Word) => {
       this.pages.push(new OcrPage(page));
     });
   }
   toString(): string {
-    return this.pages.map((page: OcrPage) => page.toString()).join("\n")+"\n";
+    return this.pages.map((page: OcrPage) => page.toString()).join("\n") + "\n";
   }
 }

@@ -5,5 +5,4 @@ export interface PredictionConstructorProps {
   pageId?: number;
 }
 
-export interface Prediction {
-}
+export class Prediction {}

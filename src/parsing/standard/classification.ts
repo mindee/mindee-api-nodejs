@@ -10,11 +10,11 @@ export class ClassificationField extends BaseField {
   value?: string;
 
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     reconstructed = false,
   }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed });
-    this.confidence = prediction.confidence ? prediction.confidence : 0.0;
+    this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
   }
 }

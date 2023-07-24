@@ -1,1 +1,1 @@
-export class BankCheckV1 { }
+export class BankCheckV1 {}

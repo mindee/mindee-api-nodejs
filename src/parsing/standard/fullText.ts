@@ -42,7 +42,7 @@ function orderLines(fullText: Word[]): Line[] {
 
   const orderedLines: Array<Line> = [];
   lines.forEach((line) => {
-    let sortedLine = [...line];
+    const sortedLine = [...line];
     sortedLine.sort((a, b) => {
       return geometry.relativeX(a.polygon) - geometry.relativeX(b.polygon);
     });

@@ -1,13 +1,12 @@
-import { CropperV1 } from "../../product";
-import { Extras } from "./extras";
+import { CropperExtra } from "./extras/cropperExtra";
+import { ExtraField, Extras } from "./extras/extras";
 import { Inference } from "./inference";
 import { Ocr } from "./ocr/ocr";
 import { StringDict } from "./stringDict";
 
-
 export class Document<T extends Inference> {
   filename: string;
-  inference?: Inference;
+  inference: Inference;
   id: string;
   extras?: Extras;
   ocr?: Ocr;
@@ -19,20 +18,24 @@ export class Document<T extends Inference> {
     this.id = httpResponse["id"] ?? "";
     this.filename = httpResponse["name"] ?? "";
     this.ocr = httpResponse["ocr"] ?? undefined;
-    let extras: Extras = [];
-    this.inference = new inferenceClass(httpResponse['inference']);
-    if (httpResponse['extras'] && Object.keys(httpResponse['extras'].length > 0)) {
-      Object.entries(httpResponse['extras']).forEach(([extraKey, extraValue]: [string, any]) => {
-        switch (extraKey) {
-          case "cropper":
-            const cropperPrediction = extraValue as StringDict;
-            extras.push(
-              new CropperV1({ httpResponse: cropperPrediction, pageId: undefined })
-            );
+    this.inference = new inferenceClass(httpResponse["inference"]);
+    // Note: this is a convoluted but functional way of being able to implement/use Extras fields
+    // as an extension of a Map object (like having an adapted toString() method, for instance)
+    if (
+      httpResponse["extras"] &&
+      Object.keys(httpResponse["extras"].length > 0)
+    ) {
+      const extras: Record<string, ExtraField> = {};
+      Object.entries(httpResponse["extras"]).forEach(
+        ([extraKey, extraValue]: [string, any]) => {
+          switch (extraKey) {
+            case "cropper":
+              extras["cropper"] = new CropperExtra(extraValue as StringDict);
+          }
         }
-      });
+      );
+      this.extras = new Extras(extras);
     }
-    this.extras = extras;
   }
 
   toString() {

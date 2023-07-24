@@ -6,7 +6,8 @@ export class PredictResponse<T extends Inference> extends ApiResponse {
 
   constructor(
     inferenceClass: new (rawPrediction: StringDict) => T,
-    rawPrediction: StringDict) {
+    rawPrediction: StringDict
+  ) {
     super(rawPrediction);
     this.document = new Document<T>(inferenceClass, rawPrediction["document"]);
   }

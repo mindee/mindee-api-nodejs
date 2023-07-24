@@ -6,7 +6,7 @@ import { Document } from "./document";
 export class Job {
   issuedAt: Date;
   availableAt?: Date;
-  id?: string;
+  id: string;
   status?: "waiting" | "processing" | "completed";
   /**
    * The time taken to process the job, in milliseconds.
@@ -46,9 +46,13 @@ export class AsyncPredictResponse<T extends Inference> extends ApiResponse {
 
   constructor(
     inferenceClass: new (httpResponse: StringDict) => T,
-    httpResponse: StringDict) {
+    httpResponse: StringDict
+  ) {
     super(httpResponse);
     this.job = new Job(httpResponse["job"]);
-    this.document = httpResponse.hasOwnProperty("document") ? new Document<T>(inferenceClass, httpResponse["document"]) : undefined;
+    this.document =
+      httpResponse["document"] !== undefined
+        ? new Document<T>(inferenceClass, httpResponse["document"])
+        : undefined;
   }
 }

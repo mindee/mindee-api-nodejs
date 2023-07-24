@@ -1,4 +1,4 @@
 import { Point } from "./point";
 
 /** A polygon, composed of several Points. */
-export class Polygon extends Array<Point>{};
+export class Polygon extends Array<Point> {}

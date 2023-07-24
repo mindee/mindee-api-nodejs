@@ -1,3 +1,5 @@
+import { CropperExtra } from "./extras/cropperExtra";
+import { ExtraField, Extras } from "./extras/extras";
 import { OrientationField } from "./orientation";
 import { Prediction } from "./prediction";
 import { StringDict } from "./stringDict";
@@ -6,6 +8,7 @@ export class Page<T extends Prediction> {
   id: number | undefined;
   orientation: OrientationField | undefined;
   prediction: T;
+  extras?: Extras;
 
   constructor(
     predictionType: new (rawPrediction: StringDict, pageId?: number) => T,
@@ -22,14 +25,29 @@ export class Page<T extends Prediction> {
       orientation = undefined;
     }
     this.id = pageId ?? undefined;
-    this.prediction = new predictionType(rawPrediction, pageId);
+    this.prediction = new predictionType(rawPrediction["prediction"], pageId);
+    if (
+      rawPrediction["extras"] &&
+      Object.keys(rawPrediction["extras"].length > 0)
+    ) {
+      const extras: Record<string, ExtraField> = {};
+      Object.entries(rawPrediction["extras"]).forEach(
+        ([extraKey, extraValue]: [string, any]) => {
+          switch (extraKey) {
+            case "cropper":
+              extras["cropper"] = new CropperExtra(extraValue as StringDict);
+          }
+        }
+      );
+      this.extras = new Extras(extras);
+    }
   }
 
   toString() {
     const title = `Page ${this.id}`;
-    return `
-${title}
+    return `${title}
 ${"-".repeat(title.length)}
-${this.prediction.toString()}`;
+${this.prediction.toString()}
+`;
   }
 }

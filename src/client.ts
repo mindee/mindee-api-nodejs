@@ -9,41 +9,18 @@ import {
   UrlInput,
   BufferInput,
 } from "./input";
-import {
-  Endpoint
-} from "./http";
+import { Endpoint, MindeeApi, STANDARD_API_OWNER } from "./http";
 import {
   Inference,
   AsyncPredictResponse,
   StringDict,
-  PredictResponse
+  PredictResponse,
 } from "./parsing/common";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 import { InferenceFactory } from "./parsing/common/inference";
 
 export interface PredictOptions {
-  /**
-   * For custom endpoints, the "API name" field in the "Settings" page of the API Builder.
-   *
-   * Do not set for standard (off the shelf) endpoints.
-   */
-  endpointName?: string;
-  /**
-   * For custom endpoints, your account or organization's username on the API Builder.
-   * This is normally not required unless you have a custom endpoint which has the
-   * same name as standard (off the shelf) endpoint.
-   *
-   * Do not set for standard (off the shelf) endpoints.
-   */
-  accountName?: string;
-  /**
-   * For custom endpoints, your product version.
-   * This should have a minimum value of '1', and should be left empty if you are not sure.
-   * 
-   * Do not set for standard (off the shelf) endpoints.
-   */
-  version?: string;
   /**
    * Whether to include the full text for each page.
    *
@@ -56,14 +33,7 @@ export interface PredictOptions {
    * This performs a cropping operation on the server and will increase response time.
    */
   cropper?: boolean;
-  /**
-   * If set, remove pages from the document as specified.
-   *
-   * This is done before sending the file to the server and is useful to avoid page limitations.
-   */
-  pageOptions?: PageOptions;
 }
-
 
 export interface CustomConfigParams {
   /** Your organization's username on the API Builder. */
@@ -95,13 +65,15 @@ export class Client {
   /**
    * @param options
    */
-  constructor({
-    apiKey = "",
-    throwOnError = true,
-    debug = false,
-  }: ClientOptions) {
-    this.apiKey = apiKey;
-    errorHandler.throwOnError = throwOnError;
+  constructor(
+    { apiKey, throwOnError, debug }: ClientOptions = {
+      apiKey: "",
+      throwOnError: true,
+      debug: false,
+    }
+  ) {
+    this.apiKey = apiKey ? apiKey : "";
+    errorHandler.throwOnError = throwOnError ?? true;
     logger.level =
       debug ?? process.env.MINDEE_DEBUG
         ? LOG_LEVELS["debug"]
@@ -115,25 +87,30 @@ export class Client {
    * @param params
    */
   async parse<T extends Inference>(
-    inputSource: InputSource,
     productClass: new (httpResponse: StringDict) => T,
+    inputSource: InputSource,
     endpointName?: string,
     accountName?: string,
     endpointVersion?: string,
     params: PredictOptions = {
       fullText: undefined,
       cropper: undefined,
-      pageOptions: undefined,
-    }
+    },
+    pageOptions?: PageOptions
   ): Promise<PredictResponse<T>> {
-    const endpoint = this.#initializeEndpoint<T>(productClass, endpointName, accountName, endpointVersion);
+    const endpoint = this.#initializeEndpoint<T>(
+      productClass,
+      endpointName,
+      accountName,
+      endpointVersion
+    );
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
     const rawPrediction = await endpoint.predict({
       inputDoc: inputSource,
       includeWords: this.getBooleanParam(params.fullText),
-      pageOptions: params.pageOptions,
+      pageOptions: pageOptions,
       cropper: this.getBooleanParam(params.cropper),
     });
     return new PredictResponse<T>(productClass, rawPrediction.data);
@@ -145,24 +122,30 @@ export class Client {
    * @param params
    */
   async enqueue<T extends Inference>(
-    inputSource: InputSource,
     productClass: new (httpResponse: StringDict) => T,
+    inputSource: InputSource,
+    endpointName?: string,
+    accountName?: string,
+    endpointVersion?: string,
     params: PredictOptions = {
-      endpointName: "",
-      accountName: "",
       fullText: false,
       cropper: false,
-      pageOptions: undefined,
-    }
+    },
+    pageOptions?: PageOptions
   ): Promise<AsyncPredictResponse<T>> {
-    const endpoint = this.#initializeEndpoint<T>(productClass, params?.endpointName, params?.accountName, params?.version);
+    const endpoint = this.#initializeEndpoint<T>(
+      productClass,
+      endpointName,
+      accountName,
+      endpointVersion
+    );
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
     const rawResponse = await endpoint.predictAsync({
       inputDoc: inputSource,
       includeWords: this.getBooleanParam(params.fullText),
-      pageOptions: params.pageOptions,
+      pageOptions: pageOptions,
       cropper: this.getBooleanParam(params.cropper),
     });
 
@@ -172,12 +155,12 @@ export class Client {
   async parseQueued<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
     queueId: string,
-    endpointIn?: Endpoint,
+    endpointIn?: Endpoint
   ): Promise<AsyncPredictResponse<T>> {
-    const endpoint: Endpoint = endpointIn ?? this.#initializeEndpoint(productClass);
+    const endpoint: Endpoint =
+      endpointIn ?? this.#initializeEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
-
   }
 
   protected getBooleanParam(param?: boolean): boolean {
@@ -219,21 +202,41 @@ export class Client {
     accountName?: string,
     endpointVersion?: string
   ): Endpoint {
-    const cleanAccountName = this.#cleanAccountName(productClass, accountName);
+    const cleanAccountName: string = this.#cleanAccountName(
+      productClass,
+      accountName
+    );
     let cleanEndpointName, cleanEndpointVersion: string;
     if (productClass.name === "CustomV1") {
       if (!endpointName || endpointName.length === 0) {
-        throw new Error(`Missing parameter 'endpointName' for custom build!`);
+        throw new Error("Missing parameter 'endpointName' for custom build!");
       }
       if (!endpointVersion || endpointVersion.length === 0) {
-        console.warn("No version provided for a custom build, will attempt to poll version 1 by default.");
+        console.warn(
+          "Warning: No version provided for a custom build, will attempt to poll version 1 by default."
+        );
         endpointVersion = "1";
       }
-      [cleanEndpointName, cleanEndpointVersion] = [endpointName, endpointVersion];
+      [cleanEndpointName, cleanEndpointVersion] = [
+        endpointName,
+        endpointVersion,
+      ];
     } else {
-      [cleanEndpointName, cleanEndpointVersion] = this.#getEndpoint<T>(productClass);
+      [cleanEndpointName, cleanEndpointVersion] =
+        this.#getEndpoint<T>(productClass);
     }
-    return new Endpoint(cleanEndpointName, cleanAccountName, cleanEndpointVersion, this.apiKey);
+    const apiSettings = new MindeeApi({
+      apiKey: this.apiKey,
+      urlName: cleanEndpointName,
+      version: cleanEndpointVersion,
+      owner: cleanAccountName,
+    });
+    return new Endpoint(
+      cleanEndpointName,
+      cleanAccountName,
+      cleanEndpointVersion,
+      apiSettings
+    );
   }
 
   /**
@@ -242,14 +245,20 @@ export class Client {
    * @param accountName Account name. Only required on custom builds.
    * @returns {string} The name of the account. Sends an error if one isn't provided for a custom build.
    */
-  #cleanAccountName<T extends Inference>(productClass: new (httpResponse: StringDict) => T, accountName?: string): string {
-    if (productClass.name === "CustomV1"){
-      if ((!accountName || accountName.length === 0)) {
-        throw new Error(`Missing parameter 'accountName' for custom build!`);
+  #cleanAccountName<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T,
+    accountName?: string
+  ): string {
+    if (productClass.name === "CustomV1") {
+      if (!accountName || accountName.length === 0) {
+        console.warn(
+          `Warning: no account name provided for custom build, ${STANDARD_API_OWNER} will be used by default`
+        );
+        return STANDARD_API_OWNER;
       }
       return accountName;
     }
-    return "mindee";
+    return STANDARD_API_OWNER;
   }
 
   /**
@@ -257,8 +266,11 @@ export class Client {
    * @param productClass Type of product
    * @returns {[string, string]} An endpoint's name and version
    */
-  #getEndpoint<T extends Inference>(productClass: new (httpResponse: StringDict) => T): [string, string] {
-    const [endpointName, endpointVersion] = InferenceFactory.getEndpoint(productClass);
+  #getEndpoint<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T
+  ): [string, string] {
+    const [endpointName, endpointVersion] =
+      InferenceFactory.getEndpoint(productClass);
     return [endpointName, endpointVersion];
   }
 

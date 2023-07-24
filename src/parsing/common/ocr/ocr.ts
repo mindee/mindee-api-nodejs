@@ -9,7 +9,7 @@ export class Ocr {
     this.mVisionV1 = new MvisionV1(rawPrediction["mvision-v1"]);
   }
 
-  toString(){
+  toString() {
     return this.mVisionV1.toString();
   }
 }
