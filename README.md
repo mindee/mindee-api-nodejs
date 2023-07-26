@@ -119,15 +119,6 @@ apiResponse.then((resp) => {
 });
 ```
 
-### Predict Options
-
-#### Add cropping
-
-#### Full text
-
-### Page Options
-
-
 ## Further Reading
 There's more to it than that for those that need more features, or want to
 customize the experience.

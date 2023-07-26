@@ -6,7 +6,7 @@ import { StringDict } from "./stringDict";
 
 export class Document<T extends Inference> {
   filename: string;
-  inference: Inference;
+  inference: T;
   id: string;
   extras?: Extras;
   ocr?: Ocr;

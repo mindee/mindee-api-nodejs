@@ -2,8 +2,6 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../../src";
-import { Page } from "../../../../src/parsing/common";
-import { LicensePlateV1Document } from "../../../../src/product/eu/licensePlate/licensePlateV1Document";
 import { LicensePlateV1 } from "../../../../src/product/eu";
 
 const dataPath = {
@@ -35,7 +33,7 @@ describe("LicensePlateV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new LicensePlateV1(response.document.inference);
     const pageString = await fs.readFile(path.join(dataPath.page0String));
-    const page0 = doc.pages[0] as Page<LicensePlateV1Document>;
+    const page0 = doc.pages[0];
     expect(page0.orientation?.value).to.be.equals(0);
     expect(page0.toString()).to.be.equals(pageString.toString());
   });

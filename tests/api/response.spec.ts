@@ -16,7 +16,7 @@ describe("Synchronous API predict response", () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.receiptV4));
     const httpResponse = JSON.parse(jsonData.toString());
     const response = new PredictResponse(product.ReceiptV4, httpResponse);
-    expect(response.document.inference?.prediction).to.not.be.undefined;
+    expect(response.document.inference.prediction).to.not.be.undefined;
     expect(response.document.inference?.pages.length).to.be.equals(1);
     response.document.inference?.pages.forEach((page, idx) => {
       expect(page.id).to.be.equals(idx);
@@ -28,7 +28,7 @@ describe("Synchronous API predict response", () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV4));
     const httpResponse =  JSON.parse(jsonData.toString());
     const response = new PredictResponse(product.InvoiceV4, httpResponse);
-    expect(response.document.inference?.prediction).to.not.be.undefined;
+    expect(response.document.inference.prediction).to.not.be.undefined;
     expect(response.document.inference?.pages.length).to.be.equals(2);
     response.document.inference?.pages.forEach((page, idx) => {
       expect(page.id).to.be.equals(idx);
@@ -40,7 +40,7 @@ describe("Synchronous API predict response", () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.licensePlateV1));
     const httpResponse = JSON.parse(jsonData.toString());
     const response = new PredictResponse(product.eu.LicensePlateV1, httpResponse);
-    expect(response.document.inference?.prediction).to.not.be.undefined;
+    expect(response.document.inference.prediction).to.not.be.undefined;
     expect(response.document.inference?.pages.length).to.be.equals(1);
     response.document.inference?.pages.forEach((page, idx) => {
       expect(page.id).to.be.equals(idx);
@@ -51,7 +51,7 @@ describe("Synchronous API predict response", () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.customV1));
     const httpResponse = JSON.parse(jsonData.toString());
     const response = new PredictResponse(product.CustomV1, httpResponse);
-    expect(response.document.inference?.prediction).to.not.be.undefined;
+    expect(response.document.inference.prediction).to.not.be.undefined;
     expect(response.document.inference?.pages.length).to.be.equals(2);
     response.document.inference?.pages.forEach((page, idx) => {
       expect(page.id).to.be.equals(idx);

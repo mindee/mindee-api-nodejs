@@ -212,7 +212,7 @@ export class Client {
         throw new Error("Missing parameter 'endpointName' for custom build!");
       }
       if (!endpointVersion || endpointVersion.length === 0) {
-        console.warn(
+        logger.debug(
           "Warning: No version provided for a custom build, will attempt to poll version 1 by default."
         );
         endpointVersion = "1";

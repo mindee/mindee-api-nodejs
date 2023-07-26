@@ -2,7 +2,6 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../src";
-import { InvoiceSplitterV1Document } from "../../../src/product/invoiceSplitter/invoiceSplitterV1Document";
 import { InvoiceSplitterV1 } from "../../../src/product";
 
 const dataPath = {
@@ -23,7 +22,7 @@ describe("InvoiceSplitter Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.Document(InvoiceSplitterV1, response.document);
-    const prediction = doc.inference?.prediction as InvoiceSplitterV1Document;
+    const prediction = doc.inference.prediction;
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
     expect(prediction.invoicePageGroups.length).to.be.equals(3);

@@ -21,8 +21,8 @@ export class CropperV1Document implements Prediction {
   toString(): string {
     const cropping = this.cropping
       .map((crop) => crop.toString())
-      .join("\n          ");
-    const outStr = `Cropping: ${cropping}`;
+      .join("\n           ");
+    const outStr = `:Cropping: ${cropping}`.trim();
     return cleanOutString(outStr);
   }
 }

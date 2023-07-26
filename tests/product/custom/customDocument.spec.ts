@@ -29,7 +29,7 @@ describe("Custom Document Object initialization", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.Document(CustomV1, response.document);
-    const docInference = doc.inference?.prediction as CustomV1Document;
+    const docInference = doc.inference.prediction as CustomV1Document;
     const stringAll = docInference.fields.get("string_all");
     expect(stringAll).to.have.property("values");
     expect(stringAll?.contentsString("-")).to.equals("Mindee-is-awesome");

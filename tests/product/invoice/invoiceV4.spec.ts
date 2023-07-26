@@ -46,7 +46,7 @@ describe("Invoice V4 Object initialization", async () => {
   it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc: mindee.Document<InvoiceV4> = new mindee.Document(InvoiceV4, response.document) as mindee.Document<InvoiceV4>;
+    const doc: mindee.Document<InvoiceV4> = new mindee.Document(InvoiceV4, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
@@ -57,7 +57,7 @@ describe("Invoice V4 Object initialization", async () => {
     const pageData = response.document.inference;
     const doc = new InvoiceV4(pageData);
     const pageString = await fs.readFile(path.join(dataPath.page0String));
-    const page0: Page<InvoiceV4Document> = doc.pages[0] as Page<InvoiceV4Document>;
+    const page0: Page<InvoiceV4Document> = doc.pages[0];
     expect(page0.toString()).to.be.equals(pageString.toString());
   });
 });
