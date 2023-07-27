@@ -3,6 +3,7 @@ import { AsyncPredictResponse } from "../../src";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { StringDict } from "../../src/parsing/common";
+import { InvoiceSplitterV1 } from "../../src/product";
 
 describe("Asynchronous API predict response", () => {
   it("should parse a successful enqueue", async () => {
@@ -12,7 +13,7 @@ describe("Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new AsyncPredictResponse(httpResponse.data);
+    const response = new AsyncPredictResponse(InvoiceSplitterV1, httpResponse.data);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-02-16T12:33:49.602Z"
@@ -28,7 +29,7 @@ describe("Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new AsyncPredictResponse(httpResponse.data);
+    const response = new AsyncPredictResponse(InvoiceSplitterV1, httpResponse.data);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-01-01T00:00:00.000Z"
@@ -44,7 +45,7 @@ describe("Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new AsyncPredictResponse(httpResponse.data);
+    const response = new AsyncPredictResponse(InvoiceSplitterV1, httpResponse.data);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-03-16T12:33:49.602Z"
@@ -60,7 +61,7 @@ describe("Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    const response = new AsyncPredictResponse(httpResponse.data);
+    const response = new AsyncPredictResponse(InvoiceSplitterV1, httpResponse.data);
     expect(response.job).to.not.be.undefined;
     expect(response.job.issuedAt.toISOString()).to.be.equals(
       "2023-03-21T13:52:56.326Z"

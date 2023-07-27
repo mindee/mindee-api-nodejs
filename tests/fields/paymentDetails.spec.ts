@@ -1,8 +1,8 @@
-import { PaymentDetails } from "../../src/parsing/standard";
+import { PaymentDetailsField } from "../../src/parsing/standard";
 import { expect } from "chai";
 
-describe("Test PaymentDetails field", () => {
-  it("should create a PaymentDetails field", () => {
+describe("Test PaymentDetailsField field", () => {
+  it("should create a PaymentDetailsField field", () => {
     const prediction = {
       account_number: "account_number",
       iban: "iban",
@@ -16,7 +16,7 @@ describe("Test PaymentDetails field", () => {
         [0.016, 0.831],
       ],
     };
-    const paymentDetail = new PaymentDetails({ prediction });
+    const paymentDetail = new PaymentDetailsField({ prediction });
     expect(paymentDetail.accountNumber).to.be.equal(prediction.account_number);
     expect(paymentDetail.iban).to.be.equal(prediction.iban);
     expect(paymentDetail.routingNumber).to.be.equal(prediction.routing_number);
@@ -26,7 +26,7 @@ describe("Test PaymentDetails field", () => {
     );
   });
 
-  it("should create a PaymentDetails field with N/A inputs", () => {
+  it("should create a PaymentDetailsField field with N/A inputs", () => {
     const prediction = {
       account_number: "N/A",
       iban: "N/A",
@@ -40,7 +40,7 @@ describe("Test PaymentDetails field", () => {
         [0.016, 0.831],
       ],
     };
-    const paymentDetail = new PaymentDetails({ prediction });
+    const paymentDetail = new PaymentDetailsField({ prediction });
     expect(paymentDetail.accountNumber).to.be.undefined;
     expect(paymentDetail.iban).to.be.undefined;
     expect(paymentDetail.routingNumber).to.be.undefined;
@@ -48,7 +48,7 @@ describe("Test PaymentDetails field", () => {
     expect(paymentDetail.toString()).to.be.equal("");
   });
 
-  it("should create a PaymentDetails field with empty inputs", () => {
+  it("should create a PaymentDetailsField field with empty inputs", () => {
     const prediction = {
       account_number: {},
       iban: {},
@@ -62,7 +62,7 @@ describe("Test PaymentDetails field", () => {
         [0.016, 0.831],
       ],
     };
-    const paymentDetail = new PaymentDetails({ prediction });
+    const paymentDetail = new PaymentDetailsField({ prediction });
     expect(paymentDetail.accountNumber).to.be.undefined;
     expect(paymentDetail.iban).to.be.undefined;
     expect(paymentDetail.routingNumber).to.be.undefined;

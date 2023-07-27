@@ -1,130 +1,48 @@
-import { InputSource } from "../../input";
-import { PositionField, FullText } from "../standard";
+import { CropperExtra } from "./extras/cropperExtra";
+import { ExtraField, Extras } from "./extras/extras";
+import { Inference } from "./inference";
+import { Ocr } from "./ocr/ocr";
+import { StringDict } from "./stringDict";
 
-import { OrientationField, StringDict } from "../common";
+export class Document<T extends Inference> {
+  filename: string;
+  inference: T;
+  id: string;
+  extras?: Extras;
+  ocr?: Ocr;
 
-export type DocumentSig<DocType extends Document> = {
-  new ({
-    prediction,
-    orientation,
-    extras,
-    pageId,
-    fullText,
-    documentType,
-    inputSource = undefined,
-  }: DocumentConstructorProps): DocType;
-};
-
-export interface DocumentConstructorProps extends BaseDocumentConstructorProps {
-  /** JSON parsed prediction from HTTP response */
-  prediction: StringDict;
-}
-
-interface BaseDocumentConstructorProps {
-  /** Orientation JSON for page-level document */
-  orientation?: StringDict;
-  /** Extras JSON */
-  extras?: StringDict;
-  /** input file given to parse the document */
-  inputSource?: InputSource;
-  /** Page ID for page-level document */
-  pageId?: number;
-  /** full OCR extracted text */
-  fullText?: FullText;
-  documentType?: string;
-}
-
-export class Document {
-  checklist: { [index: string]: boolean };
-  mimeType?: string;
-  filename: string = "";
-  filepath?: string;
-  fullText?: FullText;
-  pageId?: number | undefined;
-  orientation?: OrientationField;
-  cropper: PositionField[] = [];
-  readonly docType: string;
-
-  constructor({
-    orientation = undefined,
-    extras = undefined,
-    inputSource = undefined,
-    fullText = undefined,
-    pageId = undefined,
-    documentType,
-  }: BaseDocumentConstructorProps) {
-    this.filepath = undefined;
-    this.pageId = pageId;
-    if (documentType === undefined || documentType === "") {
-      this.docType = Object.getPrototypeOf(this).constructor.name;
-    } else {
-      this.docType = documentType;
-    }
-
-    if (pageId !== undefined && orientation !== undefined) {
-      this.orientation = new OrientationField({
-        prediction: orientation,
-        pageId: pageId,
-      });
-    }
-    if (extras !== undefined) {
-      if (extras.cropper !== undefined) {
-        extras.cropper.cropping.forEach((crop: any) => {
-          this.cropper.push(
-            new PositionField({
-              prediction: crop,
-              pageId: pageId,
-            })
-          );
-        });
-      }
-    }
-
-    if (inputSource !== undefined) {
-      this.filepath = inputSource.filepath;
-      this.filename = inputSource.filename;
-      this.mimeType = inputSource.mimeType;
-    }
-    this.fullText = fullText;
-    this.checklist = {};
-  }
-
-  clone() {
-    return JSON.parse(JSON.stringify(this));
-  }
-
-  /** return true if all checklist of the document if true */
-  checkAll() {
-    return Object.values(this.checklist).every((item) => item);
-  }
-
-  /**
-   * Takes a list of Documents and return one Document where
-   * each field is set with the maximum probability field
-   * @param {Array<Document>} documents - A list of Documents
-   */
-  static mergePages(documents: any) {
-    const finalDocument = documents[0].clone();
-    const attributes = Object.getOwnPropertyNames(finalDocument);
-    for (const document of documents) {
-      for (const attribute of attributes) {
-        if (Array.isArray(document?.[attribute])) {
-          finalDocument[attribute] = finalDocument[attribute]?.length
-            ? finalDocument[attribute]
-            : document?.[attribute];
-        } else if (
-          document?.[attribute]?.confidence >
-          finalDocument[attribute].confidence
-        ) {
-          finalDocument[attribute] = document?.[attribute];
+  constructor(
+    inferenceClass: new (httpResponse: StringDict) => T,
+    httpResponse: StringDict
+  ) {
+    this.id = httpResponse["id"] ?? "";
+    this.filename = httpResponse["name"] ?? "";
+    this.ocr = httpResponse["ocr"] ?? undefined;
+    this.inference = new inferenceClass(httpResponse["inference"]);
+    // Note: this is a convoluted but functional way of being able to implement/use Extras fields
+    // as an extension of a Map object (like having an adapted toString() method, for instance)
+    if (
+      httpResponse["extras"] &&
+      Object.keys(httpResponse["extras"].length > 0)
+    ) {
+      const extras: Record<string, ExtraField> = {};
+      Object.entries(httpResponse["extras"]).forEach(
+        ([extraKey, extraValue]: [string, any]) => {
+          switch (extraKey) {
+            case "cropper":
+              extras["cropper"] = new CropperExtra(extraValue as StringDict);
+          }
         }
-      }
+      );
+      this.extras = new Extras(extras);
     }
-    return finalDocument;
   }
 
-  static cleanOutString(outStr: string): string {
-    const lines = / \n/gm;
-    return outStr.replace(lines, "\n");
+  toString() {
+    return `########\nDocument\n########
+:Mindee ID: ${this.id}
+:Filename: ${this.filename}
+
+${this.inference?.toString()}`;
   }
 }

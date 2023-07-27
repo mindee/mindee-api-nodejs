@@ -5,7 +5,6 @@ import {
   BytesInput,
   UrlInput,
   BufferInput,
-  INPUT_TYPE_URL,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_STREAM,
   INPUT_TYPE_PATH,
@@ -124,7 +123,6 @@ describe("Test different types of input", () => {
       url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/576px-ReceiptSwiss.jpg",
     });
     await input.init();
-    expect(input.inputType).to.equals(INPUT_TYPE_URL);
     expect(input.fileObject).to.be.a("string");
   });
 

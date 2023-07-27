@@ -10,9 +10,8 @@ import {
   INPUT_TYPE_STREAM,
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BYTES,
-  INPUT_TYPE_URL,
   INPUT_TYPE_BUFFER,
-  InputSource,
+  LocalInputSource,
 } from "./base";
 
 //
@@ -23,7 +22,7 @@ interface PathInputProps {
   inputPath: string;
 }
 
-export class PathInput extends InputSource {
+export class PathInput extends LocalInputSource {
   readonly inputPath: string;
   fileObject: Buffer = Buffer.alloc(0);
 
@@ -51,7 +50,7 @@ interface Base64InputProps {
   filename: string;
 }
 
-export class Base64Input extends InputSource {
+export class Base64Input extends LocalInputSource {
   private inputString: string;
   fileObject: Buffer = Buffer.alloc(0);
 
@@ -80,7 +79,7 @@ interface StreamInputProps {
   filename: string;
 }
 
-export class StreamInput extends InputSource {
+export class StreamInput extends LocalInputSource {
   private readonly inputStream: Readable;
   fileObject: Buffer = Buffer.alloc(0);
 
@@ -116,7 +115,7 @@ interface BytesInputProps {
   filename: string;
 }
 
-export class BytesInput extends InputSource {
+export class BytesInput extends LocalInputSource {
   private inputBytes: string;
   fileObject: Buffer = Buffer.alloc(0);
 
@@ -140,18 +139,11 @@ export class BytesInput extends InputSource {
 // URL
 //
 
-interface UrlInputProps {
-  url: string;
-}
-
-export class UrlInput extends InputSource {
+export class UrlInput {
   private readonly url: string;
   fileObject!: string;
 
-  constructor({ url }: UrlInputProps) {
-    super({
-      inputType: INPUT_TYPE_URL,
-    });
+  constructor({ url }: { url: string }) {
     this.url = url;
   }
 
@@ -172,7 +164,7 @@ interface BufferInputProps {
   filename: string;
 }
 
-export class BufferInput extends InputSource {
+export class BufferInput extends LocalInputSource {
   constructor({ buffer, filename }: BufferInputProps) {
     super({
       inputType: INPUT_TYPE_BUFFER,
