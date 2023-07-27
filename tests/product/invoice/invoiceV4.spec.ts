@@ -11,7 +11,6 @@ const dataPath = {
   empty: "tests/data/invoice/response_v4/empty.json",
   docString: "tests/data/invoice/response_v4/summary_full.rst",
   page0String: "tests/data/invoice/response_v4/summary_page0.rst",
-  page1String: "tests/data/invoice/response_v4/page1_to_string.txt",
 };
 
 describe("Invoice V4 Object initialization", async () => {

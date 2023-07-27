@@ -6,7 +6,7 @@ export class IdCardV1 extends Inference {
   endpointName = "idcard_fr";
   endpointVersion = "1";
   prediction: IdCardV1Document;
-  pages: Page<IdCardV1Document>[] = [];
+  pages: Page<IdCardV1Page>[] = [];
 
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
