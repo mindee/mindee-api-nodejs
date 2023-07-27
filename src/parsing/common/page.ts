@@ -5,8 +5,8 @@ import { Prediction } from "./prediction";
 import { StringDict } from "./stringDict";
 
 export class Page<T extends Prediction> {
-  id: number | undefined;
-  orientation: OrientationField | undefined;
+  id?: number;
+  orientation?: OrientationField;
   prediction: T;
   extras?: Extras;
 

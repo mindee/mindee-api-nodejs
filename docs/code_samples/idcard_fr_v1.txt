@@ -8,9 +8,11 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 // Load a file from disk
 const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
-// Parse it
-const apiResponse = mindeeClient
-  .parse(mindee.product.fr.IdCardV1, inputSource);
+// Parse the file
+const apiResponse = mindeeClient.parse(
+  mindee.product.fr.IdCardV1,
+  inputSource
+);
 
 // Handle the response Promise
 apiResponse.then((resp) => {

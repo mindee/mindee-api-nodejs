@@ -12,7 +12,12 @@ export class LicensePlateV1 extends Inference {
     this.prediction = new LicensePlateV1Document(rawPrediction["prediction"]);
     this.pages = rawPrediction["pages"].map(
       (page: StringDict) =>
-        new Page(LicensePlateV1Document, page, page["id"], page["orientation"])
+        new Page(
+          LicensePlateV1Document,
+          page,
+          page["id"],
+          page["orientation"]
+        )
     );
   }
 }
