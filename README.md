@@ -92,14 +92,21 @@ const mindeeClient = new mindee.Client({
 // Load a file from disk
 const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
+// Create a custom endpoint for your product
+const customEndpoint = mindeeClient.createEndpoint(
+  "my-endpoint",
+  "my-account",
+  "my-version" // will default to 1 if not provided
+);
+
 // Parse it
 const apiResponse = mindeeClient
   .parse(
     mindee.product.CustomV1,
     inputSource,
-    "my-endpoint", 
-    "my-account",
-    "my-version" // 1 by default, but it is strongly recommended you provide it
+    {
+      endpoint: customEndpoint
+    }
   );
 ```
 
@@ -117,6 +124,53 @@ apiResponse.then((resp) => {
     // individual pages (array)
     console.log(res.document.pages);
 });
+```
+
+### Additional options
+
+#### Apply Cropping
+
+To apply the `Cropper` tool provided by Mindee, set the `croper` param to `true`:
+
+```js
+//...
+const apiResponse = mindeeClient.parse(
+  mindee.product.InvoiceV4,
+  inputSource,
+  { cropper: true }
+);
+```
+
+#### Full-Text extraction (OCR)
+
+To extract all words read on your document, set the `fullText` param to `true`:
+
+```js
+//...
+const apiResponse = mindeeClient.parse(
+  mindee.product.InvoiceV4,
+  inputSource,
+  { fullText: true }
+);
+```
+> Note: this parameter is only available on the InvoiceV4, ReceiptV5 & FinancialDocumentV1 APIs for now.
+
+#### Page options
+
+Here's an example on how to apply page options:
+
+```js
+//...
+const apiResponse = mindeeClient.parse(
+  mindee.product.InvoiceV4,
+  inputSource,
+  {
+    pageOptions: {
+      pageIndexes=[0, 1, 2, 3],
+      operation: mindee.PageOptionsOperation.KeepOnly,
+      onMinPages: 2
+    }
+  });
 ```
 
 ## Further Reading
