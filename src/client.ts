@@ -19,8 +19,13 @@ import {
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 import { InferenceFactory } from "./parsing/common/inference";
+import { CustomV1 } from "./product";
 
 export interface PredictOptions {
+  endpointName?: string;
+  accountName?: string;
+  endpointVersion?: string;
+  endpoint?: Endpoint;
   /**
    * Whether to include the full text for each page.
    *
@@ -33,6 +38,7 @@ export interface PredictOptions {
    * This performs a cropping operation on the server and will increase response time.
    */
   cropper?: boolean;
+  pageOptions?: PageOptions;
 }
 
 export interface CustomConfigParams {
@@ -89,28 +95,22 @@ export class Client {
   async parse<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
     inputSource: InputSource,
-    endpointName?: string,
-    accountName?: string,
-    endpointVersion?: string,
     params: PredictOptions = {
+      endpoint: undefined,
       fullText: undefined,
       cropper: undefined,
-    },
-    pageOptions?: PageOptions
+      pageOptions: undefined,
+    }
   ): Promise<PredictResponse<T>> {
-    const endpoint = this.#initializeEndpoint<T>(
-      productClass,
-      endpointName,
-      accountName,
-      endpointVersion
-    );
+    const endpoint =
+      params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
     const rawPrediction = await endpoint.predict({
       inputDoc: inputSource,
       includeWords: this.getBooleanParam(params.fullText),
-      pageOptions: pageOptions,
+      pageOptions: params.pageOptions,
       cropper: this.getBooleanParam(params.cropper),
     });
     return new PredictResponse<T>(productClass, rawPrediction.data);
@@ -124,28 +124,17 @@ export class Client {
   async enqueue<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
     inputSource: InputSource,
-    endpointName?: string,
-    accountName?: string,
-    endpointVersion?: string,
-    params: PredictOptions = {
-      fullText: false,
-      cropper: false,
-    },
-    pageOptions?: PageOptions
+    params: PredictOptions = {}
   ): Promise<AsyncPredictResponse<T>> {
-    const endpoint = this.#initializeEndpoint<T>(
-      productClass,
-      endpointName,
-      accountName,
-      endpointVersion
-    );
+    const endpoint =
+      params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
     const rawResponse = await endpoint.predictAsync({
       inputDoc: inputSource,
       includeWords: this.getBooleanParam(params.fullText),
-      pageOptions: pageOptions,
+      pageOptions: params?.pageOptions,
       cropper: this.getBooleanParam(params.cropper),
     });
 
@@ -155,10 +144,10 @@ export class Client {
   async parseQueued<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
     queueId: string,
-    endpointIn?: Endpoint
+    params: PredictOptions = {}
   ): Promise<AsyncPredictResponse<T>> {
-    const endpoint: Endpoint =
-      endpointIn ?? this.#initializeEndpoint(productClass);
+    const endpoint =
+      params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
   }
@@ -167,75 +156,74 @@ export class Client {
     return param !== undefined ? param : false;
   }
 
-  /**
-   * Creates an endpoint with the given values. Raises an error if the endpoint is invalid.
-   * @param productClass
-   * @param endpointName
-   * @param accountName
-   * @param version
-   */
-  #initializeEndpoint<T extends Inference>(
-    productClass: new (httpResponse: StringDict) => T,
-    endpointName?: string,
-    accountName?: string,
-    endpointVersion?: string
-  ): Endpoint;
+  #buildEndpoint(
+    endpointName: string,
+    accountName: string,
+    endpointVersion: string
+  ): Endpoint {
+    const apiSettings = new MindeeApi({
+      apiKey: this.apiKey,
+      urlName: endpointName,
+      version: endpointVersion,
+      owner: accountName,
+    });
+    return new Endpoint(
+      endpointName,
+      accountName,
+      endpointVersion,
+      apiSettings
+    );
+  }
 
   /**
-   * Creates an endpoint for an OTS app.
-   * @param productClass Class of the product
-   */
-  #initializeEndpoint<T extends Inference>(
-    productClass: new (httpResponse: StringDict) => T
-  ): Endpoint;
-
-  /**
-   * Creates an endpoint with the given values. Raises an error if the endpoint is invalid.
+   * Creates a custom endpoint with the given values. Raises an error if the endpoint is invalid.
    * @param productClass Class of the product
    * @param endpointName Name of a custom Endpoint
    * @param accountName Name of the account tied to the active Endpoint
    * @param version Version of a custom Endpoint
    */
-  #initializeEndpoint<T extends Inference>(
-    productClass: new (httpResponse: StringDict) => T,
-    endpointName?: string,
-    accountName?: string,
+  createEndpoint(
+    endpointName: string,
+    accountName: string,
     endpointVersion?: string
   ): Endpoint {
     const cleanAccountName: string = this.#cleanAccountName(
-      productClass,
+      CustomV1,
       accountName
     );
-    let cleanEndpointName, cleanEndpointVersion: string;
-    if (productClass.name === "CustomV1") {
-      if (!endpointName || endpointName.length === 0) {
-        throw new Error("Missing parameter 'endpointName' for custom build!");
-      }
-      if (!endpointVersion || endpointVersion.length === 0) {
-        logger.debug(
-          "Warning: No version provided for a custom build, will attempt to poll version 1 by default."
-        );
-        endpointVersion = "1";
-      }
-      [cleanEndpointName, cleanEndpointVersion] = [
-        endpointName,
-        endpointVersion,
-      ];
-    } else {
-      [cleanEndpointName, cleanEndpointVersion] =
-        this.#getEndpoint<T>(productClass);
+    if (!endpointName || endpointName.length === 0) {
+      throw new Error("Missing parameter 'endpointName' for custom build!");
     }
-    const apiSettings = new MindeeApi({
-      apiKey: this.apiKey,
-      urlName: cleanEndpointName,
-      version: cleanEndpointVersion,
-      owner: cleanAccountName,
-    });
-    return new Endpoint(
-      cleanEndpointName,
+    let cleanEndpointVersion: string;
+    if (!endpointVersion || endpointVersion.length === 0) {
+      logger.debug(
+        "Warning: No version provided for a custom build, will attempt to poll version 1 by default."
+      );
+      cleanEndpointVersion = "1";
+    } else {
+      cleanEndpointVersion = endpointVersion;
+    }
+    return this.#buildEndpoint(
+      endpointName,
       cleanAccountName,
-      cleanEndpointVersion,
-      apiSettings
+      cleanEndpointVersion
+    );
+  }
+
+  /**
+   * Creates an endpoint for an OTS product. Raises an error if the endpoint is invalid.
+   */
+  #initializeOTSEndpoint<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T
+  ): Endpoint {
+    if (productClass.name === "CustomV1") {
+      throw new Error("Incorrect parameters for Custom build.");
+    }
+    const [endpointName, endpointVersion] = this.#getEndpoint<T>(productClass);
+    return this.#buildEndpoint(
+      endpointName,
+      STANDARD_API_OWNER,
+      endpointVersion
     );
   }
 
