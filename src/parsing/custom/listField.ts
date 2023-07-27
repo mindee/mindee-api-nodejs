@@ -26,7 +26,7 @@ export class ListFieldValue {
     this.confidence = prediction["confidence"];
     if (prediction["polygon"]) {
       this.polygon = prediction["polygon"];
-      this.bbox = getBoundingBox(prediction.polygon);
+      this.bbox = getBoundingBox(prediction["polygon"]);
     }
   }
 
@@ -43,13 +43,17 @@ export class ListField {
   /** The document page on which the information was found. */
   pageId: number;
 
-  constructor({ prediction, reconstructed = false, pageId }: FieldConstructor) {
+  constructor({
+    prediction = {},
+    reconstructed = false,
+    pageId,
+  }: FieldConstructor) {
     this.values = [];
     this.confidence = prediction["confidence"];
     this.reconstructed = reconstructed;
     this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
 
-    if (Object.prototype.hasOwnProperty.call(prediction, "values")) {
+    if (prediction["values"] !== undefined) {
       prediction["values"].forEach((field: StringDict) => {
         this.values.push(new ListFieldValue(field));
       });

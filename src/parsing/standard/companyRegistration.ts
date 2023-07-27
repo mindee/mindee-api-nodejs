@@ -3,19 +3,19 @@ import { Field, FieldConstructor } from "./field";
 /**
  * A company registration item.
  */
-export class CompanyRegistration extends Field {
+export class CompanyRegistrationField extends Field {
   /** Registration identifier. */
   value?: string;
   /** Type of company registration. */
   type: string;
 
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId,
   }: FieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
-    this.type = prediction.type;
+    this.type = prediction["type"];
   }
 }

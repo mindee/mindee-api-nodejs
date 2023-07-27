@@ -3,7 +3,7 @@ import { BaseField, BaseFieldConstructor } from "./base";
 /**
  * The locale detected on the document.
  */
-export class Locale extends BaseField {
+export class LocaleField extends BaseField {
   /** Locale in ISO format. */
   value?: string;
   /** The confidence score of the prediction. */
@@ -20,20 +20,20 @@ export class Locale extends BaseField {
    * @param {String} valueKey - Key to use in the prediction dict
    * @param {boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    */
-  constructor({ prediction, reconstructed = false }: BaseFieldConstructor) {
-    const valueKey = prediction.value !== undefined ? "value" : "language";
+  constructor({
+    prediction = {},
+    reconstructed = false,
+  }: BaseFieldConstructor) {
+    const valueKey = prediction["value"] !== undefined ? "value" : "language";
     super({ prediction, valueKey, reconstructed });
 
-    this.confidence = prediction.confidence ? prediction.confidence : 0.0;
-    this.language = undefined;
-    this.country = undefined;
-    this.currency = undefined;
-    if ("language" in prediction && prediction.language !== "N/A")
-      this.language = prediction.language;
-    if ("country" in prediction && prediction.country !== "N/A")
-      this.country = prediction.country;
-    if ("currency" in prediction && prediction.currency !== "N/A")
-      this.currency = prediction.currency;
+    this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
+    this.language =
+      prediction["language"] !== undefined ? prediction["language"] : undefined;
+    this.country =
+      prediction["country"] !== undefined ? prediction["country"] : undefined;
+    this.currency =
+      prediction["currency"] !== undefined ? prediction["currency"] : undefined;
   }
 
   toString(): string {

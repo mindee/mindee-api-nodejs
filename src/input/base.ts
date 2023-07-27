@@ -14,7 +14,6 @@ export const INPUT_TYPE_STREAM = "stream";
 export const INPUT_TYPE_BASE64 = "base64";
 export const INPUT_TYPE_BYTES = "bytes";
 export const INPUT_TYPE_PATH = "path";
-export const INPUT_TYPE_URL = "URL";
 export const INPUT_TYPE_BUFFER = "buffer";
 
 const MIMETYPES = new Map<string, string>([
@@ -32,11 +31,16 @@ const ALLOWED_INPUT_TYPES = [
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH,
-  INPUT_TYPE_URL,
   INPUT_TYPE_BUFFER,
 ];
 
-export class InputSource {
+export abstract class InputSource {
+  async init() {
+    throw new Error("not Implemented");
+  }
+}
+
+export abstract class LocalInputSource extends InputSource {
   public inputType: string;
   public filename: string = "";
   public filepath?: string;
@@ -50,6 +54,7 @@ export class InputSource {
    * NB: Because of async calls, init() should be called after creating the object
    */
   constructor({ inputType }: InputProps) {
+    super();
     // Check if inputType is valid
     if (!ALLOWED_INPUT_TYPES.includes(inputType)) {
       const allowed = Array.from(ALLOWED_INPUT_TYPES.keys()).join(", ");
@@ -59,10 +64,6 @@ export class InputSource {
     }
     this.inputType = inputType;
     logger.debug(`Loading file from: ${inputType}`);
-  }
-
-  async init() {
-    throw new Error("not Implemented");
   }
 
   isPdf(): boolean {

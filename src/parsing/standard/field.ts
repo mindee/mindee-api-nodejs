@@ -35,7 +35,7 @@ export class Field extends BaseField {
    * @param {Array<String>} extraFields - Extra fields to get from the prediction and to set as attribute of the Field
    */
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId,
@@ -43,9 +43,9 @@ export class Field extends BaseField {
     super({ prediction, valueKey, reconstructed });
     this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
 
-    this.confidence = prediction.confidence ? prediction.confidence : 0.0;
-    if (prediction.polygon) {
-      this.polygon = prediction.polygon;
+    this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
+    if (prediction["polygon"]) {
+      this.polygon = prediction["polygon"];
     }
     this.boundingBox = getBoundingBox(this.polygon);
   }

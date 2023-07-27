@@ -1,12 +1,12 @@
 export { ClassificationField } from "./classification";
 export { Taxes, TaxField } from "./tax";
-export { PaymentDetails } from "./paymentDetails";
-export { Locale } from "./locale";
-export { Amount, floatToString } from "./amount";
+export { PaymentDetailsField } from "./paymentDetails";
+export { LocaleField } from "./locale";
+export { AmountField, floatToString } from "./amount";
 export { DateField } from "./date";
 export { BaseField, BaseFieldConstructor } from "./base";
 export { FullText, Word } from "./fullText";
-export { CompanyRegistration } from "./companyRegistration";
+export { CompanyRegistrationField } from "./companyRegistration";
 export { PositionField } from "./position";
-export { TextField } from "./text";
+export { StringField } from "./text";
 export { Field, FieldConstructor } from "./field";

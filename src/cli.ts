@@ -1,19 +1,6 @@
 import { Command, OptionValues } from "commander";
-import {
-  InvoiceV4,
-  InvoiceSplitterV1,
-  ReceiptV5,
-  PassportV1,
-  MindeeVisionV1,
-  CustomV1,
-  fr,
-  us,
-  eu,
-  FinancialDocumentV1,
-} from "./product";
-import { Document, DocumentSig } from "./parsing/common";
-
-import { Response, STANDARD_API_OWNER } from "./http";
+import * as product from "./product";
+import { Document, Inference, StringDict } from "./parsing/common";
 import { Client, PredictOptions } from "./client";
 import { PageOptions, PageOptionsOperation } from "./input";
 import * as console from "console";
@@ -22,9 +9,9 @@ const program = new Command();
 
 const COMMAND_CUSTOM = "custom";
 
-interface ProductConfig {
+interface ProductConfig<T extends Inference = Inference> {
   displayName: string;
-  docClass: DocumentSig<Document>;
+  docClass: new (rawPrediction: StringDict) => T;
   fullText: boolean;
   async: boolean;
   sync: boolean;
@@ -41,7 +28,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     COMMAND_CUSTOM,
     {
       displayName: "Custom Document",
-      docClass: CustomV1,
+      docClass: product.CustomV1,
       fullText: false,
       async: false,
       sync: true,
@@ -51,7 +38,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     "invoice",
     {
       displayName: "Invoice",
-      docClass: InvoiceV4,
+      docClass: product.InvoiceV4,
       fullText: true,
       async: false,
       sync: true,
@@ -61,119 +48,103 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     "invoice-splitter",
     {
       displayName: "Invoice Splitter",
-      docClass: InvoiceSplitterV1,
+      docClass: product.InvoiceSplitterV1,
       fullText: false,
       async: true,
       sync: false,
     },
   ],
-  [
-    "receipt",
-    {
-      displayName: "Expense Receipt",
-      docClass: ReceiptV5,
-      fullText: true,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "passport",
-    {
-      displayName: "Passport",
-      docClass: PassportV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "financial",
-    {
-      displayName: "Financial Document",
-      docClass: FinancialDocumentV1,
-      fullText: true,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "fr-id-card",
-    {
-      displayName: "FR ID Card",
-      docClass: fr.IdCardV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "fr-bank-account-details",
-    {
-      displayName: "FR Bank Account Details",
-      docClass: fr.BankAccountDetailsV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "fr-carte-vitale",
-    {
-      displayName: "FR Carte Vitale",
-      docClass: fr.CarteVitaleV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
+  // [
+  //   "receipt",
+  //   {
+  //     displayName: "Expense Receipt",
+  //     docClass: product.ReceiptV5,
+  //     fullText: true,
+  //     async: false,
+  //     sync: true,
+  //   },
+  // ],
+  // [
+  //   "passport",
+  //   {
+  //     displayName: "Passport",
+  //     docClass: product.PassportV1,
+  //     fullText: false,
+  //     async: false,
+  //     sync: true,
+  //   },
+  // ],
+  // [
+  //   "financial",
+  //   {
+  //     displayName: "Financial Document",
+  //     docClass: product.FinancialDocumentV1,
+  //     fullText: true,
+  //     async: false,
+  //     sync: true,
+  //   },
+  // ],
+  // [
+  //   "fr-id-card",
+  //   {
+  //     displayName: "FR ID Card",
+  //     docClass: product.IdCardV1,
+  //     fullText: false,
+  //     async: false,
+  //     sync: true,
+  //   },
+  // ],
+  // [
+  //   "fr-bank-account-details",
+  //   {
+  //     displayName: "FR Bank Account Details",
+  //     docClass: product.fr.BankAccountDetailsV1,
+  //     fullText: false,
+  //     async: false,
+  //     sync: true,
+  //   },
+  // ],
+  // [
+  //   "fr-carte-vitale",
+  //   {
+  //     displayName: "FR Carte Vitale",
+  //     docClass: product.fr.CarteVitaleV1,
+  //     fullText: false,
+  //     async: false,
+  //     sync: true,
+  //   },
+  // ],
   [
     "eu-license-plate",
     {
       displayName: "EU License Plate",
-      docClass: eu.LicensePlateV1,
+      docClass: product.eu.LicensePlateV1,
       fullText: false,
       async: false,
       sync: true,
     },
   ],
-  [
-    "us-bank-check",
-    {
-      displayName: "US Bank Check",
-      docClass: us.BankCheckV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "mvision",
-    {
-      displayName: "Mindee Vision",
-      docClass: MindeeVisionV1,
-      fullText: false,
-      async: false,
-      sync: true,
-    },
-  ],
+  // [
+  //   "us-bank-check",
+  //   {
+  //     displayName: "US Bank Check",
+  //     docClass: product.us.BankCheckV1,
+  //     fullText: false,
+  //     async: false,
+  //     sync: true,
+  //   },
+  // ]
 ]);
 
 //
 // EXECUTE THE COMMANDS
 //
 
-function initClient(command: string, options: OptionValues): Client {
+function initClient(options: OptionValues): Client {
   const mindeeClient = new Client({
     apiKey: options.apiKey,
     debug: options.debug,
   });
-  if (command === COMMAND_CUSTOM) {
-    mindeeClient.addEndpoint({
-      accountName: options.user,
-      endpointName: options.documentType,
-    });
-  }
   return mindeeClient;
 }
 
@@ -185,7 +156,7 @@ function getConfig(command: string): ProductConfig {
   return conf;
 }
 
-function getPredictParams(command: string, options: any, conf: ProductConfig) {
+function getPageOptions(options: any) {
   let pageOptions: PageOptions | undefined = undefined;
   if (options.cutPages) {
     pageOptions = {
@@ -194,41 +165,66 @@ function getPredictParams(command: string, options: any, conf: ProductConfig) {
       onMinPages: 5,
     };
   }
+  return pageOptions;
+}
+
+function getPredictParams(options: any) {
   const predictParams: PredictOptions = {
-    endpointName:
-      command === COMMAND_CUSTOM ? options.documentType : conf.docClass.name,
-    accountName: command === COMMAND_CUSTOM ? options.user : STANDARD_API_OWNER,
     fullText: options.fullText,
-    pageOptions: pageOptions,
+    cropper: options.cropper,
   };
   return predictParams;
 }
 
 async function callParse(command: string, inputPath: string, options: any) {
   const conf = getConfig(command);
-  const mindeeClient = initClient(command, options);
-  const predictParams = getPredictParams(command, options, conf);
-  const doc = mindeeClient.docFromPath(inputPath);
-  const response = await doc.parse(conf.docClass, predictParams);
-  printResponse(response, options);
+  const mindeeClient = initClient(options);
+  const predictParams = getPredictParams(options);
+  const pageOptions = getPageOptions(options);
+  const inputSource = mindeeClient.docFromPath(inputPath);
+  const response = COMMAND_CUSTOM
+    ? await mindeeClient.parse(
+        conf.docClass,
+        inputSource,
+        undefined,
+        undefined,
+        undefined,
+        predictParams
+      )
+    : await mindeeClient.parse(
+        conf.docClass,
+        inputSource,
+        options.documentType,
+        options.user,
+        options.version,
+        predictParams,
+        pageOptions
+      );
+  printResponse(response.document, options);
 }
 
 async function callEnqueue(command: string, inputPath: string, options: any) {
   const conf = getConfig(command);
-  const mindeeClient = initClient(command, options);
-  const predictParams = getPredictParams(command, options, conf);
-  const doc = mindeeClient.docFromPath(inputPath);
-  const response = await doc.enqueue(conf.docClass, predictParams);
+  const mindeeClient = initClient(options);
+  const predictParams = getPredictParams(options);
+  const pageOptions = getPageOptions(options);
+  const inputSource = mindeeClient.docFromPath(inputPath);
+  const response = await mindeeClient.enqueue(
+    conf.docClass,
+    inputSource,
+    options.documentType,
+    options.user,
+    options.version,
+    predictParams,
+    pageOptions
+  );
   console.log(response.job);
 }
 
 async function callParseQueued(command: string, queueId: string, options: any) {
   const conf = getConfig(command);
-  const mindeeClient = initClient(command, options);
-  const predictParams = getPredictParams(command, options, conf);
-  const doc = mindeeClient.docForAsync();
-
-  const response = await doc.parseQueued(conf.docClass, queueId, predictParams);
+  const mindeeClient = initClient(options);
+  const response = await mindeeClient.parseQueued(conf.docClass, queueId);
 
   if (response.document !== undefined) {
     printResponse(response.document, options);
@@ -237,19 +233,22 @@ async function callParseQueued(command: string, queueId: string, options: any) {
   }
 }
 
-function printResponse(response: Response<Document>, options: any) {
+function printResponse<T extends Inference>(
+  document: Document<T>,
+  options: any
+) {
   if (options.fullText) {
-    response.pages.forEach((page) => {
-      console.log(page.fullText?.toString());
+    document.ocr?.mVisionV1.pages.forEach((page) => {
+      console.log(page.allWords.toString());
     });
   }
   if (options.pages) {
-    response.pages.forEach((page) => {
+    document.inference.pages.forEach((page) => {
       console.log(`\n${page}`);
     });
   }
-  if (response.document) {
-    console.log(`\n${response.document}`);
+  if (document) {
+    console.log(`\n${document}`);
   }
 }
 
