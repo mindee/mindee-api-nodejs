@@ -14,7 +14,7 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 const customEndpoint = mindeeClient.createEndpoint(
   "my-endpoint",
   "my-account"
-)
+);
 
 // Parse it
 const apiResponse = mindeeClient
