@@ -21,7 +21,7 @@ export class BaseField {
    * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
    */
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     reconstructed = false,
   }: BaseFieldConstructor) {

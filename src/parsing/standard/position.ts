@@ -22,12 +22,12 @@ export class PositionField {
   /** The document page on which the information was found. */
   pageId: number | undefined;
 
-  constructor({ prediction, pageId }: PositionFieldConstructor) {
+  constructor({ prediction = {}, pageId }: PositionFieldConstructor) {
     this.pageId = pageId;
-    this.boundingBox = prediction.bounding_box;
-    this.polygon = prediction.polygon;
-    this.quadrangle = prediction.quadrangle;
-    this.rectangle = prediction.rectangle;
+    this.boundingBox = prediction["bounding_box"];
+    this.polygon = prediction["polygon"];
+    this.quadrangle = prediction["quadrangle"];
+    this.rectangle = prediction["rectangle"];
   }
 
   toString(): string {

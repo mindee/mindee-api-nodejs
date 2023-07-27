@@ -1,10 +1,8 @@
 export * as product from "./product";
+export { Client, CustomConfigParams, PredictOptions } from "./client";
 export {
-  Client,
-  ClientOptions,
-  CustomConfigParams,
-  DocumentClient,
-  PredictOptions,
-} from "./client";
-export { ResponseSig, Response, AsyncPredictResponse } from "./http";
+  AsyncPredictResponse,
+  PredictResponse,
+  Document,
+} from "./parsing/common";
 export { InputSource, PageOptionsOperation } from "./input";
