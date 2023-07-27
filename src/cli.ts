@@ -243,7 +243,7 @@ function printResponse<T extends Inference>(
     });
   }
   if (options.pages) {
-    document.inference?.pages.forEach((page) => {
+    document.inference.pages.forEach((page) => {
       console.log(`\n${page}`);
     });
   }

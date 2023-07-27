@@ -64,12 +64,13 @@ export class InvoiceV4Document implements Prediction {
     });
     this.referenceNumbers =
       rawPrediction["reference_numbers"] &&
-      rawPrediction["reference_numbers"].map(function (prediction: StringDict) {
-        return new StringField({
-          prediction: prediction,
-          pageId: pageId,
-        });
-      });
+      rawPrediction["reference_numbers"].map(
+        (prediction: StringDict) =>
+          new StringField({
+            prediction: prediction,
+            pageId: pageId,
+          })
+      );
     this.totalAmount = new AmountField({
       prediction: rawPrediction["total_amount"],
       pageId: pageId,
@@ -101,12 +102,11 @@ export class InvoiceV4Document implements Prediction {
     this.supplierCompanyRegistrations =
       rawPrediction["supplier_company_registrations"] &&
       rawPrediction["supplier_company_registrations"].map(
-        function (prediction: { [index: string]: any }) {
-          return new CompanyRegistrationField({
+        (prediction: StringDict) =>
+          new CompanyRegistrationField({
             prediction: prediction,
             pageId: pageId,
-          });
-        }
+          })
       );
     this.dueDate = new DateField({
       prediction: rawPrediction["due_date"],
@@ -133,7 +133,7 @@ export class InvoiceV4Document implements Prediction {
       pageId: pageId,
     });
     rawPrediction["customer_company_registrations"] &&
-      rawPrediction["customer_company_registrations"].map(
+      rawPrediction["customer_company_registrations"].forEach(
         (prediction: StringDict) =>
           this.customerCompanyRegistrations.push(
             new CompanyRegistrationField({
@@ -143,16 +143,17 @@ export class InvoiceV4Document implements Prediction {
           )
       );
     rawPrediction["supplier_payment_details"] &&
-      rawPrediction["supplier_payment_details"].map((prediction: StringDict) =>
-        this.supplierPaymentDetails.push(
-          new PaymentDetailsField({
-            prediction: prediction,
-            pageId: pageId,
-          })
-        )
+      rawPrediction["supplier_payment_details"].forEach(
+        (prediction: StringDict) =>
+          this.supplierPaymentDetails.push(
+            new PaymentDetailsField({
+              prediction: prediction,
+              pageId: pageId,
+            })
+          )
       );
     rawPrediction["line_items"] &&
-      rawPrediction["line_items"].map((prediction: StringDict) =>
+      rawPrediction["line_items"].forEach((prediction: StringDict) =>
         this.lineItems.push(new InvoiceV4LineItem(prediction))
       );
   }

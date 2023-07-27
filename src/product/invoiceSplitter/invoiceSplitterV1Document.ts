@@ -9,7 +9,7 @@ export class InvoiceSplitterV1Document extends Inference {
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
     rawPrediction["invoice_page_groups"] &&
-      rawPrediction["invoice_page_groups"].map((prediction: StringDict) =>
+      rawPrediction["invoice_page_groups"].forEach((prediction: StringDict) =>
         this.invoicePageGroups.push(new PageGroup(prediction))
       );
   }

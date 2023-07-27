@@ -251,7 +251,7 @@ export class Client {
   ): string {
     if (productClass.name === "CustomV1") {
       if (!accountName || accountName.length === 0) {
-        console.warn(
+        logger.debug(
           `Warning: no account name provided for custom build, ${STANDARD_API_OWNER} will be used by default`
         );
         return STANDARD_API_OWNER;

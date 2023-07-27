@@ -10,8 +10,6 @@ import {
 } from "../../parsing/standard";
 
 export class ReceiptV4Document implements Prediction {
-  endpointName = "expense_receipts";
-  endpointVersion = "4";
   /** Where the purchase was made, the language, and the currency. */
   locale: LocaleField;
   /** The purchase date. */

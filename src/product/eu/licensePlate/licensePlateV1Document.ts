@@ -6,14 +6,12 @@ import {
 import { StringField } from "../../../parsing/standard";
 
 export class LicensePlateV1Document implements Prediction {
-  endpointName = "license_plates";
-  endpointVersion = "1";
   /** A list of license plates. */
   licensePlates: StringField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
     rawPrediction["license_plates"] &&
-      rawPrediction["license_plates"].map(
+      rawPrediction["license_plates"].forEach(
         (itemPrediction: { [index: string]: any }) =>
           this.licensePlates.push(
             new StringField({

@@ -16,7 +16,7 @@ export class OcrPage {
   constructor(rawPrediction: StringDict) {
     const allWords: Word[] = [];
     rawPrediction["all_words"] &&
-      rawPrediction["all_words"].map((word: Word) => {
+      rawPrediction["all_words"].forEach((word: Word) => {
         allWords.push(word);
       });
     this.allWords = allWords.sort((word1, word2) =>
@@ -36,7 +36,11 @@ export class OcrPage {
     return nextInCurrent || currentInNext;
   }
 
-  #toLines2(): Word[][] {
+  /**
+   * Orders words in the page as lines
+   * @returns Lines
+   */
+  #toLines(): Word[][] {
     const lines: Word[][] = [];
     const lineIdx: number[] = [];
     this.allWords.forEach((current: Word, idxCurrent: number) => {
@@ -62,43 +66,6 @@ export class OcrPage {
     return lines;
   }
 
-  /**
-   * Orders words in the page as lines
-   * @returns Lines
-   */
-  #toLines(): Word[][] {
-    let current: Word | null = null;
-    const indexes: number[] = [];
-    const lines: Word[][] = [];
-
-    // We iterate for each words on our page
-    this.allWords.forEach(() => {
-      let idx: number = 0;
-      let line: Word[] = [];
-      this.allWords.forEach((word: Word) => {
-        idx += 1;
-        if (indexes.includes(idx)) {
-          return;
-        }
-        if (current === null) {
-          current = word;
-          indexes.push(idx);
-          line = [word];
-        } else if (this.#areWordsOnSameLine(current, word)) {
-          line.push(word);
-          indexes.push(idx);
-        }
-      });
-      current = null;
-      if (line.length !== 0) {
-        line.sort((word1: Word, word2: Word) =>
-          compareOnX(word1.polygon, word2.polygon)
-        );
-        lines.push(line);
-      }
-    });
-    return lines;
-  }
   /**
    * Get all words on the page as ordered lines
    * @returns Sorted lines on the pages
