@@ -8,10 +8,17 @@ export class ClassificationField {
    * Note: Score is calculated on **word selection**, not its textual content (OCR).
    */
   confidence: number;
-
-  constructor({ prediction }: { prediction: StringDict }) {
+  pageId?: number;
+  constructor({
+    prediction,
+    pageId,
+  }: {
+    prediction: StringDict;
+    pageId?: number;
+  }) {
     this.value = prediction["value"];
     this.confidence = prediction["confidence"];
+    this.pageId ??= pageId;
   }
 
   toString(): string {

@@ -15,7 +15,7 @@ interface PaymentDetailsConstructor {
 /**
  * Information on a single payment.
  */
-export class PaymentDetails extends Field {
+export class PaymentDetailsField extends Field {
   /** Synonym for the `iban` property */
   value?: string | undefined;
   /** The account number. */
@@ -38,7 +38,7 @@ export class PaymentDetails extends Field {
    * @param {Integer} pageId - Page ID for multi-page document
    */
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "iban",
     accountNumberKey = "account_number",
     ibanKey = "iban",
@@ -54,16 +54,16 @@ export class PaymentDetails extends Field {
     this.routingNumber = undefined;
     this.swift = undefined;
 
-    if (PaymentDetails.#isKeySet(prediction[accountNumberKey])) {
+    if (PaymentDetailsField.#isKeySet(prediction[accountNumberKey])) {
       this.accountNumber = prediction[accountNumberKey];
     }
-    if (PaymentDetails.#isKeySet(prediction[ibanKey])) {
+    if (PaymentDetailsField.#isKeySet(prediction[ibanKey])) {
       this.iban = prediction[ibanKey];
     }
-    if (PaymentDetails.#isKeySet(prediction[routingNumberKey])) {
+    if (PaymentDetailsField.#isKeySet(prediction[routingNumberKey])) {
       this.routingNumber = prediction[routingNumberKey];
     }
-    if (PaymentDetails.#isKeySet(prediction[swiftKey])) {
+    if (PaymentDetailsField.#isKeySet(prediction[swiftKey])) {
       this.swift = prediction[swiftKey];
     }
   }

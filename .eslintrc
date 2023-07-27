@@ -1,37 +1,48 @@
 {
-    "env": {
-        "node": true,
-        "es6": true,
-        "mocha": true
-    },
-    "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint"],
-    "extends": [
-        "eslint:recommended",
-        "plugin:@typescript-eslint/recommended",
-        "plugin:prettier/recommended"
+  "env": {
+    "node": true,
+    "es6": true,
+    "mocha": true
+  },
+  "parser": "@typescript-eslint/parser",
+  "plugins": [
+    "@typescript-eslint"
+  ],
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended"
+  ],
+  "globals": {
+    "Promise": true
+  },
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "error",
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/ban-ts-comment": "error",
+    "quotes": [
+      "error",
+      "double",
+      {
+        "avoidEscape": true,
+        "allowTemplateLiterals": false
+      }
     ],
-    "globals": {
-        "Promise": true
-    },
-    "rules": {
-        "@typescript-eslint/no-unused-vars": "error",
-        "@typescript-eslint/no-explicit-any": "off",
-        "@typescript-eslint/no-inferrable-types": "off",
-        "@typescript-eslint/ban-ts-comment": "error",
-        "quotes": [
-            "error",
-            "double",
-            {
-                "avoidEscape": true,
-                "allowTemplateLiterals": false
-            }
-        ],
-        "camelcase": "error",
-        "comma-dangle": ["error", "always-multiline"],
-        "eqeqeq": "error",
-        "no-else-return": "error",
-        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
-        "no-eval": "error"
-    }
+    "camelcase": "error",
+    "comma-dangle": [
+      "error",
+      "always-multiline"
+    ],
+    "eqeqeq": "error",
+    "no-else-return": "error",
+    "no-unused-vars": [
+      "error",
+      {
+        "argsIgnorePattern": "^_"
+      }
+    ],
+    "no-eval": "error",
+    "no-unexpected-multiline": "off"
+  }
 }

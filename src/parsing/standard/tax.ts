@@ -37,7 +37,7 @@ export class TaxField extends Field {
    * @param {Integer} pageNumber - Page ID for multi-page document
    */
   constructor({
-    prediction,
+    prediction = {},
     valueKey = "value",
     rateKey = "rate",
     codeKey = "code",
@@ -114,7 +114,7 @@ export class TaxField extends Field {
  * Represent all items.
  */
 export class Taxes extends Array<TaxField> {
-  init(prediction: StringDict[], pageId: number | undefined) {
+  init(prediction: StringDict[] = [], pageId: number | undefined) {
     for (const entry of prediction) {
       this.push(
         new TaxField({
