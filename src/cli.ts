@@ -182,24 +182,26 @@ async function callParse(command: string, inputPath: string, options: any) {
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
   const inputSource = mindeeClient.docFromPath(inputPath);
-  const response = COMMAND_CUSTOM
-    ? await mindeeClient.parse(
-        conf.docClass,
-        inputSource,
-        undefined,
-        undefined,
-        undefined,
-        predictParams
-      )
-    : await mindeeClient.parse(
-        conf.docClass,
-        inputSource,
-        options.documentType,
-        options.user,
-        options.version,
-        predictParams,
-        pageOptions
-      );
+  let response;
+  if (COMMAND_CUSTOM) {
+    const customEndpoint = mindeeClient.createEndpoint(
+      options.endpoint,
+      options.account,
+      options.version
+    );
+    response = await mindeeClient.parse(conf.docClass, inputSource, {
+      endpoint: customEndpoint,
+      pageOptions: pageOptions,
+      fullText: predictParams.fullText,
+      cropper: predictParams.cropper,
+    });
+  } else {
+    response = await mindeeClient.parse(conf.docClass, inputSource, {
+      pageOptions: pageOptions,
+      fullText: predictParams.fullText,
+      cropper: predictParams.cropper,
+    });
+  }
   printResponse(response.document, options);
 }
 
@@ -209,15 +211,27 @@ async function callEnqueue(command: string, inputPath: string, options: any) {
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
   const inputSource = mindeeClient.docFromPath(inputPath);
-  const response = await mindeeClient.enqueue(
-    conf.docClass,
-    inputSource,
-    options.documentType,
-    options.user,
-    options.version,
-    predictParams,
-    pageOptions
-  );
+
+  let response;
+  if (COMMAND_CUSTOM) {
+    const customEndpoint = mindeeClient.createEndpoint(
+      options.endpoint,
+      options.account,
+      options.version
+    );
+    response = await mindeeClient.enqueue(conf.docClass, inputSource, {
+      endpoint: customEndpoint,
+      pageOptions: pageOptions,
+      fullText: predictParams.fullText,
+      cropper: predictParams.cropper,
+    });
+  } else {
+    response = await mindeeClient.enqueue(conf.docClass, inputSource, {
+      pageOptions: pageOptions,
+      fullText: predictParams.fullText,
+      cropper: predictParams.cropper,
+    });
+  }
   console.log(response.job);
 }
 
