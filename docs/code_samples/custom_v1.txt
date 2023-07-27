@@ -10,13 +10,21 @@ const mindeeClient = new mindee.Client({
 // Load a file from disk
 const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
+// Create a custom endpoint for your product
+const customEndpoint = mindeeClient.createEndpoint(
+  "my-endpoint",
+  "my-account"
+);
+
 // Parse it
 const apiResponse = mindeeClient
   .parse(
     mindee.product.CustomV1,
     inputSource,
-    "my-endpoint", 
-    "my-account"
+    {
+      endpoint: customEndpoint,
+      cropper: true
+    }
   );
 
 // Handle the response Promise
