@@ -34,7 +34,7 @@ export class PaymentDetailsField extends Field {
    * @param {String} ibanKey - Key to use to get the IBAN in the prediction dict
    * @param {String} routingNumberKey - Key to use to get the routing number in the prediction dict
    * @param {String} swiftKey - Key to use to get the SWIFT in the prediction dict
-   * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
+   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
    * @param {Integer} pageId - Page ID for multi-page document
    */
   constructor({

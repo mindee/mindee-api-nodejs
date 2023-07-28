@@ -35,6 +35,16 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "cropper",
+    {
+      displayName: "Cropper",
+      docClass: product.CropperV1,
+      fullText: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
     "invoice",
     {
       displayName: "Invoice",
@@ -54,66 +64,66 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       sync: false,
     },
   ],
-  // [
-  //   "receipt",
-  //   {
-  //     displayName: "Expense Receipt",
-  //     docClass: product.ReceiptV5,
-  //     fullText: true,
-  //     async: false,
-  //     sync: true,
-  //   },
-  // ],
-  // [
-  //   "passport",
-  //   {
-  //     displayName: "Passport",
-  //     docClass: product.PassportV1,
-  //     fullText: false,
-  //     async: false,
-  //     sync: true,
-  //   },
-  // ],
-  // [
-  //   "financial",
-  //   {
-  //     displayName: "Financial Document",
-  //     docClass: product.FinancialDocumentV1,
-  //     fullText: true,
-  //     async: false,
-  //     sync: true,
-  //   },
-  // ],
-  // [
-  //   "fr-id-card",
-  //   {
-  //     displayName: "FR ID Card",
-  //     docClass: product.IdCardV1,
-  //     fullText: false,
-  //     async: false,
-  //     sync: true,
-  //   },
-  // ],
-  // [
-  //   "fr-bank-account-details",
-  //   {
-  //     displayName: "FR Bank Account Details",
-  //     docClass: product.fr.BankAccountDetailsV1,
-  //     fullText: false,
-  //     async: false,
-  //     sync: true,
-  //   },
-  // ],
-  // [
-  //   "fr-carte-vitale",
-  //   {
-  //     displayName: "FR Carte Vitale",
-  //     docClass: product.fr.CarteVitaleV1,
-  //     fullText: false,
-  //     async: false,
-  //     sync: true,
-  //   },
-  // ],
+  [
+    "receipt",
+    {
+      displayName: "Expense Receipt",
+      docClass: product.ReceiptV5,
+      fullText: true,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "passport",
+    {
+      displayName: "Passport",
+      docClass: product.PassportV1,
+      fullText: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "financial",
+    {
+      displayName: "Financial Document",
+      docClass: product.FinancialDocumentV1,
+      fullText: true,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "fr-id-card",
+    {
+      displayName: "FR ID Card",
+      docClass: product.fr.IdCardV1,
+      fullText: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "fr-bank-account-details",
+    {
+      displayName: "FR Bank Account Details",
+      docClass: product.fr.BankAccountDetailsV2,
+      fullText: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "fr-carte-vitale",
+    {
+      displayName: "FR Carte Vitale",
+      docClass: product.fr.CarteVitaleV1,
+      fullText: false,
+      async: false,
+      sync: true,
+    },
+  ],
   [
     "eu-license-plate",
     {
@@ -124,16 +134,16 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       sync: true,
     },
   ],
-  // [
-  //   "us-bank-check",
-  //   {
-  //     displayName: "US Bank Check",
-  //     docClass: product.us.BankCheckV1,
-  //     fullText: false,
-  //     async: false,
-  //     sync: true,
-  //   },
-  // ]
+  [
+    "us-bank-check",
+    {
+      displayName: "US Bank Check",
+      docClass: product.us.BankCheckV1,
+      fullText: false,
+      async: false,
+      sync: true,
+    },
+  ],
 ]);
 
 //
@@ -183,7 +193,7 @@ async function callParse(command: string, inputPath: string, options: any) {
   const pageOptions = getPageOptions(options);
   const inputSource = mindeeClient.docFromPath(inputPath);
   let response;
-  if (COMMAND_CUSTOM) {
+  if (command === COMMAND_CUSTOM) {
     const customEndpoint = mindeeClient.createEndpoint(
       options.endpoint,
       options.account,
@@ -213,7 +223,7 @@ async function callEnqueue(command: string, inputPath: string, options: any) {
   const inputSource = mindeeClient.docFromPath(inputPath);
 
   let response;
-  if (COMMAND_CUSTOM) {
+  if (command === COMMAND_CUSTOM) {
     const customEndpoint = mindeeClient.createEndpoint(
       options.endpoint,
       options.account,

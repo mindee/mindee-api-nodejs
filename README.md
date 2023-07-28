@@ -122,7 +122,7 @@ apiResponse.then((resp) => {
     console.log(resp.document.toString());
 
     // individual pages (array)
-    console.log(res.document.pages);
+    console.log(res.document.inference.pages);
 });
 ```
 
@@ -130,7 +130,7 @@ apiResponse.then((resp) => {
 
 #### Apply Cropping
 
-To apply the `Cropper` tool provided by Mindee, set the `croper` param to `true`:
+To apply the `Cropper` tool provided by Mindee, set the `cropper` param to `true`:
 
 ```js
 //...

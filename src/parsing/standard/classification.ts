@@ -13,8 +13,9 @@ export class ClassificationField extends BaseField {
     prediction = {},
     valueKey = "value",
     reconstructed = false,
+    pageId=undefined,
   }: BaseFieldConstructor) {
-    super({ prediction, valueKey, reconstructed });
+    super({ prediction, valueKey, reconstructed, pageId });
     this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
   }
 }
