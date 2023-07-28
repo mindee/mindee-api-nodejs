@@ -39,7 +39,7 @@ export class InvoiceV4Document implements Prediction {
   supplierAddress: StringField;
   /** The payment information. */
   supplierPaymentDetails: PaymentDetailsField[] = [];
-  /** The supplier company regitration information. */
+  /** The supplier company registration information. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The invoice number. */
   invoiceNumber: StringField;

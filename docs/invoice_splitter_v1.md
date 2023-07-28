@@ -1,0 +1,124 @@
+# Invoice Splitter API version 1
+
+> **⚠️ Important:** This API only works **asynchronously**, which means that documents have to be sent and retrieved in two separate steps. Since the parsing can be longer for some documents, be sure to implement a retry mechanism as detailed in the [Quick Start](#quick-start) section.
+
+## Table of Contents
+- [Invoice Splitter API version 1](#invoice-splitter-api-version-1)
+  - [Table of Contents](#table-of-contents)
+  - [Quick-Start](#quick-start)
+  - [Field Types](#field-types)
+    - [Custom Fields](#custom-fields)
+      - [Page Group](#page-group)
+  - [Attributes](#attributes)
+    - [Invoice Page Groups](#invoice-page-groups)
+  - [Questions?](#questions)
+
+## Quick-Start
+
+```js
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
+
+async function sampleAsyncApi() {
+  // Init a new client
+  const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+
+  // Specify the document class here to be DRY
+  const docClass = mindee.product.InvoiceSplitterV1;
+
+  const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
+
+  // Load a file from disk and send it to the asynchronous queue
+  const enqueueResponse = await mindeeClient
+    .enqueue(docClass, inputSource);
+
+  console.log(enqueueResponse.job);
+
+  // Don't try to get the document more than this many times
+  const MAX_RETRIES = 10;
+
+  // Wait this many seconds between each try
+  const INTERVAL_SECS = 6;
+
+  // Increment this counter each time we try to retrieve
+  // the document from the queue.
+  let timesTried = 1;
+
+  //
+  // Recursive function that tries to retrieve the completed document.
+  // If the document is not ready (processing), try again.
+  //
+  async function getDocFromAsyncQueue(queueId) {
+    setTimeout(async function () {
+      // This normally never happens, but otherwise TS will complain.
+      if (queueId === undefined) {
+        throw new Error("No queue ID provided.");
+      }
+
+      // Have we exceeded our retry count?
+      if (timesTried >= MAX_RETRIES) {
+        throw new Error(`Maximum retries reached: ${timesTried}`);
+      }
+
+      // increment the counter
+      timesTried++;
+
+      // Call the API endpoint
+      const parseAsyncResponse = await mindeeClient
+        .parseQueued(docClass, queueId);
+
+      //
+      // If the `document` property is set, it means the
+      // document is ready and has been retrieved successfully.
+      //
+      // Otherwise,we go around for another recursion.
+      //
+      if (parseAsyncResponse.document !== undefined) {
+        console.log(parseAsyncResponse.document.toString());
+      } else {
+        console.log(parseAsyncResponse.job);
+        await getDocFromAsyncQueue(queueId);
+      }
+
+      // Set the timeout value
+    }, INTERVAL_SECS * 1000);
+  }
+
+  // Start the recursion ...
+  await getDocFromAsyncQueue(enqueueResponse.job.id);
+}
+
+// Run it
+sampleAsyncApi();
+```
+
+## Field Types
+
+### Custom Fields
+
+#### Page Group
+
+List of page group indexes.
+
+A `PageGroup` implements the following attributes:
+
+* **pageIndexes** (`number[]`): List of indexes of the pages of a single invoice.
+* **confidence** (`number`): The confidence of the prediction.
+
+
+## Attributes
+
+The following fields are extracted for Invoice Splitter V1:
+
+### Invoice Page Groups
+
+**invoicePageGroups**  ([PageGroup](#page-group)[]): List of page indexes that belong to the same invoice in the PDF.
+
+```js
+console.log(result.document.inference.prediction.invoicePageGroups.toString());
+```
+
+## Questions?
+
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

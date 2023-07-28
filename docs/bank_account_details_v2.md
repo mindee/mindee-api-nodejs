@@ -1,0 +1,126 @@
+# Bank Account Details API version 2
+
+## Table of Contents
+- [Bank Account Details API version 2](#bank-account-details-api-version-2)
+  - [Table of Contents](#table-of-contents)
+  - [Quick-Start](#quick-start)
+  - [Field Types](#field-types)
+    - [Standard Fields](#standard-fields)
+      - [Basic Field](#basic-field)
+      - [String Field](#string-field)
+    - [Custom Fields](#custom-fields)
+      - [Basic Bank Account Number Field](#basic-bank-account-number-field)
+  - [Attributes](#attributes)
+    - [Account Holder's Names](#account-holders-names)
+    - [Basic Bank Account Number](#basic-bank-account-number)
+    - [IBAN](#iban)
+    - [SWIFT Code](#swift-code)
+  - [Questions?](#questions)
+
+## Quick-Start
+
+```js
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
+
+// Init a new client
+const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+
+// Load a file from disk
+const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
+
+// Parse the file
+const apiResponse = mindeeClient.parse(
+  mindee.product.fr.BankAccountDetailsV2,
+  inputSource
+);
+
+// Handle the response Promise
+apiResponse.then((resp) => {
+  // print a string summary
+  console.log(resp.document.toString());
+});
+```
+
+## Field Types
+
+### Standard Fields
+
+#### Basic Field
+
+Each prediction object contains a set of fields that inherit from the generic `Field` class.
+A typical `Field` object will have the following attributes:
+
+* **value** (number|string): corresponds to the field value. Can be `undefined` if no value was extracted.
+* **confidence** (`number`): the confidence score of the field prediction.
+* **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
+* **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
+* **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
+* **reconstructed** (`boolean`): indicates whether or not an object was reconstructed (not extracted as the API gave it).
+
+> **Note:** A `Point` simply refers to an array of two numbers (`[number, number]`).
+
+
+Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
+
+
+#### String Field
+
+The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+### Custom Fields
+
+Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
+
+#### Basic Bank Account Number Field
+
+Full extraction of BBAN, including: branch code, bank code, account and key.
+
+A `BankAccountDetailsV2Bban` implements the following attributes:
+
+* `bbanBankCode` (string): The BBAN bank code outputted as a string.
+* `bbanBranchCode` (string): The BBAN branch code outputted as a string.
+* `bbanKey` (string): The BBAN key outputted as a string.
+* `bbanNumber` (string): The BBAN Account number outputted as a string.
+
+
+## Attributes
+
+The following fields are extracted for Bank Account Details V2:
+
+
+### Account Holder's Names
+
+**accountHoldersNames**  ([StringField](#string-field)): Full extraction of the account holders names.
+
+```js
+console.log(result.document.inference.prediction.accountHoldersNames.toString());
+```
+
+### Basic Bank Account Number
+
+**bban**  ([BankAccountDetailsV2Bban](#basic-bank-account-number)): Full extraction of BBAN, including: branch code, bank code, account and key.
+
+```js
+console.log(result.document.inference.prediction.bban.toString());
+```
+
+### IBAN
+
+**iban**  ([StringField](#string-field)): Full extraction of the IBAN number.
+
+```js
+console.log(result.document.inference.prediction.iban.toString());
+```
+
+### SWIFT Code
+
+**swiftCode**  ([StringField](#string-field)): Full extraction of the SWIFT code.
+
+```js
+console.log(result.document.inference.prediction.swiftCode.toString());
+```
+
+## Questions?
+
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)
