@@ -12,7 +12,7 @@ export class DateField extends Field {
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
-   * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
+   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
    * @param {Integer} pageId - Page ID for multi-page document
    */
   constructor({

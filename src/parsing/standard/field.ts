@@ -23,8 +23,6 @@ export class Field extends BaseField {
    * the field in the document.
    */
   polygon: Polygon = [];
-  /** The document page on which the information was found. */
-  pageId: number;
   /** The confidence score of the prediction. */
   confidence: number;
   /**
@@ -40,8 +38,7 @@ export class Field extends BaseField {
     reconstructed = false,
     pageId,
   }: FieldConstructor) {
-    super({ prediction, valueKey, reconstructed });
-    this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
+    super({ prediction, valueKey, reconstructed, pageId });
 
     this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
     if (prediction["polygon"]) {
