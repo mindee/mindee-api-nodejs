@@ -5,15 +5,15 @@ import { Prediction } from "./prediction";
 import { StringDict } from "./stringDict";
 
 export class Page<T extends Prediction> {
-  id?: number;
+  id: number;
   orientation?: OrientationField;
   prediction: T;
   extras?: Extras;
 
   constructor(
-    predictionType: new (rawPrediction: StringDict, pageId?: number) => T,
+    predictionType: new (rawPrediction: StringDict, pageId: number) => T,
     rawPrediction: StringDict,
-    pageId?: number,
+    pageId: number,
     orientation?: StringDict
   ) {
     if (pageId !== undefined && orientation !== undefined) {
@@ -24,7 +24,7 @@ export class Page<T extends Prediction> {
     } else {
       orientation = undefined;
     }
-    this.id = pageId ?? undefined;
+    this.id = pageId;
     this.prediction = new predictionType(rawPrediction["prediction"], pageId);
     if (
       rawPrediction["extras"] &&

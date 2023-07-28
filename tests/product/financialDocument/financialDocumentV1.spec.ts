@@ -13,6 +13,10 @@ const dataPath = {
     "tests/data/financial_document/response_v1/summary_full_invoice.rst",
   receiptDocString:
     "tests/data/financial_document/response_v1/summary_full_receipt.rst",
+  page0InvoiceString:
+    "tests/data/financial_document/response_v1/summary_page0_invoice.rst",
+  page0ReceiptString:
+    "tests/data/financial_document/response_v1/summary_page0_receipt.rst",
 };
 
 describe("Financial Document V1 Object initialization", async () => {
@@ -60,5 +64,25 @@ describe("Financial Document V1 Object initialization", async () => {
     const doc = new mindee.Document(mindee.product.FinancialDocumentV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.receiptDocString));
     expect(doc.toString()).to.be.equals(docString.toString());
+  });
+
+  it("should load a complete page 0 invoice prediction", async () => {
+    const jsonData = await fs.readFile(path.resolve(dataPath.invoiceComplete));
+    const response = JSON.parse(jsonData.toString());
+    const doc = new mindee.Document(mindee.product.FinancialDocumentV1, response.document);
+    const page0 = doc.inference.pages[0];
+    const docString = await fs.readFile(path.join(dataPath.page0InvoiceString));
+    expect(page0.orientation?.value).to.be.equals(0);
+    expect(page0.toString()).to.be.equals(docString.toString());
+  });
+
+  it("should load a complete page 0 receipt prediction", async () => {
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptComplete));
+    const response = JSON.parse(jsonData.toString());
+    const doc = new mindee.Document(mindee.product.FinancialDocumentV1, response.document);
+    const page0 = doc.inference.pages[0];
+    const docString = await fs.readFile(path.join(dataPath.page0ReceiptString));
+    expect(page0.orientation?.value).to.be.equals(0);
+    expect(page0.toString()).to.be.equals(docString.toString());
   });
 });

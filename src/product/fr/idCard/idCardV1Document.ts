@@ -3,7 +3,7 @@ import {
   StringDict,
   cleanOutString,
 } from "../../../parsing/common";
-import { StringField, DateField } from "../../../parsing/standard";
+import { DateField, StringField } from "../../../parsing/standard";
 
 /**
  * Document data for Carte Nationale d'Identité, API version 1.

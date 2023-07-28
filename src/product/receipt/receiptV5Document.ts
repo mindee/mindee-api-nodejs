@@ -5,13 +5,13 @@ import {
 } from "../../parsing/common";
 import { ReceiptV5LineItem } from "./receiptV5LineItem";
 import {
-  DateField,
-  StringField,
-  CompanyRegistrationField,
-  Taxes,
-  LocaleField,
-  ClassificationField,
   AmountField,
+  ClassificationField,
+  CompanyRegistrationField,
+  DateField,
+  LocaleField,
+  StringField,
+  Taxes,
 } from "../../parsing/standard";
 
 /**

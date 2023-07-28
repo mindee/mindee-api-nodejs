@@ -5,14 +5,14 @@ import {
 } from "../../parsing/common";
 import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
 import {
-  DateField,
-  StringField,
+  AmountField,
+  ClassificationField,
   CompanyRegistrationField,
-  Taxes,
+  DateField,
   LocaleField,
   PaymentDetailsField,
-  ClassificationField,
-  AmountField,
+  StringField,
+  Taxes,
 } from "../../parsing/standard";
 
 /**

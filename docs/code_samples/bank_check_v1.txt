@@ -16,7 +16,6 @@ const apiResponse = mindeeClient.parse(
 
 // Handle the response Promise
 apiResponse.then((resp) => {
-
   // print a string summary
   console.log(resp.document.toString());
 });

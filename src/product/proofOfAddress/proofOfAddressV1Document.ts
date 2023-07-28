@@ -4,10 +4,10 @@ import {
   cleanOutString,
 } from "../../parsing/common";
 import {
-  StringField,
-  LocaleField,
-  DateField,
   CompanyRegistrationField,
+  DateField,
+  LocaleField,
+  StringField,
 } from "../../parsing/standard";
 
 /**

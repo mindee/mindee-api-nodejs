@@ -3,7 +3,7 @@ import {
   StringDict,
   cleanOutString,
 } from "../../parsing/common";
-import { StringField, DateField } from "../../parsing/standard";
+import { DateField, StringField } from "../../parsing/standard";
 
 /**
  * Document data for Passport, API version 1.

@@ -4,9 +4,9 @@ import {
   cleanOutString,
 } from "../../../parsing/common";
 import {
-  StringField,
-  DateField,
   AmountField,
+  DateField,
+  StringField,
 } from "../../../parsing/standard";
 
 /**
