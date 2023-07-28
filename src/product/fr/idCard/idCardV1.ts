@@ -13,7 +13,12 @@ export class IdCardV1 extends Inference {
     this.prediction = new IdCardV1Document(rawPrediction["prediction"]);
     this.pages = rawPrediction["pages"].map(
       (page: StringDict) =>
-        new Page(IdCardV1Page, page, page["id"], page["orientation"])
+        new Page(
+          IdCardV1Page,
+          page,
+          page["id"],
+          page["orientation"]
+        )
     );
   }
 }

@@ -10,7 +10,7 @@ export class LocaleField extends BaseField {
   confidence: number;
   /** ISO 639-1 language code */
   language?: string;
-  /** ISO 3166-1 alpha-2 country code */
+  /** ISO 3166-1 alpha-2 (or alpha-3) country code */
   country?: string;
   /** ISO 4217 currency code */
   currency?: string;
@@ -18,14 +18,15 @@ export class LocaleField extends BaseField {
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
-   * @param {boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
+   * @param {boolean} reconstructed - Is the object reconstructed (not extracted by the API)
    */
   constructor({
     prediction = {},
     reconstructed = false,
+    pageId=undefined,
   }: BaseFieldConstructor) {
     const valueKey = prediction["value"] !== undefined ? "value" : "language";
-    super({ prediction, valueKey, reconstructed });
+    super({ prediction, valueKey, reconstructed, pageId });
 
     this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
     this.language =
