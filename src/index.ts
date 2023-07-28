@@ -4,5 +4,6 @@ export {
   AsyncPredictResponse,
   PredictResponse,
   Document,
+  Page,
 } from "./parsing/common";
 export { InputSource, PageOptionsOperation } from "./input";

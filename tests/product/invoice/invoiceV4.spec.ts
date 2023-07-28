@@ -24,7 +24,7 @@ describe("Invoice V4 Object initialization", async () => {
   it("should initialize from a N/A prediction object", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new Page(InvoiceV4Document, response.document.inference.pages[0]);
+    const doc = new Page(InvoiceV4Document, response.document.inference.pages[0], 0);
     expect(doc.prediction.locale.value).to.be.undefined;
     expect(doc.prediction.totalAmount.value).to.be.undefined;
     expect(doc.prediction.totalNet.value).to.be.undefined;
