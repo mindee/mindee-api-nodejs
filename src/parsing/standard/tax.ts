@@ -33,7 +33,7 @@ export class TaxField extends Field {
    * @param {String} rateKey - Key to use to get the tax rate in the prediction dict
    * @param {String} codeKey - Key to use to get the tax code in the prediction dict
    * @param {String} baseKey - Key to use to get the base tax in the prediction dict
-   * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
+   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
    * @param {Integer} pageNumber - Page ID for multi-page document
    */
   constructor({

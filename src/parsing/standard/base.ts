@@ -4,6 +4,7 @@ export interface BaseFieldConstructor {
   prediction: StringDict;
   valueKey?: string;
   reconstructed?: boolean;
+  pageId?: number;
 }
 
 /**
@@ -14,16 +15,18 @@ export class BaseField {
   value?: string | number = undefined;
   /** `true` when the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
+  pageId?: number;
 
   /**
    * @param {Object} prediction - Prediction object from HTTP response
    * @param {String} valueKey - Key to use in the prediction dict
-   * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
+   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
    */
   constructor({
     prediction = {},
     valueKey = "value",
     reconstructed = false,
+    pageId=undefined,
   }: BaseFieldConstructor) {
     this.reconstructed = reconstructed;
     if (
@@ -33,6 +36,7 @@ export class BaseField {
       prediction[valueKey] !== null
     ) {
       this.value = prediction[valueKey];
+      this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
     }
   }
 
