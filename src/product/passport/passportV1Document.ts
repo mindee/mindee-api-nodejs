@@ -2,45 +2,47 @@ import {
   Prediction,
   StringDict,
   cleanOutString,
-} from "../../../parsing/common";
-import { StringField, DateField } from "../../../parsing/standard";
+} from "../../parsing/common";
+import { StringField, DateField } from "../../parsing/standard";
 
 /**
- * Document data for Carte Nationale d'Identité, API version 1.
+ * Document data for Passport, API version 1.
  */
-export class IdCardV1Document implements Prediction {
-  /** The name of the issuing authority. */
-  authority: StringField;
-  /** The date of birth of the card holder. */
+export class PassportV1Document implements Prediction {
+  /** The date of birth of the passport holder. */
   birthDate: DateField;
-  /** The place of birth of the card holder. */
+  /** The place of birth of the passport holder. */
   birthPlace: StringField;
-  /** The expiry date of the identification card. */
+  /** The country's 3 letter code (ISO 3166-1 alpha-3). */
+  country: StringField;
+  /** The expiry date of the passport. */
   expiryDate: DateField;
-  /** The gender of the card holder. */
+  /** The gender of the passport holder. */
   gender: StringField;
-  /** The given name(s) of the card holder. */
+  /** The given name(s) of the passport holder. */
   givenNames: StringField[] = [];
-  /** The identification card number. */
+  /** The passport's identification number. */
   idNumber: StringField;
+  /** The date the passport was issued. */
+  issuanceDate: DateField;
   /** Machine Readable Zone, first line */
   mrz1: StringField;
   /** Machine Readable Zone, second line */
   mrz2: StringField;
-  /** The surname of the card holder. */
+  /** The surname of the passport holder. */
   surname: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    this.authority = new StringField({
-      prediction: rawPrediction["authority"],
-      pageId: pageId,
-    });
     this.birthDate = new DateField({
       prediction: rawPrediction["birth_date"],
       pageId: pageId,
     });
     this.birthPlace = new StringField({
       prediction: rawPrediction["birth_place"],
+      pageId: pageId,
+    });
+    this.country = new StringField({
+      prediction: rawPrediction["country"],
       pageId: pageId,
     });
     this.expiryDate = new DateField({
@@ -65,6 +67,10 @@ export class IdCardV1Document implements Prediction {
       prediction: rawPrediction["id_number"],
       pageId: pageId,
     });
+    this.issuanceDate = new DateField({
+      prediction: rawPrediction["issuance_date"],
+      pageId: pageId,
+    });
     this.mrz1 = new StringField({
       prediction: rawPrediction["mrz1"],
       pageId: pageId,
@@ -81,14 +87,15 @@ export class IdCardV1Document implements Prediction {
 
   toString(): string {
     const givenNames = this.givenNames.join("\n              ");
-    const outStr = `:Identity Number: ${this.idNumber}
+    const outStr = `:Country Code: ${this.country}
+:ID Number: ${this.idNumber}
 :Given Name(s): ${givenNames}
 :Surname: ${this.surname}
 :Date of Birth: ${this.birthDate}
 :Place of Birth: ${this.birthPlace}
-:Expiry Date: ${this.expiryDate}
-:Issuing Authority: ${this.authority}
 :Gender: ${this.gender}
+:Date of Issue: ${this.issuanceDate}
+:Expiry Date: ${this.expiryDate}
 :MRZ Line 1: ${this.mrz1}
 :MRZ Line 2: ${this.mrz2}`.trimEnd();
     return cleanOutString(outStr);

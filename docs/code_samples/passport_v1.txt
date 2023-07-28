@@ -10,7 +10,7 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
 // Parse the file
 const apiResponse = mindeeClient.parse(
-  mindee.product.eu.LicensePlateV1,
+  mindee.product.PassportV1,
   inputSource
 );
 

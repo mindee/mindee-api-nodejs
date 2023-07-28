@@ -27,7 +27,7 @@ export class LicensePlateV1Document implements Prediction {
 
   toString(): string {
     const licensePlates = this.licensePlates.join("\n                 ");
-    const outStr = `:License Plates: ${licensePlates}`;
+    const outStr = `:License Plates: ${licensePlates}`.trimEnd();
     return cleanOutString(outStr);
   }
 }

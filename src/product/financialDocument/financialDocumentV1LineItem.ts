@@ -5,11 +5,17 @@ import { Polygon } from "../../geometry";
 /**
  * List of line item details.
  */
-export class ReceiptV5LineItem {
+export class FinancialDocumentV1LineItem {
   /** The item description. */
   description: string | undefined;
-  /** The item quantity. */
+  /** The product code referring to the item. */
+  productCode: string | undefined;
+  /** The item quantity */
   quantity: number | undefined;
+  /** The item tax amount. */
+  taxAmount: number | undefined;
+  /** The item tax rate in percentage. */
+  taxRate: number | undefined;
   /** The item total amount. */
   totalAmount: number | undefined;
   /** The item unit price. */
@@ -26,8 +32,15 @@ export class ReceiptV5LineItem {
 
   constructor({prediction = {} }: StringDict) {
     this.description = prediction["description"];
+    this.productCode = prediction["product_code"];
     if (prediction["quantity"] && !isNaN(prediction["quantity"])) {
       this.quantity = +parseFloat(prediction["quantity"]).toFixed(3);
+    }
+    if (prediction["tax_amount"] && !isNaN(prediction["tax_amount"])) {
+      this.taxAmount = +parseFloat(prediction["tax_amount"]).toFixed(3);
+    }
+    if (prediction["tax_rate"] && !isNaN(prediction["tax_rate"])) {
+      this.taxRate = +parseFloat(prediction["tax_rate"]).toFixed(3);
     }
     if (prediction["total_amount"] && !isNaN(prediction["total_amount"])) {
       this.totalAmount = +parseFloat(prediction["total_amount"]).toFixed(3);
@@ -48,7 +61,10 @@ export class ReceiptV5LineItem {
   #printableValues() {
     return {
       description: this.description ?? "",
+      productCode: this.productCode ?? "",
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
+      taxAmount: this.taxAmount !== undefined ? floatToString(this.taxAmount) : "",
+      taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",
       totalAmount:
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",
       unitPrice: this.unitPrice !== undefined ? floatToString(this.unitPrice) : "",
@@ -63,8 +79,14 @@ export class ReceiptV5LineItem {
     return (
       "Description: " +
       printable.description +
+      ", Product code: " +
+      printable.productCode +
       ", Quantity: " +
       printable.quantity +
+      ", Tax Amount: " +
+      printable.taxAmount +
+      ", Tax Rate (%): " +
+      printable.taxRate +
       ", Total Amount: " +
       printable.totalAmount +
       ", Unit Price: " +
@@ -80,7 +102,13 @@ export class ReceiptV5LineItem {
       "| " +
       printable.description.padEnd(36) +
       " | " +
+      printable.productCode.padEnd(12) +
+      " | " +
       printable.quantity.padEnd(8) +
+      " | " +
+      printable.taxAmount.padEnd(10) +
+      " | " +
+      printable.taxRate.padEnd(12) +
       " | " +
       printable.totalAmount.padEnd(12) +
       " | " +

@@ -19,7 +19,7 @@ export class IdCardV1Page extends IdCardV1Document {
   }
 
   toString(): string {
-    let outStr = `:Document Side: ${this.documentSide}`;
+    let outStr = `:Document Side: ${this.documentSide}`.trimEnd();
     outStr += "\n" + super.toString();
     return cleanOutString(outStr);
   }
