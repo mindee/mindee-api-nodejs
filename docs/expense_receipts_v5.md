@@ -1,44 +1,9 @@
-# Receipt API version 5
+The Node.js OCR SDK supports the [Receipt API](https://platform.mindee.com/mindee/expense_receipts).
 
-## Table of Contents
-- [Receipt API version 5](#receipt-api-version-5)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [Amount Field](#amount-field)
-      - [Classification Field](#classification-field)
-      - [Company Registration Field](#company-registration-field)
-      - [Date Field](#date-field)
-      - [Locale Field](#locale-field)
-      - [String Field](#string-field)
-      - [Taxes Field](#taxes-field)
-        - [Tax](#tax)
-        - [Taxes (Array)](#taxes-array)
-    - [Custom Fields](#custom-fields)
-      - [Line Items Field](#line-items-field)
-  - [Attributes](#attributes)
-    - [Purchase Category](#purchase-category)
-    - [Purchase Date](#purchase-date)
-    - [Document Type](#document-type)
-    - [Line Items](#line-items)
-    - [Expense Locale](#expense-locale)
-    - [Purchase Subcategory](#purchase-subcategory)
-    - [Supplier Address](#supplier-address)
-    - [Supplier Company Registrations](#supplier-company-registrations)
-    - [Supplier Name](#supplier-name)
-    - [Supplier Phone Number](#supplier-phone-number)
-    - [Taxes](#taxes)
-    - [Purchase Time](#purchase-time)
-    - [Tip and Gratuity](#tip-and-gratuity)
-    - [Total Amount](#total-amount)
-    - [Total Net](#total-net)
-    - [Total Tax](#total-tax)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/receipt/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Receipt sample](https://github.com/mindee/client-lib-test-data/blob/main/receipt/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -63,12 +28,9 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
-
-### Standard Fields
-
-#### Basic Field
-
+# Field Types
+## Standard Fields
+### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -85,34 +47,29 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 
-#### Amount Field
-
+### Amount Field
 The amount field `AmountField` only has one constraint: its **value** is a `number` (or `undefined`).
 
 
-#### Classification Field
-
+### Classification Field
 The classification field `ClassificationField` does not implement all the basic `Field` attributes. It only implements **value**, **confidence** and **pageId**.
 
 > Note: a classification field's `value is always a `string`.
 
 
-#### Company Registration Field
-
+### Company Registration Field
 Aside from the basic `Field` attributes, the company registration field `CompanyRegistrationField` also implements the following:
 
 * **type** (`string`): the type of company.
 
 
-#### Date Field
-
+### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
 
-#### Locale Field
-
+### Locale Field
 The locale field `LocaleField` only implements the **value**, **confidence** and **pageId** base `Field` attributes, but it comes with its own:
 
 * **language** (`string`): ISO 639-1 language code (e.g.: `en` for English). Can be `undefined`.
@@ -120,15 +77,12 @@ The locale field `LocaleField` only implements the **value**, **confidence** and
 * **currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `undefined`.
 
 
-#### String Field
-
+### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
 
-#### Taxes Field
-
-##### Tax
-
+### Taxes Field
+#### Tax
 Aside from the basic `Field` attributes, the tax field `TaxField` also implements the following:
 
 * **rate** (`number`): the tax rate applied to an item can be undefined. Expressed as a percentage. Can be `undefined`.
@@ -137,15 +91,14 @@ Aside from the basic `Field` attributes, the tax field `TaxField` also implement
 
 > Note: currently `TaxField` is not used on its own, and is accessed through a parent `Taxes` object, an array-like structure.
 
-##### Taxes (Array)
-
+#### Taxes (Array)
 The `Taxes` field represents an array-like collection of `TaxField` objects. As it is the representation of several objects, it has access to a custom `toString()` method that can render a `TaxField` object as a table line.
-### Custom Fields
+
+## Custom Fields
 
 Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
 
-#### Line Items Field
-
+### Line Items Field
 List of line item details.
 
 A `ReceiptV5LineItem` implements the following attributes:
@@ -156,139 +109,120 @@ A `ReceiptV5LineItem` implements the following attributes:
 * `unitPrice` (number): The item unit price.
 
 
-## Attributes
-
+# Attributes
 The following fields are extracted for Receipt V5:
 
-
-### Purchase Category
-
-**category**  ([ClassificationField](#classification-field)): The purchase category among predefined classes.
+## Purchase Category
+**category** ([ClassificationField](#classification-field)): The purchase category among predefined classes.
 
 ```js
-console.log(result.document.inference.prediction.category.toString());
+console.log(result.document.inference.prediction.category.value);
 ```
 
-### Purchase Date
-
-**date**  ([DateField](#date-field)): The date the purchase was made.
+## Purchase Date
+**date** ([DateField](#date-field)): The date the purchase was made.
 
 ```js
-console.log(result.document.inference.prediction.date.toString());
+console.log(result.document.inference.prediction.date.value);
 ```
 
-### Document Type
-
-**documentType**  ([ClassificationField](#classification-field)): One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+## Document Type
+**documentType** ([ClassificationField](#classification-field)): One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
 
 ```js
-console.log(result.document.inference.prediction.documentType.toString());
+console.log(result.document.inference.prediction.documentType.value);
 ```
 
-### Line Items
-
-**lineItems**  ([ReceiptV5LineItem](#line-items)[]): List of line item details.
+## Line Items
+**lineItems** ([ReceiptV5LineItem](#line-items)[]): List of line item details.
 
 ```js
-console.log(result.document.inference.prediction.lineItems.toString());
+console.log(result.document.inference.prediction.lineItems.value);
 ```
 
-### Expense Locale
-
-**locale**  ([LocaleField](#locale-field)): The locale detected on the document.
+## Expense Locale
+**locale** ([LocaleField](#locale-field)): The locale detected on the document.
 
 ```js
-console.log(result.document.inference.prediction.locale.toString());
+console.log(result.document.inference.prediction.locale.value);
 ```
 
-### Purchase Subcategory
-
-**subcategory**  ([ClassificationField](#classification-field)): The purchase subcategory among predefined classes for transport and food.
+## Purchase Subcategory
+**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory among predefined classes for transport and food.
 
 ```js
-console.log(result.document.inference.prediction.subcategory.toString());
+console.log(result.document.inference.prediction.subcategory.value);
 ```
 
-### Supplier Address
-
-**supplierAddress**  ([StringField](#string-field)): The address of the supplier or merchant.
+## Supplier Address
+**supplierAddress** ([StringField](#string-field)): The address of the supplier or merchant.
 
 ```js
-console.log(result.document.inference.prediction.supplierAddress.toString());
+console.log(result.document.inference.prediction.supplierAddress.value);
 ```
 
-### Supplier Company Registrations
-
-**supplierCompanyRegistrations**  ([CompanyRegistrationField](#company-registration-field)): List of company registrations associated to the supplier.
+## Supplier Company Registrations
+**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)): List of company registrations associated to the supplier.
 
 ```js
-console.log(result.document.inference.prediction.supplierCompanyRegistrations.toString());
+console.log(result.document.inference.prediction.supplierCompanyRegistrations.value);
 ```
 
-### Supplier Name
-
-**supplierName**  ([StringField](#string-field)): The name of the supplier or merchant.
+## Supplier Name
+**supplierName** ([StringField](#string-field)): The name of the supplier or merchant.
 
 ```js
-console.log(result.document.inference.prediction.supplierName.toString());
+console.log(result.document.inference.prediction.supplierName.value);
 ```
 
-### Supplier Phone Number
-
-**supplierPhoneNumber**  ([StringField](#string-field)): The phone number of the supplier or merchant.
+## Supplier Phone Number
+**supplierPhoneNumber** ([StringField](#string-field)): The phone number of the supplier or merchant.
 
 ```js
-console.log(result.document.inference.prediction.supplierPhoneNumber.toString());
+console.log(result.document.inference.prediction.supplierPhoneNumber.value);
 ```
 
-### Taxes
-
-**taxes**  ([TaxField](#taxes-field)): List of tax lines information.
+## Taxes
+**taxes** ([TaxField](#taxes-field)): List of tax lines information.
 
 ```js
 console.log(result.document.inference.prediction.taxes.toString());
 ```
 
-### Purchase Time
-
-**time**  ([StringField](#string-field)): The time the purchase was made.
-
-```js
-console.log(result.document.inference.prediction.time.toString());
-```
-
-### Tip and Gratuity
-
-**tip**  ([AmountField](#amount-field)): The total amount of tip and gratuity.
+## Purchase Time
+**time** ([StringField](#string-field)): The time the purchase was made.
 
 ```js
-console.log(result.document.inference.prediction.tip.toString());
+console.log(result.document.inference.prediction.time.value);
 ```
 
-### Total Amount
-
-**totalAmount**  ([AmountField](#amount-field)): The total amount paid: includes taxes, discounts, fees, tips, and gratuity.
+## Tip and Gratuity
+**tip** ([AmountField](#amount-field)): The total amount of tip and gratuity.
 
 ```js
-console.log(result.document.inference.prediction.totalAmount.toString());
+console.log(result.document.inference.prediction.tip.value);
 ```
 
-### Total Net
-
-**totalNet**  ([AmountField](#amount-field)): The net amount paid: does not include taxes, fees, and discounts.
+## Total Amount
+**totalAmount** ([AmountField](#amount-field)): The total amount paid: includes taxes, discounts, fees, tips, and gratuity.
 
 ```js
-console.log(result.document.inference.prediction.totalNet.toString());
+console.log(result.document.inference.prediction.totalAmount.value);
 ```
 
-### Total Tax
-
-**totalTax**  ([AmountField](#amount-field)): The total amount of taxes.
+## Total Net
+**totalNet** ([AmountField](#amount-field)): The net amount paid: does not include taxes, fees, and discounts.
 
 ```js
-console.log(result.document.inference.prediction.totalTax.toString());
+console.log(result.document.inference.prediction.totalNet.value);
 ```
 
-## Questions?
+## Total Tax
+**totalTax** ([AmountField](#amount-field)): The total amount of taxes.
 
+```js
+console.log(result.document.inference.prediction.totalTax.value);
+```
+
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

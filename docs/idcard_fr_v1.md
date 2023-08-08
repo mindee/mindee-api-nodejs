@@ -1,32 +1,9 @@
-# Carte Nationale d'Identité API version 1
+The Node.js OCR SDK supports the [Carte Nationale d'Identité API](https://platform.mindee.com/mindee/idcard_fr).
 
-## Table of Contents
-- [Carte Nationale d'Identité API version 1](#carte-nationale-didentité-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [Classification Field](#classification-field)
-      - [Date Field](#date-field)
-      - [String Field](#string-field)
-    - [Page-Level Fields](#page-level-fields)
-  - [Attributes](#attributes)
-    - [Issuing Authority](#issuing-authority)
-    - [Date of Birth](#date-of-birth)
-    - [Place of Birth](#place-of-birth)
-    - [Document Side](#document-side)
-    - [Expiry Date](#expiry-date)
-    - [Gender](#gender)
-    - [Given Name(s)](#given-names)
-    - [Identity Number](#identity-number)
-    - [MRZ Line 1](#mrz-line-1)
-    - [MRZ Line 2](#mrz-line-2)
-    - [Surname](#surname)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/id_card/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Carte Nationale d'Identité sample](https://github.com/mindee/client-lib-test-data/blob/main/fr/id_card/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -51,12 +28,9 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
-
-### Standard Fields
-
-#### Basic Field
-
+# Field Types
+## Standard Fields
+### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -73,123 +47,105 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 
-#### Classification Field
-
+### Classification Field
 The classification field `ClassificationField` does not implement all the basic `Field` attributes. It only implements **value**, **confidence** and **pageId**.
 
 > Note: a classification field's `value is always a `string`.
 
 
-#### Date Field
-
+### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
 
-#### String Field
-
+### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
 
-### Page-Level Fields
-
+## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
 
 
-## Attributes
-
+# Attributes
 The following fields are extracted for Carte Nationale d'Identité V1:
 
-
-### Issuing Authority
-
-**authority**  ([StringField](#string-field)): The name of the issuing authority.
+## Issuing Authority
+**authority** ([StringField](#string-field)): The name of the issuing authority.
 
 ```js
-console.log(result.document.inference.prediction.authority.toString());
+console.log(result.document.inference.prediction.authority.value);
 ```
 
-### Date of Birth
-
-**birthDate**  ([DateField](#date-field)): The date of birth of the card holder.
+## Date of Birth
+**birthDate** ([DateField](#date-field)): The date of birth of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.birthDate.toString());
+console.log(result.document.inference.prediction.birthDate.value);
 ```
 
-### Place of Birth
-
-**birthPlace**  ([StringField](#string-field)): The place of birth of the card holder.
+## Place of Birth
+**birthPlace** ([StringField](#string-field)): The place of birth of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.birthPlace.toString());
+console.log(result.document.inference.prediction.birthPlace.value);
 ```
 
-### Document Side
-
-[📄](#page-level-fields "This field is only present on individual pages.")**documentSide**  ([ClassificationField](#classification-field)): The side of the document which is visible.
+## Document Side
+[📄](#page-level-fields "This field is only present on individual pages.")**documentSide** ([ClassificationField](#classification-field)): The side of the document which is visible.
 
 ```js
-console.log(result.document.inference.pages[0].prediction.documentSide.toString());
+console.log(result.document.inference.pages[0].prediction.documentSide.value);
 ```
 
-### Expiry Date
-
-**expiryDate**  ([DateField](#date-field)): The expiry date of the identification card.
+## Expiry Date
+**expiryDate** ([DateField](#date-field)): The expiry date of the identification card.
 
 ```js
-console.log(result.document.inference.prediction.expiryDate.toString());
+console.log(result.document.inference.prediction.expiryDate.value);
 ```
 
-### Gender
-
-**gender**  ([StringField](#string-field)): The gender of the card holder.
+## Gender
+**gender** ([StringField](#string-field)): The gender of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.gender.toString());
+console.log(result.document.inference.prediction.gender.value);
 ```
 
-### Given Name(s)
-
-**givenNames**  ([StringField](#string-field)): The given name(s) of the card holder.
+## Given Name(s)
+**givenNames** ([StringField](#string-field)): The given name(s) of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.givenNames.toString());
+console.log(result.document.inference.prediction.givenNames.value);
 ```
 
-### Identity Number
-
-**idNumber**  ([StringField](#string-field)): The identification card number.
+## Identity Number
+**idNumber** ([StringField](#string-field)): The identification card number.
 
 ```js
-console.log(result.document.inference.prediction.idNumber.toString());
+console.log(result.document.inference.prediction.idNumber.value);
 ```
 
-### MRZ Line 1
-
-**mrz1**  ([StringField](#string-field)): Machine Readable Zone, first line
+## MRZ Line 1
+**mrz1** ([StringField](#string-field)): Machine Readable Zone, first line
 
 ```js
-console.log(result.document.inference.prediction.mrz1.toString());
+console.log(result.document.inference.prediction.mrz1.value);
 ```
 
-### MRZ Line 2
-
-**mrz2**  ([StringField](#string-field)): Machine Readable Zone, second line
+## MRZ Line 2
+**mrz2** ([StringField](#string-field)): Machine Readable Zone, second line
 
 ```js
-console.log(result.document.inference.prediction.mrz2.toString());
+console.log(result.document.inference.prediction.mrz2.value);
 ```
 
-### Surname
-
-**surname**  ([StringField](#string-field)): The surname of the card holder.
+## Surname
+**surname** ([StringField](#string-field)): The surname of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.surname.toString());
+console.log(result.document.inference.prediction.surname.value);
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

@@ -1,19 +1,9 @@
-# License Plate API version 1
+The Node.js OCR SDK supports the [License Plate API](https://platform.mindee.com/mindee/license_plates).
 
-## Table of Contents
-- [License Plate API version 1](#license-plate-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [String Field](#string-field)
-  - [Attributes](#attributes)
-    - [License Plates](#license-plates)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/eu/license_plate/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![License Plate sample](https://github.com/mindee/client-lib-test-data/blob/main/eu/license_plate/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -38,12 +28,9 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
-
-### Standard Fields
-
-#### Basic Field
-
+# Field Types
+## Standard Fields
+### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -60,24 +47,19 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 
-#### String Field
-
+### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
 
-## Attributes
-
+# Attributes
 The following fields are extracted for License Plate V1:
 
-
-### License Plates
-
-**licensePlates**  ([StringField](#string-field)): List of all license plates found in the image.
+## License Plates
+**licensePlates** ([StringField](#string-field)): List of all license plates found in the image.
 
 ```js
-console.log(result.document.inference.prediction.licensePlates.toString());
+console.log(result.document.inference.prediction.licensePlates.value);
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

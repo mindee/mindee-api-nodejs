@@ -1,23 +1,6 @@
-# Custom API version 1
+The Node.js OCR SDK supports [custom-built APIs](https://developers.mindee.com/docs/build-your-first-document-parsing-api). If your document isn't covered by one of Mindee's Off-the-Shelf APIs, you can create your own API using the[API Builder](https://platform.mindee.com/api-builder).
 
-> **⚠️ Important:** The implementation for Custom builds differs *significantly* from the regular ones.
-
-## Table of Contents
-- [Custom API version 1](#custom-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Custom Endpoints](#custom-endpoints)
-  - [Field Types](#field-types)
-    - [Custom Fields](#custom-fields)
-      - [List Field](#list-field)
-  - [Attributes](#attributes)
-    - [Fields](#fields)
-    - [Classifications](#classifications)
-  - [🧪 Custom Line Items](#-custom-line-items)
-  - [Questions?](#questions)
-
-
-## Quick-Start
+# Quick-Start
 
 ```js
 const mindee = require("mindee");
@@ -57,7 +40,7 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Custom Endpoints
+# Custom Endpoints
 
 You may have noticed in the previous step that in order to access a custom build, you will need to provide an account and an endpoint name at the very least. 
 
@@ -65,11 +48,11 @@ You may have noticed in the previous step that in order to access a custom build
 Although it is optional, the version number should match the latest version of your build in most use-cases. If it is not set, it will default to "1".
 
 
-## Field Types
+# Field Types
 
-### Custom Fields
+## Custom Fields
 
-#### List Field
+### List Field
 
 A `ListField` is a special type of custom list that implements the following:
 
@@ -82,11 +65,11 @@ Since the inner contents can vary, the value isn't accessed through a property, 
 * **contentsString(separator=" ")** (`string`): returns a list of concatenated values, with an optional **separator** `string` between them.
 * **toString()** returns a string representation of all values, with an empty space between each of them.
 
-## Attributes
+# Attributes
 
 Custom builds always have access to at least two attributes:
 
-### Fields
+## Fields
 
 **fields** ({`string`: [ClassificationField](#classification-field)}): 
 
@@ -97,7 +80,7 @@ Custom builds always have access to at least two attributes:
 console.log(result.document.inference.prediction.fields["my-field"].toString());
 ```
 
-### Classifications
+## Classifications
 
 **classifications** ({`string`: [ClassificationField](#classification-field)}): The purchase category among predefined classes.
 
@@ -105,7 +88,7 @@ console.log(result.document.inference.prediction.fields["my-field"].toString());
 console.log(result.document.inference.prediction.classifications["my-classification"].toString());
 ```
 
-## 🧪 Custom Line Items
+# 🧪 Custom Line Items
 
 > **⚠️ Warning**: Custom Line Items are an **experimental** feature, and are still undergoing development at the moment. Implement it at your own risk.
 
@@ -121,6 +104,6 @@ This function takes the following attributes:
 
 Returns a constructed [LineItems](#custom-line-items) object from the given params.
 
-## Questions?
+# Questions?
 
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

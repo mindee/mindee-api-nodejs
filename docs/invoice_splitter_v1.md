@@ -1,19 +1,9 @@
-# Invoice Splitter API version 1
+The Node.js OCR SDK supports the [Invoice Splitter API](https://platform.mindee.com/mindee/expense_receipts).
 
-> **⚠️ Important:** This API only works **asynchronously**, which means that documents have to be sent and retrieved in two separate steps. Since the parsing can be longer for some documents, be sure to implement a retry mechanism as detailed in the [Quick Start](#quick-start) section.
+Using [this sample](https://github.com/mindee/client-lib-test-data/blob/9a34146755c348281c28bbf351900229b412797e/invoice_splitter/default_sample.pdf), we are going to illustrate how to detect the pages of multiple invoices within the same document.
 
-## Table of Contents
-- [Invoice Splitter API version 1](#invoice-splitter-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Custom Fields](#custom-fields)
-      - [Page Group](#page-group)
-  - [Attributes](#attributes)
-    - [Invoice Page Groups](#invoice-page-groups)
-  - [Questions?](#questions)
-
-## Quick-Start
+# Quick-Start
+> **⚠️ Important:** This API only works **asynchronously**, which means that documents have to be sent and retrieved in two separate steps.
 
 ```js
 const mindee = require("mindee");
@@ -93,12 +83,9 @@ async function sampleAsyncApi() {
 sampleAsyncApi();
 ```
 
-## Field Types
-
-### Custom Fields
-
-#### Page Group
-
+# Field Types
+## Custom Fields
+### Page Group
 List of page group indexes.
 
 A `PageGroup` implements the following attributes:
@@ -106,19 +93,15 @@ A `PageGroup` implements the following attributes:
 * **pageIndexes** (`number[]`): List of indexes of the pages of a single invoice.
 * **confidence** (`number`): The confidence of the prediction.
 
-
-## Attributes
-
+# Attributes
 The following fields are extracted for Invoice Splitter V1:
 
-### Invoice Page Groups
-
-**invoicePageGroups**  ([PageGroup](#page-group)[]): List of page indexes that belong to the same invoice in the PDF.
+## Invoice Page Groups
+**invoicePageGroups** ([PageGroup](#page-group)[]): List of page indexes that belong to the same invoice in the PDF.
 
 ```js
 console.log(result.document.inference.prediction.invoicePageGroups.toString());
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

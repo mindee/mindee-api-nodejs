@@ -1,22 +1,11 @@
-# Cropper API version 1
-
 > **Note:** CropperV1 is the stand-alone API for the parameter of the same name.
+> 
+The Node.js OCR SDK supports the [Cropper API](https://platform.mindee.com/mindee/cropper).
 
-## Table of Contents
-- [Cropper API version 1](#cropper-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [Position Field](#position-field)
-    - [Page-Level Fields](#page-level-fields)
-  - [Attributes](#attributes)
-    - [Cropping](#cropping)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/cropper/default_sample.jpg), we are going to crop receipts using the Cropper API.
+![Cropper Receipts sample](https://github.com/mindee/client-lib-test-data/blob/main/cropper/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -39,11 +28,35 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: 149ce775-8302-4798-8649-7eda9fb84a1a
+:Filename: default_sample.jpg
 
-### Standard Fields
+Inference
+#########
+:Product: mindee/cropper v1.0
+:Rotation applied: No
 
-#### Basic Field
+Prediction
+==========
+:Cropping:
+
+Page Predictions
+================
+
+Page 0
+------
+:Cropping: Polygon with 26 points.
+           Polygon with 25 points.
+```
+
+# Field Types
+## Standard Fields
+### Basic Field
 
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
@@ -60,32 +73,24 @@ A typical `Field` object will have the following attributes:
 
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
-
-#### Position Field
-
+### Position Field
 The position field `PositionField` does not implement all the basic `Field` attributes, only `boundingBox`, `polygon` and **pageId**. On top of these, it has access to:
 
 * **rectangle** (`[Point, Point, Point, Point]`): a Polygon with four points that may be oriented (even beyond canvas).
 * **quadrangle** (`[Point, Point, Point, Point]`): a free polygon made up of four points.
 
-
-### Page-Level Fields
-
+## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
 
-
-## Attributes
-
+# Attributes
 The following fields are extracted for Cropper V1:
 
-### Cropping
-
-[📄](#page-level-fields "This field is only present on individual pages.")**cropping**  ([PositionField](#position-field)): A list of cropped positions on a page.
+## Cropping
+[📄](#page-level-fields "This field is only present on individual pages.")**cropping** ([PositionField](#position-field)): A list of cropped positions on a page.
 
 ```js
 console.log(result.document.inference.pages[0].prediction.cropping.toString());
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

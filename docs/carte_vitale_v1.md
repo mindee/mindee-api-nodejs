@@ -1,23 +1,9 @@
-# Carte Vitale API version 1
+The Node.js OCR SDK supports the [Carte Vitale API](https://platform.mindee.com/mindee/carte_vitale).
 
-## Table of Contents
-- [Carte Vitale API version 1](#carte-vitale-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [Date Field](#date-field)
-      - [String Field](#string-field)
-  - [Attributes](#attributes)
-    - [Given Name(s)](#given-names)
-    - [Issuance Date](#issuance-date)
-    - [Social Security Number](#social-security-number)
-    - [Surname](#surname)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/carte_vitale/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Carte Vitale sample](https://github.com/mindee/client-lib-test-data/blob/main/fr/carte_vitale/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -42,12 +28,9 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
-
-### Standard Fields
-
-#### Basic Field
-
+# Field Types
+## Standard Fields
+### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -64,55 +47,46 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 
-#### Date Field
-
+### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
 
-#### String Field
-
+### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
 
-## Attributes
-
+# Attributes
 The following fields are extracted for Carte Vitale V1:
 
-
-### Given Name(s)
-
-**givenNames**  ([StringField](#string-field)): The given name(s) of the card holder.
+## Given Name(s)
+**givenNames** ([StringField](#string-field)): The given name(s) of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.givenNames.toString());
+console.log(result.document.inference.prediction.givenNames.value);
 ```
 
-### Issuance Date
-
-**issuanceDate**  ([DateField](#date-field)): The date the card was issued.
+## Issuance Date
+**issuanceDate** ([DateField](#date-field)): The date the card was issued.
 
 ```js
-console.log(result.document.inference.prediction.issuanceDate.toString());
+console.log(result.document.inference.prediction.issuanceDate.value);
 ```
 
-### Social Security Number
-
-**socialSecurity**  ([StringField](#string-field)): The Social Security Number (Numéro de Sécurité Sociale) of the card holder
+## Social Security Number
+**socialSecurity** ([StringField](#string-field)): The Social Security Number (Numéro de Sécurité Sociale) of the card holder
 
 ```js
-console.log(result.document.inference.prediction.socialSecurity.toString());
+console.log(result.document.inference.prediction.socialSecurity.value);
 ```
 
-### Surname
-
-**surname**  ([StringField](#string-field)): The surname of the card holder.
+## Surname
+**surname** ([StringField](#string-field)): The surname of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.surname.toString());
+console.log(result.document.inference.prediction.surname.value);
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

@@ -1,30 +1,9 @@
-# Proof of Address API version 1
+The Node.js OCR SDK supports the [Proof of Address API](https://platform.mindee.com/mindee/proof_of_address).
 
-## Table of Contents
-- [Proof of Address API version 1](#proof-of-address-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [Company Registration Field](#company-registration-field)
-      - [Date Field](#date-field)
-      - [Locale Field](#locale-field)
-      - [String Field](#string-field)
-  - [Attributes](#attributes)
-    - [Date of Issue](#date-of-issue)
-    - [Dates](#dates)
-    - [Issuer Address](#issuer-address)
-    - [Issuer Company Registrations](#issuer-company-registrations)
-    - [Issuer Name](#issuer-name)
-    - [Locale](#locale)
-    - [Recipient Address](#recipient-address)
-    - [Recipient Company Registrations](#recipient-company-registrations)
-    - [Recipient Name](#recipient-name)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/proof_of_address/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Proof of Address sample](https://github.com/mindee/client-lib-test-data/blob/main/proof_of_address/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -49,12 +28,9 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
-
-### Standard Fields
-
-#### Basic Field
-
+# Field Types
+## Standard Fields
+### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -71,22 +47,19 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 
-#### Company Registration Field
-
+### Company Registration Field
 Aside from the basic `Field` attributes, the company registration field `CompanyRegistrationField` also implements the following:
 
 * **type** (`string`): the type of company.
 
 
-#### Date Field
-
+### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
 
-#### Locale Field
-
+### Locale Field
 The locale field `LocaleField` only implements the **value**, **confidence** and **pageId** base `Field` attributes, but it comes with its own:
 
 * **language** (`string`): ISO 639-1 language code (e.g.: `en` for English). Can be `undefined`.
@@ -94,88 +67,75 @@ The locale field `LocaleField` only implements the **value**, **confidence** and
 * **currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `undefined`.
 
 
-#### String Field
-
+### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
 
-## Attributes
-
+# Attributes
 The following fields are extracted for Proof of Address V1:
 
-
-### Date of Issue
-
-**date**  ([DateField](#date-field)): The date the document was issued.
+## Date of Issue
+**date** ([DateField](#date-field)): The date the document was issued.
 
 ```js
-console.log(result.document.inference.prediction.date.toString());
+console.log(result.document.inference.prediction.date.value);
 ```
 
-### Dates
-
-**dates**  ([DateField](#date-field)): List of dates found on the document.
+## Dates
+**dates** ([DateField](#date-field)): List of dates found on the document.
 
 ```js
-console.log(result.document.inference.prediction.dates.toString());
+console.log(result.document.inference.prediction.dates.value);
 ```
 
-### Issuer Address
-
-**issuerAddress**  ([StringField](#string-field)): The address of the document's issuer.
+## Issuer Address
+**issuerAddress** ([StringField](#string-field)): The address of the document's issuer.
 
 ```js
-console.log(result.document.inference.prediction.issuerAddress.toString());
+console.log(result.document.inference.prediction.issuerAddress.value);
 ```
 
-### Issuer Company Registrations
-
-**issuerCompanyRegistration**  ([CompanyRegistrationField](#company-registration-field)): List of company registrations found for the issuer.
+## Issuer Company Registrations
+**issuerCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)): List of company registrations found for the issuer.
 
 ```js
-console.log(result.document.inference.prediction.issuerCompanyRegistration.toString());
+console.log(result.document.inference.prediction.issuerCompanyRegistration.value);
 ```
 
-### Issuer Name
-
-**issuerName**  ([StringField](#string-field)): The name of the person or company issuing the document.
+## Issuer Name
+**issuerName** ([StringField](#string-field)): The name of the person or company issuing the document.
 
 ```js
-console.log(result.document.inference.prediction.issuerName.toString());
+console.log(result.document.inference.prediction.issuerName.value);
 ```
 
-### Locale
-
-**locale**  ([LocaleField](#locale-field)): The locale detected on the document.
+## Locale
+**locale** ([LocaleField](#locale-field)): The locale detected on the document.
 
 ```js
-console.log(result.document.inference.prediction.locale.toString());
+console.log(result.document.inference.prediction.locale.value);
 ```
 
-### Recipient Address
-
-**recipientAddress**  ([StringField](#string-field)): The address of the recipient.
+## Recipient Address
+**recipientAddress** ([StringField](#string-field)): The address of the recipient.
 
 ```js
-console.log(result.document.inference.prediction.recipientAddress.toString());
+console.log(result.document.inference.prediction.recipientAddress.value);
 ```
 
-### Recipient Company Registrations
-
-**recipientCompanyRegistration**  ([CompanyRegistrationField](#company-registration-field)): List of company registrations found for the recipient.
+## Recipient Company Registrations
+**recipientCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)): List of company registrations found for the recipient.
 
 ```js
-console.log(result.document.inference.prediction.recipientCompanyRegistration.toString());
+console.log(result.document.inference.prediction.recipientCompanyRegistration.value);
 ```
 
-### Recipient Name
-
-**recipientName**  ([StringField](#string-field)): The name of the person or company receiving the document.
+## Recipient Name
+**recipientName** ([StringField](#string-field)): The name of the person or company receiving the document.
 
 ```js
-console.log(result.document.inference.prediction.recipientName.toString());
+console.log(result.document.inference.prediction.recipientName.value);
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

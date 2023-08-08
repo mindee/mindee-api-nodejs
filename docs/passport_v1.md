@@ -1,30 +1,9 @@
-# Passport API version 1
+The Node.js OCR SDK supports the [Passport API](https://platform.mindee.com/mindee/passport).
 
-## Table of Contents
-- [Passport API version 1](#passport-api-version-1)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [Date Field](#date-field)
-      - [String Field](#string-field)
-  - [Attributes](#attributes)
-    - [Date of Birth](#date-of-birth)
-    - [Place of Birth](#place-of-birth)
-    - [Country Code](#country-code)
-    - [Expiry Date](#expiry-date)
-    - [Gender](#gender)
-    - [Given Name(s)](#given-names)
-    - [ID Number](#id-number)
-    - [Date of Issue](#date-of-issue)
-    - [MRZ Line 1](#mrz-line-1)
-    - [MRZ Line 2](#mrz-line-2)
-    - [Surname](#surname)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/passport/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Passport sample](https://github.com/mindee/client-lib-test-data/blob/main/passport/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -49,12 +28,9 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
-
-### Standard Fields
-
-#### Basic Field
-
+# Field Types
+## Standard Fields
+### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -71,111 +47,95 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 
-#### Date Field
-
+### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
 
-#### String Field
-
+### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
 
-## Attributes
-
+# Attributes
 The following fields are extracted for Passport V1:
 
-
-### Date of Birth
-
-**birthDate**  ([DateField](#date-field)): The date of birth of the passport holder.
+## Date of Birth
+**birthDate** ([DateField](#date-field)): The date of birth of the passport holder.
 
 ```js
-console.log(result.document.inference.prediction.birthDate.toString());
+console.log(result.document.inference.prediction.birthDate.value);
 ```
 
-### Place of Birth
-
-**birthPlace**  ([StringField](#string-field)): The place of birth of the passport holder.
+## Place of Birth
+**birthPlace** ([StringField](#string-field)): The place of birth of the passport holder.
 
 ```js
-console.log(result.document.inference.prediction.birthPlace.toString());
+console.log(result.document.inference.prediction.birthPlace.value);
 ```
 
-### Country Code
-
-**country**  ([StringField](#string-field)): The country's 3 letter code (ISO 3166-1 alpha-3).
+## Country Code
+**country** ([StringField](#string-field)): The country's 3 letter code (ISO 3166-1 alpha-3).
 
 ```js
-console.log(result.document.inference.prediction.country.toString());
+console.log(result.document.inference.prediction.country.value);
 ```
 
-### Expiry Date
-
-**expiryDate**  ([DateField](#date-field)): The expiry date of the passport.
+## Expiry Date
+**expiryDate** ([DateField](#date-field)): The expiry date of the passport.
 
 ```js
-console.log(result.document.inference.prediction.expiryDate.toString());
+console.log(result.document.inference.prediction.expiryDate.value);
 ```
 
-### Gender
-
-**gender**  ([StringField](#string-field)): The gender of the passport holder.
+## Gender
+**gender** ([StringField](#string-field)): The gender of the passport holder.
 
 ```js
-console.log(result.document.inference.prediction.gender.toString());
+console.log(result.document.inference.prediction.gender.value);
 ```
 
-### Given Name(s)
-
-**givenNames**  ([StringField](#string-field)): The given name(s) of the passport holder.
+## Given Name(s)
+**givenNames** ([StringField](#string-field)): The given name(s) of the passport holder.
 
 ```js
-console.log(result.document.inference.prediction.givenNames.toString());
+console.log(result.document.inference.prediction.givenNames.value);
 ```
 
-### ID Number
-
-**idNumber**  ([StringField](#string-field)): The passport's identification number.
+## ID Number
+**idNumber** ([StringField](#string-field)): The passport's identification number.
 
 ```js
-console.log(result.document.inference.prediction.idNumber.toString());
+console.log(result.document.inference.prediction.idNumber.value);
 ```
 
-### Date of Issue
-
-**issuanceDate**  ([DateField](#date-field)): The date the passport was issued.
+## Date of Issue
+**issuanceDate** ([DateField](#date-field)): The date the passport was issued.
 
 ```js
-console.log(result.document.inference.prediction.issuanceDate.toString());
+console.log(result.document.inference.prediction.issuanceDate.value);
 ```
 
-### MRZ Line 1
-
-**mrz1**  ([StringField](#string-field)): Machine Readable Zone, first line
+## MRZ Line 1
+**mrz1** ([StringField](#string-field)): Machine Readable Zone, first line
 
 ```js
-console.log(result.document.inference.prediction.mrz1.toString());
+console.log(result.document.inference.prediction.mrz1.value);
 ```
 
-### MRZ Line 2
-
-**mrz2**  ([StringField](#string-field)): Machine Readable Zone, second line
+## MRZ Line 2
+**mrz2** ([StringField](#string-field)): Machine Readable Zone, second line
 
 ```js
-console.log(result.document.inference.prediction.mrz2.toString());
+console.log(result.document.inference.prediction.mrz2.value);
 ```
 
-### Surname
-
-**surname**  ([StringField](#string-field)): The surname of the passport holder.
+## Surname
+**surname** ([StringField](#string-field)): The surname of the passport holder.
 
 ```js
-console.log(result.document.inference.prediction.surname.toString());
+console.log(result.document.inference.prediction.surname.value);
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

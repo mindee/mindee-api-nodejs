@@ -1,24 +1,9 @@
-# Bank Account Details API version 2
+The Node.js OCR SDK supports the [Bank Account Details API](https://platform.mindee.com/mindee/bank_account_details).
 
-## Table of Contents
-- [Bank Account Details API version 2](#bank-account-details-api-version-2)
-  - [Table of Contents](#table-of-contents)
-  - [Quick-Start](#quick-start)
-  - [Field Types](#field-types)
-    - [Standard Fields](#standard-fields)
-      - [Basic Field](#basic-field)
-      - [String Field](#string-field)
-    - [Custom Fields](#custom-fields)
-      - [Basic Bank Account Number Field](#basic-bank-account-number-field)
-  - [Attributes](#attributes)
-    - [Account Holder's Names](#account-holders-names)
-    - [Basic Bank Account Number](#basic-bank-account-number)
-    - [IBAN](#iban)
-    - [SWIFT Code](#swift-code)
-  - [Questions?](#questions)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/bank_account_details/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Bank Account Details sample](https://github.com/mindee/client-lib-test-data/blob/main/fr/bank_account_details/default_sample.jpg?raw=true)
 
-## Quick-Start
-
+# Quick-Start
 ```js
 const mindee = require("mindee");
 // for TS or modules:
@@ -43,12 +28,9 @@ apiResponse.then((resp) => {
 });
 ```
 
-## Field Types
-
-### Standard Fields
-
-#### Basic Field
-
+# Field Types
+## Standard Fields
+### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -65,15 +47,14 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 
-#### String Field
-
+### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
-### Custom Fields
+
+## Custom Fields
 
 Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
 
-#### Basic Bank Account Number Field
-
+### Basic Bank Account Number Field
 Full extraction of BBAN, including: branch code, bank code, account and key.
 
 A `BankAccountDetailsV2Bban` implements the following attributes:
@@ -84,43 +65,36 @@ A `BankAccountDetailsV2Bban` implements the following attributes:
 * `bbanNumber` (string): The BBAN Account number outputted as a string.
 
 
-## Attributes
-
+# Attributes
 The following fields are extracted for Bank Account Details V2:
 
-
-### Account Holder's Names
-
-**accountHoldersNames**  ([StringField](#string-field)): Full extraction of the account holders names.
+## Account Holder's Names
+**accountHoldersNames** ([StringField](#string-field)): Full extraction of the account holders names.
 
 ```js
-console.log(result.document.inference.prediction.accountHoldersNames.toString());
+console.log(result.document.inference.prediction.accountHoldersNames.value);
 ```
 
-### Basic Bank Account Number
-
-**bban**  ([BankAccountDetailsV2Bban](#basic-bank-account-number)): Full extraction of BBAN, including: branch code, bank code, account and key.
+## Basic Bank Account Number
+**bban** ([BankAccountDetailsV2Bban](#basic-bank-account-number)): Full extraction of BBAN, including: branch code, bank code, account and key.
 
 ```js
-console.log(result.document.inference.prediction.bban.toString());
+console.log(result.document.inference.prediction.bban.value);
 ```
 
-### IBAN
-
-**iban**  ([StringField](#string-field)): Full extraction of the IBAN number.
+## IBAN
+**iban** ([StringField](#string-field)): Full extraction of the IBAN number.
 
 ```js
-console.log(result.document.inference.prediction.iban.toString());
+console.log(result.document.inference.prediction.iban.value);
 ```
 
-### SWIFT Code
-
-**swiftCode**  ([StringField](#string-field)): Full extraction of the SWIFT code.
+## SWIFT Code
+**swiftCode** ([StringField](#string-field)): Full extraction of the SWIFT code.
 
 ```js
-console.log(result.document.inference.prediction.swiftCode.toString());
+console.log(result.document.inference.prediction.swiftCode.value);
 ```
 
-## Questions?
-
+# Questions?
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)
