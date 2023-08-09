@@ -114,11 +114,7 @@ const apiResponse = mindeeClient
 ```js
 // Handle the response Promise
 apiResponse.then((resp) => {
-
-    // full object
-    console.log(resp.document);
-
-    // string summary
+    // print a string summary
     console.log(resp.document.toString());
 
     // individual pages (array)
@@ -127,7 +123,6 @@ apiResponse.then((resp) => {
 ```
 
 ### Additional options
-
 #### Apply Cropping
 
 To apply the `Cropper` tool provided by Mindee, set the `cropper` param to `true`:
@@ -140,20 +135,6 @@ const apiResponse = mindeeClient.parse(
   { cropper: true }
 );
 ```
-
-#### Full-Text extraction (OCR)
-
-To extract all words read on your document, set the `fullText` param to `true`:
-
-```js
-//...
-const apiResponse = mindeeClient.parse(
-  mindee.product.InvoiceV4,
-  inputSource,
-  { fullText: true }
-);
-```
-> Note: this parameter is only available on the InvoiceV4, ReceiptV5 & FinancialDocumentV1 APIs for now.
 
 #### Page options
 
@@ -172,6 +153,23 @@ const apiResponse = mindeeClient.parse(
     }
   });
 ```
+
+Complete details on the working of the library are available in the following guides: 
+
+- [Overview](https://developers.mindee.com/docs/nodejs-getting-started)
+- [Node.js Custom APIs OCR](https://developers.mindee.com/docs/nodejs-custom-api)
+- [Node.js Invoices OCR](https://developers.mindee.com/docs/nodejs-invoice-ocr)
+- [Node.js Receipts OCR](https://developers.mindee.com/docs/nodejs-receipt-ocr)
+- [Node.js Financial Documents OCR](https://developers.mindee.com/docs/nodejs-financial-document-ocr)
+- [Node.js Passports OCR](https://developers.mindee.com/docs/nodejs-passport-ocr)
+- [Node.js Proof of Address OCR](https://developers.mindee.com/docs/nodejs-proof-of-address-ocr)
+- [Node.js (EU) License Plates OCR](https://developers.mindee.com/docs/nodejs-eu-license-plates-ocr)
+- [Node.js (FR) Bank Account Details OCR](https://developers.mindee.com/docs/nodejs-fr-bank-account-details-ocr)
+- [Node.js (FR) Carte Vitales OCR](https://developers.mindee.com/docs/nodejs-fr-carte-vitale-ocr)
+- [Node.js (US) Bank Checks OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
+- [Node.js (US) Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
+- [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-api)
+- [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-api)
 
 ## Further Reading
 There's more to it than that for those that need more features, or want to

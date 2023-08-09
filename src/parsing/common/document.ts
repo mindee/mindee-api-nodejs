@@ -1,7 +1,7 @@
 import { CropperExtra } from "./extras/cropperExtra";
 import { ExtraField, Extras } from "./extras/extras";
 import { Inference } from "./inference";
-import { Ocr } from "./ocr/ocr";
+import { Ocr } from "./ocr";
 import { StringDict } from "./stringDict";
 
 export class Document<T extends Inference> {

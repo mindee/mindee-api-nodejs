@@ -27,7 +27,7 @@ export class Line {
   bbox!: BBox;
   /**
    * The height tolerance used to build the line.
-   * It helps when the height of an expected line can vary.
+   * It helps when the height of a line can vary unexpectedly.
    */
   heightTolerance: number;
 
@@ -107,7 +107,7 @@ export class LineItems {
 
 export function getLineItems(
   anchorNames: string[],
-  heigthLineTolerance: number,
+  heightLineTolerance: number,
   fieldNamesTargeted: string[],
   fields: Map<string, ListField>
 ): LineItems {
@@ -119,7 +119,7 @@ export function getLineItems(
   const lineItemsPrepared = prepare(
     anchorName,
     fieldsToTransformIntoLines,
-    heigthLineTolerance
+    heightLineTolerance
   );
 
   lineItemsPrepared.rows.forEach((currentLine) => {
@@ -165,7 +165,7 @@ function findBestAnchor(
 function prepare(
   anchorName: string,
   fields: Map<string, ListField>,
-  heigthLineTolerance: number
+  heightLineTolerance: number
 ): LineItems {
   const lineItemsPrepared: Line[] = [];
 
@@ -175,7 +175,7 @@ function prepare(
   }
 
   let currentLineNumber: number = 1;
-  let currentLine = new Line(currentLineNumber, heigthLineTolerance);
+  let currentLine = new Line(currentLineNumber, heightLineTolerance);
 
   if (anchorField !== undefined) {
     let currentValue = anchorField.values[0];
@@ -188,7 +188,7 @@ function prepare(
       if (!currentLine.contains(currentFieldBbox)) {
         lineItemsPrepared.push(currentLine);
         currentLineNumber++;
-        currentLine = new Line(currentLineNumber, heigthLineTolerance);
+        currentLine = new Line(currentLineNumber, heightLineTolerance);
       }
       currentLine.extendWithBbox(currentFieldBbox);
     }

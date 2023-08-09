@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { Ocr } from "../../../src/parsing/common/ocr/ocr";
+import { Ocr } from "../../../src/parsing/common/ocr";
 
 const dataPath = {
   complete: "tests/data/ocr/complete_with_ocr.json",
