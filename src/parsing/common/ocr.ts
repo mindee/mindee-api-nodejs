@@ -1,4 +1,4 @@
-import { StringDict } from "..";
+import { StringDict } from "./stringDict";
 import { MvisionV1 } from "./mvisionV1";
 
 export class Ocr {

@@ -60,8 +60,16 @@ export class FinancialDocumentV1LineItem {
    */
   #printableValues() {
     return {
-      description: this.description ?? "",
-      productCode: this.productCode ?? "",
+      description: this.description ?
+        this.description.length <= 36 ?
+          this.description :
+          this.description.slice(0, 33) + "..." :
+          "",
+      productCode: this.productCode ?
+        this.productCode.length <= 12 ?
+          this.productCode :
+          this.productCode.slice(0, 9) + "..." :
+          "",
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       taxAmount: this.taxAmount !== undefined ? floatToString(this.taxAmount) : "",
       taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",

@@ -13,7 +13,8 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 // Create a custom endpoint for your product
 const customEndpoint = mindeeClient.createEndpoint(
   "my-endpoint",
-  "my-account"
+  "my-account",
+  // "my-version" // Optional: set the version, defaults to "1"
 );
 
 // Parse it
@@ -29,7 +30,6 @@ const apiResponse = mindeeClient
 
 // Handle the response Promise
 apiResponse.then((resp) => {
-
   // print a string summary
   console.log(resp.document.toString());
 });
