@@ -5,7 +5,7 @@ export { LocaleField } from "./locale";
 export { AmountField, floatToString } from "./amount";
 export { DateField } from "./date";
 export { BaseField, BaseFieldConstructor } from "./base";
-export { FullText, Word } from "./fullText";
+export { AllWords, Word } from "./allWords";
 export { CompanyRegistrationField } from "./companyRegistration";
 export { PositionField } from "./position";
 export { StringField } from "./text";

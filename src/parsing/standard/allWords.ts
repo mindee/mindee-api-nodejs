@@ -12,14 +12,14 @@ export type Word = {
 
 type Line = Word[];
 
-function orderLines(fullText: Word[]): Line[] {
+function orderLines(allWords: Word[]): Line[] {
   const lines: Line[] = [];
   const indexes: number[] = [];
   let current: Word | undefined = undefined;
 
-  fullText.forEach(() => {
+  allWords.forEach(() => {
     let line: Line = [];
-    fullText.forEach((word, idx) => {
+    allWords.forEach((word, idx) => {
       if (!indexes.includes(idx)) {
         if (current === undefined) {
           current = word;
@@ -55,7 +55,7 @@ function orderLines(fullText: Word[]): Line[] {
 /**
  * OCR extraction from the entire document.
  */
-export class FullText {
+export class AllWords {
   words: Word[] = [];
 
   /**
