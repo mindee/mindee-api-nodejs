@@ -1,7 +1,8 @@
 ---
 title: Custom API Node.js
 ---
-The Node.js OCR SDK supports [custom-built APIs](https://developers.mindee.com/docs/build-your-first-document-parsing-api). If your document isn't covered by one of Mindee's Off-the-Shelf APIs, you can create your own API using the[API Builder](https://platform.mindee.com/api-builder).
+The Node.js OCR SDK supports [custom-built APIs](https://developers.mindee.com/docs/build-your-first-document-parsing-api).
+If your document isn't covered by one of Mindee's Off-the-Shelf APIs, you can create your own API using the[API Builder](https://platform.mindee.com/api-builder).
 
 # Quick-Start
 
@@ -45,10 +46,10 @@ apiResponse.then((resp) => {
 
 # Custom Endpoints
 
-You may have noticed in the previous step that in order to access a custom build, you will need to provide an account and an endpoint name at the very least. 
+You may have noticed in the previous step that in order to access a custom build, you will need to provide an account and an endpoint name at the very least.
 
-
-Although it is optional, the version number should match the latest version of your build in most use-cases. If it is not set, it will default to "1".
+Although it is optional, the version number should match the latest version of your build in most use-cases.
+If it is not set, it will default to "1".
 
 
 # Field Types
@@ -96,7 +97,8 @@ console.log(result.document.inference.prediction.classifications["my-classificat
 > **⚠️ Warning**: Custom Line Items are an **experimental** feature, and are still undergoing development at the moment. Implement it at your own risk.
 
 
-Though not supported directly in the API, sometimes you might need to reconstitute line items by hand. The SDK provides a tool for this very purpose:
+Though not supported directly in the API, sometimes you might need to reconstitute line items by hand.
+The library provides a tool for this very purpose:
 
 **getLineItems()** 
 This function takes the following attributes:
