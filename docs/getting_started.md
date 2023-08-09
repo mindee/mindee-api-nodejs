@@ -1,7 +1,7 @@
 ---
 title: Nodejs Getting Started
 ---
-This guide will help you get the most out of the Mindee Node.js  OCR SDK to easily extract data from your documents.
+This guide will help you get the most out of the Mindee Node.js client library to easily extract data from your documents.
 
 > 📘 **Info**
 > 
@@ -18,7 +18,7 @@ You'll need [npm and Node.js](https://nodejs.dev/download/package-manager/).
 
 ### Standard Installation
 
-The easiest way to install the Mindee OCR SDK for your project is by using npm:
+The easiest way to install the Mindee client library for your project is by using npm:
 
 ```shell
 npm install mindee
@@ -43,9 +43,9 @@ npm install
 
 ## Updating the Library
 
-It is important to always check the version of the Mindee  OCR SDK you are using, as new and updated features won’t work on older versions.
+It is important to always check the version of the Mindee client library you are using, as new and updated features won’t work on older versions.
 
-To get the latest version of your  OCR SDK:
+To get the latest version:
 
 ```shell
 npm update mindee
@@ -167,7 +167,7 @@ const inputSource = mindeeClient.docFromBase64(b64String, "document.jpg");
 
 Specify a URL to send to the Mindee API.
 
-**Note**: The URL will not be downloaded locally, so checks (i.e. MIMEtype) and transformations (i.e. remove pages from a PDF) will not be possible.
+**Note**: The URL will not be downloaded locally, so checks (i.e. MIME type) and transformations (i.e. remove pages from a PDF) will not be possible.
 
 ```ts
 const inputSource = mindeeClient.docFromUrl("https://example.com/image.jpg");
@@ -266,12 +266,13 @@ It's possible to have the same field in various pages, but at the document level
 console.log(`${resp.document}`);
 ```
 
-A `document`'s fields (attributes) can be accessed through it's `prediction` attribute, which have types that can vary from one product to another. These attributes are detailed in each product's respective guide.
-
+A `document`'s fields (attributes) can be accessed through it's `prediction` attribute, which have types that can vary from one product to another.
+These attributes are detailed in each product's respective guide.
 
 ### Page Level Prediction
 
-The `pages` attribute is an array of `Page` objects. `Page` is a wrapper around elements that extend the [`Document` class](#Document-level-prediction). The `prediction` of a `Page` inherits from the product's own `Document`, and adds all page-specific fields to it.
+The `pages` attribute is an array of `Page` objects. `Page` is a wrapper around elements that extend the [`Document` class](#Document-level-prediction).
+The `prediction` of a `Page` inherits from the product's own `Document`, and adds all page-specific fields to it.
 
 The order of the elements in the array matches the order of the pages in the document.
 
@@ -291,4 +292,5 @@ resp.pages.forEach((page) => {
 ```
 
 # Questions?
+
 [Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)

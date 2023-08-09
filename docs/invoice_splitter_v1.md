@@ -118,7 +118,7 @@ Page 0
 ```
 
 # Field Types
-## Custom Fields
+## Specific Fields
 ### Page Group
 List of page group indexes.
 

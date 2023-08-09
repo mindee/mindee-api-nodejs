@@ -11,7 +11,7 @@ Here's the TL;DR of getting started.
 
 First, get an [API Key](https://developers.mindee.com/docs/create-api-key)
 
-Then, install the library:
+Then, install this library:
 ```shell
 npm install mindee
 ```

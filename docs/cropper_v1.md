@@ -59,6 +59,8 @@ Page 0
 
 # Field Types
 ## Standard Fields
+These fields are generic and used in several products.
+
 ### Basic Field
 
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
@@ -77,7 +79,7 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 ### Position Field
-The position field `PositionField` does not implement all the basic `Field` attributes, only `boundingBox`, `polygon` and **pageId**. On top of these, it has access to:
+The position field `PositionField` does not implement all the basic `Field` attributes, only **boundingBox**, **polygon** and **pageId**. On top of these, it has access to:
 
 * **rectangle** (`[Point, Point, Point, Point]`): a Polygon with four points that may be oriented (even beyond canvas).
 * **quadrangle** (`[Point, Point, Point, Point]`): a free polygon made up of four points.

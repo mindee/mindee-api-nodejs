@@ -72,6 +72,8 @@ Page 0
 
 # Field Types
 ## Standard Fields
+These fields are generic and used in several products.
+
 ### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
@@ -91,8 +93,8 @@ Aside from the previous attributes, all basic fields have access to a `toString(
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
-## Custom Fields
-Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
+## Specific Fields
+Fields which are specific to this product; they are not used in any other product.
 
 ### Basic Bank Account Number Field
 Full extraction of BBAN, including: branch code, bank code, account and key.

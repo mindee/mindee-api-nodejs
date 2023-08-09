@@ -110,6 +110,8 @@ Page 0
 
 # Field Types
 ## Standard Fields
+These fields are generic and used in several products.
+
 ### Basic Field
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
@@ -170,8 +172,8 @@ Aside from the basic `Field` attributes, the tax field `TaxField` also implement
 #### Taxes (Array)
 The `Taxes` field represents an array-like collection of `TaxField` objects. As it is the representation of several objects, it has access to a custom `toString()` method that can render a `TaxField` object as a table line.
 
-## Custom Fields
-Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
+## Specific Fields
+Fields which are specific to this product; they are not used in any other product.
 
 ### Line Items Field
 List of line item details.
