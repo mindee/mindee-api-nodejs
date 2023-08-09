@@ -1,3 +1,6 @@
+---
+title: Proof of Address OCR Node.js
+---
 The Node.js OCR SDK supports the [Proof of Address API](https://platform.mindee.com/mindee/proof_of_address).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/proof_of_address/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -28,6 +31,69 @@ apiResponse.then((resp) => {
 });
 ```
 
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: 3a7e1da6-d4d0-4704-af91-051fe5484c2e
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/proof_of_address v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Locale: en; en; USD;
+:Issuer Name: PPL ELECTRIC UTILITIES
+:Issuer Company Registrations:
+:Issuer Address: 2 NORTH 9TH STREET CPC-GENN1 ALLENTOWN,PA 18101-1175
+:Recipient Name:
+:Recipient Company Registrations:
+:Recipient Address: 123 MAIN ST ANYTOWN,PA 18062
+:Dates: 2011-07-27
+        2011-07-06
+        2011-08-03
+        2011-07-27
+        2011-06-01
+        2011-07-01
+        2010-07-01
+        2010-08-01
+        2011-07-01
+        2009-08-01
+        2010-07-01
+        2011-07-27
+:Date of Issue: 2011-07-27
+
+Page Predictions
+================
+
+Page 0
+------
+:Locale: en; en; USD;
+:Issuer Name: PPL ELECTRIC UTILITIES
+:Issuer Company Registrations:
+:Issuer Address: 2 NORTH 9TH STREET CPC-GENN1 ALLENTOWN,PA 18101-1175
+:Recipient Name:
+:Recipient Company Registrations:
+:Recipient Address: 123 MAIN ST ANYTOWN,PA 18062
+:Dates: 2011-07-27
+        2011-07-06
+        2011-08-03
+        2011-07-27
+        2011-06-01
+        2011-07-01
+        2010-07-01
+        2010-08-01
+        2011-07-01
+        2009-08-01
+        2010-07-01
+        2011-07-27
+:Date of Issue: 2011-07-27
+```
+
 # Field Types
 ## Standard Fields
 ### Basic Field
@@ -52,12 +118,10 @@ Aside from the basic `Field` attributes, the company registration field `Company
 
 * **type** (`string`): the type of company.
 
-
 ### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
-
 
 ### Locale Field
 The locale field `LocaleField` only implements the **value**, **confidence** and **pageId** base `Field` attributes, but it comes with its own:
@@ -66,10 +130,8 @@ The locale field `LocaleField` only implements the **value**, **confidence** and
 * **country** (`string`): ISO 3166-1 alpha-2 or ISO 3166-1 alpha-3 code for countries (e.g.: `GRB` or `GB` for "Great Britain"). Can be `undefined`.
 * **currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `undefined`.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
-
 
 # Attributes
 The following fields are extracted for Proof of Address V1:

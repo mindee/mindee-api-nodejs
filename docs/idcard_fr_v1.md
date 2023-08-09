@@ -1,3 +1,6 @@
+---
+title: Carte Nationale d'Identité OCR Node.js
+---
 The Node.js OCR SDK supports the [Carte Nationale d'Identité API](https://platform.mindee.com/mindee/idcard_fr).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/id_card/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -28,6 +31,50 @@ apiResponse.then((resp) => {
 });
 ```
 
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: ef79c45b-1300-474f-af28-de65519cabd7
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/idcard_fr v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Identity Number: 175775H55790
+:Given Name(s): VICTOR
+:Surname: DAMBARD
+:Date of Birth: 1994-04-24
+:Place of Birth: LYON 4E ARRONDISSEMT
+:Expiry Date: 2030-04-02
+:Issuing Authority: SOUS-PREFECTURE DE BELLE (02)
+:Gender:
+:MRZ Line 1: IDFRADAMBARD<<<<<<<<<<<<<<<<<<075025
+:MRZ Line 2: 170775H557903VICTOR<<MARIE<9404246M5
+
+Page Predictions
+================
+
+Page 0
+------
+:Document Side: RECTO & VERSO
+:Identity Number: 175775H55790
+:Given Name(s): VICTOR
+:Surname: DAMBARD
+:Date of Birth: 1994-04-24
+:Place of Birth: LYON 4E ARRONDISSEMT
+:Expiry Date: 2030-04-02
+:Issuing Authority: SOUS-PREFECTURE DE BELLE (02)
+:Gender:
+:MRZ Line 1: IDFRADAMBARD<<<<<<<<<<<<<<<<<<075025
+:MRZ Line 2: 170775H557903VICTOR<<MARIE<9404246M5
+```
+
 # Field Types
 ## Standard Fields
 ### Basic Field
@@ -52,20 +99,16 @@ The classification field `ClassificationField` does not implement all the basic 
 
 > Note: a classification field's `value is always a `string`.
 
-
 ### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
-
 ## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
-
 
 # Attributes
 The following fields are extracted for Carte Nationale d'Identité V1:

@@ -1,3 +1,6 @@
+---
+title: Nodejs Getting Started
+---
 This guide will help you get the most out of the Mindee Node.js  OCR SDK to easily extract data from your documents.
 
 > 📘 **Info**

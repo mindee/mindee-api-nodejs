@@ -1,3 +1,6 @@
+---
+title: Receipt OCR Node.js
+---
 The Node.js OCR SDK supports the [Receipt API](https://platform.mindee.com/mindee/expense_receipts).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/receipt/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -26,6 +29,83 @@ apiResponse.then((resp) => {
   // print a string summary
   console.log(resp.document.toString());
 });
+```
+
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: ce41e37a-65d8-4de1-b34b-1c92ab04b1ae
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/expense_receipts v5.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Expense Locale: en-GB; en; GB; GBP;
+:Purchase Category: food
+:Purchase Subcategory: restaurant
+:Document Type: EXPENSE RECEIPT
+:Purchase Date: 2016-02-26
+:Purchase Time: 15:20
+:Total Amount: 10.20
+:Total Net: 8.50
+:Total Tax: 1.70
+:Tip and Gratuity:
+:Taxes:
+  +---------------+--------+----------+---------------+
+  | Base          | Code   | Rate (%) | Amount        |
+  +===============+========+==========+===============+
+  | 8.50          | VAT    | 20.00    | 1.70          |
+  +---------------+--------+----------+---------------+
+:Supplier Name: CLACHAN
+:Supplier Company Registrations: 232153895
+                                 232153895
+:Supplier Address: 34 kingley street w1b 5qh
+:Supplier Phone Number: 02074940834
+:Line Items:
+  +--------------------------------------+----------+--------------+------------+
+  | Description                          | Quantity | Total Amount | Unit Price |
+  +======================================+==========+==============+============+
+  | Meantime Pale                        | 2.00     | 10.20        |            |
+  +--------------------------------------+----------+--------------+------------+
+
+Page Predictions
+================
+
+Page 0
+------
+:Expense Locale: en-GB; en; GB; GBP;
+:Purchase Category: food
+:Purchase Subcategory: restaurant
+:Document Type: EXPENSE RECEIPT
+:Purchase Date: 2016-02-26
+:Purchase Time: 15:20
+:Total Amount: 10.20
+:Total Net: 8.50
+:Total Tax: 1.70
+:Tip and Gratuity:
+:Taxes:
+  +---------------+--------+----------+---------------+
+  | Base          | Code   | Rate (%) | Amount        |
+  +===============+========+==========+===============+
+  | 8.50          | VAT    | 20.00    | 1.70          |
+  +---------------+--------+----------+---------------+
+:Supplier Name: CLACHAN
+:Supplier Company Registrations: 232153895
+                                 232153895
+:Supplier Address: 34 kingley street w1b 5qh
+:Supplier Phone Number: 02074940834
+:Line Items:
+  +--------------------------------------+----------+--------------+------------+
+  | Description                          | Quantity | Total Amount | Unit Price |
+  +======================================+==========+==============+============+
+  | Meantime Pale                        | 2.00     | 10.20        |            |
+  +--------------------------------------+----------+--------------+------------+
 ```
 
 # Field Types
@@ -62,12 +142,10 @@ Aside from the basic `Field` attributes, the company registration field `Company
 
 * **type** (`string`): the type of company.
 
-
 ### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
-
 
 ### Locale Field
 The locale field `LocaleField` only implements the **value**, **confidence** and **pageId** base `Field` attributes, but it comes with its own:
@@ -76,10 +154,8 @@ The locale field `LocaleField` only implements the **value**, **confidence** and
 * **country** (`string`): ISO 3166-1 alpha-2 or ISO 3166-1 alpha-3 code for countries (e.g.: `GRB` or `GB` for "Great Britain"). Can be `undefined`.
 * **currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `undefined`.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
-
 
 ### Taxes Field
 #### Tax
@@ -95,7 +171,6 @@ Aside from the basic `Field` attributes, the tax field `TaxField` also implement
 The `Taxes` field represents an array-like collection of `TaxField` objects. As it is the representation of several objects, it has access to a custom `toString()` method that can render a `TaxField` object as a table line.
 
 ## Custom Fields
-
 Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
 
 ### Line Items Field
@@ -107,7 +182,6 @@ A `ReceiptV5LineItem` implements the following attributes:
 * `quantity` (number): The item quantity.
 * `totalAmount` (number): The item total amount.
 * `unitPrice` (number): The item unit price.
-
 
 # Attributes
 The following fields are extracted for Receipt V5:

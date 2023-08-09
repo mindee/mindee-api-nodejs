@@ -1,3 +1,6 @@
+---
+title: Driver License OCR Node.js
+---
 The Node.js OCR SDK supports the [Driver License API](https://platform.mindee.com/mindee/us_driver_license).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/us/driver_license/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -28,6 +31,65 @@ apiResponse.then((resp) => {
 });
 ```
 
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: bf70068d-d3d6-49dc-b93a-b4b7d156fc3d
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/us_driver_license v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:State: AZ
+:Driver License ID: D12345678
+:Expiry Date: 2018-02-01
+:Date Of Issue: 2013-01-10
+:Last Name: SAMPLE
+:First Name: JELANI
+:Address: 123 MAIN STREET PHOENIX AZ 85007
+:Date Of Birth: 1957-02-01
+:Restrictions: NONE
+:Endorsements: NONE
+:Class:
+:Sex: M
+:Height: 5-08
+:Weight: 185
+:Hair Color: BRO
+:Eye Color: BRO
+:Document Discriminator: 1234567890123456
+
+Page Predictions
+================
+
+Page 0
+------
+:Photo: Polygon with 4 points.
+:Signature: Polygon with 4 points.
+:State: AZ
+:Driver License ID: D12345678
+:Expiry Date: 2018-02-01
+:Date Of Issue: 2013-01-10
+:Last Name: SAMPLE
+:First Name: JELANI
+:Address: 123 MAIN STREET PHOENIX AZ 85007
+:Date Of Birth: 1957-02-01
+:Restrictions: NONE
+:Endorsements: NONE
+:Class:
+:Sex: M
+:Height: 5-08
+:Weight: 185
+:Hair Color: BRO
+:Eye Color: BRO
+:Document Discriminator: 1234567890123456
+```
+
 # Field Types
 ## Standard Fields
 ### Basic Field
@@ -46,7 +108,6 @@ A typical `Field` object will have the following attributes:
 
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
-
 ### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
@@ -59,14 +120,11 @@ The position field `PositionField` does not implement all the basic `Field` attr
 * **rectangle** (`[Point, Point, Point, Point]`): a Polygon with four points that may be oriented (even beyond canvas).
 * **quadrangle** (`[Point, Point, Point, Point]`): a free polygon made up of four points.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
-
 ## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
-
 
 # Attributes
 The following fields are extracted for Driver License V1:
@@ -76,13 +134,6 @@ The following fields are extracted for Driver License V1:
 
 ```js
 console.log(result.document.inference.prediction.address.value);
-```
-
-## Class
-**class** ([StringField](#string-field)): US driver license holders class
-
-```js
-console.log(result.document.inference.prediction.class.value);
 ```
 
 ## Date Of Birth
@@ -97,6 +148,13 @@ console.log(result.document.inference.prediction.dateOfBirth.value);
 
 ```js
 console.log(result.document.inference.prediction.ddNumber.value);
+```
+
+## Driver License Class
+**dlClass** ([StringField](#string-field)): US driver license holders class
+
+```js
+console.log(result.document.inference.prediction.dlClass.value);
 ```
 
 ## Driver License ID

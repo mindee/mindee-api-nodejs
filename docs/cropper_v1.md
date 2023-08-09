@@ -1,3 +1,6 @@
+---
+title: Cropper API Node.js
+---
 > **Note:** CropperV1 is the stand-alone API for the parameter of the same name.
 > 
 The Node.js OCR SDK supports the [Cropper API](https://platform.mindee.com/mindee/cropper).

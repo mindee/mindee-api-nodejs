@@ -1,3 +1,6 @@
+---
+title: License Plate OCR Node.js
+---
 The Node.js OCR SDK supports the [License Plate API](https://platform.mindee.com/mindee/license_plates).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/eu/license_plate/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -28,6 +31,31 @@ apiResponse.then((resp) => {
 });
 ```
 
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: f0f48232-2c80-4473-9c6f-88a09111b84d
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/license_plates v1.0
+:Rotation applied: No
+
+Prediction
+==========
+:License Plates: BY-323-YB
+
+Page Predictions
+================
+
+Page 0
+------
+:License Plates: BY-323-YB
+```
+
 # Field Types
 ## Standard Fields
 ### Basic Field
@@ -46,10 +74,8 @@ A typical `Field` object will have the following attributes:
 
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
-
 
 # Attributes
 The following fields are extracted for License Plate V1:

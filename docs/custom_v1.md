@@ -1,3 +1,6 @@
+---
+title: Custom API Node.js
+---
 The Node.js OCR SDK supports [custom-built APIs](https://developers.mindee.com/docs/build-your-first-document-parsing-api). If your document isn't covered by one of Mindee's Off-the-Shelf APIs, you can create your own API using the[API Builder](https://platform.mindee.com/api-builder).
 
 # Quick-Start

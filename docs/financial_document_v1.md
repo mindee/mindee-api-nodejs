@@ -1,3 +1,6 @@
+---
+title: Financial Document OCR Node.js
+---
 The Node.js OCR SDK supports the [Financial Document API](https://platform.mindee.com/mindee/financial_document).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/financial_document/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -26,6 +29,95 @@ apiResponse.then((resp) => {
   // print a string summary
   console.log(resp.document.toString());
 });
+```
+
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: 81c1d637-3a84-41d9-b40a-f72ca2a58826
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/financial_document v1.1
+:Rotation applied: Yes
+
+Prediction
+==========
+:Locale: en; en; USD;
+:Invoice Number:
+:Reference Numbers:
+:Purchase Date: 2014-07-07
+:Due Date: 2014-07-07
+:Total Net: 40.48
+:Total Amount: 53.82
+:Taxes:
+  +---------------+--------+----------+---------------+
+  | Base          | Code   | Rate (%) | Amount        |
+  +===============+========+==========+===============+
+  |               | TAX    |          | 3.34          |
+  +---------------+--------+----------+---------------+
+:Supplier Payment Details:
+:Supplier name: LOGANS
+:Supplier Company Registrations:
+:Supplier Address: 2513 s stemmons freeway lewisville tx 75067
+:Supplier Phone Number: 9724596042
+:Customer name:
+:Customer Company Registrations:
+:Customer Address:
+:Document Type: EXPENSE RECEIPT
+:Purchase Subcategory: restaurant
+:Purchase Category: food
+:Total Tax: 3.34
+:Tip and Gratuity: 10.00
+:Purchase Time: 20:20
+:Line Items:
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit Price |
+  +======================================+==============+==========+============+==============+==============+============+
+  | TAX                                  |              |          |            |              | 3.34         |            |
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+
+Page Predictions
+================
+
+Page 0
+------
+:Locale: en; en; USD;
+:Invoice Number:
+:Reference Numbers:
+:Purchase Date: 2014-07-07
+:Due Date: 2014-07-07
+:Total Net: 40.48
+:Total Amount: 53.82
+:Taxes:
+  +---------------+--------+----------+---------------+
+  | Base          | Code   | Rate (%) | Amount        |
+  +===============+========+==========+===============+
+  |               | TAX    |          | 3.34          |
+  +---------------+--------+----------+---------------+
+:Supplier Payment Details:
+:Supplier name: LOGANS
+:Supplier Company Registrations:
+:Supplier Address: 2513 s stemmons freeway lewisville tx 75067
+:Supplier Phone Number: 9724596042
+:Customer name:
+:Customer Company Registrations:
+:Customer Address:
+:Document Type: EXPENSE RECEIPT
+:Purchase Subcategory: restaurant
+:Purchase Category: food
+:Total Tax: 3.34
+:Tip and Gratuity: 10.00
+:Purchase Time: 20:20
+:Line Items:
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit Price |
+  +======================================+==============+==========+============+==============+==============+============+
+  | TAX                                  |              |          |            |              | 3.34         |            |
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
 ```
 
 # Field Types
@@ -62,12 +154,10 @@ Aside from the basic `Field` attributes, the company registration field `Company
 
 * **type** (`string`): the type of company.
 
-
 ### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
-
 
 ### Locale Field
 The locale field `LocaleField` only implements the **value**, **confidence** and **pageId** base `Field` attributes, but it comes with its own:
@@ -75,7 +165,6 @@ The locale field `LocaleField` only implements the **value**, **confidence** and
 * **language** (`string`): ISO 639-1 language code (e.g.: `en` for English). Can be `undefined`.
 * **country** (`string`): ISO 3166-1 alpha-2 or ISO 3166-1 alpha-3 code for countries (e.g.: `GRB` or `GB` for "Great Britain"). Can be `undefined`.
 * **currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `undefined`.
-
 
 ### Payment Details Field
 Aside from the basic `Field` attributes, the payment details field `PaymentDetailsField` also implements the following:
@@ -85,10 +174,8 @@ Aside from the basic `Field` attributes, the payment details field `PaymentDetai
 * **routingNumber** (`string`): routing number of an account. Can be `undefined`.
 * **swift** (`string`): the account holder's bank's SWIFT Business Identifier Code (BIC). Can be `undefined`.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
-
 
 ### Taxes Field
 #### Tax
@@ -104,7 +191,6 @@ Aside from the basic `Field` attributes, the tax field `TaxField` also implement
 The `Taxes` field represents an array-like collection of `TaxField` objects. As it is the representation of several objects, it has access to a custom `toString()` method that can render a `TaxField` object as a table line.
 
 ## Custom Fields
-
 Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
 
 ### Line Items Field
@@ -119,7 +205,6 @@ A `FinancialDocumentV1LineItem` implements the following attributes:
 * `taxRate` (number): The item tax rate in percentage.
 * `totalAmount` (number): The item total amount.
 * `unitPrice` (number): The item unit price.
-
 
 # Attributes
 The following fields are extracted for Financial Document V1:

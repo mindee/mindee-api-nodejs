@@ -1,3 +1,6 @@
+---
+title: Bank Account Details OCR Node.js
+---
 The Node.js OCR SDK supports the [Bank Account Details API](https://platform.mindee.com/mindee/bank_account_details).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/bank_account_details/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -28,6 +31,45 @@ apiResponse.then((resp) => {
 });
 ```
 
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: bc8f7265-8dab-49fe-810c-d50049605578
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/bank_account_details v2.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Account Holder's Names: MME HEGALALDIA L ENVOL
+:Basic Bank Account Number:
+  :Bank Code: 13335
+  :Branch Code: 00040
+  :Key: 06
+  :Account Number: 08932891361
+:IBAN: FR7613335000400893289136106
+:SWIFT Code: CEPAFRPP333
+
+Page Predictions
+================
+
+Page 0
+------
+:Account Holder's Names: MME HEGALALDIA L ENVOL
+:Basic Bank Account Number:
+  :Bank Code: 13335
+  :Branch Code: 00040
+  :Key: 06
+  :Account Number: 08932891361
+:IBAN: FR7613335000400893289136106
+:SWIFT Code: CEPAFRPP333
+```
+
 # Field Types
 ## Standard Fields
 ### Basic Field
@@ -46,12 +88,10 @@ A typical `Field` object will have the following attributes:
 
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
 ## Custom Fields
-
 Custom Fields implement their own definitions & variables, and usually don't inherit from standard fields.
 
 ### Basic Bank Account Number Field
@@ -63,7 +103,6 @@ A `BankAccountDetailsV2Bban` implements the following attributes:
 * `bbanBranchCode` (string): The BBAN branch code outputted as a string.
 * `bbanKey` (string): The BBAN key outputted as a string.
 * `bbanNumber` (string): The BBAN Account number outputted as a string.
-
 
 # Attributes
 The following fields are extracted for Bank Account Details V2:

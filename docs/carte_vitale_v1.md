@@ -1,3 +1,6 @@
+---
+title: Carte Vitale OCR Node.js
+---
 The Node.js OCR SDK supports the [Carte Vitale API](https://platform.mindee.com/mindee/carte_vitale).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/carte_vitale/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -28,6 +31,37 @@ apiResponse.then((resp) => {
 });
 ```
 
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: 8c25cc63-212b-4537-9c9b-3fbd3bd0ee20
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/carte_vitale v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Given Name(s): NATHALIE
+:Surname: DURAND
+:Social Security Number: 269054958815780
+:Issuance Date: 2007-01-01
+
+Page Predictions
+================
+
+Page 0
+------
+:Given Name(s): NATHALIE
+:Surname: DURAND
+:Social Security Number: 269054958815780
+:Issuance Date: 2007-01-01
+```
+
 # Field Types
 ## Standard Fields
 ### Basic Field
@@ -46,16 +80,13 @@ A typical `Field` object will have the following attributes:
 
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
-
 ### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
-
 
 # Attributes
 The following fields are extracted for Carte Vitale V1:

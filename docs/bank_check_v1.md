@@ -1,3 +1,6 @@
+---
+title: Bank Check OCR Node.js
+---
 The Node.js OCR SDK supports the [Bank Check API](https://platform.mindee.com/mindee/bank_check).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/us/bank_check/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
@@ -28,6 +31,45 @@ apiResponse.then((resp) => {
 });
 ```
 
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: b9809586-57ae-4f84-a35d-a85b2be1f2a2
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/bank_check v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Check Issue Date: 2022-03-29
+:Amount: 15332.90
+:Payees: JOHN DOE
+         JANE DOE
+:Routing Number:
+:Account Number: 7789778136
+:Check Number: 0003401
+
+Page Predictions
+================
+
+Page 0
+------
+:Check Position: Polygon with 21 points.
+:Signature Positions: Polygon with 6 points.
+:Check Issue Date: 2022-03-29
+:Amount: 15332.90
+:Payees: JOHN DOE
+         JANE DOE
+:Routing Number:
+:Account Number: 7789778136
+:Check Number: 0003401
+```
+
 # Field Types
 ## Standard Fields
 ### Basic Field
@@ -50,7 +92,6 @@ Aside from the previous attributes, all basic fields have access to a `toString(
 ### Amount Field
 The amount field `AmountField` only has one constraint: its **value** is a `number` (or `undefined`).
 
-
 ### Date Field
 Aside from the basic `Field` attributes, the date field `DateField` also implements the following: 
 
@@ -63,14 +104,11 @@ The position field `PositionField` does not implement all the basic `Field` attr
 * **rectangle** (`[Point, Point, Point, Point]`): a Polygon with four points that may be oriented (even beyond canvas).
 * **quadrangle** (`[Point, Point, Point, Point]`): a free polygon made up of four points.
 
-
 ### String Field
 The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
 
-
 ## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
-
 
 # Attributes
 The following fields are extracted for Bank Check V1:

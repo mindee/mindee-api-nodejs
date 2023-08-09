@@ -1,3 +1,6 @@
+---
+title: Invoice Splitter API Node.js
+---
 The Node.js OCR SDK supports the [Invoice Splitter API](https://platform.mindee.com/mindee/expense_receipts).
 
 Using [this sample](https://github.com/mindee/client-lib-test-data/blob/9a34146755c348281c28bbf351900229b412797e/invoice_splitter/default_sample.pdf), we are going to illustrate how to detect the pages of multiple invoices within the same document.
@@ -81,6 +84,37 @@ async function sampleAsyncApi() {
 
 // Run it
 sampleAsyncApi();
+```
+
+**Output (RST):**
+```rst
+########
+Document
+########
+:Mindee ID: 8c25cc63-212b-4537-9c9b-3fbd3bd0ee20
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/carte_vitale v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Given Name(s): NATHALIE
+:Surname: DURAND
+:Social Security Number: 269054958815780
+:Issuance Date: 2007-01-01
+
+Page Predictions
+================
+
+Page 0
+------
+:Given Name(s): NATHALIE
+:Surname: DURAND
+:Social Security Number: 269054958815780
+:Issuance Date: 2007-01-01
 ```
 
 # Field Types
