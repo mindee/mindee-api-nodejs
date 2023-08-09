@@ -12,7 +12,7 @@ const COMMAND_CUSTOM = "custom";
 interface ProductConfig<T extends Inference = Inference> {
   displayName: string;
   docClass: new (rawPrediction: StringDict) => T;
-  fullText: boolean;
+  allWords: boolean;
   async: boolean;
   sync: boolean;
 }
@@ -29,7 +29,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Custom Document",
       docClass: product.CustomV1,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -39,7 +39,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Cropper",
       docClass: product.CropperV1,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -49,7 +49,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Invoice",
       docClass: product.InvoiceV4,
-      fullText: true,
+      allWords: true,
       async: false,
       sync: true,
     },
@@ -59,7 +59,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Invoice Splitter",
       docClass: product.InvoiceSplitterV1,
-      fullText: false,
+      allWords: false,
       async: true,
       sync: false,
     },
@@ -69,7 +69,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Expense Receipt",
       docClass: product.ReceiptV5,
-      fullText: true,
+      allWords: true,
       async: false,
       sync: true,
     },
@@ -79,7 +79,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Passport",
       docClass: product.PassportV1,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -89,7 +89,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Financial Document",
       docClass: product.FinancialDocumentV1,
-      fullText: true,
+      allWords: true,
       async: false,
       sync: true,
     },
@@ -99,7 +99,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "FR ID Card",
       docClass: product.fr.IdCardV1,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -109,7 +109,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "FR Bank Account Details",
       docClass: product.fr.BankAccountDetailsV2,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -119,7 +119,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "FR Carte Vitale",
       docClass: product.fr.CarteVitaleV1,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -129,7 +129,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "EU License Plate",
       docClass: product.eu.LicensePlateV1,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -139,7 +139,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "US Bank Check",
       docClass: product.us.BankCheckV1,
-      fullText: false,
+      allWords: false,
       async: false,
       sync: true,
     },
@@ -180,7 +180,7 @@ function getPageOptions(options: any) {
 
 function getPredictParams(options: any) {
   const predictParams: PredictOptions = {
-    fullText: options.fullText,
+    allWords: options.allWords,
     cropper: options.cropper,
   };
   return predictParams;
@@ -202,13 +202,13 @@ async function callParse(command: string, inputPath: string, options: any) {
     response = await mindeeClient.parse(conf.docClass, inputSource, {
       endpoint: customEndpoint,
       pageOptions: pageOptions,
-      fullText: predictParams.fullText,
+      allWords: predictParams.allWords,
       cropper: predictParams.cropper,
     });
   } else {
     response = await mindeeClient.parse(conf.docClass, inputSource, {
       pageOptions: pageOptions,
-      fullText: predictParams.fullText,
+      allWords: predictParams.allWords,
       cropper: predictParams.cropper,
     });
   }
@@ -232,13 +232,13 @@ async function callEnqueue(command: string, inputPath: string, options: any) {
     response = await mindeeClient.enqueue(conf.docClass, inputSource, {
       endpoint: customEndpoint,
       pageOptions: pageOptions,
-      fullText: predictParams.fullText,
+      allWords: predictParams.allWords,
       cropper: predictParams.cropper,
     });
   } else {
     response = await mindeeClient.enqueue(conf.docClass, inputSource, {
       pageOptions: pageOptions,
-      fullText: predictParams.fullText,
+      allWords: predictParams.allWords,
       cropper: predictParams.cropper,
     });
   }
@@ -261,7 +261,7 @@ function printResponse<T extends Inference>(
   document: Document<T>,
   options: any
 ) {
-  if (options.fullText) {
+  if (options.allWords) {
     document.ocr?.mVisionV1.pages.forEach((page) => {
       console.log(page.allWords.toString());
     });
@@ -286,8 +286,8 @@ function addMainOptions(prog: Command) {
 
 function addPostOptions(prog: Command, info: ProductConfig) {
   prog.option("-c, --cut-pages", "keep only the first 5 pages of the document");
-  if (info.fullText) {
-    prog.option("-t, --full-text", "include full document text in response");
+  if (info.allWords) {
+    prog.option("-w, --all-words", "to get all the words in the current document. False by default.");
   }
   prog.argument("<input_path>", "full path to the file");
 }
