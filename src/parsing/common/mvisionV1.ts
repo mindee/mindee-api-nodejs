@@ -1,5 +1,5 @@
-import { Word } from "../../standard";
-import { StringDict } from "../stringDict";
+import { Word } from "../standard";
+import { StringDict } from "./stringDict";
 import { OcrPage } from "./ocrPage";
 
 export class MvisionV1 {
