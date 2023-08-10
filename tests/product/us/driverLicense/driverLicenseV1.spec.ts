@@ -27,7 +27,7 @@ describe("DriverLicenseV1 Object initialization", async () => {
     expect(docPrediction.dateOfBirth.value).to.be.undefined;
     expect(docPrediction.restrictions.value).to.be.undefined;
     expect(docPrediction.endorsements.value).to.be.undefined;
-    expect(docPrediction.class.value).to.be.undefined;
+    expect(docPrediction.dlClass.value).to.be.undefined;
     expect(docPrediction.sex.value).to.be.undefined;
     expect(docPrediction.height.value).to.be.undefined;
     expect(docPrediction.weight.value).to.be.undefined;

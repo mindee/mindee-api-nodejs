@@ -11,12 +11,12 @@ import { DateField, StringField } from "../../../parsing/standard";
 export class DriverLicenseV1Document implements Prediction {
   /** US driver license holders address */
   address: StringField;
-  /** US driver license holders class */
-  class: StringField;
   /** US driver license holders date of birth */
   dateOfBirth: DateField;
   /** Document Discriminator Number of the US Driver License */
   ddNumber: StringField;
+  /** US driver license holders class */
+  dlClass: StringField;
   /** ID number of the US Driver License. */
   driverLicenseId: StringField;
   /** US driver license holders endorsements */
@@ -49,16 +49,16 @@ export class DriverLicenseV1Document implements Prediction {
       prediction: rawPrediction["address"],
       pageId: pageId,
     });
-    this.class = new StringField({
-      prediction: rawPrediction["class"],
-      pageId: pageId,
-    });
     this.dateOfBirth = new DateField({
       prediction: rawPrediction["date_of_birth"],
       pageId: pageId,
     });
     this.ddNumber = new StringField({
       prediction: rawPrediction["dd_number"],
+      pageId: pageId,
+    });
+    this.dlClass = new StringField({
+      prediction: rawPrediction["dl_class"],
       pageId: pageId,
     });
     this.driverLicenseId = new StringField({
@@ -126,7 +126,7 @@ export class DriverLicenseV1Document implements Prediction {
 :Date Of Birth: ${this.dateOfBirth}
 :Restrictions: ${this.restrictions}
 :Endorsements: ${this.endorsements}
-:Class: ${this.class}
+:Driver License Class: ${this.dlClass}
 :Sex: ${this.sex}
 :Height: ${this.height}
 :Weight: ${this.weight}
