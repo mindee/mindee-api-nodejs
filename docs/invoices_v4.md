@@ -1,10 +1,10 @@
 ---
-title: Financial Document OCR Node.js
+title: Invoice OCR Node.js
 ---
-The Node.js OCR SDK supports the [Financial Document API](https://platform.mindee.com/mindee/financial_document).
+The Node.js OCR SDK supports the [Invoice API](https://platform.mindee.com/mindee/invoices).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/financial_document/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Financial Document sample](https://github.com/mindee/client-lib-test-data/blob/main/financial_document/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/invoice/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Invoice sample](https://github.com/mindee/client-lib-test-data/blob/main/invoice/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js
@@ -20,7 +20,7 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
 // Parse the file
 const apiResponse = mindeeClient.parse(
-  mindee.product.FinancialDocumentV1,
+  mindee.product.InvoiceV4,
   inputSource
 );
 
@@ -36,88 +36,86 @@ apiResponse.then((resp) => {
 ########
 Document
 ########
-:Mindee ID: 81c1d637-3a84-41d9-b40a-f72ca2a58826
+:Mindee ID: a8718ec1-aaa9-410d-b2fc-15ab1d092c9a
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/financial_document v1.1
+:Product: mindee/invoices v4.2
 :Rotation applied: Yes
 
 Prediction
 ==========
-:Locale: en; en; USD;
-:Invoice Number:
-:Reference Numbers:
-:Purchase Date: 2014-07-07
-:Due Date: 2014-07-07
-:Total Net: 40.48
-:Total Amount: 53.82
+:Locale: en; en; CAD;
+:Document type: INVOICE
+:Invoice number: 14
+:Reference numbers: AD29094
+:Invoice date: 2018-09-25
+:Invoice due date: 2018-09-25
+:Supplier name: TURNPIKE DESIGNS CO.
+:Supplier address: 156 University Ave, Toronto ON, Canada M5H 2H7
+:Supplier company registrations:
+:Supplier payment details:
+:Customer name: JIRO DOI
+:Customer address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Customer company registrations:
 :Taxes:
   +---------------+--------+----------+---------------+
   | Base          | Code   | Rate (%) | Amount        |
   +===============+========+==========+===============+
-  |               | TAX    |          | 3.34          |
+  |               |        | 8.00     | 193.20        |
   +---------------+--------+----------+---------------+
-:Supplier Payment Details:
-:Supplier name: LOGANS
-:Supplier Company Registrations:
-:Supplier Address: 2513 s stemmons freeway lewisville tx 75067
-:Supplier Phone Number: 9724596042
-:Customer name:
-:Customer Company Registrations:
-:Customer Address:
-:Document Type: EXPENSE RECEIPT
-:Purchase Subcategory: restaurant
-:Purchase Category: food
-:Total Tax: 3.34
-:Tip and Gratuity: 10.00
-:Purchase Time: 20:20
+:Total net:
+:Total tax: 193.20
+:Total amount: 2608.20
 :Line Items:
-  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
-  | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit Price |
-  +======================================+==============+==========+============+==============+==============+============+
-  | TAX                                  |              |          |            |              | 3.34         |            |
-  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  | Code                 | QTY     | Price   | Amount   | Tax (Rate)       | Description                          |
+  +======================+=========+=========+==========+==================+======================================+
+  |                      | 1.00    | 65.00   | 65.00    |                  | Platinum web hosting package Down... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  |                      | 3.00    | 2100.00 | 2100.00  |                  | 2 page website design Includes ba... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  |                      | 1.00    | 250.00  | 250.00   |                  | Mobile designs Includes responsiv... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
 
 Page Predictions
 ================
 
 Page 0
 ------
-:Locale: en; en; USD;
-:Invoice Number:
-:Reference Numbers:
-:Purchase Date: 2014-07-07
-:Due Date: 2014-07-07
-:Total Net: 40.48
-:Total Amount: 53.82
+:Locale: en; en; CAD;
+:Document type: INVOICE
+:Invoice number: 14
+:Reference numbers: AD29094
+:Invoice date: 2018-09-25
+:Invoice due date: 2018-09-25
+:Supplier name: TURNPIKE DESIGNS CO.
+:Supplier address: 156 University Ave, Toronto ON, Canada M5H 2H7
+:Supplier company registrations:
+:Supplier payment details:
+:Customer name: JIRO DOI
+:Customer address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Customer company registrations:
 :Taxes:
   +---------------+--------+----------+---------------+
   | Base          | Code   | Rate (%) | Amount        |
   +===============+========+==========+===============+
-  |               | TAX    |          | 3.34          |
+  |               |        | 8.00     | 193.20        |
   +---------------+--------+----------+---------------+
-:Supplier Payment Details:
-:Supplier name: LOGANS
-:Supplier Company Registrations:
-:Supplier Address: 2513 s stemmons freeway lewisville tx 75067
-:Supplier Phone Number: 9724596042
-:Customer name:
-:Customer Company Registrations:
-:Customer Address:
-:Document Type: EXPENSE RECEIPT
-:Purchase Subcategory: restaurant
-:Purchase Category: food
-:Total Tax: 3.34
-:Tip and Gratuity: 10.00
-:Purchase Time: 20:20
+:Total net:
+:Total tax: 193.20
+:Total amount: 2608.20
 :Line Items:
-  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
-  | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit Price |
-  +======================================+==============+==========+============+==============+==============+============+
-  | TAX                                  |              |          |            |              | 3.34         |            |
-  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  | Code                 | QTY     | Price   | Amount   | Tax (Rate)       | Description                          |
+  +======================+=========+=========+==========+==================+======================================+
+  |                      | 1.00    | 65.00   | 65.00    |                  | Platinum web hosting package Down... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  |                      | 3.00    | 2100.00 | 2100.00  |                  | 2 page website design Includes ba... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  |                      | 1.00    | 250.00  | 250.00   |                  | Mobile designs Includes responsiv... |
+  +----------------------+---------+---------+----------+------------------+--------------------------------------+
 ```
 
 # Field Types
@@ -198,7 +196,7 @@ Fields which are specific to this product; they are not used in any other produc
 ### Line Items Field
 List of line item details.
 
-A `FinancialDocumentV1LineItem` implements the following attributes:
+A `InvoiceV4LineItem` implements the following attributes:
 
 * `description` (string): The item description.
 * `productCode` (string): The product code referring to the item.
@@ -209,14 +207,7 @@ A `FinancialDocumentV1LineItem` implements the following attributes:
 * `unitPrice` (number): The item unit price.
 
 # Attributes
-The following fields are extracted for Financial Document V1:
-
-## Purchase Category
-**category** ([ClassificationField](#classification-field)): The purchase category among predefined classes.
-
-```js
-console.log(result.document.inference.prediction.category.value);
-```
+The following fields are extracted for Invoice V4:
 
 ## Customer Address
 **customerAddress** ([StringField](#string-field)): The address of the customer.
@@ -232,7 +223,7 @@ console.log(result.document.inference.prediction.customerAddress.value);
 console.log(result.document.inference.prediction.customerCompanyRegistrations.value);
 ```
 
-## Customer name
+## Customer Name
 **customerName** ([StringField](#string-field)): The name of the customer.
 
 ```js
@@ -247,7 +238,7 @@ console.log(result.document.inference.prediction.date.value);
 ```
 
 ## Document Type
-**documentType** ([ClassificationField](#classification-field)): One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+**documentType** ([ClassificationField](#classification-field)): One of: 'INVOICE', 'CREDIT NOTE'.
 
 ```js
 console.log(result.document.inference.prediction.documentType.value);
@@ -268,7 +259,7 @@ console.log(result.document.inference.prediction.invoiceNumber.value);
 ```
 
 ## Line Items
-**lineItems** ([FinancialDocumentV1LineItem](#line-items-field)[]): List of line item details.
+**lineItems** ([InvoiceV4LineItem](#line-items-field)[]): List of line item details.
 
 ```js
 console.log(result.document.inference.prediction.lineItems.value);
@@ -288,13 +279,6 @@ console.log(result.document.inference.prediction.locale.value);
 console.log(result.document.inference.prediction.referenceNumbers.value);
 ```
 
-## Purchase Subcategory
-**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory among predefined classes for transport and food.
-
-```js
-console.log(result.document.inference.prediction.subcategory.value);
-```
-
 ## Supplier Address
 **supplierAddress** ([StringField](#string-field)): The address of the supplier or merchant.
 
@@ -309,7 +293,7 @@ console.log(result.document.inference.prediction.supplierAddress.value);
 console.log(result.document.inference.prediction.supplierCompanyRegistrations.value);
 ```
 
-## Supplier name
+## Supplier Name
 **supplierName** ([StringField](#string-field)): The name of the supplier or merchant.
 
 ```js
@@ -323,32 +307,11 @@ console.log(result.document.inference.prediction.supplierName.value);
 console.log(result.document.inference.prediction.supplierPaymentDetails.value);
 ```
 
-## Supplier Phone Number
-**supplierPhoneNumber** ([StringField](#string-field)): The phone number of the supplier or merchant.
-
-```js
-console.log(result.document.inference.prediction.supplierPhoneNumber.value);
-```
-
 ## Taxes
-**taxes** ([TaxField](#taxes-field)): List of tax lines information.
+**taxes** ([TaxField](#taxes-field)): List of tax line details.
 
 ```js
 console.log(result.document.inference.prediction.taxes.toString());
-```
-
-## Purchase Time
-**time** ([StringField](#string-field)): The time the purchase was made.
-
-```js
-console.log(result.document.inference.prediction.time.value);
-```
-
-## Tip and Gratuity
-**tip** ([AmountField](#amount-field)): The total amount of tip and gratuity
-
-```js
-console.log(result.document.inference.prediction.tip.value);
 ```
 
 ## Total Amount
@@ -363,13 +326,6 @@ console.log(result.document.inference.prediction.totalAmount.value);
 
 ```js
 console.log(result.document.inference.prediction.totalNet.value);
-```
-
-## Total Tax
-**totalTax** ([AmountField](#amount-field)): The total amount of taxes.
-
-```js
-console.log(result.document.inference.prediction.totalTax.value);
 ```
 
 # Questions?

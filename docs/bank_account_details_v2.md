@@ -1,5 +1,5 @@
 ---
-title: Bank Account Details OCR Node.js
+title: FR Bank Account Details OCR Node.js
 ---
 The Node.js OCR SDK supports the [Bank Account Details API](https://platform.mindee.com/mindee/bank_account_details).
 
@@ -117,7 +117,7 @@ console.log(result.document.inference.prediction.accountHoldersNames.value);
 ```
 
 ## Basic Bank Account Number
-**bban** ([BankAccountDetailsV2Bban](#basic-bank-account-number)): Full extraction of BBAN, including: branch code, bank code, account and key.
+**bban** ([BankAccountDetailsV2Bban](#basic-bank-account-number-field)): Full extraction of BBAN, including: branch code, bank code, account and key.
 
 ```js
 console.log(result.document.inference.prediction.bban.value);

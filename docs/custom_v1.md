@@ -100,14 +100,30 @@ console.log(result.document.inference.prediction.classifications["my-classificat
 Though not supported directly in the API, sometimes you might need to reconstitute line items by hand.
 The library provides a tool for this very purpose:
 
-**getLineItems()** 
-This function takes the following attributes:
+## getLineItems() 
+The **getLineItems()** function takes the following arguments:
+
 * **anchorNames** (`string[]`): a list of the names of possible anchor (field) candidate for the horizontal placement a line. If all provided anchors are invalid, the `LineItem` won't be built.
 * **heightLineTolerance** (`number`): The height tolerance used to build the line. It helps when the height of a line can vary unexpectedly.
 * **fieldNamesTargeted** (`string[]`): a list of fields to retrieve the values from
 * **fields** ({`string`: [ListField](#list-field)}): All available fields to construct line items from.
 
-Returns a constructed [LineItems](#custom-line-items) object from the given params.
+It returns a [LineItems](#lineitems) object.
+
+## LineItems
+
+A `LineItems` has only one attribute:
+
+* **rows** ([Line](#line)[]): array of the reconstructed lines.
+
+## Line
+
+`Line` represent a line as it has been read on a page. It has the following attributes:
+
+* **rowNumber** (`number`): Number of a given line. Starts at 1.
+* **fields** (`Map<string, ListFieldValue>`): List of the fields associated with the line, indexed by their column name.
+* **bbox** (`BBox`): Simple bounding box of the current line made up of four `number`.
+* **heightTolerance** (`number`): Height tolerance threshold used to build a line. Helps with unexpected height variations.
 
 # Questions?
 
