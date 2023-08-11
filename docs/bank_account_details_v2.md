@@ -1,5 +1,5 @@
 ---
-title: Bank Account Details OCR Node.js
+title: FR Bank Account Details OCR Node.js
 ---
 The Node.js OCR SDK supports the [Bank Account Details API](https://platform.mindee.com/mindee/bank_account_details).
 

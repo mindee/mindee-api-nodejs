@@ -1,5 +1,5 @@
 ---
-title: Carte Nationale d'Identité OCR Node.js
+title: FR Carte Nationale d'Identité OCR Node.js
 ---
 The Node.js OCR SDK supports the [Carte Nationale d'Identité API](https://platform.mindee.com/mindee/idcard_fr).
 
