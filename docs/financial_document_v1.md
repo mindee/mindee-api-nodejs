@@ -268,7 +268,7 @@ console.log(result.document.inference.prediction.invoiceNumber.value);
 ```
 
 ## Line Items
-**lineItems** ([FinancialDocumentV1LineItem](#line-items)[]): List of line item details.
+**lineItems** ([FinancialDocumentV1LineItem](#line-items-field)[]): List of line item details.
 
 ```js
 console.log(result.document.inference.prediction.lineItems.value);

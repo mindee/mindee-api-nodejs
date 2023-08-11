@@ -165,7 +165,7 @@ Complete details on the working of the library are available in the following gu
 - [Node.js Proof of Address OCR](https://developers.mindee.com/docs/nodejs-proof-of-address-ocr)
 - [Node.js (EU) License Plates OCR](https://developers.mindee.com/docs/nodejs-eu-license-plates-ocr)
 - [Node.js (FR) Bank Account Details OCR](https://developers.mindee.com/docs/nodejs-fr-bank-account-details-ocr)
-- [Node.js (FR) Carte Vitales OCR](https://developers.mindee.com/docs/nodejs-fr-carte-vitale-ocr)
+- [Node.js (FR) Carte Vitale OCR](https://developers.mindee.com/docs/nodejs-fr-carte-vitale-ocr)
 - [Node.js (US) Bank Checks OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
 - [Node.js (US) Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
 - [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-api)

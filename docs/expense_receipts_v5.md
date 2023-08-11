@@ -210,7 +210,7 @@ console.log(result.document.inference.prediction.documentType.value);
 ```
 
 ## Line Items
-**lineItems** ([ReceiptV5LineItem](#line-items)[]): List of line item details.
+**lineItems** ([ReceiptV5LineItem](#line-items-field)[]): List of line item details.
 
 ```js
 console.log(result.document.inference.prediction.lineItems.value);

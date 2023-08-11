@@ -117,7 +117,7 @@ console.log(result.document.inference.prediction.accountHoldersNames.value);
 ```
 
 ## Basic Bank Account Number
-**bban** ([BankAccountDetailsV2Bban](#basic-bank-account-number)): Full extraction of BBAN, including: branch code, bank code, account and key.
+**bban** ([BankAccountDetailsV2Bban](#basic-bank-account-number-field)): Full extraction of BBAN, including: branch code, bank code, account and key.
 
 ```js
 console.log(result.document.inference.prediction.bban.value);
