@@ -1,5 +1,5 @@
 ---
-title: Bank Check OCR Node.js
+title: US Bank Check OCR Node.js
 ---
 The Node.js OCR SDK supports the [Bank Check API](https://platform.mindee.com/mindee/bank_check).
 

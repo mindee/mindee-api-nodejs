@@ -1,5 +1,5 @@
 ---
-title: Carte Vitale OCR Node.js
+title: FR Carte Vitale OCR Node.js
 ---
 The Node.js OCR SDK supports the [Carte Vitale API](https://platform.mindee.com/mindee/carte_vitale).
 

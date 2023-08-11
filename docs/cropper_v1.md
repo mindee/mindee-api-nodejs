@@ -2,7 +2,7 @@
 title: Cropper API Node.js
 ---
 > **Note:** CropperV1 is the stand-alone API for the parameter of the same name.
-> 
+
 The Node.js OCR SDK supports the [Cropper API](https://platform.mindee.com/mindee/cropper).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/cropper/default_sample.jpg), we are going to crop receipts using the Cropper API.

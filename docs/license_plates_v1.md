@@ -1,5 +1,5 @@
 ---
-title: License Plate OCR Node.js
+title: EU License Plate OCR Node.js
 ---
 The Node.js OCR SDK supports the [License Plate API](https://platform.mindee.com/mindee/license_plates).
 

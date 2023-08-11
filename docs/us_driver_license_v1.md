@@ -1,5 +1,5 @@
 ---
-title: Driver License OCR Node.js
+title: US Driver License OCR Node.js
 ---
 The Node.js OCR SDK supports the [Driver License API](https://platform.mindee.com/mindee/us_driver_license).
 
