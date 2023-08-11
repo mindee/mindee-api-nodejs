@@ -34,8 +34,8 @@ export class Page<T extends Prediction> {
       Object.entries(rawPrediction["extras"]).forEach(
         ([extraKey, extraValue]: [string, any]) => {
           switch (extraKey) {
-            case "cropper":
-              extras["cropper"] = new CropperExtra(extraValue as StringDict);
+          case "cropper":
+            extras["cropper"] = new CropperExtra(extraValue as StringDict);
           }
         }
       );
