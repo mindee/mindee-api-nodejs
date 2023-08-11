@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v3.10.2 - 2023-08-11
+### Changes
+* :loud_sound: better logging of JSON errors
+
 ## v3.10.1 - 2023-07-04
 ### Changes
 * :arrow_up: update dependencies
