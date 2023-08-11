@@ -317,18 +317,18 @@ function routeSwitchboard(
   allOptions: any
 ): Promise<void> {
   switch (command.parent?.name()) {
-    case "parse": {
-      return callParse(command.name(), inputPath, allOptions);
-    }
-    case "enqueue": {
-      return callEnqueue(command.name(), inputPath, allOptions);
-    }
-    case "parse-queued": {
-      return callParseQueued(command.name(), inputPath, allOptions);
-    }
-    default: {
-      throw new Error("Unhandled parent command.");
-    }
+  case "parse": {
+    return callParse(command.name(), inputPath, allOptions);
+  }
+  case "enqueue": {
+    return callEnqueue(command.name(), inputPath, allOptions);
+  }
+  case "parse-queued": {
+    return callParseQueued(command.name(), inputPath, allOptions);
+  }
+  default: {
+    throw new Error("Unhandled parent command.");
+  }
   }
 }
 

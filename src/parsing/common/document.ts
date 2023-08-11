@@ -29,8 +29,8 @@ export class Document<T extends Inference> {
       Object.entries(httpResponse["extras"]).forEach(
         ([extraKey, extraValue]: [string, any]) => {
           switch (extraKey) {
-            case "cropper":
-              extras["cropper"] = new CropperExtra(extraValue as StringDict);
+          case "cropper":
+            extras["cropper"] = new CropperExtra(extraValue as StringDict);
           }
         }
       );

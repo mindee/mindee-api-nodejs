@@ -79,14 +79,14 @@ export class InvoiceV4Document implements Prediction {
       prediction:
         rawPrediction["taxes"] && rawPrediction["taxes"].length > 0
           ? {
-              value: rawPrediction["taxes"].reduce(
-                (acc: number, tax: StringDict) => {
-                  return tax.value !== undefined ? acc + tax.value : acc;
-                },
-                0
-              ),
-              confidence: 1,
-            }
+            value: rawPrediction["taxes"].reduce(
+              (acc: number, tax: StringDict) => {
+                return tax.value !== undefined ? acc + tax.value : acc;
+              },
+              0
+            ),
+            confidence: 1,
+          }
           : { value: undefined, confidence: 0.0 },
       pageId: pageId,
     });

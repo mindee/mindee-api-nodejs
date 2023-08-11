@@ -51,7 +51,7 @@ export class ReceiptV5LineItem {
         this.description.length <= 36 ?
           this.description :
           this.description.slice(0, 33) + "..." :
-          "",
+        "",
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       totalAmount:
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",
