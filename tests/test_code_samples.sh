@@ -10,8 +10,8 @@ rm -fr ../test_code_samples
 mkdir ../test_code_samples
 
 cd ../test_code_samples
-npm install axios
-npm install ../mindee-api-nodejs/dist
+npm install axios --ignore-scripts --no-bin-links
+npm install ../mindee-api-nodejs/dist --ignore-scripts --no-bin-links
 cd -
 
 for f in $(find docs/code_samples -maxdepth 1 -name "*.txt" | sort -h)

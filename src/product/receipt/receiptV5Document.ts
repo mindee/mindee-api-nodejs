@@ -137,8 +137,8 @@ export class ReceiptV5Document implements Prediction {
       lineItemsSummary += "| Unit Price ";
       lineItemsSummary += "|\n" + lineSeparator(lineItemsColSizes, "=");
       lineItemsSummary += this.lineItems.map(
-      (item) =>
-        "\n  " + item.toTableLine() + "\n" + lineSeparator(lineItemsColSizes, "-")
+        (item) =>
+          "\n  " + item.toTableLine() + "\n" + lineSeparator(lineItemsColSizes, "-")
       ).join("");
     }
     const outStr = `:Expense Locale: ${this.locale}

@@ -42,6 +42,7 @@
       }
     ],
     "no-eval": "error",
-    "no-unexpected-multiline": "off"
+    "no-unexpected-multiline": "off",
+    "indent" : ["error", 2]
   }
 }

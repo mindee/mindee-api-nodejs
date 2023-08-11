@@ -5,7 +5,7 @@ interface ExtraDict<T extends ExtraField> {
 }
 
 export class Extras<ExtraT extends ExtraField = ExtraField>
-  implements ExtraDict<ExtraT>
+implements ExtraDict<ExtraT>
 {
   [key: string]: ExtraT | (() => string);
   constructor(fields: Record<string, ExtraT>) {

@@ -10,10 +10,10 @@
     "build-for-dist": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
     "clean": "rm -rf ./dist ./docs/_build",
     "test": "mocha 'tests/**/*.spec.ts'",
-    "lint-fix": "eslint './src/**/*.ts' --fix",
     "lint": "eslint  './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
     "docs": "typedoc --out docs/_build ./src/index.ts",
-    "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/"
+    "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/",
+    "prepare": "husky install"
   },
   "files": [
     "src/*",
@@ -40,12 +40,15 @@
   "homepage": "https://mindee.com/",
   "devDependencies": {
     "@types/chai": "^4.3.4",
+    "@types/lint-staged": "^13.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "^18.15.11",
     "@typescript-eslint/eslint-plugin": "^5.57.1",
     "@typescript-eslint/parser": "^5.57.1",
     "chai": "^4.3.7",
     "eslint": "^8.32.0",
+    "husky": "^8.0.3",
+    "lint-staged": "^13.2.3",
     "mocha": "^10.1.0",
     "ts-node": "^10.9.1",
     "typedoc": "~0.23",
