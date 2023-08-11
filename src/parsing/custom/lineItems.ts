@@ -14,7 +14,7 @@ import { ListField, ListFieldValue } from "./listField";
 export class Line {
   /**
    * Number of the current line.
-   * Starts to 1.
+   * Starts at 1.
    */
   rowNumber!: number;
   /**
