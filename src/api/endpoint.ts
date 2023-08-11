@@ -176,20 +176,28 @@ export class Endpoint {
 
       let responseBody = "";
       res.on("data", function (chunk: string) {
-        logger.debug("receiving data ...");
+        logger.debug("Receiving data ...");
         responseBody += chunk;
       });
       res.on("end", function () {
+        logger.debug("Parsing the response ...");
         // handle empty responses from server, for example in the case of redirects
         if (!responseBody) {
           responseBody = "{}";
         }
         try {
-          resolve({
-            messageObj: res,
-            data: JSON.parse(responseBody),
-          });
+          const parsedResponse = JSON.parse(responseBody);
+          try {
+            resolve({
+              messageObj: res,
+              data: parsedResponse,
+            });
+          } catch (error) {
+            logger.error("Could not construct the return object.");
+            reject(error);
+          }
         } catch (error) {
+          logger.error("Could not parse the return as JSON.");
           logger.debug(responseBody);
           reject(error);
         }
