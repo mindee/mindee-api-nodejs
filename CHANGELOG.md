@@ -11,7 +11,7 @@
 * :sparkles: add support for FR Id Card
 * :sparkles: add support for US Driver License
 * :sparkles: add auto-generated md documentation
-* :sparkles: add support for (experimental) fullText operations
+* :sparkles: add text reconstruction when using the `allWords` parameter (full OCR)
 * :recycle: updated CLI to accommodate for newest changes
 * :coffin: remove InvoiceV3
 * :coffin: remove ReceiptV3
