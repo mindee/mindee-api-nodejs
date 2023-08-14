@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## v4.0.0 - 2023-08-14
+### ¡Breaking Changes!
+* :art: :boom: harmonize response types with other libraries
+* :art: :boom: change endpoint management & syntax
+* :art: :boom: move products to `product` module
+
+### Changes
+* :sparkles: add full support for page-specific attributes
+* :sparkles: add support for FR Id Card
+* :sparkles: add support for US Driver License
+* :sparkles: add auto-generated md documentation
+* :sparkles: add text reconstruction when using the `allWords` parameter (full OCR)
+* :recycle: updated CLI to accommodate for newest changes
+* :coffin: remove InvoiceV3
+* :coffin: remove ReceiptV3
+* :recycle: update tests to accommodate for newest changes
+* :recycle: re-organized parsing module (common/standard/custom)
+
+
 ## v3.10.2 - 2023-08-11
 ### Changes
 * :loud_sound: better logging of JSON errors
