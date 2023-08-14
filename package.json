@@ -13,7 +13,7 @@
     "lint": "eslint  './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/",
-    "preinstall": "husky install"
+    "postinstall": "husky install"
   },
   "files": [
     "src/*",
