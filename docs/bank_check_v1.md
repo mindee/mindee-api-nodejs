@@ -140,9 +140,8 @@ console.log(result.document.inference.prediction.checkNumber.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**checkPosition** ([PositionField](#position-field)): The position of the check on the document.
 
 ```js
-for (let i = 0; i < result.document.inference.pages.length; i++)
-{
-  console.log(result.document.inference.pages[i].prediction.checkPosition.polygon);
+for (const checkPositionElem of result.document.checkPosition) {
+  console.log(checkPositionElem.polygon);
 }
 ```
 
@@ -157,9 +156,8 @@ console.log(result.document.inference.prediction.date.value);
 **payees** ([StringField](#string-field)[]): List of the check's payees (recipients).
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.payees.length; i++)
-{
-  console.log(result.document.inference.prediction.payees[i].value);
+for (const payeesElem of result.document.inference.prediction.payees) {
+  console.log(payeesElem.value);
 }
 ```
 
@@ -174,11 +172,9 @@ console.log(result.document.inference.prediction.routingNumber.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**signaturesPositions** ([PositionField](#position-field)[]): List of signature positions
 
 ```js
-for (let i = 0; i < result.document.inference.pages.length; i++)
-{
-  for (let j = 0; j < result.document.inference.pages[i].prediction.signaturesPositions.length; j++)
-  {
-    console.log(result.document.inference.pages[i].prediction.signaturesPositions[j].polygon);
+for (const page of result.document.inference.pages) {
+  for (const signaturesPositionsElem of page.prediction.signaturesPositions) {
+    console.log(signaturesPositionsElem.polygon);
   }
 }
 ```

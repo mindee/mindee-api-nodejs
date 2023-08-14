@@ -97,9 +97,8 @@ The following fields are extracted for Carte Vitale V1:
 **givenNames** ([StringField](#string-field)[]): The given name(s) of the card holder.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.givenNames.length; i++)
-{
-  console.log(result.document.inference.prediction.givenNames[i].value);
+for (const givenNamesElem of result.document.inference.prediction.givenNames) {
+  console.log(givenNamesElem.value);
 }
 ```
 

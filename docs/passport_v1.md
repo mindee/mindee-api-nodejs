@@ -146,9 +146,8 @@ console.log(result.document.inference.prediction.gender.value);
 **givenNames** ([StringField](#string-field)[]): The given name(s) of the passport holder.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.givenNames.length; i++)
-{
-  console.log(result.document.inference.prediction.givenNames[i].value);
+for (const givenNamesElem of result.document.inference.prediction.givenNames) {
+  console.log(givenNamesElem.value);
 }
 ```
 

@@ -140,9 +140,8 @@ console.log(result.document.inference.prediction.birthPlace.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**documentSide** ([ClassificationField](#classification-field)): The side of the document which is visible.
 
 ```js
-for (let i = 0; i < result.document.inference.pages.length; i++)
-{
-  console.log(result.document.inference.pages[i].prediction.documentSide.value);
+for (const documentSideElem of result.document.documentSide) {
+  console.log(documentSideElem.value);
 }
 ```
 
@@ -164,9 +163,8 @@ console.log(result.document.inference.prediction.gender.value);
 **givenNames** ([StringField](#string-field)[]): The given name(s) of the card holder.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.givenNames.length; i++)
-{
-  console.log(result.document.inference.prediction.givenNames[i].value);
+for (const givenNamesElem of result.document.inference.prediction.givenNames) {
+  console.log(givenNamesElem.value);
 }
 ```
 

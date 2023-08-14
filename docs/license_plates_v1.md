@@ -86,9 +86,8 @@ The following fields are extracted for License Plate V1:
 **licensePlates** ([StringField](#string-field)[]): List of all license plates found in the image.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.licensePlates.length; i++)
-{
-  console.log(result.document.inference.prediction.licensePlates[i].value);
+for (const licensePlatesElem of result.document.inference.prediction.licensePlates) {
+  console.log(licensePlatesElem.value);
 }
 ```
 

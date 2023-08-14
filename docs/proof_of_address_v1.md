@@ -149,9 +149,8 @@ console.log(result.document.inference.prediction.date.value);
 **dates** ([DateField](#date-field)[]): List of dates found on the document.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.dates.length; i++)
-{
-  console.log(result.document.inference.prediction.dates[i].value);
+for (const datesElem of result.document.inference.prediction.dates) {
+  console.log(datesElem.value);
 }
 ```
 
@@ -166,9 +165,8 @@ console.log(result.document.inference.prediction.issuerAddress.value);
 **issuerCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations found for the issuer.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.issuerCompanyRegistration.length; i++)
-{
-  console.log(result.document.inference.prediction.issuerCompanyRegistration[i].value);
+for (const issuerCompanyRegistrationElem of result.document.inference.prediction.issuerCompanyRegistration) {
+  console.log(issuerCompanyRegistrationElem.value);
 }
 ```
 
@@ -197,9 +195,8 @@ console.log(result.document.inference.prediction.recipientAddress.value);
 **recipientCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations found for the recipient.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.recipientCompanyRegistration.length; i++)
-{
-  console.log(result.document.inference.prediction.recipientCompanyRegistration[i].value);
+for (const recipientCompanyRegistrationElem of result.document.inference.prediction.recipientCompanyRegistration) {
+  console.log(recipientCompanyRegistrationElem.value);
 }
 ```
 

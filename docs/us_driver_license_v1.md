@@ -226,9 +226,8 @@ console.log(result.document.inference.prediction.lastName.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**photo** ([PositionField](#position-field)): Has a photo of the US driver license holder
 
 ```js
-for (let i = 0; i < result.document.inference.pages.length; i++)
-{
-  console.log(result.document.inference.pages[i].prediction.photo.polygon);
+for (const photoElem of result.document.photo) {
+  console.log(photoElem.polygon);
 }
 ```
 
@@ -250,9 +249,8 @@ console.log(result.document.inference.prediction.sex.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**signature** ([PositionField](#position-field)): Has a signature of the US driver license holder
 
 ```js
-for (let i = 0; i < result.document.inference.pages.length; i++)
-{
-  console.log(result.document.inference.pages[i].prediction.signature.polygon);
+for (const signatureElem of result.document.signature) {
+  console.log(signatureElem.polygon);
 }
 ```
 

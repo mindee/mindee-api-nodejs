@@ -213,9 +213,8 @@ console.log(result.document.inference.prediction.documentType.value);
 **lineItems** ([ReceiptV5LineItem](#line-items-field)[]): List of line item details.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.lineItems.length; i++)
-{
-  console.log(result.document.inference.prediction.lineItems[i].value);
+for (const lineItemsElem of result.document.inference.prediction.lineItems) {
+  console.log(lineItemsElem.value);
 }
 ```
 
@@ -244,9 +243,8 @@ console.log(result.document.inference.prediction.supplierAddress.value);
 **supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the supplier.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.supplierCompanyRegistrations.length; i++)
-{
-  console.log(result.document.inference.prediction.supplierCompanyRegistrations[i].value);
+for (const supplierCompanyRegistrationsElem of result.document.inference.prediction.supplierCompanyRegistrations) {
+  console.log(supplierCompanyRegistrationsElem.value);
 }
 ```
 
@@ -268,9 +266,8 @@ console.log(result.document.inference.prediction.supplierPhoneNumber.value);
 **taxes** ([TaxField](#taxes-field)[]): List of tax lines information.
 
 ```js
-for (let i = 0; i < result.document.inference.prediction.taxes.length; i++)
-{
-  console.log(result.document.inference.prediction.taxes[i].toString());
+for (const taxesElem of result.document.inference.prediction.taxes) {
+  console.log(taxesElem.toString());
 }
 ```
 
