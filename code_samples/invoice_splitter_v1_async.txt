@@ -7,12 +7,13 @@ async function sampleAsyncApi() {
   const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 
   // Specify the document class here to be DRY
-  const docClass = mindee.InvoiceSplitterV1;
+  const docClass = mindee.product.InvoiceSplitterV1;
+
+  const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
   // Load a file from disk and send it to the asynchronous queue
   const enqueueResponse = await mindeeClient
-    .docFromPath("/path/to/the/file.ext")
-    .enqueue(docClass);
+    .enqueue(docClass, inputSource);
 
   console.log(enqueueResponse.job);
 
@@ -47,7 +48,6 @@ async function sampleAsyncApi() {
 
       // Call the API endpoint
       const parseAsyncResponse = await mindeeClient
-        .docForAsync()
         .parseQueued(docClass, queueId);
 
       //
@@ -57,7 +57,7 @@ async function sampleAsyncApi() {
       // Otherwise,we go around for another recursion.
       //
       if (parseAsyncResponse.document !== undefined) {
-        console.log(parseAsyncResponse.document.document);
+        console.log(parseAsyncResponse.document.toString());
       } else {
         console.log(parseAsyncResponse.job);
         await getDocFromAsyncQueue(queueId);
@@ -71,5 +71,5 @@ async function sampleAsyncApi() {
   await getDocFromAsyncQueue(enqueueResponse.job.id);
 }
 
-// Run it!
+// Run it
 sampleAsyncApi();
