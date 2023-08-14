@@ -121,7 +121,7 @@ A `LineItems` has only one attribute:
 `Line` represent a line as it has been read on a page. It has the following attributes:
 
 * **rowNumber** (`number`): Number of a given line. Starts at 1.
-* **fields** (`Map<string, ListFieldValue>`): List of the fields associated with the line, indexed by their column name.
+* **fields** (`Map<string, ListFieldValue>`[]): List of the fields associated with the line, indexed by their column name.
 * **bbox** (`BBox`): Simple bounding box of the current line made up of four `number`.
 * **heightTolerance** (`number`): Height tolerance threshold used to build a line. Helps with unexpected height variations.
 

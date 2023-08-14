@@ -133,7 +133,7 @@ The locale field `LocaleField` only implements the **value**, **confidence** and
 * **currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `undefined`.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 # Attributes
 The following fields are extracted for Proof of Address V1:
@@ -146,10 +146,13 @@ console.log(result.document.inference.prediction.date.value);
 ```
 
 ## Dates
-**dates** ([DateField](#date-field)): List of dates found on the document.
+**dates** ([DateField](#date-field)[]): List of dates found on the document.
 
 ```js
-console.log(result.document.inference.prediction.dates.value);
+for (let i = 0; i < result.document.inference.prediction.dates.length; i++)
+{
+  console.log(result.document.inference.prediction.dates[i].value);
+}
 ```
 
 ## Issuer Address
@@ -160,10 +163,13 @@ console.log(result.document.inference.prediction.issuerAddress.value);
 ```
 
 ## Issuer Company Registrations
-**issuerCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)): List of company registrations found for the issuer.
+**issuerCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations found for the issuer.
 
 ```js
-console.log(result.document.inference.prediction.issuerCompanyRegistration.value);
+for (let i = 0; i < result.document.inference.prediction.issuerCompanyRegistration.length; i++)
+{
+  console.log(result.document.inference.prediction.issuerCompanyRegistration[i].value);
+}
 ```
 
 ## Issuer Name
@@ -188,10 +194,13 @@ console.log(result.document.inference.prediction.recipientAddress.value);
 ```
 
 ## Recipient Company Registrations
-**recipientCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)): List of company registrations found for the recipient.
+**recipientCompanyRegistration** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations found for the recipient.
 
 ```js
-console.log(result.document.inference.prediction.recipientCompanyRegistration.value);
+for (let i = 0; i < result.document.inference.prediction.recipientCompanyRegistration.length; i++)
+{
+  console.log(result.document.inference.prediction.recipientCompanyRegistration[i].value);
+}
 ```
 
 ## Recipient Name

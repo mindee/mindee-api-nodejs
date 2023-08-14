@@ -77,16 +77,19 @@ A typical `Field` object will have the following attributes:
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 # Attributes
 The following fields are extracted for License Plate V1:
 
 ## License Plates
-**licensePlates** ([StringField](#string-field)): List of all license plates found in the image.
+**licensePlates** ([StringField](#string-field)[]): List of all license plates found in the image.
 
 ```js
-console.log(result.document.inference.prediction.licensePlates.value);
+for (let i = 0; i < result.document.inference.prediction.licensePlates.length; i++)
+{
+  console.log(result.document.inference.prediction.licensePlates[i].value);
+}
 ```
 
 # Questions?

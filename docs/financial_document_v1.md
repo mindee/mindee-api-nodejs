@@ -177,7 +177,7 @@ Aside from the basic `Field` attributes, the payment details field `PaymentDetai
 * **swift** (`string`): the account holder's bank's SWIFT Business Identifier Code (BIC). Can be `undefined`.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 ### Taxes Field
 #### Tax
@@ -226,10 +226,13 @@ console.log(result.document.inference.prediction.customerAddress.value);
 ```
 
 ## Customer Company Registrations
-**customerCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)): List of company registrations associated to the customer.
+**customerCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the customer.
 
 ```js
-console.log(result.document.inference.prediction.customerCompanyRegistrations.value);
+for (let i = 0; i < result.document.inference.prediction.customerCompanyRegistrations.length; i++)
+{
+  console.log(result.document.inference.prediction.customerCompanyRegistrations[i].value);
+}
 ```
 
 ## Customer name
@@ -271,7 +274,10 @@ console.log(result.document.inference.prediction.invoiceNumber.value);
 **lineItems** ([FinancialDocumentV1LineItem](#line-items-field)[]): List of line item details.
 
 ```js
-console.log(result.document.inference.prediction.lineItems.value);
+for (let i = 0; i < result.document.inference.prediction.lineItems.length; i++)
+{
+  console.log(result.document.inference.prediction.lineItems[i].value);
+}
 ```
 
 ## Locale
@@ -282,10 +288,13 @@ console.log(result.document.inference.prediction.locale.value);
 ```
 
 ## Reference Numbers
-**referenceNumbers** ([StringField](#string-field)): List of Reference numbers, including PO number.
+**referenceNumbers** ([StringField](#string-field)[]): List of Reference numbers, including PO number.
 
 ```js
-console.log(result.document.inference.prediction.referenceNumbers.value);
+for (let i = 0; i < result.document.inference.prediction.referenceNumbers.length; i++)
+{
+  console.log(result.document.inference.prediction.referenceNumbers[i].value);
+}
 ```
 
 ## Purchase Subcategory
@@ -303,10 +312,13 @@ console.log(result.document.inference.prediction.supplierAddress.value);
 ```
 
 ## Supplier Company Registrations
-**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)): List of company registrations associated to the supplier.
+**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the supplier.
 
 ```js
-console.log(result.document.inference.prediction.supplierCompanyRegistrations.value);
+for (let i = 0; i < result.document.inference.prediction.supplierCompanyRegistrations.length; i++)
+{
+  console.log(result.document.inference.prediction.supplierCompanyRegistrations[i].value);
+}
 ```
 
 ## Supplier name
@@ -317,10 +329,13 @@ console.log(result.document.inference.prediction.supplierName.value);
 ```
 
 ## Supplier Payment Details
-**supplierPaymentDetails** ([PaymentDetailsField](#payment-details-field)): List of payment details associated to the supplier.
+**supplierPaymentDetails** ([PaymentDetailsField](#payment-details-field)[]): List of payment details associated to the supplier.
 
 ```js
-console.log(result.document.inference.prediction.supplierPaymentDetails.value);
+for (let i = 0; i < result.document.inference.prediction.supplierPaymentDetails.length; i++)
+{
+  console.log(result.document.inference.prediction.supplierPaymentDetails[i].value);
+}
 ```
 
 ## Supplier Phone Number
@@ -331,10 +346,13 @@ console.log(result.document.inference.prediction.supplierPhoneNumber.value);
 ```
 
 ## Taxes
-**taxes** ([TaxField](#taxes-field)): List of tax lines information.
+**taxes** ([TaxField](#taxes-field)[]): List of tax lines information.
 
 ```js
-console.log(result.document.inference.prediction.taxes.toString());
+for (let i = 0; i < result.document.inference.prediction.taxes.length; i++)
+{
+  console.log(result.document.inference.prediction.taxes[i].toString());
+}
 ```
 
 ## Purchase Time

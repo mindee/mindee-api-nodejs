@@ -107,7 +107,7 @@ Aside from the basic `Field` attributes, the date field `DateField` also impleme
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 ## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
@@ -140,7 +140,10 @@ console.log(result.document.inference.prediction.birthPlace.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**documentSide** ([ClassificationField](#classification-field)): The side of the document which is visible.
 
 ```js
-console.log(result.document.inference.pages[0].prediction.documentSide.value);
+for (let i = 0; i < result.document.inference.pages.length; i++)
+{
+  console.log(result.document.inference.pages[i].prediction.documentSide.value);
+}
 ```
 
 ## Expiry Date
@@ -158,10 +161,13 @@ console.log(result.document.inference.prediction.gender.value);
 ```
 
 ## Given Name(s)
-**givenNames** ([StringField](#string-field)): The given name(s) of the card holder.
+**givenNames** ([StringField](#string-field)[]): The given name(s) of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.givenNames.value);
+for (let i = 0; i < result.document.inference.prediction.givenNames.length; i++)
+{
+  console.log(result.document.inference.prediction.givenNames[i].value);
+}
 ```
 
 ## Identity Number
