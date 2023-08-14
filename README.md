@@ -1,7 +1,4 @@
-[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-nodejs)](https://opensource.org/licenses/MIT)
-[![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mindee/mindee-api-nodejs/test.yml)](https://github.com/mindee/mindee-api-nodejs)
-[![NPM Version](https://img.shields.io/npm/v/mindee)](https://www.npmjs.com/package/mindee)
-[![Downloads](https://img.shields.io/npm/dm/mindee)](https://www.npmjs.com/package/mindee)
+[![License: MIT](https://img.shields.io/github/license/mindee/mindee-api-nodejs)](https://opensource.org/licenses/MIT) [![GitHub Workflow Status](https://img.shields.io/github/actions/workflow/status/mindee/mindee-api-nodejs/test.yml)](https://github.com/mindee/mindee-api-nodejs) [![NPM Version](https://img.shields.io/npm/v/mindee)](https://www.npmjs.com/package/mindee) [![Downloads](https://img.shields.io/npm/dm/mindee)](https://www.npmjs.com/package/mindee)
 
 # Mindee API Helper Library for Node.js
 Quickly and easily connect to Mindee's API services using Node.js.
@@ -156,31 +153,24 @@ const apiResponse = mindeeClient.parse(
 
 Complete details on the working of the library are available in the following guides: 
 
-- [Overview](https://developers.mindee.com/docs/nodejs-getting-started)
-- [Node.js Custom APIs OCR](https://developers.mindee.com/docs/nodejs-custom-api)
-- [Node.js Invoices OCR](https://developers.mindee.com/docs/nodejs-invoice-ocr)
-- [Node.js Receipts OCR](https://developers.mindee.com/docs/nodejs-receipt-ocr)
-- [Node.js Financial Documents OCR](https://developers.mindee.com/docs/nodejs-financial-document-ocr)
-- [Node.js Passport OCR](https://developers.mindee.com/docs/nodejs-passport-ocr)
-- [Node.js Proof of Address OCR](https://developers.mindee.com/docs/nodejs-proof-of-address-ocr)
-- [Node.js (EU) License Plates OCR](https://developers.mindee.com/docs/nodejs-eu-license-plates-ocr)
-- [Node.js (FR) Bank Account Details OCR](https://developers.mindee.com/docs/nodejs-fr-bank-account-details-ocr)
-- [Node.js (FR) Carte Vitale OCR](https://developers.mindee.com/docs/nodejs-fr-carte-vitale-ocr)
-- [Node.js (FR) ID Card OCR](https://developers.mindee.com/docs/nodejs-fr-id-card-ocr)
-- [Node.js (US) Bank Checks OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
-- [Node.js (US) Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
-- [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-api)
-- [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-api)
+* [Overview](https://developers.mindee.com/docs/nodejs-getting-started)
+* [Node.js Custom APIs OCR](https://developers.mindee.com/docs/nodejs-custom-api)
+* [Node.js Invoices OCR](https://developers.mindee.com/docs/nodejs-invoice-ocr)
+* [Node.js Receipts OCR](https://developers.mindee.com/docs/nodejs-receipt-ocr)
+* [Node.js Financial Documents OCR](https://developers.mindee.com/docs/nodejs-financial-document-ocr)
+* [Node.js Passport OCR](https://developers.mindee.com/docs/nodejs-passport-ocr)
+* [Node.js Proof of Address OCR](https://developers.mindee.com/docs/nodejs-proof-of-address-ocr)
+* [Node.js EU License Plates OCR](https://developers.mindee.com/docs/nodejs-eu-license-plates-ocr)
+* [Node.js FR Bank Account Details OCR](https://developers.mindee.com/docs/nodejs-fr-bank-account-details-ocr)
+* [Node.js FR Carte Vitale OCR](https://developers.mindee.com/docs/nodejs-fr-carte-vitale-ocr)
+* [Node.js FR ID Card OCR](https://developers.mindee.com/docs/nodejs-fr-id-card-ocr)
+* [Node.js US Bank Checks OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
+* [Node.js US Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
+* [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-api)
+* [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-api)
 
 ## Further Reading
-There's more to it than that for those that need more features, or want to
-customize the experience.
-
-All the juicy details are described in the
-**[Official Guide](https://developers.mindee.com/docs/nodejs-sdk)**.
-
-You can also take a look at the
-**[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**.
+Take a look at the**[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**.
 
 ## License
 Copyright © Mindee
