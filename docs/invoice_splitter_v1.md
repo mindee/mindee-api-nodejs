@@ -124,7 +124,7 @@ List of page group indexes.
 
 A `PageGroup` implements the following attributes:
 
-* **pageIndexes** (`number[]`): List of indexes of the pages of a single invoice.
+* **pageIndexes** (`number`[]): List of indexes of the pages of a single invoice.
 * **confidence** (`number`): The confidence of the prediction.
 
 # Attributes

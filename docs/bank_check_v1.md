@@ -107,7 +107,7 @@ The position field `PositionField` does not implement all the basic `Field` attr
 * **quadrangle** (`[Point, Point, Point, Point]`): a free polygon made up of four points.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 ## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
@@ -140,7 +140,9 @@ console.log(result.document.inference.prediction.checkNumber.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**checkPosition** ([PositionField](#position-field)): The position of the check on the document.
 
 ```js
-console.log(result.document.inference.pages[0].prediction.checkPosition.polygon);
+for (const checkPositionElem of result.document.checkPosition) {
+  console.log(checkPositionElem.polygon);
+}
 ```
 
 ## Check Issue Date
@@ -151,10 +153,12 @@ console.log(result.document.inference.prediction.date.value);
 ```
 
 ## Payees
-**payees** ([StringField](#string-field)): List of the check's payees (recipients).
+**payees** ([StringField](#string-field)[]): List of the check's payees (recipients).
 
 ```js
-console.log(result.document.inference.prediction.payees.value);
+for (const payeesElem of result.document.inference.prediction.payees) {
+  console.log(payeesElem.value);
+}
 ```
 
 ## Routing Number
@@ -165,10 +169,14 @@ console.log(result.document.inference.prediction.routingNumber.value);
 ```
 
 ## Signature Positions
-[📄](#page-level-fields "This field is only present on individual pages.")**signaturesPositions** ([PositionField](#position-field)): List of signature positions
+[📄](#page-level-fields "This field is only present on individual pages.")**signaturesPositions** ([PositionField](#position-field)[]): List of signature positions
 
 ```js
-console.log(result.document.inference.pages[0].prediction.signaturesPositions.polygon);
+for (const page of result.document.inference.pages) {
+  for (const signaturesPositionsElem of page.prediction.signaturesPositions) {
+    console.log(signaturesPositionsElem.polygon);
+  }
+}
 ```
 
 # Questions?

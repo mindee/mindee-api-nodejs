@@ -123,7 +123,7 @@ The position field `PositionField` does not implement all the basic `Field` attr
 * **quadrangle** (`[Point, Point, Point, Point]`): a free polygon made up of four points.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 ## Page-Level Fields
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
@@ -226,7 +226,9 @@ console.log(result.document.inference.prediction.lastName.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**photo** ([PositionField](#position-field)): Has a photo of the US driver license holder
 
 ```js
-console.log(result.document.inference.pages[0].prediction.photo.polygon);
+for (const photoElem of result.document.photo) {
+  console.log(photoElem.polygon);
+}
 ```
 
 ## Restrictions
@@ -247,7 +249,9 @@ console.log(result.document.inference.prediction.sex.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**signature** ([PositionField](#position-field)): Has a signature of the US driver license holder
 
 ```js
-console.log(result.document.inference.pages[0].prediction.signature.polygon);
+for (const signatureElem of result.document.signature) {
+  console.log(signatureElem.polygon);
+}
 ```
 
 ## State

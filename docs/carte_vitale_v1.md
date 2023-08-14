@@ -88,16 +88,18 @@ Aside from the basic `Field` attributes, the date field `DateField` also impleme
 * **dateObject** (`Date`): an accessible representation of the value as a JavaScript object.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 # Attributes
 The following fields are extracted for Carte Vitale V1:
 
 ## Given Name(s)
-**givenNames** ([StringField](#string-field)): The given name(s) of the card holder.
+**givenNames** ([StringField](#string-field)[]): The given name(s) of the card holder.
 
 ```js
-console.log(result.document.inference.prediction.givenNames.value);
+for (const givenNamesElem of result.document.inference.prediction.givenNames) {
+  console.log(givenNamesElem.value);
+}
 ```
 
 ## Issuance Date

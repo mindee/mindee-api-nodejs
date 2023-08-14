@@ -157,7 +157,7 @@ The locale field `LocaleField` only implements the **value**, **confidence** and
 * **currency** (`string`): ISO 4217 code for currencies (e.g.: `USD` for "US Dollars"). Can be `undefined`.
 
 ### String Field
-The text field `StringField` only has one constraint: it's **value** is a `string` (or `undefined`).
+The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 ### Taxes Field
 #### Tax
@@ -213,7 +213,9 @@ console.log(result.document.inference.prediction.documentType.value);
 **lineItems** ([ReceiptV5LineItem](#line-items-field)[]): List of line item details.
 
 ```js
-console.log(result.document.inference.prediction.lineItems.value);
+for (const lineItemsElem of result.document.inference.prediction.lineItems) {
+  console.log(lineItemsElem.value);
+}
 ```
 
 ## Expense Locale
@@ -238,10 +240,12 @@ console.log(result.document.inference.prediction.supplierAddress.value);
 ```
 
 ## Supplier Company Registrations
-**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)): List of company registrations associated to the supplier.
+**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the supplier.
 
 ```js
-console.log(result.document.inference.prediction.supplierCompanyRegistrations.value);
+for (const supplierCompanyRegistrationsElem of result.document.inference.prediction.supplierCompanyRegistrations) {
+  console.log(supplierCompanyRegistrationsElem.value);
+}
 ```
 
 ## Supplier Name
@@ -259,10 +263,12 @@ console.log(result.document.inference.prediction.supplierPhoneNumber.value);
 ```
 
 ## Taxes
-**taxes** ([TaxField](#taxes-field)): List of tax lines information.
+**taxes** ([TaxField](#taxes-field)[]): List of tax lines information.
 
 ```js
-console.log(result.document.inference.prediction.taxes.toString());
+for (const taxesElem of result.document.inference.prediction.taxes) {
+  console.log(taxesElem.toString());
+}
 ```
 
 ## Purchase Time
