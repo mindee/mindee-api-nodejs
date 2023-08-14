@@ -134,7 +134,9 @@ The following fields are extracted for Invoice Splitter V1:
 **invoicePageGroups** ([PageGroup](#page-group)[]): List of page indexes that belong to the same invoice in the PDF.
 
 ```js
-console.log(result.document.inference.prediction.invoicePageGroups.toString());
+for (const invoicePageGroupsElem of result.document.inference.prediction.invoicePageGroups){ 
+  console.log(invoicePageGroupsElem.pageIndexes.join(", "));
+}
 ```
 
 # Questions?
