@@ -41,18 +41,6 @@ export interface PredictOptions {
   pageOptions?: PageOptions;
 }
 
-export interface CustomConfigParams {
-  /** Your organization's username on the API Builder. */
-  accountName: string;
-  /** The "API name" field in the "Settings" page of the API Builder. */
-  endpointName: string;
-  /**
-   * If set, locks the version of the model to use.
-   * If not set, use the latest version of the model.
-   */
-  version?: string;
-}
-
 export interface ClientOptions {
   /** Your API key for all endpoints. */
   apiKey?: string;
