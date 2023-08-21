@@ -4,12 +4,29 @@ import { OrientationField } from "./orientation";
 import { Prediction } from "./prediction";
 import { StringDict } from "./stringDict";
 
+
+/**
+ * Page prediction wrapper class. Holds the results of a parsed document's page.
+ * Holds a `Prediction` that's either a document-level Prediction, or inherits from one.
+ * @typeParam T an extension of an `Prediction`. Mandatory in order to properly create a page-level prediction.
+ */
 export class Page<T extends Prediction> {
+  /** A page's id */
   id: number;
+  /** The page's orientation */
   orientation?: OrientationField;
+  /** A page-level prediction. Can either be specific or copied from a document-level prediction */
   prediction: T;
+  /** Potential `Extras` fields sent back along the prediction */
   extras?: Extras;
 
+  /**
+   * 
+   * @param inferenceClass constructor signature for an inference.
+   * @param httpResponse raw http response.
+   * @param pageId the page's number.
+   * @param orientation the page's orientation.
+   */
   constructor(
     predictionType: new (rawPrediction: StringDict, pageId: number) => T,
     rawPrediction: StringDict,
@@ -43,6 +60,10 @@ export class Page<T extends Prediction> {
     }
   }
 
+  /**
+   * Displays a page summary
+   * @returns a summary of a page, as a `string`
+   */
   toString() {
     const title = `Page ${this.id}`;
     return `${title}

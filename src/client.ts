@@ -39,7 +39,7 @@ export interface PredictOptions {
    * This performs a cropping operation on the server and will increase response time.
    */
   cropper?: boolean;
-  /** Page-specific options, see{@link PageOptions} for more info. */
+  /** Page-specific options. */
   pageOptions?: PageOptions;
 }
 
@@ -63,7 +63,6 @@ export class Client {
 
   /**
    * @param options options for the initialization of a client. 
-   * See {@link ClientOptions} for more information.
    */
   constructor(
     { apiKey, throwOnError, debug }: ClientOptions = {
@@ -86,9 +85,11 @@ export class Client {
    * 
    * @param productClass constructor signature for a given product. Mandatory to retrieve default OTS endpoint data.
    * @param inputSource document to parse.
-   * @param params parameters relating to prediction options. See {@link PredictOptions} for more information.
+   * @param params parameters relating to prediction options.
    * 
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Synchronous
+   * @returns a `Promise` containing the prediction sent by the server
    */
   async parse<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
@@ -117,7 +118,8 @@ export class Client {
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param productClass constructor signature for a given product.
-   * @param params parameters relating to prediction options. See {@link PredictOptions} for more information.
+   * @param params parameters relating to prediction options.
+   * @category Asynchronous
    * 
    * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
@@ -147,10 +149,11 @@ export class Client {
    * @param productClass constructor signature for a given product.
    * Mandatory to construct a response object corresponding to a product's class.
    * @param queueId id of the queue to poll.
-   * @param params parameters relating to prediction options. See {@link PredictOptions} for more information.
+   * @param params parameters relating to prediction options.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Asynchronous
    * 
-   * @returns a promise containing a {@link Job}, which contains a prediction response if the
+   * @returns a promise containing a `Job`, which contains a prediction response if the
    * parsing is complete.
    */
   async parseQueued<T extends Inference>(

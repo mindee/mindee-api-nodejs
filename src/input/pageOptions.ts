@@ -1,3 +1,4 @@
+/** Page-specific parsing options. */
 export interface PageOptions {
   /**
    * Zero-based list of page indexes.
@@ -15,7 +16,10 @@ export interface PageOptions {
   onMinPages: number;
 }
 
+/** Describes the operations to apply to a page. */
 export enum PageOptionsOperation {
+  /** Only keep pages matching the provided indexes. */
   KeepOnly = "KEEP_ONLY",
+  /** Remove pages matching the provided indexes. */
   Remove = "REMOVE",
 }
