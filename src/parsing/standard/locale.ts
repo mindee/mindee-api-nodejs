@@ -37,6 +37,9 @@ export class LocaleField extends BaseField {
       prediction["currency"] !== undefined ? prediction["currency"] : undefined;
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     let outStr = "";
     if (this.value) {

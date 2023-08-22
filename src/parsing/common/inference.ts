@@ -35,6 +35,9 @@ export abstract class Inference<
     this.product = rawPrediction?.product;
   }
 
+  /**
+   * Default string representation.
+   */
   toString() {
     return `Inference
 #########
@@ -51,12 +54,20 @@ Page Predictions
 ${this.pages.map((e: Page<PageT>) => e.toString() || "").join("\n")}`;
   }
 
+  /**
+   * Takes in an input string and replaces line breaks with `\n`.
+   * @param outStr string to cleanup
+   * @returns cleaned out string
+   */
   static cleanOutString(outStr: string): string {
     const lines = / \n/gm;
     return outStr.replace(lines, "\n");
   }
 }
-
+/**
+ * Factory to allow for static-like property access syntax in TypeScript.
+ * Used to retrieve endpoint data for OTS APIs.
+ */
 export class InferenceFactory {
   /**
    * Builds a blank product of the given type & sends back the endpointName & endpointVersion parameters of OTS classes.

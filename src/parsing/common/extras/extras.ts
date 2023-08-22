@@ -15,6 +15,9 @@ implements ExtraDict<ExtraT>
       );
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     return (
       Object.entries(this)

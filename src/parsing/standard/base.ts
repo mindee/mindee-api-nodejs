@@ -63,6 +63,9 @@ export class BaseField {
     return total;
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     if (this.value !== undefined) {
       return `${this.value}`;

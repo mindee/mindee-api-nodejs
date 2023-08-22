@@ -38,6 +38,9 @@ export class BankAccountDetailsV2Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const outStr = `:Account Holder's Names: ${this.accountHoldersNames}
 :Basic Bank Account Number: ${this.bban.toFieldList()}

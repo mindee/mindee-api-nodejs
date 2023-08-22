@@ -125,6 +125,9 @@ export class ReceiptV5Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const supplierCompanyRegistrations = this.supplierCompanyRegistrations.join("\n                                 ");
     let lineItemsSummary:string = "";

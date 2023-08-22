@@ -32,6 +32,9 @@ export class OrientationField extends BaseField {
     if (!orientations.includes(this.value)) this.value = 0;
   }
 
+  /**
+   * Default string representation.
+   */
   toString() {
     return `${this.value} degrees`;
   }

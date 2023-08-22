@@ -30,6 +30,9 @@ export class PositionField {
     this.rectangle = prediction["rectangle"];
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     return `Polygon with ${this.polygon.length} points.`;
   }

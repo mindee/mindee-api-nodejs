@@ -17,6 +17,10 @@ export class CropperExtra extends ExtraField {
         );
       });
   }
+
+  /**
+   * Default string representation.
+   */
   toString() {
     const cropping = this.cropping
       .map((crop) => crop.toString())

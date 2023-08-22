@@ -61,8 +61,7 @@ export class Page<T extends Prediction> {
   }
 
   /**
-   * Displays a page summary
-   * @returns a summary of a page, as a `string`
+   * Default string representation.
    */
   toString() {
     const title = `Page ${this.id}`;

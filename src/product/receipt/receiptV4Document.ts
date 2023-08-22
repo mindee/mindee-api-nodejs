@@ -9,6 +9,9 @@ import {
   Taxes,
 } from "../../parsing/standard";
 
+/**
+ * Document data for Receipt, API version 5.
+ */
 export class ReceiptV4Document implements Prediction {
   /** Where the purchase was made, the language, and the currency. */
   locale: LocaleField;
@@ -80,6 +83,9 @@ export class ReceiptV4Document implements Prediction {
     this.taxes = new Taxes().init(rawPrediction["taxes"], pageId);
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const outStr = `:Locale: ${this.locale}
 :Date: ${this.date}

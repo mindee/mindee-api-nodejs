@@ -52,9 +52,9 @@ export class Document<T extends Inference> {
     }
   }
 
+
   /**
-   * Displays a document summary
-   * @returns a summary of a document, as a `string`
+   * Default string representation.
    */
   toString() {
     return `########\nDocument\n########

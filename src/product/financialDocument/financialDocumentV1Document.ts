@@ -186,6 +186,9 @@ export class FinancialDocumentV1Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const referenceNumbers = this.referenceNumbers.join("\n                    ");
     const supplierPaymentDetails = this.supplierPaymentDetails.join("\n                           ");

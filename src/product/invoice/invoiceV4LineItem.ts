@@ -2,6 +2,9 @@ import { floatToString } from "../../parsing/standard";
 import { Polygon } from "../../geometry";
 import { StringDict } from "../../parsing/common";
 
+/**
+ * List of line item details.
+ */
 export class InvoiceV4LineItem {
   /** The product code referring to the item. */
   productCode: string;
@@ -62,6 +65,9 @@ export class InvoiceV4LineItem {
     }
   }
 
+  /**
+   * Collection of fields as representable strings.
+   */
   #printableValues() {
     return {
       productCode: this.productCode ?? "",
@@ -82,6 +88,9 @@ export class InvoiceV4LineItem {
     };
   }
 
+  /**
+   * Output in a format suitable for inclusion in an rST table.
+   */
   toTableLine(): string {
     const printable = this.#printableValues();
     return (
@@ -101,6 +110,9 @@ export class InvoiceV4LineItem {
     );
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const printable = this.#printableValues();
     return (

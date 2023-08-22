@@ -59,6 +59,9 @@ export class BankCheckV1Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const payees = this.payees.join("\n         ");
     const outStr = `:Check Issue Date: ${this.date}

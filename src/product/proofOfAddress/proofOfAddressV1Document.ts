@@ -89,6 +89,9 @@ export class ProofOfAddressV1Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const issuerCompanyRegistration = this.issuerCompanyRegistration.join("\n                              ");
     const recipientCompanyRegistration = this.recipientCompanyRegistration.join("\n                                 ");
