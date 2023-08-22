@@ -12,8 +12,7 @@
     "test": "mocha 'tests/**/*.spec.ts'",
     "lint": "eslint  './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
     "docs": "typedoc --out docs/_build ./src/index.ts",
-    "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/",
-    "postinstall": "husky install"
+    "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/"
   },
   "files": [
     "src/*",
@@ -47,7 +46,6 @@
     "@typescript-eslint/parser": "^5.57.1",
     "chai": "^4.3.7",
     "eslint": "^8.32.0",
-    "husky": "^8.0.3",
     "lint-staged": "^13.2.3",
     "mocha": "^10.1.0",
     "ts-node": "^10.9.1",
