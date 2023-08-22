@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.0.1 - 2023-08-22
+### Fixes
+* :bug: fixed pre-commit dependency script blocking installs
+
+
 ## v4.0.0 - 2023-08-14
 ### ¡Breaking Changes!
 * :art: :boom: harmonize response types with other libraries
