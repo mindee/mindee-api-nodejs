@@ -11,6 +11,7 @@
     "clean": "rm -rf ./dist ./docs/_build",
     "test": "mocha 'tests/**/*.spec.ts'",
     "lint": "eslint  './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
+    "lint-fix": "eslint './src/**/*.ts' --fix",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/"
   },
