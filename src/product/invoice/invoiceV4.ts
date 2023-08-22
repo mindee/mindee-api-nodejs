@@ -5,13 +5,13 @@ import { InvoiceV4Document } from "./invoiceV4Document";
  * Inference prediction for Invoice, API version 4.
  */
 export class InvoiceV4 extends Inference {
-  /** Endpoint's name */
+  /** The endpoint's name. */
   endpointName = "invoices";
-  /** Endpoint's version */
+  /** The endpoint's version. */
   endpointVersion = "4";
-  /** The document-level prediction */
+  /** The document-level prediction. */
   prediction: InvoiceV4Document;
-  /** The document's pages */
+  /** The document's pages. */
   pages: Page<InvoiceV4Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

@@ -5,13 +5,13 @@ import { LicensePlateV1Document } from "./licensePlateV1Document";
  * Inference prediction for License Plate, API version 1.
  */
 export class LicensePlateV1 extends Inference {
-  /** Endpoint's name */
+  /** The endpoint's name. */
   endpointName = "license_plates";
-  /** Endpoint's version */
+  /** The endpoint's version. */
   endpointVersion = "1";
-  /** The document-level prediction */
+  /** The document-level prediction. */
   prediction: LicensePlateV1Document;
-  /** The document's pages */
+  /** The document's pages. */
   pages: Page<LicensePlateV1Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

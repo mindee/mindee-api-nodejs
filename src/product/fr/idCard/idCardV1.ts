@@ -6,13 +6,13 @@ import { IdCardV1Page } from "./idCardV1Page";
  * Inference prediction for Carte Nationale d'Identité, API version 1.
  */
 export class IdCardV1 extends Inference {
-  /** Endpoint's name */
+  /** The endpoint's name. */
   endpointName = "idcard_fr";
-  /** Endpoint's version */
+  /** The endpoint's version. */
   endpointVersion = "1";
-  /** The document-level prediction */
+  /** The document-level prediction. */
   prediction: IdCardV1Document;
-  /** The document's pages */
+  /** The document's pages. */
   pages: Page<IdCardV1Page>[] = [];
 
   constructor(rawPrediction: StringDict) {

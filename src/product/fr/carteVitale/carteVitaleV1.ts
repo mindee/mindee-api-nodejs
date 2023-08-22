@@ -5,13 +5,13 @@ import { CarteVitaleV1Document } from "./carteVitaleV1Document";
  * Inference prediction for Carte Vitale, API version 1.
  */
 export class CarteVitaleV1 extends Inference {
-  /** Endpoint's name */
+  /** The endpoint's name. */
   endpointName = "carte_vitale";
-  /** Endpoint's version */
+  /** The endpoint's version. */
   endpointVersion = "1";
-  /** The document-level prediction */
+  /** The document-level prediction. */
   prediction: CarteVitaleV1Document;
-  /** The document's pages */
+  /** The document's pages. */
   pages: Page<CarteVitaleV1Document>[] = [];
 
   constructor(rawPrediction: StringDict) {
