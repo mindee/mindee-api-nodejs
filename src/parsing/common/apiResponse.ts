@@ -12,7 +12,7 @@ export abstract class ApiResponse {
 
   /**
    * 
-   * @param serverResponse JSON response from the server
+   * @param serverResponse JSON response from the server.
    */
   constructor(serverResponse: StringDict) {
     this.apiRequest = new ApiRequest(serverResponse["api_request"]);

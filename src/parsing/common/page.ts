@@ -15,9 +15,9 @@ export class Page<T extends Prediction> {
   id: number;
   /** The page's orientation */
   orientation?: OrientationField;
-  /** A page-level prediction. Can either be specific or copied from a document-level prediction */
+  /** A page-level prediction. Can either be page-specific or document-wide. */
   prediction: T;
-  /** Potential `Extras` fields sent back along the prediction */
+  /** Potential `Extras` fields sent back along with the prediction. */
   extras?: Extras;
 
   /**

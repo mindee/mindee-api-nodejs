@@ -23,9 +23,9 @@ export class CustomV1Document implements Prediction {
    * Sorts and sets fields between classification fields and regular fields.
    * Note: Currently, two types of fields possible in a custom API response:
    * fields having a list of values, and classification fields.
-   * @param fieldName name of the field
-   * @param fieldValue value of the field
-   * @param pageId page the field was found on
+   * @param fieldName name of the field.
+   * @param fieldValue value of the field.
+   * @param pageId page the field was found on.
    */
   protected setField(fieldName: string, fieldValue: any, pageId?: number) {
     if (fieldValue && fieldValue["values"] !== undefined) {

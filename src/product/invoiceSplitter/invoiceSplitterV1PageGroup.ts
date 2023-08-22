@@ -4,9 +4,9 @@ import { StringDict } from "../../parsing/common";
  * Pages indexes in a group.
  */
 export class PageGroup {
-  /** List of page indexes */
+  /** List of page indexes. */
   pageIndexes: number[] = [];
-  /** Confidence score */
+  /** Confidence score. */
   confidence: number;
 
   constructor(prediction: StringDict) {
