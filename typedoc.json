@@ -3,6 +3,5 @@
     "notExported": false,
     "invalidLink": true,
     "notDocumented": true,
-  },
-  "exclude": ["src/product/*"]
+  }
 }
