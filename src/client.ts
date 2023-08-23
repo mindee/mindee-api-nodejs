@@ -124,7 +124,7 @@ export class Client {
    * @param params parameters relating to prediction options.
    * @category Asynchronous
    * 
-   * @returns a `Promise` containing an empty predict response 
+   * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
   async enqueue<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
