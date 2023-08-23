@@ -35,6 +35,8 @@ const ALLOWED_INPUT_TYPES = [
 ];
 
 export abstract class InputSource {
+  fileObject: Buffer | string = "";
+
   async init() {
     throw new Error("not Implemented");
   }

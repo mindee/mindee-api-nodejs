@@ -51,7 +51,7 @@ export class Endpoint {
       params.cropper
     );
     const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode > 400) {
+    if (statusCode === undefined || statusCode >= 400) {
       handleError(this.urlName, response, statusCode);
     }
 
@@ -74,7 +74,7 @@ export class Endpoint {
       params.cropper
     );
     const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode > 400) {
+    if (statusCode === undefined || statusCode >= 400) {
       handleError(this.urlName, response, statusCode);
     }
     return response;
@@ -122,14 +122,12 @@ export class Endpoint {
       }
 
       const form = new FormData();
-      if (input instanceof LocalInputSource) {
-        if (input.fileObject instanceof Buffer) {
-          form.append("document", input.fileObject, {
-            filename: input.filename,
-          });
-        } else {
-          form.append("document", input.fileObject);
-        }
+      if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
+        form.append("document", input.fileObject, {
+          filename: input.filename,
+        });
+      } else {
+        form.append("document", input.fileObject);
       }
 
       if (includeWords) {

@@ -17,8 +17,8 @@ export abstract class Inference<
   endpointVersion?: string;
 
   constructor(rawPrediction: StringDict) {
-    this.isRotationApplied = rawPrediction["is_rotation_applied"] ?? undefined;
-    this.product = rawPrediction["product"];
+    this.isRotationApplied = rawPrediction?.is_rotation_applied ?? undefined;
+    this.product = rawPrediction?.product;
   }
 
   toString() {
