@@ -12,6 +12,7 @@ import {
   INPUT_TYPE_BYTES,
   INPUT_TYPE_BUFFER,
   LocalInputSource,
+  InputSource,
 } from "./base";
 
 //
@@ -139,11 +140,11 @@ export class BytesInput extends LocalInputSource {
 // URL
 //
 
-export class UrlInput {
+export class UrlInput extends InputSource {
   private readonly url: string;
-  fileObject!: string;
 
   constructor({ url }: { url: string }) {
+    super();
     this.url = url;
   }
 

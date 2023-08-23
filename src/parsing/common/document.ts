@@ -15,9 +15,9 @@ export class Document<T extends Inference> {
     inferenceClass: new (httpResponse: StringDict) => T,
     httpResponse: StringDict
   ) {
-    this.id = httpResponse["id"] ?? "";
-    this.filename = httpResponse["name"] ?? "";
-    this.ocr = httpResponse["ocr"] ?? undefined;
+    this.id = httpResponse?.id ?? "";
+    this.filename = httpResponse?.name ?? "";
+    this.ocr = httpResponse?.ocr ?? undefined;
     this.inference = new inferenceClass(httpResponse["inference"]);
     // Note: this is a convoluted but functional way of being able to implement/use Extras fields
     // as an extension of a Map object (like having an adapted toString() method, for instance)
