@@ -1,4 +1,4 @@
-/** Page-specific parsing options. */
+/** Options to pass to the `parse` method for cutting multi-page documents. */
 export interface PageOptions {
   /**
    * Zero-based list of page indexes.
@@ -16,7 +16,7 @@ export interface PageOptions {
   onMinPages: number;
 }
 
-/** Describes the operations to apply to a page. */
+/** Operation to apply on the document, given the page indexes specified. */
 export enum PageOptionsOperation {
   /** Only keep pages matching the provided indexes. */
   KeepOnly = "KEEP_ONLY",

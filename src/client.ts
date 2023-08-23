@@ -39,7 +39,10 @@ export interface PredictOptions {
    * This performs a cropping operation on the server and will increase response time.
    */
   cropper?: boolean;
-  /** Page-specific options. */
+  /** 
+   * If set, remove pages from the document as specified. 
+   * This is done before sending the file to the server and is useful to avoid page limitations.
+   */
   pageOptions?: PageOptions;
 }
 
@@ -83,7 +86,7 @@ export class Client {
   /**
    * Send a document to a synchronous endpoint and parse the predictions.
    * 
-   * @param productClass constructor signature for a given product. Mandatory to retrieve default OTS endpoint data.
+   * @param productClass product class to use for calling  the API and parsing the response. Mandatory to retrieve default OTS endpoint data.
    * @param inputSource document to parse.
    * @param params parameters relating to prediction options.
    * 
@@ -117,7 +120,7 @@ export class Client {
 
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param productClass constructor signature for a given product.
+   * @param productClass product class to use for calling  the API and parsing the response.
    * @param params parameters relating to prediction options.
    * @category Asynchronous
    * 
@@ -146,14 +149,13 @@ export class Client {
   /**
    * Polls a queue and returns its status as well as the prediction results if the parsing is done.
    * 
-   * @param productClass constructor signature for a given product.
-   * Mandatory to construct a response object corresponding to a product's class.
+   * @param productClass product class to use for calling  the API and parsing the response.
    * @param queueId id of the queue to poll.
    * @param params parameters relating to prediction options.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Asynchronous
    * 
-   * @returns a `Promise` containing a `Job`, which contains a `PredictResponse` if the
+   * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
    * parsing is complete.
    */
   async parseQueued<T extends Inference>(
@@ -204,10 +206,10 @@ export class Client {
 
   /**
    * Creates a custom endpoint with the given values. Raises an error if the endpoint is invalid.
-   * @param productClass constructor signature for a given product. Mandatory to retrieve default OTS endpoint data.
-   * @param endpointName Name of a custom Endpoint.
-   * @param accountName Name of the account tied to the active Endpoint.
-   * @param version Version of a custom Endpoint.
+   * @param productClass product class to use for calling the API and parsing the response.
+   * @param endpointName Name of the custom Endpoint.
+   * @param accountName Name of the account tied to the Endpoint.
+   * @param version Version of the custom Endpoint.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * 
    * @returns a new endpoint
@@ -259,7 +261,7 @@ export class Client {
 
   /**
    * Checks that an account name is provided for custom builds, and sets the default one otherwise.
-   * @param productClass constructor signature for a given product.
+   * @param productClass product class to use for calling  the API and parsing the response.
    * @param accountName name of the account's holder. Only required on custom builds.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * 
@@ -283,7 +285,7 @@ export class Client {
 
   /**
    * Get the name and version of an OTS endpoint.
-   * @param productClass constructor signature for a given product. Mandatory to retrieve default OTS endpoint data.
+   * @param productClass product class to use for calling  the API and parsing the response. Mandatory to retrieve default OTS endpoint data.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * 
    * @returns an endpoint's name and version.

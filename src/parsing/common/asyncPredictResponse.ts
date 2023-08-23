@@ -55,7 +55,9 @@ export class Job {
 export class AsyncPredictResponse<T extends Inference> extends ApiResponse {
   /** Job for a queue. */
   job: Job;
-  /** Prediction for an asynchronous request. Will not be available so long as the job isn't "completed". */
+  /** Prediction for an asynchronous request. Will not be available so long as the job is not
+   * `completed`.
+   */
   document?: Document<T>;
 
   /**

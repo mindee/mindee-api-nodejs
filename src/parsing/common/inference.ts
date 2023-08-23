@@ -66,7 +66,7 @@ ${this.pages.map((e: Page<PageT>) => e.toString() || "").join("\n")}`;
 }
 /**
  * Factory to allow for static-like property access syntax in TypeScript.
- * Used to retrieve endpoint data for OTS APIs.
+ * Used to retrieve endpoint data for standard products.
  */
 export class InferenceFactory {
   /**

@@ -6,4 +6,4 @@ export {
   Document,
   Page,
 } from "./parsing/common";
-export { PageOptionsOperation } from "./input";
+export { InputSource, PageOptionsOperation } from "./input";

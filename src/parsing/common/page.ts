@@ -11,11 +11,11 @@ import { StringDict } from "./stringDict";
  * @typeParam T an extension of an `Prediction`. Mandatory in order to properly create a page-level prediction.
  */
 export class Page<T extends Prediction> {
-  /** A page's id */
+  /** The page's index (identifier). */
   id: number;
   /** The page's orientation */
   orientation?: OrientationField;
-  /** A page-level prediction. Can either be page-specific or document-wide. */
+  /** A page-level prediction. Can either be specific to pages or identical to the document prediction. */
   prediction: T;
   /** Potential `Extras` fields sent back along with the prediction. */
   extras?: Extras;
@@ -24,7 +24,7 @@ export class Page<T extends Prediction> {
    * 
    * @param inferenceClass constructor signature for an inference.
    * @param httpResponse raw http response.
-   * @param pageId the page's number.
+   * @param pageId the page's index (identifier).
    * @param orientation the page's orientation.
    */
   constructor(
