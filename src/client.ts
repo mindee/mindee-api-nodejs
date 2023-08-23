@@ -86,7 +86,7 @@ export class Client {
   /**
    * Send a document to a synchronous endpoint and parse the predictions.
    * 
-   * @param productClass product class to use for calling  the API and parsing the response. Mandatory to retrieve default OTS endpoint data.
+   * @param productClass product class to use for calling the API and parsing the response.
    * @param inputSource document to parse.
    * @param params parameters relating to prediction options.
    * 
