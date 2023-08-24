@@ -14,18 +14,24 @@
 <ul class="tsd-breadcrumb">
 <li><a href="../modules.html">mindee</a></li>
 <li><a href="Page.html">Page</a></li></ul>
-<h1>Class Page&lt;T&gt;</h1></div> 
+<h1>Class Page&lt;T&gt;</h1></div>
+<section class="tsd-panel tsd-comment">
+<div class="tsd-comment tsd-typography"><p>Page prediction wrapper class. Holds the results of a parsed document&#39;s page.
+Holds a <code>Prediction</code> that&#39;s either a document-level Prediction, or inherits from one.</p>
+</div></section> 
 <section class="tsd-panel tsd-type-parameters">
 <h4>Type Parameters</h4>
 <ul class="tsd-type-parameters">
 <li>
-<h4>T<span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">Prediction</span></h4></li></ul></section> 
+<h4>T<span class="tsd-signature-symbol"> extends </span><span class="tsd-signature-type">Prediction</span></h4>
+<div class="tsd-comment tsd-typography"><p>an extension of an <code>Prediction</code>. Mandatory in order to properly create a page-level prediction.</p>
+</div></li></ul></section> 
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
 <li><span class="target">Page</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/7ac3df0/src/parsing/common/page.ts#L7">parsing/common/page.ts:7</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/3a0fe23/src/parsing/common/page.ts#L13">parsing/common/page.ts:13</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -79,34 +85,46 @@
 <li>
 <h5>rawPrediction: <span class="tsd-signature-type">StringDict</span></h5></li>
 <li>
-<h5>pageId: <span class="tsd-signature-type">number</span></h5></li>
+<h5>pageId: <span class="tsd-signature-type">number</span></h5>
+<div class="tsd-comment tsd-typography"><p>the page&#39;s index (identifier).</p>
+</div></li>
 <li>
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> orientation: <span class="tsd-signature-type">StringDict</span></h5></li></ul></div>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> orientation: <span class="tsd-signature-type">StringDict</span></h5>
+<div class="tsd-comment tsd-typography"><p>the page&#39;s orientation.</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Page.html" class="tsd-signature-type" data-tsd-kind="Class">Page</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/7ac3df0/src/parsing/common/page.ts#L13">parsing/common/page.ts:13</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/3a0fe23/src/parsing/common/page.ts#L30">parsing/common/page.ts:30</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="extras" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>extras</span><a href="#extras" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">extras<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">Extras</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ExtraField</span><span class="tsd-signature-symbol">&gt;</span></div><aside class="tsd-sources">
+<div class="tsd-signature">extras<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">Extras</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ExtraField</span><span class="tsd-signature-symbol">&gt;</span></div>
+<div class="tsd-comment tsd-typography"><p>Potential <code>Extras</code> fields sent back along with the prediction.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/7ac3df0/src/parsing/common/page.ts#L11">parsing/common/page.ts:11</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/3a0fe23/src/parsing/common/page.ts#L21">parsing/common/page.ts:21</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="id" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>id</span><a href="#id" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div><aside class="tsd-sources">
+<div class="tsd-signature">id<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">number</span></div>
+<div class="tsd-comment tsd-typography"><p>The page&#39;s index (identifier).</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/7ac3df0/src/parsing/common/page.ts#L8">parsing/common/page.ts:8</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/3a0fe23/src/parsing/common/page.ts#L15">parsing/common/page.ts:15</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="orientation" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>orientation</span><a href="#orientation" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">orientation<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">OrientationField</span></div><aside class="tsd-sources">
+<div class="tsd-signature">orientation<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">OrientationField</span></div>
+<div class="tsd-comment tsd-typography"><p>The page&#39;s orientation</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/7ac3df0/src/parsing/common/page.ts#L9">parsing/common/page.ts:9</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/3a0fe23/src/parsing/common/page.ts#L17">parsing/common/page.ts:17</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="prediction" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>prediction</span><a href="#prediction" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">prediction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></div><aside class="tsd-sources">
+<div class="tsd-signature">prediction<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></div>
+<div class="tsd-comment tsd-typography"><p>A page-level prediction. Can either be specific to pages or identical to the document prediction.</p>
+</div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/7ac3df0/src/parsing/common/page.ts#L10">parsing/common/page.ts:10</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/3a0fe23/src/parsing/common/page.ts#L19">parsing/common/page.ts:19</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="toString" class="tsd-anchor"></a>
@@ -114,9 +132,11 @@
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
 <li class="tsd-signature tsd-anchor-link" id="toString.toString-1">to<wbr/>String<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><a href="#toString.toString-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Default string representation.</p>
+</div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/7ac3df0/src/parsing/common/page.ts#L46">parsing/common/page.ts:46</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/3a0fe23/src/parsing/common/page.ts#L66">parsing/common/page.ts:66</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
