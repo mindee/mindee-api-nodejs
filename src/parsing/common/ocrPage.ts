@@ -77,6 +77,9 @@ export class OcrPage {
     return this.allLines;
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     return this.getAllLines()
       .map((line: Word[]) => line.map((word: Word) => word.text).join(" "))

@@ -3,14 +3,21 @@ import { StringDict } from "./stringDict";
 import { Inference } from "./inference";
 import { Document } from "./document";
 
+/** Wrapper for asynchronous request queues. Holds information regarding a job (queue).
+ * 
+ * @category API Response
+ * @category Asynchronous
+*/
 export class Job {
+  /** Timestamp noting the enqueueing of a document. */
   issuedAt: Date;
+  /** Timestamp noting the availability of a prediction for an enqueued document. */
   availableAt?: Date;
+  /** ID of the job. */
   id: string;
+  /** Status of the job. */
   status?: "waiting" | "processing" | "completed";
-  /**
-   * The time taken to process the job, in milliseconds.
-   */
+  /** The time taken to process the job, in milliseconds. */
   milliSecsTaken?: number;
 
   constructor(jsonResponse: StringDict) {
@@ -40,10 +47,24 @@ export class Job {
   }
 }
 
+/** Wrapper for asynchronous jobs and parsing results.
+ * 
+ * @category API Response
+ * @category Asynchronous
+*/
 export class AsyncPredictResponse<T extends Inference> extends ApiResponse {
+  /** Job for a queue. */
   job: Job;
+  /** Prediction for an asynchronous request. Will not be available so long as the job is not
+   * `completed`.
+   */
   document?: Document<T>;
 
+  /**
+   * 
+   * @param inferenceClass constructor signature for an inference.
+   * @param httpResponse raw http response.
+   */
   constructor(
     inferenceClass: new (httpResponse: StringDict) => T,
     httpResponse: StringDict

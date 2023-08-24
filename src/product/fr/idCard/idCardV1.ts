@@ -2,10 +2,17 @@ import { Inference, StringDict, Page } from "../../../parsing/common";
 import { IdCardV1Document } from "./idCardV1Document";
 import { IdCardV1Page } from "./idCardV1Page";
 
+/**
+ * Inference prediction for Carte Nationale d'Identité, API version 1.
+ */
 export class IdCardV1 extends Inference {
+  /** The endpoint's name. */
   endpointName = "idcard_fr";
+  /** The endpoint's version. */
   endpointVersion = "1";
+  /** The document-level prediction. */
   prediction: IdCardV1Document;
+  /** The document's pages. */
   pages: Page<IdCardV1Page>[] = [];
 
   constructor(rawPrediction: StringDict) {

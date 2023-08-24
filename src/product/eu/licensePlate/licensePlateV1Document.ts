@@ -25,6 +25,9 @@ export class LicensePlateV1Document implements Prediction {
       );
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const licensePlates = this.licensePlates.join("\n                 ");
     const outStr = `:License Plates: ${licensePlates}`.trimEnd();

@@ -11,6 +11,9 @@ export class MvisionV1 {
       this.pages.push(new OcrPage(page));
     });
   }
+  /**
+   * Default string representation.
+   */
   toString(): string {
     return this.pages.map((page: OcrPage) => page.toString()).join("\n") + "\n";
   }

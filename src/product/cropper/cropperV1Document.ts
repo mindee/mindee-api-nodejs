@@ -2,6 +2,9 @@ import { cleanOutString } from "../../parsing/common/summaryHelper";
 import { Prediction, StringDict } from "../../parsing/common";
 import { PositionField } from "../../parsing/standard";
 
+/**
+ * Document data for Cropper API, version 1.
+ */
 export class CropperV1Document implements Prediction {
   /** A list of cropped positions. */
   cropping: PositionField[] = [];
@@ -18,6 +21,9 @@ export class CropperV1Document implements Prediction {
       });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const cropping = this.cropping
       .map((crop) => crop.toString())

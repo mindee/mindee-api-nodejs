@@ -2,8 +2,13 @@ import { cleanOutString } from "../../parsing/common";
 import { StringDict, Prediction } from "../../parsing/common";
 import { ClassificationField, ListField } from "../../parsing/custom";
 
+/**
+ * Document data for Custom builds.
+ */
 export class CustomV1Document implements Prediction {
+  /** List of fields for a Custom build. */
   fields: Map<string, ListField> = new Map();
+  /** List of classification fields for a Custom build. */
   classifications: Map<string, ClassificationField> = new Map();
 
   constructor(rawPrediction: StringDict, pageId?: number) {
@@ -14,9 +19,15 @@ export class CustomV1Document implements Prediction {
     );
   }
 
+  /**
+   * Sorts and sets fields between classification fields and regular fields.
+   * Note: Currently, two types of fields possible in a custom API response:
+   * fields having a list of values, and classification fields.
+   * @param fieldName name of the field.
+   * @param fieldValue value of the field.
+   * @param pageId page the field was found on.
+   */
   protected setField(fieldName: string, fieldValue: any, pageId?: number) {
-    // Currently, two types of fields possible in a custom API response:
-    // fields having a list of values, and classification fields.
     if (fieldValue && fieldValue["values"] !== undefined) {
       // Only value lists have the 'values' attribute.
       this.fields.set(
@@ -39,6 +50,9 @@ export class CustomV1Document implements Prediction {
     }
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     let outStr = "";
     this.classifications.forEach((fieldData, name) => {

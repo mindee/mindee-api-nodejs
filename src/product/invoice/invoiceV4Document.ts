@@ -15,7 +15,9 @@ import {
 } from "../../parsing/standard";
 import { InvoiceV4LineItem } from "./invoiceV4LineItem";
 
-/** Invoice V4 */
+/**
+ * Document data for Invoice, API version 4.
+ */
 export class InvoiceV4Document implements Prediction {
   /** LocaleField information. */
   locale: LocaleField;

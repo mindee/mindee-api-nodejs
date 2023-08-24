@@ -21,10 +21,11 @@ import { LOG_LEVELS, logger } from "./logger";
 import { InferenceFactory } from "./parsing/common/inference";
 import { CustomV1 } from "./product";
 
+/**
+ * Options relating to predictions.
+ */
 export interface PredictOptions {
-  endpointName?: string;
-  accountName?: string;
-  endpointVersion?: string;
+  /** A custom endpoint. */
   endpoint?: Endpoint;
   /**
    * Whether to include the full text for each page.
@@ -38,19 +39,11 @@ export interface PredictOptions {
    * This performs a cropping operation on the server and will increase response time.
    */
   cropper?: boolean;
-  pageOptions?: PageOptions;
-}
-
-export interface CustomConfigParams {
-  /** Your organization's username on the API Builder. */
-  accountName: string;
-  /** The "API name" field in the "Settings" page of the API Builder. */
-  endpointName: string;
-  /**
-   * If set, locks the version of the model to use.
-   * If not set, use the latest version of the model.
+  /** 
+   * If set, remove pages from the document as specified. 
+   * This is done before sending the file to the server and is useful to avoid page limitations.
    */
-  version?: string;
+  pageOptions?: PageOptions;
 }
 
 export interface ClientOptions {
@@ -63,13 +56,16 @@ export interface ClientOptions {
 }
 
 /**
- * Mindee Client
+ * Mindee Client class that centralizes most basic operations.
+ * 
+ * @category Client
  */
 export class Client {
+  /** Key of the API. */
   protected apiKey: string;
 
   /**
-   * @param options
+   * @param options options for the initialization of a client. 
    */
   constructor(
     { apiKey, throwOnError, debug }: ClientOptions = {
@@ -89,8 +85,14 @@ export class Client {
 
   /**
    * Send a document to a synchronous endpoint and parse the predictions.
-   * @param productClass
-   * @param params
+   * 
+   * @param productClass product class to use for calling the API and parsing the response.
+   * @param inputSource document to parse.
+   * @param params parameters relating to prediction options.
+   * 
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Synchronous
+   * @returns a `Promise` containing parsing results.
    */
   async parse<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
@@ -118,8 +120,11 @@ export class Client {
 
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param productClass
-   * @param params
+   * @param productClass product class to use for calling  the API and parsing the response.
+   * @param params parameters relating to prediction options.
+   * @category Asynchronous
+   * 
+   * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
   async enqueue<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
@@ -141,6 +146,18 @@ export class Client {
     return new AsyncPredictResponse<T>(productClass, rawResponse.data);
   }
 
+  /**
+   * Polls a queue and returns its status as well as the prediction results if the parsing is done.
+   * 
+   * @param productClass product class to use for calling  the API and parsing the response.
+   * @param queueId id of the queue to poll.
+   * @param params parameters relating to prediction options.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Asynchronous
+   * 
+   * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
+   * parsing is complete.
+   */
   async parseQueued<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
     queueId: string,
@@ -152,10 +169,22 @@ export class Client {
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
   }
 
+  /**
+   * Forces boolean coercion on truthy/falsy parameters.
+   * @param param input parameter to check.
+   * @returns a strict boolean value.
+   */
   protected getBooleanParam(param?: boolean): boolean {
     return param !== undefined ? param : false;
   }
 
+  /**
+   * Builds a custom endpoint.
+   * @param endpointName name of the endpoint.
+   * @param accountName name of the endpoint's owner.
+   * @param endpointVersion version of the endpoint.
+   * @returns a custom `Endpoint` object.
+   */
   #buildEndpoint(
     endpointName: string,
     accountName: string,
@@ -177,10 +206,13 @@ export class Client {
 
   /**
    * Creates a custom endpoint with the given values. Raises an error if the endpoint is invalid.
-   * @param productClass Class of the product
-   * @param endpointName Name of a custom Endpoint
-   * @param accountName Name of the account tied to the active Endpoint
-   * @param version Version of a custom Endpoint
+   * @param productClass product class to use for calling the API and parsing the response.
+   * @param endpointName Name of the custom Endpoint.
+   * @param accountName Name of the account tied to the Endpoint.
+   * @param version Version of the custom Endpoint.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * 
+   * @returns a new endpoint
    */
   createEndpoint(
     endpointName: string,
@@ -229,9 +261,11 @@ export class Client {
 
   /**
    * Checks that an account name is provided for custom builds, and sets the default one otherwise.
-   * @param productClass Type of product
-   * @param accountName Account name. Only required on custom builds.
-   * @returns {string} The name of the account. Sends an error if one isn't provided for a custom build.
+   * @param productClass product class to use for calling  the API and parsing the response.
+   * @param accountName name of the account's holder. Only required on custom builds.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * 
+   * @returns the name of the account. Sends an error if one isn't provided for a custom build.
    */
   #cleanAccountName<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
@@ -251,8 +285,10 @@ export class Client {
 
   /**
    * Get the name and version of an OTS endpoint.
-   * @param productClass Type of product
-   * @returns {[string, string]} An endpoint's name and version
+   * @param productClass product class to use for calling  the API and parsing the response. Mandatory to retrieve default OTS endpoint data.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * 
+   * @returns an endpoint's name and version.
    */
   #getEndpoint<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T
@@ -274,8 +310,8 @@ export class Client {
 
   /**
    * Load an input document from a base64 encoded string.
-   * @param inputString
-   * @param filename
+   * @param inputString input content, as a string.
+   * @param filename file name.
    */
   docFromBase64(inputString: string, filename: string): InputSource {
     return new Base64Input({
@@ -286,8 +322,8 @@ export class Client {
 
   /**
    * Load an input document from a `stream.Readable` object.
-   * @param inputStream
-   * @param filename
+   * @param inputStream input content, as a readable stream.
+   * @param filename file name.
    */
   docFromStream(inputStream: Readable, filename: string): InputSource {
     return new StreamInput({
@@ -298,8 +334,8 @@ export class Client {
 
   /**
    * Load an input document from a bytes string.
-   * @param inputBytes
-   * @param filename
+   * @param inputBytes input content, as readable bytes.
+   * @param filename file name.
    */
   docFromBytes(inputBytes: string, filename: string): InputSource {
     return new BytesInput({
@@ -310,7 +346,7 @@ export class Client {
 
   /**
    * Load an input document from a URL.
-   * @param url
+   * @param url input url. Must be HTTPS.
    */
   docFromUrl(url: string): InputSource {
     return new UrlInput({
@@ -320,8 +356,8 @@ export class Client {
 
   /**
    * Load an input document from a Buffer.
-   * @param buffer
-   * @param filename
+   * @param buffer input content, as a buffer.
+   * @param filename file name.
    */
   docFromBuffer(buffer: Buffer, filename: string): InputSource {
     return new BufferInput({

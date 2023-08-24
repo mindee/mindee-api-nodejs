@@ -72,6 +72,9 @@ export class PaymentDetailsField extends Field {
     return typeof value === "string" && value !== "N/A";
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     let str = "";
     if (this.accountNumber !== undefined) {

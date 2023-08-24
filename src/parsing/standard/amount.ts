@@ -35,6 +35,9 @@ export class AmountField extends Field {
     }
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     if (this.value !== undefined) {
       return floatToString(this.value);

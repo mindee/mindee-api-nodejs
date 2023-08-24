@@ -30,6 +30,9 @@ export class ListFieldValue {
     }
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     return `${this.content}`;
   }
@@ -68,6 +71,9 @@ export class ListField {
     return this.values.map((item) => `${item.content}`).join(separator);
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     return this.contentsString();
   }

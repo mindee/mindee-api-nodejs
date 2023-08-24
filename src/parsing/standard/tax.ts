@@ -135,6 +135,9 @@ export class Taxes extends Array<TaxField> {
     return outStr + "+";
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     let outStr = `
 ${this.#lineSeparator("-")}

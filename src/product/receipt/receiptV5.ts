@@ -1,10 +1,17 @@
 import { Inference, StringDict, Page } from "../../parsing/common";
 import { ReceiptV5Document } from "./receiptV5Document";
 
+/**
+ * Inference prediction for Receipt, API version 5.
+ */
 export class ReceiptV5 extends Inference {
+  /** The endpoint's name. */
   endpointName = "expense_receipts";
+  /** The endpoint's version. */
   endpointVersion = "5";
+  /** The document-level prediction. */
   prediction: ReceiptV5Document;
+  /** The document's pages. */
   pages: Page<ReceiptV5Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

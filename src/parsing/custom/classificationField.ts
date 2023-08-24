@@ -21,6 +21,9 @@ export class ClassificationField {
     this.pageId ??= pageId;
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     return `${this.value}`;
   }

@@ -115,6 +115,9 @@ export class DriverLicenseV1Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const outStr = `:State: ${this.state}
 :Driver License ID: ${this.driverLicenseId}

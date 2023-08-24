@@ -79,6 +79,9 @@ export class IdCardV1Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const givenNames = this.givenNames.join("\n              ");
     const outStr = `:Identity Number: ${this.idNumber}

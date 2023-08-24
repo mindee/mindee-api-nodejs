@@ -31,6 +31,9 @@ export class BankAccountDetailsV1Document implements Prediction {
     });
   }
 
+  /**
+   * Default string representation.
+   */
   toString(): string {
     const outStr = `:IBAN: ${this.iban}
 :Account Holder's Name: ${this.accountHolderName}

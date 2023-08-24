@@ -1,0 +1,7 @@
+{
+  "validation": {
+    "notExported": false,
+    "invalidLink": true,
+    "notDocumented": true,
+  }
+}
