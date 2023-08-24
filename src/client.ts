@@ -89,7 +89,6 @@ export class Client {
    * @param productClass product class to use for calling the API and parsing the response.
    * @param inputSource document to parse.
    * @param params parameters relating to prediction options.
-   * 
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
@@ -123,7 +122,6 @@ export class Client {
    * @param productClass product class to use for calling  the API and parsing the response.
    * @param params parameters relating to prediction options.
    * @category Asynchronous
-   * 
    * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
   async enqueue<T extends Inference>(
@@ -154,7 +152,6 @@ export class Client {
    * @param params parameters relating to prediction options.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Asynchronous
-   * 
    * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
    * parsing is complete.
    */
