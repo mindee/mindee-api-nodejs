@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v4.0.2 - 2023-08-24
+### Changes
+* :recycle: updated technical documentation
+
+### Fixes
+* :bug: fix url source document not being sent properly
+
+
 ## v4.0.1 - 2023-08-22
 ### Fixes
 * :bug: fixed pre-commit dependency script blocking installs
