@@ -21,6 +21,13 @@ import { LOG_LEVELS, logger } from "./logger";
 import { InferenceFactory } from "./parsing/common/inference";
 import { CustomV1 } from "./product";
 
+import {
+  setTimeout,
+} from "node:timers/promises";
+
+const AUTO_ASYNC_MAX_RETRIES = 10;
+const AUTO_ASYNC_DELAY = 3000;
+
 /**
  * Options relating to predictions.
  */
@@ -164,6 +171,58 @@ export class Client {
       params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
+  }
+
+  /**
+   * Send a document to an asynchronous endpoint and poll the server until the result is sent or
+   * until the maximum amount of tries is reached.
+   * 
+   * @param productClass product class to use for calling the API and parsing the response.
+   * @param inputSource document to parse.
+   * @param params parameters relating to prediction options.
+   * 
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Synchronous
+   * @returns a `Promise` containing parsing results.
+   */
+  async enqueueAndParse<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T,
+    inputSource: InputSource,
+    params: PredictOptions = {
+      endpoint: undefined,
+      allWords: undefined,
+      cropper: undefined,
+      pageOptions: undefined,
+    }) {
+    const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(productClass, inputSource, params);
+    if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
+      throw Error("Enqueueing of the document failed.");
+    }
+    const queueId: string = enqueueResponse.job.id;
+    logger.debug(
+      `Successfully enqueued document with job id: ${queueId}.`
+    );
+    await setTimeout(6000);
+    let retryCounter = 1;
+    let pollResults: AsyncPredictResponse<T>;
+    pollResults = await this.parseQueued(productClass, queueId, params);
+    while (retryCounter < AUTO_ASYNC_MAX_RETRIES) {
+      logger.debug(
+        `Polling server for parsing result with queueId: ${queueId}.
+Attempt n°${retryCounter}/${AUTO_ASYNC_MAX_RETRIES}.
+Job status: ${pollResults.job.status}.`
+      );
+      if (pollResults.job.status === "completed") {
+        break;
+      }
+      await setTimeout(AUTO_ASYNC_DELAY);
+      pollResults = await this.parseQueued(productClass, queueId, params);
+      retryCounter++;
+    }
+    if (pollResults.job.status !== "completed") {
+      throw Error(`Asynchronous parsing request timed out after ${AUTO_ASYNC_DELAY * retryCounter} tries`);
+    }
+    return pollResults;
   }
 
   /**
