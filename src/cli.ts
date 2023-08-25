@@ -322,15 +322,15 @@ function routeSwitchboard(
 ): Promise<void> {
   const conf = getConfig(command.name());
   switch (command.parent?.name()) {
-    case "sync": {
-      return callParse(conf.docClass, command.name(), inputPath, allOptions);
-    }
-    case "async": {
-      return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
-    }
-    default: {
-      throw new Error("Unhandled parent command.");
-    }
+  case "sync": {
+    return callParse(conf.docClass, command.name(), inputPath, allOptions);
+  }
+  case "async": {
+    return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
+  }
+  default: {
+    throw new Error("Unhandled parent command.");
+  }
   }
 }
 

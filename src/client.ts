@@ -202,8 +202,7 @@ export class Client {
    * 
    * @param productClass product class to use for calling the API and parsing the response.
    * @param inputSource document to parse.
-   * @param params parameters relating to prediction options.
-   * @param asyncParams parameters related to asynchronous parsing
+   * @param asyncParams parameters relating to prediction options.
    * 
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Synchronous
@@ -212,7 +211,7 @@ export class Client {
   async enqueueAndParse<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
     inputSource: InputSource,
-    params: AsyncOptions = {
+    asyncParams: AsyncOptions = {
       endpoint: undefined,
       allWords: undefined,
       cropper: undefined,
@@ -222,8 +221,8 @@ export class Client {
       maxRetries: 10,
     }
   ) {
-    this.#validateAsyncParams(params);
-    const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(productClass, inputSource, params);
+    this.#validateAsyncParams(asyncParams);
+    const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(productClass, inputSource, asyncParams);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       throw Error("Enqueueing of the document failed.");
     }
@@ -231,25 +230,25 @@ export class Client {
     logger.debug(
       `Successfully enqueued document with job id: ${queueId}.`
     );
-    await setTimeout(params.initialDelaySec * 1000);
+    await setTimeout(asyncParams.initialDelaySec * 1000);
     let retryCounter = 1;
     let pollResults: AsyncPredictResponse<T>;
-    pollResults = await this.parseQueued(productClass, queueId, params);
-    while (retryCounter < params.maxRetries) {
+    pollResults = await this.parseQueued(productClass, queueId, asyncParams);
+    while (retryCounter < asyncParams.maxRetries) {
       logger.debug(
         `Polling server for parsing result with queueId: ${queueId}.
-Attempt n°${retryCounter}/${params.maxRetries}.
+Attempt n°${retryCounter}/${asyncParams.maxRetries}.
 Job status: ${pollResults.job.status}.`
       );
       if (pollResults.job.status === "completed") {
         break;
       }
-      await setTimeout(params.delaySec * 1000);
-      pollResults = await this.parseQueued(productClass, queueId, params);
+      await setTimeout(asyncParams.delaySec * 1000);
+      pollResults = await this.parseQueued(productClass, queueId, asyncParams);
       retryCounter++;
     }
     if (pollResults.job.status !== "completed") {
-      throw Error(`Asynchronous parsing request timed out after ${params.delaySec * retryCounter} seconds`);
+      throw Error(`Asynchronous parsing request timed out after ${asyncParams.delaySec * retryCounter} seconds`);
     }
     return pollResults;
   }
