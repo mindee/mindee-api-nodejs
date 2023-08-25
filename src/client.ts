@@ -219,7 +219,7 @@ export class Client {
       pageOptions: undefined,
       initialDelaySec: 6,
       delaySec: 3,
-      maxRetries: 10
+      maxRetries: 10,
     }
   ) {
     this.#validateAsyncParams(params);
