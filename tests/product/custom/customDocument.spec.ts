@@ -8,11 +8,11 @@ import { CropperExtra } from "../../../src/parsing/common/extras/cropperExtra";
 import { CustomV1 } from "../../../src/product";
 
 const dataPath = {
-  complete: "tests/data/custom/response_v1/complete.json",
-  empty: "tests/data/custom/response_v1/empty.json",
-  docString: "tests/data/custom/response_v1/summary_full.rst",
-  page0String: "tests/data/custom/response_v1/summary_page0.rst",
-  page1String: "tests/data/custom/response_v1/summary_page1.rst",
+  complete: "tests/data/products/custom/response_v1/complete.json",
+  empty: "tests/data/products/custom/response_v1/empty.json",
+  docString: "tests/data/products/custom/response_v1/summary_full.rst",
+  page0String: "tests/data/products/custom/response_v1/summary_page0.rst",
+  page1String: "tests/data/products/custom/response_v1/summary_page1.rst",
 };
 
 describe("Custom Document Object initialization", async () => {

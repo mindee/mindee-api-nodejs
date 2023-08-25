@@ -7,10 +7,10 @@ import { Page } from "../../../src/parsing/common";
 import { InvoiceV4Document } from "../../../src/product/invoice/invoiceV4Document";
 
 const dataPath = {
-  complete: "tests/data/invoice/response_v4/complete.json",
-  empty: "tests/data/invoice/response_v4/empty.json",
-  docString: "tests/data/invoice/response_v4/summary_full.rst",
-  page0String: "tests/data/invoice/response_v4/summary_page0.rst",
+  complete: "tests/data/products/invoices/response_v4/complete.json",
+  empty: "tests/data/products/invoices/response_v4/empty.json",
+  docString: "tests/data/products/invoices/response_v4/summary_full.rst",
+  page0String: "tests/data/products/invoices/response_v4/summary_page0.rst",
 };
 
 describe("Invoice V4 Object initialization", async () => {

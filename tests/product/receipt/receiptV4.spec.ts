@@ -7,10 +7,10 @@ import { ReceiptV4Document } from "../../../src/product/receipt/receiptV4Documen
 import { ReceiptV4 } from "../../../src/product";
 
 const dataPath = {
-  complete: "tests/data/receipt/response_v4/complete.json",
-  empty: "tests/data/receipt/response_v4/empty.json",
-  docString: "tests/data/receipt/response_v4/summary_full.rst",
-  page0String: "tests/data/receipt/response_v4/summary_page0.rst",
+  complete: "tests/data/products/expense_receipts/response_v4/complete.json",
+  empty: "tests/data/products/expense_receipts/response_v4/empty.json",
+  docString: "tests/data/products/expense_receipts/response_v4/summary_full.rst",
+  page0String: "tests/data/products/expense_receipts/response_v4/summary_page0.rst",
 };
 
 describe("Receipt Object V4 initialization", async () => {

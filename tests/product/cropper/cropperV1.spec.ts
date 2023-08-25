@@ -5,10 +5,10 @@ import { CropperV1 } from "../../../src/product";
 import { expect } from "chai";
 
 const dataPath = {
-  complete: "tests/data/cropper/response_v1/complete.json",
-  empty: "tests/data/cropper/response_v1/empty.json",
-  docString: "tests/data/cropper/response_v1/summary_full.rst",
-  page0String: "tests/data/cropper/response_v1/summary_page0.rst",
+  complete: "tests/data/products/cropper/response_v1/complete.json",
+  empty: "tests/data/products/cropper/response_v1/empty.json",
+  docString: "tests/data/products/cropper/response_v1/summary_full.rst",
+  page0String: "tests/data/products/cropper/response_v1/summary_page0.rst",
 };
 
 describe("Cropper Object initialization", async () => {

@@ -5,10 +5,10 @@ import * as mindee from "../../../src";
 
 
 const dataPath = {
-  complete: "tests/data/proof_of_address/response_v1/complete.json",
-  empty: "tests/data/proof_of_address/response_v1/empty.json",
-  docString: "tests/data/proof_of_address/response_v1/summary_full.rst",
-  page0String: "tests/data/proof_of_address/response_v1/summary_page0.rst",
+  complete: "tests/data/products/proof_of_address/response_v1/complete.json",
+  empty: "tests/data/products/proof_of_address/response_v1/empty.json",
+  docString: "tests/data/products/proof_of_address/response_v1/summary_full.rst",
+  page0String: "tests/data/products/proof_of_address/response_v1/summary_page0.rst",
 };
 
 describe("ProofOfAddressV1 Object initialization", async () => {

@@ -5,9 +5,9 @@ import * as mindee from "../../../src";
 import { InvoiceSplitterV1 } from "../../../src/product";
 
 const dataPath = {
-  complete: "tests/data/invoice_splitter/response_v1/complete.json",
-  empty: "tests/data/invoice_splitter/response_v1/empty.json",
-  docString: "tests/data/invoice_splitter/response_v1/summary_full.rst",
+  complete: "tests/data/products/invoice_splitter/response_v1/complete.json",
+  empty: "tests/data/products/invoice_splitter/response_v1/empty.json",
+  docString: "tests/data/products/invoice_splitter/response_v1/summary_full.rst",
 };
 
 describe("InvoiceSplitter Object initialization", async () => {

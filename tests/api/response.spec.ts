@@ -6,10 +6,10 @@ import { CustomV1, InvoiceV4, ReceiptV4 } from "../../src/product";
 import { LicensePlateV1 } from "../../src/product/eu";
 
 const dataPath = {
-  receiptV4: "tests/data/receipt/response_v4/complete.json",
-  invoiceV4: "tests/data/invoice/response_v4/complete.json",
-  licensePlateV1: "tests/data/eu/license_plate/response_v1/complete.json",
-  customV1: "tests/data/custom/response_v1/complete.json",
+  receiptV4: "tests/data/products/expense_receipts/response_v4/complete.json",
+  invoiceV4: "tests/data/products/invoices/response_v4/complete.json",
+  licensePlateV1: "tests/data/products/license_plates/response_v1/complete.json",
+  customV1: "tests/data/products/custom/response_v1/complete.json",
 };
 
 describe("Synchronous API predict response", () => {
