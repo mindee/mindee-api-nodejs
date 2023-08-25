@@ -122,7 +122,7 @@ Page 0
 ### Page Group
 List of page group indexes.
 
-A `PageGroup` implements the following attributes:
+An `InvoiceSplitterV1PageGroup` implements the following attributes:
 
 * **pageIndexes** (`number`[]): List of indexes of the pages of a single invoice.
 * **confidence** (`number`): The confidence of the prediction.
@@ -131,7 +131,7 @@ A `PageGroup` implements the following attributes:
 The following fields are extracted for Invoice Splitter V1:
 
 ## Invoice Page Groups
-**invoicePageGroups** ([PageGroup](#page-group)[]): List of page indexes that belong to the same invoice in the PDF.
+**invoicePageGroups** ([InvoiceSplitterV1PageGroup](#invoice-splitter-v1-page-group)[]): List of page indexes that belong to the same invoice in the PDF.
 
 ```js
 for (const invoicePageGroupsElem of result.document.inference.prediction.invoicePageGroups){ 
