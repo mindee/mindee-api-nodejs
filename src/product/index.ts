@@ -1,6 +1,5 @@
 export { InvoiceV4 } from "./invoice/invoiceV4";
 export { InvoiceSplitterV1 } from "./invoiceSplitter/invoiceSplitterV1";
-export { PageGroup } from "./invoiceSplitter/invoiceSplitterV1PageGroup";
 export { ReceiptV4 } from "./receipt/receiptV4";
 export { ReceiptV5 } from "./receipt/receiptV5";
 export { PassportV1 } from "./passport/passportV1";

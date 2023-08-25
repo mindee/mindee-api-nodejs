@@ -3,7 +3,7 @@ import { StringDict } from "../../parsing/common";
 /**
  * Pages indexes in a group.
  */
-export class PageGroup {
+export class InvoiceSplitterV1PageGroup {
   /** List of page indexes. */
   pageIndexes: number[] = [];
   /** Confidence score. */
