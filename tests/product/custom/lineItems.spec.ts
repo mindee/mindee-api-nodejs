@@ -5,7 +5,7 @@ import { getLineItems } from "../../../src/parsing/custom";
 
 const dataPath = {
   singleTable01:
-    "tests/data/custom/response_v1/line_items/single_table_01.json",
+    "tests/data/products/custom/response_v1/line_items/single_table_01.json",
 };
 
 describe("Custom Document Line Items", async () => {

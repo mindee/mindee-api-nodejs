@@ -5,10 +5,10 @@ import * as mindee from "../../../../src";
 
 
 const dataPath = {
-  complete: "tests/data/eu/license_plate/response_v1/complete.json",
-  empty: "tests/data/eu/license_plate/response_v1/empty.json",
-  docString: "tests/data/eu/license_plate/response_v1/summary_full.rst",
-  page0String: "tests/data/eu/license_plate/response_v1/summary_page0.rst",
+  complete: "tests/data/products/license_plates/response_v1/complete.json",
+  empty: "tests/data/products/license_plates/response_v1/empty.json",
+  docString: "tests/data/products/license_plates/response_v1/summary_full.rst",
+  page0String: "tests/data/products/license_plates/response_v1/summary_page0.rst",
 };
 
 describe("LicensePlateV1 Object initialization", async () => {

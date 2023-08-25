@@ -19,7 +19,7 @@ import { Buffer } from "node:buffer";
 describe("Test different types of input", () => {
   it("should accept base64 inputs", async () => {
     const b64Input = await fs.promises.readFile(
-      path.join(__dirname, "../data/receipt/receipt.txt")
+      path.join(__dirname, "../data/file_types/receipt.txt")
     );
     const b64String = b64Input.toString();
     // don't provide an extension to see if we can detect MIME
@@ -43,12 +43,12 @@ describe("Test different types of input", () => {
 
   it("should accept JPEG files from a path", async () => {
     const input = new PathInput({
-      inputPath: path.join(__dirname, "../data/receipt/default_sample.jpg"),
+      inputPath: path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg"),
     });
     await input.init();
 
     const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/receipt/default_sample.jpg")
+      path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg")
     );
     expect(input.inputType).to.equals(INPUT_TYPE_PATH);
     expect(input.filename).to.equals("default_sample.jpg");
@@ -58,11 +58,11 @@ describe("Test different types of input", () => {
 
   it("should accept TIFF from a path", async () => {
     const input = new PathInput({
-      inputPath: path.join(__dirname, "../data/receipt/receipt.tif"),
+      inputPath: path.join(__dirname, "../data/file_types/receipt.tif"),
     });
     await input.init();
     const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/receipt/receipt.tif")
+      path.join(__dirname, "../data/file_types/receipt.tif")
     );
     expect(input.inputType).to.equals(INPUT_TYPE_PATH);
     expect(input.filename).to.equals("receipt.tif");
@@ -72,11 +72,11 @@ describe("Test different types of input", () => {
 
   it("should accept HEIC from a path", async () => {
     const input = new PathInput({
-      inputPath: path.join(__dirname, "../data/receipt/receipt.heic"),
+      inputPath: path.join(__dirname, "../data/file_types/receipt.heic"),
     });
     await input.init();
     const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/receipt/receipt.heic")
+      path.join(__dirname, "../data/file_types/receipt.heic")
     );
     expect(input.inputType).to.equals(INPUT_TYPE_PATH);
     expect(input.filename).to.equals("receipt.heic");
@@ -85,7 +85,7 @@ describe("Test different types of input", () => {
   });
 
   it("should accept read streams", async () => {
-    const filePath = path.join(__dirname, "../data/receipt/default_sample.jpg");
+    const filePath = path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg");
     const stream = fs.createReadStream(filePath);
     const filename = "default_sample.jpg";
     const input = new StreamInput({
@@ -101,7 +101,7 @@ describe("Test different types of input", () => {
   });
 
   it("should accept raw bytes", async () => {
-    const filePath = path.join(__dirname, "../data/receipt/default_sample.jpg");
+    const filePath = path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg");
     const inputBytes = await fs.promises.readFile(filePath);
     // don't provide an extension to see if we can detect MIME
     // type based on contents
@@ -130,7 +130,7 @@ describe("Test different types of input", () => {
     const filename = "invoice_01.pdf";
     const buffer = Buffer.from(
       await fs.promises.readFile(
-        path.join(__dirname, "../data/invoice/invoice_10p.pdf")
+        path.join(__dirname, "../data/products/invoices/invoice_10p.pdf")
       )
     );
     const input = new BufferInput({

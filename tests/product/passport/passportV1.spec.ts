@@ -5,10 +5,10 @@ import * as mindee from "../../../src";
 
 
 const dataPath = {
-  complete: "tests/data/passport/response_v1/complete.json",
-  empty: "tests/data/passport/response_v1/empty.json",
-  docString: "tests/data/passport/response_v1/summary_full.rst",
-  page0String: "tests/data/passport/response_v1/summary_page0.rst",
+  complete: "tests/data/products/passport/response_v1/complete.json",
+  empty: "tests/data/products/passport/response_v1/empty.json",
+  docString: "tests/data/products/passport/response_v1/summary_full.rst",
+  page0String: "tests/data/products/passport/response_v1/summary_page0.rst",
 };
 
 describe("PassportV1 Object initialization", async () => {

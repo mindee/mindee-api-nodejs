@@ -5,18 +5,18 @@ import * as mindee from "../../../src";
 
 const dataPath = {
   receiptComplete:
-    "tests/data/financial_document/response_v1/complete_receipt.json",
+    "tests/data/products/financial_document/response_v1/complete_receipt.json",
   invoiceComplete:
-    "tests/data/financial_document/response_v1/complete_invoice.json",
-  empty: "tests/data/financial_document/response_v1/empty.json",
+    "tests/data/products/financial_document/response_v1/complete_invoice.json",
+  empty: "tests/data/products/financial_document/response_v1/empty.json",
   invoiceDocString:
-    "tests/data/financial_document/response_v1/summary_full_invoice.rst",
+    "tests/data/products/financial_document/response_v1/summary_full_invoice.rst",
   receiptDocString:
-    "tests/data/financial_document/response_v1/summary_full_receipt.rst",
+    "tests/data/products/financial_document/response_v1/summary_full_receipt.rst",
   page0InvoiceString:
-    "tests/data/financial_document/response_v1/summary_page0_invoice.rst",
+    "tests/data/products/financial_document/response_v1/summary_page0_invoice.rst",
   page0ReceiptString:
-    "tests/data/financial_document/response_v1/summary_page0_receipt.rst",
+    "tests/data/products/financial_document/response_v1/summary_page0_receipt.rst",
 };
 
 describe("Financial Document V1 Object initialization", async () => {

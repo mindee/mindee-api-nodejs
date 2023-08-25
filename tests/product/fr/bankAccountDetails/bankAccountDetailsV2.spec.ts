@@ -5,10 +5,10 @@ import * as mindee from "../../../../src";
 
 
 const dataPath = {
-  complete: "tests/data/fr/bank_account_details/response_v2/complete.json",
-  empty: "tests/data/fr/bank_account_details/response_v2/empty.json",
-  docString: "tests/data/fr/bank_account_details/response_v2/summary_full.rst",
-  page0String: "tests/data/fr/bank_account_details/response_v2/summary_page0.rst",
+  complete: "tests/data/products/bank_account_details/response_v2/complete.json",
+  empty: "tests/data/products/bank_account_details/response_v2/empty.json",
+  docString: "tests/data/products/bank_account_details/response_v2/summary_full.rst",
+  page0String: "tests/data/products/bank_account_details/response_v2/summary_page0.rst",
 };
 
 describe("BankAccountDetailsV2 Object initialization", async () => {
