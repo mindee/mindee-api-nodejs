@@ -320,17 +320,30 @@ function routeSwitchboard(
   inputPath: string,
   allOptions: any
 ): Promise<void> {
-  const conf = getConfig(command.name());
-  switch (command.parent?.name()) {
-  case "sync": {
-    return callParse(conf.docClass, command.name(), inputPath, allOptions);
-  }
-  case "async": {
-    return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
-  }
-  default: {
-    throw new Error("Unhandled parent command.");
-  }
+  let conf: ProductConfig;
+  switch (command.name()) {
+    case "sync": {
+      if (command.parent) {
+        conf = getConfig(command.parent.name());
+        return callParse(conf.docClass, command.parent.name(), inputPath, allOptions);
+      }
+    }
+    case "async": {
+      if (command.parent) {
+        conf = getConfig(command.parent.name());
+        return callEnqueueAndParse(conf.docClass, command.parent.name(), inputPath, allOptions);
+      }
+    }
+    default: {
+      conf = getConfig(command.name());
+      if (conf.async) {
+        return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
+      }
+      if (conf.sync) {
+        return callParse(conf.docClass, command.name(), inputPath, allOptions);
+      }
+      throw new Error("Unhandled command.")
+    }
   }
 }
 
@@ -370,35 +383,55 @@ export function cli() {
   program.name("mindee");
   program.option("-d, --debug", "high verbosity mode");
 
-  const predict = program.command("sync").description("Parse synchronously.");
-  addMainOptions(predict);
-
-  const enqueue = program
-    .command("async")
-    .description("Parse asynchronously.");
-  addMainOptions(enqueue);
 
   CLI_COMMAND_CONFIG.forEach((info, name) => {
-    if (info.sync) {
-      const prog = predict
+    if (info.sync && info.async) {
+      const prog = program
         .command(name)
-        .description(`Parse an ${info.displayName}.`);
+        .description(`${info.displayName} document (synchronous or asynchronous)`);
+
+      const predict = prog
+        .command("sync")
+        .description(`Parse synchronously.`);
+      addMainOptions(predict);
+
+      const enqueueAndParse = prog
+        .command("async")
+        .description(`Parse asynchronously.`);
+      addMainOptions(enqueueAndParse);
+
       if (name === COMMAND_CUSTOM) {
-        addCustomPostOptions(prog);
+        addCustomPostOptions(predict);
+        addCustomPostOptions(enqueueAndParse);
       }
-      addDisplayOptions(prog);
-      addPostOptions(prog, info);
-      addAction(prog);
-    }
-    if (info.async) {
-      const progAsync = enqueue
-        .command(name)
-        .description(`Add an ${info.displayName} to the queue and polls the server asynchronously.`);
-      if (name === COMMAND_CUSTOM) {
-        addCustomPostOptions(progAsync);
+      addDisplayOptions(predict);
+      addDisplayOptions(enqueueAndParse);
+      addPostOptions(predict, info);
+      addPostOptions(enqueueAndParse, info);
+      addAction(predict);
+      addAction(enqueueAndParse);
+    } else {
+      if (info.sync) {
+        const prog = program
+          .command(name)
+          .description(`${info.displayName} document (synchronous).`);
+        if (name === COMMAND_CUSTOM) {
+          addCustomPostOptions(prog);
+        }
+        addDisplayOptions(prog);
+        addPostOptions(prog, info);
+        addAction(prog);
       }
-      addPostOptions(progAsync, info);
-      addAction(progAsync);
+      if (info.async) {
+        const progAsync = program
+          .command(name)
+          .description(`${info.displayName} document (asynchronous).`);
+        if (name === COMMAND_CUSTOM) {
+          addCustomPostOptions(progAsync);
+        }
+        addPostOptions(progAsync, info);
+        addAction(progAsync);
+      }
     }
   });
   program.parse(process.argv);
