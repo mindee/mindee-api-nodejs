@@ -7,4 +7,4 @@ export {
   Page,
 } from "./parsing/common";
 export { InputSource, PageOptionsOperation } from "./input";
-export * as internals from "./internals";
+export * as internal from "./internal";
