@@ -4,8 +4,8 @@ import { expect } from "chai";
 import { Ocr } from "../../../src/parsing/common/ocr";
 
 const dataPath = {
-  complete: "tests/data/ocr/complete_with_ocr.json",
-  docString: "tests/data/ocr/ocr.txt"
+  complete: "tests/data/extras/ocr/complete.json",
+  docString: "tests/data/extras/ocr/ocr.txt"
 };
 
 

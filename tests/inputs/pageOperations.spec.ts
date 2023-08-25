@@ -10,7 +10,7 @@ import { expect } from "chai";
 describe("High level multi-page operations", () => {
   it("should cut a PDF", async () => {
     const input = new PathInput({
-      inputPath: path.join(__dirname, "../data/pdf/multipage.pdf"),
+      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage.pdf"),
     });
     await input.init();
     await input.cutPdf({
@@ -27,7 +27,7 @@ describe("High level multi-page operations", () => {
     const lengthRE = /(?<=\/FlateDecode[\s\S]\/Length )\d{1,3}/gm;
 
     const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/pdf/multipage_cut-3.pdf"),
+      path.join(__dirname, "../data/file_types/pdf/multipage_cut-3.pdf"),
       "utf-8"
     );
 
@@ -38,7 +38,7 @@ describe("High level multi-page operations", () => {
   });
 
   it("should not cut the PDF", async () => {
-    const filePath = path.join(__dirname, "../data/pdf/multipage.pdf");
+    const filePath = path.join(__dirname, "../data/file_types/pdf/multipage.pdf");
     const input = new PathInput({
       inputPath: filePath,
     });
