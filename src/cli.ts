@@ -322,29 +322,32 @@ function routeSwitchboard(
 ): Promise<void> {
   let conf: ProductConfig;
   switch (command.name()) {
-    case "sync": {
-      if (command.parent) {
-        conf = getConfig(command.parent.name());
-        return callParse(conf.docClass, command.parent.name(), inputPath, allOptions);
-      }
+  case "sync": {
+    if (command.parent) {
+      conf = getConfig(command.parent.name());
+      return callParse(conf.docClass, command.parent.name(), inputPath, allOptions);
     }
-    case "async": {
-      if (command.parent) {
-        conf = getConfig(command.parent.name());
-        return callEnqueueAndParse(conf.docClass, command.parent.name(), inputPath, allOptions);
-      }
-    }
-    default: {
-      conf = getConfig(command.name());
-      if (conf.async) {
-        return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
-      }
-      if (conf.sync) {
-        return callParse(conf.docClass, command.name(), inputPath, allOptions);
-      }
-      throw new Error("Unhandled command.")
-    }
+    break;
   }
+  case "async": {
+    if (command.parent) {
+      conf = getConfig(command.parent.name());
+      return callEnqueueAndParse(conf.docClass, command.parent.name(), inputPath, allOptions);
+    }
+    break;
+  }
+  default: {
+    conf = getConfig(command.name());
+    if (conf.async) {
+      return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
+    }
+    if (conf.sync) {
+      return callParse(conf.docClass, command.name(), inputPath, allOptions);
+    }
+    break;
+  }
+  }
+  throw new Error("Unhandled command.")
 }
 
 function addAction(prog: Command) {
@@ -392,12 +395,12 @@ export function cli() {
 
       const predict = prog
         .command("sync")
-        .description(`Parse synchronously.`);
+        .description("Parse synchronously.");
       addMainOptions(predict);
 
       const enqueueAndParse = prog
         .command("async")
-        .description(`Parse asynchronously.`);
+        .description("Parse asynchronously.");
       addMainOptions(enqueueAndParse);
 
       if (name === COMMAND_CUSTOM) {
