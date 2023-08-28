@@ -9,33 +9,33 @@ export function handleError(
   const errorObj: StringDict = response.data?.api_request;
   let errorToThrow;
   switch (errorObj["statusCode"]) {
-    case 400:
-      errorToThrow = new MindeeHttpError400(errorObj, url);
-      break;
-    case 401:
-      errorToThrow = new MindeeHttpError401(errorObj, url);
-      break;
-    case 403:
-      errorToThrow = new MindeeHttpError403(errorObj, url);
-      break;
-    case 404:
-      errorToThrow = new MindeeHttpError404(errorObj, url);
-      break;
-    case 413:
-      errorToThrow = new MindeeHttpError413(errorObj, url);
-      break;
-    case 429:
-      errorToThrow = new MindeeHttpError429(errorObj, url);
-      break;
-    case 500:
-      errorToThrow = new MindeeHttpError500(errorObj, url);
-      break;
-    case 504:
-      errorToThrow = new MindeeHttpError504(errorObj, url);
-      break;
-    default:
-      errorToThrow = new MindeeHttpError(errorObj, url);
-      break;
+  case 400:
+    errorToThrow = new MindeeHttpError400(errorObj, url);
+    break;
+  case 401:
+    errorToThrow = new MindeeHttpError401(errorObj, url);
+    break;
+  case 403:
+    errorToThrow = new MindeeHttpError403(errorObj, url);
+    break;
+  case 404:
+    errorToThrow = new MindeeHttpError404(errorObj, url);
+    break;
+  case 413:
+    errorToThrow = new MindeeHttpError413(errorObj, url);
+    break;
+  case 429:
+    errorToThrow = new MindeeHttpError429(errorObj, url);
+    break;
+  case 500:
+    errorToThrow = new MindeeHttpError500(errorObj, url);
+    break;
+  case 504:
+    errorToThrow = new MindeeHttpError504(errorObj, url);
+    break;
+  default:
+    errorToThrow = new MindeeHttpError(errorObj, url);
+    break;
   }
   errorHandler.throw(errorToThrow);
 }
