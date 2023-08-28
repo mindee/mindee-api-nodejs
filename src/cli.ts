@@ -61,7 +61,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       docClass: product.InvoiceSplitterV1,
       allWords: false,
       async: true,
-      sync: false,
+      sync: true,
     },
   ],
   [
@@ -320,32 +320,22 @@ function routeSwitchboard(
   inputPath: string,
   allOptions: any
 ): Promise<void> {
-  let conf: ProductConfig;
-  switch (command.name()) {
-  case "sync": {
-    if (command.parent) {
-      conf = getConfig(command.parent.name());
-      return callParse(conf.docClass, command.parent.name(), inputPath, allOptions);
-    }
-    break;
-  }
-  case "async": {
-    if (command.parent) {
-      conf = getConfig(command.parent.name());
-      return callEnqueueAndParse(conf.docClass, command.parent.name(), inputPath, allOptions);
-    }
-    break;
-  }
-  default: {
-    conf = getConfig(command.name());
-    if (conf.async) {
+  command.opts();
+  const conf = getConfig(command.name());
+  if (conf.async && conf.sync) {
+    if ("async" in command.opts()) {
       return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
-    }
-    if (conf.sync) {
+    } else if ("sync" in command.opts()) {
       return callParse(conf.docClass, command.name(), inputPath, allOptions);
-    }
-    break;
+    } 
+    throw new Error("No call type provided.")
+    
   }
+  if (conf.async) {
+    return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
+  }
+  if (conf.sync) {
+    return callParse(conf.docClass, command.name(), inputPath, allOptions);
   }
   throw new Error("Unhandled command.")
 }
@@ -393,26 +383,19 @@ export function cli() {
         .command(name)
         .description(`${info.displayName} document (synchronous or asynchronous)`);
 
-      const predict = prog
-        .command("sync")
+      prog.option("-S, --sync")
         .description("Parse synchronously.");
-      addMainOptions(predict);
 
-      const enqueueAndParse = prog
-        .command("async")
+      prog.option("-A, --async")
         .description("Parse asynchronously.");
-      addMainOptions(enqueueAndParse);
+      addMainOptions(prog);
 
       if (name === COMMAND_CUSTOM) {
-        addCustomPostOptions(predict);
-        addCustomPostOptions(enqueueAndParse);
+        addCustomPostOptions(prog);
       }
-      addDisplayOptions(predict);
-      addDisplayOptions(enqueueAndParse);
-      addPostOptions(predict, info);
-      addPostOptions(enqueueAndParse, info);
-      addAction(predict);
-      addAction(enqueueAndParse);
+      addDisplayOptions(prog);
+      addPostOptions(prog, info);
+      addAction(prog);
     } else {
       if (info.sync) {
         const prog = program
