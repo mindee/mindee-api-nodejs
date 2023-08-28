@@ -378,18 +378,22 @@ export function cli() {
 
   CLI_COMMAND_CONFIG.forEach((info, name) => {
     const prog = program.command(name)
-    if (info.sync && info.async) {
-      prog.description(`${info.displayName} document (synchronous or asynchronous)`);
+    prog.description(`${info.displayName} document`);
+    const syncOpt = new Option("-S, --sync", "Call synchronously");
+    const asyncOpt = new Option("-A, --async", "Call asynchronously");
 
-      const syncOpt = new Option("-S, --sync").hideHelp();
-      const asyncOpt = new Option("-A, --async").hideHelp();
+    if (info.sync && info.async) {
       prog.addOption(syncOpt).addOption(asyncOpt);
     } else {
       if (info.sync) {
-        prog.description(`${info.displayName} document (synchronous).`);
+        syncOpt.default(true);
+        syncOpt.hideHelp();
+        prog.addOption(asyncOpt);
       }
       else if (info.async) {
-        prog.description(`${info.displayName} document (asynchronous).`);
+        asyncOpt.default(true);
+        asyncOpt.hideHelp();
+        prog.addOption(asyncOpt);
       } else {
         throw new Error("Commands must have at least a synchronous or asynchronous call type.")
       }
