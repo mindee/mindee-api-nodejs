@@ -52,7 +52,7 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response);
+      handleError(this.urlName, response, statusCode);
     }
 
     return response;
@@ -75,7 +75,7 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response);
+      handleError(this.urlName, response, statusCode);
     }
     return response;
   }
