@@ -320,23 +320,11 @@ function routeSwitchboard(
   inputPath: string,
   allOptions: any
 ): Promise<void> {
-  const conf = getConfig(command.name());
-  if (conf.async && conf.sync) {
-    if ("async" in command.opts()) {
-      return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
-    } else if ("sync" in command.opts()) {
-      return callParse(conf.docClass, command.name(), inputPath, allOptions);
-    }
-    throw new Error("No call type provided.")
-
+  const docClass = getConfig(command.name()).docClass;
+  if ("async" in command.opts() && command.opts()["async"]) {
+    return callEnqueueAndParse(docClass, command.name(), inputPath, allOptions);
   }
-  if (conf.async) {
-    return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
-  }
-  if (conf.sync) {
-    return callParse(conf.docClass, command.name(), inputPath, allOptions);
-  }
-  throw new Error("Unhandled command.")
+  return callParse(docClass, command.name(), inputPath, allOptions);
 }
 
 function addAction(prog: Command) {
@@ -379,25 +367,18 @@ export function cli() {
   CLI_COMMAND_CONFIG.forEach((info, name) => {
     const prog = program.command(name)
     prog.description(`${info.displayName} document`);
-    const syncOpt = new Option("-S, --sync", "Call synchronously");
     const asyncOpt = new Option("-A, --async", "Call asynchronously");
 
-    if (info.sync && info.async) {
-      prog.addOption(syncOpt).addOption(asyncOpt);
-    } else {
+    if (info.async) {
       if (info.sync) {
-        syncOpt.default(true);
-        syncOpt.hideHelp();
-        prog.addOption(asyncOpt);
-      }
-      else if (info.async) {
+        asyncOpt.default(false);
+      } else {
         asyncOpt.default(true);
         asyncOpt.hideHelp();
-        prog.addOption(asyncOpt);
-      } else {
-        throw new Error("Commands must have at least a synchronous or asynchronous call type.")
       }
+      prog.addOption(asyncOpt);
     }
+
     if (name === COMMAND_CUSTOM) {
       addCustomPostOptions(prog);
     }
