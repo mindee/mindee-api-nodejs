@@ -1,4 +1,4 @@
-import { Command, OptionValues } from "commander";
+import { Command, OptionValues, Option } from "commander";
 import * as product from "./product";
 import { AsyncPredictResponse, Document, Inference, StringDict } from "./parsing/common";
 import { Client, PredictOptions } from "./client";
@@ -61,7 +61,7 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       docClass: product.InvoiceSplitterV1,
       allWords: false,
       async: true,
-      sync: true,
+      sync: false,
     },
   ],
   [
@@ -383,11 +383,9 @@ export function cli() {
         .command(name)
         .description(`${info.displayName} document (synchronous or asynchronous)`);
 
-      prog.option("-S, --sync")
-        .description("Parse synchronously.");
-
-      prog.option("-A, --async")
-        .description("Parse asynchronously.");
+      const syncOpt = new Option("--S", "--sync").hideHelp();
+      const asyncOpt = new Option("--A", "--async").hideHelp();
+      prog.addOption(syncOpt).addOption(asyncOpt);
       addMainOptions(prog);
 
       if (name === COMMAND_CUSTOM) {
