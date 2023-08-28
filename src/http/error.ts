@@ -11,3 +11,11 @@ export function handleError(
     new Error(`${url} API ${statusCode} HTTP error: ${errorMessage}`)
   );
 }
+
+export class MindeeHttpError413 {
+
+}
+
+export class MindeeHttpError400 {
+  
+}
