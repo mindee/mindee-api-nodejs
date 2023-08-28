@@ -52,7 +52,7 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode);
+      handleError(this.urlName, response);
     }
 
     return response;
@@ -75,7 +75,7 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode);
+      handleError(this.urlName, response);
     }
     return response;
   }
@@ -88,7 +88,7 @@ export class Endpoint {
       queueStatusCode < 200 ||
       queueStatusCode > 400
     ) {
-      handleError(this.urlName, queueResponse, queueStatusCode);
+      handleError(this.urlName, queueResponse);
     }
     if (
       queueStatusCode === 302 &&
