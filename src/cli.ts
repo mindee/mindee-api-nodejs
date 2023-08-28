@@ -367,9 +367,9 @@ export function cli() {
   CLI_COMMAND_CONFIG.forEach((info, name) => {
     const prog = program.command(name)
     prog.description(`${info.displayName} document`);
-    const asyncOpt = new Option("-A, --async", "Call asynchronously");
 
     if (info.async) {
+      const asyncOpt = new Option("-A, --async", "Call asynchronously");
       if (info.sync) {
         asyncOpt.default(false);
       } else {
