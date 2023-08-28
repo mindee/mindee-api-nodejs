@@ -320,16 +320,15 @@ function routeSwitchboard(
   inputPath: string,
   allOptions: any
 ): Promise<void> {
-  command.opts();
   const conf = getConfig(command.name());
   if (conf.async && conf.sync) {
     if ("async" in command.opts()) {
       return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
     } else if ("sync" in command.opts()) {
       return callParse(conf.docClass, command.name(), inputPath, allOptions);
-    } 
+    }
     throw new Error("No call type provided.")
-    
+
   }
   if (conf.async) {
     return callEnqueueAndParse(conf.docClass, command.name(), inputPath, allOptions);
@@ -378,45 +377,30 @@ export function cli() {
 
 
   CLI_COMMAND_CONFIG.forEach((info, name) => {
+    const prog = program.command(name)
     if (info.sync && info.async) {
-      const prog = program
-        .command(name)
-        .description(`${info.displayName} document (synchronous or asynchronous)`);
+      prog.description(`${info.displayName} document (synchronous or asynchronous)`);
 
-      const syncOpt = new Option("--S", "--sync").hideHelp();
-      const asyncOpt = new Option("--A", "--async").hideHelp();
+      const syncOpt = new Option("-S, --sync").hideHelp();
+      const asyncOpt = new Option("-A, --async").hideHelp();
       prog.addOption(syncOpt).addOption(asyncOpt);
-      addMainOptions(prog);
-
-      if (name === COMMAND_CUSTOM) {
-        addCustomPostOptions(prog);
-      }
-      addDisplayOptions(prog);
-      addPostOptions(prog, info);
-      addAction(prog);
     } else {
       if (info.sync) {
-        const prog = program
-          .command(name)
-          .description(`${info.displayName} document (synchronous).`);
-        if (name === COMMAND_CUSTOM) {
-          addCustomPostOptions(prog);
-        }
-        addDisplayOptions(prog);
-        addPostOptions(prog, info);
-        addAction(prog);
+        prog.description(`${info.displayName} document (synchronous).`);
       }
-      if (info.async) {
-        const progAsync = program
-          .command(name)
-          .description(`${info.displayName} document (asynchronous).`);
-        if (name === COMMAND_CUSTOM) {
-          addCustomPostOptions(progAsync);
-        }
-        addPostOptions(progAsync, info);
-        addAction(progAsync);
+      else if (info.async) {
+        prog.description(`${info.displayName} document (asynchronous).`);
+      } else {
+        throw new Error("Commands must have at least a synchronous or asynchronous call type.")
       }
     }
+    if (name === COMMAND_CUSTOM) {
+      addCustomPostOptions(prog);
+    }
+    addMainOptions(prog);
+    addDisplayOptions(prog);
+    addPostOptions(prog, info);
+    addAction(prog);
   });
   program.parse(process.argv);
 }
