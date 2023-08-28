@@ -1,6 +1,6 @@
-import { Command, OptionValues } from "commander";
+import { Command, OptionValues, Option } from "commander";
 import * as product from "./product";
-import { Document, Inference, StringDict } from "./parsing/common";
+import { AsyncPredictResponse, Document, Inference, StringDict } from "./parsing/common";
 import { Client, PredictOptions } from "./client";
 import { PageOptions, PageOptionsOperation } from "./input";
 import * as console from "console";
@@ -186,8 +186,12 @@ function getPredictParams(options: any) {
   return predictParams;
 }
 
-async function callParse(command: string, inputPath: string, options: any) {
-  const conf = getConfig(command);
+async function callParse<T extends Inference>(
+  productClass: new (httpResponse: StringDict) => T,
+  command: string,
+  inputPath: string,
+  options: any
+) {
   const mindeeClient = initClient(options);
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
@@ -199,14 +203,14 @@ async function callParse(command: string, inputPath: string, options: any) {
       options.account,
       options.version
     );
-    response = await mindeeClient.parse(conf.docClass, inputSource, {
+    response = await mindeeClient.parse(productClass, inputSource, {
       endpoint: customEndpoint,
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
     });
   } else {
-    response = await mindeeClient.parse(conf.docClass, inputSource, {
+    response = await mindeeClient.parse(productClass, inputSource, {
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
@@ -215,45 +219,45 @@ async function callParse(command: string, inputPath: string, options: any) {
   printResponse(response.document, options);
 }
 
-async function callEnqueue(command: string, inputPath: string, options: any) {
-  const conf = getConfig(command);
+async function callEnqueueAndParse<T extends Inference>(
+  productClass: new (httpResponse: StringDict) => T,
+  command: string,
+  inputPath: string,
+  options: any
+) {
   const mindeeClient = initClient(options);
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
   const inputSource = mindeeClient.docFromPath(inputPath);
-
-  let response;
+  let response: AsyncPredictResponse<T>;
   if (command === COMMAND_CUSTOM) {
     const customEndpoint = mindeeClient.createEndpoint(
       options.endpoint,
       options.account,
       options.version
     );
-    response = await mindeeClient.enqueue(conf.docClass, inputSource, {
+    response = await mindeeClient.enqueueAndParse(productClass, inputSource, {
       endpoint: customEndpoint,
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
+      initialDelaySec: 6,
+      delaySec: 3,
+      maxRetries: 10,
     });
   } else {
-    response = await mindeeClient.enqueue(conf.docClass, inputSource, {
+    response = await mindeeClient.enqueueAndParse(productClass, inputSource, {
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
+      initialDelaySec: 6,
+      delaySec: 3,
+      maxRetries: 10,
     });
-  }
-  console.log(response.job);
-}
-
-async function callParseQueued(command: string, queueId: string, options: any) {
-  const conf = getConfig(command);
-  const mindeeClient = initClient(options);
-  const response = await mindeeClient.parseQueued(conf.docClass, queueId);
-
-  if (response.document !== undefined) {
+    if (!response.document) {
+      throw Error("Document could not be retrieved");
+    }
     printResponse(response.document, options);
-  } else {
-    console.log(response.job);
   }
 }
 
@@ -316,20 +320,11 @@ function routeSwitchboard(
   inputPath: string,
   allOptions: any
 ): Promise<void> {
-  switch (command.parent?.name()) {
-  case "parse": {
-    return callParse(command.name(), inputPath, allOptions);
+  const docClass = getConfig(command.name()).docClass;
+  if ("async" in command.opts() && command.opts()["async"]) {
+    return callEnqueueAndParse(docClass, command.name(), inputPath, allOptions);
   }
-  case "enqueue": {
-    return callEnqueue(command.name(), inputPath, allOptions);
-  }
-  case "parse-queued": {
-    return callParseQueued(command.name(), inputPath, allOptions);
-  }
-  default: {
-    throw new Error("Unhandled parent command.");
-  }
-  }
+  return callParse(docClass, command.name(), inputPath, allOptions);
 }
 
 function addAction(prog: Command) {
@@ -368,48 +363,29 @@ export function cli() {
   program.name("mindee");
   program.option("-d, --debug", "high verbosity mode");
 
-  const predict = program.command("parse").description("Parse synchronously.");
-  addMainOptions(predict);
-
-  const enqueue = program
-    .command("enqueue")
-    .description("Add to async parse queue.");
-  addMainOptions(enqueue);
-
-  const parseQueued = program
-    .command("parse-queued")
-    .description("Parse from async queue.");
-  addMainOptions(parseQueued);
 
   CLI_COMMAND_CONFIG.forEach((info, name) => {
-    if (info.sync) {
-      const prog = predict
-        .command(name)
-        .description(`Parse an ${info.displayName}.`);
-      if (name === COMMAND_CUSTOM) {
-        addCustomPostOptions(prog);
-      }
-      addDisplayOptions(prog);
-      addPostOptions(prog, info);
-      addAction(prog);
-    }
-    if (info.async) {
-      const progEnqueue = enqueue
-        .command(name)
-        .description(`Add an ${info.displayName} to the queue.`);
-      if (name === COMMAND_CUSTOM) {
-        addCustomPostOptions(progEnqueue);
-      }
-      addPostOptions(progEnqueue, info);
-      addAction(progEnqueue);
+    const prog = program.command(name)
+    prog.description(`${info.displayName} document`);
 
-      const progParse = parseQueued
-        .command(name)
-        .description(`Parse an ${info.displayName} from the queue.`)
-        .argument("<doc_id>", "ID of the document");
-      addDisplayOptions(progParse);
-      addAction(progParse);
+    if (info.async) {
+      const asyncOpt = new Option("-A, --async", "Call asynchronously");
+      if (info.sync) {
+        asyncOpt.default(false);
+      } else {
+        asyncOpt.default(true);
+        asyncOpt.hideHelp();
+      }
+      prog.addOption(asyncOpt);
     }
+
+    if (name === COMMAND_CUSTOM) {
+      addCustomPostOptions(prog);
+    }
+    addMainOptions(prog);
+    addDisplayOptions(prog);
+    addPostOptions(prog, info);
+    addAction(prog);
   });
   program.parse(process.argv);
 }

@@ -21,6 +21,11 @@ import { LOG_LEVELS, logger } from "./logger";
 import { InferenceFactory } from "./parsing/common/inference";
 import { CustomV1 } from "./product";
 
+import {
+  setTimeout,
+} from "node:timers/promises";
+
+
 /**
  * Options relating to predictions.
  */
@@ -44,6 +49,15 @@ export interface PredictOptions {
    * This is done before sending the file to the server and is useful to avoid page limitations.
    */
   pageOptions?: PageOptions;
+}
+
+/**
+ * Asynchronous polling parameters.
+ */
+export interface AsyncOptions extends PredictOptions {
+  initialDelaySec: number;
+  delaySec: number;
+  maxRetries: number;
 }
 
 export interface ClientOptions {
@@ -164,6 +178,79 @@ export class Client {
       params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
+  }
+
+  /**
+   * Checks the values for asynchronous parsing.
+   * @param asyncParams parameters related to asynchronous parsing
+   */
+  #validateAsyncParams(asyncParams: AsyncOptions) {
+    if (asyncParams.delaySec < 2) {
+      throw Error("Cannot set auto-parsing delay to less than 2 seconds.");
+    }
+    if (asyncParams.initialDelaySec < 4) {
+      throw Error("Cannot set initial parsing delay to less than 4 seconds.");
+    }
+    if (!Number.isInteger(asyncParams.maxRetries)) {
+      throw Error("Retry amount must be an integer.")
+    }
+  }
+
+  /**
+   * Send a document to an asynchronous endpoint and poll the server until the result is sent or
+   * until the maximum amount of tries is reached.
+   * 
+   * @param productClass product class to use for calling the API and parsing the response.
+   * @param inputSource document to parse.
+   * @param asyncParams parameters relating to prediction options.
+   * 
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Synchronous
+   * @returns a `Promise` containing parsing results.
+   */
+  async enqueueAndParse<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T,
+    inputSource: InputSource,
+    asyncParams: AsyncOptions = {
+      endpoint: undefined,
+      allWords: undefined,
+      cropper: undefined,
+      pageOptions: undefined,
+      initialDelaySec: 6,
+      delaySec: 3,
+      maxRetries: 10,
+    }
+  ) {
+    this.#validateAsyncParams(asyncParams);
+    const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(productClass, inputSource, asyncParams);
+    if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
+      throw Error("Enqueueing of the document failed.");
+    }
+    const queueId: string = enqueueResponse.job.id;
+    logger.debug(
+      `Successfully enqueued document with job id: ${queueId}.`
+    );
+    await setTimeout(asyncParams.initialDelaySec * 1000);
+    let retryCounter = 1;
+    let pollResults: AsyncPredictResponse<T>;
+    pollResults = await this.parseQueued(productClass, queueId, asyncParams);
+    while (retryCounter < asyncParams.maxRetries) {
+      logger.debug(
+        `Polling server for parsing result with queueId: ${queueId}.
+Attempt n°${retryCounter}/${asyncParams.maxRetries}.
+Job status: ${pollResults.job.status}.`
+      );
+      if (pollResults.job.status === "completed") {
+        break;
+      }
+      await setTimeout(asyncParams.delaySec * 1000);
+      pollResults = await this.parseQueued(productClass, queueId, asyncParams);
+      retryCounter++;
+    }
+    if (pollResults.job.status !== "completed") {
+      throw Error(`Asynchronous parsing request timed out after ${asyncParams.delaySec * retryCounter} seconds`);
+    }
+    return pollResults;
   }
 
   /**
