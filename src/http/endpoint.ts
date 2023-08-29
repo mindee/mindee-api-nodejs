@@ -45,8 +45,9 @@ export class Endpoint {
   /**
    * Sends a prediction to the API and parses out the result.
    * Throws an error if the server's response contains one.
-   * @param params parsing options
-   * @returns a parsed document
+   * @param params parameters relating to prediction options.
+   * @category Synchronous
+   * @returns a `Promise` containing parsing results.
    */
   async predict(params: {
     inputDoc: InputSource;
@@ -71,6 +72,13 @@ export class Endpoint {
     return response;
   }
 
+  /**
+   * Enqueues a prediction to the API.
+   * Throws an error if the server's response contains one.
+   * @param params parameters relating to prediction options.
+   * @category Asynchronous
+   * @returns a `Promise` containing queue data.
+   */
   async predictAsync(params: {
     inputDoc: InputSource;
     includeWords: boolean;
@@ -92,7 +100,13 @@ export class Endpoint {
     }
     return response;
   }
-
+  /**
+   * Requests the results of a queued document from the API.
+   * Throws an error if the server's response contains one.
+   * @param params parameters relating to prediction options.
+   * @category Asynchronous
+   * @returns a `Promise` containing the parsed result.
+   */
   async getQueuedDocument(queueId: string): Promise<EndpointResponse> {
     const queueResponse = await this.#documentQueueReqGet(queueId);
     const queueStatusCode = queueResponse.messageObj.statusCode;
@@ -165,6 +179,13 @@ export class Endpoint {
     });
   }
 
+  /**
+   * Reads a response from the API and processes it.
+   * @param options options related to the request itself.
+   * @param resolve the resolved response
+   * @param reject promise rejection reason.
+   * @returns the processed request.
+   */
   protected readResponse(
     options: RequestOptions,
     resolve: (value: EndpointResponse | PromiseLike<EndpointResponse>) => void,
@@ -213,6 +234,11 @@ export class Endpoint {
     return req;
   }
 
+  /**
+   * Cuts a document's pages according to the given options.
+   * @param inputDoc input document.
+   * @param pageOptions page cutting options.
+   */
   async #cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
       await inputDoc.cutPdf(pageOptions);
