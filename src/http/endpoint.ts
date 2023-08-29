@@ -66,7 +66,7 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode);
+      handleError(this.urlName, response, statusCode, response.messageObj?.statusMessage);
     }
 
     return response;
@@ -96,7 +96,7 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode);
+      handleError(this.urlName, response, statusCode, response.messageObj?.statusMessage);
     }
     return response;
   }
@@ -115,7 +115,7 @@ export class Endpoint {
       queueStatusCode < 200 ||
       queueStatusCode > 400
     ) {
-      handleError(this.urlName, queueResponse);
+      handleError(this.urlName, queueResponse, queueStatusCode, queueResponse.messageObj?.statusMessage);
     }
     if (
       queueStatusCode === 302 &&
@@ -224,7 +224,10 @@ export class Endpoint {
         } catch (error) {
           logger.error("Could not parse the return as JSON.");
           logger.debug(responseBody);
-          reject(error);
+          resolve({
+            messageObj: res,
+            data: { reconstructed_response: responseBody }
+          });
         }
       });
     });
