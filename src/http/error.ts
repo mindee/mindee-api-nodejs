@@ -18,35 +18,35 @@ export function handleError(
     errorObj = response.data.api_request.error;
   } catch (err) {
     //Rare instances where errors are returned as HTML instead of JSON.
-    if (!response.data.hasOwnProperty("reconstructed_response")){
-      response.data.reconstructed_response = ""
+    if (!("reconstructedResponse" in response.data)){
+      response.data.reconstructedResponse = ""
     }
-    if (response.data.reconstructed_response.includes("Maximum pdf pages")) {
+    if (response.data.reconstructedResponse.includes("Maximum pdf pages")) {
       errorObj = {
         message: "TooManyPages",
         details: "Maximum amount of pdf pages reached.",
       }
-    } else if (response.data.reconstructed_response.includes("Max file size is")) {
+    } else if (response.data.reconstructedResponse.includes("Max file size is")) {
       errorObj = {
         message: "FileTooLarge",
         details: "Maximum file size reached.",
       }
-    } else if (response.data.reconstructed_response.includes("Invalid file type")) {
+    } else if (response.data.reconstructedResponse.includes("Invalid file type")) {
       errorObj = {
         message: "InvalidFiletype",
         details: "Invalid file type.",
       }
-    } else if (response.data.reconstructed_response.includes("Gateway timeout")) {
+    } else if (response.data.reconstructedResponse.includes("Gateway timeout")) {
       errorObj = {
         message: "RequestTimeout",
         details: "Request timed out.",
       }
-    } else if (response.data.reconstructed_response.includes("Bad gateway")) {
+    } else if (response.data.reconstructedResponse.includes("Bad gateway")) {
       errorObj = {
         message: "BadRequest",
         details: "Bad Gateway",
       }
-    } else if (response.data.reconstructed_response.includes("Too Many Requests")) {
+    } else if (response.data.reconstructedResponse.includes("Too Many Requests")) {
       errorObj = {
         message: "TooManyRequests",
         details: "Too Many Requests.",
@@ -54,12 +54,12 @@ export function handleError(
     } else {
       errorObj = {
         message: "Unknown Server Error.",
-        details: response.data.reconstructed_response,
+        details: response.data.reconstructedResponse,
       }
     }
   }
   if (serverError !== undefined &&
-    (!errorObj.hasOwnProperty("message") ||
+    (!("message" in errorObj) ||
       !errorObj.message ||
       errorObj.message.length === 0)
   ) {
@@ -67,33 +67,33 @@ export function handleError(
   }
   let errorToThrow;
   switch (code) {
-    case 400:
-      errorToThrow = new MindeeHttpError400(errorObj, url, code);
-      break;
-    case 401:
-      errorToThrow = new MindeeHttpError401(errorObj, url, code);
-      break;
-    case 403:
-      errorToThrow = new MindeeHttpError403(errorObj, url, code);
-      break;
-    case 404:
-      errorToThrow = new MindeeHttpError404(errorObj, url, code);
-      break;
-    case 413:
-      errorToThrow = new MindeeHttpError413(errorObj, url, code);
-      break;
-    case 429:
-      errorToThrow = new MindeeHttpError429(errorObj, url, code);
-      break;
-    case 500:
-      errorToThrow = new MindeeHttpError500(errorObj, url, code);
-      break;
-    case 504:
-      errorToThrow = new MindeeHttpError504(errorObj, url, code);
-      break;
-    default:
-      errorToThrow = new MindeeHttpError(errorObj, url, code);
-      break;
+  case 400:
+    errorToThrow = new MindeeHttpError400(errorObj, url, code);
+    break;
+  case 401:
+    errorToThrow = new MindeeHttpError401(errorObj, url, code);
+    break;
+  case 403:
+    errorToThrow = new MindeeHttpError403(errorObj, url, code);
+    break;
+  case 404:
+    errorToThrow = new MindeeHttpError404(errorObj, url, code);
+    break;
+  case 413:
+    errorToThrow = new MindeeHttpError413(errorObj, url, code);
+    break;
+  case 429:
+    errorToThrow = new MindeeHttpError429(errorObj, url, code);
+    break;
+  case 500:
+    errorToThrow = new MindeeHttpError500(errorObj, url, code);
+    break;
+  case 504:
+    errorToThrow = new MindeeHttpError504(errorObj, url, code);
+    break;
+  default:
+    errorToThrow = new MindeeHttpError(errorObj, url, code);
+    break;
   }
   errorHandler.throw(errorToThrow);
 }

@@ -226,7 +226,7 @@ export class Endpoint {
           logger.debug(responseBody);
           resolve({
             messageObj: res,
-            data: { reconstructed_response: responseBody }
+            data: { reconstructedResponse: responseBody },
           });
         }
       });

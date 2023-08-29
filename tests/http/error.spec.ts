@@ -73,7 +73,7 @@ describe("A known 50x HTTP error", async () => {
     message.method = 'POST';
     const dummyEndpointResponse: EndpointResponse = {
       messageObj: message,
-      data: { reconstructed_response: jsonData.toString() },
+      data: { reconstructedResponse: jsonData.toString() },
     };
     expect(() => handleError("dummy_url", dummyEndpointResponse, 503)).to.throw(MindeeHttpError);
     expect(() => handleError("dummy_url", dummyEndpointResponse, 503)).to.not.throw(MindeeHttpError500);
