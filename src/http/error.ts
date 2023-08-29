@@ -120,10 +120,9 @@ export class MindeeHttpError400 extends MindeeHttpError {
 }
 
 /**
- * Can include NoTokenSet or InvalidToken errors.
+ * Can include errors like NoTokenSet or InvalidToken.
  */
 export class MindeeHttpError401 extends MindeeHttpError {
-
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
@@ -134,46 +133,52 @@ export class MindeeHttpError401 extends MindeeHttpError {
  * Can also include errors like PlanLimitReached, AsyncRequestDisallowed or SyncRequestDisallowed.
  */
 export class MindeeHttpError403 extends MindeeHttpError {
-
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
 }
 
 export class MindeeHttpError404 extends MindeeHttpError {
-
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
 }
 
-/** Rare error.
+/** 
+ * Rare error.
  * Can occasionally happen when unusually large documents are passed.
  */
 export class MindeeHttpError413 extends MindeeHttpError {
-
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
 }
 
+/**
+ * Usually contains TooManyRequests errors.
+ * Arises whenever too many calls to the API are made in quick succession.
+ */
 export class MindeeHttpError429 extends MindeeHttpError {
-
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
 }
 
+/**
+ * Generic server errors.
+ */
 export class MindeeHttpError500 extends MindeeHttpError {
-
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
 }
+
+/**
+ * Miscellaneous server errors.
+ * Can include errors like RequestTimeout or GatewayTimeout.
+ */
 export class MindeeHttpError504 extends MindeeHttpError {
-
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
 }
-

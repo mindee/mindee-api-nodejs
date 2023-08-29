@@ -14,12 +14,19 @@ export interface EndpointResponse {
   messageObj: IncomingMessage;
   data: { [key: string]: any };
 }
-
+/**
+ * Endpoint object class wrapper.
+ */
 export class Endpoint {
+  /** URL of a product. */
   urlName: string;
+  /** Account owning the product. */
   owner: string;
+  /** Product's version, as a string. */
   version: string;
+  /** Entire root of the URL for API calls. */
   urlRoot: string;
+  /** Settings relating to the API. */
   settings: MindeeApi;
 
   constructor(
@@ -35,6 +42,12 @@ export class Endpoint {
     this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
   }
 
+  /**
+   * Sends a prediction to the API and parses out the result.
+   * Throws an error if the server's response contains one.
+   * @param params parsing options
+   * @returns a parsed document
+   */
   async predict(params: {
     inputDoc: InputSource;
     includeWords: boolean;
