@@ -3,7 +3,7 @@ import * as path from "path";
 import { expect } from "chai";
 import { IncomingMessage } from "http";
 import { Socket } from "net";
-import { MindeeHttpError, MindeeHttpError400, MindeeHttpError401, MindeeHttpError429, MindeeHttpError500, handleError } from "../../src/http/error";
+import { MindeeHttpError, MindeeHttp400Error, MindeeHttp401Error, MindeeHttp429Error, MindeeHttp500Error, handleError } from "../../src/http/error";
 import { EndpointResponse } from "../../src/http/endpoint"
 
 const dataPath = {
@@ -23,7 +23,7 @@ describe("A 400 HTTP error", async () => {
       messageObj: message,
       data: JSON.parse(jsonData.toString()),
     };
-    expect(() => handleError("dummy_url", dummyEndpointResponse, 400)).to.throw(MindeeHttpError400);
+    expect(() => handleError("dummy_url", dummyEndpointResponse, 400)).to.throw(MindeeHttp400Error);
   });
 });
 
@@ -36,7 +36,7 @@ describe("A 401 HTTP error", async () => {
       messageObj: message,
       data: JSON.parse(jsonData.toString()),
     };
-    expect(() => handleError("dummy_url", dummyEndpointResponse, 401)).to.throw(MindeeHttpError401);
+    expect(() => handleError("dummy_url", dummyEndpointResponse, 401)).to.throw(MindeeHttp401Error);
   });
 });
 
@@ -49,7 +49,7 @@ describe("A 429 HTTP error", async () => {
       messageObj: message,
       data: JSON.parse(jsonData.toString()),
     };
-    expect(() => handleError("dummy_url", dummyEndpointResponse, 429)).to.throw(MindeeHttpError429);
+    expect(() => handleError("dummy_url", dummyEndpointResponse, 429)).to.throw(MindeeHttp429Error);
   });
 });
 
@@ -62,7 +62,7 @@ describe("A 500 HTTP error", async () => {
       messageObj: message,
       data: JSON.parse(jsonData.toString()),
     };
-    expect(() => handleError("dummy_url", dummyEndpointResponse, 500)).to.throw(MindeeHttpError500);
+    expect(() => handleError("dummy_url", dummyEndpointResponse, 500)).to.throw(MindeeHttp500Error);
   });
 });
 
@@ -76,6 +76,6 @@ describe("A known 50x HTTP error", async () => {
       data: { reconstructedResponse: jsonData.toString() },
     };
     expect(() => handleError("dummy_url", dummyEndpointResponse, 503)).to.throw(MindeeHttpError);
-    expect(() => handleError("dummy_url", dummyEndpointResponse, 503)).to.not.throw(MindeeHttpError500);
+    expect(() => handleError("dummy_url", dummyEndpointResponse, 503)).to.not.throw(MindeeHttp500Error);
   });
 });

@@ -68,28 +68,28 @@ export function handleError(
   let errorToThrow;
   switch (code) {
   case 400:
-    errorToThrow = new MindeeHttpError400(errorObj, url, code);
+    errorToThrow = new MindeeHttp400Error(errorObj, url, code);
     break;
   case 401:
-    errorToThrow = new MindeeHttpError401(errorObj, url, code);
+    errorToThrow = new MindeeHttp401Error(errorObj, url, code);
     break;
   case 403:
-    errorToThrow = new MindeeHttpError403(errorObj, url, code);
+    errorToThrow = new MindeeHttp403Error(errorObj, url, code);
     break;
   case 404:
-    errorToThrow = new MindeeHttpError404(errorObj, url, code);
+    errorToThrow = new MindeeHttp404Error(errorObj, url, code);
     break;
   case 413:
-    errorToThrow = new MindeeHttpError413(errorObj, url, code);
+    errorToThrow = new MindeeHttp413Error(errorObj, url, code);
     break;
   case 429:
-    errorToThrow = new MindeeHttpError429(errorObj, url, code);
+    errorToThrow = new MindeeHttp429Error(errorObj, url, code);
     break;
   case 500:
-    errorToThrow = new MindeeHttpError500(errorObj, url, code);
+    errorToThrow = new MindeeHttp500Error(errorObj, url, code);
     break;
   case 504:
-    errorToThrow = new MindeeHttpError504(errorObj, url, code);
+    errorToThrow = new MindeeHttp504Error(errorObj, url, code);
     break;
   default:
     errorToThrow = new MindeeHttpError(errorObj, url, code);
@@ -123,7 +123,7 @@ export class MindeeHttpError extends MindeeError {
  * Generic client errors.
  * Can include errors like InvalidQuery.
  */
-export class MindeeHttpError400 extends MindeeHttpError {
+export class MindeeHttp400Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
   }
@@ -132,9 +132,10 @@ export class MindeeHttpError400 extends MindeeHttpError {
 /**
  * Can include errors like NoTokenSet or InvalidToken.
  */
-export class MindeeHttpError401 extends MindeeHttpError {
+export class MindeeHttp401Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp401Error";
   }
 }
 
@@ -142,15 +143,17 @@ export class MindeeHttpError401 extends MindeeHttpError {
  * Regular AccessForbidden error.
  * Can also include errors like PlanLimitReached, AsyncRequestDisallowed or SyncRequestDisallowed.
  */
-export class MindeeHttpError403 extends MindeeHttpError {
+export class MindeeHttp403Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp403Error";
   }
 }
 
-export class MindeeHttpError404 extends MindeeHttpError {
+export class MindeeHttp404Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp404Error";
   }
 }
 
@@ -158,9 +161,10 @@ export class MindeeHttpError404 extends MindeeHttpError {
  * Rare error.
  * Can occasionally happen when unusually large documents are passed.
  */
-export class MindeeHttpError413 extends MindeeHttpError {
+export class MindeeHttp413Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp413Error";
   }
 }
 
@@ -168,18 +172,20 @@ export class MindeeHttpError413 extends MindeeHttpError {
  * Usually contains TooManyRequests errors.
  * Arises whenever too many calls to the API are made in quick succession.
  */
-export class MindeeHttpError429 extends MindeeHttpError {
+export class MindeeHttp429Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp429Error";
   }
 }
 
 /**
  * Generic server errors.
  */
-export class MindeeHttpError500 extends MindeeHttpError {
+export class MindeeHttp500Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp500Error";
   }
 }
 
@@ -187,8 +193,9 @@ export class MindeeHttpError500 extends MindeeHttpError {
  * Miscellaneous server errors.
  * Can include errors like RequestTimeout or GatewayTimeout.
  */
-export class MindeeHttpError504 extends MindeeHttpError {
+export class MindeeHttp504Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp500Error";
   }
 }
