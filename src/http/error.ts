@@ -112,8 +112,8 @@ export class MindeeHttpError extends MindeeError {
 
   constructor(httpError: StringDict, url: string, code?: number) {
     super(`${url} API ${code} HTTP error: ${httpError.message}`);
-    this.details ??= httpError?.details;
-    this.message ??= httpError?.message;
+    this.details = httpError.details;
+    this.message = httpError.message;
     this.code = code;
     this.name = "MindeeHttpError";
   }
@@ -126,6 +126,7 @@ export class MindeeHttpError extends MindeeError {
 export class MindeeHttp400Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
+    this.name = "MindeeHttp400Error";
   }
 }
 

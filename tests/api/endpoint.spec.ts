@@ -6,7 +6,6 @@ import * as mindee from "../../src/";
 process.env["MINDEE_API_HOST"] = "local.mindee.net";
 
 describe("HTTP calls", () => {
-
   async function sendRequest(http_code: number, http_result_file: string) {
     const owner = "mindee";
     const urlName = "invoices";
@@ -16,18 +15,20 @@ describe("HTTP calls", () => {
       .post(`/v1/products/${owner}/${urlName}/v${version}/predict`)
       .replyWithFile(http_code, path.resolve(http_result_file));
 
-    const mindeeClient = new mindee.Client({ apiKey: "my-api-key", debug: true});
+    const mindeeClient = new mindee.Client({ apiKey: "my-api-key", debug: true });
     const doc = mindeeClient.docFromPath(path.resolve("tests/data/file_types/pdf/blank_1.pdf"));
 
     return await mindeeClient.parse(mindee.product.InvoiceV4, doc);
   }
 
-  it("should fail on HTML response", async () => {
+  it("should fail on 400 response with object", async () => {
     try {
-      await sendRequest(413, path.resolve("tests/data/errors/error_50x.html"));
+      await sendRequest(400, path.resolve("tests/data/errors/error_400_from_mindeeapi_with_object_response_in_detail.json"));
     } catch (error: any) {
-      expect(error.name).to.be.equals("MindeeHttp413Error");
-      expect(error.code).to.be.equals(413);
+      expect(error.name).to.be.equals("MindeeHttp400Error");
+      expect(error.code).to.be.equals(400);
+      expect(error.message).to.be.null;
+      expect(error.details).to.deep.equal({ document: ['error message'] });
     }
   });
 
@@ -50,6 +51,25 @@ describe("HTTP calls", () => {
       expect(error.code).to.be.equals(429);
       expect(error.message).to.be.equals("Too many requests");
       expect(error.details).to.be.equals("Too Many Requests.");
+    }
+  });
+  it("should fail on 500 response", async () => {
+    try {
+      await sendRequest(500, path.resolve("tests/data/errors/error_500_from_mindeeapi.json"));
+    } catch (error: any) {
+      expect(error.name).to.be.equals("MindeeHttp500Error");
+      expect(error.code).to.be.equals(500);
+      expect(error.details).to.be.equals("Can not run prediction: ");
+      expect(error.message).to.be.equals("Inference failed");
+    }
+  });
+
+  it("should fail on HTML response", async () => {
+    try {
+      await sendRequest(413, path.resolve("tests/data/errors/error_50x.html"));
+    } catch (error: any) {
+      expect(error.name).to.be.equals("MindeeHttp413Error");
+      expect(error.code).to.be.equals(413);
     }
   });
 });
