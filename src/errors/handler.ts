@@ -7,7 +7,7 @@ class ErrorHandler {
     this.throwOnError = throwOnError;
   }
 
-  throw(error: Error): void {
+  throw(error: Error) {
     if (this.throwOnError) {
       throw error;
     } else {

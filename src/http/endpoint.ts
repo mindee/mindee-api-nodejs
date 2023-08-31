@@ -14,12 +14,19 @@ export interface EndpointResponse {
   messageObj: IncomingMessage;
   data: { [key: string]: any };
 }
-
+/**
+ * Endpoint object class wrapper.
+ */
 export class Endpoint {
+  /** URL of a product. */
   urlName: string;
+  /** Account owning the product. */
   owner: string;
+  /** Product's version, as a string. */
   version: string;
+  /** Entire root of the URL for API calls. */
   urlRoot: string;
+  /** Settings relating to the API. */
   settings: MindeeApi;
 
   constructor(
@@ -35,6 +42,13 @@ export class Endpoint {
     this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
   }
 
+  /**
+   * Sends a prediction to the API and parses out the result.
+   * Throws an error if the server's response contains one.
+   * @param params parameters relating to prediction options.
+   * @category Synchronous
+   * @returns a `Promise` containing parsing results.
+   */
   async predict(params: {
     inputDoc: InputSource;
     includeWords: boolean;
@@ -52,12 +66,19 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode);
+      handleError(this.urlName, response, statusCode, response.messageObj?.statusMessage);
     }
 
     return response;
   }
 
+  /**
+   * Enqueues a prediction to the API.
+   * Throws an error if the server's response contains one.
+   * @param params parameters relating to prediction options.
+   * @category Asynchronous
+   * @returns a `Promise` containing queue data.
+   */
   async predictAsync(params: {
     inputDoc: InputSource;
     includeWords: boolean;
@@ -75,11 +96,17 @@ export class Endpoint {
     );
     const statusCode = response.messageObj.statusCode;
     if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode);
+      handleError(this.urlName, response, statusCode, response.messageObj?.statusMessage);
     }
     return response;
   }
-
+  /**
+   * Requests the results of a queued document from the API.
+   * Throws an error if the server's response contains one.
+   * @param params parameters relating to prediction options.
+   * @category Asynchronous
+   * @returns a `Promise` containing the parsed result.
+   */
   async getQueuedDocument(queueId: string): Promise<EndpointResponse> {
     const queueResponse = await this.#documentQueueReqGet(queueId);
     const queueStatusCode = queueResponse.messageObj.statusCode;
@@ -88,7 +115,7 @@ export class Endpoint {
       queueStatusCode < 200 ||
       queueStatusCode > 400
     ) {
-      handleError(this.urlName, queueResponse, queueStatusCode);
+      handleError(this.urlName, queueResponse, queueStatusCode, queueResponse.messageObj?.statusMessage);
     }
     if (
       queueStatusCode === 302 &&
@@ -152,6 +179,13 @@ export class Endpoint {
     });
   }
 
+  /**
+   * Reads a response from the API and processes it.
+   * @param options options related to the request itself.
+   * @param resolve the resolved response
+   * @param reject promise rejection reason.
+   * @returns the processed request.
+   */
   protected readResponse(
     options: RequestOptions,
     resolve: (value: EndpointResponse | PromiseLike<EndpointResponse>) => void,
@@ -190,7 +224,10 @@ export class Endpoint {
         } catch (error) {
           logger.error("Could not parse the return as JSON.");
           logger.debug(responseBody);
-          reject(error);
+          resolve({
+            messageObj: res,
+            data: { reconstructedResponse: responseBody },
+          });
         }
       });
     });
@@ -200,6 +237,11 @@ export class Endpoint {
     return req;
   }
 
+  /**
+   * Cuts a document's pages according to the given options.
+   * @param inputDoc input document.
+   * @param pageOptions page cutting options.
+   */
   async #cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
       await inputDoc.cutPdf(pageOptions);
