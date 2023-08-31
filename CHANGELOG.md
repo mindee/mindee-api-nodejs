@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v4.1.0 - 2023-08-31
+### Changes
+* :boom: remove support for node versions <16
+* :sparkles: add support for auto-polling in asynchronous calls
+* :sparkles: update HTTP error management system
+* :sparkles: add possibility to access raw server response
+* :arrow_up: add support for node 20
+* :wrench: expose more internal tools
+* :memo: add better technical documentation
+* :recycle: remove deprecated examples
+* :recycle: update linting rules
+* :arrow_up: update testing library
+
+### Fixes
+* :bug: fix miscellaneous bugs related to http parsing issues
+
+
 ## v4.0.2 - 2023-08-24
 ### Changes
 * :recycle: updated technical documentation
