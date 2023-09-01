@@ -23,7 +23,7 @@ describe("HTTP calls", () => {
 
   it("should fail on 400 response with object", async () => {
     try {
-      await sendRequest(400, path.resolve("tests/data/errors/error_400_from_mindeeapi_with_object_response_in_detail.json"));
+      await sendRequest(400, path.resolve("tests/data/errors/error_400_with_object_in_detail.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp400Error");
       expect(error.code).to.be.equals(400);
@@ -34,7 +34,7 @@ describe("HTTP calls", () => {
 
   it("should fail on 401 response", async () => {
     try {
-      await sendRequest(401, path.resolve("tests/data/errors/error_401_from_mindeeapi.json"));
+      await sendRequest(401, path.resolve("tests/data/errors/error_401_no_token.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp401Error");
       expect(error.code).to.be.equals(401);
@@ -45,7 +45,7 @@ describe("HTTP calls", () => {
 
   it("should fail on 429 response", async () => {
     try {
-      await sendRequest(429, path.resolve("tests/data/errors/error_429_from_mindeeapi.json"));
+      await sendRequest(429, path.resolve("tests/data/errors/error_429_too_many_requests.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp429Error");
       expect(error.code).to.be.equals(429);
@@ -55,7 +55,7 @@ describe("HTTP calls", () => {
   });
   it("should fail on 500 response", async () => {
     try {
-      await sendRequest(500, path.resolve("tests/data/errors/error_500_from_mindeeapi.json"));
+      await sendRequest(500, path.resolve("tests/data/errors/error_500_inference_fail.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp500Error");
       expect(error.code).to.be.equals(500);

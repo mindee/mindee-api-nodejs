@@ -184,7 +184,7 @@ The text field `StringField` only has one constraint: its **value** is a `string
 Aside from the basic `Field` attributes, the tax field `TaxField` also implements the following:
 
 * **rate** (`number`): the tax rate applied to an item can be undefined. Expressed as a percentage. Can be `undefined`.
-* **code** (`number`): tax code (or equivalent, depending on the origin of the document). Can be `undefined`.
+* **code** (`string`): tax code (or equivalent, depending on the origin of the document). Can be `undefined`.
 * **base** (`number`): base amount used for the tax. Can be `undefined`.
 
 > Note: currently `TaxField` is not used on its own, and is accessed through a parent `Taxes` object, an array-like structure.
