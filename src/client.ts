@@ -58,6 +58,14 @@ export interface AsyncOptions extends PredictOptions {
   initialDelaySec: number;
   delaySec: number;
   maxRetries: number;
+  initialTimerOptions?: { 
+    ref?: boolean,
+    signal?: AbortSignal
+  };
+  recurringTimerOptions?: {
+    ref?: boolean,
+    signal?: AbortSignal
+  }
 }
 
 export interface ClientOptions {
@@ -181,10 +189,13 @@ export class Client {
   }
 
   /**
-   * Checks the values for asynchronous parsing.
+   * Checks the values for asynchronous parsing. Sets their value if they are somehow undefined.
    * @param asyncParams parameters related to asynchronous parsing
    */
   #validateAsyncParams(asyncParams: AsyncOptions) {
+    asyncParams.delaySec ??= 3;
+    asyncParams.initialDelaySec ??= 6;
+    asyncParams.maxRetries ??= 10;
     if (asyncParams.delaySec < 2) {
       throw Error("Cannot set auto-parsing delay to less than 2 seconds.");
     }
@@ -219,6 +230,14 @@ export class Client {
       initialDelaySec: 6,
       delaySec: 3,
       maxRetries: 10,
+      initialTimerOptions: {
+        ref: false,
+        signal: undefined,
+      },
+      recurringTimerOptions: {
+        ref: false,
+        signal: undefined,
+      },
     }
   ) {
     this.#validateAsyncParams(asyncParams);
@@ -230,7 +249,7 @@ export class Client {
     logger.debug(
       `Successfully enqueued document with job id: ${queueId}.`
     );
-    await setTimeout(asyncParams.initialDelaySec * 1000);
+    await setTimeout(asyncParams.initialDelaySec * 1000, undefined, asyncParams.initialTimerOptions);
     let retryCounter = 1;
     let pollResults: AsyncPredictResponse<T>;
     pollResults = await this.parseQueued(productClass, queueId, asyncParams);
@@ -243,7 +262,7 @@ Job status: ${pollResults.job.status}.`
       if (pollResults.job.status === "completed") {
         break;
       }
-      await setTimeout(asyncParams.delaySec * 1000);
+      await setTimeout(asyncParams.delaySec * 1000, undefined, asyncParams.recurringTimerOptions);
       pollResults = await this.parseQueued(productClass, queueId, asyncParams);
       retryCounter++;
     }
