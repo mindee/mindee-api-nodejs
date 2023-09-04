@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { InvoiceV4 } from "../../../src/product";
+import { ReceiptV5 } from "../../../src/product";
 import { Document } from "../../../src";
 
 const dataPath = {
@@ -13,7 +13,7 @@ describe("When getting all lines in an OCR", () => {
   it("should not affect word order", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new Document(InvoiceV4, response.document);
+    const doc = new Document(ReceiptV5, response.document);
     if (!doc.ocr) {
       throw new Error("No ocr.");
     }
@@ -26,7 +26,7 @@ describe("When getting all lines in an OCR", () => {
   it("should match expected string exactly", async () => {
     const jsonDataComplete = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonDataComplete.toString());
-    const doc = new Document(InvoiceV4, response.document);
+    const doc = new Document(ReceiptV5, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
     if (!doc.ocr) {
       throw new Error("No ocr.");
