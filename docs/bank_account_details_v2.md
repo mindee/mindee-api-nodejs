@@ -3,8 +3,8 @@ title: FR Bank Account Details OCR Node.js
 ---
 The Node.js OCR SDK supports the [Bank Account Details API](https://platform.mindee.com/mindee/bank_account_details).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/bank_account_details/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Bank Account Details sample](https://github.com/mindee/client-lib-test-data/blob/main/fr/bank_account_details/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/bank_account_details/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Bank Account Details sample](https://github.com/mindee/client-lib-test-data/blob/main/products/bank_account_details/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

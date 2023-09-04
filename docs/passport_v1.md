@@ -3,8 +3,8 @@ title: Passport OCR Node.js
 ---
 The Node.js OCR SDK supports the [Passport API](https://platform.mindee.com/mindee/passport).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/passport/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Passport sample](https://github.com/mindee/client-lib-test-data/blob/main/passport/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/passport/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Passport sample](https://github.com/mindee/client-lib-test-data/blob/main/products/passport/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

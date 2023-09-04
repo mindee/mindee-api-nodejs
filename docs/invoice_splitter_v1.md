@@ -3,7 +3,7 @@ title: Invoice Splitter API Node.js
 ---
 The Node.js OCR SDK supports the [Invoice Splitter API](https://platform.mindee.com/mindee/invoice_splitter).
 
-Using [this sample](https://github.com/mindee/client-lib-test-data/blob/9a34146755c348281c28bbf351900229b412797e/invoice_splitter/default_sample.pdf), we are going to illustrate how to detect the pages of multiple invoices within the same document.
+Using [this sample](https://github.com/mindee/client-lib-test-data/blob/main/products/invoice_splitter/default_sample.pdf), we are going to illustrate how to detect the pages of multiple invoices within the same document.
 
 # Quick-Start
 > **⚠️ Important:** This API only works **asynchronously**, which means that documents have to be sent and retrieved in two separate steps.

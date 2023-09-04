@@ -3,8 +3,8 @@ title: FR Carte Vitale OCR Node.js
 ---
 The Node.js OCR SDK supports the [Carte Vitale API](https://platform.mindee.com/mindee/carte_vitale).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/carte_vitale/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Carte Vitale sample](https://github.com/mindee/client-lib-test-data/blob/main/fr/carte_vitale/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/carte_vitale/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Carte Vitale sample](https://github.com/mindee/client-lib-test-data/blob/main/products/carte_vitale/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

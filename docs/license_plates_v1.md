@@ -3,8 +3,8 @@ title: EU License Plate OCR Node.js
 ---
 The Node.js OCR SDK supports the [License Plate API](https://platform.mindee.com/mindee/license_plates).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/eu/license_plate/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![License Plate sample](https://github.com/mindee/client-lib-test-data/blob/main/eu/license_plate/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/license_plates/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![License Plate sample](https://github.com/mindee/client-lib-test-data/blob/main/products/license_plates/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js
