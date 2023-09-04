@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v4.1.1 - 2023-09-04
+### Changes
+* :recycle: tweaked timer management in async
+
+### Fixes
+* :bug: fix ocr option not being generated as an Ocr object
+
+
 ## v4.1.0 - 2023-08-31
 ### Changes
 * :boom: remove support for node versions <16
