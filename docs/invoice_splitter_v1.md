@@ -6,7 +6,7 @@ The Node.js OCR SDK supports the [Invoice Splitter API](https://platform.mindee.
 Using [this sample](https://github.com/mindee/client-lib-test-data/blob/main/products/invoice_splitter/default_sample.pdf), we are going to illustrate how to detect the pages of multiple invoices within the same document.
 
 # Quick-Start
-> **⚠️ Important:** This API only works **asynchronously**, which means that documents have to be sent and retrieved in two separate steps.
+> **⚠️ Important:** This API only works **asynchronously**, which means that documents have to be sent and retrieved in a specific way:
 
 ```js
 const mindee = require("mindee");
@@ -62,7 +62,7 @@ Page 0
 
 # Field Types
 ## Specific Fields
-### Page Group
+### Invoice Splitter V1 Page Group
 List of page group indexes.
 
 An `InvoiceSplitterV1PageGroup` implements the following attributes:
