@@ -3,8 +3,8 @@ title: Invoice OCR Node.js
 ---
 The Node.js OCR SDK supports the [Invoice API](https://platform.mindee.com/mindee/invoices).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/invoice/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Invoice sample](https://github.com/mindee/client-lib-test-data/blob/main/invoice/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/invoices/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Invoice sample](https://github.com/mindee/client-lib-test-data/blob/main/products/invoices/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

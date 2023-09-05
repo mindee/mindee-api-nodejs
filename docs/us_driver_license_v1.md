@@ -3,8 +3,8 @@ title: US Driver License OCR Node.js
 ---
 The Node.js OCR SDK supports the [Driver License API](https://platform.mindee.com/mindee/us_driver_license).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/us/driver_license/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Driver License sample](https://github.com/mindee/client-lib-test-data/blob/main/us/driver_license/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/us_driver_license/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Driver License sample](https://github.com/mindee/client-lib-test-data/blob/main/products/us_driver_license/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

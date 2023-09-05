@@ -67,7 +67,16 @@ A `ListField` is a special type of custom list that implements the following:
 Since the inner contents can vary, the value isn't accessed through a property, but rather through the following functions:
 * **contentsList()** (`Array<string, number>`): returns a list of values for each element.
 * **contentsString(separator=" ")** (`string`): returns a list of concatenated values, with an optional **separator** `string` between them.
-* **toString()** returns a string representation of all values, with an empty space between each of them.
+* **toString()**: returns a string representation of all values, with an empty space between each of them.
+
+
+### Classification Field
+
+A `ClassificationField` is a special type of custom classification that implements the following:
+
+* **value** (`string`): the value of the classification. Corresponds to one of the values specified during training.
+* **confidence** (`number`): the confidence score of the field prediction.
+* **toString()**: returns a string representation of all values, with an empty space between each of them.
 
 # Attributes
 
@@ -75,10 +84,7 @@ Custom builds always have access to at least two attributes:
 
 ## Fields
 
-**fields** ({`string`: [ClassificationField](#classification-field)}): 
-
-> Note: `Map` here refers more or less to a standard JavaScript Object, though this one only has `string` keys and `ListField` values.
-
+**fields** ({`string`: [ListField](#list-field)}): 
 
 ```js
 console.log(result.document.inference.prediction.fields["my-field"].toString());

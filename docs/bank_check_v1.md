@@ -3,8 +3,8 @@ title: US Bank Check OCR Node.js
 ---
 The Node.js OCR SDK supports the [Bank Check API](https://platform.mindee.com/mindee/bank_check).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/us/bank_check/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Bank Check sample](https://github.com/mindee/client-lib-test-data/blob/main/us/bank_check/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/bank_check/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Bank Check sample](https://github.com/mindee/client-lib-test-data/blob/main/products/bank_check/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

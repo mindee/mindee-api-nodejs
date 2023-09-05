@@ -3,8 +3,8 @@ title: FR Carte Nationale d'Identité OCR Node.js
 ---
 The Node.js OCR SDK supports the [Carte Nationale d'Identité API](https://platform.mindee.com/mindee/idcard_fr).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/fr/id_card/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Carte Nationale d'Identité sample](https://github.com/mindee/client-lib-test-data/blob/main/fr/id_card/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/idcard_fr/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Carte Nationale d'Identité sample](https://github.com/mindee/client-lib-test-data/blob/main/products/idcard_fr/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

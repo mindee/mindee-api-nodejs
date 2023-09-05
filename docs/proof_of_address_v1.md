@@ -3,8 +3,8 @@ title: Proof of Address OCR Node.js
 ---
 The Node.js OCR SDK supports the [Proof of Address API](https://platform.mindee.com/mindee/proof_of_address).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/proof_of_address/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Proof of Address sample](https://github.com/mindee/client-lib-test-data/blob/main/proof_of_address/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/proof_of_address/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Proof of Address sample](https://github.com/mindee/client-lib-test-data/blob/main/products/proof_of_address/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js

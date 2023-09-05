@@ -3,8 +3,8 @@ title: Financial Document OCR Node.js
 ---
 The Node.js OCR SDK supports the [Financial Document API](https://platform.mindee.com/mindee/financial_document).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/financial_document/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![Financial Document sample](https://github.com/mindee/client-lib-test-data/blob/main/financial_document/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/financial_document/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Financial Document sample](https://github.com/mindee/client-lib-test-data/blob/main/products/financial_document/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js
