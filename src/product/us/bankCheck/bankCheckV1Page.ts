@@ -31,7 +31,7 @@ export class BankCheckV1Page extends BankCheckV1Document {
   }
 
   toString(): string {
-    const signaturesPositions = this.signaturesPositions.join("\n                       ");
+    const signaturesPositions = this.signaturesPositions.join("\n                      ");
     let outStr = `:Check Position: ${this.checkPosition}
 :Signature Positions: ${signaturesPositions}`.trimEnd();
     outStr += "\n" + super.toString();

@@ -20,7 +20,7 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
 // Parse the file
 const apiResponse = mindeeClient.parse(
-  mindee.product.fr.IdCardV1,
+  mindee.product.fr.IdCardV2,
   inputSource
 );
 
@@ -36,43 +36,56 @@ apiResponse.then((resp) => {
 ########
 Document
 ########
-:Mindee ID: ef79c45b-1300-474f-af28-de65519cabd7
+:Mindee ID: d33828f1-ef7e-4984-b9df-a2bfaa38a78d
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/idcard_fr v1.0
+:Product: mindee/idcard_fr v2.0
 :Rotation applied: Yes
 
 Prediction
 ==========
-:Identity Number: 175775H55790
-:Given Name(s): VICTOR
+:Nationality:
+:Card Access Number: 175775H55790
+:Document Number:
+:Given Name(s): Victor
+                Marie
 :Surname: DAMBARD
+:Alternate Name:
 :Date of Birth: 1994-04-24
-:Place of Birth: LYON 4E ARRONDISSEMT
+:Place of Birth: LYON 4E ARRONDISSEM
+:Gender: M
 :Expiry Date: 2030-04-02
+:Mrz Line 1: IDFRADAMBARD<<<<<<<<<<<<<<<<<<075025
+:Mrz Line 2: 170775H557903VICTOR<<MARIE<9404246M5
+:Mrz Line 3:
+:Date of Issue: 2015-04-03
 :Issuing Authority: SOUS-PREFECTURE DE BELLE (02)
-:Gender:
-:MRZ Line 1: IDFRADAMBARD<<<<<<<<<<<<<<<<<<075025
-:MRZ Line 2: 170775H557903VICTOR<<MARIE<9404246M5
 
 Page Predictions
 ================
 
 Page 0
 ------
-:Document Side: RECTO & VERSO
-:Identity Number: 175775H55790
-:Given Name(s): VICTOR
+:Document Type: OLD
+:Document Sides: RECTO & VERSO
+:Nationality:
+:Card Access Number: 175775H55790
+:Document Number:
+:Given Name(s): Victor
+                Marie
 :Surname: DAMBARD
+:Alternate Name:
 :Date of Birth: 1994-04-24
-:Place of Birth: LYON 4E ARRONDISSEMT
+:Place of Birth: LYON 4E ARRONDISSEM
+:Gender: M
 :Expiry Date: 2030-04-02
+:Mrz Line 1: IDFRADAMBARD<<<<<<<<<<<<<<<<<<075025
+:Mrz Line 2: 170775H557903VICTOR<<MARIE<9404246M5
+:Mrz Line 3:
+:Date of Issue: 2015-04-03
 :Issuing Authority: SOUS-PREFECTURE DE BELLE (02)
-:Gender:
-:MRZ Line 1: IDFRADAMBARD<<<<<<<<<<<<<<<<<<075025
-:MRZ Line 2: 170775H557903VICTOR<<MARIE<9404246M5
 ```
 
 # Field Types
@@ -113,7 +126,14 @@ The text field `StringField` only has one constraint: its **value** is a `string
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
 
 # Attributes
-The following fields are extracted for Carte Nationale d'Identité V1:
+The following fields are extracted for Carte Nationale d'Identité V2:
+
+## Alternate Name
+**alternateName** ([StringField](#string-field)): The alternate name of the card holder.
+
+```js
+console.log(result.document.inference.prediction.alternateName.value);
+```
 
 ## Issuing Authority
 **authority** ([StringField](#string-field)): The name of the issuing authority.
@@ -136,12 +156,35 @@ console.log(result.document.inference.prediction.birthDate.value);
 console.log(result.document.inference.prediction.birthPlace.value);
 ```
 
-## Document Side
-[📄](#page-level-fields "This field is only present on individual pages.")**documentSide** ([ClassificationField](#classification-field)): The side of the document which is visible.
+## Card Access Number
+**cardAccessNumber** ([StringField](#string-field)): The card access number (CAN).
+
+```js
+console.log(result.document.inference.prediction.cardAccessNumber.value);
+```
+
+## Document Number
+**documentNumber** ([StringField](#string-field)): The document number.
+
+```js
+console.log(result.document.inference.prediction.documentNumber.value);
+```
+
+## Document Sides
+[📄](#page-level-fields "This field is only present on individual pages.")**documentSide** ([ClassificationField](#classification-field)): The sides of the document which are visible.
 
 ```js
 for (const documentSideElem of result.document.documentSide) {
   console.log(documentSideElem.value);
+}
+```
+
+## Document Type
+[📄](#page-level-fields "This field is only present on individual pages.")**documentType** ([ClassificationField](#classification-field)): The document type or format.
+
+```js
+for (const documentTypeElem of result.document.documentType) {
+  console.log(documentTypeElem.value);
 }
 ```
 
@@ -168,25 +211,39 @@ for (const givenNamesElem of result.document.inference.prediction.givenNames) {
 }
 ```
 
-## Identity Number
-**idNumber** ([StringField](#string-field)): The identification card number.
+## Date of Issue
+**issueDate** ([DateField](#date-field)): The date of issue of the identification card.
 
 ```js
-console.log(result.document.inference.prediction.idNumber.value);
+console.log(result.document.inference.prediction.issueDate.value);
 ```
 
-## MRZ Line 1
-**mrz1** ([StringField](#string-field)): Machine Readable Zone, first line
+## Mrz Line 1
+**mrz1** ([StringField](#string-field)): The Machine Readable Zone, first line.
 
 ```js
 console.log(result.document.inference.prediction.mrz1.value);
 ```
 
-## MRZ Line 2
-**mrz2** ([StringField](#string-field)): Machine Readable Zone, second line
+## Mrz Line 2
+**mrz2** ([StringField](#string-field)): The Machine Readable Zone, second line.
 
 ```js
 console.log(result.document.inference.prediction.mrz2.value);
+```
+
+## Mrz Line 3
+**mrz3** ([StringField](#string-field)): The Machine Readable Zone, third line.
+
+```js
+console.log(result.document.inference.prediction.mrz3.value);
+```
+
+## Nationality
+**nationality** ([StringField](#string-field)): The nationality of the card holder.
+
+```js
+console.log(result.document.inference.prediction.nationality.value);
 ```
 
 ## Surname

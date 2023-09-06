@@ -19,8 +19,8 @@ export class BaseField {
 
   /**
    * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict
-   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
+   * @param valueKey - Key to use in the prediction dict
+   * @param reconstructed - Is the object reconstructed (not extracted by the API)
    */
   constructor({
     prediction = {},

@@ -1,8 +1,9 @@
-import { Inference, Page, StringDict } from "../../parsing/common";
+import { Inference, StringDict, Page } from "../../parsing/common";
 import { CropperV1Document } from "./cropperV1Document";
+import { CropperV1Page } from "./cropperV1Page";
 
 /**
- * Inference prediction for Cropper API, version 1.
+ * Inference prediction for Cropper, API version 1.
  */
 export class CropperV1 extends Inference {
   /** The endpoint's name. */
@@ -12,14 +13,19 @@ export class CropperV1 extends Inference {
   /** The document-level prediction. */
   prediction: CropperV1Document;
   /** The document's pages. */
-  pages: Page<CropperV1Document>[] = [];
+  pages: Page<CropperV1Page>[] = [];
 
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
-    this.prediction = new CropperV1Document(rawPrediction["prediction"]);
+    this.prediction = new CropperV1Document();
     this.pages = rawPrediction["pages"].map(
       (page: StringDict) =>
-        new Page(CropperV1Document, page, page["id"], page["orientation"])
+        new Page(
+          CropperV1Page,
+          page,
+          page["id"],
+          page["orientation"]
+        )
     );
   }
 }

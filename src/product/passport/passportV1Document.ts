@@ -89,7 +89,7 @@ export class PassportV1Document implements Prediction {
    * Default string representation.
    */
   toString(): string {
-    const givenNames = this.givenNames.join("\n              ");
+    const givenNames = this.givenNames.join("\n                ");
     const outStr = `:Country Code: ${this.country}
 :ID Number: ${this.idNumber}
 :Given Name(s): ${givenNames}

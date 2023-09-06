@@ -47,7 +47,7 @@ export class CarteVitaleV1Document implements Prediction {
    * Default string representation.
    */
   toString(): string {
-    const givenNames = this.givenNames.join("\n              ");
+    const givenNames = this.givenNames.join("\n                ");
     const outStr = `:Given Name(s): ${givenNames}
 :Surname: ${this.surname}
 :Social Security Number: ${this.socialSecurity}
