@@ -26,8 +26,7 @@ export class CropperV1Page extends CropperV1Document {
 
   toString(): string {
     const cropping = this.cropping.join("\n                   ");
-    let outStr = `:Document Cropper: ${cropping}`;
-    outStr = outStr.trimEnd();
+    const outStr = `:Document Cropper: ${cropping}`.trimEnd();
     return cleanOutString(outStr);
   }
 }
