@@ -114,7 +114,7 @@ export class IdCardV2Document implements Prediction {
    */
   toString(): string {
     const givenNames = this.givenNames.join("\n                ");
-    const outStr = `:Nationality: ${this.nationality}
+    let outStr = `:Nationality: ${this.nationality}
 :Card Access Number: ${this.cardAccessNumber}
 :Document Number: ${this.documentNumber}
 :Given Name(s): ${givenNames}
@@ -128,7 +128,8 @@ export class IdCardV2Document implements Prediction {
 :Mrz Line 2: ${this.mrz2}
 :Mrz Line 3: ${this.mrz3}
 :Date of Issue: ${this.issueDate}
-:Issuing Authority: ${this.authority}`.trimEnd();
+:Issuing Authority: ${this.authority}`;
+    outStr = outStr.trimEnd();
     return cleanOutString(outStr);
   }
 }

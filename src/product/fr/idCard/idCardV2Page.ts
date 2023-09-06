@@ -25,7 +25,8 @@ export class IdCardV2Page extends IdCardV2Document {
 
   toString(): string {
     let outStr = `:Document Type: ${this.documentType}
-:Document Sides: ${this.documentSide}`.trimEnd();
+:Document Sides: ${this.documentSide}`;
+    outStr = outStr.trimEnd();
     outStr += "\n" + super.toString();
     return cleanOutString(outStr);
   }
