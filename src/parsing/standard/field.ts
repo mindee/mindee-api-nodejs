@@ -26,11 +26,11 @@ export class Field extends BaseField {
   /** The confidence score of the prediction. */
   confidence: number;
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict
-   * @param {Boolean} reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param {Integer} pageId - Page ID for multi-page document
-   * @param {Array<String>} extraFields - Extra fields to get from the prediction and to set as attribute of the Field
+   * @param prediction - Prediction object from HTTP response
+   * @param valueKey - Key to use in the prediction dict
+   * @param reconstructed - Does the object is reconstructed (not extracted by the API)
+   * @param pageId - Page ID for multi-page document
+   * @param extraFields - Extra fields to get from the prediction and to set as attribute of the Field
    */
   constructor({
     prediction = {},
@@ -48,15 +48,15 @@ export class Field extends BaseField {
   }
 
   /**
-  @param {Field[]} array1 - first Array of Fields
-  @param {Field[]} array2 - second Array of Fields
-  @param {String} attr - Attribute to compare
-  @returns {Boolean} - true if all elements in array1 exist in array2 and vice-versa, false otherwise
+  @param array1 first Array of Fields
+  @param array2 second Array of Fields
+  @param attr Attribute to compare
+  @returns true if all elements in array1 exist in array2 and vice-versa, false otherwise
    */
   static compareArrays(
     array1: Field[],
     array2: Field[],
-    attr = "value"
+    attr: string = "value"
   ): boolean {
     const list1 = array1.map((item: any) => item[attr]);
     const list2 = array2.map((item: any) => item[attr]);
@@ -69,7 +69,7 @@ export class Field extends BaseField {
 
   /**
    * @param {Field[]} array - Array of Fields
-   * @returns {Number} product of all the fields probaility
+   * @returns {Number} product of all the fields probability
    */
   static arrayConfidence(array: Field[]): number {
     let total = 1.0;

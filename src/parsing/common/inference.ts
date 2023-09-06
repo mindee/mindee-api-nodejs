@@ -46,8 +46,7 @@ export abstract class Inference<
 
 Prediction
 ==========
-${this.prediction.toString() || ""}
-
+${this.prediction.toString().length === 0 ? "" : this.prediction.toString()+"\n"}
 Page Predictions
 ================
 
