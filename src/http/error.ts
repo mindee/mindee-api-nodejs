@@ -170,7 +170,7 @@ export class MindeeHttp413Error extends MindeeHttpError {
 }
 
 /**
- * Usually contains TooManyRequests errors.
+ * Usually corresponds to TooManyRequests errors.
  * Arises whenever too many calls to the API are made in quick succession.
  */
 export class MindeeHttp429Error extends MindeeHttpError {
@@ -197,6 +197,6 @@ export class MindeeHttp500Error extends MindeeHttpError {
 export class MindeeHttp504Error extends MindeeHttpError {
   constructor(httpError: StringDict, url: string, code?: number) {
     super(httpError, url, code);
-    this.name = "MindeeHttp500Error";
+    this.name = "MindeeHttp504Error";
   }
 }

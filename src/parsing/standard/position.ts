@@ -34,6 +34,6 @@ export class PositionField {
    * Default string representation.
    */
   toString(): string {
-    return `Polygon with ${this.polygon.length} points.`;
+    return this.polygon.length > 0 ? `Polygon with ${this.polygon.length} points.` : "";
   }
 }
