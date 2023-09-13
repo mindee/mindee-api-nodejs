@@ -1,3 +1,4 @@
+export * as barcodeReader from "./barcodeReader/internal";
 export * as cropper from "./cropper/internal";
 export * as custom from "./custom/internal";
 export * as eu from "./eu/internal";
