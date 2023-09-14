@@ -4,6 +4,7 @@ export { CustomV1 } from "./custom/customV1";
 export { FinancialDocumentV1 } from "./financialDocument/financialDocumentV1";
 export { InvoiceV4 } from "./invoice/invoiceV4";
 export { InvoiceSplitterV1 } from "./invoiceSplitter/invoiceSplitterV1";
+export { MultiReceiptsDetectorV1 } from "./multiReceiptsDetector/multiReceiptsDetectorV1";
 export { PassportV1 } from "./passport/passportV1";
 export { ProofOfAddressV1 } from "./proofOfAddress/proofOfAddressV1";
 export { ReceiptV4 } from "./receipt/receiptV4";

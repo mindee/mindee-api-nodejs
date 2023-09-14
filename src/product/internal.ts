@@ -6,6 +6,7 @@ export * as financialDocument from "./financialDocument/internal";
 export * as fr from "./fr/internal";
 export * as invoice from "./invoice/internal";
 export * as invoiceSplitter from "./invoiceSplitter/internal";
+export * as multiReceiptsDetector from "./multiReceiptsDetector/internal";
 export * as passport from "./passport/internal";
 export * as proofOfAddress from "./proofOfAddress/internal";
 export * as receipt from "./receipt/internal";
