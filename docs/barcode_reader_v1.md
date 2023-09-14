@@ -33,6 +33,31 @@ apiResponse.then((resp) => {
 
 **Output (RST):**
 ```rst
+########
+Document
+########
+:Mindee ID: 0f54c154-5030-41ac-939e-046b7f6aca71
+:Filename: default_sample.jpg
+
+Inference
+#########
+:Product: mindee/barcode_reader v1.0
+:Rotation applied: Yes
+
+Prediction
+==========
+:Barcodes 1D: Mindee
+:Barcodes 2D: https://developers.mindee.com/docs/barcode-reader-ocr
+              I love paperwork! - Said no one ever
+
+Page Predictions
+================
+
+Page 0
+------
+:Barcodes 1D: Mindee
+:Barcodes 2D: https://developers.mindee.com/docs/barcode-reader-ocr
+              I love paperwork! - Said no one ever
 ```
 
 # Field Types
