@@ -156,6 +156,7 @@ Complete details on the working of the library are available in the following gu
 * [Node.js FR ID Card OCR](https://developers.mindee.com/docs/nodejs-fr-id-card-ocr)
 * [Node.js US Bank Check OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
 * [Node.js US Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
+* [Node.js Barcode Reader API](https://developers.mindee.com/docs/nodejs-barcode-reader-api)
 * [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-api)
 * [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-api)
 

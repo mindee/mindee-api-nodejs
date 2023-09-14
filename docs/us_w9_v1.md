@@ -1,5 +1,5 @@
 ---
-title: US US W9 OCR Node.js
+title: US W9 OCR Node.js
 ---
 The Node.js OCR SDK supports the [US W9 API](https://platform.mindee.com/mindee/us_w9).
 
