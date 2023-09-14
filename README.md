@@ -155,10 +155,12 @@ Complete details on the working of the library are available in the following gu
 * [Node.js FR Carte Vitale OCR](https://developers.mindee.com/docs/nodejs-fr-carte-vitale-ocr)
 * [Node.js FR ID Card OCR](https://developers.mindee.com/docs/nodejs-fr-id-card-ocr)
 * [Node.js US Bank Check OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
-* [Node.js US Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
+* [Node.js US W9 OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
+* [Node.js US Driver License OCR](https://developers.mindee.com/docs/nodejs-us-w9-ocr)
 * [Node.js Barcode Reader API](https://developers.mindee.com/docs/nodejs-barcode-reader-api)
 * [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-api)
 * [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-api)
+* [Node.js Multi Receipts Detector API](https://developers.mindee.com/docs/nodejs-multi-receipts-detector-api)
 
 You can also take a look at the **[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**.
 
