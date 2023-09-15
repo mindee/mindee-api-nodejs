@@ -1,5 +1,19 @@
 # CHANGELOG
 
+## v4.2.0 - 2023-09-15
+### Changes
+* :sparkles: add support for W9 V1
+* :sparkles: add support for Barcode Reader V11
+* :sparkles: add support for Multi Receipt Detector V1
+* :sparkles: add support for FR Id Card V2
+* :sparkles: add support for OTS Cropper V1
+* :memo: update documentation
+
+### Fixes
+* :bug: fix missing position field display issues
+* :bug: fix issues with asynchronous timeouts crashing in some instances
+
+
 ## v4.1.1 - 2023-09-04
 ### Changes
 * :recycle: tweaked timer management in async
