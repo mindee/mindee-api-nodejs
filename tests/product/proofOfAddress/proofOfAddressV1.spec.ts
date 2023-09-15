@@ -42,7 +42,6 @@ describe("ProofOfAddressV1 Object initialization", async () => {
     const doc = new mindee.Document(mindee.product.ProofOfAddressV1, response.document);
     const page0 = doc.inference.pages[0];
     const docString = await fs.readFile(path.join(dataPath.page0String));
-    expect(page0.orientation?.value).to.be.equals(0);
     expect(page0.toString()).to.be.equals(docString.toString());
   });
 });

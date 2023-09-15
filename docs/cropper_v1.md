@@ -1,12 +1,10 @@
 ---
 title: Cropper API Node.js
 ---
-> **Note:** CropperV1 is the stand-alone API for the parameter of the same name.
-
 The Node.js OCR SDK supports the [Cropper API](https://platform.mindee.com/mindee/cropper).
 
-Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/cropper/default_sample.jpg), we are going to crop receipts using the Cropper API.
-![Cropper Receipts sample](https://github.com/mindee/client-lib-test-data/blob/main/products/default_sample.jpg?raw=true)
+Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/cropper/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
+![Cropper sample](https://github.com/mindee/client-lib-test-data/blob/main/products/cropper/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js
@@ -20,9 +18,11 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 // Load a file from disk
 const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
-// Parse it
-const apiResponse = mindeeClient
-  .parse(mindee.product.CropperV1, inputSource);
+// Parse the file
+const apiResponse = mindeeClient.parse(
+  mindee.product.CropperV1,
+  inputSource
+);
 
 // Handle the response Promise
 apiResponse.then((resp) => {
@@ -46,15 +46,14 @@ Inference
 
 Prediction
 ==========
-:Cropping:
 
 Page Predictions
 ================
 
 Page 0
 ------
-:Cropping: Polygon with 26 points.
-           Polygon with 25 points.
+:Document Cropper: Polygon with 26 points.
+                   Polygon with 25 points.
 ```
 
 # Field Types
@@ -62,7 +61,6 @@ Page 0
 These fields are generic and used in several products.
 
 ### Basic Field
-
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
@@ -78,6 +76,7 @@ A typical `Field` object will have the following attributes:
 
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
 
+
 ### Position Field
 The position field `PositionField` does not implement all the basic `Field` attributes, only **boundingBox**, **polygon** and **pageId**. On top of these, it has access to:
 
@@ -90,11 +89,15 @@ Some fields are constrained to the page level, and so will not be retrievable to
 # Attributes
 The following fields are extracted for Cropper V1:
 
-## Cropping
-[📄](#page-level-fields "This field is only present on individual pages.")**cropping** ([PositionField](#position-field)): A list of cropped positions on a page.
+## Document Cropper
+[📄](#page-level-fields "This field is only present on individual pages.")**cropping** ([PositionField](#position-field)[]): List of documents found in the image.
 
 ```js
-console.log(result.document.inference.pages[0].prediction.cropping.toString());
+for (const page of result.document.inference.pages) {
+  for (const croppingElem of page.prediction.cropping) {
+    console.log(croppingElem.polygon);
+  }
+}
 ```
 
 # Questions?
