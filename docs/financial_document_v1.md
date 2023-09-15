@@ -234,7 +234,7 @@ for (const customerCompanyRegistrationsElem of result.document.inference.predict
 }
 ```
 
-## Customer name
+## Customer Name
 **customerName** ([StringField](#string-field)): The name of the customer.
 
 ```js
