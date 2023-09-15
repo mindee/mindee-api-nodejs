@@ -34,6 +34,17 @@ export class PositionField {
    * Default string representation.
    */
   toString(): string {
-    return this.polygon.length > 0 ? `Polygon with ${this.polygon.length} points.` : "";
+    if (this.polygon && this.polygon.length > 0)
+      return  `Polygon with ${this.polygon.length} points.`;
+    if (this.boundingBox && this.boundingBox.length > 0) {
+      return `Polygon with ${this.boundingBox.length} points.`;
+    }
+    if (this.rectangle && this.rectangle.length > 0) {
+      return `Polygon with ${this.rectangle.length} points.`;
+    }
+    if (this.quadrangle && this.quadrangle.length > 0) {
+      return `Polygon with ${this.quadrangle.length} points.`;
+    }
+    return "";
   }
 }
