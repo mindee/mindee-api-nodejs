@@ -230,14 +230,8 @@ export class Client {
       initialDelaySec: 6,
       delaySec: 3,
       maxRetries: 10,
-      initialTimerOptions: {
-        ref: false,
-        signal: undefined,
-      },
-      recurringTimerOptions: {
-        ref: false,
-        signal: undefined,
-      },
+      initialTimerOptions: undefined,
+      recurringTimerOptions: undefined,
     }
   ) {
     this.#validateAsyncParams(asyncParams);
