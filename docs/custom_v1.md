@@ -100,36 +100,48 @@ console.log(result.document.inference.prediction.classifications["my-classificat
 
 # 🧪 Custom Line Items
 
-> **⚠️ Warning**: Custom Line Items are an **experimental** feature, and are still undergoing development at the moment. Implement it at your own risk.
+> **⚠️ Warning**: Custom Line Items are an **experimental** feature, results may vary.
 
 
 Though not supported directly in the API, sometimes you might need to reconstitute line items by hand.
 The library provides a tool for this very purpose:
 
-## getLineItems() 
-The **getLineItems()** function takes the following arguments:
+## columnsToLineItems()
+The **columnsToLineItems()** function can be called from the document and page level prediction objects.
+
+It takes the following arguments:
 
 * **anchorNames** (`string[]`): a list of the names of possible anchor (field) candidate for the horizontal placement a line. If all provided anchors are invalid, the `LineItem` won't be built.
-* **heightLineTolerance** (`number`): The height tolerance used to build the line. It helps when the height of a line can vary unexpectedly.
 * **fieldNamesTargeted** (`string[]`): a list of fields to retrieve the values from
-* **fields** ({`string`: [ListField](#list-field)}): All available fields to construct line items from.
+* **heightLineTolerance** (`number`): Optional, the height tolerance used to build the line. It helps when the height of a line can vary unexpectedly.
 
-It returns a [LineItems](#lineitems) object.
+Example use:
 
-## LineItems
+```js
+// document-level
+response.document.inference.prediction.columnsToLineItems(
+  anchorNames,
+  fieldNamesToLineItems,
+  0.011 // optional, defaults to 0.01
+);
 
-A `LineItems` has only one attribute:
+// page-level
+response.document.pages[0].prediction.columnsToLineItems(
+  anchorNames,
+  fieldNamesToLineItems,
+  0.011 // optional, defaults to 0.01
+);
+```
 
-* **rows** ([Line](#line)[]): array of the reconstructed lines.
+It returns a list of [CustomLine](#Customline) objects.
 
-## Line
+## Customline
 
-`Line` represent a line as it has been read on a page. It has the following attributes:
+`Customline` represents a line as it has been read from column fields. It has the following attributes:
 
 * **rowNumber** (`number`): Number of a given line. Starts at 1.
 * **fields** (`Map<string, ListFieldValue>`[]): List of the fields associated with the line, indexed by their column name.
-* **bbox** (`BBox`): Simple bounding box of the current line made up of four `number`.
-* **heightTolerance** (`number`): Height tolerance threshold used to build a line. Helps with unexpected height variations.
+* **bbox** (`BBox`): Simple bounding box of the current line representing the 4 corners as `number` values.
 
 # Questions?
 
