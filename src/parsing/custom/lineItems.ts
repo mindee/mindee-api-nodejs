@@ -11,31 +11,25 @@ import {
 } from "../../geometry";
 import { ListField, ListFieldValue } from "./listField";
 
-export class Line {
+export class CustomLine {
   /**
    * Number of the current line.
    * Starts at 1.
    */
-  rowNumber!: number;
+  rowNumber: number;
   /**
    * List of the fields associated to the current line, identified by their column name.
    */
-  fields!: Map<string, ListFieldValue>;
+  fields: Map<string, ListFieldValue>;
   /**
    * The BBox of the current line.
    */
-  bbox!: BBox;
-  /**
-   * The height tolerance used to build the line.
-   * It helps when the height of a line can vary unexpectedly.
-   */
-  heightTolerance: number;
+  bbox: BBox;
 
-  constructor(rowNumber: number, heightTolerance: number) {
+  constructor(rowNumber: number) {
     this.rowNumber = rowNumber;
-    this.bbox = [1, 1, 0, 0];
+    this.bbox = new BBox(1, 1, 0, 0);
     this.fields = new Map<string, ListFieldValue>();
-    this.heightTolerance = heightTolerance;
   }
 
   /**
@@ -50,16 +44,6 @@ export class Line {
    */
   extendWith(polygon: Polygon): void {
     this.bbox = mergeBbox(this.bbox, getBbox(polygon));
-  }
-
-  /**
-   * Check if the bbox fits the current line.
-   */
-  contains(bbox: BBox): boolean {
-    if (Math.abs(bbox[1] - this.bbox[1]) <= this.heightTolerance) {
-      return true;
-    }
-    return Math.abs(this.bbox[1] - bbox[1]) <= this.heightTolerance;
   }
 
   updateField(name: string, fieldValue: ListFieldValue): void {
@@ -97,47 +81,38 @@ export class Line {
   }
 }
 
-export class LineItems {
-  rows: Line[] = [];
-
-  constructor(lines: Line[]) {
-    this.rows = lines;
-  }
-}
-
 export function getLineItems(
   anchorNames: string[],
+  fieldNames: string[],
+  fields: Map<string, ListField>,
   heightLineTolerance: number,
-  fieldNamesTargeted: string[],
-  fields: Map<string, ListField>
-): LineItems {
+): CustomLine[] {
   const fieldsToTransformIntoLines = new Map(
-    [...fields].filter(([k]) => fieldNamesTargeted.includes(k))
+    [...fields].filter(([k]) => fieldNames.includes(k))
   );
 
-  const anchorName = findBestAnchor(anchorNames, fieldsToTransformIntoLines);
-  const lineItemsPrepared = prepare(
+  const anchorName: string = findBestAnchor(anchorNames, fieldsToTransformIntoLines);
+  const linesPrepared: CustomLine[] = prepare(
     anchorName,
     fieldsToTransformIntoLines,
     heightLineTolerance
   );
 
-  lineItemsPrepared.rows.forEach((currentLine) => {
+  linesPrepared.forEach((currentLine) => {
     fieldsToTransformIntoLines.forEach((field, fieldName) => {
       field.values.forEach((listFieldValue) => {
         const minYCurrentValue: number = getMinMaxY(listFieldValue.polygon).min;
 
         if (
-          minYCurrentValue < currentLine.bbox[3] &&
-          minYCurrentValue >= currentLine.bbox[1]
+          minYCurrentValue < currentLine.bbox.yMax &&
+          minYCurrentValue >= currentLine.bbox.yMin
         ) {
           currentLine.updateField(fieldName, listFieldValue);
         }
       });
     });
   });
-
-  return lineItemsPrepared;
+  return linesPrepared;
 }
 
 function findBestAnchor(
@@ -148,7 +123,7 @@ function findBestAnchor(
   let anchorRows = 0;
 
   possibleAnchorNames.forEach((fieldName) => {
-    const fieldValues = fields.get(fieldName)?.values;
+    const fieldValues: ListFieldValue[]|undefined = fields.get(fieldName)?.values;
     if (fieldValues !== undefined && fieldValues.length > anchorRows) {
       anchorRows = fieldValues.length;
       anchorName = fieldName;
@@ -162,12 +137,22 @@ function findBestAnchor(
   return anchorName;
 }
 
+/**
+ * Check if the bbox fits inside the line.
+ */
+function isBboxInLine(line: CustomLine, bbox: BBox, heightTolerance: number): boolean {
+  if (Math.abs(bbox.yMin - line.bbox.yMin) <= heightTolerance) {
+    return true;
+  }
+  return Math.abs(line.bbox.yMin - bbox.yMin) <= heightTolerance;
+}
+
 function prepare(
   anchorName: string,
   fields: Map<string, ListField>,
   heightLineTolerance: number
-): LineItems {
-  const lineItemsPrepared: Line[] = [];
+): CustomLine[] {
+  const linesPrepared: CustomLine[] = [];
 
   const anchorField = fields.get(anchorName);
   if (anchorField === undefined || anchorField.values.length === 0) {
@@ -175,7 +160,7 @@ function prepare(
   }
 
   let currentLineNumber: number = 1;
-  let currentLine = new Line(currentLineNumber, heightLineTolerance);
+  let currentLine = new CustomLine(currentLineNumber);
 
   if (anchorField !== undefined) {
     let currentValue = anchorField.values[0];
@@ -185,21 +170,21 @@ function prepare(
       currentValue = anchorField.values[index];
       const currentFieldBbox = getBbox(currentValue.polygon);
 
-      if (!currentLine.contains(currentFieldBbox)) {
-        lineItemsPrepared.push(currentLine);
+      if (!isBboxInLine(currentLine, currentFieldBbox, heightLineTolerance)) {
+        linesPrepared.push(currentLine);
         currentLineNumber++;
-        currentLine = new Line(currentLineNumber, heightLineTolerance);
+        currentLine = new CustomLine(currentLineNumber);
       }
       currentLine.extendWithBbox(currentFieldBbox);
     }
 
     if (
-      lineItemsPrepared.filter((line) => line.rowNumber === currentLineNumber)
+      linesPrepared.filter((line) => line.rowNumber === currentLineNumber)
         .length === 0
     ) {
-      lineItemsPrepared.push(currentLine);
+      linesPrepared.push(currentLine);
     }
   }
 
-  return new LineItems(lineItemsPrepared);
+  return linesPrepared;
 }

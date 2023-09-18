@@ -28,31 +28,31 @@ describe("Custom Document Line Items", async () => {
 
     const lineItems = getLineItems(
       anchorNames,
-      0.011,
       fieldNamesToLineItems,
-      doc.prediction!.fields
+      doc.prediction!.fields,
+      0.011
     );
 
     expect(lineItems).to.not.null;
-    expect(lineItems.rows.length).to.be.eq(3);
-    const firstLine = lineItems.rows[0];
-    expect(firstLine.bbox[0]).to.be.eq(0.059);
-    expect(firstLine.bbox[1]).to.be.eq(0.351);
-    expect(firstLine.bbox[2]).to.be.eq(0.3);
-    expect(firstLine.bbox[3]).to.be.eq(0.36);
+    expect(lineItems.length).to.be.eq(3);
+    const firstLine = lineItems[0];
+    expect(firstLine.bbox.xMin).to.be.eq(0.059);
+    expect(firstLine.bbox.yMin).to.be.eq(0.351);
+    expect(firstLine.bbox.xMax).to.be.eq(0.3);
+    expect(firstLine.bbox.yMax).to.be.eq(0.36);
     expect(firstLine.fields.size).to.be.eq(4);
     expect(firstLine.fields.has("beneficiary_birth_date")).to.be.true;
     expect(firstLine.fields.has("beneficiary_number")).to.be.true;
     expect(firstLine.fields.has("beneficiary_name")).to.be.true;
     expect(firstLine.fields.has("beneficiary_rank")).to.be.true;
     expect(
-      lineItems.rows[1].fields.get("beneficiary_number")?.confidence
+      lineItems[1].fields.get("beneficiary_number")?.confidence
     ).to.be.eq(0.5);
     expect(
-      lineItems.rows[1].fields.get("beneficiary_birth_date")?.content
+      lineItems[1].fields.get("beneficiary_birth_date")?.content
     ).to.be.eq("2010-07-18");
-    expect(lineItems.rows[2].fields.size).to.be.eq(4);
-    expect(lineItems.rows[2].fields.get("beneficiary_rank")?.content).to.be.eq(
+    expect(lineItems[2].fields.size).to.be.eq(4);
+    expect(lineItems[2].fields.get("beneficiary_rank")?.content).to.be.eq(
       "3"
     );
   });
