@@ -1,6 +1,6 @@
 import { cleanOutString } from "../../parsing/common";
 import { StringDict, Prediction } from "../../parsing/common";
-import { ClassificationField, ListField } from "../../parsing/custom";
+import {ClassificationField, ListField, getLineItems, CustomLine } from "../../parsing/custom";
 
 /**
  * Document data for Custom builds.
@@ -48,6 +48,21 @@ export class CustomV1Document implements Prediction {
         `Unknown API field type for field ${fieldName} : ${fieldValue}`
       );
     }
+  }
+
+  /**
+   * Order column fields into line items.
+   * @param anchorNames list of possible anchor fields.
+   * @param fieldNames list of all column fields.
+   * @param heightTolerance height tolerance to apply to lines.
+   */
+  columnsToLineItems(anchorNames: string[], fieldNames: string[], heightTolerance: number = 0.01): CustomLine[] {
+    return getLineItems(
+      anchorNames,
+      fieldNames,
+      this.fields,
+      heightTolerance
+    );
   }
 
   /**
