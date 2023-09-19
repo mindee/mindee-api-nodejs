@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.3.0 - 2023-09-19
+### Changes
+* :sparkles: add line items reconstruction for API builder
+
+
 ## v4.2.0 - 2023-09-15
 ### Changes
 * :sparkles: add support for W9 V1
