@@ -8,6 +8,7 @@ import {
   getMinMaxY,
   mergeBbox,
   getBoundingBoxFromBBox,
+  MinMax,
 } from "../../geometry";
 import { ListField, ListFieldValue } from "./listField";
 
@@ -22,7 +23,7 @@ export class CustomLine {
    */
   fields: Map<string, ListFieldValue>;
   /**
-   * The BBox of the current line.
+   * The BBox of the entire line, all fields included.
    */
   bbox: BBox;
 
@@ -81,13 +82,18 @@ export class CustomLine {
   }
 }
 
+export class CustomLines extends Array<CustomLine> {}
+
+/**
+ * Get line items from fields.
+ */
 export function getLineItems(
   anchorNames: string[],
   fieldNames: string[],
   fields: Map<string, ListField>,
   heightLineTolerance: number,
-): CustomLine[] {
-  const fieldsToTransformIntoLines = new Map(
+): CustomLines {
+  const fieldsToTransformIntoLines: Map<string, ListField> = new Map(
     [...fields].filter(([k]) => fieldNames.includes(k))
   );
 
@@ -101,11 +107,10 @@ export function getLineItems(
   linesPrepared.forEach((currentLine) => {
     fieldsToTransformIntoLines.forEach((field, fieldName) => {
       field.values.forEach((listFieldValue) => {
-        const minYCurrentValue: number = getMinMaxY(listFieldValue.polygon).min;
-
+        const minMaxY: MinMax = getMinMaxY(listFieldValue.polygon);
         if (
-          minYCurrentValue < currentLine.bbox.yMax &&
-          minYCurrentValue >= currentLine.bbox.yMin
+          Math.abs(minMaxY.max - currentLine.bbox.yMax) <= heightLineTolerance &&
+          Math.abs(minMaxY.min - currentLine.bbox.yMin) <= heightLineTolerance
         ) {
           currentLine.updateField(fieldName, listFieldValue);
         }
@@ -115,6 +120,9 @@ export function getLineItems(
   return linesPrepared;
 }
 
+/**
+ * Loop through the possible anchor fields and find the one with the most values.
+ */
 function findBestAnchor(
   possibleAnchorNames: string[],
   fields: Map<string, ListField>
@@ -160,10 +168,10 @@ function prepare(
   }
 
   let currentLineNumber: number = 1;
-  let currentLine = new CustomLine(currentLineNumber);
+  let currentLine: CustomLine = new CustomLine(currentLineNumber);
 
   if (anchorField !== undefined) {
-    let currentValue = anchorField.values[0];
+    let currentValue: ListFieldValue = anchorField.values[0];
     currentLine.extendWith(currentValue.polygon);
 
     for (let index = 1; index < anchorField.values.length; index++) {
