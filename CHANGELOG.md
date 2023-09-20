@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.3.1 - 2023-09-20
+### Fixes
+* :bug: take line height tolerance into account when evaluating fields
+
+
 ## v4.3.0 - 2023-09-19
 ### Changes
 * :sparkles: add line items reconstruction for API builder
