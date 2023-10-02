@@ -21,7 +21,7 @@ implements ExtraDict<ExtraT>
   toString(): string {
     return (
       Object.entries(this)
-        .map(([name, extraField]) => name + ":\n" + extraField.toString())
+        .map(([name, extraField]) => name + extraField.toString())
         .join("\n") + "\n"
     );
   }
