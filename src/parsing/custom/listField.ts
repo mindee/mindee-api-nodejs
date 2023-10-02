@@ -4,7 +4,7 @@ import { StringDict } from "../common";
 
 export class ListFieldValue {
   /** Extracted content of the prediction */
-  content: string | number;
+  content: string;
   /**
    * The confidence score of the prediction.
    * Note: Score is calculated on **word selection**, not its textual content (OCR).
