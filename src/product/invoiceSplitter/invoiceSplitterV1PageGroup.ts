@@ -1,7 +1,7 @@
 import { StringDict } from "../../parsing/common";
 
 /**
- * Pages indexes in a group.
+ * Pages indexes in a group for Invoice Splitter V1.
  */
 export class InvoiceSplitterV1PageGroup {
   /** List of page indexes. */
