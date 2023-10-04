@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.3.2 - 2023-10-04
+### Changes
+* :arrow_up: dependency upgrade
+* :recycle: minor refactoring
+
+
 ## v4.3.1 - 2023-09-20
 ### Fixes
 * :bug: take line height tolerance into account when evaluating fields
