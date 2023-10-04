@@ -24,7 +24,7 @@ export class CropperExtra extends ExtraField {
   toString() {
     const cropping = this.cropping
       .map((crop) => crop.toString())
-      .join("\n          ");
+      .join("\n           ");
     return cleanOutString(cropping);
   }
 }
