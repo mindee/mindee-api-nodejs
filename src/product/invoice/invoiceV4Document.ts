@@ -1,7 +1,7 @@
 import {
   cleanOutString,
   lineSeparator,
-} from "../../parsing/common/summaryHelper";
+} from "../../parsing/common";
 import { Prediction, StringDict } from "../../parsing/common";
 import {
   ClassificationField,

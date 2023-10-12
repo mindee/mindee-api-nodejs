@@ -4,7 +4,7 @@ import { Inference } from "./inference";
 import { Document } from "./document";
 
 /** Wrapper for asynchronous request queues. Holds information regarding a job (queue).
- * 
+ *
  * @category API Response
  * @category Asynchronous
  */
@@ -48,7 +48,7 @@ export class Job {
 }
 
 /** Wrapper for asynchronous jobs and parsing results.
- * 
+ *
  * @category API Response
  * @category Asynchronous
  */
@@ -61,19 +61,19 @@ export class AsyncPredictResponse<T extends Inference> extends ApiResponse {
   document?: Document<T>;
 
   /**
-   * 
+   *
    * @param inferenceClass constructor signature for an inference.
-   * @param httpResponse raw http response.
+   * @param serverResponse raw http response.
    */
   constructor(
     inferenceClass: new (httpResponse: StringDict) => T,
-    httpResponse: StringDict
+    serverResponse: StringDict
   ) {
-    super(httpResponse);
-    this.job = new Job(httpResponse["job"]);
+    super(serverResponse);
+    this.job = new Job(serverResponse["job"]);
     this.document =
-      httpResponse["document"] !== undefined
-        ? new Document<T>(inferenceClass, httpResponse["document"])
+      serverResponse["document"] !== undefined
+        ? new Document<T>(inferenceClass, serverResponse["document"])
         : undefined;
   }
 }

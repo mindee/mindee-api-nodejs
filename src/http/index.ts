@@ -1,9 +1,10 @@
-export { Endpoint, EndpointResponse } from "./endpoint";
+export { Endpoint } from "./endpoint";
+export { EndpointResponse } from "./baseEndpoint";
 export {
   STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,
-  MindeeApi,
-} from "./mindeeApi";
+  ApiSettings,
+} from "./apiSettings";
 export {
   MindeeHttpError,
   MindeeHttp400Error,
