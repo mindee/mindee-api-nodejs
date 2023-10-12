@@ -5,7 +5,7 @@ import { Document, Inference, StringDict } from ".";
  * 
  * @category API Response
  * @category Synchronous
-*/
+ */
 export class PredictResponse<T extends Inference> extends ApiResponse {
   /** A document prediction response. */
   document: Document<T>;

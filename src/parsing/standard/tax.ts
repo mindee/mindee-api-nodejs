@@ -1,15 +1,17 @@
 import { StringDict } from "../common";
 import { Field } from "./field";
+import { BaseFieldConstructor } from "./base";
 import { floatToString } from "./amount";
 
-interface TaxConstructor {
-  prediction: StringDict;
-  valueKey?: string;
+/**
+ * @property {string} constructor.rateKey - Key to use to get the tax rate in the prediction dict.
+ * @property {string} constructor.codeKey - Key to use to get the tax code in the prediction dict.
+ * @property {string} constructor.baseKey - Key to use to get the base tax in the prediction dict.
+ */
+interface TaxConstructor extends BaseFieldConstructor {
   rateKey?: string;
   codeKey?: string;
   baseKey?: string;
-  reconstructed?: boolean;
-  pageId?: number;
 }
 
 /**
@@ -28,13 +30,7 @@ export class TaxField extends Field {
   pageId!: number;
 
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict to get the tax value
-   * @param {String} rateKey - Key to use to get the tax rate in the prediction dict
-   * @param {String} codeKey - Key to use to get the tax code in the prediction dict
-   * @param {String} baseKey - Key to use to get the base tax in the prediction dict
-   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
-   * @param {Integer} pageNumber - Page ID for multi-page document
+   * @param {TaxConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},

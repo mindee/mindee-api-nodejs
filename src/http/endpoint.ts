@@ -14,6 +14,14 @@ export interface EndpointResponse {
   messageObj: IncomingMessage;
   data: { [key: string]: any };
 }
+
+export interface PredictParams {
+  inputDoc: InputSource;
+  includeWords: boolean;
+  pageOptions?: PageOptions;
+  cropper: boolean;
+}
+
 /**
  * Endpoint object class wrapper.
  */
@@ -45,16 +53,11 @@ export class Endpoint {
   /**
    * Sends a prediction to the API and parses out the result.
    * Throws an error if the server's response contains one.
-   * @param params parameters relating to prediction options.
+   * @param {PredictParams} params parameters relating to prediction options.
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
-  async predict(params: {
-    inputDoc: InputSource;
-    includeWords: boolean;
-    pageOptions?: PageOptions;
-    cropper: boolean;
-  }): Promise<EndpointResponse> {
+  async predict(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
       await this.#cutDocPages(params.inputDoc, params.pageOptions);
@@ -75,16 +78,11 @@ export class Endpoint {
   /**
    * Enqueues a prediction to the API.
    * Throws an error if the server's response contains one.
-   * @param params parameters relating to prediction options.
+   * @param {PredictParams} params parameters relating to prediction options.
    * @category Asynchronous
    * @returns a `Promise` containing queue data.
    */
-  async predictAsync(params: {
-    inputDoc: InputSource;
-    includeWords: boolean;
-    pageOptions?: PageOptions;
-    cropper: boolean;
-  }): Promise<EndpointResponse> {
+  async predictAsync(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
       await this.#cutDocPages(params.inputDoc, params.pageOptions);
@@ -103,12 +101,12 @@ export class Endpoint {
   /**
    * Requests the results of a queued document from the API.
    * Throws an error if the server's response contains one.
-   * @param params parameters relating to prediction options.
+   * @param queueId parameters relating to prediction options.
    * @category Asynchronous
    * @returns a `Promise` containing the parsed result.
    */
   async getQueuedDocument(queueId: string): Promise<EndpointResponse> {
-    const queueResponse = await this.#documentQueueReqGet(queueId);
+    const queueResponse: EndpointResponse = await this.#documentQueueReqGet(queueId);
     const queueStatusCode = queueResponse.messageObj.statusCode;
     if (
       queueStatusCode === undefined ||
@@ -139,8 +137,8 @@ export class Endpoint {
   protected sendFileForPrediction(
     input: InputSource,
     predictUrl: string,
-    includeWords = false,
-    cropper = false
+    includeWords: boolean = false,
+    cropper: boolean = false
   ): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const searchParams = new URLSearchParams();

@@ -9,4 +9,4 @@ export { Word } from "./word";
 export { CompanyRegistrationField } from "./companyRegistration";
 export { PositionField } from "./position";
 export { StringField } from "./text";
-export { Field, FieldConstructor } from "./field";
+export { Field } from "./field";

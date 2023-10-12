@@ -1,4 +1,4 @@
-import { FieldConstructor } from "../standard";
+import { BaseFieldConstructor } from "../standard";
 import { Polygon, getBoundingBox } from "../../geometry";
 import { StringDict } from "../common";
 
@@ -46,11 +46,14 @@ export class ListField {
   /** The document page on which the information was found. */
   pageId: number;
 
+  /**
+   * @param {BaseFieldConstructor} constructor Constructor parameters.
+   */
   constructor({
     prediction = {},
     reconstructed = false,
     pageId,
-  }: FieldConstructor) {
+  }: BaseFieldConstructor) {
     this.values = [];
     this.confidence = prediction["confidence"];
     this.reconstructed = reconstructed;

@@ -44,8 +44,8 @@ export interface PredictOptions {
    * This performs a cropping operation on the server and will increase response time.
    */
   cropper?: boolean;
-  /** 
-   * If set, remove pages from the document as specified. 
+  /**
+   * If set, remove pages from the document as specified.
    * This is done before sending the file to the server and is useful to avoid page limitations.
    */
   pageOptions?: PageOptions;
@@ -58,7 +58,7 @@ export interface AsyncOptions extends PredictOptions {
   initialDelaySec: number;
   delaySec: number;
   maxRetries: number;
-  initialTimerOptions?: { 
+  initialTimerOptions?: {
     ref?: boolean,
     signal?: AbortSignal
   };
@@ -79,7 +79,7 @@ export interface ClientOptions {
 
 /**
  * Mindee Client class that centralizes most basic operations.
- * 
+ *
  * @category Client
  */
 export class Client {
@@ -87,7 +87,7 @@ export class Client {
   protected apiKey: string;
 
   /**
-   * @param options options for the initialization of a client. 
+   * @param {ClientOptions} options options for the initialization of a client.
    */
   constructor(
     { apiKey, throwOnError, debug }: ClientOptions = {
@@ -107,9 +107,9 @@ export class Client {
 
   /**
    * Send a document to a synchronous endpoint and parse the predictions.
-   * 
+   *
    * @param productClass product class to use for calling the API and parsing the response.
-   * @param inputSource document to parse.
+   * @param inputSource file to parse.
    * @param params parameters relating to prediction options.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Synchronous
@@ -125,7 +125,7 @@ export class Client {
       pageOptions: undefined,
     }
   ): Promise<PredictResponse<T>> {
-    const endpoint =
+    const endpoint: Endpoint =
       params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
@@ -142,6 +142,7 @@ export class Client {
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param productClass product class to use for calling  the API and parsing the response.
+   * @param inputSource file to parse.
    * @param params parameters relating to prediction options.
    * @category Asynchronous
    * @returns a `Promise` containing the job (queue) corresponding to a document.
@@ -168,7 +169,7 @@ export class Client {
 
   /**
    * Polls a queue and returns its status as well as the prediction results if the parsing is done.
-   * 
+   *
    * @param productClass product class to use for calling  the API and parsing the response.
    * @param queueId id of the queue to poll.
    * @param params parameters relating to prediction options.
@@ -210,11 +211,11 @@ export class Client {
   /**
    * Send a document to an asynchronous endpoint and poll the server until the result is sent or
    * until the maximum amount of tries is reached.
-   * 
+   *
    * @param productClass product class to use for calling the API and parsing the response.
    * @param inputSource document to parse.
    * @param asyncParams parameters relating to prediction options.
-   * 
+   *
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
@@ -303,13 +304,12 @@ Job status: ${pollResults.job.status}.`
 
   /**
    * Creates a custom endpoint with the given values. Raises an error if the endpoint is invalid.
-   * @param productClass product class to use for calling the API and parsing the response.
    * @param endpointName Name of the custom Endpoint.
    * @param accountName Name of the account tied to the Endpoint.
-   * @param version Version of the custom Endpoint.
+   * @param endpointVersion Version of the custom Endpoint.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * 
-   * @returns a new endpoint
+   *
+   * @returns Endpoint a new endpoint
    */
   createEndpoint(
     endpointName: string,
@@ -361,7 +361,7 @@ Job status: ${pollResults.job.status}.`
    * @param productClass product class to use for calling  the API and parsing the response.
    * @param accountName name of the account's holder. Only required on custom builds.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * 
+   *
    * @returns the name of the account. Sends an error if one isn't provided for a custom build.
    */
   #cleanAccountName<T extends Inference>(
@@ -384,7 +384,7 @@ Job status: ${pollResults.job.status}.`
    * Get the name and version of an OTS endpoint.
    * @param productClass product class to use for calling  the API and parsing the response. Mandatory to retrieve default OTS endpoint data.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * 
+   *
    * @returns an endpoint's name and version.
    */
   #getEndpoint<T extends Inference>(

@@ -1,4 +1,5 @@
-import { Field, FieldConstructor } from "./field";
+import { Field } from "./field";
+import { BaseFieldConstructor } from "./base";
 
 export function floatToString(value: number) {
   return value.toLocaleString(undefined, {
@@ -16,17 +17,14 @@ export class AmountField extends Field {
   value?: number = undefined;
 
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict
-   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
-   * @param {Integer} pageId - Page ID for multi-page document
+   * @param {BaseFieldConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId = undefined,
-  }: FieldConstructor) {
+  }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
     this.value = +parseFloat(prediction[valueKey]).toFixed(3);
     if (isNaN(this.value)) {

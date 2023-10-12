@@ -1,4 +1,5 @@
-import { Field, FieldConstructor } from "./field";
+import { Field } from "./field";
+import { BaseFieldConstructor } from "./base"
 
 /**
  * A company registration item.
@@ -14,7 +15,7 @@ export class CompanyRegistrationField extends Field {
     valueKey = "value",
     reconstructed = false,
     pageId,
-  }: FieldConstructor) {
+  }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
     this.type = prediction["type"];
   }

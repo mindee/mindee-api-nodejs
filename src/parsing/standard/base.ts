@@ -1,5 +1,11 @@
 import { StringDict } from "../common";
 
+/**
+ * @property {object} prediction - Prediction object from HTTP response.
+ * @property {string} valueKey - Key to use in the prediction dict.
+ * @property {boolean} reconstructed - Is the object reconstructed (not extracted by the API).
+ * @property {number} pageId - Page ID for multi-page document.
+ */
 export interface BaseFieldConstructor {
   prediction: StringDict;
   valueKey?: string;
@@ -15,12 +21,11 @@ export class BaseField {
   value?: string | number = undefined;
   /** `true` when the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
+  /** Page ID for multi-page document. */
   pageId?: number;
 
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param valueKey - Key to use in the prediction dict
-   * @param reconstructed - Is the object reconstructed (not extracted by the API)
+   * @param {BaseFieldConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},
@@ -51,7 +56,7 @@ export class BaseField {
 
   /**
    * @param {BaseField[]} array - Array of Fields
-   * @returns {Number} Sum of all the Fields values in the array
+   * @returns {number} Sum of all the Fields values in the array
    */
   static arraySum(array: BaseField[]): number {
     let total = 0.0;
