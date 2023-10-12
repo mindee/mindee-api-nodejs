@@ -1,19 +1,14 @@
-import { request, RequestOptions } from "https";
-
+import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
 import { InputSource } from "../input";
-import { logger } from "../logger";
-import { IncomingMessage, ClientRequest } from "http";
 import { PageOptions } from "../input";
 import { LocalInputSource } from "../input/base";
 import { handleError } from "./error";
-import { MindeeApi } from "./mindeeApi";
-
-export interface EndpointResponse {
-  messageObj: IncomingMessage;
-  data: { [key: string]: any };
-}
+import { ApiSettings } from "./apiSettings";
+import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
+import {StringDict} from "../parsing/common";
+import {ClientRequest} from "http";
 
 export interface PredictParams {
   inputDoc: InputSource;
@@ -23,9 +18,9 @@ export interface PredictParams {
 }
 
 /**
- * Endpoint object class wrapper.
+ * Endpoint for a product (OTS or Custom).
  */
-export class Endpoint {
+export class Endpoint extends BaseEndpoint {
   /** URL of a product. */
   urlName: string;
   /** Account owning the product. */
@@ -34,19 +29,17 @@ export class Endpoint {
   version: string;
   /** Entire root of the URL for API calls. */
   urlRoot: string;
-  /** Settings relating to the API. */
-  settings: MindeeApi;
 
   constructor(
     urlName: string,
     owner: string,
     version: string,
-    settings: MindeeApi
+    settings: ApiSettings
   ) {
+    super(settings);
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
-    this.settings = settings;
     this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
   }
 
@@ -98,10 +91,11 @@ export class Endpoint {
     }
     return response;
   }
+
   /**
    * Requests the results of a queued document from the API.
    * Throws an error if the server's response contains one.
-   * @param queueId parameters relating to prediction options.
+   * @param queueId The document's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing the parsed result.
    */
@@ -125,6 +119,43 @@ export class Endpoint {
       }
     }
     return queueResponse;
+  }
+
+  /**
+   * Send a feedback
+   * @param {string} documentId
+   */
+  async getDocument(documentId: string): Promise<EndpointResponse> {
+    const response = await this.#documentGetReq(
+      documentId,
+    );
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode >= 400) {
+      handleError("document", response, statusCode, response.messageObj?.statusMessage);
+    }
+
+    return response;
+  }
+
+  /**
+   * Send a feedback
+   * @param {string} documentId - ID of the document to send feedback to.
+   * @param {StringDict} feedback - Feedback object to send.
+   */
+  async sendFeedback(
+    documentId: string,
+    feedback: StringDict
+  ): Promise<EndpointResponse> {
+    const response: EndpointResponse = await this.#documentFeedbackPutReq(
+      documentId,
+      feedback,
+    );
+    const statusCode = response.messageObj.statusCode;
+    if (statusCode === undefined || statusCode >= 400) {
+      handleError("feedback", response, statusCode, response.messageObj?.statusMessage);
+    }
+
+    return response;
   }
 
   /**
@@ -175,64 +206,6 @@ export class Endpoint {
       // potential ECONNRESET if we don't end the request.
       req.end();
     });
-  }
-
-  /**
-   * Reads a response from the API and processes it.
-   * @param options options related to the request itself.
-   * @param resolve the resolved response
-   * @param reject promise rejection reason.
-   * @returns the processed request.
-   */
-  protected readResponse(
-    options: RequestOptions,
-    resolve: (value: EndpointResponse | PromiseLike<EndpointResponse>) => void,
-    reject: (reason?: any) => void
-  ): ClientRequest {
-    logger.debug(
-      `${options.method}: https://${options.hostname}${options.path}`
-    );
-
-    const req = request(options, function (res: IncomingMessage) {
-      // when the encoding is set, data chunks will be strings
-      res.setEncoding("utf-8");
-
-      let responseBody = "";
-      res.on("data", function (chunk: string) {
-        logger.debug("Receiving data ...");
-        responseBody += chunk;
-      });
-      res.on("end", function () {
-        logger.debug("Parsing the response ...");
-        // handle empty responses from server, for example in the case of redirects
-        if (!responseBody) {
-          responseBody = "{}";
-        }
-        try {
-          const parsedResponse = JSON.parse(responseBody);
-          try {
-            resolve({
-              messageObj: res,
-              data: parsedResponse,
-            });
-          } catch (error) {
-            logger.error("Could not construct the return object.");
-            reject(error);
-          }
-        } catch (error) {
-          logger.error("Could not parse the return as JSON.");
-          logger.debug(responseBody);
-          resolve({
-            messageObj: res,
-            data: { reconstructedResponse: responseBody },
-          });
-        }
-      });
-    });
-    req.on("error", (err: any) => {
-      reject(err);
-    });
-    return req;
   }
 
   /**
@@ -310,6 +283,27 @@ export class Endpoint {
         path: `${this.urlRoot}/documents/${documentId}`,
       };
       const req = this.readResponse(options, resolve, reject);
+      // potential ECONNRESET if we don't end the request.
+      req.end();
+    });
+  }
+
+  /**
+   * Make a request to PUT a document feedback.
+   * @param documentId
+   * @param feedback
+   */
+  #documentFeedbackPutReq(documentId: string, feedback: StringDict): Promise<EndpointResponse> {
+    return new Promise((resolve, reject) => {
+      const options = {
+        method: "PUT",
+        headers: this.settings.baseHeaders,
+        hostname: this.settings.hostname,
+        path: `/v1/documents/${documentId}/feedback`,
+      };
+      const req: ClientRequest = this.readResponse(options, resolve, reject);
+      req.write(JSON.stringify(feedback));
+
       // potential ECONNRESET if we don't end the request.
       req.end();
     });

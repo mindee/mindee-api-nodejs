@@ -151,11 +151,10 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
 //
 
 function initClient(options: OptionValues): Client {
-  const mindeeClient = new Client({
+  return new Client({
     apiKey: options.apiKey,
     debug: options.debug,
   });
-  return mindeeClient;
 }
 
 function getConfig(command: string): ProductConfig {
@@ -178,12 +177,11 @@ function getPageOptions(options: any) {
   return pageOptions;
 }
 
-function getPredictParams(options: any) {
-  const predictParams: PredictOptions = {
+function getPredictParams(options: any): PredictOptions {
+  return {
     allWords: options.allWords,
     cropper: options.cropper,
   };
-  return predictParams;
 }
 
 async function callParse<T extends Inference>(
@@ -191,7 +189,7 @@ async function callParse<T extends Inference>(
   command: string,
   inputPath: string,
   options: any
-) {
+): Promise<void> {
   const mindeeClient = initClient(options);
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
@@ -224,7 +222,7 @@ async function callEnqueueAndParse<T extends Inference>(
   command: string,
   inputPath: string,
   options: any
-) {
+): Promise<void> {
   const mindeeClient = initClient(options);
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
@@ -261,10 +259,37 @@ async function callEnqueueAndParse<T extends Inference>(
   }
 }
 
+async function callGetDocument<T extends Inference>(
+  productClass: new (httpResponse: StringDict) => T,
+  documentId: string, options: any
+): Promise<void> {
+  const mindeeClient = initClient(options);
+  const response = await mindeeClient.getDocument(productClass, documentId)
+  printResponse(response.document, options);
+}
+
+async function callSendFeedback<T extends Inference>(
+  productClass: new (httpResponse: StringDict) => T,
+  documentId: string,
+  feedbackStr: string,
+  options: any
+): Promise<void> {
+  const mindeeClient = initClient(options);
+  const feedback = {
+    feedback: JSON.parse(feedbackStr),
+  };
+  const response = await mindeeClient.sendFeedback(
+    productClass,
+    documentId,
+    feedback
+  );
+  console.log(response.feedback);
+}
+
 function printResponse<T extends Inference>(
   document: Document<T>,
   options: any
-) {
+): void {
   if (options.allWords) {
     document.ocr?.mVisionV1.pages.forEach((page) => {
       console.log(page.allWords.toString());
@@ -320,14 +345,17 @@ function routeSwitchboard(
   inputPath: string,
   allOptions: any
 ): Promise<void> {
-  const docClass = getConfig(command.name()).docClass;
+  if (command.parent === null || command.parent === undefined) {
+    throw new Error(`Improperly configured command: ${command.name()}`);
+  }
+  const docClass = getConfig(command.parent.name()).docClass;
   if ("async" in command.opts() && command.opts()["async"]) {
     return callEnqueueAndParse(docClass, command.name(), inputPath, allOptions);
   }
   return callParse(docClass, command.name(), inputPath, allOptions);
 }
 
-function addAction(prog: Command) {
+function addPredictAction(prog: Command) {
   if (prog.name() === COMMAND_CUSTOM) {
     prog.action(function (
       inputPath: string,
@@ -360,13 +388,46 @@ function addAction(prog: Command) {
 }
 
 export function cli() {
-  program.name("mindee");
-  program.option("-d, --debug", "high verbosity mode");
-
+  program.name("mindee")
+    .description("Command line interface for Mindee products.")
+    .option("-d, --debug", "high verbosity mode");
 
   CLI_COMMAND_CONFIG.forEach((info, name) => {
-    const prog = program.command(name)
-    prog.description(`${info.displayName} document`);
+    const productCmd: Command = program.command(name)
+      .description(info.displayName);
+
+    if (info.async) {
+      const getDocProductCmd: Command = productCmd.command("fetch")
+        .description("Fetch previously parsed results.")
+        .argument("<documentId>", "Unique ID of the document.")
+        .action(async (documentId, options) => {
+          const docClass = getConfig(name).docClass;
+          await callGetDocument(
+            docClass,
+            documentId,
+            {...options, ...productCmd.opts(), ...program.opts()}
+          );
+        });
+      addMainOptions(getDocProductCmd);
+    }
+
+    const feedbackProductCmd: Command = productCmd.command("feedback")
+      .description("Send feedback for a document.")
+      .argument("<documentId>", "Unique ID of the document.")
+      .argument("<feedback>", "Feedback to send, ex '{\"key\": \"value\"}'.")
+      .action(async (documentId, feedback, options) => {
+        const docClass = getConfig(name).docClass;
+        await callSendFeedback(
+          docClass,
+          documentId,
+          feedback,
+          {...options, ...productCmd.opts(), ...program.opts()}
+        );
+      });
+    addMainOptions(feedbackProductCmd);
+
+    const predictProductCmd: Command = productCmd.command("parse")
+      .description("Send a file for parsing.");
 
     if (info.async) {
       const asyncOpt = new Option("-A, --async", "Call asynchronously");
@@ -376,16 +437,16 @@ export function cli() {
         asyncOpt.default(true);
         asyncOpt.hideHelp();
       }
-      prog.addOption(asyncOpt);
+      predictProductCmd.addOption(asyncOpt);
     }
 
     if (name === COMMAND_CUSTOM) {
-      addCustomPostOptions(prog);
+      addCustomPostOptions(predictProductCmd);
     }
-    addMainOptions(prog);
-    addDisplayOptions(prog);
-    addPostOptions(prog, info);
-    addAction(prog);
+    addMainOptions(predictProductCmd);
+    addDisplayOptions(predictProductCmd);
+    addPostOptions(predictProductCmd, info);
+    addPredictAction(predictProductCmd);
   });
   program.parse(process.argv);
 }

@@ -9,12 +9,13 @@ import {
   UrlInput,
   BufferInput,
 } from "./input";
-import { Endpoint, MindeeApi, STANDARD_API_OWNER } from "./http";
+import {Endpoint, ApiSettings, STANDARD_API_OWNER, EndpointResponse} from "./http";
 import {
-  Inference,
   AsyncPredictResponse,
-  StringDict,
+  FeedbackResponse,
+  Inference,
   PredictResponse,
+  StringDict,
 } from "./parsing/common";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
@@ -183,17 +184,63 @@ export class Client {
     queueId: string,
     params: PredictOptions = {}
   ): Promise<AsyncPredictResponse<T>> {
-    const endpoint =
+    const endpoint: Endpoint =
       params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
   }
 
   /**
+   * Fetch prediction results from a document already processed.
+   *
+   * @param productClass product class to use for calling  the API and parsing the response.
+   * @param documentId id of the document to fetch.
+   * @param params optional parameters.
+   * @param params.endpoint Endpoint, only specify if using a custom product.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Synchronous
+   * @returns a `Promise` containing parsing results.
+   */
+  async getDocument<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T,
+    documentId: string,
+    params: { endpoint?: Endpoint } = {}
+  ): Promise<PredictResponse<T>> {
+    const endpoint: Endpoint =
+      params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
+    const response: EndpointResponse = await endpoint.getDocument(documentId);
+    return new PredictResponse<T>(productClass, response.data);
+  }
+
+  /**
+   * Send a feedback for a document.
+   *
+   * @param productClass product class to use for calling  the API and parsing the response.
+   * @param documentId id of the document to send feedback for.
+   * @param feedback the feedback to send.
+   * @param params optional parameters.
+   * @param params.endpoint Endpoint, only specify if using a custom product.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Synchronous
+   * @returns a `Promise` containing feedback results.
+   */
+  async sendFeedback<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T,
+    documentId: string,
+    feedback: StringDict,
+    params: { endpoint?: Endpoint } = {}
+  ): Promise<FeedbackResponse> {
+    const endpoint: Endpoint =
+      params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
+    const response: EndpointResponse = await endpoint.sendFeedback(documentId, feedback);
+    return new FeedbackResponse(response.data);
+  }
+
+  /**
    * Checks the values for asynchronous parsing. Sets their value if they are somehow undefined.
    * @param asyncParams parameters related to asynchronous parsing
    */
-  #validateAsyncParams(asyncParams: AsyncOptions) {
+  #validateAsyncParams(asyncParams: AsyncOptions): void {
     asyncParams.delaySec ??= 3;
     asyncParams.initialDelaySec ??= 6;
     asyncParams.maxRetries ??= 10;
@@ -234,7 +281,7 @@ export class Client {
       initialTimerOptions: undefined,
       recurringTimerOptions: undefined,
     }
-  ) {
+  ): Promise<AsyncPredictResponse<T>> {
     this.#validateAsyncParams(asyncParams);
     const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(productClass, inputSource, asyncParams);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
@@ -245,7 +292,7 @@ export class Client {
       `Successfully enqueued document with job id: ${queueId}.`
     );
     await setTimeout(asyncParams.initialDelaySec * 1000, undefined, asyncParams.initialTimerOptions);
-    let retryCounter = 1;
+    let retryCounter: number = 1;
     let pollResults: AsyncPredictResponse<T>;
     pollResults = await this.parseQueued(productClass, queueId, asyncParams);
     while (retryCounter < asyncParams.maxRetries) {
@@ -277,29 +324,33 @@ Job status: ${pollResults.job.status}.`
   }
 
   /**
-   * Builds a custom endpoint.
+   * Builds a product endpoint.
    * @param endpointName name of the endpoint.
    * @param accountName name of the endpoint's owner.
    * @param endpointVersion version of the endpoint.
    * @returns a custom `Endpoint` object.
    */
-  #buildEndpoint(
+  #buildProductEndpoint(
     endpointName: string,
     accountName: string,
     endpointVersion: string
   ): Endpoint {
-    const apiSettings = new MindeeApi({
-      apiKey: this.apiKey,
-      urlName: endpointName,
-      version: endpointVersion,
-      owner: accountName,
-    });
     return new Endpoint(
       endpointName,
       accountName,
       endpointVersion,
-      apiSettings
+      this.#buildApiSettings()
     );
+  }
+
+  /**
+   * Builds a document endpoint.
+   * @returns a custom `Endpoint` object.
+   */
+  #buildApiSettings(): ApiSettings {
+    return new ApiSettings({
+      apiKey: this.apiKey,
+    });
   }
 
   /**
@@ -309,7 +360,7 @@ Job status: ${pollResults.job.status}.`
    * @param endpointVersion Version of the custom Endpoint.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    *
-   * @returns Endpoint a new endpoint
+   * @returns Endpoint a new product endpoint
    */
   createEndpoint(
     endpointName: string,
@@ -332,7 +383,7 @@ Job status: ${pollResults.job.status}.`
     } else {
       cleanEndpointVersion = endpointVersion;
     }
-    return this.#buildEndpoint(
+    return this.#buildProductEndpoint(
       endpointName,
       cleanAccountName,
       cleanEndpointVersion
@@ -348,8 +399,8 @@ Job status: ${pollResults.job.status}.`
     if (productClass.name === "CustomV1") {
       throw new Error("Incorrect parameters for Custom build.");
     }
-    const [endpointName, endpointVersion] = this.#getEndpoint<T>(productClass);
-    return this.#buildEndpoint(
+    const [endpointName, endpointVersion] = this.#getOtsEndpoint<T>(productClass);
+    return this.#buildProductEndpoint(
       endpointName,
       STANDARD_API_OWNER,
       endpointVersion
@@ -387,7 +438,7 @@ Job status: ${pollResults.job.status}.`
    *
    * @returns an endpoint's name and version.
    */
-  #getEndpoint<T extends Inference>(
+  #getOtsEndpoint<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T
   ): [string, string] {
     const [endpointName, endpointVersion] =

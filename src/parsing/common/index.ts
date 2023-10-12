@@ -1,4 +1,5 @@
 export { Document } from "./document";
+export { FeedbackResponse } from "./feedback/feedbackResponse";
 export { OrientationField } from "./orientation";
 export { StringDict } from "./stringDict";
 export { Inference } from "./inference";

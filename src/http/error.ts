@@ -1,16 +1,19 @@
 import { MindeeError } from "../errors";
 import { errorHandler } from "../errors/handler";
 import { StringDict } from "../parsing/common";
-import { EndpointResponse } from "./endpoint";
+import { EndpointResponse } from "./baseEndpoint";
 
 export function handleError(
-  url: string,
+  urlName: string,
   response: EndpointResponse,
   code?: number,
   serverError?: string
-) {
+): void {
   if (code === undefined) {
-    throw new MindeeHttpError({ message: "Missing HTTP Error code.", details: response.data, undefined }, url);
+    throw new MindeeHttpError(
+      {message: "Missing HTTP Error code.", details: response.data, undefined },
+      urlName
+    );
   }
   let errorObj: StringDict;
   try {
@@ -68,31 +71,31 @@ export function handleError(
   let errorToThrow;
   switch (code) {
   case 400:
-    errorToThrow = new MindeeHttp400Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp400Error(errorObj, urlName, code);
     break;
   case 401:
-    errorToThrow = new MindeeHttp401Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp401Error(errorObj, urlName, code);
     break;
   case 403:
-    errorToThrow = new MindeeHttp403Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp403Error(errorObj, urlName, code);
     break;
   case 404:
-    errorToThrow = new MindeeHttp404Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp404Error(errorObj, urlName, code);
     break;
   case 413:
-    errorToThrow = new MindeeHttp413Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp413Error(errorObj, urlName, code);
     break;
   case 429:
-    errorToThrow = new MindeeHttp429Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp429Error(errorObj, urlName, code);
     break;
   case 500:
-    errorToThrow = new MindeeHttp500Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp500Error(errorObj, urlName, code);
     break;
   case 504:
-    errorToThrow = new MindeeHttp504Error(errorObj, url, code);
+    errorToThrow = new MindeeHttp504Error(errorObj, urlName, code);
     break;
   default:
-    errorToThrow = new MindeeHttpError(errorObj, url, code);
+    errorToThrow = new MindeeHttpError(errorObj, urlName, code);
     break;
   }
   errorHandler.throw(errorToThrow);
@@ -110,8 +113,8 @@ export class MindeeHttpError extends MindeeError {
   /** Standard HTTP error code. */
   code?: number;
 
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(`${url} API ${code} HTTP error: ${httpError.message}`);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(`${urlName} API ${code} HTTP error: ${httpError.message}`);
     this.details = httpError.details;
     this.message = httpError.message;
     this.code = code;
@@ -124,8 +127,8 @@ export class MindeeHttpError extends MindeeError {
  * Can include errors like InvalidQuery.
  */
 export class MindeeHttp400Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp400Error";
   }
 }
@@ -134,8 +137,8 @@ export class MindeeHttp400Error extends MindeeHttpError {
  * Can include errors like NoTokenSet or InvalidToken.
  */
 export class MindeeHttp401Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp401Error";
   }
 }
@@ -145,26 +148,26 @@ export class MindeeHttp401Error extends MindeeHttpError {
  * Can also include errors like PlanLimitReached, AsyncRequestDisallowed or SyncRequestDisallowed.
  */
 export class MindeeHttp403Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp403Error";
   }
 }
 
 export class MindeeHttp404Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp404Error";
   }
 }
 
-/** 
+/**
  * Rare error.
  * Can occasionally happen when unusually large documents are passed.
  */
 export class MindeeHttp413Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp413Error";
   }
 }
@@ -174,8 +177,8 @@ export class MindeeHttp413Error extends MindeeHttpError {
  * Arises whenever too many calls to the API are made in quick succession.
  */
 export class MindeeHttp429Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp429Error";
   }
 }
@@ -184,8 +187,8 @@ export class MindeeHttp429Error extends MindeeHttpError {
  * Generic server errors.
  */
 export class MindeeHttp500Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp500Error";
   }
 }
@@ -195,8 +198,8 @@ export class MindeeHttp500Error extends MindeeHttpError {
  * Can include errors like RequestTimeout or GatewayTimeout.
  */
 export class MindeeHttp504Error extends MindeeHttpError {
-  constructor(httpError: StringDict, url: string, code?: number) {
-    super(httpError, url, code);
+  constructor(httpError: StringDict, urlName: string, code?: number) {
+    super(httpError, urlName, code);
     this.name = "MindeeHttp504Error";
   }
 }
