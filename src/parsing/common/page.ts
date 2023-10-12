@@ -21,9 +21,8 @@ export class Page<T extends Prediction> {
   extras?: Extras;
 
   /**
-   * 
-   * @param inferenceClass constructor signature for an inference.
-   * @param httpResponse raw http response.
+   * @param predictionType constructor signature for an inference.
+   * @param rawPrediction raw http response.
    * @param pageId the page's index (identifier).
    * @param orientation the page's orientation.
    */

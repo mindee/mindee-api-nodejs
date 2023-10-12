@@ -1,13 +1,5 @@
-import { BaseField } from "./base";
+import { BaseField, BaseFieldConstructor } from "./base";
 import { Polygon, BoundingBox, getBoundingBox } from "../../geometry";
-import { StringDict } from "../common";
-
-export interface FieldConstructor {
-  prediction: StringDict;
-  valueKey?: string;
-  reconstructed?: boolean;
-  pageId?: number | undefined;
-}
 
 /**
  * A basic field with position and page information.
@@ -25,19 +17,16 @@ export class Field extends BaseField {
   polygon: Polygon = [];
   /** The confidence score of the prediction. */
   confidence: number;
+
   /**
-   * @param prediction - Prediction object from HTTP response
-   * @param valueKey - Key to use in the prediction dict
-   * @param reconstructed - Does the object is reconstructed (not extracted by the API)
-   * @param pageId - Page ID for multi-page document
-   * @param extraFields - Extra fields to get from the prediction and to set as attribute of the Field
+   * @param {BaseFieldConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId,
-  }: FieldConstructor) {
+  }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
 
     this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
@@ -69,7 +58,7 @@ export class Field extends BaseField {
 
   /**
    * @param {Field[]} array - Array of Fields
-   * @returns {Number} product of all the fields probability
+   * @returns {number} product of all the fields probability
    */
   static arrayConfidence(array: Field[]): number {
     let total = 1.0;

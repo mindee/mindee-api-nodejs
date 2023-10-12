@@ -16,9 +16,7 @@ export class LocaleField extends BaseField {
   currency?: string;
 
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict
-   * @param {boolean} reconstructed - Is the object reconstructed (not extracted by the API)
+   * @param {BaseFieldConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},

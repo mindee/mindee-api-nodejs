@@ -5,7 +5,7 @@ import { StringDict } from "./stringDict";
 /** Base wrapper for API requests.
  * 
  * @category API Response
-*/
+ */
 export abstract class ApiResponse {
   /** Initial request sent to the API. */
   apiRequest: ApiRequest;

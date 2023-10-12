@@ -1,4 +1,5 @@
-import { Field, FieldConstructor } from "./field";
+import { Field } from "./field";
+import { BaseFieldConstructor } from "./base";
 
 /**
  * A field containing a date value.
@@ -10,17 +11,14 @@ export class DateField extends Field {
   public dateObject?: Date;
 
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict
-   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
-   * @param {Integer} pageId - Page ID for multi-page document
+   * @param {BaseFieldConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},
     valueKey = "value",
     reconstructed = false,
     pageId,
-  }: FieldConstructor) {
+  }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
     if (typeof this.value === "string") {
       this.dateObject = new Date(this.value);

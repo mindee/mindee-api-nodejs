@@ -14,10 +14,7 @@ export class OrientationField extends BaseField {
   pageId!: number;
 
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict
-   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
-   * @param {Integer} pageId - Page ID for multi-page document
+   * @param {OrientationFieldConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},

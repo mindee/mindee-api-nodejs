@@ -1,6 +1,16 @@
 import { StringDict } from "../common";
 import { Field } from "./field";
 
+/**
+ * @property {StringDict} constructor.prediction - Prediction object from HTTP response
+ * @property {string} constructor.valueKey - Key to use in the prediction dict to get the iban.
+ * @property {string} constructor.accountNumberKey - Key to use to get the account number in the prediction dict.
+ * @property {string} constructor.ibanKey - Key to use to get the IBAN in the prediction dict.
+ * @property {string} constructor.routingNumberKey - Key to use to get the routing number in the prediction dict.
+ * @property {string} constructor.swiftKey - Key to use to get the SWIFT in the prediction dict.
+ * @property {boolean} constructor.reconstructed - Is the object reconstructed (not extracted by the API).
+ * @property {number} constructor.pageId - Page ID for multi-page document.
+ */
 interface PaymentDetailsConstructor {
   prediction: StringDict;
   valueKey?: string;
@@ -28,14 +38,7 @@ export class PaymentDetailsField extends Field {
   swift: string | undefined;
 
   /**
-   * @param {Object} prediction - Prediction object from HTTP response
-   * @param {String} valueKey - Key to use in the prediction dict to get the iban
-   * @param {String} accountNumberKey - Key to use to get the account number in the prediction dict
-   * @param {String} ibanKey - Key to use to get the IBAN in the prediction dict
-   * @param {String} routingNumberKey - Key to use to get the routing number in the prediction dict
-   * @param {String} swiftKey - Key to use to get the SWIFT in the prediction dict
-   * @param {Boolean} reconstructed - Is the object reconstructed (not extracted by the API)
-   * @param {Integer} pageId - Page ID for multi-page document
+   * @param {PaymentDetailsConstructor} constructor Constructor parameters.
    */
   constructor({
     prediction = {},

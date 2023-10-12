@@ -1,12 +1,15 @@
 import * as fileType from "file-type";
 import * as path from "path";
-
 import { PageOptions } from "./pageOptions";
 import { extractPages } from "../pdf";
 import { logger } from "../logger";
 import { errorHandler } from "../errors/handler";
 
-interface InputProps {
+/**
+ * @param {string} inputType - the type of input used in file ("base64", "path", "dummy").
+ *                             NB: dummy is only used for tests purposes
+ */
+interface InputConstructor {
   inputType: string;
 }
 
@@ -50,12 +53,9 @@ export abstract class LocalInputSource extends InputSource {
   public fileObject!: Buffer | string;
 
   /**
-   * @param {String} inputType - the type of input used in file ("base64", "path", "dummy").
-   *                             NB: dummy is only used for tests purposes
-   * @param {Boolean} cutPages
-   * NB: Because of async calls, init() should be called after creating the object
+   * @param {InputConstructor} constructor Constructor parameters.
    */
-  constructor({ inputType }: InputProps) {
+  protected constructor({ inputType }: InputConstructor) {
     super();
     // Check if inputType is valid
     if (!ALLOWED_INPUT_TYPES.includes(inputType)) {

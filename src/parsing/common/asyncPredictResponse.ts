@@ -7,7 +7,7 @@ import { Document } from "./document";
  * 
  * @category API Response
  * @category Asynchronous
-*/
+ */
 export class Job {
   /** Timestamp noting the enqueueing of a document. */
   issuedAt: Date;
@@ -51,7 +51,7 @@ export class Job {
  * 
  * @category API Response
  * @category Asynchronous
-*/
+ */
 export class AsyncPredictResponse<T extends Inference> extends ApiResponse {
   /** Job for a queue. */
   job: Job;
