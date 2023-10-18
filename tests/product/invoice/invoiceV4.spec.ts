@@ -2,9 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../src";
-import { InvoiceV4 } from "../../../src/product";
-import { Page } from "../../../src/parsing/common";
-import { InvoiceV4Document } from "../../../src/product/invoice/invoiceV4Document";
+
 
 const dataPath = {
   complete: "tests/data/products/invoices/response_v4/complete.json",
@@ -13,39 +11,34 @@ const dataPath = {
   page0String: "tests/data/products/invoices/response_v4/summary_page0.rst",
 };
 
-describe("Invoice V4 Object initialization", async () => {
-  before(async function () {
-    const jsonDataNA = await fs.readFile(path.resolve(dataPath.empty));
-    this.basePrediction = JSON.parse(
-      jsonDataNA.toString()
-    ).document.inference.pages[0].prediction;
-  });
-
-  it("should initialize from a N/A prediction object", async () => {
+describe("InvoiceV4 Object initialization", async () => {
+  it("should load an empty document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new Page(InvoiceV4Document, response.document.inference.pages[0], 0);
-    expect(doc.prediction.locale.value).to.be.undefined;
-    expect(doc.prediction.totalAmount.value).to.be.undefined;
-    expect(doc.prediction.totalNet.value).to.be.undefined;
-    expect(doc.prediction.totalTax.value).to.be.undefined;
-    expect(doc.prediction.date.value).to.be.undefined;
-    expect(doc.prediction.invoiceNumber.value).to.be.undefined;
-    expect(doc.prediction.dueDate.value).to.be.undefined;
-    expect(doc.prediction.supplierName.value).to.be.undefined;
-    expect(doc.prediction.supplierAddress.value).to.be.undefined;
-    expect(doc.prediction.customerName.value).to.be.undefined;
-    expect(doc.prediction.customerAddress.value).to.be.undefined;
-    expect(doc.prediction.customerCompanyRegistrations.length).to.be.eq(0);
-    expect(doc.prediction.taxes.length).to.be.equal(0);
-    expect(doc.prediction.supplierPaymentDetails.length).to.be.equal(0);
-    expect(doc.prediction.supplierCompanyRegistrations.length).to.be.equal(0);
+    const doc = new mindee.Document(mindee.product.InvoiceV4, response.document);
+    const docPrediction = doc.inference.prediction;
+    expect(docPrediction.locale.value).to.be.undefined;
+    expect(docPrediction.invoiceNumber.value).to.be.undefined;
+    expect(docPrediction.referenceNumbers.length).to.be.equals(0);
+    expect(docPrediction.date.value).to.be.undefined;
+    expect(docPrediction.dueDate.value).to.be.undefined;
+    expect(docPrediction.totalNet.value).to.be.undefined;
+    expect(docPrediction.totalAmount.value).to.be.undefined;
+    expect(docPrediction.taxes.length).to.be.equals(0);
+    expect(docPrediction.supplierPaymentDetails.length).to.be.equals(0);
+    expect(docPrediction.supplierName.value).to.be.undefined;
+    expect(docPrediction.supplierCompanyRegistrations.length).to.be.equals(0);
+    expect(docPrediction.supplierAddress.value).to.be.undefined;
+    expect(docPrediction.customerName.value).to.be.undefined;
+    expect(docPrediction.customerCompanyRegistrations.length).to.be.equals(0);
+    expect(docPrediction.customerAddress.value).to.be.undefined;
+    expect(docPrediction.lineItems.length).to.be.equals(0);
   });
 
   it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc: mindee.Document<InvoiceV4> = new mindee.Document(InvoiceV4, response.document);
+    const doc = new mindee.Document(mindee.product.InvoiceV4, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
@@ -53,10 +46,9 @@ describe("Invoice V4 Object initialization", async () => {
   it("should load a complete page 0 prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
-    const pageData = response.document.inference;
-    const doc = new InvoiceV4(pageData);
-    const pageString = await fs.readFile(path.join(dataPath.page0String));
-    const page0: Page<InvoiceV4Document> = doc.pages[0];
-    expect(page0.toString()).to.be.equals(pageString.toString());
+    const doc = new mindee.Document(mindee.product.InvoiceV4, response.document);
+    const page0 = doc.inference.pages[0];
+    const docString = await fs.readFile(path.join(dataPath.page0String));
+    expect(page0.toString()).to.be.equals(docString.toString());
   });
 });

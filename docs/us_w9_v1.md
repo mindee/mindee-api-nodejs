@@ -1,10 +1,10 @@
 ---
 title: US W9 OCR Node.js
 ---
-The Node.js OCR SDK supports the [US W9 API](https://platform.mindee.com/mindee/us_w9).
+The Node.js OCR SDK supports the [W9 API](https://platform.mindee.com/mindee/us_w9).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/us_w9/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![US W9 sample](https://github.com/mindee/client-lib-test-data/blob/main/products/us_w9/default_sample.jpg?raw=true)
+![W9 sample](https://github.com/mindee/client-lib-test-data/blob/main/products/us_w9/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js
@@ -74,7 +74,7 @@ These fields are generic and used in several products.
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
-* **value** (number|string): corresponds to the field value. Can be `undefined` if no value was extracted.
+* **value** (`number | string`): corresponds to the field value. Can be `undefined` if no value was extracted.
 * **confidence** (`number`): the confidence score of the field prediction.
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
@@ -100,7 +100,7 @@ The text field `StringField` only has one constraint: its **value** is a `string
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
 
 # Attributes
-The following fields are extracted for US W9 V1:
+The following fields are extracted for W9 V1:
 
 ## Address
 [📄](#page-level-fields "This field is only present on individual pages.")**address** ([StringField](#string-field)): The street address (number, street, and apt. or suite no.) of the applicant.

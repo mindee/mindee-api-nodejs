@@ -220,11 +220,11 @@ export class FinancialDocumentV1Document implements Prediction {
 :Total Amount: ${this.totalAmount}
 :Taxes: ${this.taxes}
 :Supplier Payment Details: ${supplierPaymentDetails}
-:Supplier name: ${this.supplierName}
+:Supplier Name: ${this.supplierName}
 :Supplier Company Registrations: ${supplierCompanyRegistrations}
 :Supplier Address: ${this.supplierAddress}
 :Supplier Phone Number: ${this.supplierPhoneNumber}
-:Customer name: ${this.customerName}
+:Customer Name: ${this.customerName}
 :Customer Company Registrations: ${customerCompanyRegistrations}
 :Customer Address: ${this.customerAddress}
 :Document Type: ${this.documentType}
