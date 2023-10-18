@@ -47,37 +47,37 @@ Inference
 Prediction
 ==========
 :Locale: en; en; CAD;
-:Document type: INVOICE
-:Invoice number: 14
-:Reference numbers: AD29094
-:Invoice date: 2018-09-25
-:Invoice due date: 2018-09-25
-:Supplier name: TURNPIKE DESIGNS CO.
-:Supplier address: 156 University Ave, Toronto ON, Canada M5H 2H7
-:Supplier company registrations:
-:Supplier payment details:
-:Customer name: JIRO DOI
-:Customer address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
-:Customer company registrations:
+:Document Type: INVOICE
+:Invoice Number: 14
+:Reference Numbers: AD29094
+:Invoice Date: 2018-09-25
+:Invoice Due Date: 2018-09-25
+:Supplier Name: TURNPIKE DESIGNS CO.
+:Supplier Address: 156 University Ave, Toronto ON, Canada M5H 2H7
+:Supplier Company Registrations:
+:Supplier Payment Details:
+:Customer Name: JIRO DOI
+:Customer Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Customer Company Registrations:
 :Taxes:
   +---------------+--------+----------+---------------+
   | Base          | Code   | Rate (%) | Amount        |
   +===============+========+==========+===============+
   |               |        | 8.00     | 193.20        |
   +---------------+--------+----------+---------------+
-:Total net:
-:Total tax: 193.20
-:Total amount: 2608.20
+:Total Net:
+:Total Tax: 193.20
+:Total Amount: 2608.20
 :Line Items:
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
-  | Code                 | QTY     | Price   | Amount   | Tax (Rate)       | Description                          |
-  +======================+=========+=========+==========+==================+======================================+
-  |                      | 1.00    | 65.00   | 65.00    |                  | Platinum web hosting package Down... |
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
-  |                      | 3.00    | 2100.00 | 2100.00  |                  | 2 page website design Includes ba... |
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
-  |                      | 1.00    | 250.00  | 250.00   |                  | Mobile designs Includes responsiv... |
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit Price |
+  +======================================+==============+==========+============+==============+==============+============+
+  | Platinum web hosting package Down... |              | 1.00     |            |              | 65.00        | 65.00      |
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | 2 page website design Includes ba... |              | 3.00     |            |              | 2100.00      | 2100.00    |
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | Mobile designs Includes responsiv... |              | 1.00     |            |              | 250.00       | 250.00     |
+  +--------------------------------------+--------------+----------+---------------------------+--------------+------------+
 
 Page Predictions
 ================
@@ -85,37 +85,37 @@ Page Predictions
 Page 0
 ------
 :Locale: en; en; CAD;
-:Document type: INVOICE
-:Invoice number: 14
-:Reference numbers: AD29094
-:Invoice date: 2018-09-25
-:Invoice due date: 2018-09-25
-:Supplier name: TURNPIKE DESIGNS CO.
-:Supplier address: 156 University Ave, Toronto ON, Canada M5H 2H7
-:Supplier company registrations:
-:Supplier payment details:
-:Customer name: JIRO DOI
-:Customer address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
-:Customer company registrations:
+:Document Type: INVOICE
+:Invoice Number: 14
+:Reference Numbers: AD29094
+:Invoice Date: 2018-09-25
+:Invoice Due Date: 2018-09-25
+:Supplier Name: TURNPIKE DESIGNS CO.
+:Supplier Address: 156 University Ave, Toronto ON, Canada M5H 2H7
+:Supplier Company Registrations:
+:Supplier Payment Details:
+:Customer Name: JIRO DOI
+:Customer Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Customer Company Registrations:
 :Taxes:
   +---------------+--------+----------+---------------+
   | Base          | Code   | Rate (%) | Amount        |
   +===============+========+==========+===============+
   |               |        | 8.00     | 193.20        |
   +---------------+--------+----------+---------------+
-:Total net:
-:Total tax: 193.20
-:Total amount: 2608.20
+:Total Net:
+:Total Tax: 193.20
+:Total Amount: 2608.20
 :Line Items:
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
-  | Code                 | QTY     | Price   | Amount   | Tax (Rate)       | Description                          |
-  +======================+=========+=========+==========+==================+======================================+
-  |                      | 1.00    | 65.00   | 65.00    |                  | Platinum web hosting package Down... |
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
-  |                      | 3.00    | 2100.00 | 2100.00  |                  | 2 page website design Includes ba... |
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
-  |                      | 1.00    | 250.00  | 250.00   |                  | Mobile designs Includes responsiv... |
-  +----------------------+---------+---------+----------+------------------+--------------------------------------+
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | Description                          | Product code | Quantity | Tax Amount | Tax Rate (%) | Total Amount | Unit Price |
+  +======================================+==============+==========+============+==============+==============+============+
+  | Platinum web hosting package Down... |              | 1.00     |            |              | 65.00        | 65.00      |
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | 2 page website design Includes ba... |              | 3.00     |            |              | 2100.00      | 2100.00    |
+  +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
+  | Mobile designs Includes responsiv... |              | 1.00     |            |              | 250.00       | 250.00     |
+  +--------------------------------------+--------------+----------+---------------------------+--------------+------------+
 ```
 
 # Field Types
@@ -126,7 +126,7 @@ These fields are generic and used in several products.
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
-* **value** (number|string): corresponds to the field value. Can be `undefined` if no value was extracted.
+* **value** (`number | string`): corresponds to the field value. Can be `undefined` if no value was extracted.
 * **confidence** (`number`): the confidence score of the field prediction.
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
@@ -181,7 +181,7 @@ The text field `StringField` only has one constraint: its **value** is a `string
 #### Tax
 Aside from the basic `Field` attributes, the tax field `TaxField` also implements the following:
 
-* **rate** (`number`): the tax rate applied to an item can be undefined. Expressed as a percentage. Can be `undefined`.
+* **rate** (`number`): the tax rate applied to an item can be expressed as a percentage. Can be `undefined`.
 * **code** (`string`): tax code (or equivalent, depending on the origin of the document). Can be `undefined`.
 * **base** (`number`): base amount used for the tax. Can be `undefined`.
 
@@ -226,7 +226,7 @@ for (const customerCompanyRegistrationsElem of result.document.inference.predict
 ```
 
 ## Customer Name
-**customerName** ([StringField](#string-field)): The name of the customer.
+**customerName** ([StringField](#string-field)): The name of the customer or client.
 
 ```js
 console.log(result.document.inference.prediction.customerName.value);
@@ -322,7 +322,7 @@ for (const supplierPaymentDetailsElem of result.document.inference.prediction.su
 
 ```js
 for (const taxesElem of result.document.inference.prediction.taxes) {
-  console.log(taxesElem.value);
+  console.log(taxesElem.toString());
 }
 ```
 

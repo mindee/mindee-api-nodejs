@@ -2,7 +2,7 @@ import { Prediction } from "../../../parsing/common";
 
 
 /**
- * Document data for US W9, API version 1.
+ * Document data for W9, API version 1.
  */
 export class W9V1Document implements Prediction {
   /**

@@ -19,7 +19,12 @@ export class InvoiceV4 extends Inference {
     this.prediction = new InvoiceV4Document(rawPrediction["prediction"]);
     this.pages = rawPrediction["pages"].map(
       (page: StringDict) =>
-        new Page(InvoiceV4Document, page, page["id"], page["orientation"])
+        new Page(
+          InvoiceV4Document,
+          page,
+          page["id"],
+          page["orientation"]
+        )
     );
   }
 }
