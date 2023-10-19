@@ -19,6 +19,8 @@ export class Document<T extends Inference> {
   extras?: Extras;
   /** Raw-text response for `allWords` parsing. */
   ocr?: Ocr;
+  /** Page number as sent back by the API. */
+  nPages: number;
 
   /**
    * 
@@ -50,6 +52,7 @@ export class Document<T extends Inference> {
       );
       this.extras = new Extras(extras);
     }
+    this.nPages = httpResponse["n_pages"];
   }
 
 
