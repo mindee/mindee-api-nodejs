@@ -37,6 +37,13 @@ do
     sed -i "s/my-version/1/" $OUTPUT_FILE
   fi
 
+  if echo "${f}" | grep -q "default_async.txt"
+    then
+      sed -i "s/my-account/mindee/" $OUTPUT_FILE
+      sed -i "s/my-endpoint/invoice_splitter/" $OUTPUT_FILE
+      sed -i "s/my-version/1/" $OUTPUT_FILE
+    fi
+
   sleep 0.6  # avoid too many request errors
   node $OUTPUT_FILE
 done
