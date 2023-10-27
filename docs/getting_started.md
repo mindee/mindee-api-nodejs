@@ -1,11 +1,8 @@
----
-title: Nodejs Getting Started
----
 This guide will help you get the most out of the Mindee Node.js client library to easily extract data from your documents.
 
 > 📘 **Info**
 > 
-> The library is written in TypeScript for your coding pleasure and is officially supported on all current LTS versions of Node.js.
+> The library is written in TypeScript for your coding pleasure and is officially supported on all current LTS versions of Node.js.  
 > All examples shown in this guide should work in both TypeScript and JavaScript.
 
 ## Installation
