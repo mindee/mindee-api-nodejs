@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.3.2 - 2023-11-07
+### Changes
+* :recycle: update invoice splitter
+
+### Fixes
+* :bug: fix display issues when products didn't have pages
+* :memo: fix doc typos
+
+
 ## v4.3.2 - 2023-10-04
 ### Changes
 * :arrow_up: dependency upgrade
