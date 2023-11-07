@@ -39,6 +39,15 @@ export abstract class Inference<
    * Default string representation.
    */
   toString() {
+
+    let pages = "";
+    if (this.pages.toString().length > 0) {
+      pages = `
+Page Predictions
+================
+
+${this.pages.map((e: Page<PageT>) => e.toString() || "").join("\n")}`;
+    }
     return `Inference
 #########
 :Product: ${this.product.name} v${this.product.version}
@@ -46,11 +55,7 @@ export abstract class Inference<
 
 Prediction
 ==========
-${this.prediction.toString().length === 0 ? "" : this.prediction.toString()+"\n"}
-Page Predictions
-================
-
-${this.pages.map((e: Page<PageT>) => e.toString() || "").join("\n")}`;
+${this.prediction.toString().length === 0 ? "" : this.prediction.toString() + "\n"}${pages}`;
   }
 
   /**
