@@ -23,7 +23,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">Client</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L85">src/client.ts:85</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L86">src/client.ts:86</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -44,9 +44,10 @@
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods - Other</h3>
-<div class="tsd-index-list"><a href="Client.html#_buildEndpoint" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#build<wbr/>Endpoint</span></a>
+<div class="tsd-index-list"><a href="Client.html#_buildApiSettings" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#build<wbr/>Api<wbr/>Settings</span></a>
+<a href="Client.html#_buildProductEndpoint" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#build<wbr/>Product<wbr/>Endpoint</span></a>
 <a href="Client.html#_cleanAccountName" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#clean<wbr/>Account<wbr/>Name</span></a>
-<a href="Client.html#_getEndpoint" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#get<wbr/>Endpoint</span></a>
+<a href="Client.html#_getOtsEndpoint" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#get<wbr/>Ots<wbr/>Endpoint</span></a>
 <a href="Client.html#_initializeOTSEndpoint" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#initializeOTSEndpoint</span></a>
 <a href="Client.html#_validateAsyncParams" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#validate<wbr/>Async<wbr/>Params</span></a>
 <a href="Client.html#createEndpoint" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>create<wbr/>Endpoint</span></a>
@@ -61,7 +62,9 @@
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods - Synchronous</h3>
 <div class="tsd-index-list"><a href="Client.html#enqueueAndParse" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>enqueue<wbr/>And<wbr/>Parse</span></a>
+<a href="Client.html#getDocument" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Document</span></a>
 <a href="Client.html#parse" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>parse</span></a>
+<a href="Client.html#sendFeedback" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>send<wbr/>Feedback</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Constructors</h2>
@@ -79,7 +82,7 @@
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="Client.html" class="tsd-signature-type" data-tsd-kind="Class">Client</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L92">src/client.ts:92</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L93">src/client.ts:93</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a id="apiKey" class="tsd-anchor"></a>
@@ -88,7 +91,7 @@
 <div class="tsd-comment tsd-typography"><p>Key of the API.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L87">src/client.ts:87</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L88">src/client.ts:88</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Asynchronous Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="enqueue" class="tsd-anchor"></a>
@@ -124,14 +127,16 @@
 <h5>httpResponse: <a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></h4></li></ul></li></ul></li>
 <li>
-<h5>inputSource: <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h5></li>
+<h5>inputSource: <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h5>
+<div class="tsd-comment tsd-typography"><p>file to parse.</p>
+</div></li>
 <li>
 <h5>params: <a href="../interfaces/PredictOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">PredictOptions</a><span class="tsd-signature-symbol"> = {}</span></h5>
 <div class="tsd-comment tsd-typography"><p>parameters relating to prediction options.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="AsyncPredictResponse.html" class="tsd-signature-type" data-tsd-kind="Class">AsyncPredictResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L149">src/client.ts:149</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L151">src/client.ts:151</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="parseQueued" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>parse<wbr/>Queued</span><a href="#parseQueued" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -177,15 +182,27 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="AsyncPredictResponse.html" class="tsd-signature-type" data-tsd-kind="Class">AsyncPredictResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L180">src/client.ts:180</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L182">src/client.ts:182</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Other Methods</h2>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_buildEndpoint" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#build<wbr/>Endpoint</span><a href="#_buildEndpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_buildApiSettings" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#build<wbr/>Api<wbr/>Settings</span><a href="#_buildApiSettings" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-<li class="tsd-signature tsd-anchor-link" id="_buildEndpoint._buildEndpoint-1">#build<wbr/>Endpoint<span class="tsd-signature-symbol">(</span>endpointName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, accountName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endpointVersion<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><a href="#_buildEndpoint._buildEndpoint-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="_buildApiSettings._buildApiSettings-1">#build<wbr/>Api<wbr/>Settings<span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="internal.http.ApiSettings.html" class="tsd-signature-type" data-tsd-kind="Class">ApiSettings</a><a href="#_buildApiSettings._buildApiSettings-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
-<div class="tsd-comment tsd-typography"><p>Builds a custom endpoint.</p>
+<div class="tsd-comment tsd-typography"><p>Builds a document endpoint.</p>
+
+<h3>Returns</h3><p>a custom <code>Endpoint</code> object.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <a href="internal.http.ApiSettings.html" class="tsd-signature-type" data-tsd-kind="Class">ApiSettings</a></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L350">src/client.ts:350</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_buildProductEndpoint" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#build<wbr/>Product<wbr/>Endpoint</span><a href="#_buildProductEndpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="_buildProductEndpoint._buildProductEndpoint-1">#build<wbr/>Product<wbr/>Endpoint<span class="tsd-signature-symbol">(</span>endpointName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, accountName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, endpointVersion<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><a href="#_buildProductEndpoint._buildProductEndpoint-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Builds a product endpoint.</p>
 
 <h3>Returns</h3><p>a custom <code>Endpoint</code> object.</p>
 </div>
@@ -206,7 +223,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L285">src/client.ts:285</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L333">src/client.ts:333</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_cleanAccountName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#clean<wbr/>Account<wbr/>Name</span><a href="#_cleanAccountName" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -247,11 +264,11 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L367">src/client.ts:367</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_getEndpoint" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#get<wbr/>Endpoint</span><a href="#_getEndpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L418">src/client.ts:418</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_getOtsEndpoint" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#get<wbr/>Ots<wbr/>Endpoint</span><a href="#_getOtsEndpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
-<li class="tsd-signature tsd-anchor-link" id="_getEndpoint._getEndpoint-1">#get<wbr/>Endpoint<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>productClass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><a href="#_getEndpoint._getEndpoint-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="_getOtsEndpoint._getOtsEndpoint-1">#get<wbr/>Ots<wbr/>Endpoint<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>productClass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span><a href="#_getOtsEndpoint._getOtsEndpoint-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Get the name and version of an OTS endpoint.</p>
 
@@ -284,7 +301,7 @@ parsing is complete.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-symbol">[</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">]</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L390">src/client.ts:390</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L441">src/client.ts:441</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_initializeOTSEndpoint" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#initializeOTSEndpoint</span><a href="#_initializeOTSEndpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -315,7 +332,7 @@ parsing is complete.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L345">src/client.ts:345</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L396">src/client.ts:396</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_validateAsyncParams" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#validate<wbr/>Async<wbr/>Params</span><a href="#_validateAsyncParams" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -332,7 +349,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L195">src/client.ts:195</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L243">src/client.ts:243</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="createEndpoint" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>create<wbr/>Endpoint</span><a href="#createEndpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -340,7 +357,7 @@ parsing is complete.</p>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Creates a custom endpoint with the given values. Raises an error if the endpoint is invalid.</p>
 
-<h3>Returns</h3><p>a new endpoint</p>
+<h3>Returns</h3><p>Endpoint a new product endpoint</p>
 </div>
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -354,10 +371,12 @@ parsing is complete.</p>
 <div class="tsd-comment tsd-typography"><p>Name of the account tied to the Endpoint.</p>
 </div></li>
 <li>
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> endpointVersion: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> endpointVersion: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>Version of the custom Endpoint.</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L314">src/client.ts:314</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L365">src/client.ts:365</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="docFromBase64" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>doc<wbr/>From<wbr/>Base64</span><a href="#docFromBase64" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -378,7 +397,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L413">src/client.ts:413</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L464">src/client.ts:464</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="docFromBuffer" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>doc<wbr/>From<wbr/>Buffer</span><a href="#docFromBuffer" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -399,7 +418,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L459">src/client.ts:459</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L510">src/client.ts:510</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="docFromBytes" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>doc<wbr/>From<wbr/>Bytes</span><a href="#docFromBytes" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -420,7 +439,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L437">src/client.ts:437</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L488">src/client.ts:488</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="docFromPath" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>doc<wbr/>From<wbr/>Path</span><a href="#docFromPath" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -435,7 +454,7 @@ parsing is complete.</p>
 <h5>inputPath: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L402">src/client.ts:402</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L453">src/client.ts:453</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="docFromStream" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>doc<wbr/>From<wbr/>Stream</span><a href="#docFromStream" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -456,7 +475,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L425">src/client.ts:425</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L476">src/client.ts:476</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="docFromUrl" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>doc<wbr/>From<wbr/>Url</span><a href="#docFromUrl" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -473,7 +492,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L448">src/client.ts:448</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L499">src/client.ts:499</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a id="getBooleanParam" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>get<wbr/>Boolean<wbr/>Param</span><a href="#getBooleanParam" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
@@ -492,7 +511,7 @@ parsing is complete.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L274">src/client.ts:274</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L322">src/client.ts:322</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Synchronous Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="enqueueAndParse" class="tsd-anchor"></a>
@@ -540,7 +559,57 @@ until the maximum amount of tries is reached.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="AsyncPredictResponse.html" class="tsd-signature-type" data-tsd-kind="Class">AsyncPredictResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L222">src/client.ts:222</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L270">src/client.ts:270</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getDocument" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>Document</span><a href="#getDocument" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="getDocument.getDocument-1">get<wbr/>Document<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>productClass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">)</span>, documentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, params<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span>endpoint<span class="tsd-signature-symbol">?: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="PredictResponse.html" class="tsd-signature-type" data-tsd-kind="Class">PredictResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span><a href="#getDocument.getDocument-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Fetch prediction results from a document already processed.</p>
+
+<h3>Returns</h3><p>a <code>Promise</code> containing parsing results.</p>
+</div>
+<section class="tsd-panel tsd-type-parameters">
+<h4>Type Parameters</h4>
+<ul class="tsd-type-parameters">
+<li>
+<h4>T<span class="tsd-signature-symbol"> extends </span><a href="internal.parsing.common.Inference.html" class="tsd-signature-type" data-tsd-kind="Class">Inference</a><span class="tsd-signature-symbol">&lt;</span><a href="internal.parsing.common.Prediction.html" class="tsd-signature-type" data-tsd-kind="Class">Prediction</a><span class="tsd-signature-symbol">, </span><a href="internal.parsing.common.Prediction.html" class="tsd-signature-type" data-tsd-kind="Class">Prediction</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+<div class="tsd-comment tsd-typography"><p>an extension of an <code>Inference</code>. Can be omitted as it will be inferred from the <code>productClass</code>.</p>
+</div></li></ul></section>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>productClass: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">)</span></h5>
+<div class="tsd-comment tsd-typography"><p>product class to use for calling  the API and parsing the response.</p>
+</div>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures tsd-kind-constructor">
+<li class="tsd-signature"><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>httpResponse: <a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></h4></li></ul></li></ul></li>
+<li>
+<h5>documentId: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>id of the document to fetch.</p>
+</div></li>
+<li>
+<h5>params: <span class="tsd-signature-symbol">{ </span><br/><span>    </span>endpoint<span class="tsd-signature-symbol">?: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = {}</span></h5>
+<div class="tsd-comment tsd-typography"><p>optional parameters.</p>
+</div>
+<ul class="tsd-parameters">
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> endpoint<span class="tsd-signature-symbol">?: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a></h5>
+<div class="tsd-comment tsd-typography"><p>Endpoint, only specify if using a custom product.</p>
+</div></li></ul></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="PredictResponse.html" class="tsd-signature-type" data-tsd-kind="Class">PredictResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L204">src/client.ts:204</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="parse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>parse</span><a href="#parse" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -577,7 +646,7 @@ until the maximum amount of tries is reached.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></h4></li></ul></li></ul></li>
 <li>
 <h5>inputSource: <a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h5>
-<div class="tsd-comment tsd-typography"><p>document to parse.</p>
+<div class="tsd-comment tsd-typography"><p>file to parse.</p>
 </div></li>
 <li>
 <h5>params: <a href="../interfaces/PredictOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">PredictOptions</a><span class="tsd-signature-symbol"> = ...</span></h5>
@@ -585,7 +654,61 @@ until the maximum amount of tries is reached.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="PredictResponse.html" class="tsd-signature-type" data-tsd-kind="Class">PredictResponse</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/client.ts#L118">src/client.ts:118</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L119">src/client.ts:119</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="sendFeedback" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>send<wbr/>Feedback</span><a href="#sendFeedback" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="sendFeedback.sendFeedback-1">send<wbr/>Feedback<span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">(</span>productClass<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">)</span>, documentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, feedback<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a>, params<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span>endpoint<span class="tsd-signature-symbol">?: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="internal.parsing.common.FeedbackResponse.html" class="tsd-signature-type" data-tsd-kind="Class">FeedbackResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#sendFeedback.sendFeedback-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Send a feedback for a document.</p>
+
+<h3>Returns</h3><p>a <code>Promise</code> containing feedback results.</p>
+</div>
+<section class="tsd-panel tsd-type-parameters">
+<h4>Type Parameters</h4>
+<ul class="tsd-type-parameters">
+<li>
+<h4>T<span class="tsd-signature-symbol"> extends </span><a href="internal.parsing.common.Inference.html" class="tsd-signature-type" data-tsd-kind="Class">Inference</a><span class="tsd-signature-symbol">&lt;</span><a href="internal.parsing.common.Prediction.html" class="tsd-signature-type" data-tsd-kind="Class">Prediction</a><span class="tsd-signature-symbol">, </span><a href="internal.parsing.common.Prediction.html" class="tsd-signature-type" data-tsd-kind="Class">Prediction</a><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">&gt;</span></h4>
+<div class="tsd-comment tsd-typography"><p>an extension of an <code>Inference</code>. Can be omitted as it will be inferred from the <code>productClass</code>.</p>
+</div></li></ul></section>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>productClass: <span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span><span class="tsd-signature-symbol">)</span></h5>
+<div class="tsd-comment tsd-typography"><p>product class to use for calling  the API and parsing the response.</p>
+</div>
+<ul class="tsd-parameters">
+<li class="tsd-parameter-signature">
+<ul class="tsd-signatures tsd-kind-constructor">
+<li class="tsd-signature"><span class="tsd-signature-symbol">new </span><span class="tsd-signature-symbol">(</span>httpResponse<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></li>
+<li class="tsd-description">
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>httpResponse: <a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type" data-tsd-kind="Type parameter">T</span></h4></li></ul></li></ul></li>
+<li>
+<h5>documentId: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>id of the document to send feedback for.</p>
+</div></li>
+<li>
+<h5>feedback: <a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a></h5>
+<div class="tsd-comment tsd-typography"><p>the feedback to send.</p>
+</div></li>
+<li>
+<h5>params: <span class="tsd-signature-symbol">{ </span><br/><span>    </span>endpoint<span class="tsd-signature-symbol">?: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol"> = {}</span></h5>
+<div class="tsd-comment tsd-typography"><p>optional parameters.</p>
+</div>
+<ul class="tsd-parameters">
+<li class="tsd-parameter">
+<h5><code class="tsd-tag ts-flagOptional">Optional</code> endpoint<span class="tsd-signature-symbol">?: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a></h5>
+<div class="tsd-comment tsd-typography"><p>Endpoint, only specify if using a custom product.</p>
+</div></li></ul></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="internal.parsing.common.FeedbackResponse.html" class="tsd-signature-type" data-tsd-kind="Class">FeedbackResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/client.ts#L227">src/client.ts:227</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -652,9 +775,10 @@ until the maximum amount of tries is reached.</p>
 <ul>
 <li class="tsd-kind-constructor tsd-parent-kind-class"><a href="Client.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg>constructor</a></li>
 <li class="tsd-kind-property tsd-parent-kind-class tsd-is-protected"><a href="Client.html#apiKey" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>api<wbr/>Key</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_buildEndpoint" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#build<wbr/>Endpoint</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_buildApiSettings" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#build<wbr/>Api<wbr/>Settings</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_buildProductEndpoint" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#build<wbr/>Product<wbr/>Endpoint</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_cleanAccountName" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#clean<wbr/>Account<wbr/>Name</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_getEndpoint" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#get<wbr/>Endpoint</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_getOtsEndpoint" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#get<wbr/>Ots<wbr/>Endpoint</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_initializeOTSEndpoint" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#initializeOTSEndpoint</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="Client.html#_validateAsyncParams" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#validate<wbr/>Async<wbr/>Params</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#createEndpoint" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>create<wbr/>Endpoint</a></li>
@@ -667,8 +791,10 @@ until the maximum amount of tries is reached.</p>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#enqueue" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>enqueue</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#enqueueAndParse" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>enqueue<wbr/>And<wbr/>Parse</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="Client.html#getBooleanParam" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Boolean<wbr/>Param</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#getDocument" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Document</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#parse" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>parse</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#parseQueued" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>parse<wbr/>Queued</a></li></ul></li></ul></nav></div></div>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#parseQueued" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>parse<wbr/>Queued</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="Client.html#sendFeedback" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>send<wbr/>Feedback</a></li></ul></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>

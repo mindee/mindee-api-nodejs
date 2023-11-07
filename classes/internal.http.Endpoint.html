@@ -18,14 +18,16 @@
 <li><a href="internal.http.Endpoint.html">Endpoint</a></li></ul>
 <h1>Class Endpoint</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>Endpoint object class wrapper.</p>
+<div class="tsd-comment tsd-typography"><p>Endpoint for a product (OTS or Custom).</p>
 </div></section>
 <section class="tsd-panel tsd-hierarchy">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
-<li><span class="target">Endpoint</span></li></ul></section><aside class="tsd-sources">
+<li><span class="tsd-signature-type">BaseEndpoint</span>
+<ul class="tsd-hierarchy">
+<li><span class="target">Endpoint</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L20">src/http/endpoint.ts:20</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L23">src/http/endpoint.ts:23</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -38,7 +40,7 @@
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Properties</h3>
 <div class="tsd-index-list"><a href="internal.http.Endpoint.html#owner" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>owner</span></a>
-<a href="internal.http.Endpoint.html#settings" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>settings</span></a>
+<a href="internal.http.Endpoint.html#settings" class="tsd-index-link tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>settings</span></a>
 <a href="internal.http.Endpoint.html#urlName" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>url<wbr/>Name</span></a>
 <a href="internal.http.Endpoint.html#urlRoot" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>url<wbr/>Root</span></a>
 <a href="internal.http.Endpoint.html#version" class="tsd-index-link tsd-kind-property tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>version</span></a>
@@ -51,11 +53,14 @@
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Methods - Other</h3>
 <div class="tsd-index-list"><a href="internal.http.Endpoint.html#_cutDocPages" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#cut<wbr/>Doc<wbr/>Pages</span></a>
+<a href="internal.http.Endpoint.html#_documentFeedbackPutReq" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#document<wbr/>Feedback<wbr/>Put<wbr/>Req</span></a>
 <a href="internal.http.Endpoint.html#_documentGetReq" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#document<wbr/>Get<wbr/>Req</span></a>
 <a href="internal.http.Endpoint.html#_documentQueueReqGet" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#document<wbr/>Queue<wbr/>Req<wbr/>Get</span></a>
 <a href="internal.http.Endpoint.html#_predictAsyncReqPost" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#predict<wbr/>Async<wbr/>Req<wbr/>Post</span></a>
 <a href="internal.http.Endpoint.html#_predictReqPost" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-private"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>#predict<wbr/>Req<wbr/>Post</span></a>
-<a href="internal.http.Endpoint.html#readResponse" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-protected"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>read<wbr/>Response</span></a>
+<a href="internal.http.Endpoint.html#getDocument" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Document</span></a>
+<a href="internal.http.Endpoint.html#readResponse" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>read<wbr/>Response</span></a>
+<a href="internal.http.Endpoint.html#sendFeedback" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>send<wbr/>Feedback</span></a>
 <a href="internal.http.Endpoint.html#sendFileForPrediction" class="tsd-index-link tsd-kind-method tsd-parent-kind-class tsd-is-protected"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>send<wbr/>File<wbr/>For<wbr/>Prediction</span></a>
 </div></section>
 <section class="tsd-index-section">
@@ -67,7 +72,7 @@
 <section class="tsd-panel tsd-member tsd-kind-constructor tsd-parent-kind-class"><a id="constructor" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-constructor tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="constructor.new_Endpoint">new <wbr/>Endpoint<span class="tsd-signature-symbol">(</span>urlName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, owner<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, settings<span class="tsd-signature-symbol">: </span><a href="internal.http.MindeeApi.html" class="tsd-signature-type" data-tsd-kind="Class">MindeeApi</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><a href="#constructor.new_Endpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="constructor.new_Endpoint">new <wbr/>Endpoint<span class="tsd-signature-symbol">(</span>urlName<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, owner<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, version<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, settings<span class="tsd-signature-symbol">: </span><a href="internal.http.ApiSettings.html" class="tsd-signature-type" data-tsd-kind="Class">ApiSettings</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a><a href="#constructor.new_Endpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
@@ -79,10 +84,11 @@
 <li>
 <h5>version: <span class="tsd-signature-type">string</span></h5></li>
 <li>
-<h5>settings: <a href="internal.http.MindeeApi.html" class="tsd-signature-type" data-tsd-kind="Class">MindeeApi</a></h5></li></ul></div>
+<h5>settings: <a href="internal.http.ApiSettings.html" class="tsd-signature-type" data-tsd-kind="Class">ApiSettings</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a></h4><aside class="tsd-sources">
+<p>Overrides BaseEndpoint.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L32">src/http/endpoint.ts:32</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L33">src/http/endpoint.ts:33</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Properties</h2>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="owner" class="tsd-anchor"></a>
@@ -91,35 +97,36 @@
 <div class="tsd-comment tsd-typography"><p>Account owning the product.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L24">src/http/endpoint.ts:24</a></li></ul></aside></section>
-<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="settings" class="tsd-anchor"></a>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L27">src/http/endpoint.ts:27</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a id="settings" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>settings</span><a href="#settings" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<div class="tsd-signature">settings<span class="tsd-signature-symbol">:</span> <a href="internal.http.MindeeApi.html" class="tsd-signature-type" data-tsd-kind="Class">MindeeApi</a></div>
+<div class="tsd-signature">settings<span class="tsd-signature-symbol">:</span> <a href="internal.http.ApiSettings.html" class="tsd-signature-type" data-tsd-kind="Class">ApiSettings</a></div>
 <div class="tsd-comment tsd-typography"><p>Settings relating to the API.</p>
 </div><aside class="tsd-sources">
+<p>Inherited from BaseEndpoint.settings</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L30">src/http/endpoint.ts:30</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/baseEndpoint.ts#L17">src/http/baseEndpoint.ts:17</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="urlName" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>url<wbr/>Name</span><a href="#urlName" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">url<wbr/>Name<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>URL of a product.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L22">src/http/endpoint.ts:22</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L25">src/http/endpoint.ts:25</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="urlRoot" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>url<wbr/>Root</span><a href="#urlRoot" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">url<wbr/>Root<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Entire root of the URL for API calls.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L28">src/http/endpoint.ts:28</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L31">src/http/endpoint.ts:31</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="version" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>version</span><a href="#version" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">version<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Product&#39;s version, as a string.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L26">src/http/endpoint.ts:26</a></li></ul></aside></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L29">src/http/endpoint.ts:29</a></li></ul></aside></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Asynchronous Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getQueuedDocument" class="tsd-anchor"></a>
@@ -136,14 +143,16 @@ Throws an error if the server&#39;s response contains one.</p>
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>queueId: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h5>queueId: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>The document&#39;s ID in the queue.</p>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L110">src/http/endpoint.ts:110</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L102">src/http/endpoint.ts:102</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="predictAsync" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>predict<wbr/>Async</span><a href="#predictAsync" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="predictAsync.predictAsync-1">predict<wbr/>Async<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span>cropper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>includeWords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>inputDoc<span class="tsd-signature-symbol">: </span><a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a><span class="tsd-signature-symbol">; </span><br/><span>    </span>pageOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PageOptions</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#predictAsync.predictAsync-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="predictAsync.predictAsync-1">predict<wbr/>Async<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PredictParams</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#predictAsync.predictAsync-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Enqueues a prediction to the API.
 Throws an error if the server&#39;s response contains one.</p>
@@ -154,21 +163,12 @@ Throws an error if the server&#39;s response contains one.</p>
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>params: <span class="tsd-signature-symbol">{ </span><br/><span>    </span>cropper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>includeWords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>inputDoc<span class="tsd-signature-symbol">: </span><a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a><span class="tsd-signature-symbol">; </span><br/><span>    </span>pageOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PageOptions</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></h5>
+<h5>params: <span class="tsd-signature-type">PredictParams</span></h5>
 <div class="tsd-comment tsd-typography"><p>parameters relating to prediction options.</p>
-</div>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5>cropper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5></li>
-<li class="tsd-parameter">
-<h5>include<wbr/>Words<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5></li>
-<li class="tsd-parameter">
-<h5>input<wbr/>Doc<span class="tsd-signature-symbol">: </span><a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> page<wbr/>Options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PageOptions</span></h5></li></ul></li></ul></div>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L82">src/http/endpoint.ts:82</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L78">src/http/endpoint.ts:78</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Other Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_cutDocPages" class="tsd-anchor"></a>
@@ -191,7 +191,24 @@ Throws an error if the server&#39;s response contains one.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L245">src/http/endpoint.ts:245</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L216">src/http/endpoint.ts:216</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_documentFeedbackPutReq" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#document<wbr/>Feedback<wbr/>Put<wbr/>Req</span><a href="#_documentFeedbackPutReq" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
+<li class="tsd-signature tsd-anchor-link" id="_documentFeedbackPutReq._documentFeedbackPutReq-1">#document<wbr/>Feedback<wbr/>Put<wbr/>Req<span class="tsd-signature-symbol">(</span>documentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, feedback<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#_documentFeedbackPutReq._documentFeedbackPutReq-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Make a request to PUT a document feedback.</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>documentId: <span class="tsd-signature-type">string</span></h5></li>
+<li>
+<h5>feedback: <a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L296">src/http/endpoint.ts:296</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_documentGetReq" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#document<wbr/>Get<wbr/>Req</span><a href="#_documentGetReq" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -206,7 +223,7 @@ Throws an error if the server&#39;s response contains one.</p>
 <h5>documentId: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L306">src/http/endpoint.ts:306</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L277">src/http/endpoint.ts:277</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_documentQueueReqGet" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#document<wbr/>Queue<wbr/>Req<wbr/>Get</span><a href="#_documentQueueReqGet" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -221,7 +238,7 @@ Throws an error if the server&#39;s response contains one.</p>
 <h5>queueId: <span class="tsd-signature-type">string</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L288">src/http/endpoint.ts:288</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L259">src/http/endpoint.ts:259</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_predictAsyncReqPost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#predict<wbr/>Async<wbr/>Req<wbr/>Post</span><a href="#_predictAsyncReqPost" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -240,7 +257,7 @@ Throws an error if the server&#39;s response contains one.</p>
 <h5>cropper: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L271">src/http/endpoint.ts:271</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L242">src/http/endpoint.ts:242</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-private"><a id="_predictReqPost" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>#predict<wbr/>Req<wbr/>Post</span><a href="#_predictReqPost" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-private">
@@ -259,10 +276,25 @@ Throws an error if the server&#39;s response contains one.</p>
 <h5>cropper: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L257">src/http/endpoint.ts:257</a></li></ul></aside></li></ul></section>
-<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a id="readResponse" class="tsd-anchor"></a>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L228">src/http/endpoint.ts:228</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="getDocument" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>get<wbr/>Document</span><a href="#getDocument" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="getDocument.getDocument-1">get<wbr/>Document<span class="tsd-signature-symbol">(</span>documentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#getDocument.getDocument-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Send a feedback</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>documentId: <span class="tsd-signature-type">string</span></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L128">src/http/endpoint.ts:128</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a id="readResponse" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>read<wbr/>Response</span><a href="#readResponse" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
-<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited">
 <li class="tsd-signature tsd-anchor-link" id="readResponse.readResponse-1">read<wbr/>Response<span class="tsd-signature-symbol">(</span>options<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">RequestOptions</span>, resolve<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>value<span class="tsd-signature-symbol">: </span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">PromiseLike</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span>, reject<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span><span class="tsd-signature-symbol">(</span>reason<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">any</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">ClientRequest</span><a href="#readResponse.readResponse-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Reads a response from the API and processes it.</p>
@@ -307,8 +339,30 @@ Throws an error if the server&#39;s response contains one.</p>
 <h5><code class="tsd-tag ts-flagOptional">Optional</code> reason: <span class="tsd-signature-type">any</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4></li></ul></li></ul></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">ClientRequest</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseEndpoint.readResponse</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L189">src/http/endpoint.ts:189</a></li></ul></aside></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/baseEndpoint.ts#L32">src/http/baseEndpoint.ts:32</a></li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="sendFeedback" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>send<wbr/>Feedback</span><a href="#sendFeedback" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="sendFeedback.sendFeedback-1">send<wbr/>Feedback<span class="tsd-signature-symbol">(</span>documentId<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span>, feedback<span class="tsd-signature-symbol">: </span><a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#sendFeedback.sendFeedback-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Send a feedback</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>documentId: <span class="tsd-signature-type">string</span></h5>
+<div class="tsd-comment tsd-typography"><p>ID of the document to send feedback to.</p>
+</div></li>
+<li>
+<h5>feedback: <a href="../types/internal.parsing.common.StringDict.html" class="tsd-signature-type" data-tsd-kind="Type alias">StringDict</a></h5>
+<div class="tsd-comment tsd-typography"><p>Feedback object to send.</p>
+</div></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L145">src/http/endpoint.ts:145</a></li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a id="sendFileForPrediction" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagProtected">Protected</code> <span>send<wbr/>File<wbr/>For<wbr/>Prediction</span><a href="#sendFileForPrediction" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class tsd-is-protected">
@@ -329,13 +383,13 @@ Throws an error if the server&#39;s response contains one.</p>
 <h5>cropper: <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L139">src/http/endpoint.ts:139</a></li></ul></aside></li></ul></section></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L168">src/http/endpoint.ts:168</a></li></ul></aside></li></ul></section></section>
 <section class="tsd-panel-group tsd-member-group">
 <h2>Synchronous Methods</h2>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="predict" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>predict</span><a href="#predict" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
-<li class="tsd-signature tsd-anchor-link" id="predict.predict-1">predict<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">{ </span><br/><span>    </span>cropper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>includeWords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>inputDoc<span class="tsd-signature-symbol">: </span><a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a><span class="tsd-signature-symbol">; </span><br/><span>    </span>pageOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PageOptions</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#predict.predict-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-signature tsd-anchor-link" id="predict.predict-1">predict<span class="tsd-signature-symbol">(</span>params<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">PredictParams</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span><a href="#predict.predict-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
 <li class="tsd-description">
 <div class="tsd-comment tsd-typography"><p>Sends a prediction to the API and parses out the result.
 Throws an error if the server&#39;s response contains one.</p>
@@ -346,21 +400,12 @@ Throws an error if the server&#39;s response contains one.</p>
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
 <li>
-<h5>params: <span class="tsd-signature-symbol">{ </span><br/><span>    </span>cropper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>includeWords<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">; </span><br/><span>    </span>inputDoc<span class="tsd-signature-symbol">: </span><a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a><span class="tsd-signature-symbol">; </span><br/><span>    </span>pageOptions<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PageOptions</span><span class="tsd-signature-symbol">; </span><br/><span class="tsd-signature-symbol">}</span></h5>
+<h5>params: <span class="tsd-signature-type">PredictParams</span></h5>
 <div class="tsd-comment tsd-typography"><p>parameters relating to prediction options.</p>
-</div>
-<ul class="tsd-parameters">
-<li class="tsd-parameter">
-<h5>cropper<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5></li>
-<li class="tsd-parameter">
-<h5>include<wbr/>Words<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span></h5></li>
-<li class="tsd-parameter">
-<h5>input<wbr/>Doc<span class="tsd-signature-symbol">: </span><a href="InputSource.html" class="tsd-signature-type" data-tsd-kind="Class">InputSource</a></h5></li>
-<li class="tsd-parameter">
-<h5><code class="tsd-tag ts-flagOptional">Optional</code> page<wbr/>Options<span class="tsd-signature-symbol">?: </span><span class="tsd-signature-type">PageOptions</span></h5></li></ul></li></ul></div>
+</div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../interfaces/internal.http.EndpointResponse.html" class="tsd-signature-type" data-tsd-kind="Interface">EndpointResponse</a><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b5de429/src/http/endpoint.ts#L52">src/http/endpoint.ts:52</a></li></ul></aside></li></ul></section></section></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/74f8e9b/src/http/endpoint.ts#L53">src/http/endpoint.ts:53</a></li></ul></aside></li></ul></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -427,19 +472,22 @@ Throws an error if the server&#39;s response contains one.</p>
 <ul>
 <li class="tsd-kind-constructor tsd-parent-kind-class"><a href="internal.http.Endpoint.html#constructor" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-512-path"></use><use href="#icon-512-text"></use></svg>constructor</a></li>
 <li class="tsd-kind-property tsd-parent-kind-class"><a href="internal.http.Endpoint.html#owner" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>owner</a></li>
-<li class="tsd-kind-property tsd-parent-kind-class"><a href="internal.http.Endpoint.html#settings" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>settings</a></li>
+<li class="tsd-kind-property tsd-parent-kind-class tsd-is-inherited"><a href="internal.http.Endpoint.html#settings" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>settings</a></li>
 <li class="tsd-kind-property tsd-parent-kind-class"><a href="internal.http.Endpoint.html#urlName" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>url<wbr/>Name</a></li>
 <li class="tsd-kind-property tsd-parent-kind-class"><a href="internal.http.Endpoint.html#urlRoot" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>url<wbr/>Root</a></li>
 <li class="tsd-kind-property tsd-parent-kind-class"><a href="internal.http.Endpoint.html#version" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>version</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="internal.http.Endpoint.html#_cutDocPages" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#cut<wbr/>Doc<wbr/>Pages</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="internal.http.Endpoint.html#_documentFeedbackPutReq" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#document<wbr/>Feedback<wbr/>Put<wbr/>Req</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="internal.http.Endpoint.html#_documentGetReq" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#document<wbr/>Get<wbr/>Req</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="internal.http.Endpoint.html#_documentQueueReqGet" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#document<wbr/>Queue<wbr/>Req<wbr/>Get</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="internal.http.Endpoint.html#_predictAsyncReqPost" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#predict<wbr/>Async<wbr/>Req<wbr/>Post</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-private"><a href="internal.http.Endpoint.html#_predictReqPost" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>#predict<wbr/>Req<wbr/>Post</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="internal.http.Endpoint.html#getDocument" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Document</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="internal.http.Endpoint.html#getQueuedDocument" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>get<wbr/>Queued<wbr/>Document</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="internal.http.Endpoint.html#predict" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>predict</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class"><a href="internal.http.Endpoint.html#predictAsync" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>predict<wbr/>Async</a></li>
-<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="internal.http.Endpoint.html#readResponse" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>read<wbr/>Response</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected tsd-is-inherited"><a href="internal.http.Endpoint.html#readResponse" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>read<wbr/>Response</a></li>
+<li class="tsd-kind-method tsd-parent-kind-class"><a href="internal.http.Endpoint.html#sendFeedback" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>send<wbr/>Feedback</a></li>
 <li class="tsd-kind-method tsd-parent-kind-class tsd-is-protected"><a href="internal.http.Endpoint.html#sendFileForPrediction" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg>send<wbr/>File<wbr/>For<wbr/>Prediction</a></li></ul></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
