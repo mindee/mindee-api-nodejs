@@ -44,7 +44,7 @@ export class ListField {
   /** True if the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
   /** The document page on which the information was found. */
-  pageId?: number;
+  pageId: number;
 
   /**
    * @param {BaseFieldConstructor} constructor Constructor parameters.
@@ -57,20 +57,16 @@ export class ListField {
     this.values = [];
     this.confidence = prediction["confidence"];
     this.reconstructed = reconstructed;
-    if (prediction["page_id"]) {
-      this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
-    } else {
-      this.pageId = undefined;
-    }
 
     if (prediction["values"] !== undefined) {
       prediction["values"].forEach((field: StringDict) => {
-        if (field["page_id"] && field["page_id"] !== null) {
-          this.pageId = field["page_id"];
+        if (pageId === undefined) {
+          pageId = field["page_id"];
         }
         this.values.push(new ListFieldValue(field));
       });
     }
+    this.pageId = pageId !== undefined ? pageId : prediction["page_id"];
   }
 
   contentsList(): Array<string | number> {
