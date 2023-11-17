@@ -26,8 +26,8 @@ describe("W9V1 Object initialization", async () => {
     expect(pagePrediction.taxClassification.value).to.be.undefined;
     expect(pagePrediction.taxClassificationOtherDetails.value).to.be.undefined;
     expect(pagePrediction.w9RevisionDate.value).to.be.undefined;
-    expect(pagePrediction.signaturePosition.boundingBox.length).to.be.equals(0);
-    expect(pagePrediction.signatureDatePosition.boundingBox.length).to.be.equals(0);
+    expect(pagePrediction.signaturePosition.polygon.length).to.be.equals(0);
+    expect(pagePrediction.signatureDatePosition.polygon.length).to.be.equals(0);
     expect(pagePrediction.taxClassificationLlc.value).to.be.undefined;
   });
 

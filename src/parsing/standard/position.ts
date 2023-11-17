@@ -24,10 +24,10 @@ export class PositionField {
 
   constructor({ prediction = {}, pageId }: PositionFieldConstructor) {
     this.pageId = pageId;
-    this.boundingBox = prediction["bounding_box"];
-    this.polygon = prediction["polygon"];
-    this.quadrangle = prediction["quadrangle"];
-    this.rectangle = prediction["rectangle"];
+    this.boundingBox = "bounding_box" in prediction ? prediction["bounding_box"] : [];
+    this.polygon = "polygon" in prediction ? prediction["polygon"] : [];
+    this.quadrangle = "quadrangle" in prediction ? prediction["quadrangle"] : [];
+    this.rectangle = "rectangle" in prediction ? prediction["rectangle"] : [];
   }
 
   /**
@@ -35,7 +35,7 @@ export class PositionField {
    */
   toString(): string {
     if (this.polygon && this.polygon.length > 0)
-      return  `Polygon with ${this.polygon.length} points.`;
+      return `Polygon with ${this.polygon.length} points.`;
     if (this.boundingBox && this.boundingBox.length > 0) {
       return `Polygon with ${this.boundingBox.length} points.`;
     }
