@@ -27,7 +27,7 @@ export class Page<T extends Prediction> {
    * @param orientation the page's orientation.
    */
   constructor(
-    predictionType: new (rawPrediction: StringDict, pageId: number) => T,
+    predictionType: new (rawPrediction: StringDict) => T,
     rawPrediction: StringDict,
     pageId: number,
     orientation?: StringDict
@@ -41,7 +41,7 @@ export class Page<T extends Prediction> {
       orientation = undefined;
     }
     this.id = pageId;
-    this.prediction = new predictionType(rawPrediction["prediction"], pageId);
+    this.prediction = new predictionType(rawPrediction["prediction"]);
     if (
       rawPrediction["extras"] &&
       Object.keys(rawPrediction["extras"].length > 0)
