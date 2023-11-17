@@ -61,14 +61,22 @@ If it is not set, it will default to "1".
 A `ListField` is a special type of custom list that implements the following:
 
 * **confidence** (`number`): the confidence score of the field prediction.
-* **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
 * **reconstructed** (`boolean`): indicates whether or not an object was reconstructed (not extracted as the API gave it).
+* **values** (`Array<`[ListFieldValue](#list-field-value)`>`): list of value fields
 
 Since the inner contents can vary, the value isn't accessed through a property, but rather through the following functions:
 * **contentsList()** (`Array<string, number>`): returns a list of values for each element.
 * **contentsString(separator=" ")** (`string`): returns a list of concatenated values, with an optional **separator** `string` between them.
 * **toString()**: returns a string representation of all values, with an empty space between each of them.
 
+#### List Field Value
+
+Values of `ListField`s are stored in a `ListFieldValue` structure, which is implemented as follows:
+* **content** (`string`): extracted content of the prediction
+* **confidence** (`number`): the confidence score of the prediction
+* **bbox** (`BBox`): 4 relative vertices corrdinates of a rectangle containing the word in the document.
+* **polygon** (`Polygon`): vertices of a polygon containing the word.
+* **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
 
 ### Classification Field
 
