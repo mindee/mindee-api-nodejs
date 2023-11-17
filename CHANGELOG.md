@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.4.0 - 2023-11-17
+### Changes
+* :sparkles: add support for Carte Grise V1
+* :sparkles: add page nubmer attribute to doc
+* :arrow_up: update product tests & doc
+### Fixes
+* :bug: fix broken `page_id` attribute for newer custom builds
+
+
 ## v4.3.2 - 2023-11-07
 ### Changes
 * :recycle: update invoice splitter
