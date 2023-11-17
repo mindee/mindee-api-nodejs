@@ -72,10 +72,10 @@ Since the inner contents can vary, the value isn't accessed through a property, 
 #### List Field Value
 
 Values of `ListField`s are stored in a `ListFieldValue` structure, which is implemented as follows:
-* **content**: `string`: extracted content of the prediction
-* **confidence**: `string`: the confidence score of the prediction
-* **bbox**: `string`: 4 relative vertices corrdinates of a rectangle containing the word in the document.
-* **polygon**: `string`: vertices of a polygon containing the word.
+* **content** (`string`): extracted content of the prediction
+* **confidence** (`number`): the confidence score of the prediction
+* **bbox** (`BBox`): 4 relative vertices corrdinates of a rectangle containing the word in the document.
+* **polygon** (`Polygon`): vertices of a polygon containing the word.
 * **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
 
 ### Classification Field
