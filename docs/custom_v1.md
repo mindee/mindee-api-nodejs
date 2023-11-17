@@ -76,7 +76,7 @@ Values of `ListField`s are stored in a `ListFieldValue` structure, which is impl
 * **confidence** (`number`): the confidence score of the prediction
 * **bbox** (`BBox`): 4 relative vertices corrdinates of a rectangle containing the word in the document.
 * **polygon** (`Polygon`): vertices of a polygon containing the word.
-* **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
+* **pageId** (`number | undefined`): the ID of the page, is `undefined` when at document-level.
 
 ### Classification Field
 

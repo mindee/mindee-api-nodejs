@@ -11,10 +11,10 @@ export class CustomV1Document implements Prediction {
   /** List of classification fields for a Custom build. */
   classifications: Map<string, ClassificationField> = new Map();
 
-  constructor(rawPrediction: StringDict, pageId?: number) {
+  constructor(rawPrediction: StringDict) {
     Object.entries(rawPrediction).forEach(
       ([fieldName, fieldValue]: [string, any]) => {
-        this.setField(fieldName, fieldValue, pageId);
+        this.setField(fieldName, fieldValue);
       }
     );
   }
@@ -25,16 +25,14 @@ export class CustomV1Document implements Prediction {
    * fields having a list of values, and classification fields.
    * @param fieldName name of the field.
    * @param fieldValue value of the field.
-   * @param pageId page the field was found on.
    */
-  protected setField(fieldName: string, fieldValue: any, pageId?: number) {
+  protected setField(fieldName: string, fieldValue: any) {
     if (fieldValue && fieldValue["values"] !== undefined) {
       // Only value lists have the 'values' attribute.
       this.fields.set(
         fieldName,
         new ListField({
           prediction: fieldValue as StringDict,
-          pageId: pageId,
         })
       );
     } else if (fieldValue && fieldValue["value"] !== undefined) {

@@ -9,14 +9,13 @@ export class CustomV1Page implements Prediction {
   /** List of page-specific fields for a Custom build. Cannot include Classification fields. */
   fields: Map<string, ListField> = new Map();
 
-  constructor(rawPrediction: StringDict, pageId?: number) {
+  constructor(rawPrediction: StringDict) {
     Object.entries(rawPrediction).forEach(
       ([fieldName, fieldValue]: [string, any]) => {
         this.fields.set(
           fieldName,
           new ListField({
             prediction: fieldValue as StringDict,
-            pageId: pageId,
           })
         );
       }

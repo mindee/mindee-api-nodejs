@@ -23,15 +23,15 @@ export class ListFieldValue {
   /** The document page on which the information was found. */
   pageId?: number;
 
-  constructor(prediction: StringDict, pageId?: number) {
+  constructor(prediction: StringDict) {
     this.content = prediction["content"];
     this.confidence = prediction["confidence"];
     if (prediction["polygon"]) {
       this.polygon = prediction["polygon"];
       this.bbox = getBoundingBox(prediction["polygon"]);
     }
-    if (pageId !== undefined) {
-      this.pageId = pageId;
+    if ("page_id" in prediction) {
+      this.pageId = prediction["page_id"];
     }
   }
 
@@ -55,7 +55,6 @@ export class ListField {
   constructor({
     prediction = {},
     reconstructed = false,
-    pageId,
   }: BaseFieldConstructor) {
     this.values = [];
     this.confidence = prediction["confidence"];
@@ -63,10 +62,7 @@ export class ListField {
 
     if (prediction["values"] !== undefined) {
       prediction["values"].forEach((field: StringDict) => {
-        if (pageId === undefined) {
-          pageId = field["page_id"];
-        }
-        this.values.push(new ListFieldValue(field, pageId));
+        this.values.push(new ListFieldValue(field));
       });
     }
   }
