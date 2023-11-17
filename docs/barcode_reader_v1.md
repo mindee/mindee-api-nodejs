@@ -36,7 +36,7 @@ apiResponse.then((resp) => {
 ########
 Document
 ########
-:Mindee ID: 0f54c154-5030-41ac-939e-046b7f6aca71
+:Mindee ID: f9c48da1-a306-4805-8da8-f7231fda2d88
 :Filename: default_sample.jpg
 
 Inference
@@ -68,7 +68,7 @@ These fields are generic and used in several products.
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
-* **value** (number|string): corresponds to the field value. Can be `undefined` if no value was extracted.
+* **value** (`number | string`): corresponds to the field value. Can be `undefined` if no value was extracted.
 * **confidence** (`number`): the confidence score of the field prediction.
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.

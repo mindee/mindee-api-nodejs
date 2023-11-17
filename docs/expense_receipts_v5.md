@@ -116,7 +116,7 @@ These fields are generic and used in several products.
 Each prediction object contains a set of fields that inherit from the generic `Field` class.
 A typical `Field` object will have the following attributes:
 
-* **value** (number|string): corresponds to the field value. Can be `undefined` if no value was extracted.
+* **value** (`number | string`): corresponds to the field value. Can be `undefined` if no value was extracted.
 * **confidence** (`number`): the confidence score of the field prediction.
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
@@ -163,7 +163,7 @@ The text field `StringField` only has one constraint: its **value** is a `string
 #### Tax
 Aside from the basic `Field` attributes, the tax field `TaxField` also implements the following:
 
-* **rate** (`number`): the tax rate applied to an item can be undefined. Expressed as a percentage. Can be `undefined`.
+* **rate** (`number`): the tax rate applied to an item can be expressed as a percentage. Can be `undefined`.
 * **code** (`string`): tax code (or equivalent, depending on the origin of the document). Can be `undefined`.
 * **base** (`number`): base amount used for the tax. Can be `undefined`.
 
