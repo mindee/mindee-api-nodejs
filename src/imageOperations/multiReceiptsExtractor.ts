@@ -2,7 +2,6 @@ import { PDFDocument, PDFImage, PDFPage } from "pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../errors";
 import { Polygon, getMinMaxX, getMinMaxY } from "../geometry";
 import { MultiReceiptsDetectorV1 } from "../product";
-import { ExtractedImage } from "./extractedImage";
 import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage";
 import { LocalInputSource } from "../input/base";
 
@@ -22,7 +21,6 @@ async function addPage(
     right: getMinMaxX(boundingBox).max * width,
     top: height - (getMinMaxY(boundingBox).min * height),
     bottom: height - (getMinMaxY(boundingBox).max * height),
-
   });
   const receiptPage = receiptPdf.addPage([newWidth, newHeight]);
   receiptPage.drawPage(croppedReceipt,
@@ -36,7 +34,12 @@ async function addPage(
 
 async function loadPdfDoc(inputFile: LocalInputSource) {
   let pdfDoc: PDFDocument;
-  if (["image/jpeg", "image/jpg", "image/png"].includes(inputFile.mimeType)) {
+  if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputFile.mimeType)) {
+    throw new MindeeMimeTypeError(`Unsupported file type "${inputFile.mimeType}" Currently supported types are .png, .jpg and .pdf`);
+  }
+  else if (inputFile.isPdf()) {
+    pdfDoc = await PDFDocument.load(inputFile.fileObject);
+  } else {
     pdfDoc = await PDFDocument.create();
     let image: PDFImage;
     if (inputFile.mimeType === "image/png") {
@@ -48,16 +51,11 @@ async function loadPdfDoc(inputFile: LocalInputSource) {
     const pageImage = pdfDoc.addPage([imageDims.width, imageDims.height]);
     pageImage.drawImage(image);
   }
-  else if (inputFile.isPdf()) {
-    pdfDoc = await PDFDocument.load(inputFile.fileObject);
-  } else {
-    throw new MindeeMimeTypeError(`Unsupported file type "${inputFile.mimeType}" Currently supported types are .png, .jpg and .pdf`);
-  }
   return pdfDoc;
 }
 
-export async function extractReceipts(inputFile: LocalInputSource, inference: MultiReceiptsDetectorV1): Promise<ExtractedImage[]> {
-  const images: ExtractedImage[] = [];
+export async function extractReceipts(inputFile: LocalInputSource, inference: MultiReceiptsDetectorV1): Promise<ExtractedMultiReceiptImage[]> {
+  const images: ExtractedMultiReceiptImage[] = [];
   if (!inference.prediction.receipts) {
     throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");
   }
