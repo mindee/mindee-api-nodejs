@@ -1,5 +1,5 @@
 import { BufferInput } from "../input";
-import { ExtractedImage } from "./ExtractedImage";
+import { ExtractedImage } from "./extractedImage";
 
 export class ExtractedMultiReceiptImage extends ExtractedImage {
   readonly receiptId: number;

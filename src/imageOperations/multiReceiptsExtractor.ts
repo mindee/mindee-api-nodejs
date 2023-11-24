@@ -2,8 +2,8 @@ import { PDFDocument, PDFImage, PDFPage } from "pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../errors";
 import { Polygon, getMinMaxX, getMinMaxY } from "../geometry";
 import { MultiReceiptsDetectorV1 } from "../product";
-import { ExtractedImage } from "./ExtractedImage";
-import { ExtractedMultiReceiptImage } from "./ExtractedMultiReceiptImage";
+import { ExtractedImage } from "./extractedImage";
+import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage";
 import { LocalInputSource } from "../input/base";
 
 async function addPage(
