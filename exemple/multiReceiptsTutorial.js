@@ -1,4 +1,4 @@
-const { Client, product, imageOperations } = require("./../dist/src");
+const { Client, product, imageOperations } = require("mindee");
 const { setTimeout } = require("node:timers/promises");
 
 async function parseReceipts() {
