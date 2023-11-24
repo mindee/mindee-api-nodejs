@@ -1,7 +1,7 @@
 const { Client, product, imageOperations } = require("./../dist/src");
 const { setTimeout } = require("node:timers/promises");
 
-async function callParse() {
+async function parseReceipts() {
 
     const mindeeClient = new Client();// fill in your API key or add it as an environment variable
 
@@ -15,4 +15,4 @@ async function callParse() {
     }
 
 }
-callParse();
+parseReceipts();
