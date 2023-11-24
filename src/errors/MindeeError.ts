@@ -4,3 +4,10 @@ export class MindeeError extends Error {
     this.name = "MindeeError";
   }
 }
+
+export class MindeeMimeTypeError extends MindeeError {
+  constructor(message: string) {
+    super(message);
+    this.name = "MindeeMimeTypeError";
+  }
+}

@@ -1,0 +1,1 @@
+export { extractReceipts } from "./multiReceiptsExtractor";
