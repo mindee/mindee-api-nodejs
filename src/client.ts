@@ -26,7 +26,6 @@ import {
   setTimeout,
 } from "node:timers/promises";
 
-
 /**
  * Options relating to predictions.
  */
@@ -450,7 +449,7 @@ Job status: ${pollResults.job.status}.`
    * Load an input document from a local path.
    * @param inputPath
    */
-  docFromPath(inputPath: string): InputSource {
+  docFromPath(inputPath: string): PathInput {
     return new PathInput({
       inputPath: inputPath,
     });
@@ -461,7 +460,7 @@ Job status: ${pollResults.job.status}.`
    * @param inputString input content, as a string.
    * @param filename file name.
    */
-  docFromBase64(inputString: string, filename: string): InputSource {
+  docFromBase64(inputString: string, filename: string): Base64Input {
     return new Base64Input({
       inputString: inputString,
       filename: filename,
@@ -473,7 +472,7 @@ Job status: ${pollResults.job.status}.`
    * @param inputStream input content, as a readable stream.
    * @param filename file name.
    */
-  docFromStream(inputStream: Readable, filename: string): InputSource {
+  docFromStream(inputStream: Readable, filename: string): StreamInput {
     return new StreamInput({
       inputStream: inputStream,
       filename: filename,
@@ -485,7 +484,7 @@ Job status: ${pollResults.job.status}.`
    * @param inputBytes input content, as readable bytes.
    * @param filename file name.
    */
-  docFromBytes(inputBytes: string, filename: string): InputSource {
+  docFromBytes(inputBytes: string, filename: string): BytesInput {
     return new BytesInput({
       inputBytes: inputBytes,
       filename: filename,
@@ -496,7 +495,7 @@ Job status: ${pollResults.job.status}.`
    * Load an input document from a URL.
    * @param url input url. Must be HTTPS.
    */
-  docFromUrl(url: string): InputSource {
+  docFromUrl(url: string): UrlInput {
     return new UrlInput({
       url: url,
     });
@@ -507,7 +506,7 @@ Job status: ${pollResults.job.status}.`
    * @param buffer input content, as a buffer.
    * @param filename file name.
    */
-  docFromBuffer(buffer: Buffer, filename: string): InputSource {
+  docFromBuffer(buffer: Buffer, filename: string): BufferInput {
     return new BufferInput({
       buffer: buffer,
       filename: filename,

@@ -1,1 +1,1 @@
-export { MindeeError } from "./MindeeError";
+export { MindeeError, MindeeMimeTypeError } from "./MindeeError";
