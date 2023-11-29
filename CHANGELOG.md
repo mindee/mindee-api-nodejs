@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v4.5.0 - 2023-11-29
+### Changes
+* :sparkles: add Multi-Receipts auto-extraction feature
+* :art: add example file to illustrate multi-receipt image extraction feature
+* :recycle: add new imageOperations namespace
+* :recycle: fix loose typing issues for inputsources
+
+
 ## v4.4.0 - 2023-11-17
 ### Changes
 * :sparkles: add support for Carte Grise V1
