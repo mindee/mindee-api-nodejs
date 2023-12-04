@@ -15,7 +15,6 @@ async function addPage(
 
   const newWidth = width * (getMinMaxX(boundingBox).max - getMinMaxX(boundingBox).min);
   const newHeight = height * (getMinMaxY(boundingBox).max - getMinMaxY(boundingBox).min);
-  //Note: PDF-lib seems to invert y coordinates, giving us the following horror:
   const croppedReceipt = await receiptPdf.embedPage(pdfPage, {
     left: getMinMaxX(boundingBox).min * width,
     right: getMinMaxX(boundingBox).max * width,
