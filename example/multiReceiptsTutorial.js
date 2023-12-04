@@ -11,6 +11,7 @@ async function parseReceipts() {
   for (const receipt of receipts) {
     const respReceipt = await mindeeClient.parse(product.ReceiptV5, receipt.asSource());
     console.log(respReceipt.document.toString());
+    receipt.saveToFile(`receipt_p${receipt.pageId}_${receipt.receiptId}.pdf`,`./tmp`); //optional: save to a file
     await setTimeout(1000); // wait some time between requests as to not overload the server
   }
 

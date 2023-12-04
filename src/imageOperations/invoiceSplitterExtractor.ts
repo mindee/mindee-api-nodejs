@@ -3,7 +3,7 @@ import { MindeeError, MindeeMimeTypeError } from "../errors";
 import { InvoiceSplitterV1 } from "../product";
 import { LocalInputSource } from "../input/base";
 import { InvoiceSplitterV1PageGroup } from "src/product/invoiceSplitter/invoiceSplitterV1PageGroup";
-import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage";
+import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterDocument";
 
 async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: InvoiceSplitterV1PageGroup[]): Promise<ExtractedInvoiceSplitterImage[]> {
   const generatedPdfs: ExtractedInvoiceSplitterImage[] = [];

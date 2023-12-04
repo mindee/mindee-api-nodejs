@@ -1,15 +1,14 @@
 import { BufferInput } from "../input";
 import { ExtractedImage } from "./extractedImage";
 
-export class ExtractedInvoiceSplitterImage implements ExtractedImage {
+export class ExtractedInvoiceSplitterImage extends ExtractedImage {
   readonly pageIdMin: number;
   readonly pageIdMax: number;
-  imageData: Buffer;
 
   constructor(imageData: Uint8Array, pageIndices: [number, number]) {
+    super(imageData);
     this.pageIdMin = pageIndices[0];
     this.pageIdMax = pageIndices[1];
-    this.imageData = Buffer.from(imageData);
   }
 
   asSource(): BufferInput {
