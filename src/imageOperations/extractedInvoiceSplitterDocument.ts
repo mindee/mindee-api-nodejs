@@ -1,4 +1,3 @@
-import { BufferInput } from "../input";
 import { ExtractedImage } from "./extractedImage";
 
 export class ExtractedInvoiceSplitterImage extends ExtractedImage {
@@ -6,15 +5,8 @@ export class ExtractedInvoiceSplitterImage extends ExtractedImage {
   readonly pageIdMax: number;
 
   constructor(imageData: Uint8Array, pageIndices: [number, number]) {
-    super(imageData);
+    super(imageData, `invoice_p_${pageIndices[0]}-${pageIndices[1]}.pdf`);
     this.pageIdMin = pageIndices[0];
     this.pageIdMax = pageIndices[1];
-  }
-
-  asSource(): BufferInput {
-    return new BufferInput({
-      buffer: this.imageData,
-      filename: `invoice_p_${this.pageIdMin}-${this.pageIdMax}.pdf`,
-    });
   }
 }

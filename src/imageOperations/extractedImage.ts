@@ -3,14 +3,17 @@ import { MindeeError } from "../errors";
 import { writeFileSync } from "node:fs";
 import path from "node:path";
 import { logger } from "../logger";
+import { BufferInput } from "../input";
 
 
 export abstract class ExtractedImage {
   protected imageData: Buffer;
+  protected internalFileName: string;
 
 
-  constructor(imageData: Uint8Array) {
+  constructor(imageData: Uint8Array, fileName: string) {
     this.imageData = Buffer.from(imageData);
+    this.internalFileName = fileName;
   }
 
   /**
@@ -29,5 +32,11 @@ export abstract class ExtractedImage {
         throw e;
       }
     }
+  }
+  asSource(): BufferInput {
+    return new BufferInput({
+      buffer: this.imageData,
+      filename: this.internalFileName,
+    });
   }
 }
