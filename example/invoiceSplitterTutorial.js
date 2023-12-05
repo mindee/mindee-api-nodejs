@@ -10,7 +10,7 @@ async function parseInvoices() {
     let invoices = await imageOperations.extractInvoices(invoiceFile, resp.document.inference);
     for (const invoice of invoices) {
         // optional: save the documents locally
-        invoice.saveToFile(`invoice_p${invoice.pageIdMin}-${invoice.pageIdMax}_${invoice.receiptId}.pdf`, `./tmp`);
+        invoice.saveToFile(`/tmp/invoice_p${invoice.pageIdMin}-${invoice.pageIdMax}_${invoice.receiptId}.pdf`);
         const respInvoice = await mindeeClient.parse(product.InvoiceV4, invoice.asSource());
         console.log(respInvoice.document.toString());
         await setTimeout(1000); // wait some time between requests as to not overload the server

@@ -18,13 +18,13 @@ export abstract class ExtractedImage {
 
   /**
    * Saves the document to a file.
-   * @param fileName Name of the file to save.
-   * @param inputPath Location of the saved file. Defaults to './tmp'
+   *
+   * @param outputPath Path to save the file to.
    */
-  saveToFile(fileName: string, inputPath: string = "./tmp") {
+  saveToFile(outputPath: string) {
     try {
-      writeFileSync(path.resolve(inputPath, fileName), this.imageData);
-      logger.info(`File saved successfully to ${path.resolve(inputPath, fileName)}.`);
+      writeFileSync(path.resolve(outputPath), this.imageData);
+      logger.info(`File saved successfully to ${path.resolve(outputPath)}.`);
     } catch (e) {
       if (e instanceof TypeError) {
         throw new MindeeError("Invalid path/filename provided.");
