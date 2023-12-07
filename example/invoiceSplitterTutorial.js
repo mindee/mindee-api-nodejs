@@ -7,7 +7,7 @@ async function parseInvoices() {
 
     const invoiceFile = mindeeClient.docFromPath("path/to/your/file.ext");
     const resp = await mindeeClient.enqueueAndParse(product.InvoiceSplitterV1, invoiceFile);
-    let invoices = await imageOperations.extractInvoices(invoiceFile, resp.document.inference);
+    let invoices = await imageOperations.extractAllInvoices(invoiceFile, resp.document.inference);
     for (const invoice of invoices) {
         // optional: save the documents locally
         invoice.saveToFile(`/tmp/invoice_p${invoice.pageIdMin}-${invoice.pageIdMax}_${invoice.receiptId}.pdf`);

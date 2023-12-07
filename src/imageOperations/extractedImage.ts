@@ -33,6 +33,13 @@ export abstract class ExtractedImage {
       }
     }
   }
+
+
+  /**
+   * Return the file as a Mindee-compatible BufferInput source.
+   *
+   * @returns A BufferInput source.
+   */
   asSource(): BufferInput {
     return new BufferInput({
       buffer: this.imageData,

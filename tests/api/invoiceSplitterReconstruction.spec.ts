@@ -3,7 +3,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { Document } from "../../src/parsing/common";
 import { InvoiceSplitterV1 } from "../../src/product";
-import { extractInvoices } from "../../src/imageOperations";
+import { extractAllInvoices } from "../../src/imageOperations";
 import { PathInput } from "../../src/input";
 
 describe("An Multipage Invoice Document", () => {
@@ -15,7 +15,7 @@ describe("An Multipage Invoice Document", () => {
         await sourceDoc.init();
         const response = JSON.parse(jsonData.toString());
         const doc = new Document(InvoiceSplitterV1, response.document);
-        const extractedInvoices = await extractInvoices(sourceDoc, doc.inference);
+        const extractedInvoices = await extractAllInvoices(sourceDoc, doc.inference);
         expect(extractedInvoices.length).to.be.equals(3);
         expect(extractedInvoices[0].pageIdMin).to.be.equal(0);
         expect(extractedInvoices[0].pageIdMax).to.be.equal(0);

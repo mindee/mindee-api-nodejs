@@ -100,7 +100,7 @@ export abstract class LocalInputSource extends InputSource {
   }
 
   /**
-   * Merge PDF pages.
+   * Cut PDF pages.
    * @param pageOptions
    */
   async cutPdf(pageOptions: PageOptions) {
