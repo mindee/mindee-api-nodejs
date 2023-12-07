@@ -7,12 +7,12 @@ import { BufferInput } from "../input";
 
 
 export abstract class ExtractedImage {
-  protected imageData: Buffer;
+  public buffer: Buffer;
   protected internalFileName: string;
 
 
-  constructor(imageData: Uint8Array, fileName: string) {
-    this.imageData = Buffer.from(imageData);
+  constructor(buffer: Uint8Array, fileName: string) {
+    this.buffer = Buffer.from(buffer);
     this.internalFileName = fileName;
   }
 
@@ -23,7 +23,7 @@ export abstract class ExtractedImage {
    */
   saveToFile(outputPath: string) {
     try {
-      writeFileSync(path.resolve(outputPath), this.imageData);
+      writeFileSync(path.resolve(outputPath), this.buffer);
       logger.info(`File saved successfully to ${path.resolve(outputPath)}.`);
     } catch (e) {
       if (e instanceof TypeError) {
@@ -42,7 +42,7 @@ export abstract class ExtractedImage {
    */
   asSource(): BufferInput {
     return new BufferInput({
-      buffer: this.imageData,
+      buffer: this.buffer,
       filename: this.internalFileName,
     });
   }
