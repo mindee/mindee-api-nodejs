@@ -28,7 +28,7 @@ describe("A Multipage Invoice Document", () => {
             expect(Buffer.byteLength(extractedInvoice.asSource().fileObject)).to.be.greaterThan(100000);
         }
     });
-    it("should not be split if confidences are taken into account.", async () => {
+    it("should be split differently if confidences are taken into account.", async () => {
         const jsonData = await fs.readFile(
             path.resolve("tests/data/products/invoice_splitter/response_v1/complete.json")
         );

@@ -30,8 +30,9 @@ async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Pro
 }
 
 async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
+  await inputFile.init();
   if (!inputFile.isPdf()) {
-    throw new MindeeMimeTypeError("Invoice Splitter is only compatible with multi-page-pdf documents.");
+    throw new MindeeMimeTypeError("Invoice Splitter is only compatible with pdf documents.");
   }
 
   const pdfDoc = await PDFDocument.load(inputFile.fileObject);
@@ -71,8 +72,8 @@ export async function extractInvoices(
   const pageCount = pdfDoc.getPageCount();
   customIndexes.forEach((pageGroup) => {
     pageGroup.forEach((index) => {
-      if (index > pageCount) {
-        throw new MindeeError(`Input file page count (${pageCount}) didn't match that of the inference ${index}. Did the input file change?`)
+      if (index >= pageCount) {
+        throw new MindeeError(`Given index ${index} doesn't exist in page range (0-${pageCount - 1})`);
       }
     })
   });
