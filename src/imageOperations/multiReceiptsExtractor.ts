@@ -53,6 +53,13 @@ async function loadPdfDoc(inputFile: LocalInputSource) {
   return pdfDoc;
 }
 
+/**
+ * Extracts individual receipts from multi-receipts documents.
+ *
+ * @param inputFile File to extract sub-receipts from.
+ * @param inference Results of the inference.
+ * @returns Individual extracted receipts as an array of ExtractedMultiReceiptsImage.
+ */
 export async function extractReceipts(inputFile: LocalInputSource, inference: MultiReceiptsDetectorV1): Promise<ExtractedMultiReceiptImage[]> {
   const images: ExtractedMultiReceiptImage[] = [];
   if (!inference.prediction.receipts) {

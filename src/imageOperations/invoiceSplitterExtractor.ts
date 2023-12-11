@@ -59,7 +59,7 @@ export async function extractInvoices(
   let customIndexes: number[][] = [];
   if (indexes instanceof InvoiceSplitterV1) {
     indexes.prediction.invoicePageGroups.map((invoicePageGroup) => {
-      if (!strict || invoicePageGroup.confidence > 0) {
+      if (!strict || invoicePageGroup.confidence === 1) {
         customIndexes.push(invoicePageGroup.pageIndexes);
       }
     });
