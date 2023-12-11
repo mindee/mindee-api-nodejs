@@ -2,25 +2,28 @@ import { PDFDocument } from "pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../errors";
 import { InvoiceSplitterV1 } from "../product";
 import { LocalInputSource } from "../input/base";
-import { InvoiceSplitterV1PageGroup } from "../product/invoiceSplitter/invoiceSplitterV1PageGroup";
 import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterDocument";
 
-async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: InvoiceSplitterV1PageGroup[] | number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
+async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
+  if (invoicePageGroups.length === 0) {
+    return [];
+  }
   const generatedPdfs: ExtractedInvoiceSplitterImage[] = [];
-  const pageIndexes: number[][] = invoicePageGroups.map((pageGroup) => {
-    if (pageGroup instanceof InvoiceSplitterV1PageGroup) {
-      return pageGroup.pageIndexes;
-    }
-    return pageGroup;
-  });
-  for (let i = 0; i < pageIndexes.length; i++) {
+  for (let i = 0; i < invoicePageGroups.length; i++) {
     const subdocument = await PDFDocument.create();
-    const copiedPages = await subdocument.copyPages(pdfDoc, pageIndexes[i]);
+    const fullIndexes = [];
+    for (let j = invoicePageGroups[i][0]; j <= invoicePageGroups[i][invoicePageGroups[i].length - 1]; j++) {
+      fullIndexes.push(j);
+    }
+    const copiedPages = await subdocument.copyPages(pdfDoc, fullIndexes);
     copiedPages.map((page) => {
       subdocument.addPage(page);
     });
     const subdocumentBytes = await subdocument.save();
-    generatedPdfs.push(new ExtractedInvoiceSplitterImage(subdocumentBytes, [pageIndexes[i][0], pageIndexes[i][pageIndexes[i].length - 1]]));
+    generatedPdfs.push(new ExtractedInvoiceSplitterImage(
+      subdocumentBytes,
+      [invoicePageGroups[i][0], invoicePageGroups[i][invoicePageGroups[i].length - 1]]
+    ));
   }
 
   return generatedPdfs;
@@ -38,9 +41,30 @@ async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
   return pdfDoc;
 }
 
-export async function extractSelectedInvoices(inputFile: LocalInputSource, customIndexes: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
-  if (!customIndexes) {
+/**
+ * Extracts & cuts the pages of a main document invoice according to the provided indexes.
+ *
+ * @param inputFile File to extract sub-invoices from.
+ * @param indexes List of indexes to cut the document according to. Can be provided either as a InvoiceSplitterV1 inference, or a direct list of splits.
+ * @param strict If set to true, doesn't cut pages where the API isn't 100% confident.
+ * @returns A promise of extracted images, as an array of ExtractedInvoiceSplitterImage.
+ */
+export async function extractInvoices(
+  inputFile: LocalInputSource,
+  indexes: InvoiceSplitterV1 | number[][],
+  strict: boolean = false): Promise<ExtractedInvoiceSplitterImage[]> {
+  if (!indexes) {
     throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");
+  }
+  let customIndexes: number[][] = [];
+  if (indexes instanceof InvoiceSplitterV1) {
+    indexes.prediction.invoicePageGroups.map((invoicePageGroup) => {
+      if (!strict || invoicePageGroup.confidence > 0) {
+        customIndexes.push(invoicePageGroup.pageIndexes);
+      }
+    });
+  } else {
+    customIndexes = indexes;
   }
 
   const pdfDoc = await getPdfDoc(inputFile);
@@ -53,20 +77,4 @@ export async function extractSelectedInvoices(inputFile: LocalInputSource, custo
     })
   });
   return await splitPdf(pdfDoc, customIndexes);
-}
-
-export async function extractAllInvoices(inputFile: LocalInputSource, inference: InvoiceSplitterV1): Promise<ExtractedInvoiceSplitterImage[]> {
-  if (!inference.prediction.invoicePageGroups) {
-    throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");
-  }
-  const pdfDoc = await getPdfDoc(inputFile);
-  const pageCount = pdfDoc.getPageCount();
-  inference.prediction.invoicePageGroups.forEach((pageGroup) => {
-    pageGroup.pageIndexes.forEach((index) => {
-      if (index > pageCount) {
-        throw new MindeeError(`Input file page count (${pageCount}) didn't match that of the inference ${index}. Did the input file change?`)
-      }
-    })
-  });
-  return await splitPdf(pdfDoc, inference.prediction.invoicePageGroups);
 }
