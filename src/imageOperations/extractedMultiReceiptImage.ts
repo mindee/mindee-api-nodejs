@@ -1,21 +1,12 @@
-import { BufferInput } from "../input";
 import { ExtractedImage } from "./extractedImage";
 
-export class ExtractedMultiReceiptImage implements ExtractedImage {
+export class ExtractedMultiReceiptImage extends ExtractedImage {
   readonly receiptId: number;
   readonly pageId: number;
-  imageData: Buffer;
 
-  constructor(imageData: Uint8Array, pageId: number, receiptId: number) {
+  constructor(buffer: Uint8Array, pageId: number, receiptId: number) {
+    super(buffer, `receipt_p${pageId}_${receiptId}.pdf`);
     this.pageId = pageId;
-    this.imageData = Buffer.from(imageData);
     this.receiptId = receiptId;
-  }
-
-  asSource(): BufferInput {
-    return new BufferInput({
-      buffer: this.imageData,
-      filename: `receipt_p${this.pageId}_${this.receiptId}.pdf`,
-    });
   }
 }

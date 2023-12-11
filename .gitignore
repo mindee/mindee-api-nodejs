@@ -118,3 +118,4 @@ docs/_build
 # Temporary test files
 local_test/
 test.js
+tmp/
