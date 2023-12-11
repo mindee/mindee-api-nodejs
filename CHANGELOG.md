@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.6.0 - 2023-12-11
+### Changes
+* :sparkles: add invoice-splitter auto-splitting feature
+* :memo: add examples to illustrate auto-splitting feature
+* :recycle: add unit tests for auto-splitting feature
+* :recycle: rename `exemple` folder to `example`
+* :arrow_up: update testing library
+
+
 ## v4.5.0 - 2023-11-29
 ### Changes
 * :sparkles: add Multi-Receipts auto-extraction feature
