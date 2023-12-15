@@ -239,18 +239,18 @@ async function callEnqueueAndParse<T extends Inference>(
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
-      initialDelaySec: 6,
-      delaySec: 3,
-      maxRetries: 10,
+      initialDelaySec: 4,
+      delaySec: 2,
+      maxRetries: 30,
     });
   } else {
     response = await mindeeClient.enqueueAndParse(productClass, inputSource, {
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
-      initialDelaySec: 6,
-      delaySec: 3,
-      maxRetries: 10,
+      initialDelaySec: 4,
+      delaySec: 2,
+      maxRetries: 30,
     });
     if (!response.document) {
       throw Error("Document could not be retrieved");

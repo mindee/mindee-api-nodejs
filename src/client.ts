@@ -240,9 +240,9 @@ export class Client {
    * @param asyncParams parameters related to asynchronous parsing
    */
   #validateAsyncParams(asyncParams: AsyncOptions): void {
-    asyncParams.delaySec ??= 3;
-    asyncParams.initialDelaySec ??= 6;
-    asyncParams.maxRetries ??= 10;
+    asyncParams.delaySec ??= 2;
+    asyncParams.initialDelaySec ??= 4;
+    asyncParams.maxRetries ??= 30;
     if (asyncParams.delaySec < 2) {
       throw Error("Cannot set auto-parsing delay to less than 2 seconds.");
     }
@@ -274,9 +274,9 @@ export class Client {
       allWords: undefined,
       cropper: undefined,
       pageOptions: undefined,
-      initialDelaySec: 6,
-      delaySec: 3,
-      maxRetries: 10,
+      initialDelaySec: 4,
+      delaySec: 2,
+      maxRetries: 30,
       initialTimerOptions: undefined,
       recurringTimerOptions: undefined,
     }
