@@ -311,11 +311,10 @@ console.log(result.document.inference.prediction.supplierName.value);
 
 ```js
 for (const supplierPaymentDetailsElem of result.document.inference.prediction.supplierPaymentDetails) {
-  console.log(supplierPaymentDetailsElem
-.value;
+  console.log(supplierPaymentDetailsElem.value);
     console.log(supplierPaymentDetailsElem.rate);
     console.log(supplierPaymentDetailsElem.code);
-    console.log(supplierPaymentDetailsElem.basis));
+    console.log(supplierPaymentDetailsElem.basis);
 }
 ```
 
