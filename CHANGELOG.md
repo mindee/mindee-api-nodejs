@@ -3,7 +3,7 @@
 ## v4.6.1 - 2023-12-15
 ### Changes
 * :recycle: tweak async delays & retry
-* :recycme: tweak default async sample delays & retry
+* :recycle: tweak default async sample delays & retry
 * :memo: update md doc & fix typos
 
 
