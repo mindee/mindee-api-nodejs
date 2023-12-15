@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.6.1 - 2023-12-15
+### Changes
+* :recycle: tweak async delays & retry
+* :recycle: tweak default async sample delays & retry
+* :memo: update md doc & fix typos
+
+
 ## v4.6.0 - 2023-12-11
 ### Changes
 * :sparkles: add invoice-splitter auto-splitting feature
