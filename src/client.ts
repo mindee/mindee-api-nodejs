@@ -240,17 +240,20 @@ export class Client {
    * @param asyncParams parameters related to asynchronous parsing
    */
   #validateAsyncParams(asyncParams: AsyncOptions): void {
-    asyncParams.delaySec ??= 3;
-    asyncParams.initialDelaySec ??= 6;
-    asyncParams.maxRetries ??= 10;
-    if (asyncParams.delaySec < 2) {
-      throw Error("Cannot set auto-parsing delay to less than 2 seconds.");
+    const minDelaySec = 1;
+    const minInitialDelay = 2;
+    const minRetries = 2;
+    asyncParams.delaySec ??= 2;
+    asyncParams.initialDelaySec ??= 4;
+    asyncParams.maxRetries ??= 30;
+    if (asyncParams.delaySec < minDelaySec) {
+      throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} seconds.`);
     }
-    if (asyncParams.initialDelaySec < 4) {
-      throw Error("Cannot set initial parsing delay to less than 4 seconds.");
+    if (asyncParams.initialDelaySec < minInitialDelay) {
+      throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} seconds.`);
     }
-    if (!Number.isInteger(asyncParams.maxRetries)) {
-      throw Error("Retry amount must be an integer.")
+    if (asyncParams.maxRetries < minRetries) {
+      throw Error(`Cannot set retry to less than ${minRetries}.`)
     }
   }
 
@@ -274,9 +277,9 @@ export class Client {
       allWords: undefined,
       cropper: undefined,
       pageOptions: undefined,
-      initialDelaySec: 6,
-      delaySec: 3,
-      maxRetries: 10,
+      initialDelaySec: 4,
+      delaySec: 2,
+      maxRetries: 30,
       initialTimerOptions: undefined,
       recurringTimerOptions: undefined,
     }

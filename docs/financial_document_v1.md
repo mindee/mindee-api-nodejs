@@ -133,7 +133,7 @@ A typical `Field` object will have the following attributes:
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
 * **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
-* **reconstructed** (`boolean`): indicates whether or not an object was reconstructed (not extracted as the API gave it).
+* **reconstructed** (`boolean`): indicates whether an object was reconstructed (not extracted as the API gave it).
 
 > **Note:** A `Point` simply refers to an array of two numbers (`[number, number]`).
 
@@ -330,6 +330,9 @@ console.log(result.document.inference.prediction.supplierName.value);
 ```js
 for (const supplierPaymentDetailsElem of result.document.inference.prediction.supplierPaymentDetails) {
   console.log(supplierPaymentDetailsElem.value);
+    console.log(supplierPaymentDetailsElem.rate);
+    console.log(supplierPaymentDetailsElem.code);
+    console.log(supplierPaymentDetailsElem.basis);
 }
 ```
 
@@ -345,7 +348,7 @@ console.log(result.document.inference.prediction.supplierPhoneNumber.value);
 
 ```js
 for (const taxesElem of result.document.inference.prediction.taxes) {
-  console.log(taxesElem.toString());
+  console.log(taxesElem.value);
 }
 ```
 
