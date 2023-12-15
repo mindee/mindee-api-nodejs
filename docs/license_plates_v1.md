@@ -69,7 +69,7 @@ A typical `Field` object will have the following attributes:
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
 * **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
-* **reconstructed** (`boolean`): indicates whether or not an object was reconstructed (not extracted as the API gave it).
+* **reconstructed** (`boolean`): indicates whether an object was reconstructed (not extracted as the API gave it).
 
 > **Note:** A `Point` simply refers to an array of two numbers (`[number, number]`).
 
