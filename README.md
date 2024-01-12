@@ -47,7 +47,7 @@ const inputSource = mindeeClient.docFromBase64(myInputString, "my-file-name")
 
 A stream:
 ```js
-const inputSource = mindeeClient.docFromBuffer(myReadableStream, "my-file-name")
+const inputSource = mindeeClient.docFromStream(myReadableStream, "my-file-name")
 ```
 
 A buffer:
