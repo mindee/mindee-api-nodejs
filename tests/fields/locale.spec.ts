@@ -10,12 +10,12 @@ describe("Test LocaleField field", () => {
       currency: "GBP",
       confidence: 0.1,
     };
-    const locale = new LocaleField({ prediction });
-    expect(locale.value).to.be.equal("en-EN");
-    expect(locale.language).to.be.equal("en");
-    expect(locale.country).to.be.equal("uk");
-    expect(locale.currency).to.be.equal("GBP");
-    expect(locale.confidence).to.be.equal(0.1);
+    const field = new LocaleField({ prediction });
+    expect(field.value).to.be.equal("en-EN");
+    expect(field.language).to.be.equal("en");
+    expect(field.country).to.be.equal("uk");
+    expect(field.currency).to.be.equal("GBP");
+    expect(field.confidence).to.be.equal(0.1);
   });
 
   it("Should create a LocaleField without the value property", () => {
@@ -25,12 +25,12 @@ describe("Test LocaleField field", () => {
       currency: "EUR",
       confidence: 0.15,
     };
-    const locale = new LocaleField({ prediction });
-    expect(locale.value).to.be.be.equal("fr");
-    expect(locale.language).to.be.equal("fr");
-    expect(locale.country).to.be.equal("fr");
-    expect(locale.currency).to.be.equal("EUR");
-    expect(locale.confidence).to.be.equal(0.15);
+    const field = new LocaleField({ prediction });
+    expect(field.value).to.be.be.equal("fr");
+    expect(field.language).to.be.equal("fr");
+    expect(field.country).to.be.equal("fr");
+    expect(field.currency).to.be.equal("EUR");
+    expect(field.confidence).to.be.equal(0.15);
   });
 
   it("Should create a LocaleField with mainly empty fields", () => {
@@ -38,9 +38,9 @@ describe("Test LocaleField field", () => {
       value: "en-EN",
       confidence: 0.1,
     };
-    const locale = new LocaleField({ prediction });
-    expect(locale.language).to.be.undefined;
-    expect(locale.country).to.be.undefined;
-    expect(locale.currency).to.be.undefined;
+    const field = new LocaleField({ prediction });
+    expect(field.language).to.be.undefined;
+    expect(field.country).to.be.undefined;
+    expect(field.currency).to.be.undefined;
   });
 });

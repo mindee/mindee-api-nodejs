@@ -14,6 +14,8 @@ export interface FieldConstructor {
 export class StringField extends Field {
   /** The value. */
   value?: string;
+  /** Value as it appears on the document. */
+  rawValue?: string;
 
   constructor({
     prediction = {},
@@ -22,5 +24,8 @@ export class StringField extends Field {
     pageId,
   }: FieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
+    if (prediction["raw_value"]) {
+      this.rawValue = prediction["raw_value"];
+    }
   }
 }
