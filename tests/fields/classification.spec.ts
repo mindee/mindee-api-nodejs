@@ -7,15 +7,15 @@ describe("Test Classification field", () => {
       value: "food",
       confidence: 0.1,
     };
-    const classification = new ClassificationField({ prediction });
-    expect(classification.value).to.be.equal(prediction.value);
+    const field = new ClassificationField({ prediction });
+    expect(field.value).to.be.equal(prediction.value);
   });
 
   it("Should create a Classification field with no confidence", () => {
     const prediction = {
       value: "N/A",
     };
-    const classification = new ClassificationField({ prediction });
-    expect(classification.confidence).to.be.equals(0);
+    const field = new ClassificationField({ prediction });
+    expect(field.confidence).to.be.equals(0);
   });
 });
