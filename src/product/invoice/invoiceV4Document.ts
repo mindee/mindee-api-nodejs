@@ -53,6 +53,8 @@ export class InvoiceV4Document implements Prediction {
   totalAmount: AmountField;
   /** The net amount paid: does not include taxes, fees, and discounts. */
   totalNet: AmountField;
+  /** The total tax: includes all the taxes paid for this invoice. */
+  totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {
     this.customerAddress = new StringField({
@@ -150,6 +152,10 @@ export class InvoiceV4Document implements Prediction {
       prediction: rawPrediction["total_net"],
       pageId: pageId,
     });
+    this.totalTax = new AmountField({
+      prediction: rawPrediction["total_tax"],
+      pageId: pageId,
+    });
   }
 
   /**
@@ -184,6 +190,7 @@ export class InvoiceV4Document implements Prediction {
 :Due Date: ${this.dueDate}
 :Total Net: ${this.totalNet}
 :Total Amount: ${this.totalAmount}
+:Total Tax: ${this.totalTax}
 :Taxes: ${this.taxes}
 :Supplier Payment Details: ${supplierPaymentDetails}
 :Supplier Name: ${this.supplierName}

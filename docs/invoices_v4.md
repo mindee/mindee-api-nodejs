@@ -312,9 +312,6 @@ console.log(result.document.inference.prediction.supplierName.value);
 ```js
 for (const supplierPaymentDetailsElem of result.document.inference.prediction.supplierPaymentDetails) {
   console.log(supplierPaymentDetailsElem.value);
-    console.log(supplierPaymentDetailsElem.rate);
-    console.log(supplierPaymentDetailsElem.code);
-    console.log(supplierPaymentDetailsElem.basis);
 }
 ```
 
@@ -323,7 +320,7 @@ for (const supplierPaymentDetailsElem of result.document.inference.prediction.su
 
 ```js
 for (const taxesElem of result.document.inference.prediction.taxes) {
-  console.log(taxesElem.value);
+  console.log(taxesElem.toString());
 }
 ```
 
@@ -339,6 +336,13 @@ console.log(result.document.inference.prediction.totalAmount.value);
 
 ```js
 console.log(result.document.inference.prediction.totalNet.value);
+```
+
+## Total Tax
+**totalTax** ([AmountField](#amount-field)): The total tax: includes all the taxes paid for this invoice.
+
+```js
+console.log(result.document.inference.prediction.totalTax.value);
 ```
 
 # Questions?

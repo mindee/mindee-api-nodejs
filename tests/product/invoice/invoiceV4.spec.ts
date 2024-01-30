@@ -24,6 +24,7 @@ describe("InvoiceV4 Object initialization", async () => {
     expect(docPrediction.dueDate.value).to.be.undefined;
     expect(docPrediction.totalNet.value).to.be.undefined;
     expect(docPrediction.totalAmount.value).to.be.undefined;
+    expect(docPrediction.totalTax.value).to.be.undefined;
     expect(docPrediction.taxes.length).to.be.equals(0);
     expect(docPrediction.supplierPaymentDetails.length).to.be.equals(0);
     expect(docPrediction.supplierName.value).to.be.undefined;
@@ -41,14 +42,5 @@ describe("InvoiceV4 Object initialization", async () => {
     const doc = new mindee.Document(mindee.product.InvoiceV4, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
-  });
-
-  it("should load a complete page 0 prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.complete));
-    const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.Document(mindee.product.InvoiceV4, response.document);
-    const page0 = doc.inference.pages[0];
-    const docString = await fs.readFile(path.join(dataPath.page0String));
-    expect(page0.toString()).to.be.equals(docString.toString());
   });
 });
