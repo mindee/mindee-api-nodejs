@@ -6,9 +6,9 @@ import { ClassificationField, ListField, getLineItems, CustomLines } from "../..
  * Document data for Custom builds.
  */
 export class CustomV1Document implements Prediction {
-  /** List of fields for a Custom build. */
+  /** Map of fields for a Custom build. */
   fields: Map<string, ListField> = new Map();
-  /** List of classification fields for a Custom build. */
+  /** Map of classification fields for a Custom build. */
   classifications: Map<string, ClassificationField> = new Map();
 
   constructor(rawPrediction: StringDict, pageId?: number) {

@@ -3,6 +3,8 @@ export { Client, PredictOptions } from "./client";
 export {
   AsyncPredictResponse,
   PredictResponse,
+  Inference,
+  Prediction,
   Document,
   Page,
 } from "./parsing/common";
