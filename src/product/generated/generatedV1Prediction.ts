@@ -1,14 +1,14 @@
-import { Prediction, cleanOutString } from "src/parsing/common";
-import { GeneratedListField, GeneratedObjectField } from "src/parsing/generated";
-import { StringField } from "src/parsing/standard";
+import { Prediction, cleanOutString } from "../../../src/parsing/common";
+import { GeneratedListField, GeneratedObjectField } from "../../../src/parsing/generated";
+import { StringField } from "../../../src/parsing/standard";
 
 
 export class GeneratedV1Prediction implements Prediction {
   /** Map of all fields in the document. */
-  fields: Map<string, GeneratedListField | StringField | GeneratedObjectField>;
+  fields: Record<string, GeneratedListField | StringField | GeneratedObjectField>;
 
   constructor(){
-    this.fields = new Map();
+    this.fields = {};
   }
 
   toString(): string {

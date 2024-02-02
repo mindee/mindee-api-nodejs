@@ -1,4 +1,4 @@
-import { Inference, Page, StringDict } from "src/parsing/common";
+import { Inference, Page, StringDict } from "../../../src/parsing/common";
 import { GeneratedV1Document } from "./generatedV1Document";
 import { GeneratedV1Page } from "./generatedV1Page";
 
