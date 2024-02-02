@@ -5,17 +5,17 @@ import { StringField } from "../../../src/parsing/standard";
 
 export class GeneratedV1Prediction implements Prediction {
   /** Map of all fields in the document. */
-  fields: Record<string, GeneratedListField | StringField | GeneratedObjectField>;
+  fields: Map<string, GeneratedListField | StringField | GeneratedObjectField>;
 
-  constructor(){
-    this.fields = {};
+  constructor() {
+    this.fields = new Map();
   }
 
   toString(): string {
     let outStr = "";
     const pattern = /^(\n*[  ]*)( {2}):/;
 
-    for (const [fieldName, fieldValue] of Object.entries(this.fields)) {
+    this.fields.forEach((fieldValue, fieldName) => {
       let strValue = "";
 
       if (
@@ -23,6 +23,7 @@ export class GeneratedV1Prediction implements Prediction {
         fieldValue.values.length > 0
       ) {
         if (fieldValue.values[0] instanceof GeneratedObjectField) {
+          // throw new MindeeError(fieldValue.values[0].toStringLevel(1) + "\n vs \n" + fieldValue.values[0].toStringLevel(1).replace(pattern, "$1* :"));
           strValue += fieldValue.values[0].toStringLevel(1).replace(pattern, "$1* :");
         } else {
           strValue += fieldValue.values[0].toString().replace(pattern, "$1* :") + "\n";
@@ -38,13 +39,13 @@ export class GeneratedV1Prediction implements Prediction {
 
         strValue = strValue.trimEnd();
       } else {
-        strValue = String(fieldValue);
+        strValue = fieldValue.toString();
       }
 
       outStr += `:${fieldName}: ${strValue}\n`;
-    }
+    });
 
-    return cleanOutString(outStr);
+    return cleanOutString(outStr.trimEnd());
   }
 
   /**

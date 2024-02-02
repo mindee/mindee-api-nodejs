@@ -1,6 +1,11 @@
 import { StringDict } from "../common";
-import { BaseFieldConstructor, StringField } from "../standard";
+import { StringField } from "../standard";
 import { GeneratedObjectField, isGeneratedObject } from "./generatedObject";
+
+export interface GeneratedListFieldConstructor {
+  prediction: StringDict[];
+  pageId?: number;
+}
 
 /**
  * A list of values or objects, used in generated APIs.
@@ -12,21 +17,23 @@ export class GeneratedListField {
   values: Array<GeneratedObjectField | StringField>;
 
   constructor({
-    prediction = {},
-    pageId,
-  }: BaseFieldConstructor) {
+    prediction = [],
+    pageId = undefined,
+  }: GeneratedListFieldConstructor) {
     this.values = [];
 
-    for (const value of Object.values(prediction)) {
+    for (const value of prediction) {
       if (value["page_id"] !== undefined && value["page_id"] !== null) {
         this.pageId = value["page_id"];
       }
       if (isGeneratedObject(value)) {
-        this.values.push(new GeneratedObjectField({prediction: value, pageId}));
+        this.values.push(new GeneratedObjectField({ prediction: value, pageId }));
       }
       else {
         const valueStr: StringDict = { ...value };
-        if (value["value"] !== undefined && value["value"] !== null) {
+        if (valueStr["value"] !== null && valueStr["value"] !== undefined && !isNaN(valueStr["value"])) {
+          valueStr["value"] = value["value"].toFixed(1);
+        } else if (value["value"] !== undefined && value["value"] !== null) {
           valueStr["value"] = value["value"].toString();
         }
         this.values.push(new StringField({ prediction: valueStr, pageId: pageId }));
@@ -36,7 +43,7 @@ export class GeneratedListField {
   /**
    * Returns an array of the contents of all values.
    */
-  contentsList(): Array<string | number> {
+  contentsList(): string[] {
     return this.values.map((item) => item.toString());
   }
 
@@ -46,7 +53,7 @@ export class GeneratedListField {
    * @returns string representation.
    */
   contentsString(separator: string = " "): string {
-    return this.contentsList().map((item) => `${item}`).join(separator);
+    return this.contentsList().map((item) => `${item.toString()}`).join(separator);
   }
 
   /**

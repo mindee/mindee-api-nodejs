@@ -24,14 +24,18 @@ export class GeneratedObjectField {
       if (name === "page_id") {
         itemPageId = value;
       } else if (["polygon", "rectangle", "quadrangle", "bounding_box"].includes(name)) {
-        Object.assign(this, { name: new PositionField({ prediction: { [name]: value }, valueKey: name, pageId: pageId }) });
+        Object.assign(this, { [name]: new PositionField({ prediction: { [name]: value }, valueKey: name, pageId: pageId }) });
         this.printableValues.push(name);
       } else if (name === "confidence") {
         this.confidence = value;
       } else if (name === "raw_value") {
         this.rawValue = value;
       } else {
-        Object.assign(this, value !== undefined && value !== null ? value.toString() : null);
+        if (value !== null && value !== undefined && !isNaN(value) && name !== "degrees") {
+          Object.assign(this, { [name]: this.toNumberString(value) });
+        } else {
+          Object.assign(this, { [name]: (value !== undefined && value !== null) ? String(value) : null });
+        }
         this.printableValues.push(name);
       }
       this.pageId = pageId ?? itemPageId;
@@ -46,11 +50,23 @@ export class GeneratedObjectField {
   toStringLevel(level: number = 0): string {
     const indent = "  " + "  ".repeat(level);
     let outStr = "";
-    this.printableValues.forEach((printableValue: string) => {
-      const strValue: string = (this as any)[printableValue].toString();
-      outStr += `\n${indent}:${printableValue}: ${strValue}`;
+    this.printableValues.forEach((printableValue) => {
+      const strValue = (this as any)[printableValue];
+      outStr += `\n${indent}:${printableValue}: ${strValue !== null && strValue !== undefined ? strValue : ""}`;
     });
-    return `\n${indent}${outStr}`;
+    return `\n${indent}${outStr.trim()}`;
+  }
+
+  /**
+   * Formats a float number to have at least one decimal place.
+   * @param n Input number.
+   * @returns 
+   */
+  private toNumberString(n: number): string {
+    if (Number.isInteger(n)) {
+      return n + ".0"
+    }
+    return n.toString();
   }
 
   toString() {
@@ -74,7 +90,11 @@ export function isGeneratedObject(strDict: StringDict): boolean {
     "values",
     "raw_value",
   ];
-  return Object.keys(strDict).some((key: string) => {
-    commonKeys.includes(key);
-  });
+
+  for (const key in strDict) {
+    if (Object.prototype.hasOwnProperty.call(strDict, key) && !commonKeys.includes(key)) {
+      return true;
+    }
+  }
+  return false;
 }

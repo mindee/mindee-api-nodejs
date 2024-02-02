@@ -11,16 +11,16 @@ export class GeneratedV1Document extends GeneratedV1Prediction {
     super();
     Object.entries(rawPrediction).forEach(([fieldName, fieldValue]: [string, any]) => {
       if (Array.isArray(fieldValue)) {
-        this.fields[fieldName] = new GeneratedListField({prediction: fieldValue});
+        this.fields.set(fieldName, new GeneratedListField({ prediction: fieldValue }));
       }
-      if (typeof fieldValue === "object" && fieldValue !== null && isGeneratedObject(fieldValue)) {
-        this.fields[fieldName], new GeneratedObjectField(fieldValue);
+      else if (typeof fieldValue === "object" && fieldValue !== null && isGeneratedObject(fieldValue)) {
+        this.fields.set(fieldName, new GeneratedObjectField({ prediction: fieldValue }));
       } else {
         const fieldValueStr = fieldValue;
         if (Object.prototype.hasOwnProperty.call(fieldValueStr, "value") && fieldValueStr["value"] !== null) {
           fieldValueStr["value"] = fieldValueStr["value"].toString();
         }
-        this.fields[fieldName] = new StringField({ prediction: fieldValueStr });
+        this.fields.set(fieldName, new StringField({ prediction: fieldValueStr }));
       }
     })
   }

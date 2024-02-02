@@ -28,8 +28,8 @@ describe("Generated Document Object initialization on an OTS product", async () 
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPathInvoice.complete));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new GeneratedV1(response.document.inference);
-    expect((doc.prediction.fields['customerAddress'] as StringField).value).to.equal('1954 Bloon Street West Toronto, ON, M6P 3K9 Canada');
+    const doc = new mindee.Document(GeneratedV1, response.document);
+    expect((doc.inference.prediction.fields.get('customer_address') as StringField).value).to.equal('1954 Bloon Street West Toronto, ON, M6P 3K9 Canada');
 
     const docString = await fs.readFile(path.join(dataPathInvoice.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
