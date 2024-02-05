@@ -20,23 +20,23 @@ export class GeneratedObjectField {
   }: BaseFieldConstructor) {
     let itemPageId = null;
     this.printableValues = [];
-    for (const [name, value] of Object.entries(prediction)) {
-      if (name === "page_id") {
-        itemPageId = value;
-      } else if (["polygon", "rectangle", "quadrangle", "bounding_box"].includes(name)) {
-        Object.assign(this, { [name]: new PositionField({ prediction: { [name]: value }, valueKey: name, pageId: pageId }) });
-        this.printableValues.push(name);
-      } else if (name === "confidence") {
-        this.confidence = value;
-      } else if (name === "raw_value") {
-        this.rawValue = value;
+    for (const [fieldName, fieldValue] of Object.entries(prediction)) {
+      if (fieldName === "page_id") {
+        itemPageId = fieldValue;
+      } else if (["polygon", "rectangle", "quadrangle", "bounding_box"].includes(fieldName)) {
+        Object.assign(this, { [fieldName]: new PositionField({ prediction: { [fieldName]: fieldValue }, valueKey: fieldName, pageId: pageId }) });
+        this.printableValues.push(fieldName);
+      } else if (fieldName === "confidence") {
+        this.confidence = fieldValue;
+      } else if (fieldName === "raw_value") {
+        this.rawValue = fieldValue;
       } else {
-        if (value !== null && value !== undefined && !isNaN(value) && name !== "degrees") {
-          Object.assign(this, { [name]: this.toNumberString(value) });
+        if (fieldValue !== null && fieldValue !== undefined && !isNaN(fieldValue) && fieldName !== "degrees") {
+          Object.assign(this, { [fieldName]: this.toNumberString(fieldValue) });
         } else {
-          Object.assign(this, { [name]: (value !== undefined && value !== null) ? String(value) : null });
+          Object.assign(this, { [fieldName]: (fieldValue !== undefined && fieldValue !== null) ? String(fieldValue) : null });
         }
-        this.printableValues.push(name);
+        this.printableValues.push(fieldName);
       }
       this.pageId = pageId ?? itemPageId;
     }

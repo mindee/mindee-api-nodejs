@@ -5,7 +5,7 @@ import { StringField } from "../../../src/parsing/standard";
 
 export class GeneratedV1Prediction implements Prediction {
   /** Map of all fields in the document. */
-  fields: Map<string, GeneratedListField | StringField | GeneratedObjectField>;
+  fields: Map<string, any>;
 
   constructor() {
     this.fields = new Map();
@@ -23,7 +23,6 @@ export class GeneratedV1Prediction implements Prediction {
         fieldValue.values.length > 0
       ) {
         if (fieldValue.values[0] instanceof GeneratedObjectField) {
-          // throw new MindeeError(fieldValue.values[0].toStringLevel(1) + "\n vs \n" + fieldValue.values[0].toStringLevel(1).replace(pattern, "$1* :"));
           strValue += fieldValue.values[0].toStringLevel(1).replace(pattern, "$1* :");
         } else {
           strValue += fieldValue.values[0].toString().replace(pattern, "$1* :") + "\n";

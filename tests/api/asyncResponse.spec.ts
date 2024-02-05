@@ -69,7 +69,7 @@ describe("Asynchronous API predict response", () => {
     expect(response.job.availableAt?.toISOString()).to.be.equals(
       "2023-03-21T13:53:00.990Z"
     );
-    expect(response.job.milliSecsTaken)?.to.equal(4664);
+    expect(response.job.milliSecsTaken)?.to.equals(4664);
     expect(response.apiRequest.error).to.deep.equal({});
   });
 });
