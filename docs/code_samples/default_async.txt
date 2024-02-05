@@ -1,60 +1,29 @@
-// works for NODE >= v16
-const axios = require("axios");
-const fs = require("fs");
-const FormData = require("form-data");
-const {setTimeout} = require("node:timers/promises");
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
 
-const apiKey = "my-api-key";
-const account = "my-account";
-const endpoint = "my-endpoint";
-const version = "my-version";
+// Init a new client
+const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 
-const urlRoot = `https://api.mindee.net/v1/products/${account}/${endpoint}/v${version}`;
+// Load a file from disk
+const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
-async function makeRequest(url, method, data = null) {
-  const config = {
-    method: method,
-    url: url,
-    headers: { Authorization: `Token ${apiKey}` },
-    data
-  }
-  try {
-    const response = await axios(config);
-    return response.data;
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-}
+// Create a custom endpoint for your product
+const customEndpoint = mindeeClient.createEndpoint(
+  "my-endpoint",
+  "my-account",
+  // "my-version" // Defaults to "1"
+);
 
-async function enqueueRequest(filePath) {
-  const data = new FormData();
-  data.append("document", fs.createReadStream(filePath));
-  return await makeRequest(`${urlRoot}/predict_async`, "POST", data);
-}
+// Parse the file asynchronously.
+const asyncApiResponse = mindeeClient.enqueueAndParse(
+  mindee.product.InvoiceSplitterV1,
+  inputSource,
+  { endpoint: customEndpoint }
+);
 
-async function pollRequest(jobId) {
-  return await makeRequest(`${urlRoot}/documents/queue/${jobId}`, "GET");
-}
-
-async function main(filePath) {
-  const enqueueResponse = await enqueueRequest(filePath);
-  await setTimeout(4000);
-  let pollResponse;
-  let retryCounter = 1;
-  while (retryCounter <= 30) {
-    pollResponse = await pollRequest(enqueueResponse.job.id);
-    if (pollResponse.job.status === "completed") {
-      break;
-    }
-    retryCounter += 1;
-    await setTimeout(2000);
-  }
-  if (pollResponse.job.status !== "completed") {
-    throw Error(`Asynchronous parsing request timed out.`);
-  } else {
-    console.log(pollResponse);
-  }
-}
-
-main("/path/to/the/file.ext");
+// Handle the response Promise
+asyncApiResponse.then((resp) => {
+  // print a string summary
+  console.log(resp.document.toString());
+});
