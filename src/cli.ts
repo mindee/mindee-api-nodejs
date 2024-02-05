@@ -8,6 +8,7 @@ import * as console from "console";
 const program = new Command();
 
 const COMMAND_CUSTOM = "custom";
+const COMMAND_GENERATED = "generated";
 
 interface ProductConfig<T extends Inference = Inference> {
   displayName: string;
@@ -31,6 +32,16 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       docClass: product.CustomV1,
       allWords: false,
       async: false,
+      sync: true,
+    },
+  ],
+  [
+    COMMAND_GENERATED,
+    {
+      displayName: "Generated Document",
+      docClass: product.GeneratedV1,
+      allWords: true,
+      async: true,
       sync: true,
     },
   ],
@@ -195,7 +206,7 @@ async function callParse<T extends Inference>(
   const pageOptions = getPageOptions(options);
   const inputSource = mindeeClient.docFromPath(inputPath);
   let response;
-  if (command === COMMAND_CUSTOM) {
+  if (command === COMMAND_CUSTOM || command === COMMAND_GENERATED) {
     const customEndpoint = mindeeClient.createEndpoint(
       options.endpoint,
       options.account,
@@ -228,7 +239,7 @@ async function callEnqueueAndParse<T extends Inference>(
   const pageOptions = getPageOptions(options);
   const inputSource = mindeeClient.docFromPath(inputPath);
   let response: AsyncPredictResponse<T>;
-  if (command === COMMAND_CUSTOM) {
+  if (command === COMMAND_CUSTOM || command === COMMAND_GENERATED) {
     const customEndpoint = mindeeClient.createEndpoint(
       options.endpoint,
       options.account,
@@ -356,7 +367,7 @@ function routeSwitchboard(
 }
 
 function addPredictAction(prog: Command) {
-  if (prog.name() === COMMAND_CUSTOM) {
+  if (prog.name() === COMMAND_CUSTOM || prog.name() === COMMAND_GENERATED) {
     prog.action(function (
       inputPath: string,
       options: OptionValues,
@@ -440,7 +451,7 @@ export function cli() {
       predictProductCmd.addOption(asyncOpt);
     }
 
-    if (name === COMMAND_CUSTOM) {
+    if (name === COMMAND_CUSTOM || name === COMMAND_GENERATED) {
       addCustomPostOptions(predictProductCmd);
     }
     addMainOptions(predictProductCmd);

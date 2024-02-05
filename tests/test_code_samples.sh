@@ -10,7 +10,6 @@ rm -fr ../test_code_samples
 mkdir ../test_code_samples
 
 cd ../test_code_samples
-npm install axios --ignore-scripts --no-bin-links
 npm install ../mindee-api-nodejs/dist --ignore-scripts --no-bin-links
 cd -
 

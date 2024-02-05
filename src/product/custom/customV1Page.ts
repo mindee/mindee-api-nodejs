@@ -6,7 +6,7 @@ import { ListField, CustomLines, getLineItems } from "../../parsing/custom";
  * Page data for Custom builds.
  */
 export class CustomV1Page implements Prediction {
-  /** List of page-specific fields for a Custom build. Cannot include Classification fields. */
+  /** Map of page-specific fields for a Custom build. Cannot include Classification fields. */
   fields: Map<string, ListField> = new Map();
 
   constructor(rawPrediction: StringDict, pageId?: number) {
