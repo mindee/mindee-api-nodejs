@@ -1,6 +1,7 @@
 export * as barcodeReader from "./barcodeReader/internal";
 export * as cropper from "./cropper/internal";
 export * as custom from "./custom/internal";
+export * as generated from "./generated/internal";
 export * as eu from "./eu/internal";
 export * as financialDocument from "./financialDocument/internal";
 export * as fr from "./fr/internal";
