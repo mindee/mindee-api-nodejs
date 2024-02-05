@@ -12,7 +12,7 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 const customEndpoint = mindeeClient.createEndpoint(
   "my-endpoint",
   "my-account",
-  // "my-version" // Defaults to "1"
+  "my-version" // Defaults to "1"
 );
 
 // Parse the file asynchronously.
