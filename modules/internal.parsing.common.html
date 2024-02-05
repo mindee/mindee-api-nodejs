@@ -18,7 +18,7 @@
 <li><a href="internal.parsing.common.html">common</a></li></ul>
 <h1>Namespace common</h1></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/b77d9aa/src/parsing/common/index.ts#L1">src/parsing/common/index.ts:1</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/aeb3943/src/parsing/common/index.ts#L1">src/parsing/common/index.ts:1</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -28,8 +28,10 @@
 <h3 class="tsd-index-heading">References</h3>
 <div class="tsd-index-list"><a href="internal.parsing.common.html#AsyncPredictResponse" class="tsd-index-link tsd-kind-reference tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF4D82" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-8388608-path"></rect><path d="M10.354 17V8.24H13.066C13.586 8.24 14.042 8.348 14.434 8.564C14.826 8.772 15.13 9.064 15.346 9.44C15.562 9.816 15.67 10.256 15.67 10.76C15.67 11.352 15.514 11.86 15.202 12.284C14.898 12.708 14.482 13 13.954 13.16L15.79 17H14.518L12.838 13.28H11.434V17H10.354ZM11.434 12.308H13.066C13.514 12.308 13.874 12.168 14.146 11.888C14.418 11.6 14.554 11.224 14.554 10.76C14.554 10.288 14.418 9.912 14.146 9.632C13.874 9.352 13.514 9.212 13.066 9.212H11.434V12.308Z" fill="var(--color-text)" id="icon-8388608-text"></path></svg><span>Async<wbr/>Predict<wbr/>Response</span></a>
 <a href="internal.parsing.common.html#Document" class="tsd-index-link tsd-kind-reference tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg><span>Document</span></a>
+<a href="internal.parsing.common.html#Inference" class="tsd-index-link tsd-kind-reference tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg><span>Inference</span></a>
 <a href="internal.parsing.common.html#Page" class="tsd-index-link tsd-kind-reference tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg><span>Page</span></a>
 <a href="internal.parsing.common.html#PredictResponse" class="tsd-index-link tsd-kind-reference tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg><span>Predict<wbr/>Response</span></a>
+<a href="internal.parsing.common.html#Prediction" class="tsd-index-link tsd-kind-reference tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg><span>Prediction</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Classes - API Response</h3>
@@ -37,9 +39,7 @@
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Classes - Other</h3>
-<div class="tsd-index-list"><a href="../classes/internal.parsing.common.Inference.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Inference</span></a>
-<a href="../classes/internal.parsing.common.OrientationField.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Orientation<wbr/>Field</span></a>
-<a href="../classes/internal.parsing.common.Prediction.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Prediction</span></a>
+<div class="tsd-index-list"><a href="../classes/internal.parsing.common.OrientationField.html" class="tsd-index-link tsd-kind-class tsd-parent-kind-namespace"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg><span>Orientation<wbr/>Field</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading">Classes - Synchronous</h3>
@@ -60,10 +60,14 @@
 <h3 class="tsd-anchor-link"><span>Async<wbr/>Predict<wbr/>Response</span><a href="#AsyncPredictResponse" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" id="icon-anchor-a"></path><path d="M10 14a3.5 3.5 0 0 0 5 0l4 -4a3.5 3.5 0 0 0 -5 -5l-.5 .5" id="icon-anchor-b"></path><path d="M14 10a3.5 3.5 0 0 0 -5 0l-4 4a3.5 3.5 0 0 0 5 5l.5 -.5" id="icon-anchor-c"></path></svg></a></h3>Re-exports <a href="../classes/AsyncPredictResponse.html">AsyncPredictResponse</a></section>
 <section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-namespace"><a id="Document" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>Document</span><a href="#Document" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>Re-exports <a href="../classes/Document.html">Document</a></section>
+<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-namespace"><a id="Inference" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Inference</span><a href="#Inference" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>Re-exports <a href="../classes/Inference.html">Inference</a></section>
 <section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-namespace"><a id="Page" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>Page</span><a href="#Page" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>Re-exports <a href="../classes/Page.html">Page</a></section>
 <section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-namespace"><a id="PredictResponse" class="tsd-anchor"></a>
-<h3 class="tsd-anchor-link"><span>Predict<wbr/>Response</span><a href="#PredictResponse" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>Re-exports <a href="../classes/PredictResponse.html">PredictResponse</a></section></section></div>
+<h3 class="tsd-anchor-link"><span>Predict<wbr/>Response</span><a href="#PredictResponse" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>Re-exports <a href="../classes/PredictResponse.html">PredictResponse</a></section>
+<section class="tsd-panel tsd-member tsd-kind-reference tsd-parent-kind-namespace"><a id="Prediction" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>Prediction</span><a href="#Prediction" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>Re-exports <a href="../classes/Prediction.html">Prediction</a></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -94,6 +98,7 @@
 <ul>
 <li class="current selected tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.parsing.common.html">common</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.parsing.custom.html">custom</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.parsing.generated.html">generated</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.parsing.standard.html">standard</a></li></ul></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.pdf.html">pdf</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.html">product</a>
@@ -111,6 +116,7 @@
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.fr.carteGrise.html">carte<wbr/>Grise</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.fr.carteVitale.html">carte<wbr/>Vitale</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.fr.idCard.html">id<wbr/>Card</a></li></ul></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.generated.html">generated</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.invoice.html">invoice</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.invoiceSplitter.html">invoice<wbr/>Splitter</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="internal.product.multiReceiptsDetector.html">multi<wbr/>Receipts<wbr/>Detector</a></li>
@@ -130,12 +136,12 @@
 <ul>
 <li class="tsd-kind-reference tsd-parent-kind-namespace"><a href="internal.parsing.common.html#AsyncPredictResponse" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg>Async<wbr/>Predict<wbr/>Response</a></li>
 <li class="tsd-kind-reference tsd-parent-kind-namespace"><a href="internal.parsing.common.html#Document" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg>Document</a></li>
+<li class="tsd-kind-reference tsd-parent-kind-namespace"><a href="internal.parsing.common.html#Inference" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg>Inference</a></li>
 <li class="tsd-kind-reference tsd-parent-kind-namespace"><a href="internal.parsing.common.html#Page" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg>Page</a></li>
 <li class="tsd-kind-reference tsd-parent-kind-namespace"><a href="internal.parsing.common.html#PredictResponse" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg>Predict<wbr/>Response</a></li>
+<li class="tsd-kind-reference tsd-parent-kind-namespace"><a href="internal.parsing.common.html#Prediction" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-8388608-path"></use><use href="#icon-8388608-text"></use></svg>Prediction</a></li>
 <li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/internal.parsing.common.FeedbackResponse.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Feedback<wbr/>Response</a></li>
-<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/internal.parsing.common.Inference.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Inference</a></li>
 <li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/internal.parsing.common.OrientationField.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Orientation<wbr/>Field</a></li>
-<li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/internal.parsing.common.Prediction.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Prediction</a></li>
 <li class="tsd-kind-type-alias tsd-parent-kind-namespace"><a href="../types/internal.parsing.common.StringDict.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-4194304-path"></use><use href="#icon-4194304-text"></use></svg>String<wbr/>Dict</a></li>
 <li class="tsd-kind-function tsd-parent-kind-namespace"><a href="../functions/internal.parsing.common.cleanOutString.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>clean<wbr/>Out<wbr/>String</a></li>
 <li class="tsd-kind-function tsd-parent-kind-namespace"><a href="../functions/internal.parsing.common.lineSeparator.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-64-path"></use><use href="#icon-64-text"></use></svg>line<wbr/>Separator</a></li></ul></nav></div></div>
