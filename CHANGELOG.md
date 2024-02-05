@@ -1,5 +1,22 @@
 # CHANGELOG
 
+## v4.8.0 - 2024-02-05
+### Changes
+* :sparkles: add support for Generated APIs
+* :sparkles: add custom GeneratedList & GeneratedObject classes linked to Generated APIs
+* :arrow_up: update test lib to add testing samples for Generated APIs
+* :arrow_up: upgraded dependencies & lockfile version
+* :recycle: add new generated namespace & associated documentation
+* :wrench: add unit tests for generated APIs
+* :wrench: add code samples for generated APIs
+* :recycle: add CLI entry for generated APIs
+* :memo: add documentation entry for generated APIs
+* :recycle: expose a bit more of our internals for easier use (#247)
+
+### Fixes
+* :memo: fix invoice v4 md doc
+
+
 ## v4.7.0 - 2024-01-30
 ### Changes
 * :arrow_up: update invoices to 4.4
