@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.8.1 - 2024-02-06
+### Fixes
+* :bug: fixed invalid code samples for generated & async generic APIs
+* :memo: fix corresponding docs
+
+
 ## v4.8.0 - 2024-02-05
 ### Changes
 * :sparkles: add support for Generated APIs
