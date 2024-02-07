@@ -144,6 +144,7 @@ const apiResponse = mindeeClient.parse(
 Complete details on the working of the library are available in the following guides: 
 
 * [Node.js Getting Started](https://developers.mindee.com/docs/nodejs-getting-started)
+* [Node.js Generated API](https://developers.mindee.com/docs/nodejs-generated-api)
 * [Node.js Custom OCR](https://developers.mindee.com/docs/nodejs-api-builder)
 * [Node.js Invoice OCR](https://developers.mindee.com/docs/nodejs-invoice-ocr)
 * [Node.js Receipt OCR](https://developers.mindee.com/docs/nodejs-receipt-ocr)
