@@ -26,7 +26,7 @@ const customEndpoint = mindeeClient.createEndpoint(
 
 // Parse the file asynchronously.
 const asyncApiResponse = mindeeClient.enqueueAndParse(
-  mindee.product.InvoiceSplitterV1,
+  mindee.product.GenneratedV1,
   inputSource,
   { endpoint: customEndpoint }
 );
