@@ -54,6 +54,20 @@ export interface PredictOptions {
 /**
  * Asynchronous polling parameters.
  */
+export interface OptionalAsyncOptions extends PredictOptions {
+  initialDelaySec?: number;
+  delaySec?: number;
+  maxRetries?: number;
+  initialTimerOptions?: {
+    ref?: boolean,
+    signal?: AbortSignal
+  };
+  recurringTimerOptions?: {
+    ref?: boolean,
+    signal?: AbortSignal
+  }
+}
+
 export interface AsyncOptions extends PredictOptions {
   initialDelaySec: number;
   delaySec: number;
@@ -236,25 +250,29 @@ export class Client {
   }
 
   /**
-   * Checks the values for asynchronous parsing. Sets their value if they are somehow undefined.
+   * Checks the values for asynchronous parsing. Returns their corrected value if they are undefined.
    * @param asyncParams parameters related to asynchronous parsing
+   * @returns A valid `AsyncOptions`.
    */
-  #validateAsyncParams(asyncParams: AsyncOptions): void {
+  #setAsyncParams(asyncParams: OptionalAsyncOptions): AsyncOptions {
     const minDelaySec = 1;
     const minInitialDelay = 2;
     const minRetries = 2;
-    asyncParams.delaySec ??= 2;
-    asyncParams.initialDelaySec ??= 4;
-    asyncParams.maxRetries ??= 30;
-    if (asyncParams.delaySec < minDelaySec) {
+    const newAsyncParams = {...asyncParams};
+    newAsyncParams.delaySec ??= 2;
+    newAsyncParams.initialDelaySec ??= 4;
+    newAsyncParams.maxRetries ??= 30;
+    
+    if (newAsyncParams.delaySec < minDelaySec) {
       throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} seconds.`);
     }
-    if (asyncParams.initialDelaySec < minInitialDelay) {
+    if (newAsyncParams.initialDelaySec < minInitialDelay) {
       throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} seconds.`);
     }
-    if (asyncParams.maxRetries < minRetries) {
+    if (newAsyncParams.maxRetries < minRetries) {
       throw Error(`Cannot set retry to less than ${minRetries}.`)
     }
+    return newAsyncParams as AsyncOptions;
   }
 
   /**
@@ -272,7 +290,7 @@ export class Client {
   async enqueueAndParse<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T,
     inputSource: InputSource,
-    asyncParams: AsyncOptions = {
+    asyncParams: OptionalAsyncOptions = {
       endpoint: undefined,
       allWords: undefined,
       cropper: undefined,
@@ -284,7 +302,7 @@ export class Client {
       recurringTimerOptions: undefined,
     }
   ): Promise<AsyncPredictResponse<T>> {
-    this.#validateAsyncParams(asyncParams);
+    const validatedAsyncParams = this.#setAsyncParams(asyncParams);
     const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(productClass, inputSource, asyncParams);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       throw Error("Enqueueing of the document failed.");
@@ -293,11 +311,11 @@ export class Client {
     logger.debug(
       `Successfully enqueued document with job id: ${queueId}.`
     );
-    await setTimeout(asyncParams.initialDelaySec * 1000, undefined, asyncParams.initialTimerOptions);
+    await setTimeout(validatedAsyncParams.initialDelaySec * 1000, undefined, asyncParams.initialTimerOptions);
     let retryCounter: number = 1;
     let pollResults: AsyncPredictResponse<T>;
     pollResults = await this.parseQueued(productClass, queueId, asyncParams);
-    while (retryCounter < asyncParams.maxRetries) {
+    while (retryCounter < validatedAsyncParams.maxRetries) {
       logger.debug(
         `Polling server for parsing result with queueId: ${queueId}.
 Attempt n°${retryCounter}/${asyncParams.maxRetries}.
@@ -306,12 +324,12 @@ Job status: ${pollResults.job.status}.`
       if (pollResults.job.status === "completed") {
         break;
       }
-      await setTimeout(asyncParams.delaySec * 1000, undefined, asyncParams.recurringTimerOptions);
+      await setTimeout(validatedAsyncParams.delaySec * 1000, undefined, asyncParams.recurringTimerOptions);
       pollResults = await this.parseQueued(productClass, queueId, asyncParams);
       retryCounter++;
     }
     if (pollResults.job.status !== "completed") {
-      throw Error(`Asynchronous parsing request timed out after ${asyncParams.delaySec * retryCounter} seconds`);
+      throw Error(`Asynchronous parsing request timed out after ${validatedAsyncParams.delaySec * retryCounter} seconds`);
     }
     return pollResults;
   }
