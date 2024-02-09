@@ -252,7 +252,7 @@ async function callEnqueueAndParse<T extends Inference>(
       cropper: predictParams.cropper,
       initialDelaySec: 4,
       delaySec: 2,
-      maxRetries: 30,
+      maxRetries: 60,
     });
   } else {
     response = await mindeeClient.enqueueAndParse(productClass, inputSource, {
@@ -261,7 +261,7 @@ async function callEnqueueAndParse<T extends Inference>(
       cropper: predictParams.cropper,
       initialDelaySec: 4,
       delaySec: 2,
-      maxRetries: 30,
+      maxRetries: 60,
     });
     if (!response.document) {
       throw Error("Document could not be retrieved");
