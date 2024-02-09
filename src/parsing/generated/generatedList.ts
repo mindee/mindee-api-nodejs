@@ -31,9 +31,7 @@ export class GeneratedListField {
       }
       else {
         const valueStr: StringDict = { ...value };
-        if (valueStr["value"] !== null && valueStr["value"] !== undefined && !isNaN(valueStr["value"])) {
-          valueStr["value"] = value["value"].toFixed(1);
-        } else if (value["value"] !== undefined && value["value"] !== null) {
+        if (valueStr["value"] !== null && valueStr["value"] !== undefined) {
           valueStr["value"] = value["value"].toString();
         }
         this.values.push(new StringField({ prediction: valueStr, pageId: pageId }));
