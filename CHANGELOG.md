@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.8.2 - 2024-02-09
+### Changes
+* :recycle: increased update time for async retries
+
+### Fixes
+* :bug: fixed improper float parsing for Generated list objects
+* :bug: typescript should now allow the use of default values for enqueueAndParse() async options
+
+
 ## v4.8.1 - 2024-02-06
 ### Fixes
 * :bug: fixed invalid code samples for generated & async generic APIs
