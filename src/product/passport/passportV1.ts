@@ -17,14 +17,18 @@ export class PassportV1 extends Inference {
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
     this.prediction = new PassportV1Document(rawPrediction["prediction"]);
-    this.pages = rawPrediction["pages"].map(
-      (page: StringDict) =>
-        new Page(
-          PassportV1Document,
-          page,
-          page["id"],
-          page["orientation"]
-        )
+    rawPrediction["pages"].forEach(
+      (page: StringDict) => {
+        if (page.prediction !== undefined && page.prediction !== null &&
+          Object.keys(page.prediction).length > 0) {
+          this.pages.push(new Page(
+            PassportV1Document,
+            page,
+            page["id"],
+            page["orientation"]
+          ))
+        }
+      }
     );
   }
 }

@@ -18,14 +18,18 @@ export class DriverLicenseV1 extends Inference {
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
     this.prediction = new DriverLicenseV1Document(rawPrediction["prediction"]);
-    this.pages = rawPrediction["pages"].map(
-      (page: StringDict) =>
-        new Page(
-          DriverLicenseV1Page,
-          page,
-          page["id"],
-          page["orientation"]
-        )
+    rawPrediction["pages"].forEach(
+      (page: StringDict) => {
+        if (page.prediction !== undefined && page.prediction !== null &&
+          Object.keys(page.prediction).length > 0) {
+          this.pages.push(new Page(
+            DriverLicenseV1Page,
+            page,
+            page["id"],
+            page["orientation"]
+          ))
+        }
+      }
     );
   }
 }

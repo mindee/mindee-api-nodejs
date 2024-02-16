@@ -27,7 +27,6 @@ describe("CropperV1 Object initialization", async () => {
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
-
   it("should load a complete page 0 prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());

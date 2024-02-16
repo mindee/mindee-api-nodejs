@@ -17,14 +17,18 @@ export class ProofOfAddressV1 extends Inference {
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
     this.prediction = new ProofOfAddressV1Document(rawPrediction["prediction"]);
-    this.pages = rawPrediction["pages"].map(
-      (page: StringDict) =>
-        new Page(
-          ProofOfAddressV1Document,
-          page,
-          page["id"],
-          page["orientation"]
-        )
+    rawPrediction["pages"].forEach(
+      (page: StringDict) => {
+        if (page.prediction !== undefined && page.prediction !== null &&
+          Object.keys(page.prediction).length > 0) {
+          this.pages.push(new Page(
+            ProofOfAddressV1Document,
+            page,
+            page["id"],
+            page["orientation"]
+          ))
+        }
+      }
     );
   }
 }

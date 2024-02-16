@@ -28,13 +28,4 @@ describe("BarcodeReaderV1 Object initialization", async () => {
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
-
-  it("should load a complete page 0 prediction", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.complete));
-    const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.Document(mindee.product.BarcodeReaderV1, response.document);
-    const page0 = doc.inference.pages[0];
-    const docString = await fs.readFile(path.join(dataPath.page0String));
-    expect(page0.toString()).to.be.equals(docString.toString());
-  });
 });

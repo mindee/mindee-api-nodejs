@@ -3,6 +3,8 @@ export { CropperV1 } from "./cropper/cropperV1";
 export { CustomV1 } from "./custom/customV1";
 export { FinancialDocumentV1 } from "./financialDocument/financialDocumentV1";
 export { InvoiceV4 } from "./invoice/invoiceV4";
+export { InternationalIdV1 } from "./internationalId/internationalIdV1";
+export { InternationalIdV2 } from "./internationalId/internationalIdV2";
 export { InvoiceSplitterV1 } from "./invoiceSplitter/invoiceSplitterV1";
 export { GeneratedV1 } from "./generated/generatedV1";
 export { MultiReceiptsDetectorV1 } from "./multiReceiptsDetector/multiReceiptsDetectorV1";
