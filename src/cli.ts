@@ -56,6 +56,16 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "international-id",
+    {
+      displayName: "International Id",
+      docClass: product.InternationalIdV2,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
     "invoice",
     {
       displayName: "Invoice",
@@ -146,10 +156,30 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "eu-driver-license",
+    {
+      displayName: "EU Driver License",
+      docClass: product.eu.DriverLicenseV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
     "us-bank-check",
     {
       displayName: "US Bank Check",
       docClass: product.us.BankCheckV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "us-driver-license",
+    {
+      displayName: "US Driver License",
+      docClass: product.us.DriverLicenseV1,
       allWords: false,
       async: false,
       sync: true,
