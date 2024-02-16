@@ -18,14 +18,18 @@ export class IdCardV2 extends Inference {
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
     this.prediction = new IdCardV2Document(rawPrediction["prediction"]);
-    this.pages = rawPrediction["pages"].map(
-      (page: StringDict) =>
-        new Page(
-          IdCardV2Page,
-          page,
-          page["id"],
-          page["orientation"]
-        )
+    rawPrediction["pages"].forEach(
+      (page: StringDict) => {
+        if (page.prediction !== undefined && page.prediction !== null &&
+          Object.keys(page.prediction).length > 0) {
+          this.pages.push(new Page(
+            IdCardV2Page,
+            page,
+            page["id"],
+            page["orientation"]
+          ))
+        }
+      }
     );
   }
 }

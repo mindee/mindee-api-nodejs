@@ -17,14 +17,18 @@ export class BarcodeReaderV1 extends Inference {
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
     this.prediction = new BarcodeReaderV1Document(rawPrediction["prediction"]);
-    this.pages = rawPrediction["pages"].map(
-      (page: StringDict) =>
-        new Page(
-          BarcodeReaderV1Document,
-          page,
-          page["id"],
-          page["orientation"]
-        )
+    rawPrediction["pages"].forEach(
+      (page: StringDict) => {
+        if (page.prediction !== undefined && page.prediction !== null &&
+          Object.keys(page.prediction).length > 0) {
+          this.pages.push(new Page(
+            BarcodeReaderV1Document,
+            page,
+            page["id"],
+            page["orientation"]
+          ))
+        }
+      }
     );
   }
 }

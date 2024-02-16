@@ -5,6 +5,7 @@ export * as generated from "./generated/internal";
 export * as eu from "./eu/internal";
 export * as financialDocument from "./financialDocument/internal";
 export * as fr from "./fr/internal";
+export * as internationalId from "./internationalId/internal";
 export * as invoice from "./invoice/internal";
 export * as invoiceSplitter from "./invoiceSplitter/internal";
 export * as multiReceiptsDetector from "./multiReceiptsDetector/internal";
