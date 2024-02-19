@@ -1,10 +1,10 @@
 ---
-title: EU EU Driver License OCR Node.js
+title: EU Driver License OCR Node.js
 ---
-The Node.js OCR SDK supports the [EU Driver License API](https://platform.mindee.com/mindee/eu_driver_license).
+The Node.js OCR SDK supports the [Driver License API](https://platform.mindee.com/mindee/eu_driver_license).
 
 Using the [sample below](https://github.com/mindee/client-lib-test-data/blob/main/products/eu_driver_license/default_sample.jpg), we are going to illustrate how to extract the data that we want using the OCR SDK.
-![EU Driver License sample](https://github.com/mindee/client-lib-test-data/blob/main/products/eu_driver_license/default_sample.jpg?raw=true)
+![Driver License sample](https://github.com/mindee/client-lib-test-data/blob/main/products/eu_driver_license/default_sample.jpg?raw=true)
 
 # Quick-Start
 ```js
@@ -119,7 +119,7 @@ The text field `StringField` only has one constraint: its **value** is a `string
 Some fields are constrained to the page level, and so will not be retrievable to through the document.
 
 # Attributes
-The following fields are extracted for EU Driver License V1:
+The following fields are extracted for Driver License V1:
 
 ## Address
 **address** ([StringField](#string-field)): EU driver license holders address

@@ -6,7 +6,7 @@ import {
 import { DateField, StringField } from "../../../parsing/standard";
 
 /**
- * Document data for EU Driver License, API version 1.
+ * Document data for Driver License, API version 1.
  */
 export class DriverLicenseV1Document implements Prediction {
   /** EU driver license holders address */
