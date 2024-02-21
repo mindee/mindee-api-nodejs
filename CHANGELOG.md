@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.9.0 - 2024-02-21
+### Changes
+* :sparkles: add support for resume V1
+* :sparkles: add support for International ID v2
+* :sparkles: add support for EU Driver License V1
+
+### Fixes
+:memo: misc doc fixes
+
 ## v4.8.2 - 2024-02-09
 ### Changes
 * :recycle: increased update time for async retries
