@@ -149,6 +149,7 @@ Complete details on the working of the library are available in the following gu
 * [Node.js Invoice OCR](https://developers.mindee.com/docs/nodejs-invoice-ocr)
 * [Node.js International Id OCR](https://developers.mindee.com/docs/nodejs-international-id-ocr)
 * [Node.js Receipt OCR](https://developers.mindee.com/docs/nodejs-receipt-ocr)
+* [Node.js Resume OCR](https://developers.mindee.com/docs/nodejs-resume-ocr)
 * [Node.js Financial Document OCR](https://developers.mindee.com/docs/nodejs-financial-document-ocr)
 * [Node.js Passport OCR](https://developers.mindee.com/docs/nodejs-passport-ocr)
 * [Node.js Proof of Address OCR](https://developers.mindee.com/docs/nodejs-proof-of-address-ocr)
@@ -173,4 +174,4 @@ Copyright © Mindee
 Available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Questions?
-[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-1jv6nawjq-FDgFcF2T5CmMmRpl9LLptw)
+[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-2d0ds7dtz-DPAF81ZqTy20chsYpQBW5g)

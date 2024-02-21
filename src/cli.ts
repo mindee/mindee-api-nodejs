@@ -96,6 +96,16 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "resume",
+    {
+      displayName: "Resume",
+      docClass: product.ResumeV1,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
     "passport",
     {
       displayName: "Passport",
