@@ -18,7 +18,6 @@ describe("ResumeV1 Object initialization", async () => {
     const doc = new mindee.Document(mindee.product.ResumeV1, response.document);
     const docPrediction = doc.inference.prediction;
     expect(docPrediction.documentLanguage.value).to.be.undefined;
-    expect(docPrediction.documentType.value).to.be.undefined;
     expect(docPrediction.givenNames.length).to.be.equals(0);
     expect(docPrediction.surnames.length).to.be.equals(0);
     expect(docPrediction.nationality.value).to.be.undefined;

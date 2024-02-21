@@ -2,18 +2,18 @@ import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**
- * The list of values that represent the educational background of an individual.
+ * The list of the candidate's educational background.
  */
 export class ResumeV1Education {
-  /** The area of study or specialization pursued by an individual in their educational background. */
+  /** The area of study or specialization. */
   degreeDomain: string | undefined;
-  /** The type of degree obtained by the individual, such as Bachelor's, Master's, or Doctorate. */
+  /** The type of degree obtained, such as Bachelor's, Master's, or Doctorate. */
   degreeType: string | undefined;
-  /** The month when the education program or course was completed or is expected to be completed. */
+  /** The month when the education program or course was completed. */
   endMonth: string | undefined;
-  /** The year when the education program or course was completed or is expected to be completed. */
+  /** The year when the education program or course was completed. */
   endYear: string | undefined;
-  /** The name of the school the individual went to. */
+  /** The name of the school. */
   school: string | undefined;
   /** The month when the education program or course began. */
   startMonth: string | undefined;

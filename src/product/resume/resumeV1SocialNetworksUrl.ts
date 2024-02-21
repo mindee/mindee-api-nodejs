@@ -2,12 +2,12 @@ import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**
- * The list of URLs for social network profiles of the person.
+ * The list of social network profiles of the candidate.
  */
 export class ResumeV1SocialNetworksUrl {
-  /** The name of of the social media concerned. */
+  /** The name of the social network. */
   name: string | undefined;
-  /** The URL of the profile for this particular social network. */
+  /** The URL of the social network. */
   url: string | undefined;
   /** Confidence score */
   confidence: number = 0.0;

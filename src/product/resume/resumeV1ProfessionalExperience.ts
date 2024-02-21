@@ -2,24 +2,24 @@ import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**
- * The list of values that represent the professional experiences of an individual in their global resume.
+ * The list of the candidate's professional experiences.
  */
 export class ResumeV1ProfessionalExperience {
-  /** The type of contract for a professional experience. Possible values: 'Full-Time', 'Part-Time', 'Internship' and 'Freelance'. */
+  /** The type of contract for the professional experience. */
   contractType: string | undefined;
-  /** The specific department or division within a company where the professional experience was gained. */
+  /** The specific department or division within the company. */
   department: string | undefined;
-  /** The name of the company or organization where the candidate has worked. */
+  /** The name of the company or organization. */
   employer: string | undefined;
-  /** The month when a professional experience ended. */
+  /** The month when the professional experience ended. */
   endMonth: string | undefined;
-  /** The year when a professional experience ended. */
+  /** The year when the professional experience ended. */
   endYear: string | undefined;
-  /** The position or job title held by the individual in their previous work experience. */
+  /** The position or job title held by the candidate. */
   role: string | undefined;
-  /** The month when a professional experience began. */
+  /** The month when the professional experience began. */
   startMonth: string | undefined;
-  /** The year when a professional experience began. */
+  /** The year when the professional experience began. */
   startYear: string | undefined;
   /** Confidence score */
   confidence: number = 0.0;

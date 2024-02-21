@@ -7,9 +7,9 @@ import { Polygon } from "../../geometry";
 export class ResumeV1Certificate {
   /** The grade obtained for the certificate. */
   grade: string | undefined;
-  /** The name of certifications obtained by the individual. */
+  /** The name of certification. */
   name: string | undefined;
-  /** The organization or institution that issued the certificates listed in the document. */
+  /** The organization or institution that issued the certificate. */
   provider: string | undefined;
   /** The year when a certificate was issued or received. */
   year: string | undefined;
