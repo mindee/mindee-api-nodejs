@@ -6,14 +6,13 @@ import { EndpointResponse } from "./baseEndpoint";
 export function handleError(
   urlName: string,
   response: EndpointResponse,
-  code?: number,
   serverError?: string
 ): void {
-  if (code === undefined) {
-    throw new MindeeHttpError(
-      {message: "Missing HTTP Error code.", details: response.data, undefined },
-      urlName
-    );
+  let code;
+  if (response.data.status_code && !isNaN(response.data.status_code)){
+    code = parseInt(response.data["status_code"].toString());
+  } else {
+    code = 500;
   }
   let errorObj: StringDict;
   try {
