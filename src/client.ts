@@ -9,7 +9,7 @@ import {
   UrlInput,
   BufferInput,
 } from "./input";
-import {Endpoint, ApiSettings, STANDARD_API_OWNER, EndpointResponse} from "./http";
+import { Endpoint, ApiSettings, STANDARD_API_OWNER, EndpointResponse } from "./http";
 import {
   AsyncPredictResponse,
   FeedbackResponse,
@@ -258,7 +258,7 @@ export class Client {
     const minDelaySec = 1;
     const minInitialDelay = 2;
     const minRetries = 2;
-    const newAsyncParams = {...asyncParams};
+    const newAsyncParams = { ...asyncParams };
     newAsyncParams.delaySec ??= 2;
     newAsyncParams.initialDelaySec ??= 4;
     newAsyncParams.maxRetries ??= 60;

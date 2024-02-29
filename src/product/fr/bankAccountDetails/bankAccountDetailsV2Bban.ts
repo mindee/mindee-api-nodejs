@@ -23,7 +23,7 @@ export class BankAccountDetailsV2Bban {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.bbanBankCode = prediction["bban_bank_code"];
     this.bbanBranchCode = prediction["bban_branch_code"];
     this.bbanKey = prediction["bban_key"];

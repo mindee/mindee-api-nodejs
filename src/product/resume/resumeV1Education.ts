@@ -29,7 +29,7 @@ export class ResumeV1Education {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.degreeDomain = prediction["degree_domain"];
     this.degreeType = prediction["degree_type"];
     this.endMonth = prediction["end_month"];

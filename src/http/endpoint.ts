@@ -7,8 +7,9 @@ import { LocalInputSource } from "../input/base";
 import { handleError } from "./error";
 import { ApiSettings } from "./apiSettings";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import {StringDict} from "../parsing/common";
-import {ClientRequest} from "http";
+import { StringDict } from "../parsing/common";
+import { ClientRequest } from "http";
+import { isValidAsyncResponse, isValidSyncResponse } from "./response_validation";
 
 export interface PredictParams {
   inputDoc: InputSource;
@@ -60,9 +61,8 @@ export class Endpoint extends BaseEndpoint {
       params.includeWords,
       params.cropper
     );
-    const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode, response.messageObj?.statusMessage);
+    if (!isValidSyncResponse(response)) {
+      handleError(this.urlName, response, response.messageObj?.statusMessage);
     }
 
     return response;
@@ -85,9 +85,8 @@ export class Endpoint extends BaseEndpoint {
       params.includeWords,
       params.cropper
     );
-    const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode >= 400) {
-      handleError(this.urlName, response, statusCode, response.messageObj?.statusMessage);
+    if (!isValidAsyncResponse(response)) {
+      handleError(this.urlName, response, response.messageObj?.statusMessage);
     }
     return response;
   }
@@ -102,12 +101,8 @@ export class Endpoint extends BaseEndpoint {
   async getQueuedDocument(queueId: string): Promise<EndpointResponse> {
     const queueResponse: EndpointResponse = await this.#documentQueueReqGet(queueId);
     const queueStatusCode = queueResponse.messageObj.statusCode;
-    if (
-      queueStatusCode === undefined ||
-      queueStatusCode < 200 ||
-      queueStatusCode > 400
-    ) {
-      handleError(this.urlName, queueResponse, queueStatusCode, queueResponse.messageObj?.statusMessage);
+    if (!isValidAsyncResponse(queueResponse)) {
+      handleError(this.urlName, queueResponse, queueResponse.messageObj?.statusMessage);
     }
     if (
       queueStatusCode === 302 &&
@@ -129,9 +124,8 @@ export class Endpoint extends BaseEndpoint {
     const response = await this.#documentGetReq(
       documentId,
     );
-    const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode >= 400) {
-      handleError("document", response, statusCode, response.messageObj?.statusMessage);
+    if (!isValidAsyncResponse(response)) {
+      handleError("document", response, response.messageObj?.statusMessage);
     }
 
     return response;
@@ -150,9 +144,8 @@ export class Endpoint extends BaseEndpoint {
       documentId,
       feedback,
     );
-    const statusCode = response.messageObj.statusCode;
-    if (statusCode === undefined || statusCode >= 400) {
-      handleError("feedback", response, statusCode, response.messageObj?.statusMessage);
+    if (!isValidSyncResponse(response)) {
+      handleError("feedback", response, response.messageObj?.statusMessage);
     }
 
     return response;

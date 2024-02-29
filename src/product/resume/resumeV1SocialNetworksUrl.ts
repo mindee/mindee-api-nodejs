@@ -19,7 +19,7 @@ export class ResumeV1SocialNetworksUrl {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.name = prediction["name"];
     this.url = prediction["url"];
     this.pageId = prediction["page_id"];

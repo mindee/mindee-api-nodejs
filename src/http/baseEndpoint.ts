@@ -1,4 +1,4 @@
-import {ApiSettings} from "./apiSettings";
+import { ApiSettings } from "./apiSettings";
 import { logger } from "../logger";
 import { IncomingMessage, ClientRequest } from "http";
 import { request, RequestOptions } from "https";

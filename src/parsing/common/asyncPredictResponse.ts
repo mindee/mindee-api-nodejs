@@ -13,6 +13,8 @@ export class Job {
   issuedAt: Date;
   /** Timestamp noting the availability of a prediction for an enqueued document. */
   availableAt?: Date;
+  /** Information about an error that occurred during the job processing. */
+  error?: StringDict;
   /** ID of the job. */
   id: string;
   /** Status of the job. */

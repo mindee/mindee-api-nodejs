@@ -19,7 +19,7 @@ export class ResumeV1Language {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.language = prediction["language"];
     this.level = prediction["level"];
     this.pageId = prediction["page_id"];

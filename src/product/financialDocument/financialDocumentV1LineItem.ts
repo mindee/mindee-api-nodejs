@@ -30,7 +30,7 @@ export class FinancialDocumentV1LineItem {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.description = prediction["description"];
     this.productCode = prediction["product_code"];
     if (prediction["quantity"] && !isNaN(prediction["quantity"])) {
