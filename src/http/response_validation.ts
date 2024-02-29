@@ -40,13 +40,8 @@ export function cleanRequestData(response: EndpointResponse): EndpointResponse {
     if (response.data["api_request"] && response.data["api_request"]["status_code"] && parseInt(response.data["api_request"]["status_code"].toString()) > 399) {
       response.messageObj.statusCode = parseInt(response.data["api_request"]["status_code"].toString());
     }
-    if (response.data["job"] && response.data["job"]["error"] && response.data["job"]["error"]["status_code"]) {
-      if (response.data["job"]["error"]["status_code"]) {
-        const errorCode = parseInt(response.data["job"]["error"]["status_code"].toString());
-        if (errorCode >= 400) {
-          response.messageObj.statusCode = errorCode;
-        }
-      }
+    if (response.data["job"] && response.data["job"]["error"] && Object.keys(response.data["job"]["error"]).length > 0) {
+      response.messageObj.statusCode = 500;
     }
   }
   return response;
