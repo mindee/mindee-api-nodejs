@@ -1,6 +1,9 @@
 import { logger } from "../logger";
 
-class ErrorHandler {
+/**
+ * Custom Error handling class.
+ */
+export class ErrorHandler {
   public throwOnError: boolean;
 
   constructor(throwOnError: boolean = true) {

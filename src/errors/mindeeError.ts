@@ -1,3 +1,6 @@
+/**
+ * Main Mindee Error custom class.
+ */
 export class MindeeError extends Error {
   constructor(message: string) {
     super(message);
@@ -5,6 +8,9 @@ export class MindeeError extends Error {
   }
 }
 
+/**
+ * Custom Mindee error relating to improper mimetypes in inputs.
+ */
 export class MindeeMimeTypeError extends MindeeError {
   constructor(message: string) {
     super(message);

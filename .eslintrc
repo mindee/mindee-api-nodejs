@@ -25,6 +25,7 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/ban-ts-comment": "error",
+    "@typescript-eslint/naming-convention": "error",
     "@typescript-eslint/object-curly-spacing": [
       "error",
       "always"

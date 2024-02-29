@@ -1,4 +1,7 @@
-/** Options to pass to the `parse` method for cutting multi-page documents. */
+/* eslint-disable @typescript-eslint/naming-convention */
+/**
+ * Options to pass to the `parse` method for cutting multi-page documents.
+ */
 export interface PageOptions {
   /**
    * Zero-based list of page indexes.
@@ -16,7 +19,9 @@ export interface PageOptions {
   onMinPages: number;
 }
 
-/** Operation to apply on the document, given the page indexes specified. */
+/**
+ * Operation to apply on the document, given the page indexes specified.
+ */
 export enum PageOptionsOperation {
   /** Only keep pages matching the provided indexes. */
   KeepOnly = "KEEP_ONLY",

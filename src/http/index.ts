@@ -21,4 +21,4 @@ export {
   isValidSyncResponse,
   isValidAsyncResponse,
   cleanRequestData,
-} from "./response_validation";
+} from "./responseValidation";
