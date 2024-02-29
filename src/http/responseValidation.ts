@@ -1,6 +1,11 @@
 import { EndpointResponse } from "./baseEndpoint";
 
-
+/**
+ * Checks if the synchronous response is valid. Returns True if the response is valid.
+ *
+ * @param response an endpoint response object.
+ * @returns bool
+ */
 export function isValidSyncResponse(response: EndpointResponse): boolean {
   if (!response.messageObj || !response.messageObj.statusCode) {
     return false;
@@ -9,6 +14,13 @@ export function isValidSyncResponse(response: EndpointResponse): boolean {
 
 }
 
+/**
+ * Checks if the asynchronous response is valid. Also checks if it is a valid synchronous response.
+ * Returns True if the response is valid.
+ *
+ * @param response an endpoint response object.
+ * @returns bool
+ */
 export function isValidAsyncResponse(response: EndpointResponse): boolean {
   if (!isValidSyncResponse(response)) {
     return false;
@@ -27,6 +39,13 @@ export function isValidAsyncResponse(response: EndpointResponse): boolean {
   return !(response.data["job"] && response.data["job"]["error"] && Object.keys(response.data["job"]["error"]).length > 0);
 }
 
+/**
+ * Checks and correct the response object depending on the possible kinds of returns.
+ * Returns True if the response is valid.
+ *
+ * @param response an endpoint response object.
+ * @returns EndpointResponse Returns the job error if the error is due to parsing, returns the http error otherwise.
+ */
 export function cleanRequestData(response: EndpointResponse): EndpointResponse {
   if (response.messageObj &&
     response.messageObj.statusCode &&

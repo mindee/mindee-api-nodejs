@@ -9,7 +9,7 @@ import { ApiSettings } from "./apiSettings";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
 import { StringDict } from "../parsing/common";
 import { ClientRequest } from "http";
-import { isValidAsyncResponse, isValidSyncResponse } from "./response_validation";
+import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation";
 
 export interface PredictParams {
   inputDoc: InputSource;

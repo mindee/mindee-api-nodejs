@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 import { logger } from "../logger";
 import { version as sdkVersion } from "../../package.json";
 import * as os from "os";
