@@ -23,7 +23,7 @@ export class ResumeV1Certificate {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.grade = prediction["grade"];
     this.name = prediction["name"];
     this.provider = prediction["provider"];

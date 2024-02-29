@@ -25,6 +25,10 @@
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-inferrable-types": "off",
     "@typescript-eslint/ban-ts-comment": "error",
+    "@typescript-eslint/object-curly-spacing": [
+      "error",
+      "always"
+    ],
     "quotes": [
       "error",
       "double",
@@ -48,7 +52,10 @@
     ],
     "no-eval": "error",
     "no-unexpected-multiline": "off",
-    "indent" : ["error", 2],
-    "eol-last" : "error"
+    "indent": [
+      "error",
+      2
+    ],
+    "eol-last": "error"
   }
 }

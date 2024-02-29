@@ -24,7 +24,7 @@ export class ReceiptV5LineItem {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.description = prediction["description"];
     if (prediction["quantity"] && !isNaN(prediction["quantity"])) {
       this.quantity = +parseFloat(prediction["quantity"]).toFixed(3);

@@ -7,9 +7,9 @@ import { LocalInputSource } from "../input/base";
 import { handleError } from "./error";
 import { ApiSettings } from "./apiSettings";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import {StringDict} from "../parsing/common";
-import {ClientRequest} from "http";
-import {isValidAsyncResponse, isValidSyncResponse} from "./response_validation";
+import { StringDict } from "../parsing/common";
+import { ClientRequest } from "http";
+import { isValidAsyncResponse, isValidSyncResponse } from "./response_validation";
 
 export interface PredictParams {
   inputDoc: InputSource;

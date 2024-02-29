@@ -31,7 +31,7 @@ export class ResumeV1ProfessionalExperience {
    */
   polygon: Polygon = [];
 
-  constructor({prediction = {} }: StringDict) {
+  constructor({ prediction = {} }: StringDict) {
     this.contractType = prediction["contract_type"];
     this.department = prediction["department"];
     this.employer = prediction["employer"];

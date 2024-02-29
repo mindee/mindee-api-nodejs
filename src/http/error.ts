@@ -9,8 +9,8 @@ export function handleError(
   serverError?: string
 ): void {
   let code;
-  if (response.data.status_code && !isNaN(response.data.status_code)){
-    code = parseInt(response.data["status_code"].toString());
+  if (response.messageObj.statusCode && !Number.isNaN(response.data.statusCode)){
+    code = response.messageObj.statusCode;
   } else {
     code = 500;
   }

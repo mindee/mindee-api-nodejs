@@ -1,5 +1,5 @@
-export {Endpoint} from "./endpoint";
-export {EndpointResponse} from "./baseEndpoint";
+export { Endpoint } from "./endpoint";
+export { EndpointResponse } from "./baseEndpoint";
 export {
   STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,

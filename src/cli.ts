@@ -456,7 +456,7 @@ export function cli() {
           await callGetDocument(
             docClass,
             documentId,
-            {...options, ...productCmd.opts(), ...program.opts()}
+            { ...options, ...productCmd.opts(), ...program.opts() }
           );
         });
       addMainOptions(getDocProductCmd);
@@ -472,7 +472,7 @@ export function cli() {
           docClass,
           documentId,
           feedback,
-          {...options, ...productCmd.opts(), ...program.opts()}
+          { ...options, ...productCmd.opts(), ...program.opts() }
         );
       });
     addMainOptions(feedbackProductCmd);
