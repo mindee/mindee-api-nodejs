@@ -13,8 +13,13 @@ export function isValidAsyncResponse(response: EndpointResponse): boolean {
   if (!isValidSyncResponse(response)) {
     return false;
   }
-  if (response.messageObj.statusCode && (response.messageObj.statusCode < 200 || response.messageObj.statusCode > 302)) {
-    return false;
+  if (response.messageObj.statusCode) {
+    if (response.messageObj.statusCode >= 300 && response.messageObj.statusCode <= 302) {
+      // Skip next check for redirections as the final payload will be checked anyway.
+      return true;
+    } else if (response.messageObj.statusCode < 200 || response.messageObj.statusCode > 302) {
+      return false;
+    }
   }
   if (!response.data["job"]) {
     return false;
