@@ -33,6 +33,16 @@ describe("Asynchronous API predict response", () => {
     expect(isValidAsyncResponse(cleanRequestData(httpResponse.data))).to.be.false;
   });
 
+  it("should parse a failed job", async () => {
+    const jsonData = await fs.readFile(
+      path.resolve("tests/data/async/get_failed_job_error.json")
+    );
+    const httpResponse: StringDict = {
+      data: JSON.parse(jsonData.toString()),
+    };
+    expect(isValidAsyncResponse(cleanRequestData(httpResponse.data))).to.be.false;
+  });
+
   it("should parse a job in progress", async () => {
     const jsonData = await fs.readFile(
       path.resolve("tests/data/async/get_processing.json")

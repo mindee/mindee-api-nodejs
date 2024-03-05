@@ -41,7 +41,6 @@ export function isValidAsyncResponse(response: EndpointResponse): boolean {
 
 /**
  * Checks and correct the response object depending on the possible kinds of returns.
- * Returns True if the response is valid.
  *
  * @param response an endpoint response object.
  * @returns EndpointResponse Returns the job error if the error is due to parsing, returns the http error otherwise.
