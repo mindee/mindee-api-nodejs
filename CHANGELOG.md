@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v4.9.1 - 2024-03-05
+### Changes
+* :recycle: update error handling to account for future evolutions
+* :recycle: expose the input, geometry & imageOperations modules in internals for better fine-tuning
+* :recycle: fix inconsistencies with naming conventions
+* :memo: add missing reference documentation
+
+
 ## v4.9.0 - 2024-02-21
 ### Changes
 * :sparkles: add support for resume V1
