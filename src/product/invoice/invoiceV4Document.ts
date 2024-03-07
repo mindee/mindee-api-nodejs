@@ -19,6 +19,8 @@ import {
  * Document data for Invoice, API version 4.
  */
 export class InvoiceV4Document implements Prediction {
+  /** The customer's address used for billing. */
+  billingAddress: StringField;
   /** The address of the customer. */
   customerAddress: StringField;
   /** List of company registrations associated to the customer. */
@@ -39,6 +41,8 @@ export class InvoiceV4Document implements Prediction {
   locale: LocaleField;
   /** List of Reference numbers, including PO number. */
   referenceNumbers: StringField[] = [];
+  /** Customer's delivery address. */
+  shippingAddress: StringField;
   /** The address of the supplier or merchant. */
   supplierAddress: StringField;
   /** List of company registrations associated to the supplier. */
@@ -57,6 +61,10 @@ export class InvoiceV4Document implements Prediction {
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {
+    this.billingAddress = new StringField({
+      prediction: rawPrediction["billing_address"],
+      pageId: pageId,
+    });
     this.customerAddress = new StringField({
       prediction: rawPrediction["customer_address"],
       pageId: pageId,
@@ -113,6 +121,10 @@ export class InvoiceV4Document implements Prediction {
             })
           )
       );
+    this.shippingAddress = new StringField({
+      prediction: rawPrediction["shipping_address"],
+      pageId: pageId,
+    });
     this.supplierAddress = new StringField({
       prediction: rawPrediction["supplier_address"],
       pageId: pageId,
@@ -199,6 +211,8 @@ export class InvoiceV4Document implements Prediction {
 :Customer Name: ${this.customerName}
 :Customer Company Registrations: ${customerCompanyRegistrations}
 :Customer Address: ${this.customerAddress}
+:Shipping Address: ${this.shippingAddress}
+:Billing Address: ${this.billingAddress}
 :Document Type: ${this.documentType}
 :Line Items: ${lineItemsSummary}`.trimEnd();
     return cleanOutString(outStr);
