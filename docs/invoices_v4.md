@@ -36,12 +36,12 @@ apiResponse.then((resp) => {
 ########
 Document
 ########
-:Mindee ID: 80f2328c-58a5-486a-9599-eb2d738680f0
+:Mindee ID: a9062dd1-0d34-42ab-9505-0481a8545106
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/invoices v4.4
+:Product: mindee/invoices v4.5
 :Rotation applied: Yes
 
 Prediction
@@ -67,6 +67,8 @@ Prediction
 :Customer Name: JIRO DOI
 :Customer Company Registrations:
 :Customer Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Shipping Address:
+:Billing Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
 :Document Type: INVOICE
 :Line Items:
   +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
@@ -105,6 +107,8 @@ Page 0
 :Customer Name: JIRO DOI
 :Customer Company Registrations:
 :Customer Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Shipping Address:
+:Billing Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
 :Document Type: INVOICE
 :Line Items:
   +--------------------------------------+--------------+----------+------------+--------------+--------------+------------+
@@ -209,6 +213,13 @@ A `InvoiceV4LineItem` implements the following attributes:
 # Attributes
 The following fields are extracted for Invoice V4:
 
+## Billing Address
+**billingAddress** ([StringField](#string-field)): The customer's address used for billing.
+
+```js
+console.log(result.document.inference.prediction.billingAddress.value);
+```
+
 ## Customer Address
 **customerAddress** ([StringField](#string-field)): The address of the customer.
 
@@ -283,6 +294,13 @@ console.log(result.document.inference.prediction.locale.value);
 for (const referenceNumbersElem of result.document.inference.prediction.referenceNumbers) {
   console.log(referenceNumbersElem.value);
 }
+```
+
+## Shipping Address
+**shippingAddress** ([StringField](#string-field)): Customer's delivery address.
+
+```js
+console.log(result.document.inference.prediction.shippingAddress.value);
 ```
 
 ## Supplier Address

@@ -33,6 +33,8 @@ describe("InvoiceV4 Object initialization", async () => {
     expect(docPrediction.customerName.value).to.be.undefined;
     expect(docPrediction.customerCompanyRegistrations.length).to.be.equals(0);
     expect(docPrediction.customerAddress.value).to.be.undefined;
+    expect(docPrediction.shippingAddress.value).to.be.undefined;
+    expect(docPrediction.billingAddress.value).to.be.undefined;
     expect(docPrediction.lineItems.length).to.be.equals(0);
   });
 
