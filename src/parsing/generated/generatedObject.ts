@@ -60,7 +60,7 @@ export class GeneratedObjectField {
   /**
    * Formats a float number to have at least one decimal place.
    * @param n Input number.
-   * @returns 
+   * @returns
    */
   private toNumberString(n: number): string {
     if (Number.isInteger(n)) {

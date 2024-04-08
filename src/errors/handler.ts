@@ -2,6 +2,7 @@ import { logger } from "../logger";
 
 /**
  * Custom Error handling class.
+ * @deprecated Clashes with current implementation of some errors, which may cause unexpected behaviors.
  */
 export class ErrorHandler {
   public throwOnError: boolean;

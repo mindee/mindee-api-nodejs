@@ -2,7 +2,6 @@ import { promises as fs } from "fs";
 import { Readable } from "stream";
 import * as path from "path";
 
-import { errorHandler } from "../errors/handler";
 import { Buffer } from "buffer";
 import { logger } from "../logger";
 import {
@@ -150,7 +149,7 @@ export class UrlInput extends InputSource {
 
   async init() {
     if (!this.url.toLowerCase().startsWith("https")) {
-      errorHandler.throw(new Error("URL must be HTTPS"));
+      throw new Error("URL must be HTTPS");
     }
     this.fileObject = this.url;
   }
