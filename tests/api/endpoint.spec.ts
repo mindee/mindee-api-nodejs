@@ -66,10 +66,10 @@ describe("HTTP calls", () => {
 
   it("should fail on HTML response", async () => {
     try {
-      await sendRequest(413, path.resolve("tests/data/errors/error_50x.html"));
+      await sendRequest(500, path.resolve("tests/data/errors/error_50x.html"));
     } catch (error: any) {
-      expect(error.name).to.be.equals("MindeeHttp413Error");
-      expect(error.code).to.be.equals(413);
+      expect(error.name).to.be.equals("MindeeHttp500Error");
+      expect(error.code).to.be.equals(500);
     }
   });
 });

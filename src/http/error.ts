@@ -9,9 +9,14 @@ export function handleError(
   serverError?: string
 ): void {
   let code;
-  if (response.messageObj.statusCode && !Number.isNaN(response.data.statusCode)){
-    code = response.messageObj.statusCode;
-  } else {
+  try {
+    if (response.data.api_request["status_code"] === 200 && response.data?.job?.error?.code) {
+      code = 500;
+      response.data.api_request.error = response.data.job.error;
+    } else {
+      code = response.data.api_request["status_code"];
+    }
+  } catch (e) {
     code = 500;
   }
   let errorObj: StringDict;
@@ -20,7 +25,7 @@ export function handleError(
     errorObj = response.data.api_request.error;
   } catch (err) {
     //Rare instances where errors are returned as HTML instead of JSON.
-    if (!("reconstructedResponse" in response.data)){
+    if (!("reconstructedResponse" in response.data)) {
       response.data.reconstructedResponse = ""
     }
     if (response.data.reconstructedResponse.includes("Maximum pdf pages")) {
