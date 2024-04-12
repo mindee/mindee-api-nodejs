@@ -1,5 +1,14 @@
 # CHANGELOG
 
+# v4.10.0 - 2024-04-12
+### Changes
+* :sparkles: update Invoice to v4.5 (#264)
+
+### Fixes
+* :bug: fix error management not following intended flow (#267)
+* :recycle: deprecated old error handler (#266)
+
+
 ## v4.9.1 - 2024-03-05
 ### Changes
 * :recycle: update error handling to account for future evolutions
