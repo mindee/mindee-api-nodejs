@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { FinancialDocumentV1Document } from "./financialDocumentV1Document";
 
 /**
- * Inference prediction for Financial Document, API version 1.
+ * Financial Document API version 1 inference prediction.
  */
 export class FinancialDocumentV1 extends Inference {
   /** The endpoint's name. */

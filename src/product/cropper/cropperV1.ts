@@ -3,7 +3,7 @@ import { CropperV1Document } from "./cropperV1Document";
 import { CropperV1Page } from "./cropperV1Page";
 
 /**
- * Inference prediction for Cropper, API version 1.
+ * Cropper API version 1 inference prediction.
  */
 export class CropperV1 extends Inference {
   /** The endpoint's name. */

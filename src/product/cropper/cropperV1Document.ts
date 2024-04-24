@@ -2,7 +2,7 @@ import { Prediction } from "../../parsing/common";
 
 
 /**
- * Document data for Cropper, API version 1.
+ * Cropper API version 1.1 document data.
  */
 export class CropperV1Document implements Prediction {
   /**

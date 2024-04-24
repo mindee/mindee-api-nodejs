@@ -3,7 +3,7 @@ import { DriverLicenseV1Document } from "./driverLicenseV1Document";
 import { DriverLicenseV1Page } from "./driverLicenseV1Page";
 
 /**
- * Inference prediction for Driver License, API version 1.
+ * Driver License API version 1 inference prediction.
  */
 export class DriverLicenseV1 extends Inference {
   /** The endpoint's name. */

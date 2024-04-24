@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { ResumeV1Document } from "./resumeV1Document";
 
 /**
- * Inference prediction for Resume, API version 1.
+ * Resume API version 1 inference prediction.
  */
 export class ResumeV1 extends Inference {
   /** The endpoint's name. */

@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../../parsing/common";
 import { CarteGriseV1Document } from "./carteGriseV1Document";
 
 /**
- * Inference prediction for Carte Grise, API version 1.
+ * Carte Grise API version 1 inference prediction.
  */
 export class CarteGriseV1 extends Inference {
   /** The endpoint's name. */

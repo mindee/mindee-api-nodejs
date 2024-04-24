@@ -10,7 +10,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Document data for International ID, API version 2.
+ * International ID API version 2.0 document data.
  */
 export class InternationalIdV2Document implements Prediction {
   /** The physical address of the document holder. */

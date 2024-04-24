@@ -6,7 +6,7 @@ import {
 import { DateField, StringField } from "../../../parsing/standard";
 
 /**
- * Document data for Carte Grise, API version 1.
+ * Carte Grise API version 1.1 document data.
  */
 export class CarteGriseV1Document implements Prediction {
   /** The vehicle's license plate number. */

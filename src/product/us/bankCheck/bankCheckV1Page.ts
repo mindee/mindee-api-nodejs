@@ -4,7 +4,7 @@ import { PositionField } from "../../../parsing/standard";
 import { BankCheckV1Document } from "./bankCheckV1Document";
 
 /**
- * Page data for Bank Check, API version 1.
+ * Bank Check API version 1.1 page data.
  */
 export class BankCheckV1Page extends BankCheckV1Document {
   /** The position of the check on the document. */

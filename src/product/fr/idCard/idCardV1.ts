@@ -3,7 +3,7 @@ import { IdCardV1Document } from "./idCardV1Document";
 import { IdCardV1Page } from "./idCardV1Page";
 
 /**
- * Inference prediction for Carte Nationale d'Identité, API version 1.
+ * Carte Nationale d'Identité API version 1 inference prediction.
  */
 export class IdCardV1 extends Inference {
   /** The endpoint's name. */

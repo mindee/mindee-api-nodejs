@@ -11,7 +11,7 @@ import { ResumeV1Certificate } from "./resumeV1Certificate";
 import { ClassificationField, StringField } from "../../parsing/standard";
 
 /**
- * Document data for Resume, API version 1.
+ * Resume API version 1.0 document data.
  */
 export class ResumeV1Document implements Prediction {
   /** The location information of the candidate, including city, state, and country. */

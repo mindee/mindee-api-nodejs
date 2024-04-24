@@ -3,7 +3,7 @@ import { W9V1Document } from "./w9V1Document";
 import { W9V1Page } from "./w9V1Page";
 
 /**
- * Inference prediction for W9, API version 1.
+ * W9 API version 1 inference prediction.
  */
 export class W9V1 extends Inference {
   /** The endpoint's name. */

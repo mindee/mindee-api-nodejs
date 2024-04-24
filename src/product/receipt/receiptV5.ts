@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { ReceiptV5Document } from "./receiptV5Document";
 
 /**
- * Inference prediction for Receipt, API version 5.
+ * Receipt API version 5 inference prediction.
  */
 export class ReceiptV5 extends Inference {
   /** The endpoint's name. */

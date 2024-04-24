@@ -6,7 +6,7 @@ import {
 import { StringField } from "../../../parsing/standard";
 
 /**
- * Document data for License Plate, API version 1.
+ * License Plate API version 1.1 document data.
  */
 export class LicensePlateV1Document implements Prediction {
   /** List of all license plates found in the image. */

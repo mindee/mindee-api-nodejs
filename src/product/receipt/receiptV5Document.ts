@@ -15,7 +15,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Document data for Receipt, API version 5.
+ * Receipt API version 5.1 document data.
  */
 export class ReceiptV5Document implements Prediction {
   /** The purchase category among predefined classes. */

@@ -16,15 +16,19 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Document data for Financial Document, API version 1.
+ * Financial Document API version 1.6 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
+  /** The customer's address used for billing. */
+  billingAddress: StringField;
   /** The purchase category among predefined classes. */
   category: ClassificationField;
   /** The address of the customer. */
   customerAddress: StringField;
   /** List of company registrations associated to the customer. */
   customerCompanyRegistrations: CompanyRegistrationField[] = [];
+  /** The customer account number or identifier from the supplier. */
+  customerId: StringField;
   /** The name of the customer. */
   customerName: StringField;
   /** The date the purchase was made. */
@@ -41,18 +45,24 @@ export class FinancialDocumentV1Document implements Prediction {
   locale: LocaleField;
   /** List of Reference numbers, including PO number. */
   referenceNumbers: StringField[] = [];
+  /** The customer's address used for shipping. */
+  shippingAddress: StringField;
   /** The purchase subcategory among predefined classes for transport and food. */
   subcategory: ClassificationField;
   /** The address of the supplier or merchant. */
   supplierAddress: StringField;
   /** List of company registrations associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
+  /** The email of the supplier or merchant. */
+  supplierEmail: StringField;
   /** The name of the supplier or merchant. */
   supplierName: StringField;
   /** List of payment details associated to the supplier. */
   supplierPaymentDetails: PaymentDetailsField[] = [];
   /** The phone number of the supplier or merchant. */
   supplierPhoneNumber: StringField;
+  /** The website URL of the supplier or merchant. */
+  supplierWebsite: StringField;
   /** List of tax lines information. */
   taxes: Taxes;
   /** The time the purchase was made. */
@@ -67,6 +77,10 @@ export class FinancialDocumentV1Document implements Prediction {
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {
+    this.billingAddress = new StringField({
+      prediction: rawPrediction["billing_address"],
+      pageId: pageId,
+    });
     this.category = new ClassificationField({
       prediction: rawPrediction["category"],
     });
@@ -84,6 +98,10 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    this.customerId = new StringField({
+      prediction: rawPrediction["customer_id"],
+      pageId: pageId,
+    });
     this.customerName = new StringField({
       prediction: rawPrediction["customer_name"],
       pageId: pageId,
@@ -126,6 +144,10 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    this.shippingAddress = new StringField({
+      prediction: rawPrediction["shipping_address"],
+      pageId: pageId,
+    });
     this.subcategory = new ClassificationField({
       prediction: rawPrediction["subcategory"],
     });
@@ -143,6 +165,10 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    this.supplierEmail = new StringField({
+      prediction: rawPrediction["supplier_email"],
+      pageId: pageId,
+    });
     this.supplierName = new StringField({
       prediction: rawPrediction["supplier_name"],
       pageId: pageId,
@@ -159,6 +185,10 @@ export class FinancialDocumentV1Document implements Prediction {
       );
     this.supplierPhoneNumber = new StringField({
       prediction: rawPrediction["supplier_phone_number"],
+      pageId: pageId,
+    });
+    this.supplierWebsite = new StringField({
+      prediction: rawPrediction["supplier_website"],
       pageId: pageId,
     });
     this.taxes = new Taxes().init(
@@ -225,8 +255,13 @@ export class FinancialDocumentV1Document implements Prediction {
 :Supplier Address: ${this.supplierAddress}
 :Supplier Phone Number: ${this.supplierPhoneNumber}
 :Customer Name: ${this.customerName}
+:Supplier Website: ${this.supplierWebsite}
+:Supplier Email: ${this.supplierEmail}
 :Customer Company Registrations: ${customerCompanyRegistrations}
 :Customer Address: ${this.customerAddress}
+:Customer ID: ${this.customerId}
+:Shipping Address: ${this.shippingAddress}
+:Billing Address: ${this.billingAddress}
 :Document Type: ${this.documentType}
 :Purchase Subcategory: ${this.subcategory}
 :Purchase Category: ${this.category}

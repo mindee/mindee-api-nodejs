@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../../parsing/common";
 import { LicensePlateV1Document } from "./licensePlateV1Document";
 
 /**
- * Inference prediction for License Plate, API version 1.
+ * License Plate API version 1 inference prediction.
  */
 export class LicensePlateV1 extends Inference {
   /** The endpoint's name. */

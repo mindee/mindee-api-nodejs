@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Document data for Invoice, API version 4.
+ * Invoice API version 4.6 document data.
  */
 export class InvoiceV4Document implements Prediction {
   /** The customer's address used for billing. */
@@ -25,6 +25,8 @@ export class InvoiceV4Document implements Prediction {
   customerAddress: StringField;
   /** List of company registrations associated to the customer. */
   customerCompanyRegistrations: CompanyRegistrationField[] = [];
+  /** The customer account number or identifier from the supplier. */
+  customerId: StringField;
   /** The name of the customer or client. */
   customerName: StringField;
   /** The date the purchase was made. */
@@ -47,10 +49,16 @@ export class InvoiceV4Document implements Prediction {
   supplierAddress: StringField;
   /** List of company registrations associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
+  /** The email of the supplier or merchant. */
+  supplierEmail: StringField;
   /** The name of the supplier or merchant. */
   supplierName: StringField;
   /** List of payment details associated to the supplier. */
   supplierPaymentDetails: PaymentDetailsField[] = [];
+  /** The phone number of the supplier or merchant. */
+  supplierPhoneNumber: StringField;
+  /** The website URL of the supplier or merchant. */
+  supplierWebsite: StringField;
   /** List of tax line details. */
   taxes: Taxes;
   /** The total amount paid: includes taxes, tips, fees, and other charges. */
@@ -79,6 +87,10 @@ export class InvoiceV4Document implements Prediction {
             })
           )
       );
+    this.customerId = new StringField({
+      prediction: rawPrediction["customer_id"],
+      pageId: pageId,
+    });
     this.customerName = new StringField({
       prediction: rawPrediction["customer_name"],
       pageId: pageId,
@@ -139,6 +151,10 @@ export class InvoiceV4Document implements Prediction {
             })
           )
       );
+    this.supplierEmail = new StringField({
+      prediction: rawPrediction["supplier_email"],
+      pageId: pageId,
+    });
     this.supplierName = new StringField({
       prediction: rawPrediction["supplier_name"],
       pageId: pageId,
@@ -153,6 +169,14 @@ export class InvoiceV4Document implements Prediction {
             })
           )
       );
+    this.supplierPhoneNumber = new StringField({
+      prediction: rawPrediction["supplier_phone_number"],
+      pageId: pageId,
+    });
+    this.supplierWebsite = new StringField({
+      prediction: rawPrediction["supplier_website"],
+      pageId: pageId,
+    });
     this.taxes = new Taxes().init(
       rawPrediction["taxes"], pageId
     );
@@ -208,9 +232,13 @@ export class InvoiceV4Document implements Prediction {
 :Supplier Name: ${this.supplierName}
 :Supplier Company Registrations: ${supplierCompanyRegistrations}
 :Supplier Address: ${this.supplierAddress}
+:Supplier Phone Number: ${this.supplierPhoneNumber}
+:Supplier Website: ${this.supplierWebsite}
+:Supplier Email: ${this.supplierEmail}
 :Customer Name: ${this.customerName}
 :Customer Company Registrations: ${customerCompanyRegistrations}
 :Customer Address: ${this.customerAddress}
+:Customer ID: ${this.customerId}
 :Shipping Address: ${this.shippingAddress}
 :Billing Address: ${this.billingAddress}
 :Document Type: ${this.documentType}

@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { InvoiceV4Document } from "./invoiceV4Document";
 
 /**
- * Inference prediction for Invoice, API version 4.
+ * Invoice API version 4 inference prediction.
  */
 export class InvoiceV4 extends Inference {
   /** The endpoint's name. */

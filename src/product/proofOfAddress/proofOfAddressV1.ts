@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { ProofOfAddressV1Document } from "./proofOfAddressV1Document";
 
 /**
- * Inference prediction for Proof of Address, API version 1.
+ * Proof of Address API version 1 inference prediction.
  */
 export class ProofOfAddressV1 extends Inference {
   /** The endpoint's name. */
