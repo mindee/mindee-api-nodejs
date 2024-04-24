@@ -11,7 +11,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Document data for Proof of Address, API version 1.
+ * Proof of Address API version 1.1 document data.
  */
 export class ProofOfAddressV1Document implements Prediction {
   /** The date the document was issued. */

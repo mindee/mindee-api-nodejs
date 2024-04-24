@@ -4,7 +4,7 @@ import { PositionField } from "../../parsing/standard";
 import { CropperV1Document } from "./cropperV1Document";
 
 /**
- * Page data for Cropper, API version 1.
+ * Cropper API version 1.1 page data.
  */
 export class CropperV1Page extends CropperV1Document {
   /** List of documents found in the image. */

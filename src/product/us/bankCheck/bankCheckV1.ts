@@ -3,7 +3,7 @@ import { BankCheckV1Document } from "./bankCheckV1Document";
 import { BankCheckV1Page } from "./bankCheckV1Page";
 
 /**
- * Inference prediction for Bank Check, API version 1.
+ * Bank Check API version 1 inference prediction.
  */
 export class BankCheckV1 extends Inference {
   /** The endpoint's name. */

@@ -7,7 +7,7 @@ import { BankAccountDetailsV2Bban } from "./bankAccountDetailsV2Bban";
 import { StringField } from "../../../parsing/standard";
 
 /**
- * Document data for Bank Account Details, API version 2.
+ * Bank Account Details API version 2.0 document data.
  */
 export class BankAccountDetailsV2Document implements Prediction {
   /** Full extraction of the account holders names. */

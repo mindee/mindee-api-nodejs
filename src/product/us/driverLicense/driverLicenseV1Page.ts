@@ -4,7 +4,7 @@ import { PositionField } from "../../../parsing/standard";
 import { DriverLicenseV1Document } from "./driverLicenseV1Document";
 
 /**
- * Page data for Driver License, API version 1.
+ * Driver License API version 1.1 page data.
  */
 export class DriverLicenseV1Page extends DriverLicenseV1Document {
   /** Has a photo of the US driver license holder */

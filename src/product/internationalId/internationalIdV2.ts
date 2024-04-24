@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { InternationalIdV2Document } from "./internationalIdV2Document";
 
 /**
- * Inference prediction for International ID, API version 2.
+ * International ID API version 2 inference prediction.
  */
 export class InternationalIdV2 extends Inference {
   /** The endpoint's name. */

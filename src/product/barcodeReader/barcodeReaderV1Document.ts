@@ -6,7 +6,7 @@ import {
 import { StringField } from "../../parsing/standard";
 
 /**
- * Document data for Barcode Reader, API version 1.
+ * Barcode Reader API version 1.0 document data.
  */
 export class BarcodeReaderV1Document implements Prediction {
   /** List of decoded 1D barcodes. */

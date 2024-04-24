@@ -4,7 +4,7 @@ import { ClassificationField } from "../../../parsing/standard";
 import { IdCardV1Document } from "./idCardV1Document";
 
 /**
- * Page data for Carte Nationale d'Identité, API version 1.
+ * Carte Nationale d'Identité API version 1.1 page data.
  */
 export class IdCardV1Page extends IdCardV1Document {
   /** The side of the document which is visible. */

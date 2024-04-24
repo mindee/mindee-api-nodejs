@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../../parsing/common";
 import { BankAccountDetailsV1Document } from "./bankAccountDetailsV1Document";
 
 /**
- * Inference prediction for Bank Account Details, API version 1.
+ * Bank Account Details API version 1 inference prediction.
  */
 export class BankAccountDetailsV1 extends Inference {
   /** The endpoint's name. */

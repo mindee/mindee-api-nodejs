@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../../parsing/common";
 import { CarteVitaleV1Document } from "./carteVitaleV1Document";
 
 /**
- * Inference prediction for Carte Vitale, API version 1.
+ * Carte Vitale API version 1 inference prediction.
  */
 export class CarteVitaleV1 extends Inference {
   /** The endpoint's name. */

@@ -10,7 +10,7 @@ import {
 } from "../../../parsing/standard";
 
 /**
- * Document data for Bank Check, API version 1.
+ * Bank Check API version 1.1 document data.
  */
 export class BankCheckV1Document implements Prediction {
   /** The check payer's account number. */

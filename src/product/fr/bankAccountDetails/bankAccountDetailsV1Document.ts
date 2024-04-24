@@ -6,7 +6,7 @@ import {
 import { StringField } from "../../../parsing/standard";
 
 /**
- * Document data for Bank Account Details, API version 1.
+ * Bank Account Details API version 1.0 document data.
  */
 export class BankAccountDetailsV1Document implements Prediction {
   /** The name of the account holder as seen on the document. */

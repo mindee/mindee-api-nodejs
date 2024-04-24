@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { MultiReceiptsDetectorV1Document } from "./multiReceiptsDetectorV1Document";
 
 /**
- * Inference prediction for Multi Receipts Detector, API version 1.
+ * Multi Receipts Detector API version 1 inference prediction.
  */
 export class MultiReceiptsDetectorV1 extends Inference {
   /** The endpoint's name. */

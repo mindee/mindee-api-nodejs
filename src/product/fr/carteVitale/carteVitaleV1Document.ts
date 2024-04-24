@@ -6,7 +6,7 @@ import {
 import { DateField, StringField } from "../../../parsing/standard";
 
 /**
- * Document data for Carte Vitale, API version 1.
+ * Carte Vitale API version 1.1 document data.
  */
 export class CarteVitaleV1Document implements Prediction {
   /** The given name(s) of the card holder. */

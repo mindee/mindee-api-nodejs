@@ -36,12 +36,12 @@ apiResponse.then((resp) => {
 ########
 Document
 ########
-:Mindee ID: a9062dd1-0d34-42ab-9505-0481a8545106
+:Mindee ID: 5c0371d0-1433-43a4-b8fb-a3b11aaf9a0e
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/invoices v4.5
+:Product: mindee/invoices v4.6
 :Rotation applied: Yes
 
 Prediction
@@ -50,7 +50,7 @@ Prediction
 :Invoice Number: 14
 :Reference Numbers: AD29094
 :Purchase Date: 2018-09-25
-:Due Date: 2018-09-25
+:Due Date:
 :Total Net:
 :Total Amount: 2608.20
 :Total Tax: 193.20
@@ -63,10 +63,14 @@ Prediction
 :Supplier Payment Details:
 :Supplier Name: TURNPIKE DESIGNS
 :Supplier Company Registrations:
-:Supplier Address: 156 University Ave, Toronto ON, Canada M5H 2H7
+:Supplier Address: 156 University Ave, Toronto ON, Canada, M5H 2H7
+:Supplier Phone Number: 4165551212
+:Supplier Website:
+:Supplier Email: i_doi@example.com
 :Customer Name: JIRO DOI
 :Customer Company Registrations:
 :Customer Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Customer ID:
 :Shipping Address:
 :Billing Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
 :Document Type: INVOICE
@@ -90,7 +94,7 @@ Page 0
 :Invoice Number: 14
 :Reference Numbers: AD29094
 :Purchase Date: 2018-09-25
-:Due Date: 2018-09-25
+:Due Date:
 :Total Net:
 :Total Amount: 2608.20
 :Total Tax: 193.20
@@ -103,10 +107,14 @@ Page 0
 :Supplier Payment Details:
 :Supplier Name: TURNPIKE DESIGNS
 :Supplier Company Registrations:
-:Supplier Address: 156 University Ave, Toronto ON, Canada M5H 2H7
+:Supplier Address: 156 University Ave, Toronto ON, Canada, M5H 2H7
+:Supplier Phone Number: 4165551212
+:Supplier Website:
+:Supplier Email: i_doi@example.com
 :Customer Name: JIRO DOI
 :Customer Company Registrations:
 :Customer Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
+:Customer ID:
 :Shipping Address:
 :Billing Address: 1954 Bloor Street West Toronto, ON, M6P 3K9 Canada
 :Document Type: INVOICE
@@ -236,6 +244,13 @@ for (const customerCompanyRegistrationsElem of result.document.inference.predict
 }
 ```
 
+## Customer ID
+**customerId** ([StringField](#string-field)): The customer account number or identifier from the supplier.
+
+```js
+console.log(result.document.inference.prediction.customerId.value);
+```
+
 ## Customer Name
 **customerName** ([StringField](#string-field)): The name of the customer or client.
 
@@ -319,6 +334,13 @@ for (const supplierCompanyRegistrationsElem of result.document.inference.predict
 }
 ```
 
+## Supplier Email
+**supplierEmail** ([StringField](#string-field)): The email of the supplier or merchant.
+
+```js
+console.log(result.document.inference.prediction.supplierEmail.value);
+```
+
 ## Supplier Name
 **supplierName** ([StringField](#string-field)): The name of the supplier or merchant.
 
@@ -336,6 +358,20 @@ for (const supplierPaymentDetailsElem of result.document.inference.prediction.su
     console.log(supplierPaymentDetailsElem.code);
     console.log(supplierPaymentDetailsElem.basis);
 }
+```
+
+## Supplier Phone Number
+**supplierPhoneNumber** ([StringField](#string-field)): The phone number of the supplier or merchant.
+
+```js
+console.log(result.document.inference.prediction.supplierPhoneNumber.value);
+```
+
+## Supplier Website
+**supplierWebsite** ([StringField](#string-field)): The website URL of the supplier or merchant.
+
+```js
+console.log(result.document.inference.prediction.supplierWebsite.value);
 ```
 
 ## Taxes

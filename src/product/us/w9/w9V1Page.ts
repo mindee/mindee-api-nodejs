@@ -4,7 +4,7 @@ import { PositionField, StringField } from "../../../parsing/standard";
 import { W9V1Document } from "./w9V1Document";
 
 /**
- * Page data for W9, API version 1.
+ * W9 API version 1.0 page data.
  */
 export class W9V1Page extends W9V1Document {
   /** The street address (number, street, and apt. or suite no.) of the applicant. */

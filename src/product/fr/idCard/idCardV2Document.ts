@@ -6,7 +6,7 @@ import {
 import { DateField, StringField } from "../../../parsing/standard";
 
 /**
- * Document data for Carte Nationale d'Identité, API version 2.
+ * Carte Nationale d'Identité API version 2.0 document data.
  */
 export class IdCardV2Document implements Prediction {
   /** The alternate name of the card holder. */

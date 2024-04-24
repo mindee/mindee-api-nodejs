@@ -6,7 +6,7 @@ import {
 import { DateField, StringField } from "../../parsing/standard";
 
 /**
- * Document data for Passport, API version 1.
+ * Passport API version 1.1 document data.
  */
 export class PassportV1Document implements Prediction {
   /** The date of birth of the passport holder. */

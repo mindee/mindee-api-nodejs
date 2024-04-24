@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { BarcodeReaderV1Document } from "./barcodeReaderV1Document";
 
 /**
- * Inference prediction for Barcode Reader, API version 1.
+ * Barcode Reader API version 1 inference prediction.
  */
 export class BarcodeReaderV1 extends Inference {
   /** The endpoint's name. */
