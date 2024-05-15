@@ -29,6 +29,7 @@ describe("ReceiptV5 Object initialization", async () => {
     expect(docPrediction.supplierCompanyRegistrations.length).to.be.equals(0);
     expect(docPrediction.supplierAddress.value).to.be.undefined;
     expect(docPrediction.supplierPhoneNumber.value).to.be.undefined;
+    expect(docPrediction.receiptNumber.value).to.be.undefined;
     expect(docPrediction.lineItems.length).to.be.equals(0);
   });
 

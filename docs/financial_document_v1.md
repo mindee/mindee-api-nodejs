@@ -280,6 +280,13 @@ console.log(result.document.inference.prediction.customerName.value);
 console.log(result.document.inference.prediction.date.value);
 ```
 
+## Document Number
+**documentNumber** ([StringField](#string-field)): The document number or identifier.
+
+```js
+console.log(result.document.inference.prediction.documentNumber.value);
+```
+
 ## Document Type
 **documentType** ([ClassificationField](#classification-field)): One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
 
@@ -295,7 +302,7 @@ console.log(result.document.inference.prediction.dueDate.value);
 ```
 
 ## Invoice Number
-**invoiceNumber** ([StringField](#string-field)): The invoice number or identifier.
+**invoiceNumber** ([StringField](#string-field)): The invoice number or identifier only if document is an invoice.
 
 ```js
 console.log(result.document.inference.prediction.invoiceNumber.value);
@@ -315,6 +322,13 @@ for (const lineItemsElem of result.document.inference.prediction.lineItems) {
 
 ```js
 console.log(result.document.inference.prediction.locale.value);
+```
+
+## Receipt Number
+**receiptNumber** ([StringField](#string-field)): The receipt number or identifier only if document is a receipt.
+
+```js
+console.log(result.document.inference.prediction.receiptNumber.value);
 ```
 
 ## Reference Numbers

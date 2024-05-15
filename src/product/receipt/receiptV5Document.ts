@@ -15,7 +15,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Receipt API version 5.1 document data.
+ * Receipt API version 5.2 document data.
  */
 export class ReceiptV5Document implements Prediction {
   /** The purchase category among predefined classes. */
@@ -28,6 +28,8 @@ export class ReceiptV5Document implements Prediction {
   lineItems: ReceiptV5LineItem[] = [];
   /** The locale detected on the document. */
   locale: LocaleField;
+  /** The receipt number or identifier. */
+  receiptNumber: StringField;
   /** The purchase subcategory among predefined classes for transport and food. */
   subcategory: ClassificationField;
   /** The address of the supplier or merchant. */
@@ -74,6 +76,10 @@ export class ReceiptV5Document implements Prediction {
       );
     this.locale = new LocaleField({
       prediction: rawPrediction["locale"],
+    });
+    this.receiptNumber = new StringField({
+      prediction: rawPrediction["receipt_number"],
+      pageId: pageId,
     });
     this.subcategory = new ClassificationField({
       prediction: rawPrediction["subcategory"],
@@ -159,6 +165,7 @@ export class ReceiptV5Document implements Prediction {
 :Supplier Company Registrations: ${supplierCompanyRegistrations}
 :Supplier Address: ${this.supplierAddress}
 :Supplier Phone Number: ${this.supplierPhoneNumber}
+:Receipt Number: ${this.receiptNumber}
 :Line Items: ${lineItemsSummary}`.trimEnd();
     return cleanOutString(outStr);
   }

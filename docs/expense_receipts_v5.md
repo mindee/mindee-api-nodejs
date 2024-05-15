@@ -225,6 +225,13 @@ for (const lineItemsElem of result.document.inference.prediction.lineItems) {
 console.log(result.document.inference.prediction.locale.value);
 ```
 
+## Receipt Number
+**receiptNumber** ([StringField](#string-field)): The receipt number or identifier.
+
+```js
+console.log(result.document.inference.prediction.receiptNumber.value);
+```
+
 ## Purchase Subcategory
 **subcategory** ([ClassificationField](#classification-field)): The purchase subcategory among predefined classes for transport and food.
 
