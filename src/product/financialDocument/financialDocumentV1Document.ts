@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Financial Document API version 1.6 document data.
+ * Financial Document API version 1.7 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
   /** The customer's address used for billing. */
@@ -33,16 +33,20 @@ export class FinancialDocumentV1Document implements Prediction {
   customerName: StringField;
   /** The date the purchase was made. */
   date: DateField;
+  /** The document number or identifier. */
+  documentNumber: StringField;
   /** One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'. */
   documentType: ClassificationField;
   /** The date on which the payment is due. */
   dueDate: DateField;
-  /** The invoice number or identifier. */
+  /** The invoice number or identifier only if document is an invoice. */
   invoiceNumber: StringField;
   /** List of line item details. */
   lineItems: FinancialDocumentV1LineItem[] = [];
   /** The locale detected on the document. */
   locale: LocaleField;
+  /** The receipt number or identifier only if document is a receipt. */
+  receiptNumber: StringField;
   /** List of Reference numbers, including PO number. */
   referenceNumbers: StringField[] = [];
   /** The customer's address used for shipping. */
@@ -110,6 +114,10 @@ export class FinancialDocumentV1Document implements Prediction {
       prediction: rawPrediction["date"],
       pageId: pageId,
     });
+    this.documentNumber = new StringField({
+      prediction: rawPrediction["document_number"],
+      pageId: pageId,
+    });
     this.documentType = new ClassificationField({
       prediction: rawPrediction["document_type"],
     });
@@ -133,6 +141,10 @@ export class FinancialDocumentV1Document implements Prediction {
       );
     this.locale = new LocaleField({
       prediction: rawPrediction["locale"],
+    });
+    this.receiptNumber = new StringField({
+      prediction: rawPrediction["receipt_number"],
+      pageId: pageId,
     });
     rawPrediction["reference_numbers"] &&
       rawPrediction["reference_numbers"].map(
@@ -243,6 +255,8 @@ export class FinancialDocumentV1Document implements Prediction {
     }
     const outStr = `:Locale: ${this.locale}
 :Invoice Number: ${this.invoiceNumber}
+:Receipt Number: ${this.receiptNumber}
+:Document Number: ${this.documentNumber}
 :Reference Numbers: ${referenceNumbers}
 :Purchase Date: ${this.date}
 :Due Date: ${this.dueDate}
