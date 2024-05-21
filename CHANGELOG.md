@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.12.0 - 2024-05-16
+### Changes
+* :sparkles: update receipt to 5.2 and financial document to 1.7 (#270)
+
+
 # v4.11.0 - 2024-04-30
 ### Changes
 * :sparkles: update invoice to 4.6 & financial document to 1.6 (#269)
