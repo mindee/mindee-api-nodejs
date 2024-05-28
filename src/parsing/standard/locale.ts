@@ -23,7 +23,7 @@ export class LocaleField extends BaseField {
     reconstructed = false,
     pageId=undefined,
   }: BaseFieldConstructor) {
-    const valueKey = prediction["value"] !== undefined ? "value" : "language";
+    const valueKey = prediction["value"] ? "value" : "language";
     super({ prediction, valueKey, reconstructed, pageId });
 
     this.confidence = prediction["confidence"] ? prediction["confidence"] : 0.0;
