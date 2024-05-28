@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v4.13.0 - 2024-05-28
+### Changes
+* :sparkles: add support for local response loading
+* :sparkles: add support for HMAC validation for webhooks
+* :sparkles: add support for US Mail V2
+* :sparkles: add support for boolean fields
+
+### Fixes
+* :recycle: fixed Locale display
+
+
 ## v4.12.0 - 2024-05-16
 ### Changes
 * :sparkles: update receipt to 5.2 and financial document to 1.7 (#270)
