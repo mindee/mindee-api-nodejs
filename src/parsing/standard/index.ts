@@ -1,6 +1,7 @@
 export { ClassificationField } from "./classification";
 export { Taxes, TaxField } from "./tax";
 export { PaymentDetailsField } from "./paymentDetails";
+export { BooleanField } from "./boolean";
 export { LocaleField } from "./locale";
 export { AmountField, floatToString } from "./amount";
 export { DateField } from "./date";
