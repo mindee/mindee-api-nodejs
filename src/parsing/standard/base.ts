@@ -18,7 +18,7 @@ export interface BaseFieldConstructor {
  */
 export class BaseField {
   /** The value. */
-  value?: string | number = undefined;
+  value?: string | number | boolean = undefined;
   /** `true` when the field was reconstructed or computed using other fields. */
   reconstructed: boolean;
   /** Page ID for multi-page document. */
