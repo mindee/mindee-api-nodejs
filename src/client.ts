@@ -25,7 +25,7 @@ import { CustomV1 } from "./product";
 import {
   setTimeout,
 } from "node:timers/promises";
-import {MindeeError} from "./errors";
+import { MindeeError } from "./errors";
 
 /**
  * Options relating to predictions.
