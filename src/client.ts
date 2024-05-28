@@ -7,7 +7,7 @@ import {
   StreamInput,
   PageOptions,
   UrlInput,
-  BufferInput,
+  BufferInput, LocalResponse,
 } from "./input";
 import { Endpoint, ApiSettings, STANDARD_API_OWNER, EndpointResponse } from "./http";
 import {
@@ -25,6 +25,7 @@ import { CustomV1 } from "./product";
 import {
   setTimeout,
 } from "node:timers/promises";
+import {MindeeError} from "./errors";
 
 /**
  * Options relating to predictions.
@@ -203,6 +204,29 @@ export class Client {
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
   }
 
+  async loadPrediction<T extends Inference>(
+    productClass: new (httpResponse: StringDict) => T,
+    localResponse: LocalResponse
+  ) {
+    /**
+     * Load a prediction.
+     *
+     * @param productClass Product class to use for calling  the API and parsing the response.
+     * @param localResponse Local response to load.
+     * @category Asynchronous
+     * @returns A valid prediction
+     */
+    try {
+      if (Object.prototype.hasOwnProperty.call(localResponse.asDict(), "job")){
+        return new AsyncPredictResponse(productClass, localResponse.asDict());
+      }
+      return new PredictResponse(productClass, localResponse.asDict());
+    } catch (err) {
+      throw new MindeeError("No prediction found in local response.");
+    }
+  }
+
+
   /**
    * Fetch prediction results from a document already processed.
    *
@@ -262,7 +286,7 @@ export class Client {
     newAsyncParams.delaySec ??= 2;
     newAsyncParams.initialDelaySec ??= 4;
     newAsyncParams.maxRetries ??= 60;
-    
+
     if (newAsyncParams.delaySec < minDelaySec) {
       throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} seconds.`);
     }

@@ -8,6 +8,6 @@ export {
   Document,
   Page,
 } from "./parsing/common";
-export { InputSource, PageOptionsOperation } from "./input";
+export { InputSource, PageOptionsOperation, LocalResponse } from "./input";
 export * as internal from "./internal";
 export * as imageOperations from "./imageOperations";
