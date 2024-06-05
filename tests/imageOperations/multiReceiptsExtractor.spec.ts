@@ -19,7 +19,6 @@ describe("A multi-receipts document", () => {
     await inputSample.init();
     const extractedReceipts = await extractReceipts(inputSample, doc);
     expect(extractedReceipts.length).to.be.equals(6);
-    await fs.writeFile("local_test/buffer.txt", extractedReceipts[0].buffer);
     for (let i = 0; i < extractedReceipts.length; i++) {
       expect(extractedReceipts[i].buffer).to.be.not.null;
       expect(extractedReceipts[i].pageId).to.be.equals(0);

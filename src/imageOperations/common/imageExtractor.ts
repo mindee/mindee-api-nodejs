@@ -5,14 +5,14 @@ import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
  * Extracts elements from a page based off of a list of bounding boxes.
  *
  * @param pdfPage PDF Page to extract from.
- * @param boundingBoxes List of coordinates to pull the elements from.
+ * @param polygons List of coordinates to pull the elements from.
  */
 export async function extractFromPage(
   pdfPage: PDFPage,
-  boundingBoxes: Polygon[]) {
+  polygons: Polygon[]) {
   const { width, height } = pdfPage.getSize();
   const extractedElements :Uint8Array[] = [];
-  for (const boundingBox of boundingBoxes) {
+  for (const boundingBox of polygons) {
     const tempPdf = await PDFDocument.create();
 
     const newWidth = width * (getMinMaxX(boundingBox).max - getMinMaxX(boundingBox).min);
