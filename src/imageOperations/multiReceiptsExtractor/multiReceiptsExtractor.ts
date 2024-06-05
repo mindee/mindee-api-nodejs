@@ -4,7 +4,7 @@ import { Polygon } from "../../geometry";
 import { MultiReceiptsDetectorV1 } from "../../product";
 import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage";
 import { LocalInputSource } from "../../input/base";
-import { extractFromPage } from "../common/imageExtractor";
+import { extractFromPage } from "../common";
 import { PositionField } from "../../parsing/standard";
 
 /**

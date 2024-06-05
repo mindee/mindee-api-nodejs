@@ -4,7 +4,6 @@ import {
   INPUT_TYPE_PATH, LocalResponse,
 } from "../../src/input";
 import * as fs from "node:fs/promises";
-import * as path from "path";
 import { expect } from "chai";
 
 const signature: string = "5ed1673e34421217a5dbfcad905ee62261a3dd66c442f3edd19302072bbf70d0";
