@@ -1,42 +1,38 @@
 import { PDFDocument, PDFImage, PDFPage } from "pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../errors";
-import { Polygon, getMinMaxX, getMinMaxY } from "../geometry";
+import { Polygon } from "../geometry";
 import { MultiReceiptsDetectorV1 } from "../product";
 import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage";
 import { LocalInputSource } from "../input/base";
+import { extractFromPage } from "./imageExtractor";
+import { PositionField } from "../parsing/standard";
 
-async function addPage(
+/**
+ * Given a page and a set of coordinates, extracts & assigns individual receipts to an ExtractedMultiReceiptImage
+ * object.
+ *
+ * @param pdfPage PDF Page to extract from.
+ * @param boundingBoxes A set of coordinates delimiting the position of each receipt.
+ * @param pageId Id of the page the receipt is extracted from. Caution: this starts at 0, unlike the numbering in PDF
+ * pages.
+ */
+async function extractReceiptsFromPage(
   pdfPage: PDFPage,
-  boundingBox: Polygon,
-  pageId: number,
-  receiptId: number) {
-  const { width, height } = pdfPage.getSize();
-  const receiptPdf = await PDFDocument.create();
-
-  const newWidth = width * (getMinMaxX(boundingBox).max - getMinMaxX(boundingBox).min);
-  const newHeight = height * (getMinMaxY(boundingBox).max - getMinMaxY(boundingBox).min);
-  const croppedReceipt = await receiptPdf.embedPage(pdfPage, {
-    left: getMinMaxX(boundingBox).min * width,
-    right: getMinMaxX(boundingBox).max * width,
-    top: height - (getMinMaxY(boundingBox).min * height),
-    bottom: height - (getMinMaxY(boundingBox).max * height),
-  });
-  const receiptPage = receiptPdf.addPage([newWidth, newHeight]);
-  receiptPage.drawPage(croppedReceipt,
-    {
-      width: newWidth,
-      height: newHeight,
-    });
-  const receiptBytes = await receiptPdf.save();
-  return new ExtractedMultiReceiptImage(receiptBytes, pageId, receiptId);
+  boundingBoxes: Polygon[],
+  pageId: number) {
+  const extractedReceiptsRaw = await extractFromPage(pdfPage, boundingBoxes);
+  const extractedReceipts = [];
+  for (let i = 0; i< extractedReceiptsRaw.length; i++) {
+    extractedReceipts.push(new ExtractedMultiReceiptImage(extractedReceiptsRaw[i], pageId, i));
+  }
+  return extractedReceipts;
 }
 
 async function loadPdfDoc(inputFile: LocalInputSource) {
   let pdfDoc: PDFDocument;
   if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputFile.mimeType)) {
     throw new MindeeMimeTypeError(`Unsupported file type "${inputFile.mimeType}" Currently supported types are .png, .jpg and .pdf`);
-  }
-  else if (inputFile.isPdf()) {
+  } else if (inputFile.isPdf()) {
     pdfDoc = await PDFDocument.load(inputFile.fileObject);
   } else {
     pdfDoc = await PDFDocument.create();
@@ -68,10 +64,9 @@ export async function extractReceipts(inputFile: LocalInputSource, inference: Mu
   const pdfDoc = await loadPdfDoc(inputFile);
   for (let pageId = 0; pageId < pdfDoc.getPageCount(); pageId++) {
     const [page] = await pdfDoc.copyPages(pdfDoc, [pageId]);
-    for (let receiptId = 0; receiptId < inference.pages[pageId].prediction.receipts.length; receiptId++) {
-      const receipt = inference.pages[pageId].prediction.receipts[receiptId];
-      images.push(await addPage(page, receipt.boundingBox, pageId, receiptId));
-    }
+    const receiptPositions = inference.pages[pageId].prediction.receipts.map((receipt: PositionField) => receipt.boundingBox)
+    const extractedReceipts = await extractReceiptsFromPage(page, receiptPositions, pageId);
+    images.push(...extractedReceipts);
   }
   return images;
 }
