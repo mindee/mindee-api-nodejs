@@ -1,5 +1,5 @@
 import { PDFDocument, PDFPage } from "pdf-lib";
-import { getMinMaxX, getMinMaxY, Polygon } from "../geometry";
+import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
 
 /**
  * Extracts elements from a page based off of a list of bounding boxes.

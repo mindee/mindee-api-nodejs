@@ -1,4 +1,4 @@
-import { ExtractedImage } from "./extractedImage";
+import { ExtractedImage } from "../common/extractedImage";
 
 export class ExtractedInvoiceSplitterImage extends ExtractedImage {
   readonly pageIdMin: number;

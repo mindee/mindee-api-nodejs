@@ -1,4 +1,4 @@
-import { ExtractedImage } from "./extractedImage";
+import { ExtractedImage } from "../common/extractedImage";
 
 export class ExtractedMultiReceiptImage extends ExtractedImage {
   readonly receiptId: number;

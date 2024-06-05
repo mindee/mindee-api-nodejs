@@ -1,9 +1,9 @@
 import { Buffer } from "node:buffer";
-import { MindeeError } from "../errors";
+import { MindeeError } from "../../errors";
 import { writeFileSync } from "node:fs";
 import path from "node:path";
-import { logger } from "../logger";
-import { BufferInput } from "../input";
+import { logger } from "../../logger";
+import { BufferInput } from "../../input";
 
 
 export abstract class ExtractedImage {
@@ -11,7 +11,7 @@ export abstract class ExtractedImage {
   protected internalFileName: string;
 
 
-  constructor(buffer: Uint8Array, fileName: string) {
+  protected constructor(buffer: Uint8Array, fileName: string) {
     this.buffer = Buffer.from(buffer);
     this.internalFileName = fileName;
   }
