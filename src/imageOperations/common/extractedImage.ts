@@ -5,8 +5,10 @@ import path from "node:path";
 import { logger } from "../../logger";
 import { BufferInput } from "../../input";
 
-
-export abstract class ExtractedImage {
+/**
+ * Generic class for image extraction
+ */
+export class ExtractedImage {
   public buffer: Buffer;
   protected internalFileName: string;
 
