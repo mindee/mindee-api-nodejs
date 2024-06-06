@@ -1,5 +1,8 @@
 import { ExtractedImage } from "../common";
 
+/**
+ * Wrapper class for extracted multiple-receipts images.
+ */
 export class ExtractedMultiReceiptImage extends ExtractedImage {
   readonly receiptId: number;
   readonly pageId: number;
