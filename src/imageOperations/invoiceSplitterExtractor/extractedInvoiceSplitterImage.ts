@@ -1,5 +1,8 @@
 import { ExtractedImage } from "../common/extractedImage";
 
+/**
+ * Wrapper class for extracted invoice pages.
+ */
 export class ExtractedInvoiceSplitterImage extends ExtractedImage {
   readonly pageIdMin: number;
   readonly pageIdMax: number;
