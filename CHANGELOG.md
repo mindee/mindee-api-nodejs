@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.13.1 - 2024-06-10
+### Fixes
+* :recycle: refactored image extraction module to allow for more generic manipulations
+* :recycle: add tests for multipage receipts extraction
+
+
 ## v4.13.0 - 2024-05-28
 ### Changes
 * :sparkles: add support for local response loading
