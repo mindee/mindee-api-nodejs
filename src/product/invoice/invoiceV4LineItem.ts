@@ -18,6 +18,8 @@ export class InvoiceV4LineItem {
   taxRate: number | undefined;
   /** The item total amount. */
   totalAmount: number | undefined;
+  /** The item unit of measure. */
+  unitMeasure: string | undefined;
   /** The item unit price. */
   unitPrice: number | undefined;
   /** Confidence score */
@@ -45,6 +47,7 @@ export class InvoiceV4LineItem {
     if (prediction["total_amount"] && !isNaN(prediction["total_amount"])) {
       this.totalAmount = +parseFloat(prediction["total_amount"]).toFixed(3);
     }
+    this.unitMeasure = prediction["unit_measure"];
     if (prediction["unit_price"] && !isNaN(prediction["unit_price"])) {
       this.unitPrice = +parseFloat(prediction["unit_price"]).toFixed(3);
     }
@@ -75,6 +78,11 @@ export class InvoiceV4LineItem {
       taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",
       totalAmount:
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",
+      unitMeasure: this.unitMeasure ?
+        this.unitMeasure.length <= 15 ?
+          this.unitMeasure :
+          this.unitMeasure.slice(0, 12) + "..." :
+        "",
       unitPrice: this.unitPrice !== undefined ? floatToString(this.unitPrice) : "",
     };
   }
@@ -97,6 +105,8 @@ export class InvoiceV4LineItem {
       printable.taxRate +
       ", Total Amount: " +
       printable.totalAmount +
+      ", Unit of measure: " +
+      printable.unitMeasure +
       ", Unit Price: " +
       printable.unitPrice
     );
@@ -119,6 +129,8 @@ export class InvoiceV4LineItem {
       printable.taxRate.padEnd(12) +
       " | " +
       printable.totalAmount.padEnd(12) +
+      " | " +
+      printable.unitMeasure.padEnd(15) +
       " | " +
       printable.unitPrice.padEnd(10) +
       " |"
