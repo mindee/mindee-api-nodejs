@@ -6,7 +6,7 @@ import {
 import { PositionField } from "../../parsing/standard";
 
 /**
- * Multi Receipts Detector API version 1.0 document data.
+ * Multi Receipts Detector API version 1.1 document data.
  */
 export class MultiReceiptsDetectorV1Document implements Prediction {
   /** Positions of the receipts on the document. */

@@ -46,10 +46,90 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "barcode-reader",
+    {
+      displayName: "Barcode Reader",
+      docClass: product.BarcodeReaderV1,
+      allWords: true,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
     "cropper",
     {
       displayName: "Cropper",
       docClass: product.CropperV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "financial",
+    {
+      displayName: "Financial Document",
+      docClass: product.FinancialDocumentV1,
+      allWords: true,
+      async: true,
+      sync: true,
+    },
+  ],
+  [
+    "fr-bank-account-details",
+    {
+      displayName: "FR Bank Account Details",
+      docClass: product.fr.BankAccountDetailsV2,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "fr-id-card",
+    {
+      displayName: "FR ID Card",
+      docClass: product.fr.IdCardV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "fr-carte-vitale",
+    {
+      displayName: "FR Carte Vitale",
+      docClass: product.fr.CarteVitaleV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "fr-carte-grise",
+    {
+      displayName: "FR Carte Grise",
+      docClass: product.fr.CarteGriseV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "eu-license-plate",
+    {
+      displayName: "EU License Plate",
+      docClass: product.eu.LicensePlateV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "eu-driver-license",
+    {
+      displayName: "EU Driver License",
+      docClass: product.eu.DriverLicenseV1,
       allWords: false,
       async: false,
       sync: true,
@@ -86,6 +166,26 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "multi-receipts-detector",
+    {
+      displayName: "Multi Receipts Detector",
+      docClass: product.MultiReceiptsDetectorV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
+    "passport",
+    {
+      displayName: "Passport",
+      docClass: product.PassportV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
     "receipt",
     {
       displayName: "Expense Receipt",
@@ -106,76 +206,6 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "passport",
-    {
-      displayName: "Passport",
-      docClass: product.PassportV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "financial",
-    {
-      displayName: "Financial Document",
-      docClass: product.FinancialDocumentV1,
-      allWords: true,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "fr-id-card",
-    {
-      displayName: "FR ID Card",
-      docClass: product.fr.IdCardV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "fr-bank-account-details",
-    {
-      displayName: "FR Bank Account Details",
-      docClass: product.fr.BankAccountDetailsV2,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "fr-carte-vitale",
-    {
-      displayName: "FR Carte Vitale",
-      docClass: product.fr.CarteVitaleV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "eu-license-plate",
-    {
-      displayName: "EU License Plate",
-      docClass: product.eu.LicensePlateV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "eu-driver-license",
-    {
-      displayName: "EU Driver License",
-      docClass: product.eu.DriverLicenseV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
     "us-bank-check",
     {
       displayName: "US Bank Check",
@@ -193,6 +223,36 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       allWords: false,
       async: false,
       sync: true,
+    },
+  ],
+  [
+    "us-healthcare-card",
+    {
+      displayName: "US Healthcare Card",
+      docClass: product.us.HealthcareCardV1,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
+    "us-mail",
+    {
+      displayName: "US Mail",
+      docClass: product.us.UsMailV2,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
+    "us-w9",
+    {
+      displayName: "US W9",
+      docClass: product.us.W9V1,
+      allWords: false,
+      async: true,
+      sync: false,
     },
   ],
 ]);

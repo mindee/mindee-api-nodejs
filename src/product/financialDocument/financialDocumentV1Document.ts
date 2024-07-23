@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Financial Document API version 1.7 document data.
+ * Financial Document API version 1.9 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
   /** The customer's address used for billing. */
@@ -238,7 +238,7 @@ export class FinancialDocumentV1Document implements Prediction {
     const customerCompanyRegistrations = this.customerCompanyRegistrations.join("\n                                 ");
     let lineItemsSummary:string = "";
     if (this.lineItems && this.lineItems.length > 0) {
-      const lineItemsColSizes:number[] = [38, 14, 10, 12, 14, 14, 12];
+      const lineItemsColSizes:number[] = [38, 14, 10, 12, 14, 14, 17, 12];
       lineItemsSummary += "\n" + lineSeparator(lineItemsColSizes, "-") + "\n  ";
       lineItemsSummary += "| Description                          ";
       lineItemsSummary += "| Product code ";
@@ -246,6 +246,7 @@ export class FinancialDocumentV1Document implements Prediction {
       lineItemsSummary += "| Tax Amount ";
       lineItemsSummary += "| Tax Rate (%) ";
       lineItemsSummary += "| Total Amount ";
+      lineItemsSummary += "| Unit of measure ";
       lineItemsSummary += "| Unit Price ";
       lineItemsSummary += "|\n" + lineSeparator(lineItemsColSizes, "=");
       lineItemsSummary += this.lineItems.map(
