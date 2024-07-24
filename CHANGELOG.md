@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v4.14.0 - 2024-07-24
+### Changes
+* :sparkles: add support for Healthcare Card V1
+* :sparkles: add support for Invoice V4.7
+* :sparkles: add support for Financial Document V1.9
+* :recycle: update display for registration field
+
+
 ## v4.13.1 - 2024-06-10
 ### Fixes
 * :recycle: refactored image extraction module to allow for more generic manipulations
