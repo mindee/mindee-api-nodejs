@@ -1,5 +1,8 @@
 ---
-title: Generated API Node.js
+title: Generated OCR Node.js
+category: 622b805aaec68102ea7fcbc2
+slug: nodejs-generated-ocr
+parentDoc: 609809574212d40077a040f1
 ---
 The Node.js OCR SDK supports generated APIs.
 Generated APIs can theoretically support all APIs in a catch-all generic format.

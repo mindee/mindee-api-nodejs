@@ -1,5 +1,8 @@
 ---
 title: US Driver License OCR Node.js
+category: 622b805aaec68102ea7fcbc2
+slug: nodejs-us-driver-license-ocr
+parentDoc: 609809574212d40077a040f1
 ---
 The Node.js OCR SDK supports the [Driver License API](https://platform.mindee.com/mindee/us_driver_license).
 
@@ -102,7 +105,7 @@ A typical `Field` object will have the following attributes:
 * **confidence** (`number`): the confidence score of the field prediction.
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
-* **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
+* **pageId** (`number`): the ID of the page, always `undefined` when at document-level.
 * **reconstructed** (`boolean`): indicates whether an object was reconstructed (not extracted as the API gave it).
 
 > **Note:** A `Point` simply refers to an array of two numbers (`[number, number]`).
@@ -126,7 +129,7 @@ The position field `PositionField` does not implement all the basic `Field` attr
 The text field `StringField` only has one constraint: its **value** is a `string` (or `undefined`).
 
 ## Page-Level Fields
-Some fields are constrained to the page level, and so will not be retrievable to through the document.
+Some fields are constrained to the page level, and so will not be retrievable at document level.
 
 # Attributes
 The following fields are extracted for Driver License V1:

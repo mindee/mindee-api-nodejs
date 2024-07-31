@@ -1,5 +1,8 @@
 ---
 title: US US Mail OCR Node.js
+category: 622b805aaec68102ea7fcbc2
+slug: nodejs-us-us-mail-ocr
+parentDoc: 609809574212d40077a040f1
 ---
 The Node.js OCR SDK supports the [US Mail API](https://platform.mindee.com/mindee/us_mail).
 
