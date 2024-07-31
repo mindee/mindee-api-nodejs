@@ -157,7 +157,7 @@ Complete details on the working of the library are available in the following gu
 * [Node.js EU Driver License OCR](https://developers.mindee.com/docs/nodejs-eu-driver-license-ocr)
 * [Node.js FR Bank Account Detail OCR](https://developers.mindee.com/docs/nodejs-fr-bank-account-details-ocr)
 * [Node.js FR Carte Vitale OCR](https://developers.mindee.com/docs/nodejs-fr-carte-vitale-ocr)
-* [Node.js FR ID Card OCR](https://developers.mindee.com/docs/nodejs-fr-id-card-ocr)
+* [Node.js FR ID Card OCR](https://developers.mindee.com/docs/nodejs-fr-carte-nationale-didentite-ocr)
 * [Node.js US Bank Check OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
 * [Node.js US W9 OCR](https://developers.mindee.com/docs/nodejs-us-w9-ocr)
 * [Node.js US Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
