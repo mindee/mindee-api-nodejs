@@ -144,8 +144,8 @@ const apiResponse = mindeeClient.parse(
 Complete details on the working of the library are available in the following guides: 
 
 * [Node.js Getting Started](https://developers.mindee.com/docs/nodejs-getting-started)
-* [Node.js Generated API](https://developers.mindee.com/docs/nodejs-generated-api)
-* [Node.js Custom OCR](https://developers.mindee.com/docs/nodejs-api-builder)
+* [Node.js Generated API](https://developers.mindee.com/docs/nodejs-generated-ocr)
+* [Node.js Custom OCR (Deprecated)](https://developers.mindee.com/docs/nodejs-api-builder)
 * [Node.js Invoice OCR](https://developers.mindee.com/docs/nodejs-invoice-ocr)
 * [Node.js International Id OCR](https://developers.mindee.com/docs/nodejs-international-id-ocr)
 * [Node.js Receipt OCR](https://developers.mindee.com/docs/nodejs-receipt-ocr)
@@ -161,10 +161,10 @@ Complete details on the working of the library are available in the following gu
 * [Node.js US Bank Check OCR](https://developers.mindee.com/docs/nodejs-us-bank-checks-ocr)
 * [Node.js US W9 OCR](https://developers.mindee.com/docs/nodejs-us-w9-ocr)
 * [Node.js US Driver License OCR](https://developers.mindee.com/docs/nodejs-us-driver-license-ocr)
-* [Node.js Barcode Reader API](https://developers.mindee.com/docs/nodejs-barcode-reader-api)
-* [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-api)
-* [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-api)
-* [Node.js Multi Receipts Detector API](https://developers.mindee.com/docs/nodejs-multi-receipts-detector-api)
+* [Node.js Barcode Reader API](https://developers.mindee.com/docs/nodejs-barcode-reader-ocr)
+* [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-ocr)
+* [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-ocr)
+* [Node.js Multi Receipts Detector API](https://developers.mindee.com/docs/nodejs-multi-receipts-detector-ocr)
 
 You can also take a look at the **[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**.
 

@@ -1,6 +1,11 @@
 ---
 title: Custom API Node.js
+category: 622b805aaec68102ea7fcbc2
+slug: nodejs-api-builder
+parentDoc: 609809574212d40077a040f1
 ---
+> 🚧 This product is still supported, but is considered to be deprecated. If you are looking for the DocTI API documentation, you can find it [here](https://developers.mindee.com/docs/nodejs-generated-ocr).
+
 The Node.js OCR SDK supports [custom-built APIs](https://developers.mindee.com/docs/build-your-first-document-parsing-api).
 If your document isn't covered by one of Mindee's Off-the-Shelf APIs, you can create your own API using the[API Builder](https://platform.mindee.com/api-builder).
 

@@ -1,3 +1,9 @@
+---
+title: Getting Started Node.js
+category: 622b805aaec68102ea7fcbc2
+slug: nodejs-getting-started
+parentDoc: 609809574212d40077a040f1
+---
 This guide will help you get the most out of the Mindee Node.js client library to easily extract data from your documents.
 
 > 📘 **Info**

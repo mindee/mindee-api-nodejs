@@ -1,5 +1,8 @@
 ---
-title: Invoice Splitter API Node.js
+title: Invoice Splitter OCR Node.js
+category: 622b805aaec68102ea7fcbc2
+slug: nodejs-invoice-splitter-ocr
+parentDoc: 609809574212d40077a040f1
 ---
 The Node.js OCR SDK supports the [Invoice Splitter API](https://platform.mindee.com/mindee/invoice_splitter).
 
