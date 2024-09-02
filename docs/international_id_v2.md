@@ -144,6 +144,14 @@ console.log(result.document.inference.prediction.documentNumber.value);
 ## Document Type
 **documentType** ([ClassificationField](#classification-field)): The type of personal identification document.
 
+> Possible values include:
+> - IDENTIFICATION_CARD
+> - PASSPORT
+> - DRIVER_LICENSE
+> - VISA
+> - RESIDENCY_CARD
+> - VOTER_REGISTRATION
+
 ```js
 console.log(result.document.inference.prediction.documentType.value);
 ```
