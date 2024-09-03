@@ -273,15 +273,15 @@ console.log(result.document.inference.prediction.billingAddress.value);
 ## Purchase Category
 **category** ([ClassificationField](#classification-field)): The purchase category among predefined classes.
 
-> Possible values include:
-> - toll
-> - food
-> - parking
-> - transport
-> - accommodation
-> - gasoline
-> - telecom
-> - miscellaneous
+#### Possible values include:
+ - toll
+ - food
+ - parking
+ - transport
+ - accommodation
+ - gasoline
+ - telecom
+ - miscellaneous
 
 ```js
 console.log(result.document.inference.prediction.category.value);
@@ -334,11 +334,11 @@ console.log(result.document.inference.prediction.documentNumber.value);
 ## Document Type
 **documentType** ([ClassificationField](#classification-field)): One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
 
-> Possible values include:
-> - INVOICE
-> - CREDIT NOTE
-> - CREDIT CARD RECEIPT
-> - EXPENSE RECEIPT
+#### Possible values include:
+ - INVOICE
+ - CREDIT NOTE
+ - CREDIT CARD RECEIPT
+ - EXPENSE RECEIPT
 
 ```js
 console.log(result.document.inference.prediction.documentType.value);
@@ -400,12 +400,12 @@ console.log(result.document.inference.prediction.shippingAddress.value);
 ## Purchase Subcategory
 **subcategory** ([ClassificationField](#classification-field)): The purchase subcategory among predefined classes for transport and food.
 
-> Possible values include:
-> - plane
-> - taxi
-> - train
-> - restaurant
-> - shopping
+#### Possible values include:
+ - plane
+ - taxi
+ - train
+ - restaurant
+ - shopping
 
 ```js
 console.log(result.document.inference.prediction.subcategory.value);

@@ -298,9 +298,9 @@ console.log(result.document.inference.prediction.date.value);
 ## Document Type
 **documentType** ([ClassificationField](#classification-field)): One of: 'INVOICE', 'CREDIT NOTE'.
 
-> Possible values include:
-> - INVOICE
-> - CREDIT NOTE
+#### Possible values include:
+ - INVOICE
+ - CREDIT NOTE
 
 ```js
 console.log(result.document.inference.prediction.documentType.value);
