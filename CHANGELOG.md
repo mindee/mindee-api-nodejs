@@ -1,5 +1,15 @@
 # CHANGELOG
 
+## v4.14.1 - 2024-09-03
+### Changes
+* :memo: add classification detail to guide documentation
+### Fixes
+* :arrow_up: update dependencies
+* :memo: fix broken documentation URLs
+* :recycle: generate missing accessors for products
+* :recycle: add missing async code samples
+
+
 ## v4.14.0 - 2024-07-24
 ### Changes
 * :sparkles: add support for Healthcare Card V1
