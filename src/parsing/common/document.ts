@@ -1,8 +1,9 @@
-import { CropperExtra } from "./extras/cropperExtra";
+import { CropperExtra } from "./extras";
 import { ExtraField, Extras } from "./extras/extras";
 import { Inference } from "./inference";
 import { Ocr } from "./ocr";
 import { StringDict } from "./stringDict";
+import { FullTextOcrExtra } from "./extras";
 
 /**
  * Document prediction wrapper class. Holds the results of a parsed document.
@@ -23,7 +24,7 @@ export class Document<T extends Inference> {
   nPages: number;
 
   /**
-   * 
+   *
    * @param inferenceClass constructor signature for an inference.
    * @param httpResponse raw http response.
    */
@@ -35,8 +36,6 @@ export class Document<T extends Inference> {
     this.filename = httpResponse?.name ?? "";
     this.ocr = httpResponse.ocr && Object.keys(httpResponse.ocr).length > 0 ? new Ocr(httpResponse.ocr) : undefined;
     this.inference = new inferenceClass(httpResponse["inference"]);
-    // Note: this is a convoluted but functional way of being able to implement/use Extras fields
-    // as an extension of a Map object (like having an adapted toString() method, for instance).
     if (
       httpResponse["extras"] &&
       Object.keys(httpResponse["extras"].length > 0)
@@ -47,10 +46,17 @@ export class Document<T extends Inference> {
           switch (extraKey) {
           case "cropper":
             extras["cropper"] = new CropperExtra(extraValue as StringDict);
+            break;
+          case "full_text_ocr":
+            extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
+            break;
           }
         }
       );
       this.extras = new Extras(extras);
+    }
+    if (!this.extras || !("fullTextOcr" in this.extras) || this.extras["full_text_ocr"].toString().length === 0) {
+      this.injectFullTextOcr(httpResponse);
     }
     this.nPages = httpResponse["n_pages"];
   }
@@ -65,5 +71,27 @@ export class Document<T extends Inference> {
 :Filename: ${this.filename}
 
 ${this.inference?.toString()}`;
+  }
+
+  private injectFullTextOcr(rawPrediction: StringDict) {
+    if (
+      rawPrediction["inference"]["pages"].length < 1 ||
+      rawPrediction["inference"]["pages"][0]["extras"].length < 1 ||
+      !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"])
+    ) {
+      return;
+    }
+    const fullTextOcr = rawPrediction["inference"]["pages"].filter(
+      (e: StringDict) => "extras" in e
+    ).map(
+      (e: StringDict) => e["extras"]["full_text_ocr"]["content"]
+    ).join("\n");
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const artificialTextObj = { "full_text_ocr": { "content": fullTextOcr.length > 0 ? fullTextOcr : "" } };
+    if (!this.extras) {
+      this.extras = new Extras({ "fullTextOcr": new FullTextOcrExtra(artificialTextObj) });
+    } else {
+      this.extras["fullTextOcr"] = new FullTextOcrExtra(artificialTextObj);
+    }
   }
 }

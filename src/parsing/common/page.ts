@@ -1,4 +1,4 @@
-import { CropperExtra } from "./extras/cropperExtra";
+import { CropperExtra, FullTextOcrExtra } from "./extras";
 import { ExtraField, Extras } from "./extras/extras";
 import { OrientationField } from "./orientation";
 import { Prediction } from "./prediction";
@@ -57,6 +57,9 @@ export class Page<T extends Prediction> {
       );
       this.extras = new Extras(extras);
     }
+    if (!this.extras || !("fullTextOcr" in this.extras) || this.extras["full_text_ocr"].toString().length === 0) {
+      this.injectFullTextOcr(rawPrediction);
+    }
   }
 
   /**
@@ -68,5 +71,25 @@ export class Page<T extends Prediction> {
 ${"-".repeat(title.length)}
 ${this.prediction.toString()}
 `;
+  }
+
+  private injectFullTextOcr(rawPrediction: StringDict) {
+    if (!("extras" in rawPrediction) || !("full_text_ocr" in rawPrediction["extras"])) {
+      return;
+    }
+    const fullTextOcr = rawPrediction.map(
+      (e: StringDict) => e["extras"]["full_text_ocr"]["content"]
+    ).join("\n");
+    const artificialTextObj = {
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      "full_text_ocr": {
+        "content": fullTextOcr.length > 0 ? fullTextOcr : "",
+      },
+    };
+    if (!this.extras) {
+      this.extras = new Extras({ "fullTextOcr": new FullTextOcrExtra(artificialTextObj) });
+    } else {
+      this.extras["fullTextOcr"] = new FullTextOcrExtra(artificialTextObj);
+    }
   }
 }

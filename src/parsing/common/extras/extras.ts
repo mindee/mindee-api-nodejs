@@ -1,18 +1,19 @@
-export abstract class ExtraField {}
+export abstract class ExtraField {
+}
 
 interface ExtraDict<T extends ExtraField> {
   [key: string]: T | (() => string);
 }
 
 export class Extras<ExtraT extends ExtraField = ExtraField>
-implements ExtraDict<ExtraT>
-{
+implements ExtraDict<ExtraT> {
   [key: string]: ExtraT | (() => string);
+
   constructor(fields: Record<string, ExtraT>) {
     Object.keys(fields).length > 0 &&
-      Object.keys(fields).forEach(
-        (name: string) => (this[name] = fields[name])
-      );
+    Object.keys(fields).forEach(
+      (name: string) => (this[name] = fields[name])
+    );
   }
 
   /**
