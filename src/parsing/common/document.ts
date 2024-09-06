@@ -81,7 +81,11 @@ ${this.inference?.toString()}`;
     ) {
       return;
     }
-    const fullTextOcr = rawPrediction["inference"]["pages"].filter((e: StringDict) => "extras" in e).map((e: StringDict) => e["extras"]["full_text_ocr"]["content"]).join("\n");
+    const fullTextOcr = rawPrediction["inference"]["pages"].filter(
+      (e: StringDict) => "extras" in e
+    ).map(
+      (e: StringDict) => e["extras"]["full_text_ocr"]["content"]
+    ).join("\n");
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const artificialTextObj = { "full_text_ocr": { "content": fullTextOcr.length > 0 ? fullTextOcr : "" } };
     if (!this.extras) {
