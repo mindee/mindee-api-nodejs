@@ -74,7 +74,11 @@ ${this.inference?.toString()}`;
   }
 
   private injectFullTextOcr(rawPrediction: StringDict) {
-    if (rawPrediction["inference"]["pages"].length < 1 || rawPrediction["inference"]["pages"][0]["extras"].length < 1 || !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"])) {
+    if (
+      rawPrediction["inference"]["pages"].length < 1 ||
+      rawPrediction["inference"]["pages"][0]["extras"].length < 1 ||
+      !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"])
+    ) {
       return;
     }
     const fullTextOcr = rawPrediction["inference"]["pages"].filter((e: StringDict) => "extras" in e).map((e: StringDict) => e["extras"]["full_text_ocr"]["content"]).join("\n");
