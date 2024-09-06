@@ -26,43 +26,43 @@ export function handleError(
   } catch (err) {
     //Rare instances where errors are returned as HTML instead of JSON.
     if (!("reconstructedResponse" in response.data)) {
-      response.data.reconstructedResponse = ""
+      response.data.reconstructedResponse = "";
     }
     if (response.data.reconstructedResponse.includes("Maximum pdf pages")) {
       errorObj = {
         message: "TooManyPages",
         details: "Maximum amount of pdf pages reached.",
-      }
+      };
     } else if (response.data.reconstructedResponse.includes("Max file size is")) {
       errorObj = {
         message: "FileTooLarge",
         details: "Maximum file size reached.",
-      }
+      };
     } else if (response.data.reconstructedResponse.includes("Invalid file type")) {
       errorObj = {
         message: "InvalidFiletype",
         details: "Invalid file type.",
-      }
+      };
     } else if (response.data.reconstructedResponse.includes("Gateway timeout")) {
       errorObj = {
         message: "RequestTimeout",
         details: "Request timed out.",
-      }
+      };
     } else if (response.data.reconstructedResponse.includes("Bad gateway")) {
       errorObj = {
         message: "BadRequest",
         details: "Bad Gateway",
-      }
+      };
     } else if (response.data.reconstructedResponse.includes("Too Many Requests")) {
       errorObj = {
         message: "TooManyRequests",
         details: "Too Many Requests.",
-      }
+      };
     } else {
       errorObj = {
         message: "Unknown Server Error.",
         details: response.data.reconstructedResponse,
-      }
+      };
     }
   }
   if (serverError !== undefined &&

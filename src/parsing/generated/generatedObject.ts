@@ -24,7 +24,15 @@ export class GeneratedObjectField {
       if (fieldName === "page_id") {
         itemPageId = fieldValue;
       } else if (["polygon", "rectangle", "quadrangle", "bounding_box"].includes(fieldName)) {
-        Object.assign(this, { [fieldName]: new PositionField({ prediction: { [fieldName]: fieldValue }, valueKey: fieldName, pageId: pageId }) });
+        Object.assign(
+          this,
+          {
+            [fieldName]: new PositionField({
+              prediction: { [fieldName]: fieldValue },
+              valueKey: fieldName,
+              pageId: pageId,
+            }),
+          });
         this.printableValues.push(fieldName);
       } else if (fieldName === "confidence") {
         this.confidence = fieldValue;
@@ -34,7 +42,13 @@ export class GeneratedObjectField {
         if (fieldValue !== null && fieldValue !== undefined && !isNaN(fieldValue) && fieldName !== "degrees") {
           Object.assign(this, { [fieldName]: this.toNumberString(fieldValue) });
         } else {
-          Object.assign(this, { [fieldName]: (fieldValue !== undefined && fieldValue !== null) ? String(fieldValue) : null });
+          Object.assign(
+            this,
+            {
+              [fieldName]:
+                (fieldValue !== undefined && fieldValue !== null) ?
+                  String(fieldValue) : null,
+            });
         }
         this.printableValues.push(fieldName);
       }
@@ -44,8 +58,8 @@ export class GeneratedObjectField {
 
   /**
    * ReSTructured-compliant string representation.
-     Takes into account level of indentation & displays elements as list elements.
-   * @param level Lvel of indentation. 0 by default.
+   Takes into account level of indentation & displays elements as list elements.
+   * @param level Level of indentation. 0 by default.
    */
   toStringLevel(level: number = 0): string {
     const indent = "  " + "  ".repeat(level);
@@ -64,7 +78,7 @@ export class GeneratedObjectField {
    */
   private toNumberString(n: number): string {
     if (Number.isInteger(n)) {
-      return n + ".0"
+      return n + ".0";
     }
     return n.toString();
   }
@@ -76,7 +90,7 @@ export class GeneratedObjectField {
 
 
 /**
- * Checks whether an field is a custom object or not.
+ * Checks whether a field is a custom object or not.
  * @param strDict input dictionary to check.
  */
 export function isGeneratedObject(strDict: StringDict): boolean {

@@ -46,7 +46,8 @@ async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
  * Extracts & cuts the pages of a main document invoice according to the provided indexes.
  *
  * @param inputFile File to extract sub-invoices from.
- * @param indexes List of indexes to cut the document according to. Can be provided either as a InvoiceSplitterV1 inference, or a direct list of splits.
+ * @param indexes List of indexes to cut the document according to.
+ *  Can be provided either as a InvoiceSplitterV1 inference, or a direct list of splits.
  * @param strict If set to true, doesn't cut pages where the API isn't 100% confident.
  * @returns A promise of extracted images, as an array of ExtractedInvoiceSplitterImage.
  */
@@ -75,7 +76,7 @@ export async function extractInvoices(
       if (index >= pageCount) {
         throw new MindeeError(`Given index ${index} doesn't exist in page range (0-${pageCount - 1})`);
       }
-    })
+    });
   });
   return await splitPdf(pdfDoc, customIndexes);
 }

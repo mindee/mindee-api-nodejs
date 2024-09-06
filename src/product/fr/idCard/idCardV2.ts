@@ -27,7 +27,7 @@ export class IdCardV2 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

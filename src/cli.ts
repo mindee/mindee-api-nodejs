@@ -375,7 +375,7 @@ async function callGetDocument<T extends Inference>(
   documentId: string, options: any
 ): Promise<void> {
   const mindeeClient = initClient(options);
-  const response = await mindeeClient.getDocument(productClass, documentId)
+  const response = await mindeeClient.getDocument(productClass, documentId);
   printResponse(response.document, options);
 }
 

@@ -12,7 +12,7 @@ export interface SplitPdf {
  * Cut pages from a pdf file. If pages index are out of bound, it will throw an error.
  * @param file
  * @param pageOptions
- * @returns the new cutted pdf file.
+ * @returns the new cut pdf file.
  */
 export async function extractPages(
   file: Buffer,
@@ -27,7 +27,9 @@ export async function extractPages(
   if (pageOptions.pageIndexes.length > currentPdf.getPageCount()) {
     errorHandler.throw(
       new MindeeError(
-        `The total indexes of pages to cut is superior to the total page count of the file (${currentPdf.getPageCount()}).`
+        "The total indexes of pages to cut is superior to the total page count of the file (" +
+        currentPdf.getPageCount() +
+        ")."
       )
     );
   }

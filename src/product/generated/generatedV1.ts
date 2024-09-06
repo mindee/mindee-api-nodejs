@@ -18,10 +18,12 @@ export class GeneratedV1 extends Inference {
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
     this.prediction = new GeneratedV1Document(rawPrediction["prediction"]);
-    this.pages = rawPrediction["pages"].length > 0 && Object.keys(rawPrediction["pages"][0]["prediction"]).length > 0 ? rawPrediction["pages"].map(
-      (page: StringDict) =>
-        new Page(GeneratedV1Page, page,
-          page["id"])
-    ) : []
+    this.pages = rawPrediction["pages"].length > 0 && Object.keys(
+      rawPrediction["pages"][0]["prediction"]).length > 0 ?
+      rawPrediction["pages"].map(
+        (page: StringDict) =>
+          new Page(GeneratedV1Page, page,
+            page["id"])
+      ) : [];
   }
 }

@@ -15,4 +15,4 @@ export {
   INPUT_TYPE_STREAM,
   INPUT_TYPE_BUFFER,
 } from "./base";
-export { LocalResponse } from "./localResponse"
+export { LocalResponse } from "./localResponse";

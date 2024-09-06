@@ -26,7 +26,7 @@ export class UsMailV2 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

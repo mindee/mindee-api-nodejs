@@ -27,7 +27,7 @@ export class DriverLicenseV1 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

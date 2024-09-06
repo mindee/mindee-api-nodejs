@@ -26,7 +26,7 @@ export class ReceiptV5 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

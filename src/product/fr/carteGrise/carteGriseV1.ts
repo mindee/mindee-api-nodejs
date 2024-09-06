@@ -26,7 +26,7 @@ export class CarteGriseV1 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );
