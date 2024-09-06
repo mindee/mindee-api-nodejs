@@ -74,18 +74,10 @@ ${this.inference?.toString()}`;
   }
 
   private injectFullTextOcr(rawPrediction: StringDict) {
-    if (
-      rawPrediction["inference"]["pages"].length < 1 ||
-      rawPrediction["inference"]["pages"][0]["extras"].length < 1 ||
-      !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"])
-    ) {
+    if (rawPrediction["inference"]["pages"].length < 1 || rawPrediction["inference"]["pages"][0]["extras"].length < 1 || !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"])) {
       return;
     }
-    const fullTextOcr = rawPrediction["inference"]["pages"].filter(
-      (e: StringDict) => "extras" in e
-    ).map(
-      (e: StringDict) => e["extras"]["full_text_ocr"]["content"]
-    ).join("\n");
+    const fullTextOcr = rawPrediction["inference"]["pages"].filter((e: StringDict) => "extras" in e).map((e: StringDict) => e["extras"]["full_text_ocr"]["content"]).join("\n");
     // eslint-disable-next-line @typescript-eslint/naming-convention
     const artificialTextObj = { "full_text_ocr": { "content": fullTextOcr.length > 0 ? fullTextOcr : "" } };
     if (!this.extras) {

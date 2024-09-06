@@ -1,8 +1,9 @@
-import { CropperExtra, FullTextOcrExtra } from "./extras";
+import { CropperExtra } from "./extras/cropperExtra";
 import { ExtraField, Extras } from "./extras/extras";
 import { OrientationField } from "./orientation";
 import { Prediction } from "./prediction";
 import { StringDict } from "./stringDict";
+import { FullTextOcrExtra } from "./extras";
 
 
 /**
@@ -77,15 +78,9 @@ ${this.prediction.toString()}
     if (!("extras" in rawPrediction) || !("full_text_ocr" in rawPrediction["extras"])) {
       return;
     }
-    const fullTextOcr = rawPrediction.map(
-      (e: StringDict) => e["extras"]["full_text_ocr"]["content"]
-    ).join("\n");
-    const artificialTextObj = {
-      // eslint-disable-next-line @typescript-eslint/naming-convention
-      "full_text_ocr": {
-        "content": fullTextOcr.length > 0 ? fullTextOcr : "",
-      },
-    };
+    const fullTextOcr = rawPrediction.map((e: StringDict) => e["extras"]["full_text_ocr"]["content"]).join("\n");
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    const artificialTextObj = { "full_text_ocr": { "content": fullTextOcr.length > 0 ? fullTextOcr : "" } };
     if (!this.extras) {
       this.extras = new Extras({ "fullTextOcr": new FullTextOcrExtra(artificialTextObj) });
     } else {

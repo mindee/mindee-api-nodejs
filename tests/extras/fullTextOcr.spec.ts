@@ -8,16 +8,12 @@ const fullTextOcrDir = "tests/data/extras/full_text_ocr";
 
 async function loadDocument() {
   const jsonData = await fs.readFile(path.resolve(fullTextOcrDir, "complete.json"));
-  return new AsyncPredictResponse(
-    InternationalIdV2, JSON.parse(jsonData.toString())
-  ).document?.extras?.fullTextOcr.toString();
+  return new AsyncPredictResponse(InternationalIdV2, JSON.parse(jsonData.toString())).document?.extras?.fullTextOcr.toString();
 }
 
 async function loadPage() {
   const jsonData = await fs.readFile(path.resolve(fullTextOcrDir, "complete.json"));
-  return new AsyncPredictResponse(
-    InternationalIdV2, JSON.parse(jsonData.toString())
-  )?.document?.inference.pages[0]?.extras?.fullTextOcr.toString();
+  return new AsyncPredictResponse(InternationalIdV2, JSON.parse(jsonData.toString()))?.document?.inference.pages[0]?.extras?.fullTextOcr.toString();
 }
 
 describe("Full Text Ocr", async () => {
@@ -27,8 +23,7 @@ describe("Full Text Ocr", async () => {
     expect(fullTextOcr).to.be.equals(expectedText.trim());
   });
 
-  // Not enabled due to the fact that pages without content aren't generated. Left here as a reminder to implement the
-  // test in the next major version.
+  // Not enabled due to the fact that pages without content aren't generated. Left here as a reminder to implement the test in the next major version.
   // TODO: Add test in next major.
   // it("should load a Full Text OCR prediction per page", async () => {
   //   const expectedText = (await fs.readFile(path.resolve(fullTextOcrDir, "full_text_ocr.txt"))).toString();
