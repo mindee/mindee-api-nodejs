@@ -26,7 +26,7 @@ export class InternationalIdV1 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

@@ -1,30 +1,23 @@
 import { Readable } from "stream";
 import {
   Base64Input,
+  BufferInput,
   BytesInput,
   InputSource,
+  LocalResponse,
+  PageOptions,
   PathInput,
   StreamInput,
-  PageOptions,
   UrlInput,
-  BufferInput, LocalResponse,
 } from "./input";
-import { Endpoint, ApiSettings, STANDARD_API_OWNER, EndpointResponse } from "./http";
-import {
-  AsyncPredictResponse,
-  FeedbackResponse,
-  Inference,
-  PredictResponse,
-  StringDict,
-} from "./parsing/common";
+import { ApiSettings, Endpoint, EndpointResponse, STANDARD_API_OWNER } from "./http";
+import { AsyncPredictResponse, FeedbackResponse, Inference, PredictResponse, StringDict } from "./parsing/common";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 import { InferenceFactory } from "./parsing/common/inference";
 import { CustomV1 } from "./product";
 
-import {
-  setTimeout,
-} from "node:timers/promises";
+import { setTimeout } from "node:timers/promises";
 import { MindeeError } from "./errors";
 
 /**
@@ -114,9 +107,9 @@ export class Client {
     this.apiKey = apiKey ? apiKey : "";
     errorHandler.throwOnError = throwOnError ?? true;
     logger.level =
-      debug ?? process.env.MINDEE_DEBUG
-        ? LOG_LEVELS["debug"]
-        : LOG_LEVELS["warn"];
+    debug ?? process.env.MINDEE_DEBUG
+      ? LOG_LEVELS["debug"]
+      : LOG_LEVELS["warn"];
     logger.debug("Client initialized");
   }
 
@@ -141,7 +134,7 @@ export class Client {
     }
   ): Promise<PredictResponse<T>> {
     const endpoint: Endpoint =
-      params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
+    params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
@@ -168,7 +161,7 @@ export class Client {
     params: PredictOptions = {}
   ): Promise<AsyncPredictResponse<T>> {
     const endpoint =
-      params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
+    params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
@@ -199,7 +192,7 @@ export class Client {
     params: PredictOptions = {}
   ): Promise<AsyncPredictResponse<T>> {
     const endpoint: Endpoint =
-      params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
+    params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
   }
@@ -217,7 +210,7 @@ export class Client {
      * @returns A valid prediction
      */
     try {
-      if (Object.prototype.hasOwnProperty.call(localResponse.asDict(), "job")){
+      if (Object.prototype.hasOwnProperty.call(localResponse.asDict(), "job")) {
         return new AsyncPredictResponse(productClass, localResponse.asDict());
       }
       return new PredictResponse(productClass, localResponse.asDict());
@@ -244,7 +237,7 @@ export class Client {
     params: { endpoint?: Endpoint } = {}
   ): Promise<PredictResponse<T>> {
     const endpoint: Endpoint =
-      params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
+    params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const response: EndpointResponse = await endpoint.getDocument(documentId);
     return new PredictResponse<T>(productClass, response.data);
   }
@@ -268,7 +261,7 @@ export class Client {
     params: { endpoint?: Endpoint } = {}
   ): Promise<FeedbackResponse> {
     const endpoint: Endpoint =
-      params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
+    params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const response: EndpointResponse = await endpoint.sendFeedback(documentId, feedback);
     return new FeedbackResponse(response.data);
   }
@@ -294,7 +287,7 @@ export class Client {
       throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} seconds.`);
     }
     if (newAsyncParams.maxRetries < minRetries) {
-      throw Error(`Cannot set retry to less than ${minRetries}.`)
+      throw Error(`Cannot set retry to less than ${minRetries}.`);
     }
     return newAsyncParams as AsyncOptions;
   }
@@ -353,7 +346,11 @@ Job status: ${pollResults.job.status}.`
       retryCounter++;
     }
     if (pollResults.job.status !== "completed") {
-      throw Error(`Asynchronous parsing request timed out after ${validatedAsyncParams.delaySec * retryCounter} seconds`);
+      throw Error(
+        "Asynchronous parsing request timed out after " +
+      validatedAsyncParams.delaySec * retryCounter +
+      " seconds"
+      );
     }
     return pollResults;
   }
@@ -477,7 +474,8 @@ Job status: ${pollResults.job.status}.`
 
   /**
    * Get the name and version of an OTS endpoint.
-   * @param productClass product class to use for calling  the API and parsing the response. Mandatory to retrieve default OTS endpoint data.
+   * @param productClass product class to use for calling  the API and parsing the response.
+   *  Mandatory to retrieve default OTS endpoint data.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    *
    * @returns an endpoint's name and version.
@@ -486,7 +484,7 @@ Job status: ${pollResults.job.status}.`
     productClass: new (httpResponse: StringDict) => T
   ): [string, string] {
     const [endpointName, endpointVersion] =
-      InferenceFactory.getEndpoint(productClass);
+    InferenceFactory.getEndpoint(productClass);
     return [endpointName, endpointVersion];
   }
 

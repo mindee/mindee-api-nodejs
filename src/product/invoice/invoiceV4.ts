@@ -26,7 +26,7 @@ export class InvoiceV4 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

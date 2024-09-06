@@ -26,7 +26,7 @@ export class BankAccountDetailsV2 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

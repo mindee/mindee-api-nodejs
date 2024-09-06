@@ -22,6 +22,6 @@ export class GeneratedV1Page extends GeneratedV1Prediction {
         }
         this.fields.set(fieldName, new StringField({ prediction: fieldValueStr, pageId: pageId }));
       }
-    })
+    });
   }
 }

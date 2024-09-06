@@ -22,7 +22,7 @@ async function extractReceiptsFromPage(
   pageId: number) {
   const extractedReceiptsRaw = await extractFromPage(pdfPage, boundingBoxes);
   const extractedReceipts = [];
-  for (let i = 0; i< extractedReceiptsRaw.length; i++) {
+  for (let i = 0; i < extractedReceiptsRaw.length; i++) {
     extractedReceipts.push(new ExtractedMultiReceiptImage(extractedReceiptsRaw[i], pageId, i));
   }
   return extractedReceipts;
@@ -31,7 +31,11 @@ async function extractReceiptsFromPage(
 async function loadPdfDoc(inputFile: LocalInputSource) {
   let pdfDoc: PDFDocument;
   if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputFile.mimeType)) {
-    throw new MindeeMimeTypeError(`Unsupported file type "${inputFile.mimeType}" Currently supported types are .png, .jpg and .pdf`);
+    throw new MindeeMimeTypeError(
+      'Unsupported file type "' +
+      inputFile.mimeType +
+      '" Currently supported types are .png, .jpg and .pdf'
+    );
   } else if (inputFile.isPdf()) {
     pdfDoc = await PDFDocument.load(inputFile.fileObject);
   } else {
@@ -56,7 +60,10 @@ async function loadPdfDoc(inputFile: LocalInputSource) {
  * @param inference Results of the inference.
  * @returns Individual extracted receipts as an array of ExtractedMultiReceiptImage.
  */
-export async function extractReceipts(inputFile: LocalInputSource, inference: MultiReceiptsDetectorV1): Promise<ExtractedMultiReceiptImage[]> {
+export async function extractReceipts(
+  inputFile: LocalInputSource,
+  inference: MultiReceiptsDetectorV1
+): Promise<ExtractedMultiReceiptImage[]> {
   const images: ExtractedMultiReceiptImage[] = [];
   if (!inference.prediction.receipts) {
     throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");
@@ -64,7 +71,9 @@ export async function extractReceipts(inputFile: LocalInputSource, inference: Mu
   const pdfDoc = await loadPdfDoc(inputFile);
   for (let pageId = 0; pageId < pdfDoc.getPageCount(); pageId++) {
     const [page] = await pdfDoc.copyPages(pdfDoc, [pageId]);
-    const receiptPositions = inference.pages[pageId].prediction.receipts.map((receipt: PositionField) => receipt.boundingBox)
+    const receiptPositions = inference.pages[pageId].prediction.receipts.map(
+      (receipt: PositionField) => receipt.boundingBox
+    );
     const extractedReceipts = await extractReceiptsFromPage(page, receiptPositions, pageId);
     images.push(...extractedReceipts);
   }

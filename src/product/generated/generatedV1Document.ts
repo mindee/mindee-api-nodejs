@@ -22,6 +22,6 @@ export class GeneratedV1Document extends GeneratedV1Prediction {
         }
         this.fields.set(fieldName, new StringField({ prediction: fieldValueStr }));
       }
-    })
+    });
   }
 }

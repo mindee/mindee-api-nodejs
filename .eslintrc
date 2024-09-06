@@ -17,6 +17,8 @@
     "Promise": true
   },
   "rules": {
+    "max-len": ["error", { "code": 120 }],
+    "semi": ["error"],
     "jsdoc/check-alignment": 1,
     "jsdoc/check-param-names": 1,
     "jsdoc/check-types": 1,

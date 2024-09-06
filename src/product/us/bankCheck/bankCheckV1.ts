@@ -27,7 +27,7 @@ export class BankCheckV1 extends Inference {
             page,
             page["id"],
             page["orientation"]
-          ))
+          ));
         }
       }
     );

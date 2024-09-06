@@ -1,5 +1,5 @@
 import { Field } from "./field";
-import { BaseFieldConstructor } from "./base"
+import { BaseFieldConstructor } from "./base";
 import { cleanOutString } from "../common";
 
 /**
