@@ -45,7 +45,7 @@ export class Endpoint extends BaseEndpoint {
     this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
   }
 
-  /**a
+  /**
    * Sends a prediction to the API and parses out the result.
    * Throws an error if the server's response contains one.
    * @param {PredictParams} params parameters relating to prediction options.
