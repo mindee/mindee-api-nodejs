@@ -1,0 +1,38 @@
+name: Integration Test
+
+on:
+  - push
+
+jobs:
+  run-tests:
+    name: Run Integration Tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version:
+          - "16"
+          - "18"
+          - "20"
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install Node.js dependencies
+        run: npm ci
+
+      - name: Compilation
+        run: npm run build
+
+      - name: Test code
+        env:
+          MINDEE_API_KEY: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+        run: npm run test-integration

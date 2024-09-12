@@ -33,6 +33,12 @@ export interface PredictOptions {
    */
   allWords?: boolean;
   /**
+   * Whether to include the full ocr text. Only available on compatible APIs.
+   *
+   * This performs a full OCR operation on the server and will increase response time.
+   */
+  fullText?: boolean;
+  /**
    * Whether to include cropper results for each page.
    *
    * This performs a cropping operation on the server and will increase response time.
@@ -129,6 +135,7 @@ export class Client {
     params: PredictOptions = {
       endpoint: undefined,
       allWords: undefined,
+      fullText: undefined,
       cropper: undefined,
       pageOptions: undefined,
     }
@@ -141,6 +148,7 @@ export class Client {
     const rawPrediction = await endpoint.predict({
       inputDoc: inputSource,
       includeWords: this.getBooleanParam(params.allWords),
+      fullText: this.getBooleanParam(params.fullText),
       pageOptions: params.pageOptions,
       cropper: this.getBooleanParam(params.cropper),
     });
@@ -168,6 +176,7 @@ export class Client {
     const rawResponse = await endpoint.predictAsync({
       inputDoc: inputSource,
       includeWords: this.getBooleanParam(params.allWords),
+      fullText: this.getBooleanParam(params.fullText),
       pageOptions: params?.pageOptions,
       cropper: this.getBooleanParam(params.cropper),
     });
@@ -310,6 +319,7 @@ export class Client {
     asyncParams: OptionalAsyncOptions = {
       endpoint: undefined,
       allWords: undefined,
+      fullText: undefined,
       cropper: undefined,
       pageOptions: undefined,
       initialDelaySec: 4,
