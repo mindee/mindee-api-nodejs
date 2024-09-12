@@ -37,8 +37,6 @@ export class Page<T extends Prediction> {
         prediction: orientation,
         pageId: pageId,
       });
-    } else {
-      orientation = undefined;
     }
     this.id = pageId;
     this.prediction = new predictionType(rawPrediction["prediction"], pageId);
@@ -52,12 +50,16 @@ export class Page<T extends Prediction> {
           switch (extraKey) {
           case "cropper":
             extras["cropper"] = new CropperExtra(extraValue as StringDict);
+            break;
+          case "full_text_ocr":
+            extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
+            break;
           }
         }
       );
       this.extras = new Extras(extras);
     }
-    if (!this.extras || !("fullTextOcr" in this.extras) || this.extras["full_text_ocr"].toString().length === 0) {
+    if (!this.extras || !("fullTextOcr" in this.extras) || this.extras["fullTextOcr"].toString().length === 0) {
       this.injectFullTextOcr(rawPrediction);
     }
   }
@@ -87,7 +89,8 @@ ${this.prediction.toString()}
       },
     };
     if (!this.extras) {
-      this.extras = new Extras({ "fullTextOcr": new FullTextOcrExtra(artificialTextObj) });
+      // eslint-disable-next-line @typescript-eslint/naming-convention
+      this.extras = new Extras({ "full_text_ocr": new FullTextOcrExtra(artificialTextObj) });
     } else {
       this.extras["fullTextOcr"] = new FullTextOcrExtra(artificialTextObj);
     }

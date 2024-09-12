@@ -14,6 +14,7 @@ import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation"
 export interface PredictParams {
   inputDoc: InputSource;
   includeWords: boolean;
+  fullText: boolean;
   pageOptions?: PageOptions;
   cropper: boolean;
 }
@@ -59,6 +60,7 @@ export class Endpoint extends BaseEndpoint {
     const response = await this.#predictReqPost(
       params.inputDoc,
       params.includeWords,
+      params.fullText,
       params.cropper
     );
     if (!isValidSyncResponse(response)) {
@@ -83,6 +85,7 @@ export class Endpoint extends BaseEndpoint {
     const response = await this.#predictAsyncReqPost(
       params.inputDoc,
       params.includeWords,
+      params.fullText,
       params.cropper
     );
     if (!isValidAsyncResponse(response)) {
@@ -156,18 +159,23 @@ export class Endpoint extends BaseEndpoint {
    * @param input
    * @param predictUrl
    * @param includeWords
+   * @param fullText
    * @param cropper
    */
   protected sendFileForPrediction(
     input: InputSource,
     predictUrl: string,
     includeWords: boolean = false,
+    fullText: boolean = false,
     cropper: boolean = false
   ): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const searchParams = new URLSearchParams();
       if (cropper) {
         searchParams.append("cropper", "true");
+      }
+      if (fullText) {
+        searchParams.append("full_text_ocr", "true");
       }
 
       const form = new FormData();
@@ -185,7 +193,7 @@ export class Endpoint extends BaseEndpoint {
       const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
 
       let path = `${this.urlRoot}/${predictUrl}`;
-      if (searchParams.keys.length > 0) {
+      if (searchParams.toString().length > 0) {
         path += `?${searchParams}`;
       }
       const options: RequestOptions = {
@@ -216,31 +224,36 @@ export class Endpoint extends BaseEndpoint {
    * Make a request to POST a document for prediction.
    * @param input
    * @param includeWords
+   * @param fullText
    * @param cropper
    */
   #predictReqPost(
     input: InputSource,
     includeWords = false,
+    fullText = false,
     cropper = false
   ): Promise<EndpointResponse> {
-    return this.sendFileForPrediction(input, "predict", includeWords, cropper);
+    return this.sendFileForPrediction(input, "predict", includeWords, fullText, cropper);
   }
 
   /**
    * Make a request to POST a document for async prediction.
    * @param input
    * @param includeWords
+   * @param fullText
    * @param cropper
    */
   #predictAsyncReqPost(
     input: InputSource,
     includeWords = false,
+    fullText = false,
     cropper = false
   ): Promise<EndpointResponse> {
     return this.sendFileForPrediction(
       input,
       "predict_async",
       includeWords,
+      fullText,
       cropper
     );
   }

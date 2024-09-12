@@ -1,14 +1,11 @@
-name: Test Code Samples
+name: Integration Test
+
 on:
-  pull_request:
-  schedule:
-    - cron:  '0 23 * * *'
-  # Allow running this workflow manually from the Actions tab
-  workflow_dispatch:
+  - push
 
 jobs:
-  build:
-    name: Run Tests
+  run-tests:
+    name: Run Integration Tests
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -32,10 +29,10 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Build
-        run: npm run build-for-dist
+      - name: Compilation
+        run: npm run build
 
-      - name: Tests sample code
-        run: |
-          ./tests/test_code_samples.sh ${{ secrets.MINDEE_ACCOUNT_SE_TESTS }} ${{ secrets.MINDEE_ENDPOINT_SE_TESTS }} ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
-
+      - name: Test code
+        env:
+          MINDEE_API_KEY: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+        run: npm run test-integration
