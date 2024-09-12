@@ -34,14 +34,10 @@ export interface PredictOptions {
   allWords?: boolean;
   /**
    * Whether to include the full ocr text. Only available on compatible APIs.
-   *
-   * This performs a full OCR operation on the server and will increase response time.
    */
   fullText?: boolean;
   /**
    * Whether to include cropper results for each page.
-   *
-   * This performs a cropping operation on the server and will increase response time.
    */
   cropper?: boolean;
   /**
