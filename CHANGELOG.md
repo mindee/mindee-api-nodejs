@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.15.0 - 2024-09-12
+### Changes
+* :sparkles: add support for full text OCR extraction
+* :wrench: add stricter linting rules
+* :recycle: add integration tests
+
+
 ## v4.14.1 - 2024-09-03
 ### Changes
 * :memo: add classification detail to guide documentation
