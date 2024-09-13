@@ -1,0 +1,15 @@
+export { NutritionFactsLabelV1 } from "./nutritionFactsLabelV1";
+export { NutritionFactsLabelV1AddedSugar } from "./nutritionFactsLabelV1AddedSugar";
+export { NutritionFactsLabelV1Calorie } from "./nutritionFactsLabelV1Calorie";
+export { NutritionFactsLabelV1Cholesterol } from "./nutritionFactsLabelV1Cholesterol";
+export { NutritionFactsLabelV1DietaryFiber } from "./nutritionFactsLabelV1DietaryFiber";
+export { NutritionFactsLabelV1Document } from "./nutritionFactsLabelV1Document";
+export { NutritionFactsLabelV1Nutrient } from "./nutritionFactsLabelV1Nutrient";
+export { NutritionFactsLabelV1Protein } from "./nutritionFactsLabelV1Protein";
+export { NutritionFactsLabelV1SaturatedFat } from "./nutritionFactsLabelV1SaturatedFat";
+export { NutritionFactsLabelV1ServingSize } from "./nutritionFactsLabelV1ServingSize";
+export { NutritionFactsLabelV1Sodium } from "./nutritionFactsLabelV1Sodium";
+export { NutritionFactsLabelV1TotalCarbohydrate } from "./nutritionFactsLabelV1TotalCarbohydrate";
+export { NutritionFactsLabelV1TotalFat } from "./nutritionFactsLabelV1TotalFat";
+export { NutritionFactsLabelV1TotalSugar } from "./nutritionFactsLabelV1TotalSugar";
+export { NutritionFactsLabelV1TransFat } from "./nutritionFactsLabelV1TransFat";
