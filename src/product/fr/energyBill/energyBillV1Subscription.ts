@@ -1,4 +1,5 @@
 import { floatToString } from "../../../parsing/standard";
+import { cleanSpaces } from "../../../parsing/common/summaryHelper";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -55,18 +56,18 @@ export class EnergyBillV1Subscription {
     return {
       description: this.description ?
         this.description.length <= 36 ?
-          this.description :
-          this.description.slice(0, 33) + "..." :
+          cleanSpaces(this.description) :
+          cleanSpaces(this.description).slice(0, 33) + "..." :
         "",
       endDate: this.endDate ?
         this.endDate.length <= 10 ?
-          this.endDate :
-          this.endDate.slice(0, 7) + "..." :
+          cleanSpaces(this.endDate) :
+          cleanSpaces(this.endDate).slice(0, 7) + "..." :
         "",
       startDate: this.startDate ?
         this.startDate.length <= 10 ?
-          this.startDate :
-          this.startDate.slice(0, 7) + "..." :
+          cleanSpaces(this.startDate) :
+          cleanSpaces(this.startDate).slice(0, 7) + "..." :
         "",
       taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",
       total: this.total !== undefined ? floatToString(this.total) : "",

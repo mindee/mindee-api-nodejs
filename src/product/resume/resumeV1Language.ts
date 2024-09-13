@@ -1,3 +1,4 @@
+import { cleanSpaces } from "../../parsing/common/summaryHelper";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -36,13 +37,13 @@ export class ResumeV1Language {
     return {
       language: this.language ?
         this.language.length <= 8 ?
-          this.language :
-          this.language.slice(0, 5) + "..." :
+          cleanSpaces(this.language) :
+          cleanSpaces(this.language).slice(0, 5) + "..." :
         "",
       level: this.level ?
         this.level.length <= 20 ?
-          this.level :
-          this.level.slice(0, 17) + "..." :
+          cleanSpaces(this.level) :
+          cleanSpaces(this.level).slice(0, 17) + "..." :
         "",
     };
   }

@@ -1,4 +1,5 @@
 import { floatToString } from "../../../parsing/standard";
+import { cleanSpaces } from "../../../parsing/common/summaryHelper";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 

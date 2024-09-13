@@ -16,3 +16,12 @@ export function lineSeparator(columnSizes: number[], separator: string) {
   });
   return outStr;
 }
+
+/**
+ * Removes all line breaks and replaces them by the \n character in table displays.
+ * Also trims line breaks at the end of the string.
+ * @param outStr
+ */
+export function cleanSpaces(outStr: string) {
+  return outStr.replace(/\n/g, "\\n");
+}

@@ -1,4 +1,5 @@
 import { floatToString } from "../../../parsing/standard";
+import { cleanSpaces } from "../../../parsing/common/summaryHelper";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -51,8 +52,8 @@ export class PayslipV2SalaryDetail {
       base: this.base !== undefined ? floatToString(this.base) : "",
       description: this.description ?
         this.description.length <= 36 ?
-          this.description :
-          this.description.slice(0, 33) + "..." :
+          cleanSpaces(this.description) :
+          cleanSpaces(this.description).slice(0, 33) + "..." :
         "",
       rate: this.rate !== undefined ? floatToString(this.rate) : "",
     };

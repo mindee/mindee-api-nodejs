@@ -1,3 +1,4 @@
+import { cleanSpaces } from "../../parsing/common/summaryHelper";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -42,23 +43,23 @@ export class ResumeV1Certificate {
     return {
       grade: this.grade ?
         this.grade.length <= 10 ?
-          this.grade :
-          this.grade.slice(0, 7) + "..." :
+          cleanSpaces(this.grade) :
+          cleanSpaces(this.grade).slice(0, 7) + "..." :
         "",
       name: this.name ?
         this.name.length <= 30 ?
-          this.name :
-          this.name.slice(0, 27) + "..." :
+          cleanSpaces(this.name) :
+          cleanSpaces(this.name).slice(0, 27) + "..." :
         "",
       provider: this.provider ?
         this.provider.length <= 25 ?
-          this.provider :
-          this.provider.slice(0, 22) + "..." :
+          cleanSpaces(this.provider) :
+          cleanSpaces(this.provider).slice(0, 22) + "..." :
         "",
       year: this.year ?
         this.year.length <= 4 ?
-          this.year :
-          this.year.slice(0, 1) + "..." :
+          cleanSpaces(this.year) :
+          cleanSpaces(this.year).slice(0, 1) + "..." :
         "",
     };
   }

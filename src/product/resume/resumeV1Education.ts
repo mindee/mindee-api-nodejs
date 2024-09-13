@@ -1,3 +1,4 @@
+import { cleanSpaces } from "../../parsing/common/summaryHelper";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -51,38 +52,38 @@ export class ResumeV1Education {
     return {
       degreeDomain: this.degreeDomain ?
         this.degreeDomain.length <= 15 ?
-          this.degreeDomain :
-          this.degreeDomain.slice(0, 12) + "..." :
+          cleanSpaces(this.degreeDomain) :
+          cleanSpaces(this.degreeDomain).slice(0, 12) + "..." :
         "",
       degreeType: this.degreeType ?
         this.degreeType.length <= 25 ?
-          this.degreeType :
-          this.degreeType.slice(0, 22) + "..." :
+          cleanSpaces(this.degreeType) :
+          cleanSpaces(this.degreeType).slice(0, 22) + "..." :
         "",
       endMonth: this.endMonth ?
         this.endMonth.length <= 9 ?
-          this.endMonth :
-          this.endMonth.slice(0, 6) + "..." :
+          cleanSpaces(this.endMonth) :
+          cleanSpaces(this.endMonth).slice(0, 6) + "..." :
         "",
       endYear: this.endYear ?
         this.endYear.length <= 8 ?
-          this.endYear :
-          this.endYear.slice(0, 5) + "..." :
+          cleanSpaces(this.endYear) :
+          cleanSpaces(this.endYear).slice(0, 5) + "..." :
         "",
       school: this.school ?
         this.school.length <= 25 ?
-          this.school :
-          this.school.slice(0, 22) + "..." :
+          cleanSpaces(this.school) :
+          cleanSpaces(this.school).slice(0, 22) + "..." :
         "",
       startMonth: this.startMonth ?
         this.startMonth.length <= 11 ?
-          this.startMonth :
-          this.startMonth.slice(0, 8) + "..." :
+          cleanSpaces(this.startMonth) :
+          cleanSpaces(this.startMonth).slice(0, 8) + "..." :
         "",
       startYear: this.startYear ?
         this.startYear.length <= 10 ?
-          this.startYear :
-          this.startYear.slice(0, 7) + "..." :
+          cleanSpaces(this.startYear) :
+          cleanSpaces(this.startYear).slice(0, 7) + "..." :
         "",
     };
   }

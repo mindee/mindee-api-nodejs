@@ -1,3 +1,4 @@
+import { cleanSpaces } from "../../parsing/common/summaryHelper";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -54,43 +55,43 @@ export class ResumeV1ProfessionalExperience {
     return {
       contractType: this.contractType ?
         this.contractType.length <= 15 ?
-          this.contractType :
-          this.contractType.slice(0, 12) + "..." :
+          cleanSpaces(this.contractType) :
+          cleanSpaces(this.contractType).slice(0, 12) + "..." :
         "",
       department: this.department ?
         this.department.length <= 10 ?
-          this.department :
-          this.department.slice(0, 7) + "..." :
+          cleanSpaces(this.department) :
+          cleanSpaces(this.department).slice(0, 7) + "..." :
         "",
       employer: this.employer ?
         this.employer.length <= 25 ?
-          this.employer :
-          this.employer.slice(0, 22) + "..." :
+          cleanSpaces(this.employer) :
+          cleanSpaces(this.employer).slice(0, 22) + "..." :
         "",
       endMonth: this.endMonth ?
         this.endMonth.length <= 9 ?
-          this.endMonth :
-          this.endMonth.slice(0, 6) + "..." :
+          cleanSpaces(this.endMonth) :
+          cleanSpaces(this.endMonth).slice(0, 6) + "..." :
         "",
       endYear: this.endYear ?
         this.endYear.length <= 8 ?
-          this.endYear :
-          this.endYear.slice(0, 5) + "..." :
+          cleanSpaces(this.endYear) :
+          cleanSpaces(this.endYear).slice(0, 5) + "..." :
         "",
       role: this.role ?
         this.role.length <= 20 ?
-          this.role :
-          this.role.slice(0, 17) + "..." :
+          cleanSpaces(this.role) :
+          cleanSpaces(this.role).slice(0, 17) + "..." :
         "",
       startMonth: this.startMonth ?
         this.startMonth.length <= 11 ?
-          this.startMonth :
-          this.startMonth.slice(0, 8) + "..." :
+          cleanSpaces(this.startMonth) :
+          cleanSpaces(this.startMonth).slice(0, 8) + "..." :
         "",
       startYear: this.startYear ?
         this.startYear.length <= 10 ?
-          this.startYear :
-          this.startYear.slice(0, 7) + "..." :
+          cleanSpaces(this.startYear) :
+          cleanSpaces(this.startYear).slice(0, 7) + "..." :
         "",
     };
   }

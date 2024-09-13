@@ -1,4 +1,5 @@
 import { floatToString } from "../../parsing/standard";
+import { cleanSpaces } from "../../parsing/common/summaryHelper";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -65,13 +66,13 @@ export class InvoiceV4LineItem {
     return {
       description: this.description ?
         this.description.length <= 36 ?
-          this.description :
-          this.description.slice(0, 33) + "..." :
+          cleanSpaces(this.description) :
+          cleanSpaces(this.description).slice(0, 33) + "..." :
         "",
       productCode: this.productCode ?
         this.productCode.length <= 12 ?
-          this.productCode :
-          this.productCode.slice(0, 9) + "..." :
+          cleanSpaces(this.productCode) :
+          cleanSpaces(this.productCode).slice(0, 9) + "..." :
         "",
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       taxAmount: this.taxAmount !== undefined ? floatToString(this.taxAmount) : "",
@@ -80,8 +81,8 @@ export class InvoiceV4LineItem {
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",
       unitMeasure: this.unitMeasure ?
         this.unitMeasure.length <= 15 ?
-          this.unitMeasure :
-          this.unitMeasure.slice(0, 12) + "..." :
+          cleanSpaces(this.unitMeasure) :
+          cleanSpaces(this.unitMeasure).slice(0, 12) + "..." :
         "",
       unitPrice: this.unitPrice !== undefined ? floatToString(this.unitPrice) : "",
     };

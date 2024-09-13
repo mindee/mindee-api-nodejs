@@ -1,3 +1,4 @@
+import { cleanSpaces } from "../../parsing/common/summaryHelper";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -36,13 +37,13 @@ export class ResumeV1SocialNetworksUrl {
     return {
       name: this.name ?
         this.name.length <= 20 ?
-          this.name :
-          this.name.slice(0, 17) + "..." :
+          cleanSpaces(this.name) :
+          cleanSpaces(this.name).slice(0, 17) + "..." :
         "",
       url: this.url ?
         this.url.length <= 50 ?
-          this.url :
-          this.url.slice(0, 47) + "..." :
+          cleanSpaces(this.url) :
+          cleanSpaces(this.url).slice(0, 47) + "..." :
         "",
     };
   }

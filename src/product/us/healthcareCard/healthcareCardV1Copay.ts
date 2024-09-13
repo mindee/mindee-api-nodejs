@@ -1,4 +1,5 @@
 import { floatToString } from "../../../parsing/standard";
+import { cleanSpaces } from "../../../parsing/common/summaryHelper";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -41,8 +42,8 @@ export class HealthcareCardV1Copay {
         this.serviceFees !== undefined ? floatToString(this.serviceFees) : "",
       serviceName: this.serviceName ?
         this.serviceName.length <= 12 ?
-          this.serviceName :
-          this.serviceName.slice(0, 9) + "..." :
+          cleanSpaces(this.serviceName) :
+          cleanSpaces(this.serviceName).slice(0, 9) + "..." :
         "",
     };
   }

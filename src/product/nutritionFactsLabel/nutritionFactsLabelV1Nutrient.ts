@@ -1,4 +1,5 @@
 import { floatToString } from "../../parsing/standard";
+import { cleanSpaces } from "../../parsing/common/summaryHelper";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -54,16 +55,16 @@ export class NutritionFactsLabelV1Nutrient {
         this.dailyValue !== undefined ? floatToString(this.dailyValue) : "",
       name: this.name ?
         this.name.length <= 20 ?
-          this.name :
-          this.name.slice(0, 17) + "..." :
+          cleanSpaces(this.name) :
+          cleanSpaces(this.name).slice(0, 17) + "..." :
         "",
       per100G: this.per100G !== undefined ? floatToString(this.per100G) : "",
       perServing:
         this.perServing !== undefined ? floatToString(this.perServing) : "",
       unit: this.unit ?
         this.unit.length <= 4 ?
-          this.unit :
-          this.unit.slice(0, 1) + "..." :
+          cleanSpaces(this.unit) :
+          cleanSpaces(this.unit).slice(0, 1) + "..." :
         "",
     };
   }
