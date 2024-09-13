@@ -122,10 +122,10 @@ export class NutritionFactsLabelV1Document implements Prediction {
   toString(): string {
     let nutrientsSummary:string = "";
     if (this.nutrients && this.nutrients.length > 0) {
-      const nutrientsColSizes:number[] = [13, 6, 10, 13, 6];
+      const nutrientsColSizes:number[] = [13, 22, 10, 13, 6];
       nutrientsSummary += "\n" + lineSeparator(nutrientsColSizes, "-") + "\n  ";
       nutrientsSummary += "| Daily Value ";
-      nutrientsSummary += "| Name ";
+      nutrientsSummary += "| Name                 ";
       nutrientsSummary += "| Per 100g ";
       nutrientsSummary += "| Per Serving ";
       nutrientsSummary += "| Unit ";

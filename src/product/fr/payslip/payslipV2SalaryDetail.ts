@@ -50,9 +50,9 @@ export class PayslipV2SalaryDetail {
       amount: this.amount !== undefined ? floatToString(this.amount) : "",
       base: this.base !== undefined ? floatToString(this.base) : "",
       description: this.description ?
-        this.description.length <= 11 ?
+        this.description.length <= 36 ?
           this.description :
-          this.description.slice(0, 8) + "..." :
+          this.description.slice(0, 33) + "..." :
         "",
       rate: this.rate !== undefined ? floatToString(this.rate) : "",
     };
@@ -81,13 +81,13 @@ export class PayslipV2SalaryDetail {
     const printable = this.#printableValues();
     return (
       "| " +
-      printable.amount.padEnd(6) +
+      printable.amount.padEnd(12) +
       " | " +
-      printable.base.padEnd(4) +
+      printable.base.padEnd(8) +
       " | " +
-      printable.description.padEnd(11) +
+      printable.description.padEnd(36) +
       " | " +
-      printable.rate.padEnd(4) +
+      printable.rate.padEnd(8) +
       " |"
     );
   }

@@ -54,9 +54,9 @@ export class BillOfLadingV1CarrierItem {
   #printableValues() {
     return {
       description: this.description ?
-        this.description.length <= 11 ?
+        this.description.length <= 36 ?
           this.description :
-          this.description.slice(0, 8) + "..." :
+          this.description.slice(0, 33) + "..." :
         "",
       grossWeight:
         this.grossWeight !== undefined ? floatToString(this.grossWeight) : "",
@@ -103,7 +103,7 @@ export class BillOfLadingV1CarrierItem {
     const printable = this.#printableValues();
     return (
       "| " +
-      printable.description.padEnd(11) +
+      printable.description.padEnd(36) +
       " | " +
       printable.grossWeight.padEnd(12) +
       " | " +

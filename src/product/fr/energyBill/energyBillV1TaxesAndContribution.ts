@@ -54,14 +54,14 @@ export class EnergyBillV1TaxesAndContribution {
   #printableValues() {
     return {
       description: this.description ?
-        this.description.length <= 11 ?
+        this.description.length <= 36 ?
           this.description :
-          this.description.slice(0, 8) + "..." :
+          this.description.slice(0, 33) + "..." :
         "",
       endDate: this.endDate ?
-        this.endDate.length <= 8 ?
+        this.endDate.length <= 10 ?
           this.endDate :
-          this.endDate.slice(0, 5) + "..." :
+          this.endDate.slice(0, 7) + "..." :
         "",
       startDate: this.startDate ?
         this.startDate.length <= 10 ?
@@ -101,15 +101,15 @@ export class EnergyBillV1TaxesAndContribution {
     const printable = this.#printableValues();
     return (
       "| " +
-      printable.description.padEnd(11) +
+      printable.description.padEnd(36) +
       " | " +
-      printable.endDate.padEnd(8) +
+      printable.endDate.padEnd(10) +
       " | " +
       printable.startDate.padEnd(10) +
       " | " +
       printable.taxRate.padEnd(8) +
       " | " +
-      printable.total.padEnd(5) +
+      printable.total.padEnd(6) +
       " | " +
       printable.unitPrice.padEnd(10) +
       " |"

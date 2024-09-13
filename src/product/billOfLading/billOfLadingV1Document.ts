@@ -96,9 +96,9 @@ export class BillOfLadingV1Document implements Prediction {
   toString(): string {
     let carrierItemsSummary:string = "";
     if (this.carrierItems && this.carrierItems.length > 0) {
-      const carrierItemsColSizes:number[] = [13, 14, 13, 18, 10, 13];
+      const carrierItemsColSizes:number[] = [38, 14, 13, 18, 10, 13];
       carrierItemsSummary += "\n" + lineSeparator(carrierItemsColSizes, "-") + "\n  ";
-      carrierItemsSummary += "| Description ";
+      carrierItemsSummary += "| Description                          ";
       carrierItemsSummary += "| Gross Weight ";
       carrierItemsSummary += "| Measurement ";
       carrierItemsSummary += "| Measurement Unit ";

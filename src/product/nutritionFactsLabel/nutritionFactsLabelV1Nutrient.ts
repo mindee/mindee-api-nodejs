@@ -53,9 +53,9 @@ export class NutritionFactsLabelV1Nutrient {
       dailyValue:
         this.dailyValue !== undefined ? floatToString(this.dailyValue) : "",
       name: this.name ?
-        this.name.length <= 4 ?
+        this.name.length <= 20 ?
           this.name :
-          this.name.slice(0, 1) + "..." :
+          this.name.slice(0, 17) + "..." :
         "",
       per100G: this.per100G !== undefined ? floatToString(this.per100G) : "",
       perServing:
@@ -95,7 +95,7 @@ export class NutritionFactsLabelV1Nutrient {
       "| " +
       printable.dailyValue.padEnd(11) +
       " | " +
-      printable.name.padEnd(4) +
+      printable.name.padEnd(20) +
       " | " +
       printable.per100G.padEnd(8) +
       " | " +
