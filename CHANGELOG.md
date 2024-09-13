@@ -5,6 +5,8 @@
 * :sparkles: add support for full text OCR extraction
 * :wrench: add stricter linting rules
 * :recycle: add integration tests
+### Fixes
+* :bug: fix page operations not taking minimum threshold into account.
 
 
 ## v4.14.1 - 2024-09-03
