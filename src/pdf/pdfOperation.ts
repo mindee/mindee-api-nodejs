@@ -2,6 +2,7 @@ import { errorHandler } from "../errors/handler";
 import { PDFDocument } from "pdf-lib";
 import { PageOptions, PageOptionsOperation } from "../input";
 import { MindeeError } from "../errors";
+import { logger } from "../logger";
 
 export interface SplitPdf {
   file: Buffer;
@@ -24,24 +25,27 @@ export async function extractPages(
 
   const newPdf = await PDFDocument.create();
 
-  if (pageOptions.pageIndexes.length > currentPdf.getPageCount()) {
+  const pageCount = currentPdf.getPageCount();
+
+  if (pageCount < pageOptions.onMinPages) {
+    logger.debug(`File skipped because it had less than ${pageOptions} pages (${pageCount}).`);
+    return { file: file, totalPagesRemoved: 0 };
+  }
+
+  if (pageOptions.pageIndexes.length > pageCount) {
     errorHandler.throw(
       new MindeeError(
         "The total indexes of pages to cut is superior to the total page count of the file (" +
-        currentPdf.getPageCount() +
+        pageCount +
         ")."
       )
     );
   }
 
-  if (currentPdf.getPageCount() < pageOptions.onMinPages) {
-    return { file: file, totalPagesRemoved: 0 };
-  }
-
   const pageIndexes: number[] = [];
   pageOptions.pageIndexes.forEach((pageIndex) => {
     if (pageIndex < 0) {
-      pageIndexes.push(currentPdf.getPageCount() - Math.abs(pageIndex));
+      pageIndexes.push(pageCount - Math.abs(pageIndex));
     } else {
       pageIndexes.push(pageIndex);
     }
@@ -74,7 +78,7 @@ export async function extractPages(
   } else {
     throw new Error(`The operation ${pageOptions.operation} is not available.`);
   }
-  const sumRemovedPages = currentPdf.getPageCount() - newPdf.getPageCount();
+  const sumRemovedPages = pageCount - newPdf.getPageCount();
   const fileBuffer = Buffer.from(await newPdf.save());
   return { file: fileBuffer, totalPagesRemoved: sumRemovedPages };
 }
