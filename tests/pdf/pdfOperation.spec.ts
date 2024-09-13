@@ -117,7 +117,7 @@ describe("Test pdf operation", () => {
     await inputDoc.init();
 
     const pageOptions: PageOptions = {
-      pageIndexes: [0],
+      pageIndexes: [0, 1, 3, 4],
       operation: PageOptionsOperation.KeepOnly,
       onMinPages: 12,
     };
