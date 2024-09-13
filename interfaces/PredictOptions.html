@@ -23,7 +23,7 @@
 <ul class="tsd-hierarchy">
 <li><span class="target">PredictOptions</span></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/1a4b80d/src/client.ts#L33">src/client.ts:33</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/6470b01/src/client.ts#L26">src/client.ts:26</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-index-accordion" open><summary class="tsd-accordion-summary tsd-index-summary">
@@ -34,6 +34,7 @@
 <div class="tsd-index-list"><a href="PredictOptions.html#allWords" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="#FF984D" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="12" id="icon-1024-path"></rect><path d="M9.354 16V7.24H12.174C12.99 7.24 13.638 7.476 14.118 7.948C14.606 8.412 14.85 9.036 14.85 9.82C14.85 10.604 14.606 11.232 14.118 11.704C13.638 12.168 12.99 12.4 12.174 12.4H10.434V16H9.354ZM10.434 11.428H12.174C12.646 11.428 13.022 11.284 13.302 10.996C13.59 10.7 13.734 10.308 13.734 9.82C13.734 9.324 13.59 8.932 13.302 8.644C13.022 8.356 12.646 8.212 12.174 8.212H10.434V11.428Z" fill="var(--color-text)" id="icon-1024-text"></path></svg><span>all<wbr/>Words?</span></a>
 <a href="PredictOptions.html#cropper" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>cropper?</span></a>
 <a href="PredictOptions.html#endpoint" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>endpoint?</span></a>
+<a href="PredictOptions.html#fullText" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>full<wbr/>Text?</span></a>
 <a href="PredictOptions.html#pageOptions" class="tsd-index-link tsd-kind-property tsd-parent-kind-interface"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg><span>page<wbr/>Options?</span></a>
 </div></section></div></details></section></section>
 <section class="tsd-panel-group tsd-member-group">
@@ -45,22 +46,28 @@
 <p>This performs a full OCR operation on the server and will increase response time.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/1a4b80d/src/client.ts#L41">src/client.ts:41</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/6470b01/src/client.ts#L34">src/client.ts:34</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="cropper" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>cropper</span><a href="#cropper" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">cropper<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether to include cropper results for each page.</p>
-<p>This performs a cropping operation on the server and will increase response time.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/1a4b80d/src/client.ts#L47">src/client.ts:47</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/6470b01/src/client.ts#L42">src/client.ts:42</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="endpoint" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>endpoint</span><a href="#endpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">endpoint<span class="tsd-signature-symbol">?:</span> <a href="../classes/internal.http.Endpoint.html" class="tsd-signature-type" data-tsd-kind="Class">Endpoint</a></div>
 <div class="tsd-comment tsd-typography"><p>A custom endpoint.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/1a4b80d/src/client.ts#L35">src/client.ts:35</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/6470b01/src/client.ts#L28">src/client.ts:28</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="fullText" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>full<wbr/>Text</span><a href="#fullText" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<div class="tsd-signature">full<wbr/>Text<span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
+<div class="tsd-comment tsd-typography"><p>Whether to include the full ocr text. Only available on compatible APIs.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/6470b01/src/client.ts#L38">src/client.ts:38</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface"><a id="pageOptions" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagOptional">Optional</code> <span>page<wbr/>Options</span><a href="#pageOptions" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">page<wbr/>Options<span class="tsd-signature-symbol">?:</span> <a href="internal.input.PageOptions.html" class="tsd-signature-type" data-tsd-kind="Interface">PageOptions</a></div>
@@ -68,7 +75,7 @@
 This is done before sending the file to the server and is useful to avoid page limitations.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/1a4b80d/src/client.ts#L52">src/client.ts:52</a></li></ul></aside></section></section></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/6470b01/src/client.ts#L47">src/client.ts:47</a></li></ul></aside></section></section></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -99,7 +106,9 @@ This is done before sending the file to the server and is useful to avoid page l
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.input.html">input</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.parsing.html">parsing</a>
 <ul>
-<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.parsing.common.html">common</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.parsing.common.html">common</a>
+<ul>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.parsing.common.extras.html">extras</a></li></ul></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.parsing.custom.html">custom</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.parsing.generated.html">generated</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.parsing.standard.html">standard</a></li></ul></li>
@@ -148,6 +157,7 @@ This is done before sending the file to the server and is useful to avoid page l
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="PredictOptions.html#allWords" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>all<wbr/>Words?</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="PredictOptions.html#cropper" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>cropper?</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="PredictOptions.html#endpoint" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>endpoint?</a></li>
+<li class="tsd-kind-property tsd-parent-kind-interface"><a href="PredictOptions.html#fullText" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>full<wbr/>Text?</a></li>
 <li class="tsd-kind-property tsd-parent-kind-interface"><a href="PredictOptions.html#pageOptions" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-1024-path"></use><use href="#icon-1024-text"></use></svg>page<wbr/>Options?</a></li></ul></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
