@@ -64,7 +64,7 @@ A typical `Field` object will have the following attributes:
 * **confidence** (`number`): the confidence score of the field prediction.
 * **boundingBox** (`[Point, Point, Point, Point]`): contains exactly 4 relative vertices (points) coordinates of a right rectangle containing the field in the document.
 * **polygon** (`Point[]`): contains the relative vertices coordinates (`Point`) of a polygon containing the field in the image.
-* **pageId** (`number`): the ID of the page, is `undefined` when at document-level.
+* **pageId** (`number`): the ID of the page, always `undefined` when at document-level.
 * **reconstructed** (`boolean`): indicates whether an object was reconstructed (not extracted as the API gave it).
 
 > **Note:** A `Point` simply refers to an array of two numbers (`[number, number]`).
