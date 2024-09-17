@@ -1,4 +1,4 @@
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -7,19 +7,19 @@ import { Polygon } from "../../../geometry";
  */
 export class PayslipV2Employer {
   /** The address of the employer. */
-  address: string | undefined;
+  address: string | null;
   /** The company ID of the employer. */
-  companyId: string | undefined;
+  companyId: string | null;
   /** The site of the company. */
-  companySite: string | undefined;
+  companySite: string | null;
   /** The NAF code of the employer. */
-  nafCode: string | undefined;
+  nafCode: string | null;
   /** The name of the employer. */
-  name: string | undefined;
+  name: string | null;
   /** The phone number of the employer. */
-  phoneNumber: string | undefined;
+  phoneNumber: string | null;
   /** The URSSAF number of the employer. */
-  urssafNumber: string | undefined;
+  urssafNumber: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */

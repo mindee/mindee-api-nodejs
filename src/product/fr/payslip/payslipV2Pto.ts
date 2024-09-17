@@ -1,5 +1,5 @@
-import { floatToString } from "../../../parsing/standard";
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+
+import { floatToString } from "../../../parsing/common";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -8,11 +8,11 @@ import { Polygon } from "../../../geometry";
  */
 export class PayslipV2Pto {
   /** The amount of paid time off accrued in this period. */
-  accruedThisPeriod: number | undefined;
+  accruedThisPeriod: number | null;
   /** The balance of paid time off at the end of the period. */
-  balanceEndOfPeriod: number | undefined;
+  balanceEndOfPeriod: number | null;
   /** The amount of paid time off used in this period. */
-  usedThisPeriod: number | undefined;
+  usedThisPeriod: number | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -24,14 +24,32 @@ export class PayslipV2Pto {
   polygon: Polygon = [];
 
   constructor({ prediction = {} }: StringDict) {
-    if (prediction["accrued_this_period"] && !isNaN(prediction["accrued_this_period"])) {
-      this.accruedThisPeriod = +parseFloat(prediction["accrued_this_period"]).toFixed(3);
+    if (
+      prediction["accrued_this_period"] !== undefined &&
+      prediction["accrued_this_period"] !== null &&
+      !isNaN(prediction["accrued_this_period"])
+    ) {
+      this.accruedThisPeriod = +parseFloat(prediction["accrued_this_period"]);
+    } else {
+      this.accruedThisPeriod = null;
     }
-    if (prediction["balance_end_of_period"] && !isNaN(prediction["balance_end_of_period"])) {
-      this.balanceEndOfPeriod = +parseFloat(prediction["balance_end_of_period"]).toFixed(3);
+    if (
+      prediction["balance_end_of_period"] !== undefined &&
+      prediction["balance_end_of_period"] !== null &&
+      !isNaN(prediction["balance_end_of_period"])
+    ) {
+      this.balanceEndOfPeriod = +parseFloat(prediction["balance_end_of_period"]);
+    } else {
+      this.balanceEndOfPeriod = null;
     }
-    if (prediction["used_this_period"] && !isNaN(prediction["used_this_period"])) {
-      this.usedThisPeriod = +parseFloat(prediction["used_this_period"]).toFixed(3);
+    if (
+      prediction["used_this_period"] !== undefined &&
+      prediction["used_this_period"] !== null &&
+      !isNaN(prediction["used_this_period"])
+    ) {
+      this.usedThisPeriod = +parseFloat(prediction["used_this_period"]);
+    } else {
+      this.usedThisPeriod = null;
     }
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;

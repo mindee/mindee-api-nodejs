@@ -1,4 +1,4 @@
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -7,11 +7,11 @@ import { Polygon } from "../../geometry";
  */
 export class BillOfLadingV1Carrier {
   /** The name of the carrier. */
-  name: string | undefined;
+  name: string | null;
   /** The professional number of the carrier. */
-  professionalNumber: string | undefined;
+  professionalNumber: string | null;
   /** The Standard Carrier Alpha Code (SCAC) of the carrier. */
-  scac: string | undefined;
+  scac: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */

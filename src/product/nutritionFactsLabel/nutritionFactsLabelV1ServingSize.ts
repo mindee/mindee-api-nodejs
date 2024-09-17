@@ -1,5 +1,5 @@
-import { floatToString } from "../../parsing/standard";
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+
+import { floatToString } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -8,9 +8,9 @@ import { Polygon } from "../../geometry";
  */
 export class NutritionFactsLabelV1ServingSize {
   /** The amount of a single serving. */
-  amount: number | undefined;
+  amount: number | null;
   /** The unit for the amount of a single serving. */
-  unit: string | undefined;
+  unit: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -22,8 +22,14 @@ export class NutritionFactsLabelV1ServingSize {
   polygon: Polygon = [];
 
   constructor({ prediction = {} }: StringDict) {
-    if (prediction["amount"] && !isNaN(prediction["amount"])) {
-      this.amount = +parseFloat(prediction["amount"]).toFixed(3);
+    if (
+      prediction["amount"] !== undefined &&
+      prediction["amount"] !== null &&
+      !isNaN(prediction["amount"])
+    ) {
+      this.amount = +parseFloat(prediction["amount"]);
+    } else {
+      this.amount = null;
     }
     this.unit = prediction["unit"];
     this.pageId = prediction["page_id"];

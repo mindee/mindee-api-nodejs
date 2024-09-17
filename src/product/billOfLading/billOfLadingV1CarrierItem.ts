@@ -1,5 +1,4 @@
-import { floatToString } from "../../parsing/standard";
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+import { cleanSpecialChars, floatToString } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -8,17 +7,17 @@ import { Polygon } from "../../geometry";
  */
 export class BillOfLadingV1CarrierItem {
   /** A description of the item. */
-  description: string | undefined;
+  description: string | null;
   /** The gross weight of the item. */
-  grossWeight: number | undefined;
+  grossWeight: number | null;
   /** The measurement of the item. */
-  measurement: number | undefined;
+  measurement: number | null;
   /** The unit of measurement for the measurement. */
-  measurementUnit: string | undefined;
+  measurementUnit: string | null;
   /** The quantity of the item being shipped. */
-  quantity: number | undefined;
+  quantity: number | null;
   /** The unit of measurement for weights. */
-  weightUnit: string | undefined;
+  weightUnit: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -31,15 +30,33 @@ export class BillOfLadingV1CarrierItem {
 
   constructor({ prediction = {} }: StringDict) {
     this.description = prediction["description"];
-    if (prediction["gross_weight"] && !isNaN(prediction["gross_weight"])) {
-      this.grossWeight = +parseFloat(prediction["gross_weight"]).toFixed(3);
+    if (
+      prediction["gross_weight"] !== undefined &&
+      prediction["gross_weight"] !== null &&
+      !isNaN(prediction["gross_weight"])
+    ) {
+      this.grossWeight = +parseFloat(prediction["gross_weight"]);
+    } else {
+      this.grossWeight = null;
     }
-    if (prediction["measurement"] && !isNaN(prediction["measurement"])) {
-      this.measurement = +parseFloat(prediction["measurement"]).toFixed(3);
+    if (
+      prediction["measurement"] !== undefined &&
+      prediction["measurement"] !== null &&
+      !isNaN(prediction["measurement"])
+    ) {
+      this.measurement = +parseFloat(prediction["measurement"]);
+    } else {
+      this.measurement = null;
     }
     this.measurementUnit = prediction["measurement_unit"];
-    if (prediction["quantity"] && !isNaN(prediction["quantity"])) {
-      this.quantity = +parseFloat(prediction["quantity"]).toFixed(3);
+    if (
+      prediction["quantity"] !== undefined &&
+      prediction["quantity"] !== null &&
+      !isNaN(prediction["quantity"])
+    ) {
+      this.quantity = +parseFloat(prediction["quantity"]);
+    } else {
+      this.quantity = null;
     }
     this.weightUnit = prediction["weight_unit"];
     this.pageId = prediction["page_id"];
@@ -56,8 +73,8 @@ export class BillOfLadingV1CarrierItem {
     return {
       description: this.description ?
         this.description.length <= 36 ?
-          cleanSpaces(this.description) :
-          cleanSpaces(this.description).slice(0, 33) + "..." :
+          cleanSpecialChars(this.description) :
+          cleanSpecialChars(this.description).slice(0, 33) + "..." :
         "",
       grossWeight:
         this.grossWeight !== undefined ? floatToString(this.grossWeight) : "",
@@ -65,14 +82,14 @@ export class BillOfLadingV1CarrierItem {
         this.measurement !== undefined ? floatToString(this.measurement) : "",
       measurementUnit: this.measurementUnit ?
         this.measurementUnit.length <= 16 ?
-          cleanSpaces(this.measurementUnit) :
-          cleanSpaces(this.measurementUnit).slice(0, 13) + "..." :
+          cleanSpecialChars(this.measurementUnit) :
+          cleanSpecialChars(this.measurementUnit).slice(0, 13) + "..." :
         "",
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       weightUnit: this.weightUnit ?
         this.weightUnit.length <= 11 ?
-          cleanSpaces(this.weightUnit) :
-          cleanSpaces(this.weightUnit).slice(0, 8) + "..." :
+          cleanSpecialChars(this.weightUnit) :
+          cleanSpecialChars(this.weightUnit).slice(0, 8) + "..." :
         "",
     };
   }

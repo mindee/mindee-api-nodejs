@@ -134,13 +134,13 @@ export class EnergyBillV1Document implements Prediction {
   toString(): string {
     let subscriptionSummary:string = "";
     if (this.subscription && this.subscription.length > 0) {
-      const subscriptionColSizes:number[] = [38, 12, 12, 10, 8, 12];
+      const subscriptionColSizes:number[] = [38, 12, 12, 10, 11, 12];
       subscriptionSummary += "\n" + lineSeparator(subscriptionColSizes, "-") + "\n  ";
       subscriptionSummary += "| Description                          ";
       subscriptionSummary += "| End Date   ";
       subscriptionSummary += "| Start Date ";
       subscriptionSummary += "| Tax Rate ";
-      subscriptionSummary += "| Total  ";
+      subscriptionSummary += "| Total     ";
       subscriptionSummary += "| Unit Price ";
       subscriptionSummary += "|\n" + lineSeparator(subscriptionColSizes, "=");
       subscriptionSummary += this.subscription.map(
@@ -150,13 +150,13 @@ export class EnergyBillV1Document implements Prediction {
     }
     let energyUsageSummary:string = "";
     if (this.energyUsage && this.energyUsage.length > 0) {
-      const energyUsageColSizes:number[] = [38, 12, 12, 10, 8, 12];
+      const energyUsageColSizes:number[] = [38, 12, 12, 10, 11, 12];
       energyUsageSummary += "\n" + lineSeparator(energyUsageColSizes, "-") + "\n  ";
       energyUsageSummary += "| Description                          ";
       energyUsageSummary += "| End Date   ";
       energyUsageSummary += "| Start Date ";
       energyUsageSummary += "| Tax Rate ";
-      energyUsageSummary += "| Total  ";
+      energyUsageSummary += "| Total     ";
       energyUsageSummary += "| Unit Price ";
       energyUsageSummary += "|\n" + lineSeparator(energyUsageColSizes, "=");
       energyUsageSummary += this.energyUsage.map(
@@ -166,13 +166,13 @@ export class EnergyBillV1Document implements Prediction {
     }
     let taxesAndContributionsSummary:string = "";
     if (this.taxesAndContributions && this.taxesAndContributions.length > 0) {
-      const taxesAndContributionsColSizes:number[] = [38, 12, 12, 10, 8, 12];
+      const taxesAndContributionsColSizes:number[] = [38, 12, 12, 10, 11, 12];
       taxesAndContributionsSummary += "\n" + lineSeparator(taxesAndContributionsColSizes, "-") + "\n  ";
       taxesAndContributionsSummary += "| Description                          ";
       taxesAndContributionsSummary += "| End Date   ";
       taxesAndContributionsSummary += "| Start Date ";
       taxesAndContributionsSummary += "| Tax Rate ";
-      taxesAndContributionsSummary += "| Total  ";
+      taxesAndContributionsSummary += "| Total     ";
       taxesAndContributionsSummary += "| Unit Price ";
       taxesAndContributionsSummary += "|\n" + lineSeparator(taxesAndContributionsColSizes, "=");
       taxesAndContributionsSummary += this.taxesAndContributions.map(

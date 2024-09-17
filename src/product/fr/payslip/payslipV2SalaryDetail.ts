@@ -1,5 +1,4 @@
-import { floatToString } from "../../../parsing/standard";
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+import { cleanSpecialChars, floatToString } from "../../../parsing/common";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -8,13 +7,13 @@ import { Polygon } from "../../../geometry";
  */
 export class PayslipV2SalaryDetail {
   /** The amount of the earnings. */
-  amount: number | undefined;
+  amount: number | null;
   /** The base value of the earnings. */
-  base: number | undefined;
+  base: number | null;
   /** The description of the earnings. */
-  description: string | undefined;
+  description: string | null;
   /** The rate of the earnings. */
-  rate: number | undefined;
+  rate: number | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -26,15 +25,33 @@ export class PayslipV2SalaryDetail {
   polygon: Polygon = [];
 
   constructor({ prediction = {} }: StringDict) {
-    if (prediction["amount"] && !isNaN(prediction["amount"])) {
-      this.amount = +parseFloat(prediction["amount"]).toFixed(3);
+    if (
+      prediction["amount"] !== undefined &&
+      prediction["amount"] !== null &&
+      !isNaN(prediction["amount"])
+    ) {
+      this.amount = +parseFloat(prediction["amount"]);
+    } else {
+      this.amount = null;
     }
-    if (prediction["base"] && !isNaN(prediction["base"])) {
-      this.base = +parseFloat(prediction["base"]).toFixed(3);
+    if (
+      prediction["base"] !== undefined &&
+      prediction["base"] !== null &&
+      !isNaN(prediction["base"])
+    ) {
+      this.base = +parseFloat(prediction["base"]);
+    } else {
+      this.base = null;
     }
     this.description = prediction["description"];
-    if (prediction["rate"] && !isNaN(prediction["rate"])) {
-      this.rate = +parseFloat(prediction["rate"]).toFixed(3);
+    if (
+      prediction["rate"] !== undefined &&
+      prediction["rate"] !== null &&
+      !isNaN(prediction["rate"])
+    ) {
+      this.rate = +parseFloat(prediction["rate"]);
+    } else {
+      this.rate = null;
     }
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;
@@ -52,8 +69,8 @@ export class PayslipV2SalaryDetail {
       base: this.base !== undefined ? floatToString(this.base) : "",
       description: this.description ?
         this.description.length <= 36 ?
-          cleanSpaces(this.description) :
-          cleanSpaces(this.description).slice(0, 33) + "..." :
+          cleanSpecialChars(this.description) :
+          cleanSpecialChars(this.description).slice(0, 33) + "..." :
         "",
       rate: this.rate !== undefined ? floatToString(this.rate) : "",
     };
@@ -84,11 +101,11 @@ export class PayslipV2SalaryDetail {
       "| " +
       printable.amount.padEnd(12) +
       " | " +
-      printable.base.padEnd(8) +
+      printable.base.padEnd(9) +
       " | " +
       printable.description.padEnd(36) +
       " | " +
-      printable.rate.padEnd(8) +
+      printable.rate.padEnd(9) +
       " |"
     );
   }

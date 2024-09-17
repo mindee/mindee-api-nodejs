@@ -81,12 +81,12 @@ export class PayslipV2Document implements Prediction {
   toString(): string {
     let salaryDetailsSummary:string = "";
     if (this.salaryDetails && this.salaryDetails.length > 0) {
-      const salaryDetailsColSizes:number[] = [14, 10, 38, 10];
+      const salaryDetailsColSizes:number[] = [14, 11, 38, 11];
       salaryDetailsSummary += "\n" + lineSeparator(salaryDetailsColSizes, "-") + "\n  ";
       salaryDetailsSummary += "| Amount       ";
-      salaryDetailsSummary += "| Base     ";
+      salaryDetailsSummary += "| Base      ";
       salaryDetailsSummary += "| Description                          ";
-      salaryDetailsSummary += "| Rate     ";
+      salaryDetailsSummary += "| Rate      ";
       salaryDetailsSummary += "|\n" + lineSeparator(salaryDetailsColSizes, "=");
       salaryDetailsSummary += this.salaryDetails.map(
         (item) =>

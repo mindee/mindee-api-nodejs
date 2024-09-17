@@ -1,4 +1,4 @@
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -7,15 +7,15 @@ import { Polygon } from "../../../geometry";
  */
 export class PayslipV2PayPeriod {
   /** The end date of the pay period. */
-  endDate: string | undefined;
+  endDate: string | null;
   /** The month of the pay period. */
-  month: string | undefined;
+  month: string | null;
   /** The date of payment for the pay period. */
-  paymentDate: string | undefined;
+  paymentDate: string | null;
   /** The start date of the pay period. */
-  startDate: string | undefined;
+  startDate: string | null;
   /** The year of the pay period. */
-  year: string | undefined;
+  year: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */

@@ -1,5 +1,5 @@
-import { floatToString } from "../../parsing/standard";
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+
+import { floatToString } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -8,11 +8,11 @@ import { Polygon } from "../../geometry";
  */
 export class NutritionFactsLabelV1TotalCarbohydrate {
   /** DVs are the recommended amounts of total carbohydrates to consume or not to exceed each day. */
-  dailyValue: number | undefined;
+  dailyValue: number | null;
   /** The amount of total carbohydrates per 100g of the product. */
-  per100G: number | undefined;
+  per100G: number | null;
   /** The amount of total carbohydrates per serving of the product. */
-  perServing: number | undefined;
+  perServing: number | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -24,14 +24,32 @@ export class NutritionFactsLabelV1TotalCarbohydrate {
   polygon: Polygon = [];
 
   constructor({ prediction = {} }: StringDict) {
-    if (prediction["daily_value"] && !isNaN(prediction["daily_value"])) {
-      this.dailyValue = +parseFloat(prediction["daily_value"]).toFixed(3);
+    if (
+      prediction["daily_value"] !== undefined &&
+      prediction["daily_value"] !== null &&
+      !isNaN(prediction["daily_value"])
+    ) {
+      this.dailyValue = +parseFloat(prediction["daily_value"]);
+    } else {
+      this.dailyValue = null;
     }
-    if (prediction["per_100g"] && !isNaN(prediction["per_100g"])) {
-      this.per100G = +parseFloat(prediction["per_100g"]).toFixed(3);
+    if (
+      prediction["per_100g"] !== undefined &&
+      prediction["per_100g"] !== null &&
+      !isNaN(prediction["per_100g"])
+    ) {
+      this.per100G = +parseFloat(prediction["per_100g"]);
+    } else {
+      this.per100G = null;
     }
-    if (prediction["per_serving"] && !isNaN(prediction["per_serving"])) {
-      this.perServing = +parseFloat(prediction["per_serving"]).toFixed(3);
+    if (
+      prediction["per_serving"] !== undefined &&
+      prediction["per_serving"] !== null &&
+      !isNaN(prediction["per_serving"])
+    ) {
+      this.perServing = +parseFloat(prediction["per_serving"]);
+    } else {
+      this.perServing = null;
     }
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;

@@ -1,5 +1,5 @@
-import { floatToString } from "../../../parsing/standard";
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+
+import { floatToString } from "../../../parsing/common";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -8,17 +8,17 @@ import { Polygon } from "../../../geometry";
  */
 export class PayslipV2Employment {
   /** The category of the employment. */
-  category: string | undefined;
+  category: string | null;
   /** The coefficient of the employment. */
-  coefficient: number | undefined;
+  coefficient: number | null;
   /** The collective agreement of the employment. */
-  collectiveAgreement: string | undefined;
+  collectiveAgreement: string | null;
   /** The job title of the employee. */
-  jobTitle: string | undefined;
+  jobTitle: string | null;
   /** The position level of the employment. */
-  positionLevel: string | undefined;
+  positionLevel: string | null;
   /** The start date of the employment. */
-  startDate: string | undefined;
+  startDate: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -31,8 +31,14 @@ export class PayslipV2Employment {
 
   constructor({ prediction = {} }: StringDict) {
     this.category = prediction["category"];
-    if (prediction["coefficient"] && !isNaN(prediction["coefficient"])) {
-      this.coefficient = +parseFloat(prediction["coefficient"]).toFixed(3);
+    if (
+      prediction["coefficient"] !== undefined &&
+      prediction["coefficient"] !== null &&
+      !isNaN(prediction["coefficient"])
+    ) {
+      this.coefficient = +parseFloat(prediction["coefficient"]);
+    } else {
+      this.coefficient = null;
     }
     this.collectiveAgreement = prediction["collective_agreement"];
     this.jobTitle = prediction["job_title"];

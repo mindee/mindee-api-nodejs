@@ -1,5 +1,4 @@
-import { floatToString } from "../../parsing/standard";
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+import { cleanSpecialChars, floatToString } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -8,21 +7,21 @@ import { Polygon } from "../../geometry";
  */
 export class FinancialDocumentV1LineItem {
   /** The item description. */
-  description: string | undefined;
+  description: string | null;
   /** The product code referring to the item. */
-  productCode: string | undefined;
+  productCode: string | null;
   /** The item quantity */
-  quantity: number | undefined;
+  quantity: number | null;
   /** The item tax amount. */
-  taxAmount: number | undefined;
+  taxAmount: number | null;
   /** The item tax rate in percentage. */
-  taxRate: number | undefined;
+  taxRate: number | null;
   /** The item total amount. */
-  totalAmount: number | undefined;
+  totalAmount: number | null;
   /** The item unit of measure. */
-  unitMeasure: string | undefined;
+  unitMeasure: string | null;
   /** The item unit price. */
-  unitPrice: number | undefined;
+  unitPrice: number | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -36,21 +35,51 @@ export class FinancialDocumentV1LineItem {
   constructor({ prediction = {} }: StringDict) {
     this.description = prediction["description"];
     this.productCode = prediction["product_code"];
-    if (prediction["quantity"] && !isNaN(prediction["quantity"])) {
-      this.quantity = +parseFloat(prediction["quantity"]).toFixed(3);
+    if (
+      prediction["quantity"] !== undefined &&
+      prediction["quantity"] !== null &&
+      !isNaN(prediction["quantity"])
+    ) {
+      this.quantity = +parseFloat(prediction["quantity"]);
+    } else {
+      this.quantity = null;
     }
-    if (prediction["tax_amount"] && !isNaN(prediction["tax_amount"])) {
-      this.taxAmount = +parseFloat(prediction["tax_amount"]).toFixed(3);
+    if (
+      prediction["tax_amount"] !== undefined &&
+      prediction["tax_amount"] !== null &&
+      !isNaN(prediction["tax_amount"])
+    ) {
+      this.taxAmount = +parseFloat(prediction["tax_amount"]);
+    } else {
+      this.taxAmount = null;
     }
-    if (prediction["tax_rate"] && !isNaN(prediction["tax_rate"])) {
-      this.taxRate = +parseFloat(prediction["tax_rate"]).toFixed(3);
+    if (
+      prediction["tax_rate"] !== undefined &&
+      prediction["tax_rate"] !== null &&
+      !isNaN(prediction["tax_rate"])
+    ) {
+      this.taxRate = +parseFloat(prediction["tax_rate"]);
+    } else {
+      this.taxRate = null;
     }
-    if (prediction["total_amount"] && !isNaN(prediction["total_amount"])) {
-      this.totalAmount = +parseFloat(prediction["total_amount"]).toFixed(3);
+    if (
+      prediction["total_amount"] !== undefined &&
+      prediction["total_amount"] !== null &&
+      !isNaN(prediction["total_amount"])
+    ) {
+      this.totalAmount = +parseFloat(prediction["total_amount"]);
+    } else {
+      this.totalAmount = null;
     }
     this.unitMeasure = prediction["unit_measure"];
-    if (prediction["unit_price"] && !isNaN(prediction["unit_price"])) {
-      this.unitPrice = +parseFloat(prediction["unit_price"]).toFixed(3);
+    if (
+      prediction["unit_price"] !== undefined &&
+      prediction["unit_price"] !== null &&
+      !isNaN(prediction["unit_price"])
+    ) {
+      this.unitPrice = +parseFloat(prediction["unit_price"]);
+    } else {
+      this.unitPrice = null;
     }
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;
@@ -66,13 +95,13 @@ export class FinancialDocumentV1LineItem {
     return {
       description: this.description ?
         this.description.length <= 36 ?
-          cleanSpaces(this.description) :
-          cleanSpaces(this.description).slice(0, 33) + "..." :
+          cleanSpecialChars(this.description) :
+          cleanSpecialChars(this.description).slice(0, 33) + "..." :
         "",
       productCode: this.productCode ?
         this.productCode.length <= 12 ?
-          cleanSpaces(this.productCode) :
-          cleanSpaces(this.productCode).slice(0, 9) + "..." :
+          cleanSpecialChars(this.productCode) :
+          cleanSpecialChars(this.productCode).slice(0, 9) + "..." :
         "",
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       taxAmount: this.taxAmount !== undefined ? floatToString(this.taxAmount) : "",
@@ -81,8 +110,8 @@ export class FinancialDocumentV1LineItem {
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",
       unitMeasure: this.unitMeasure ?
         this.unitMeasure.length <= 15 ?
-          cleanSpaces(this.unitMeasure) :
-          cleanSpaces(this.unitMeasure).slice(0, 12) + "..." :
+          cleanSpecialChars(this.unitMeasure) :
+          cleanSpecialChars(this.unitMeasure).slice(0, 12) + "..." :
         "",
       unitPrice: this.unitPrice !== undefined ? floatToString(this.unitPrice) : "",
     };

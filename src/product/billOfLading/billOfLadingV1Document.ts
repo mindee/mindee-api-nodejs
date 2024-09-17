@@ -11,7 +11,7 @@ import { BillOfLadingV1CarrierItem } from "./billOfLadingV1CarrierItem";
 import { DateField, StringField } from "../../parsing/standard";
 
 /**
- * Bill of Lading API version 1.0 document data.
+ * Bill of Lading API version 1.1 document data.
  */
 export class BillOfLadingV1Document implements Prediction {
   /** A unique identifier assigned to a Bill of Lading document. */

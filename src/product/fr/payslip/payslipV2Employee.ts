@@ -1,4 +1,4 @@
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -7,19 +7,19 @@ import { Polygon } from "../../../geometry";
  */
 export class PayslipV2Employee {
   /** The address of the employee. */
-  address: string | undefined;
+  address: string | null;
   /** The date of birth of the employee. */
-  dateOfBirth: string | undefined;
+  dateOfBirth: string | null;
   /** The first name of the employee. */
-  firstName: string | undefined;
+  firstName: string | null;
   /** The last name of the employee. */
-  lastName: string | undefined;
+  lastName: string | null;
   /** The phone number of the employee. */
-  phoneNumber: string | undefined;
+  phoneNumber: string | null;
   /** The registration number of the employee. */
-  registrationNumber: string | undefined;
+  registrationNumber: string | null;
   /** The social security number of the employee. */
-  socialSecurityNumber: string | undefined;
+  socialSecurityNumber: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */

@@ -1,4 +1,4 @@
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -7,13 +7,13 @@ import { Polygon } from "../../geometry";
  */
 export class BillOfLadingV1Shipper {
   /** The address of the shipper. */
-  address: string | undefined;
+  address: string | null;
   /** The  email of the shipper. */
-  email: string | undefined;
+  email: string | null;
   /** The name of the shipper. */
-  name: string | undefined;
+  name: string | null;
   /** The phone number of the shipper. */
-  phone: string | undefined;
+  phone: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */

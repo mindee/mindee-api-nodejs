@@ -1,5 +1,4 @@
-import { floatToString } from "../../../parsing/standard";
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+import { cleanSpecialChars, floatToString } from "../../../parsing/common";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -8,17 +7,17 @@ import { Polygon } from "../../../geometry";
  */
 export class EnergyBillV1Subscription {
   /** Description or details of the subscription. */
-  description: string | undefined;
+  description: string | null;
   /** The end date of the subscription. */
-  endDate: string | undefined;
+  endDate: string | null;
   /** The start date of the subscription. */
-  startDate: string | undefined;
+  startDate: string | null;
   /** The rate of tax applied to the total cost. */
-  taxRate: number | undefined;
+  taxRate: number | null;
   /** The total cost of subscription. */
-  total: number | undefined;
+  total: number | null;
   /** The price per unit of subscription. */
-  unitPrice: number | undefined;
+  unitPrice: number | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -33,14 +32,32 @@ export class EnergyBillV1Subscription {
     this.description = prediction["description"];
     this.endDate = prediction["end_date"];
     this.startDate = prediction["start_date"];
-    if (prediction["tax_rate"] && !isNaN(prediction["tax_rate"])) {
-      this.taxRate = +parseFloat(prediction["tax_rate"]).toFixed(3);
+    if (
+      prediction["tax_rate"] !== undefined &&
+      prediction["tax_rate"] !== null &&
+      !isNaN(prediction["tax_rate"])
+    ) {
+      this.taxRate = +parseFloat(prediction["tax_rate"]);
+    } else {
+      this.taxRate = null;
     }
-    if (prediction["total"] && !isNaN(prediction["total"])) {
-      this.total = +parseFloat(prediction["total"]).toFixed(3);
+    if (
+      prediction["total"] !== undefined &&
+      prediction["total"] !== null &&
+      !isNaN(prediction["total"])
+    ) {
+      this.total = +parseFloat(prediction["total"]);
+    } else {
+      this.total = null;
     }
-    if (prediction["unit_price"] && !isNaN(prediction["unit_price"])) {
-      this.unitPrice = +parseFloat(prediction["unit_price"]).toFixed(3);
+    if (
+      prediction["unit_price"] !== undefined &&
+      prediction["unit_price"] !== null &&
+      !isNaN(prediction["unit_price"])
+    ) {
+      this.unitPrice = +parseFloat(prediction["unit_price"]);
+    } else {
+      this.unitPrice = null;
     }
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;
@@ -56,18 +73,18 @@ export class EnergyBillV1Subscription {
     return {
       description: this.description ?
         this.description.length <= 36 ?
-          cleanSpaces(this.description) :
-          cleanSpaces(this.description).slice(0, 33) + "..." :
+          cleanSpecialChars(this.description) :
+          cleanSpecialChars(this.description).slice(0, 33) + "..." :
         "",
       endDate: this.endDate ?
         this.endDate.length <= 10 ?
-          cleanSpaces(this.endDate) :
-          cleanSpaces(this.endDate).slice(0, 7) + "..." :
+          cleanSpecialChars(this.endDate) :
+          cleanSpecialChars(this.endDate).slice(0, 7) + "..." :
         "",
       startDate: this.startDate ?
         this.startDate.length <= 10 ?
-          cleanSpaces(this.startDate) :
-          cleanSpaces(this.startDate).slice(0, 7) + "..." :
+          cleanSpecialChars(this.startDate) :
+          cleanSpecialChars(this.startDate).slice(0, 7) + "..." :
         "",
       taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",
       total: this.total !== undefined ? floatToString(this.total) : "",
@@ -110,7 +127,7 @@ export class EnergyBillV1Subscription {
       " | " +
       printable.taxRate.padEnd(8) +
       " | " +
-      printable.total.padEnd(6) +
+      printable.total.padEnd(9) +
       " | " +
       printable.unitPrice.padEnd(10) +
       " |"

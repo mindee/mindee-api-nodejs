@@ -1,4 +1,4 @@
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -7,11 +7,11 @@ import { Polygon } from "../../../geometry";
  */
 export class EnergyBillV1MeterDetail {
   /** The unique identifier of the energy meter. */
-  meterNumber: string | undefined;
+  meterNumber: string | null;
   /** The type of energy meter. */
-  meterType: string | undefined;
+  meterType: string | null;
   /** The unit of measurement for energy consumption, which can be kW, m³, or L. */
-  unit: string | undefined;
+  unit: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */

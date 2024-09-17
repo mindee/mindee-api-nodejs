@@ -1,4 +1,5 @@
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+
+import { cleanSpecialChars } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -7,19 +8,19 @@ import { Polygon } from "../../geometry";
  */
 export class ResumeV1Education {
   /** The area of study or specialization. */
-  degreeDomain: string | undefined;
+  degreeDomain: string | null;
   /** The type of degree obtained, such as Bachelor's, Master's, or Doctorate. */
-  degreeType: string | undefined;
+  degreeType: string | null;
   /** The month when the education program or course was completed. */
-  endMonth: string | undefined;
+  endMonth: string | null;
   /** The year when the education program or course was completed. */
-  endYear: string | undefined;
+  endYear: string | null;
   /** The name of the school. */
-  school: string | undefined;
+  school: string | null;
   /** The month when the education program or course began. */
-  startMonth: string | undefined;
+  startMonth: string | null;
   /** The year when the education program or course began. */
-  startYear: string | undefined;
+  startYear: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -52,38 +53,38 @@ export class ResumeV1Education {
     return {
       degreeDomain: this.degreeDomain ?
         this.degreeDomain.length <= 15 ?
-          cleanSpaces(this.degreeDomain) :
-          cleanSpaces(this.degreeDomain).slice(0, 12) + "..." :
+          cleanSpecialChars(this.degreeDomain) :
+          cleanSpecialChars(this.degreeDomain).slice(0, 12) + "..." :
         "",
       degreeType: this.degreeType ?
         this.degreeType.length <= 25 ?
-          cleanSpaces(this.degreeType) :
-          cleanSpaces(this.degreeType).slice(0, 22) + "..." :
+          cleanSpecialChars(this.degreeType) :
+          cleanSpecialChars(this.degreeType).slice(0, 22) + "..." :
         "",
       endMonth: this.endMonth ?
         this.endMonth.length <= 9 ?
-          cleanSpaces(this.endMonth) :
-          cleanSpaces(this.endMonth).slice(0, 6) + "..." :
+          cleanSpecialChars(this.endMonth) :
+          cleanSpecialChars(this.endMonth).slice(0, 6) + "..." :
         "",
       endYear: this.endYear ?
         this.endYear.length <= 8 ?
-          cleanSpaces(this.endYear) :
-          cleanSpaces(this.endYear).slice(0, 5) + "..." :
+          cleanSpecialChars(this.endYear) :
+          cleanSpecialChars(this.endYear).slice(0, 5) + "..." :
         "",
       school: this.school ?
         this.school.length <= 25 ?
-          cleanSpaces(this.school) :
-          cleanSpaces(this.school).slice(0, 22) + "..." :
+          cleanSpecialChars(this.school) :
+          cleanSpecialChars(this.school).slice(0, 22) + "..." :
         "",
       startMonth: this.startMonth ?
         this.startMonth.length <= 11 ?
-          cleanSpaces(this.startMonth) :
-          cleanSpaces(this.startMonth).slice(0, 8) + "..." :
+          cleanSpecialChars(this.startMonth) :
+          cleanSpecialChars(this.startMonth).slice(0, 8) + "..." :
         "",
       startYear: this.startYear ?
         this.startYear.length <= 10 ?
-          cleanSpaces(this.startYear) :
-          cleanSpaces(this.startYear).slice(0, 7) + "..." :
+          cleanSpecialChars(this.startYear) :
+          cleanSpecialChars(this.startYear).slice(0, 7) + "..." :
         "",
     };
   }

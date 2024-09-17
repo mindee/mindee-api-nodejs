@@ -1,5 +1,4 @@
-import { floatToString } from "../../parsing/standard";
-import { cleanSpaces } from "../../parsing/common/summaryHelper";
+import { cleanSpecialChars, floatToString } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -8,13 +7,13 @@ import { Polygon } from "../../geometry";
  */
 export class ReceiptV5LineItem {
   /** The item description. */
-  description: string | undefined;
+  description: string | null;
   /** The item quantity. */
-  quantity: number | undefined;
+  quantity: number | null;
   /** The item total amount. */
-  totalAmount: number | undefined;
+  totalAmount: number | null;
   /** The item unit price. */
-  unitPrice: number | undefined;
+  unitPrice: number | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -27,14 +26,32 @@ export class ReceiptV5LineItem {
 
   constructor({ prediction = {} }: StringDict) {
     this.description = prediction["description"];
-    if (prediction["quantity"] && !isNaN(prediction["quantity"])) {
-      this.quantity = +parseFloat(prediction["quantity"]).toFixed(3);
+    if (
+      prediction["quantity"] !== undefined &&
+      prediction["quantity"] !== null &&
+      !isNaN(prediction["quantity"])
+    ) {
+      this.quantity = +parseFloat(prediction["quantity"]);
+    } else {
+      this.quantity = null;
     }
-    if (prediction["total_amount"] && !isNaN(prediction["total_amount"])) {
-      this.totalAmount = +parseFloat(prediction["total_amount"]).toFixed(3);
+    if (
+      prediction["total_amount"] !== undefined &&
+      prediction["total_amount"] !== null &&
+      !isNaN(prediction["total_amount"])
+    ) {
+      this.totalAmount = +parseFloat(prediction["total_amount"]);
+    } else {
+      this.totalAmount = null;
     }
-    if (prediction["unit_price"] && !isNaN(prediction["unit_price"])) {
-      this.unitPrice = +parseFloat(prediction["unit_price"]).toFixed(3);
+    if (
+      prediction["unit_price"] !== undefined &&
+      prediction["unit_price"] !== null &&
+      !isNaN(prediction["unit_price"])
+    ) {
+      this.unitPrice = +parseFloat(prediction["unit_price"]);
+    } else {
+      this.unitPrice = null;
     }
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;
@@ -50,8 +67,8 @@ export class ReceiptV5LineItem {
     return {
       description: this.description ?
         this.description.length <= 36 ?
-          cleanSpaces(this.description) :
-          cleanSpaces(this.description).slice(0, 33) + "..." :
+          cleanSpecialChars(this.description) :
+          cleanSpecialChars(this.description).slice(0, 33) + "..." :
         "",
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       totalAmount:

@@ -1,4 +1,4 @@
-import { cleanSpaces } from "../../../parsing/common/summaryHelper";
+
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -7,11 +7,11 @@ import { Polygon } from "../../../geometry";
  */
 export class PayslipV2BankAccountDetail {
   /** The name of the bank. */
-  bankName: string | undefined;
+  bankName: string | null;
   /** The IBAN of the bank account. */
-  iban: string | undefined;
+  iban: string | null;
   /** The SWIFT code of the bank. */
-  swift: string | undefined;
+  swift: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
