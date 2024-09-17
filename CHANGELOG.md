@@ -1,5 +1,20 @@
 # CHANGELOG
 
+# v4.16.0 - 2024-09-17
+### Changes
+* :sparkles: add support for US Mail V2
+* :sparkles: add support for Bill of Lading V1
+* :sparkles: add support for FR Energy Bill V1
+* :sparkles: add support for FR Payslips V1
+* :sparkles: add support for Nutrition Facts Label V1
+* :recycle: refactor internals to accommodate for new changes
+
+### Fixes
+* :bug: fix float numbers not containing more 3 decimals in some instances
+* :bug: fix boolean field display issues
+* :bug: fix values being extracted as `undefined` instead of `null`, as is present in the initial prediction.
+
+
 ## v4.15.0 - 2024-09-12
 ### Changes
 * :sparkles: add support for full text OCR extraction
