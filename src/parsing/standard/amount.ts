@@ -1,13 +1,6 @@
 import { Field } from "./field";
 import { BaseFieldConstructor } from "./base";
-
-export function floatToString(value: number) {
-  return value.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 3,
-    useGrouping: false,
-  });
-}
+import { floatToString } from "../common";
 
 /**
  * A field containing an amount value.
@@ -26,7 +19,7 @@ export class AmountField extends Field {
     pageId = undefined,
   }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
-    this.value = +parseFloat(prediction[valueKey]).toFixed(3);
+    this.value = +parseFloat(prediction[valueKey]);
     if (isNaN(this.value)) {
       this.value = undefined;
       this.confidence = 0.0;

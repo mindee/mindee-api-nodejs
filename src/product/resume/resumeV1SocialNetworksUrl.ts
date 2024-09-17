@@ -1,3 +1,5 @@
+
+import { cleanSpecialChars } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -6,9 +8,9 @@ import { Polygon } from "../../geometry";
  */
 export class ResumeV1SocialNetworksUrl {
   /** The name of the social network. */
-  name: string | undefined;
+  name: string | null;
   /** The URL of the social network. */
-  url: string | undefined;
+  url: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -36,13 +38,13 @@ export class ResumeV1SocialNetworksUrl {
     return {
       name: this.name ?
         this.name.length <= 20 ?
-          this.name :
-          this.name.slice(0, 17) + "..." :
+          cleanSpecialChars(this.name) :
+          cleanSpecialChars(this.name).slice(0, 17) + "..." :
         "",
       url: this.url ?
         this.url.length <= 50 ?
-          this.url :
-          this.url.slice(0, 47) + "..." :
+          cleanSpecialChars(this.url) :
+          cleanSpecialChars(this.url).slice(0, 47) + "..." :
         "",
     };
   }
@@ -59,6 +61,7 @@ export class ResumeV1SocialNetworksUrl {
       printable.url
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

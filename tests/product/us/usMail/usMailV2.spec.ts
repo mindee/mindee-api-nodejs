@@ -18,11 +18,11 @@ describe("UsMailV2 Object initialization", async () => {
     const doc = new mindee.Document(mindee.product.us.UsMailV2, response.document);
     const docPrediction = doc.inference.prediction;
     expect(docPrediction.senderName.value).to.be.undefined;
-    expect(docPrediction.senderAddress.city).to.be.undefined;
-    expect(docPrediction.senderAddress.complete).to.be.undefined;
-    expect(docPrediction.senderAddress.postalCode).to.be.undefined;
-    expect(docPrediction.senderAddress.state).to.be.undefined;
-    expect(docPrediction.senderAddress.street).to.be.undefined;
+    expect(docPrediction.senderAddress.city).to.be.null;
+    expect(docPrediction.senderAddress.complete).to.be.null;
+    expect(docPrediction.senderAddress.postalCode).to.be.null;
+    expect(docPrediction.senderAddress.state).to.be.null;
+    expect(docPrediction.senderAddress.street).to.be.null;
     expect(docPrediction.recipientNames.length).to.be.equals(0);
     expect(docPrediction.recipientAddresses.length).to.be.equals(0);
   });

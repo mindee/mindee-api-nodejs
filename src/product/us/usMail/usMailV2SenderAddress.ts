@@ -1,3 +1,4 @@
+
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -6,15 +7,15 @@ import { Polygon } from "../../../geometry";
  */
 export class UsMailV2SenderAddress {
   /** The city of the sender's address. */
-  city: string | undefined;
+  city: string | null;
   /** The complete address of the sender. */
-  complete: string | undefined;
+  complete: string | null;
   /** The postal code of the sender's address. */
-  postalCode: string | undefined;
+  postalCode: string | null;
   /** Second part of the ISO 3166-2 code, consisting of two letters indicating the US State. */
-  state: string | undefined;
+  state: string | null;
   /** The street of the sender's address. */
-  street: string | undefined;
+  street: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -43,31 +44,11 @@ export class UsMailV2SenderAddress {
    */
   #printableValues() {
     return {
-      city: this.city ?
-        this.city.length <= 15 ?
-          this.city :
-          this.city.slice(0, 12) + "..." :
-        "",
-      complete: this.complete ?
-        this.complete.length <= 35 ?
-          this.complete :
-          this.complete.slice(0, 32) + "..." :
-        "",
-      postalCode: this.postalCode ?
-        this.postalCode.length <= 11 ?
-          this.postalCode :
-          this.postalCode.slice(0, 8) + "..." :
-        "",
-      state: this.state ?
-        this.state.length <= 5 ?
-          this.state :
-          this.state.slice(0, 2) + "..." :
-        "",
-      street: this.street ?
-        this.street.length <= 25 ?
-          this.street :
-          this.street.slice(0, 22) + "..." :
-        "",
+      city: this.city ?? "",
+      complete: this.complete ?? "",
+      postalCode: this.postalCode ?? "",
+      state: this.state ?? "",
+      street: this.street ?? "",
     };
   }
 

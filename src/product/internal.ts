@@ -1,4 +1,5 @@
 export * as barcodeReader from "./barcodeReader/internal";
+export * as billOfLading from "./billOfLading/internal";
 export * as cropper from "./cropper/internal";
 export * as custom from "./custom/internal";
 export * as eu from "./eu/internal";
@@ -9,6 +10,7 @@ export * as internationalId from "./internationalId/internal";
 export * as invoice from "./invoice/internal";
 export * as invoiceSplitter from "./invoiceSplitter/internal";
 export * as multiReceiptsDetector from "./multiReceiptsDetector/internal";
+export * as nutritionFactsLabel from "./nutritionFactsLabel/internal";
 export * as passport from "./passport/internal";
 export * as proofOfAddress from "./proofOfAddress/internal";
 export * as receipt from "./receipt/internal";

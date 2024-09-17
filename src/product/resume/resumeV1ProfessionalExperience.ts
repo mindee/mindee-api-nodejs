@@ -1,3 +1,5 @@
+
+import { cleanSpecialChars } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -6,21 +8,21 @@ import { Polygon } from "../../geometry";
  */
 export class ResumeV1ProfessionalExperience {
   /** The type of contract for the professional experience. */
-  contractType: string | undefined;
+  contractType: string | null;
   /** The specific department or division within the company. */
-  department: string | undefined;
+  department: string | null;
   /** The name of the company or organization. */
-  employer: string | undefined;
+  employer: string | null;
   /** The month when the professional experience ended. */
-  endMonth: string | undefined;
+  endMonth: string | null;
   /** The year when the professional experience ended. */
-  endYear: string | undefined;
+  endYear: string | null;
   /** The position or job title held by the candidate. */
-  role: string | undefined;
+  role: string | null;
   /** The month when the professional experience began. */
-  startMonth: string | undefined;
+  startMonth: string | null;
   /** The year when the professional experience began. */
-  startYear: string | undefined;
+  startYear: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -54,43 +56,43 @@ export class ResumeV1ProfessionalExperience {
     return {
       contractType: this.contractType ?
         this.contractType.length <= 15 ?
-          this.contractType :
-          this.contractType.slice(0, 12) + "..." :
+          cleanSpecialChars(this.contractType) :
+          cleanSpecialChars(this.contractType).slice(0, 12) + "..." :
         "",
       department: this.department ?
         this.department.length <= 10 ?
-          this.department :
-          this.department.slice(0, 7) + "..." :
+          cleanSpecialChars(this.department) :
+          cleanSpecialChars(this.department).slice(0, 7) + "..." :
         "",
       employer: this.employer ?
         this.employer.length <= 25 ?
-          this.employer :
-          this.employer.slice(0, 22) + "..." :
+          cleanSpecialChars(this.employer) :
+          cleanSpecialChars(this.employer).slice(0, 22) + "..." :
         "",
       endMonth: this.endMonth ?
         this.endMonth.length <= 9 ?
-          this.endMonth :
-          this.endMonth.slice(0, 6) + "..." :
+          cleanSpecialChars(this.endMonth) :
+          cleanSpecialChars(this.endMonth).slice(0, 6) + "..." :
         "",
       endYear: this.endYear ?
         this.endYear.length <= 8 ?
-          this.endYear :
-          this.endYear.slice(0, 5) + "..." :
+          cleanSpecialChars(this.endYear) :
+          cleanSpecialChars(this.endYear).slice(0, 5) + "..." :
         "",
       role: this.role ?
         this.role.length <= 20 ?
-          this.role :
-          this.role.slice(0, 17) + "..." :
+          cleanSpecialChars(this.role) :
+          cleanSpecialChars(this.role).slice(0, 17) + "..." :
         "",
       startMonth: this.startMonth ?
         this.startMonth.length <= 11 ?
-          this.startMonth :
-          this.startMonth.slice(0, 8) + "..." :
+          cleanSpecialChars(this.startMonth) :
+          cleanSpecialChars(this.startMonth).slice(0, 8) + "..." :
         "",
       startYear: this.startYear ?
         this.startYear.length <= 10 ?
-          this.startYear :
-          this.startYear.slice(0, 7) + "..." :
+          cleanSpecialChars(this.startYear) :
+          cleanSpecialChars(this.startYear).slice(0, 7) + "..." :
         "",
     };
   }
@@ -119,6 +121,7 @@ export class ResumeV1ProfessionalExperience {
       printable.startYear
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

@@ -1,4 +1,4 @@
-import { floatToString } from "../../../parsing/standard";
+import { cleanSpecialChars, floatToString } from "../../../parsing/common";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -7,9 +7,9 @@ import { Polygon } from "../../../geometry";
  */
 export class HealthcareCardV1Copay {
   /** The price of service. */
-  serviceFees: number | undefined;
+  serviceFees: number | null;
   /** The name of service of the copay. */
-  serviceName: string | undefined;
+  serviceName: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -21,8 +21,14 @@ export class HealthcareCardV1Copay {
   polygon: Polygon = [];
 
   constructor({ prediction = {} }: StringDict) {
-    if (prediction["service_fees"] && !isNaN(prediction["service_fees"])) {
-      this.serviceFees = +parseFloat(prediction["service_fees"]).toFixed(3);
+    if (
+      prediction["service_fees"] !== undefined &&
+      prediction["service_fees"] !== null &&
+      !isNaN(prediction["service_fees"])
+    ) {
+      this.serviceFees = +parseFloat(prediction["service_fees"]);
+    } else {
+      this.serviceFees = null;
     }
     this.serviceName = prediction["service_name"];
     this.pageId = prediction["page_id"];
@@ -41,8 +47,8 @@ export class HealthcareCardV1Copay {
         this.serviceFees !== undefined ? floatToString(this.serviceFees) : "",
       serviceName: this.serviceName ?
         this.serviceName.length <= 12 ?
-          this.serviceName :
-          this.serviceName.slice(0, 9) + "..." :
+          cleanSpecialChars(this.serviceName) :
+          cleanSpecialChars(this.serviceName).slice(0, 9) + "..." :
         "",
     };
   }
@@ -59,6 +65,7 @@ export class HealthcareCardV1Copay {
       printable.serviceName
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

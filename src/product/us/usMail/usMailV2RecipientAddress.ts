@@ -1,3 +1,5 @@
+
+import { cleanSpecialChars } from "../../../parsing/common";
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -6,19 +8,19 @@ import { Polygon } from "../../../geometry";
  */
 export class UsMailV2RecipientAddress {
   /** The city of the recipient's address. */
-  city: string | undefined;
+  city: string | null;
   /** The complete address of the recipient. */
-  complete: string | undefined;
+  complete: string | null;
   /** Indicates if the recipient's address is a change of address. */
-  isAddressChange: boolean | undefined;
+  isAddressChange: boolean | null;
   /** The postal code of the recipient's address. */
-  postalCode: string | undefined;
+  postalCode: string | null;
   /** The private mailbox number of the recipient's address. */
-  privateMailboxNumber: string | undefined;
+  privateMailboxNumber: string | null;
   /** Second part of the ISO 3166-2 code, consisting of two letters indicating the US State. */
-  state: string | undefined;
+  state: string | null;
   /** The street of the recipient's address. */
-  street: string | undefined;
+  street: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -51,37 +53,38 @@ export class UsMailV2RecipientAddress {
     return {
       city: this.city ?
         this.city.length <= 15 ?
-          this.city :
-          this.city.slice(0, 12) + "..." :
+          cleanSpecialChars(this.city) :
+          cleanSpecialChars(this.city).slice(0, 12) + "..." :
         "",
       complete: this.complete ?
         this.complete.length <= 35 ?
-          this.complete :
-          this.complete.slice(0, 32) + "..." :
+          cleanSpecialChars(this.complete) :
+          cleanSpecialChars(this.complete).slice(0, 32) + "..." :
         "",
       isAddressChange: this.isAddressChange === true ?
-        "True" : this.isAddressChange === false ?
+        "True" :
+        this.isAddressChange === false ?
           "False" :
           "",
       postalCode: this.postalCode ?
         this.postalCode.length <= 11 ?
-          this.postalCode :
-          this.postalCode.slice(0, 8) + "..." :
+          cleanSpecialChars(this.postalCode) :
+          cleanSpecialChars(this.postalCode).slice(0, 8) + "..." :
         "",
       privateMailboxNumber: this.privateMailboxNumber ?
         this.privateMailboxNumber.length <= 22 ?
-          this.privateMailboxNumber :
-          this.privateMailboxNumber.slice(0, 19) + "..." :
+          cleanSpecialChars(this.privateMailboxNumber) :
+          cleanSpecialChars(this.privateMailboxNumber).slice(0, 19) + "..." :
         "",
       state: this.state ?
         this.state.length <= 5 ?
-          this.state :
-          this.state.slice(0, 2) + "..." :
+          cleanSpecialChars(this.state) :
+          cleanSpecialChars(this.state).slice(0, 2) + "..." :
         "",
       street: this.street ?
         this.street.length <= 25 ?
-          this.street :
-          this.street.slice(0, 22) + "..." :
+          cleanSpecialChars(this.street) :
+          cleanSpecialChars(this.street).slice(0, 22) + "..." :
         "",
     };
   }
@@ -108,6 +111,7 @@ export class UsMailV2RecipientAddress {
       printable.street
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

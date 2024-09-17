@@ -1,3 +1,5 @@
+
+import { cleanSpecialChars } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -6,13 +8,13 @@ import { Polygon } from "../../geometry";
  */
 export class ResumeV1Certificate {
   /** The grade obtained for the certificate. */
-  grade: string | undefined;
+  grade: string | null;
   /** The name of certification. */
-  name: string | undefined;
+  name: string | null;
   /** The organization or institution that issued the certificate. */
-  provider: string | undefined;
+  provider: string | null;
   /** The year when a certificate was issued or received. */
-  year: string | undefined;
+  year: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -42,23 +44,23 @@ export class ResumeV1Certificate {
     return {
       grade: this.grade ?
         this.grade.length <= 10 ?
-          this.grade :
-          this.grade.slice(0, 7) + "..." :
+          cleanSpecialChars(this.grade) :
+          cleanSpecialChars(this.grade).slice(0, 7) + "..." :
         "",
       name: this.name ?
         this.name.length <= 30 ?
-          this.name :
-          this.name.slice(0, 27) + "..." :
+          cleanSpecialChars(this.name) :
+          cleanSpecialChars(this.name).slice(0, 27) + "..." :
         "",
       provider: this.provider ?
         this.provider.length <= 25 ?
-          this.provider :
-          this.provider.slice(0, 22) + "..." :
+          cleanSpecialChars(this.provider) :
+          cleanSpecialChars(this.provider).slice(0, 22) + "..." :
         "",
       year: this.year ?
         this.year.length <= 4 ?
-          this.year :
-          this.year.slice(0, 1) + "..." :
+          cleanSpecialChars(this.year) :
+          cleanSpecialChars(this.year).slice(0, 1) + "..." :
         "",
     };
   }
@@ -79,6 +81,7 @@ export class ResumeV1Certificate {
       printable.year
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

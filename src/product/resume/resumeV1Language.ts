@@ -1,3 +1,5 @@
+
+import { cleanSpecialChars } from "../../parsing/common";
 import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
@@ -6,9 +8,9 @@ import { Polygon } from "../../geometry";
  */
 export class ResumeV1Language {
   /** The language's ISO 639 code. */
-  language: string | undefined;
+  language: string | null;
   /** The candidate's level for the language. */
-  level: string | undefined;
+  level: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -36,13 +38,13 @@ export class ResumeV1Language {
     return {
       language: this.language ?
         this.language.length <= 8 ?
-          this.language :
-          this.language.slice(0, 5) + "..." :
+          cleanSpecialChars(this.language) :
+          cleanSpecialChars(this.language).slice(0, 5) + "..." :
         "",
       level: this.level ?
         this.level.length <= 20 ?
-          this.level :
-          this.level.slice(0, 17) + "..." :
+          cleanSpecialChars(this.level) :
+          cleanSpecialChars(this.level).slice(0, 17) + "..." :
         "",
     };
   }
@@ -59,6 +61,7 @@ export class ResumeV1Language {
       printable.level
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

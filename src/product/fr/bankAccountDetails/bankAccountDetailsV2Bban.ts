@@ -1,3 +1,4 @@
+
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
@@ -6,13 +7,13 @@ import { Polygon } from "../../../geometry";
  */
 export class BankAccountDetailsV2Bban {
   /** The BBAN bank code outputted as a string. */
-  bbanBankCode: string | undefined;
+  bbanBankCode: string | null;
   /** The BBAN branch code outputted as a string. */
-  bbanBranchCode: string | undefined;
+  bbanBranchCode: string | null;
   /** The BBAN key outputted as a string. */
-  bbanKey: string | undefined;
+  bbanKey: string | null;
   /** The BBAN Account number outputted as a string. */
-  bbanNumber: string | undefined;
+  bbanNumber: string | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
