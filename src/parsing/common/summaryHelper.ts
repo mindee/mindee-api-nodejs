@@ -29,7 +29,10 @@ export function cleanSpecialChars(outStr: string) {
     .replace(/\t/g, "\\t");
 }
 
-export function floatToString(value: number) {
+export function floatToString(value: number|null) {
+  if (value === null){
+    return "";
+  }
   return value.toLocaleString(undefined, {
     minimumFractionDigits: 2,
     maximumFractionDigits: 5,

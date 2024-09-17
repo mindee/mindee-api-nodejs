@@ -19,7 +19,7 @@ export class AmountField extends Field {
     pageId = undefined,
   }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
-    this.value = +parseFloat(prediction[valueKey]).toFixed(3);
+    this.value = +parseFloat(prediction[valueKey]);
     if (isNaN(this.value)) {
       this.value = undefined;
       this.confidence = 0.0;
