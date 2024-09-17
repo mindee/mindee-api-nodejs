@@ -111,6 +111,7 @@ export class UsMailV2RecipientAddress {
       printable.street
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

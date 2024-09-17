@@ -104,6 +104,7 @@ export class NutritionFactsLabelV1Nutrient {
       printable.unit
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

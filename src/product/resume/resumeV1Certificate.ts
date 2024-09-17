@@ -81,6 +81,7 @@ export class ResumeV1Certificate {
       printable.year
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

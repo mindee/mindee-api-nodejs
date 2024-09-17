@@ -114,6 +114,7 @@ export class BillOfLadingV1CarrierItem {
       printable.weightUnit
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

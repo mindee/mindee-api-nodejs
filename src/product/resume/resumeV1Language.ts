@@ -61,6 +61,7 @@ export class ResumeV1Language {
       printable.level
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

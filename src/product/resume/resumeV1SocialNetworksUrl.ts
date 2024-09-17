@@ -61,6 +61,7 @@ export class ResumeV1SocialNetworksUrl {
       printable.url
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

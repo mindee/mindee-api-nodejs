@@ -141,6 +141,7 @@ export class FinancialDocumentV1LineItem {
       printable.unitPrice
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

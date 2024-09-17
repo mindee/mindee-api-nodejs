@@ -92,6 +92,7 @@ export class PayslipV2SalaryDetail {
       printable.rate
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

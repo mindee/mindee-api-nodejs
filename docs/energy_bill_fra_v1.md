@@ -111,7 +111,7 @@ A `EnergyBillV1MeterDetail` implements the following attributes:
  - electricity
  - gas
  - water
- - None
+ - `null`
 
 * `unit` (string): The unit of measurement for energy consumption, which can be kW, m³, or L.
 Fields which are specific to this product; they are not used in any other product.

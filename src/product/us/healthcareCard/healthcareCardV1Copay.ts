@@ -65,6 +65,7 @@ export class HealthcareCardV1Copay {
       printable.serviceName
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

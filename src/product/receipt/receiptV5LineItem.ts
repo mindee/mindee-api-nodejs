@@ -93,6 +93,7 @@ export class ReceiptV5LineItem {
       printable.unitPrice
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

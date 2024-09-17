@@ -121,6 +121,7 @@ export class ResumeV1ProfessionalExperience {
       printable.startYear
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */

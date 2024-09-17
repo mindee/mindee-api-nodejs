@@ -111,6 +111,7 @@ export class ResumeV1Education {
       printable.startYear
     );
   }
+
   /**
    * Output in a format suitable for inclusion in an rST table.
    */
