@@ -32,7 +32,7 @@ the field in the document.</p>
 <li class="tsd-parameter">
 <h5>text<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">string</span></h5></li></ul></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/6470b01/src/parsing/standard/word.ts#L3">src/parsing/standard/word.ts:3</a></li></ul></aside></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/190481f/src/parsing/standard/word.ts#L3">src/parsing/standard/word.ts:3</a></li></ul></aside></div>
 <div class="col-4 col-menu menu-sticky-wrap menu-highlight">
 <div class="tsd-navigation settings">
 <details class="tsd-index-accordion"><summary class="tsd-accordion-summary">
@@ -73,6 +73,7 @@ the field in the document.</p>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.html">product</a>
 <ul>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.barcodeReader.html">barcode<wbr/>Reader</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.billOfLading.html">bill<wbr/>Of<wbr/>Lading</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.cropper.html">cropper</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.custom.html">custom</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.eu.html">eu</a>
@@ -85,12 +86,15 @@ the field in the document.</p>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.fr.bankAccountDetails.html">bank<wbr/>Account<wbr/>Details</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.fr.carteGrise.html">carte<wbr/>Grise</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.fr.carteVitale.html">carte<wbr/>Vitale</a></li>
-<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.fr.idCard.html">id<wbr/>Card</a></li></ul></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.fr.energyBill.html">energy<wbr/>Bill</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.fr.idCard.html">id<wbr/>Card</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.fr.payslip.html">payslip</a></li></ul></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.generated.html">generated</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.internationalId.html">international<wbr/>Id</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.invoice.html">invoice</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.invoiceSplitter.html">invoice<wbr/>Splitter</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.multiReceiptsDetector.html">multi<wbr/>Receipts<wbr/>Detector</a></li>
+<li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.nutritionFactsLabel.html">nutrition<wbr/>Facts<wbr/>Label</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.passport.html">passport</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.proofOfAddress.html">proof<wbr/>Of<wbr/>Address</a></li>
 <li class="tsd-kind-namespace tsd-parent-kind-namespace"><a href="../modules/internal.product.receipt.html">receipt</a></li>
@@ -123,8 +127,7 @@ the field in the document.</p>
 <li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/internal.parsing.standard.TaxField.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Tax<wbr/>Field</a></li>
 <li class="tsd-kind-class tsd-parent-kind-namespace"><a href="../classes/internal.parsing.standard.Taxes.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-128-path"></use><use href="#icon-128-text"></use></svg>Taxes</a></li>
 <li class="tsd-kind-interface tsd-parent-kind-namespace"><a href="../interfaces/internal.parsing.standard.BaseFieldConstructor.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-interface)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-256-path"></rect><path d="M9.51 16V15.016H11.298V8.224H9.51V7.24H14.19V8.224H12.402V15.016H14.19V16H9.51Z" fill="var(--color-text)" id="icon-256-text"></path></svg>Base<wbr/>Field<wbr/>Constructor</a></li>
-<li class="current tsd-kind-type-alias tsd-parent-kind-namespace"><a href="internal.parsing.standard.Word.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4194304-path"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)" id="icon-4194304-text"></path></svg>Word</a></li>
-<li class="tsd-kind-function tsd-parent-kind-namespace"><a href="../functions/internal.parsing.standard.floatToString.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts-function)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-64-path"></rect><path d="M9.39 16V7.24H14.55V8.224H10.446V11.128H14.238V12.112H10.47V16H9.39Z" fill="var(--color-text)" id="icon-64-text"></path></svg>float<wbr/>To<wbr/>String</a></li></ul></nav></div></div>
+<li class="current tsd-kind-type-alias tsd-parent-kind-namespace"><a href="internal.parsing.standard.Word.html" class="tsd-index-link"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><rect fill="var(--color-icon-background)" stroke="var(--color-ts)" stroke-width="1.5" x="1" y="1" width="22" height="22" rx="6" id="icon-4194304-path"></rect><path d="M11.31 16V8.224H8.91V7.24H14.79V8.224H12.39V16H11.31Z" fill="var(--color-text)" id="icon-4194304-text"></path></svg>Word</a></li></ul></nav></div></div>
 <div class="container tsd-generator">
 <p>Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></div>
 <div class="overlay"></div><script src="../assets/main.js"></script></body></html>
