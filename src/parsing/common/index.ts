@@ -9,3 +9,4 @@ export { Prediction } from "./prediction";
 export { Page } from "./page";
 export { cleanOutString, lineSeparator } from "./summaryHelper";
 export * as extras from "./extras";
+export { floatToString, cleanSpecialChars } from "./summaryHelper";

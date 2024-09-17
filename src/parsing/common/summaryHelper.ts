@@ -22,6 +22,17 @@ export function lineSeparator(columnSizes: number[], separator: string) {
  * Also trims line breaks at the end of the string.
  * @param outStr
  */
-export function cleanSpaces(outStr: string) {
-  return outStr.replace(/\n/g, "\\n");
+export function cleanSpecialChars(outStr: string) {
+  return outStr
+    .replace(/\n/g, "\\n")
+    .replace(/\r/g, "\\r")
+    .replace(/\t/g, "\\t");
+}
+
+export function floatToString(value: number) {
+  return value.toLocaleString(undefined, {
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 5,
+    useGrouping: false,
+  });
 }

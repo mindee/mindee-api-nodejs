@@ -1,13 +1,6 @@
 import { Field } from "./field";
 import { BaseFieldConstructor } from "./base";
-
-export function floatToString(value: number) {
-  return value.toLocaleString(undefined, {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 3,
-    useGrouping: false,
-  });
-}
+import { floatToString } from "../common";
 
 /**
  * A field containing an amount value.
