@@ -16,4 +16,5 @@ async function parseReceipts() {
   }
 
 }
+
 parseReceipts();
