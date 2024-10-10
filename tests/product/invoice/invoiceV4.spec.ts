@@ -19,9 +19,11 @@ describe("InvoiceV4 Object initialization", async () => {
     const docPrediction = doc.inference.prediction;
     expect(docPrediction.locale.value).to.be.undefined;
     expect(docPrediction.invoiceNumber.value).to.be.undefined;
+    expect(docPrediction.poNumber.value).to.be.undefined;
     expect(docPrediction.referenceNumbers.length).to.be.equals(0);
     expect(docPrediction.date.value).to.be.undefined;
     expect(docPrediction.dueDate.value).to.be.undefined;
+    expect(docPrediction.paymentDate.value).to.be.undefined;
     expect(docPrediction.totalNet.value).to.be.undefined;
     expect(docPrediction.totalAmount.value).to.be.undefined;
     expect(docPrediction.totalTax.value).to.be.undefined;
