@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Invoice API version 4.7 document data.
+ * Invoice API version 4.8 document data.
  */
 export class InvoiceV4Document implements Prediction {
   /** The customer's address used for billing. */
@@ -41,6 +41,10 @@ export class InvoiceV4Document implements Prediction {
   lineItems: InvoiceV4LineItem[] = [];
   /** The locale detected on the document. */
   locale: LocaleField;
+  /** The date on which the payment is due/ was full-filled. */
+  paymentDate: DateField;
+  /** The purchase order number. */
+  poNumber: StringField;
   /** List of Reference numbers, including PO number. */
   referenceNumbers: StringField[] = [];
   /** Customer's delivery address. */
@@ -122,6 +126,14 @@ export class InvoiceV4Document implements Prediction {
       );
     this.locale = new LocaleField({
       prediction: rawPrediction["locale"],
+    });
+    this.paymentDate = new DateField({
+      prediction: rawPrediction["payment_date"],
+      pageId: pageId,
+    });
+    this.poNumber = new StringField({
+      prediction: rawPrediction["po_number"],
+      pageId: pageId,
     });
     rawPrediction["reference_numbers"] &&
       rawPrediction["reference_numbers"].map(
@@ -222,9 +234,11 @@ export class InvoiceV4Document implements Prediction {
     }
     const outStr = `:Locale: ${this.locale}
 :Invoice Number: ${this.invoiceNumber}
+:Purchase Order Number: ${this.poNumber}
 :Reference Numbers: ${referenceNumbers}
 :Purchase Date: ${this.date}
 :Due Date: ${this.dueDate}
+:Payment Date: ${this.paymentDate}
 :Total Net: ${this.totalNet}
 :Total Amount: ${this.totalAmount}
 :Total Tax: ${this.totalTax}

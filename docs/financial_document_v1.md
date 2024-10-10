@@ -374,6 +374,20 @@ for (const lineItemsElem of result.document.inference.prediction.lineItems) {
 console.log(result.document.inference.prediction.locale.value);
 ```
 
+## Payment Date
+**paymentDate** ([DateField](#date-field)): The date on which the payment is due / fullfilled.
+
+```js
+console.log(result.document.inference.prediction.paymentDate.value);
+```
+
+## Purchase Order Number
+**poNumber** ([StringField](#string-field)): The purchase order number.
+
+```js
+console.log(result.document.inference.prediction.poNumber.value);
+```
+
 ## Receipt Number
 **receiptNumber** ([StringField](#string-field)): The receipt number or identifier only if document is a receipt.
 
