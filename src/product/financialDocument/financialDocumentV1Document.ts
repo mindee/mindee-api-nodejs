@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Financial Document API version 1.9 document data.
+ * Financial Document API version 1.10 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
   /** The customer's address used for billing. */
@@ -45,6 +45,10 @@ export class FinancialDocumentV1Document implements Prediction {
   lineItems: FinancialDocumentV1LineItem[] = [];
   /** The locale detected on the document. */
   locale: LocaleField;
+  /** The date on which the payment is due / fullfilled. */
+  paymentDate: DateField;
+  /** The purchase order number. */
+  poNumber: StringField;
   /** The receipt number or identifier only if document is a receipt. */
   receiptNumber: StringField;
   /** List of Reference numbers, including PO number. */
@@ -141,6 +145,14 @@ export class FinancialDocumentV1Document implements Prediction {
       );
     this.locale = new LocaleField({
       prediction: rawPrediction["locale"],
+    });
+    this.paymentDate = new DateField({
+      prediction: rawPrediction["payment_date"],
+      pageId: pageId,
+    });
+    this.poNumber = new StringField({
+      prediction: rawPrediction["po_number"],
+      pageId: pageId,
     });
     this.receiptNumber = new StringField({
       prediction: rawPrediction["receipt_number"],
@@ -256,11 +268,13 @@ export class FinancialDocumentV1Document implements Prediction {
     }
     const outStr = `:Locale: ${this.locale}
 :Invoice Number: ${this.invoiceNumber}
+:Purchase Order Number: ${this.poNumber}
 :Receipt Number: ${this.receiptNumber}
 :Document Number: ${this.documentNumber}
 :Reference Numbers: ${referenceNumbers}
 :Purchase Date: ${this.date}
 :Due Date: ${this.dueDate}
+:Payment Date: ${this.paymentDate}
 :Total Net: ${this.totalNet}
 :Total Amount: ${this.totalAmount}
 :Taxes: ${this.taxes}
