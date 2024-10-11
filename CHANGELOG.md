@@ -1,6 +1,12 @@
 # CHANGELOG
 
-# v4.16.0 - 2024-09-17
+## v4.17.0 - 2024-10-11
+### Changes
+* :sparkles: add support for Financial Document v1.10
+* :sparkles: add support for Invoice v4.8
+
+
+## v4.16.0 - 2024-09-17
 ### Changes
 * :sparkles: add support for US Mail V2
 * :sparkles: add support for Bill of Lading V1
