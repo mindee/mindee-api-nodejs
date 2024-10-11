@@ -9,6 +9,8 @@ export class DateField extends Field {
   value?: string;
   /** Date as a standard JavaScript `Date` object. */
   public dateObject?: Date;
+  /** Whether the field was computed or retrieved directly from the document. */
+  public isComputed?: boolean;
 
   /**
    * @param {BaseFieldConstructor} constructor Constructor parameters.
@@ -20,6 +22,10 @@ export class DateField extends Field {
     pageId,
   }: BaseFieldConstructor) {
     super({ prediction, valueKey, reconstructed, pageId });
+    if ("is_computed" in prediction)
+    {
+      this.isComputed = prediction["is_computed"];
+    }
     if (typeof this.value === "string") {
       this.dateObject = new Date(this.value);
       if (isNaN(this.dateObject.valueOf())) {
