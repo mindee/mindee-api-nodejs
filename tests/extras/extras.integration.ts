@@ -17,7 +17,7 @@ describe("Mindee Client Integration Tests", async () => {
     await sample.init();
     const response = await client.parse(mindee.product.InvoiceV4, sample, { cropper: true });
     expect(response.document.inference.pages[0]?.extras?.cropper).to.exist;
-  }).timeout(3000);
+  }).timeout(60000);
 
   it("should send full text OCR extra", async () => {
     const sample = client.docFromPath(
