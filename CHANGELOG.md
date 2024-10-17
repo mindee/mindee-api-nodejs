@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.17.1 - 2024-10-17
+### Fixes
+* :bug: fix invalid handling of boolean fields & fix accidental coercion into numbers in `GeneratedObjectField` fields
+* :bug: fix `GeneratedObjectField` fields being inaccessible in typescript without going through the main object
+
+
 ## v4.17.0 - 2024-10-11
 ### Changes
 * :sparkles: add support for Financial Document v1.10
