@@ -45,7 +45,7 @@ export class GeneratedObjectField {
         if (
           fieldValue !== null &&
           fieldValue !== undefined &&
-          typeof fieldValue !== "boolean" &&
+          typeof fieldValue === "number" &&
           !isNaN(fieldValue) &&
           fieldName !== "degrees"
         ) {
