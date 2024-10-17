@@ -2,7 +2,7 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../src";
-import { Page } from "../../../src/parsing/common";
+import { Page } from "../../../src";
 import { GeneratedV1 } from "../../../src/product";
 import { GeneratedListField, GeneratedObjectField } from "../../../src/parsing/generated";
 import { GeneratedV1Page } from "../../../src/product/generated/generatedV1Page";
