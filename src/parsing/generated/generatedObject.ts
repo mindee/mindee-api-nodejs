@@ -14,6 +14,9 @@ export class GeneratedObjectField {
   /** List of all printable field names. */
   private printableValues: string[];
 
+  /** All potentially present fields. */
+  [key: string]: string | number | boolean | object | undefined;
+
   constructor({
     prediction = {},
     pageId,
@@ -39,8 +42,16 @@ export class GeneratedObjectField {
       } else if (fieldName === "raw_value") {
         this.rawValue = fieldValue;
       } else {
-        if (fieldValue !== null && fieldValue !== undefined && !isNaN(fieldValue) && fieldName !== "degrees") {
+        if (
+          fieldValue !== null &&
+          fieldValue !== undefined &&
+          typeof fieldValue === "number" &&
+          !isNaN(fieldValue) &&
+          fieldName !== "degrees"
+        ) {
           Object.assign(this, { [fieldName]: this.toNumberString(fieldValue) });
+        } else if (typeof fieldValue === "boolean") {
+          Object.assign(this, { [fieldName]: fieldValue });
         } else {
           Object.assign(
             this,
@@ -85,6 +96,10 @@ export class GeneratedObjectField {
 
   toString() {
     return this.toStringLevel();
+  }
+
+  get(fieldName: string): string | number | boolean | object | undefined {
+    return this[fieldName];
   }
 }
 
