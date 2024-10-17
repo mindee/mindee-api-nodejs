@@ -45,7 +45,8 @@ export class GeneratedObjectField {
         if (
           fieldValue !== null &&
           fieldValue !== undefined &&
-          (typeof fieldValue === "number" && !isNaN(fieldValue)) &&
+          typeof fieldValue !== "boolean" &&
+          !isNaN(fieldValue) &&
           fieldName !== "degrees"
         ) {
           Object.assign(this, { [fieldName]: this.toNumberString(fieldValue) });
