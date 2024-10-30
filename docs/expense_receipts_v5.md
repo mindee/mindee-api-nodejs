@@ -34,6 +34,32 @@ apiResponse.then((resp) => {
 });
 ```
 
+You can also call this product asynchronously:
+
+```js
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
+
+// Init a new client
+const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+
+// Load a file from disk
+const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
+
+// Parse the file
+const apiResponse = mindeeClient.enqueueAndParse(
+  mindee.product.ReceiptV5,
+  inputSource
+);
+
+// Handle the response Promise
+apiResponse.then((resp) => {
+  // print a string summary
+  console.log(resp.document.toString());
+});
+```
+
 **Output (RST):**
 ```rst
 ########
@@ -51,7 +77,7 @@ Prediction
 ==========
 :Expense Locale: en-GB; en; GB; GBP;
 :Purchase Category: food
-:Purchase Subcategory:
+:Purchase Subcategory: restaurant
 :Document Type: EXPENSE RECEIPT
 :Purchase Date: 2016-02-26
 :Purchase Time: 15:20
@@ -85,7 +111,7 @@ Page 0
 ------
 :Expense Locale: en-GB; en; GB; GBP;
 :Purchase Category: food
-:Purchase Subcategory:
+:Purchase Subcategory: restaurant
 :Document Type: EXPENSE RECEIPT
 :Purchase Date: 2016-02-26
 :Purchase Time: 15:20
