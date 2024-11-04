@@ -17,3 +17,11 @@ export class MindeeMimeTypeError extends MindeeError {
     this.name = "MindeeMimeTypeError";
   }
 }
+
+
+export class MindeeImageError extends MindeeError {
+  constructor(message: string) {
+    super(message);
+    this.name = "MindeeImageError";
+  }
+}

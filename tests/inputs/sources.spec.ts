@@ -11,15 +11,27 @@ import {
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BUFFER,
 } from "../../src/input";
-import * as fs from "fs";
+import * as fs from "node:fs/promises";
 import * as path from "path";
 import { expect } from "chai";
 import { Buffer } from "node:buffer";
+import {createReadStream} from "node:fs";
+import {compressImage} from "../../src/image/imageCompressor";
+import sharp from "sharp";
+import {MindeeError} from "../../src/errors";
 
 describe("Test different types of input", () => {
+
+  const resourcesPath = path.join(__dirname, '../data');
+  const outputPath = path.join(resourcesPath, 'output');
+
+  before(async () => {
+    await fs.mkdir(outputPath, { recursive: true });
+  });
+
   it("should accept base64 inputs", async () => {
-    const b64Input = await fs.promises.readFile(
-      path.join(__dirname, "../data/file_types/receipt.txt")
+    const b64Input = await fs.readFile(
+      path.join(resourcesPath, "file_types/receipt.txt")
     );
     const b64String = b64Input.toString();
     // don't provide an extension to see if we can detect MIME
@@ -43,12 +55,12 @@ describe("Test different types of input", () => {
 
   it("should accept JPEG files from a path", async () => {
     const input = new PathInput({
-      inputPath: path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg"),
+      inputPath: path.join(resourcesPath, "products/expense_receipts/default_sample.jpg"),
     });
     await input.init();
 
-    const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg")
+    const expectedResult = await fs.readFile(
+      path.join(resourcesPath, "products/expense_receipts/default_sample.jpg")
     );
     expect(input.inputType).to.equals(INPUT_TYPE_PATH);
     expect(input.filename).to.equals("default_sample.jpg");
@@ -58,11 +70,11 @@ describe("Test different types of input", () => {
 
   it("should accept TIFF from a path", async () => {
     const input = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/receipt.tif"),
+      inputPath: path.join(resourcesPath, "file_types/receipt.tif"),
     });
     await input.init();
-    const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/file_types/receipt.tif")
+    const expectedResult = await fs.readFile(
+      path.join(resourcesPath, "file_types/receipt.tif")
     );
     expect(input.inputType).to.equals(INPUT_TYPE_PATH);
     expect(input.filename).to.equals("receipt.tif");
@@ -72,11 +84,11 @@ describe("Test different types of input", () => {
 
   it("should accept HEIC from a path", async () => {
     const input = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/receipt.heic"),
+      inputPath: path.join(resourcesPath, "file_types/receipt.heic"),
     });
     await input.init();
-    const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/file_types/receipt.heic")
+    const expectedResult = await fs.readFile(
+      path.join(resourcesPath, "file_types/receipt.heic")
     );
     expect(input.inputType).to.equals(INPUT_TYPE_PATH);
     expect(input.filename).to.equals("receipt.heic");
@@ -85,8 +97,8 @@ describe("Test different types of input", () => {
   });
 
   it("should accept read streams", async () => {
-    const filePath = path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg");
-    const stream = fs.createReadStream(filePath);
+    const filePath = path.join(resourcesPath, "products/expense_receipts/default_sample.jpg");
+    const stream = createReadStream(filePath);
     const filename = "default_sample.jpg";
     const input = new StreamInput({
       inputStream: stream,
@@ -96,13 +108,13 @@ describe("Test different types of input", () => {
     expect(input.inputType).to.equals(INPUT_TYPE_STREAM);
     expect(input.filename).to.equals(filename);
     expect(input.mimeType).to.equals("image/jpeg");
-    const expectedResult = await fs.promises.readFile(filePath);
+    const expectedResult = await fs.readFile(filePath);
     expect(input.fileObject.toString()).to.eqls(expectedResult.toString());
   });
 
   it("should accept raw bytes", async () => {
-    const filePath = path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg");
-    const inputBytes = await fs.promises.readFile(filePath);
+    const filePath = path.join(resourcesPath, "products/expense_receipts/default_sample.jpg");
+    const inputBytes = await fs.readFile(filePath);
     // don't provide an extension to see if we can detect MIME
     // type based on contents
     const filename = "receipt";
@@ -114,7 +126,7 @@ describe("Test different types of input", () => {
     expect(input.inputType).to.equals(INPUT_TYPE_BYTES);
     expect(input.filename).to.equals(filename);
     expect(input.mimeType).to.equals("image/jpeg");
-    const expectedResult = await fs.promises.readFile(filePath);
+    const expectedResult = await fs.readFile(filePath);
     expect(input.fileObject.toString()).to.eqls(expectedResult.toString());
   });
 
@@ -129,8 +141,8 @@ describe("Test different types of input", () => {
   it("should accept a Buffer", async () => {
     const filename = "invoice_01.pdf";
     const buffer = Buffer.from(
-      await fs.promises.readFile(
-        path.join(__dirname, "../data/products/invoices/invoice_10p.pdf")
+      await fs.readFile(
+        path.join(resourcesPath, "products/invoices/invoice_10p.pdf")
       )
     );
     const input = new BufferInput({
@@ -142,5 +154,112 @@ describe("Test different types of input", () => {
     expect(input.filename).to.equals(filename);
     expect(input.isPdf()).to.be.true;
     expect(input.fileObject).to.be.instanceOf(Buffer);
+  });
+
+
+
+  it('Image Quality Compress From Input Source', async () => {
+    const receiptInput = new PathInput({ inputPath: path.join(resourcesPath, 'file_types/receipt.jpg')});
+    await receiptInput.init();
+    await receiptInput.compress(40);
+    await fs.writeFile(path.join(outputPath, 'compress_indirect.jpg'), receiptInput.fileObject);
+
+    const initialFileStats = await fs.stat(path.join(resourcesPath, 'file_types/receipt.jpg'));
+    const renderedFileStats = await fs.stat(path.join(outputPath, 'compress_indirect.jpg'));
+    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+  });
+
+  it('Image Quality Compresses From Compressor', async () => {
+    const receiptInput = new PathInput({ inputPath: path.join(resourcesPath, 'file_types/receipt.jpg') });
+    await receiptInput.init();
+    const compresses = [
+      await compressImage(receiptInput.fileObject, 100),
+      await compressImage(receiptInput.fileObject),
+      await compressImage(receiptInput.fileObject, 50),
+      await compressImage(receiptInput.fileObject, 10),
+      await compressImage(receiptInput.fileObject, 1)
+    ];
+
+    const fileNames = ['compress100.jpg', 'compress75.jpg', 'compress50.jpg', 'compress10.jpg', 'compress1.jpg'];
+    for (let i = 0; i < compresses.length; i++) {
+      await fs.writeFile(path.join(outputPath, fileNames[i]), compresses[i]);
+    }
+
+    const initialFileStats = await fs.stat(path.join(resourcesPath, 'file_types/receipt.jpg'));
+    const renderedFileStats = await Promise.all(
+      fileNames.map(fileName => fs.stat(path.join(outputPath, fileName)))
+    );
+
+    expect(initialFileStats.size).to.be.lessThan(renderedFileStats[0].size);
+    expect(initialFileStats.size).to.be.lessThan(renderedFileStats[1].size);
+    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
+    expect(renderedFileStats[2].size).to.be.greaterThan(renderedFileStats[3].size);
+    expect(renderedFileStats[3].size).to.be.greaterThan(renderedFileStats[4].size);
+  });
+
+  it('Image Resize From InputSource', async () => {
+    const imageResizeInput = new PathInput({ inputPath: path.join(resourcesPath, 'file_types/receipt.jpg') });
+    await imageResizeInput.init();
+
+    await imageResizeInput.compress(75, 250, 1000);
+    await fs.writeFile(path.join(outputPath, 'resize_indirect.jpg'), imageResizeInput.fileObject);
+
+    const initialFileStats = await fs.stat(path.join(resourcesPath, 'file_types/receipt.jpg'));
+    const renderedFileStats = await fs.stat(path.join(outputPath, 'resize_indirect.jpg'));
+    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+
+    const metadata = await sharp(imageResizeInput.fileObject).metadata();
+    expect(metadata.width).to.be.equals(250);
+    expect(metadata.height).to.be.equals(333);
+  });
+
+  it('Image Resize From Compressor', async () => {
+    const imageResizeInput = new PathInput({ inputPath: path.join(resourcesPath, 'file_types/receipt.jpg') });
+    await imageResizeInput.init();
+
+    const resizes = [
+      await compressImage(imageResizeInput.fileObject, 75, 500),
+      await compressImage(imageResizeInput.fileObject, 75, 250, 500),
+      await compressImage(imageResizeInput.fileObject, 75, 500, 250),
+      await compressImage(imageResizeInput.fileObject, 75, null, 250)
+    ];
+
+    const fileNames = ['resize500xnull.jpg', 'resize250x500.jpg', 'resize500x250.jpg', 'resizenullx250.jpg'];
+    for (let i = 0; i < resizes.length; i++) {
+      await fs.writeFile(path.join(outputPath, fileNames[i]), resizes[i]);
+    }
+
+    const initialFileStats = await fs.stat(path.join(resourcesPath, 'file_types/receipt.jpg'));
+    const renderedFileStats = await Promise.all(
+      fileNames.map(fileName => fs.stat(path.join(outputPath, fileName)))
+    );
+
+    expect(initialFileStats.size).to.be.greaterThan(renderedFileStats[0].size);
+    expect(renderedFileStats[0].size).to.be.greaterThan(renderedFileStats[1].size);
+    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
+    expect(renderedFileStats[2].size).to.be.equals(renderedFileStats[3].size);
+  });
+
+  after (async function() {
+    const createdFiles: string[] = [
+      "compress1.jpg",
+      "compress10.jpg",
+      "compress50.jpg",
+      "compress75.jpg",
+      "compress100.jpg",
+      "compress_indirect.jpg",
+      "resize250x500.jpg",
+      "resize500x250.jpg",
+      "resize500xnull.jpg",
+      "resize_indirect.jpg",
+      "resizenullx250.jpg",
+    ];
+    for (const filePath of createdFiles) {
+      try {
+        await fs.unlink(path.join(resourcesPath, "output", filePath));
+      } catch (error){
+        throw new MindeeError(`Error during tests, Could not delete file '${filePath}'.`);
+      }
+    }
   });
 });
