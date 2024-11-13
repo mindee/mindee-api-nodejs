@@ -1,7 +1,9 @@
 export * as barcodeReader from "./barcodeReader/internal";
 export * as billOfLading from "./billOfLading/internal";
+export * as businessCard from "./businessCard/internal";
 export * as cropper from "./cropper/internal";
 export * as custom from "./custom/internal";
+export * as deliveryNote from "./deliveryNote/internal";
 export * as eu from "./eu/internal";
 export * as financialDocument from "./financialDocument/internal";
 export * as fr from "./fr/internal";

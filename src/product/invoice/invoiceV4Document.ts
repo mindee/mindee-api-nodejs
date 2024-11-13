@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Invoice API version 4.8 document data.
+ * Invoice API version 4.9 document data.
  */
 export class InvoiceV4Document implements Prediction {
   /** The customer's address used for billing. */

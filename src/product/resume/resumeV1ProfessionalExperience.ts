@@ -11,6 +11,8 @@ export class ResumeV1ProfessionalExperience {
   contractType: string | null;
   /** The specific department or division within the company. */
   department: string | null;
+  /** The description of the professional experience as written in the document. */
+  description: string | null;
   /** The name of the company or organization. */
   employer: string | null;
   /** The month when the professional experience ended. */
@@ -36,6 +38,7 @@ export class ResumeV1ProfessionalExperience {
   constructor({ prediction = {} }: StringDict) {
     this.contractType = prediction["contract_type"];
     this.department = prediction["department"];
+    this.description = prediction["description"];
     this.employer = prediction["employer"];
     this.endMonth = prediction["end_month"];
     this.endYear = prediction["end_year"];
@@ -63,6 +66,11 @@ export class ResumeV1ProfessionalExperience {
         this.department.length <= 10 ?
           cleanSpecialChars(this.department) :
           cleanSpecialChars(this.department).slice(0, 7) + "..." :
+        "",
+      description: this.description ?
+        this.description.length <= 36 ?
+          cleanSpecialChars(this.description) :
+          cleanSpecialChars(this.description).slice(0, 33) + "..." :
         "",
       employer: this.employer ?
         this.employer.length <= 25 ?
@@ -107,6 +115,8 @@ export class ResumeV1ProfessionalExperience {
       printable.contractType +
       ", Department: " +
       printable.department +
+      ", Description: " +
+      printable.description +
       ", Employer: " +
       printable.employer +
       ", End Month: " +
@@ -132,6 +142,8 @@ export class ResumeV1ProfessionalExperience {
       printable.contractType.padEnd(15) +
       " | " +
       printable.department.padEnd(10) +
+      " | " +
+      printable.description.padEnd(36) +
       " | " +
       printable.employer.padEnd(25) +
       " | " +
