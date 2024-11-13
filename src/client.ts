@@ -278,11 +278,11 @@ export class Client {
    */
   #setAsyncParams(asyncParams: OptionalAsyncOptions): AsyncOptions {
     const minDelaySec = 1;
-    const minInitialDelay = 2;
+    const minInitialDelay = 1;
     const minRetries = 2;
     const newAsyncParams = { ...asyncParams };
-    newAsyncParams.delaySec ??= 2;
-    newAsyncParams.initialDelaySec ??= 4;
+    newAsyncParams.delaySec ??= 1.5;
+    newAsyncParams.initialDelaySec ??= 2;
     newAsyncParams.maxRetries ??= 60;
 
     if (newAsyncParams.delaySec < minDelaySec) {
