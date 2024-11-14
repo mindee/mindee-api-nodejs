@@ -11,7 +11,7 @@ import { ResumeV1Certificate } from "./resumeV1Certificate";
 import { ClassificationField, StringField } from "../../parsing/standard";
 
 /**
- * Resume API version 1.0 document data.
+ * Resume API version 1.1 document data.
  */
 export class ResumeV1Document implements Prediction {
   /** The location information of the candidate, including city, state, and country. */
@@ -224,10 +224,11 @@ export class ResumeV1Document implements Prediction {
     }
     let professionalExperiencesSummary:string = "";
     if (this.professionalExperiences && this.professionalExperiences.length > 0) {
-      const professionalExperiencesColSizes:number[] = [17, 12, 27, 11, 10, 22, 13, 12];
+      const professionalExperiencesColSizes:number[] = [17, 12, 38, 27, 11, 10, 22, 13, 12];
       professionalExperiencesSummary += "\n" + lineSeparator(professionalExperiencesColSizes, "-") + "\n  ";
       professionalExperiencesSummary += "| Contract Type   ";
       professionalExperiencesSummary += "| Department ";
+      professionalExperiencesSummary += "| Description                          ";
       professionalExperiencesSummary += "| Employer                  ";
       professionalExperiencesSummary += "| End Month ";
       professionalExperiencesSummary += "| End Year ";

@@ -350,8 +350,8 @@ async function callEnqueueAndParse<T extends Inference>(
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
-      initialDelaySec: 4,
-      delaySec: 2,
+      initialDelaySec: 2,
+      delaySec: 1.5,
       maxRetries: 60,
     });
   } else {
@@ -359,8 +359,8 @@ async function callEnqueueAndParse<T extends Inference>(
       pageOptions: pageOptions,
       allWords: predictParams.allWords,
       cropper: predictParams.cropper,
-      initialDelaySec: 4,
-      delaySec: 2,
+      initialDelaySec: 2,
+      delaySec: 1.5,
       maxRetries: 60,
     });
     if (!response.document) {

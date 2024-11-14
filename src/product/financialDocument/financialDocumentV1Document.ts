@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Financial Document API version 1.10 document data.
+ * Financial Document API version 1.11 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
   /** The customer's address used for billing. */

@@ -278,18 +278,18 @@ export class Client {
    */
   #setAsyncParams(asyncParams: OptionalAsyncOptions): AsyncOptions {
     const minDelaySec = 1;
-    const minInitialDelay = 2;
+    const minInitialDelay = 1;
     const minRetries = 2;
     const newAsyncParams = { ...asyncParams };
-    newAsyncParams.delaySec ??= 2;
-    newAsyncParams.initialDelaySec ??= 4;
+    newAsyncParams.delaySec ??= 1.5;
+    newAsyncParams.initialDelaySec ??= 2;
     newAsyncParams.maxRetries ??= 60;
 
     if (newAsyncParams.delaySec < minDelaySec) {
-      throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} seconds.`);
+      throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} second(s).`);
     }
     if (newAsyncParams.initialDelaySec < minInitialDelay) {
-      throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} seconds.`);
+      throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} second(s).`);
     }
     if (newAsyncParams.maxRetries < minRetries) {
       throw Error(`Cannot set retry to less than ${minRetries}.`);
@@ -318,8 +318,8 @@ export class Client {
       fullText: undefined,
       cropper: undefined,
       pageOptions: undefined,
-      initialDelaySec: 4,
-      delaySec: 2,
+      initialDelaySec: 2,
+      delaySec: 1.5,
       maxRetries: 60,
       initialTimerOptions: undefined,
       recurringTimerOptions: undefined,

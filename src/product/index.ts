@@ -1,7 +1,9 @@
 export { BarcodeReaderV1 } from "./barcodeReader/barcodeReaderV1";
 export { BillOfLadingV1 } from "./billOfLading/billOfLadingV1";
+export { BusinessCardV1 } from "./businessCard/businessCardV1";
 export { CropperV1 } from "./cropper/cropperV1";
 export { CustomV1 } from "./custom/customV1";
+export { DeliveryNoteV1 } from "./deliveryNote/deliveryNoteV1";
 export { FinancialDocumentV1 } from "./financialDocument/financialDocumentV1";
 export { GeneratedV1 } from "./generated/generatedV1";
 export { InternationalIdV1 } from "./internationalId/internationalIdV1";
@@ -17,4 +19,5 @@ export { ReceiptV5 } from "./receipt/receiptV5";
 export { ResumeV1 } from "./resume/resumeV1";
 export * as eu from "./eu";
 export * as fr from "./fr";
+export * as ind from "./ind";
 export * as us from "./us";
