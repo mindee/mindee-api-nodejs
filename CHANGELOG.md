@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v.4.18.0 - 2024-11-14
+### Changes
+* :sparkles: add support for business cards V1
+* :sparkles: add support for delivery note V1.1
+* :sparkles: add support for indian passport V1
+* :sparkles: add support for resume V1.1
+### Fixes
+* :recycle: adjust default values for async delays
+* :recycle: remove unused dependencies
+
+
 ## v4.17.1 - 2024-10-17
 ### Fixes
 * :bug: fix invalid handling of boolean fields & fix accidental coercion into numbers in `GeneratedObjectField` fields
