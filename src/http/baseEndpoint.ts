@@ -2,6 +2,8 @@ import { ApiSettings } from "./apiSettings";
 import { logger } from "../logger";
 import { IncomingMessage, ClientRequest } from "http";
 import { request, RequestOptions } from "https";
+import { InputSource, PageOptions } from "../input";
+import { LocalInputSource } from "../input/base";
 
 
 export interface EndpointResponse {
@@ -16,10 +18,26 @@ export abstract class BaseEndpoint {
   /** Settings relating to the API. */
   settings: ApiSettings;
 
+  /** Entire root of the URL for API calls. */
+  urlRoot: string;
+
   protected constructor(
-    settings: ApiSettings
+    settings: ApiSettings,
+    urlRoot: string
   ) {
     this.settings = settings;
+    this.urlRoot = urlRoot;
+  }
+
+  /**
+   * Cuts a document's pages according to the given options.
+   * @param inputDoc input document.
+   * @param pageOptions page cutting options.
+   */
+  protected async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
+    if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
+      await inputDoc.cutPdf(pageOptions);
+    }
   }
 
   /**

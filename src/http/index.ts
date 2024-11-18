@@ -22,3 +22,4 @@ export {
   isValidAsyncResponse,
   cleanRequestData,
 } from "./responseValidation";
+export { PredictParams, WorkflowParams } from "./httpParams";

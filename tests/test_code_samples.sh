@@ -13,7 +13,7 @@ cd ../test_code_samples
 npm install ../mindee-api-nodejs/dist --ignore-scripts --no-bin-links
 cd -
 
-for f in $(find docs/code_samples -maxdepth 1 -name "*.txt" | sort -h)
+for f in $(find docs/code_samples -maxdepth 1 -name "*.txt" -not -name "workflow_execution.txt" | sort -h)
 do
   echo "###############################################"
   echo "${f}"

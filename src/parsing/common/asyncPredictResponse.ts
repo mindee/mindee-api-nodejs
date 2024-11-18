@@ -23,12 +23,12 @@ export class Job {
   milliSecsTaken?: number;
 
   constructor(jsonResponse: StringDict) {
-    this.issuedAt = this.datetimeWithTimezone(jsonResponse["issued_at"]);
+    this.issuedAt = datetimeWithTimezone(jsonResponse["issued_at"]);
     if (
       jsonResponse["available_at"] !== undefined &&
       jsonResponse["available_at"] !== null
     ) {
-      this.availableAt = this.datetimeWithTimezone(
+      this.availableAt = datetimeWithTimezone(
         jsonResponse["available_at"]
       );
     }
@@ -39,14 +39,14 @@ export class Job {
         this.availableAt.getTime() - this.issuedAt.getTime();
     }
   }
+}
 
-  // Hideous thing to make sure dates sent back by the server are parsed correctly in UTC.
-  protected datetimeWithTimezone(date: string): Date {
-    if (date.search(/\+[0-9]{2}:[0-9]{2}$/) === -1) {
-      date += "+00:00";
-    }
-    return new Date(date);
+// Hideous thing to make sure dates sent back by the server are parsed correctly in UTC.
+export function datetimeWithTimezone(date: string): Date {
+  if (date.search(/\+[0-9]{2}:[0-9]{2}$/) === -1) {
+    date += "+00:00";
   }
+  return new Date(date);
 }
 
 /** Wrapper for asynchronous jobs and parsing results.
