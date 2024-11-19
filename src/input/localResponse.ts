@@ -48,7 +48,7 @@ export class LocalResponse {
     try {
       const content = this.file.toString("utf-8");
       return JSON.parse(content);
-    } catch (error) {
+    } catch {
       throw new MindeeError("File is not a valid dictionary.");
     }
   }
@@ -64,7 +64,7 @@ export class LocalResponse {
       const hmac = crypto.createHmac(algorithm, secretKey);
       hmac.update(this.file);
       return hmac.digest("hex");
-    } catch (error) {
+    } catch {
       throw new MindeeError("Could not get HMAC signature from payload.");
     }
   }

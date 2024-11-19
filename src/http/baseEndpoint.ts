@@ -64,7 +64,7 @@ export abstract class BaseEndpoint {
             logger.error("Could not construct the return object.");
             reject(error);
           }
-        } catch (error) {
+        } catch {
           logger.error("Could not parse the return as JSON.");
           logger.debug(responseBody);
           resolve({
