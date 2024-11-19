@@ -1,6 +1,12 @@
 # CHANGELOG
 
-## v.4.18.0 - 2024-11-14
+## v4.18.1 - 2024-11-19
+### Fixes
+* :bug: fix composed API server response not properly filling full_text_ocr in pages
+* :arrow_up: bump dependencies
+
+
+## v4.18.0 - 2024-11-14
 ### Changes
 * :sparkles: add support for business cards V1
 * :sparkles: add support for delivery note V1.1
