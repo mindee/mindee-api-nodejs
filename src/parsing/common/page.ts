@@ -79,9 +79,7 @@ ${this.prediction.toString()}
     if (!("extras" in rawPrediction) || !("full_text_ocr" in rawPrediction["extras"])) {
       return;
     }
-    const fullTextOcr = rawPrediction.map(
-      (e: StringDict) => e["extras"]["full_text_ocr"]["content"]
-    ).join("\n");
+    const fullTextOcr = rawPrediction["extras"]["full_text_ocr"]["content"];
     const artificialTextObj = {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       "full_text_ocr": {
