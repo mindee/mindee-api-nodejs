@@ -4,6 +4,7 @@ import { PageOptions } from "./pageOptions";
 import { extractPages } from "../pdf";
 import { logger } from "../logger";
 import { errorHandler } from "../errors/handler";
+import { compressImage } from "../image/imageCompressor";
 
 /**
  * @param {string} inputType - the type of input used in file ("base64", "path", "dummy").
@@ -111,5 +112,25 @@ export abstract class LocalInputSource extends InputSource {
     }
     const processedPdf = await extractPages(this.fileObject, pageOptions);
     this.fileObject = processedPdf.file;
+  }
+
+  async compress(
+    quality: number = 85,
+    maxWidth: number | null = null,
+    maxHeight: number | null = null,
+    // forceSourceText: boolean = false,
+    // disableSourceText: boolean = true
+  ) {
+    if (this.isPdf()){
+      // TODO
+    } else {
+      let buffer: Buffer;
+      if (typeof this.fileObject === "string") {
+        buffer = Buffer.from(this.fileObject);
+      } else {
+        buffer = this.fileObject;
+      }
+      this.fileObject = await compressImage(buffer, quality, maxWidth, maxHeight);
+    }
   }
 }
