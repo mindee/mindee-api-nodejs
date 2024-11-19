@@ -219,7 +219,7 @@ export class Client {
         return new AsyncPredictResponse(productClass, localResponse.asDict());
       }
       return new PredictResponse(productClass, localResponse.asDict());
-    } catch (err) {
+    } catch {
       throw new MindeeError("No prediction found in local response.");
     }
   }

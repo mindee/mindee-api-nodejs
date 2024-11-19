@@ -16,14 +16,14 @@ export function handleError(
     } else {
       code = response.data.api_request["status_code"];
     }
-  } catch (e) {
+  } catch {
     code = 500;
   }
   let errorObj: StringDict;
   try {
     //Regular instances where the returned error is in JSON format.
     errorObj = response.data.api_request.error;
-  } catch (err) {
+  } catch {
     //Rare instances where errors are returned as HTML instead of JSON.
     if (!("reconstructedResponse" in response.data)) {
       response.data.reconstructedResponse = "";

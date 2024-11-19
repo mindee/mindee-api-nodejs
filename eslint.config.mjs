@@ -56,7 +56,13 @@ export default [{
         }],
 
         camelcase: "error",
-        "comma-dangle": ["error", "always-multiline"],
+        "comma-dangle": ["error", {
+            "arrays": "only-multiline",
+            "objects": "only-multiline",
+            "imports": "only-multiline",
+            "exports": "only-multiline",
+            "functions": "only-multiline"
+        }],
         eqeqeq: "error",
         "no-else-return": "error",
 
@@ -64,6 +70,8 @@ export default [{
             argsIgnorePattern: "^_",
         }],
 
+        "no-unused-expressions": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
         "no-eval": "error",
         "no-unexpected-multiline": "off",
         indent: ["error", 2],
