@@ -1,5 +1,9 @@
 import { StringDict } from "./stringDict";
 
+/**
+ * Representation of an execution's file info.
+ * @category Workflow
+ */
 export class ExecutionFile {
 
   /** File name. */

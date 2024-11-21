@@ -4,7 +4,10 @@ import { ExecutionFile } from "./executionFile";
 import { StringDict } from "./stringDict";
 import { ExecutionPriority } from "./executionPriority";
 
-
+/**
+ * Representation of an execution for a workflow.
+ * @category Workflow
+ */
 export class Execution<T extends Inference> {
   /** Identifier for the batch to which the execution belongs. */
   batchName: string;

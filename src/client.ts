@@ -64,6 +64,7 @@ export interface PredictOptions extends BaseOptions {
 
 /**
  * Options relating to workflows.
+ * @category Workflow
  */
 export interface WorkflowOptions extends BaseOptions {
   /**
@@ -257,9 +258,9 @@ export class Client {
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param inputSource file to send to the API.
-   * @param workflowId ID of the workflow
+   * @param workflowId ID of the workflow.
    * @param params parameters relating to prediction options.
-   * @category Asynchronous
+   * @category Workflow
    * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
   async executeWorkflow(

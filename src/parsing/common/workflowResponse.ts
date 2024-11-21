@@ -7,6 +7,7 @@ import { Inference } from "./inference";
 /** Wrapper for workflow requests.
  *
  * @category API Response
+ * @category Workflow
  */
 export class WorkflowResponse<T extends Inference> extends ApiResponse {
   /**
