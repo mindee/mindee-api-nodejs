@@ -10,6 +10,14 @@ export function isValidSyncResponse(response: EndpointResponse): boolean {
   if (!response.messageObj || !response.messageObj.statusCode) {
     return false;
   }
+  if (
+    response.data &&
+    response.data["api_request"] &&
+    response.data["api_request"]["status_code"] &&
+    response.data["api_request"]["status_code"] > 399
+  ) {
+    return false;
+  }
   return !(
     isNaN(response.messageObj.statusCode) ||
     parseInt(response.messageObj.statusCode.toString()) < 200 ||
