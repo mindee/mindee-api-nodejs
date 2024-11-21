@@ -14,8 +14,8 @@ const inputSource = mindeeClient.docFromPath(
 
 // Parse the file asynchronously.
 const asyncApiResponse = mindeeClient.executeWorkflow(
-  workflowId,
   inputSource,
+  workflowId,
   // Optionally: send an alias & priority
   // { alias: "my-alias", priority: ExecutionPriority.low }
 );

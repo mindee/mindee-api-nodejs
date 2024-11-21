@@ -14,8 +14,8 @@ describe("Workflow calls", () => {
     await sample.init();
     const currentDateTime = new Date().toISOString().replace(/T/, "-").replace(/\..+/, "");
     const response = await client.executeWorkflow(
-      process.env["WORKFLOW_ID"] ?? "",
       sample,
+      process.env["WORKFLOW_ID"] ?? "",
       { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low });
     expect(response.execution.priority).to.equal(ExecutionPriority.low);
     expect(response.execution.file.alias).to.equal(`node-${currentDateTime}`);

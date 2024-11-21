@@ -256,15 +256,15 @@ export class Client {
 
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param workflowId ID of the workflow
    * @param inputSource file to send to the API.
+   * @param workflowId ID of the workflow
    * @param params parameters relating to prediction options.
    * @category Asynchronous
    * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
   async executeWorkflow(
-    workflowId: string,
     inputSource: InputSource,
+    workflowId: string,
     params: WorkflowOptions = {}
   ): Promise<WorkflowResponse<GeneratedV1>> {
     const workflowEndpoint = new WorkflowEndpoint(this.#buildApiSettings(), workflowId);
