@@ -4,7 +4,7 @@ import { Execution } from "./execution";
 import { Inference } from "./inference";
 
 
-/** Base wrapper for API requests.
+/** Wrapper for workflow requests.
  *
  * @category API Response
  */
