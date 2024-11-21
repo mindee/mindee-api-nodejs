@@ -1,4 +1,4 @@
-const nock = require('nock');
+const nock = require("nock");
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../src/";
@@ -27,8 +27,8 @@ describe("HTTP calls", () => {
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp400Error");
       expect(error.code).to.be.equals(400);
-      expect(error.message).to.be.null;
-      expect(error.details).to.deep.equal({ document: ['error message'] });
+      expect(error.message).to.be.undefined;
+      expect(error.details).to.deep.equal({ document: ["error message"] });
     }
   });
 

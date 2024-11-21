@@ -93,15 +93,19 @@ export class Endpoint extends BaseEndpoint {
     return response;
   }
 
-  private extractStatusMessage(response: EndpointResponse): string {
+  private extractStatusMessage(response: EndpointResponse): string | undefined {
     if (response.messageObj?.statusMessage !== undefined && response.messageObj?.statusMessage !== null) {
       return response.messageObj?.statusMessage;
     }
-    const errorDetails = response.data?.api_request?.error?.details;
-    if (errorDetails) {
-      return JSON.stringify(errorDetails);
+    const errorDetail = response.data?.api_request?.error?.detail;
+    if (errorDetail) {
+      return JSON.stringify(errorDetail);
     }
-    return "Unknown error";
+    const errorMessage = response.data?.api_request?.error?.message;
+    if (errorMessage) {
+      return JSON.stringify(errorMessage);
+    }
+    return undefined;
   }
 
   /**
