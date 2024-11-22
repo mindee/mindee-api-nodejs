@@ -13,7 +13,7 @@ export function handleError(
     if (response.data.api_request["status_code"] === 200 && response.data?.job?.error?.code) {
       code = 500;
       response.data.api_request.error = response.data.job.error;
-    } else {
+    } else if (response.data) {
       code = response.data.api_request["status_code"];
     }
   } catch {

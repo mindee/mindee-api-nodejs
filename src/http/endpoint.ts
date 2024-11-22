@@ -1,8 +1,7 @@
 import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { InputSource } from "../input";
-import { PageOptions } from "../input";
+import { InputSource, PageOptions } from "../input";
 import { LocalInputSource } from "../input/base";
 import { handleError } from "./error";
 import { ApiSettings } from "./apiSettings";
@@ -64,7 +63,7 @@ export class Endpoint extends BaseEndpoint {
       params.cropper
     );
     if (!isValidSyncResponse(response)) {
-      handleError(this.urlName, response, response.messageObj?.statusMessage);
+      handleError(this.urlName, response, this.extractStatusMessage(response));
     }
 
     return response;
@@ -89,9 +88,24 @@ export class Endpoint extends BaseEndpoint {
       params.cropper
     );
     if (!isValidAsyncResponse(response)) {
-      handleError(this.urlName, response, response.messageObj?.statusMessage);
+      handleError(this.urlName, response, this.extractStatusMessage(response));
     }
     return response;
+  }
+
+  private extractStatusMessage(response: EndpointResponse): string | undefined {
+    if (response.messageObj?.statusMessage !== undefined && response.messageObj?.statusMessage !== null) {
+      return response.messageObj?.statusMessage;
+    }
+    const errorDetail = response.data?.api_request?.error?.detail;
+    if (errorDetail) {
+      return JSON.stringify(errorDetail);
+    }
+    const errorMessage = response.data?.api_request?.error?.message;
+    if (errorMessage) {
+      return JSON.stringify(errorMessage);
+    }
+    return undefined;
   }
 
   /**
@@ -105,7 +119,7 @@ export class Endpoint extends BaseEndpoint {
     const queueResponse: EndpointResponse = await this.#documentQueueReqGet(queueId);
     const queueStatusCode = queueResponse.messageObj.statusCode;
     if (!isValidAsyncResponse(queueResponse)) {
-      handleError(this.urlName, queueResponse, queueResponse.messageObj?.statusMessage);
+      handleError(this.urlName, queueResponse, this.extractStatusMessage(queueResponse));
     }
     if (
       queueStatusCode === 302 &&
@@ -128,7 +142,7 @@ export class Endpoint extends BaseEndpoint {
       documentId,
     );
     if (!isValidAsyncResponse(response)) {
-      handleError("document", response, response.messageObj?.statusMessage);
+      handleError("document", response, this.extractStatusMessage(response));
     }
 
     return response;
@@ -148,7 +162,7 @@ export class Endpoint extends BaseEndpoint {
       feedback,
     );
     if (!isValidSyncResponse(response)) {
-      handleError("feedback", response, response.messageObj?.statusMessage);
+      handleError("feedback", response, this.extractStatusMessage(response));
     }
 
     return response;
