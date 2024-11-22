@@ -50,10 +50,10 @@ export class WorkflowEndpoint extends BaseEndpoint {
 
   /**
    * Make a request to POST a document for workflow.
-   * @param input
-   * @param alias
-   * @param priority
-   * @param fullText
+   * @param input Input document.
+   * @param alias Alias for the document.
+   * @param priority Priority for the document.
+   * @param fullText Whether to include the fulltext in the response.
    */
   #workflowReqPost(
     input: InputSource,
