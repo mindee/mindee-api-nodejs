@@ -75,6 +75,10 @@ export interface WorkflowOptions extends BaseOptions {
    * Priority to give to the document.
    */
   priority?: ExecutionPriority;
+  /**
+   * A unique, encrypted URL for accessing the document validation interface without requiring authentication.
+   */
+  publicUrl?: string;
 }
 
 /**

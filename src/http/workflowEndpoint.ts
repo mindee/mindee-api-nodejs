@@ -39,7 +39,8 @@ export class WorkflowEndpoint extends BaseEndpoint {
       params.inputDoc,
       params.alias,
       params.priority,
-      params.fullText
+      params.fullText,
+      params.publicUrl
     );
     if (!isValidSyncResponse(response)) {
       handleError(this.urlRoot, response, response.messageObj?.statusMessage);
@@ -54,14 +55,16 @@ export class WorkflowEndpoint extends BaseEndpoint {
    * @param alias Alias for the document.
    * @param priority Priority for the document.
    * @param fullText Whether to include the fulltext in the response.
+   * @param publicUrl Optional verification Url.
    */
   #workflowReqPost(
     input: InputSource,
     alias: string | null = null,
     priority: ExecutionPriority | null = null,
-    fullText: boolean = false
+    fullText: boolean = false,
+    publicUrl: string | null = null
   ): Promise<EndpointResponse> {
-    return this.sendFileForPrediction(input, alias, priority, fullText);
+    return this.sendFileForPrediction(input, alias, priority, fullText, publicUrl);
   }
 
   /**
@@ -70,12 +73,14 @@ export class WorkflowEndpoint extends BaseEndpoint {
    * @param alias
    * @param priority
    * @param fullText
+   * @param publicUrl
    */
   protected sendFileForPrediction(
     input: InputSource,
     alias: string | null = null,
     priority: ExecutionPriority | null = null,
-    fullText: boolean = false
+    fullText: boolean = false,
+    publicUrl: string | null = null,
   ): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const searchParams = new URLSearchParams();
@@ -95,6 +100,9 @@ export class WorkflowEndpoint extends BaseEndpoint {
 
       if (alias) {
         form.append("alias", alias);
+      }
+      if (publicUrl) {
+        form.append("public_url", publicUrl);
       }
       if (priority) {
         form.append("priority", priority.toString());

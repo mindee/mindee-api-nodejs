@@ -15,4 +15,5 @@ export interface PredictParams extends HTTPParams {
 export interface WorkflowParams extends HTTPParams {
   alias?: string;
   priority?: ExecutionPriority;
+  publicUrl?: string;
 }
