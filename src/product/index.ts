@@ -6,7 +6,6 @@ export { CustomV1 } from "./custom/customV1";
 export { DeliveryNoteV1 } from "./deliveryNote/deliveryNoteV1";
 export { FinancialDocumentV1 } from "./financialDocument/financialDocumentV1";
 export { GeneratedV1 } from "./generated/generatedV1";
-export { InternationalIdV1 } from "./internationalId/internationalIdV1";
 export { InternationalIdV2 } from "./internationalId/internationalIdV2";
 export { InvoiceV4 } from "./invoice/invoiceV4";
 export { InvoiceSplitterV1 } from "./invoiceSplitter/invoiceSplitterV1";
