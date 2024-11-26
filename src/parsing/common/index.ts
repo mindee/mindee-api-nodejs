@@ -1,8 +1,11 @@
 export { Document } from "./document";
+export { Execution } from "./execution";
+export { ExecutionFile } from "./executionFile";
+export { ExecutionPriority } from "./executionPriority";
+export { Inference } from "./inference";
 export { FeedbackResponse } from "./feedback/feedbackResponse";
 export { OrientationField } from "./orientation";
 export { StringDict } from "./stringDict";
-export { Inference } from "./inference";
 export { AsyncPredictResponse } from "./asyncPredictResponse";
 export { PredictResponse } from "./predictResponse";
 export { Prediction } from "./prediction";

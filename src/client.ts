@@ -11,19 +11,43 @@ import {
   UrlInput,
 } from "./input";
 import { ApiSettings, Endpoint, EndpointResponse, STANDARD_API_OWNER } from "./http";
-import { AsyncPredictResponse, FeedbackResponse, Inference, PredictResponse, StringDict } from "./parsing/common";
+import {
+  AsyncPredictResponse,
+  ExecutionPriority,
+  FeedbackResponse,
+  Inference,
+  PredictResponse,
+  StringDict
+} from "./parsing/common";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 import { InferenceFactory } from "./parsing/common/inference";
-import { CustomV1 } from "./product";
+import { CustomV1, GeneratedV1 } from "./product";
 
 import { setTimeout } from "node:timers/promises";
 import { MindeeError } from "./errors";
+import { WorkflowResponse } from "./parsing/common/workflowResponse";
+import { WorkflowEndpoint } from "./http/workflowEndpoint";
+
+/**
+ * Common options for workflows & predictions.
+ */
+interface BaseOptions {
+  /**
+   * Whether to include the full ocr text. Only available on compatible APIs.
+   */
+  fullText?: boolean;
+  /**
+   * If set, remove pages from the document as specified.
+   * This is done before sending the file to the server and is useful to avoid page limitations.
+   */
+  pageOptions?: PageOptions;
+}
 
 /**
  * Options relating to predictions.
  */
-export interface PredictOptions {
+export interface PredictOptions extends BaseOptions {
   /** A custom endpoint. */
   endpoint?: Endpoint;
   /**
@@ -33,18 +57,28 @@ export interface PredictOptions {
    */
   allWords?: boolean;
   /**
-   * Whether to include the full ocr text. Only available on compatible APIs.
-   */
-  fullText?: boolean;
-  /**
    * Whether to include cropper results for each page.
    */
   cropper?: boolean;
+}
+
+/**
+ * Options relating to workflows.
+ * @category Workflow
+ */
+export interface WorkflowOptions extends BaseOptions {
   /**
-   * If set, remove pages from the document as specified.
-   * This is done before sending the file to the server and is useful to avoid page limitations.
+   * Alias to give to the document.
    */
-  pageOptions?: PageOptions;
+  alias?: string;
+  /**
+   * Priority to give to the document.
+   */
+  priority?: ExecutionPriority;
+  /**
+   * A unique, encrypted URL for accessing the document validation interface without requiring authentication.
+   */
+  publicUrl?: string;
 }
 
 /**
@@ -224,6 +258,34 @@ export class Client {
     }
   }
 
+
+  /**
+   * Send the document to an asynchronous endpoint and return its ID in the queue.
+   * @param inputSource file to send to the API.
+   * @param workflowId ID of the workflow.
+   * @param params parameters relating to prediction options.
+   * @category Workflow
+   * @returns a `Promise` containing the job (queue) corresponding to a document.
+   */
+  async executeWorkflow(
+    inputSource: InputSource,
+    workflowId: string,
+    params: WorkflowOptions = {}
+  ): Promise<WorkflowResponse<GeneratedV1>> {
+    const workflowEndpoint = new WorkflowEndpoint(this.#buildApiSettings(), workflowId);
+    if (inputSource === undefined) {
+      throw new Error("The 'parse' function requires an input document.");
+    }
+    const rawResponse = await workflowEndpoint.executeWorkflow({
+      inputDoc: inputSource,
+      alias: params.alias,
+      priority: params.priority,
+      pageOptions: params?.pageOptions,
+      fullText: this.getBooleanParam(params.fullText),
+    });
+
+    return new WorkflowResponse<GeneratedV1>(GeneratedV1, rawResponse.data);
+  }
 
   /**
    * Fetch prediction results from a document already processed.

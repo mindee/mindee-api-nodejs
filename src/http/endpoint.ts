@@ -1,7 +1,7 @@
 import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { InputSource, PageOptions } from "../input";
+import { InputSource } from "../input";
 import { LocalInputSource } from "../input/base";
 import { handleError } from "./error";
 import { ApiSettings } from "./apiSettings";
@@ -9,14 +9,7 @@ import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
 import { StringDict } from "../parsing/common";
 import { ClientRequest } from "http";
 import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation";
-
-export interface PredictParams {
-  inputDoc: InputSource;
-  includeWords: boolean;
-  fullText: boolean;
-  pageOptions?: PageOptions;
-  cropper: boolean;
-}
+import { PredictParams } from "./httpParams";
 
 /**
  * Endpoint for a product (OTS or Custom).
@@ -28,8 +21,6 @@ export class Endpoint extends BaseEndpoint {
   owner: string;
   /** Product's version, as a string. */
   version: string;
-  /** Entire root of the URL for API calls. */
-  urlRoot: string;
 
   constructor(
     urlName: string,
@@ -37,15 +28,14 @@ export class Endpoint extends BaseEndpoint {
     version: string,
     settings: ApiSettings
   ) {
-    super(settings);
+    super(settings, `/v1/products/${owner}/${urlName}/v${version}`);
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
-    this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
   }
 
   /**
-   * Sends a prediction to the API and parses out the result.
+   * Sends a document to the API and parses out the result.
    * Throws an error if the server's response contains one.
    * @param {PredictParams} params parameters relating to prediction options.
    * @category Synchronous
@@ -54,7 +44,7 @@ export class Endpoint extends BaseEndpoint {
   async predict(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await this.#cutDocPages(params.inputDoc, params.pageOptions);
+      await super.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictReqPost(
       params.inputDoc,
@@ -79,7 +69,7 @@ export class Endpoint extends BaseEndpoint {
   async predictAsync(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await this.#cutDocPages(params.inputDoc, params.pageOptions);
+      await super.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictAsyncReqPost(
       params.inputDoc,
@@ -221,17 +211,6 @@ export class Endpoint extends BaseEndpoint {
       // potential ECONNRESET if we don't end the request.
       req.end();
     });
-  }
-
-  /**
-   * Cuts a document's pages according to the given options.
-   * @param inputDoc input document.
-   * @param pageOptions page cutting options.
-   */
-  async #cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
-    if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
-      await inputDoc.cutPdf(pageOptions);
-    }
   }
 
   /**
