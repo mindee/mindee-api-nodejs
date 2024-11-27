@@ -96,13 +96,13 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "fr-carte-vitale",
+    "fr-health-card",
     {
-      displayName: "FR Carte Vitale",
-      docClass: product.fr.CarteVitaleV1,
+      displayName: "FR Health Card",
+      docClass: product.fr.HealthCardV1,
       allWords: false,
-      async: false,
-      sync: true,
+      async: true,
+      sync: false,
     },
   ],
   [
@@ -126,13 +126,13 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "eu-driver-license",
+    "driver-license",
     {
-      displayName: "EU Driver License",
-      docClass: product.eu.DriverLicenseV1,
+      displayName: "Driver License",
+      docClass: product.DriverLicenseV1,
       allWords: false,
-      async: false,
-      sync: true,
+      async: true,
+      sync: false,
     },
   ],
   [
@@ -210,16 +210,6 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "US Bank Check",
       docClass: product.us.BankCheckV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "us-driver-license",
-    {
-      displayName: "US Driver License",
-      docClass: product.us.DriverLicenseV1,
       allWords: false,
       async: false,
       sync: true,
