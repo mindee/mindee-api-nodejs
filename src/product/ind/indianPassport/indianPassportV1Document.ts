@@ -10,7 +10,7 @@ import {
 } from "../../../parsing/standard";
 
 /**
- * Passport - India API version 1.0 document data.
+ * Passport - India API version 1.1 document data.
  */
 export class IndianPassportV1Document implements Prediction {
   /** The first line of the address of the passport holder. */
