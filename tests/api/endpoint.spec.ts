@@ -93,7 +93,7 @@ describe ("Endpoint parameters" , () => {
     expect(customEndpoint.settings.apiKey).to.equal("dummy-api-key");
   });
 
-  it ("should initialize default parameters properly", async () => {
+  it ("should initialize environment parameters properly", async () => {
     process.env.MINDEE_API_HOST = "dummy-host";
     process.env.MINDEE_API_KEY = "dummy-key";
     process.env.MINDEE_REQUEST_TIMEOUT = "30";
