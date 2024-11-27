@@ -205,6 +205,7 @@ export class Endpoint extends BaseEndpoint {
         headers: headers,
         hostname: this.settings.hostname,
         path: path,
+        timeout: this.settings.timeout,
       };
       const req = this.readResponse(options, resolve, reject);
       form.pipe(req);

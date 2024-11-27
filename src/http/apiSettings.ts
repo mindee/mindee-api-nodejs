@@ -6,6 +6,7 @@ import * as os from "os";
 export const API_KEY_ENVVAR_NAME: string = "MINDEE_API_KEY";
 export const API_HOST_ENVVAR_NAME: string = "MINDEE_API_HOST";
 export const STANDARD_API_OWNER: string = "mindee";
+export const TIMEOUT_DEFAULT: number = 120;
 const DEFAULT_MINDEE_API_HOST: string = "api.mindee.net";
 
 interface MindeeApiConstructorProps {
@@ -20,6 +21,7 @@ export class ApiSettings {
   apiKey: string;
   baseHeaders: Record<string, string>;
   hostname: string;
+  timeout: number;
 
   constructor({
     apiKey = "",
@@ -40,6 +42,7 @@ export class ApiSettings {
       Authorization: `Token ${this.apiKey}`,
     };
     this.hostname = this.hostnameFromEnv();
+    this.timeout = process.env.MINDEE_REQUEST_TIMEOUT ? parseInt(process.env.MINDEE_REQUEST_TIMEOUT) : TIMEOUT_DEFAULT;
   }
 
   protected apiKeyFromEnv(): string {
