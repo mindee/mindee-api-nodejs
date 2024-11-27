@@ -1,19 +1,25 @@
-const nock = require("nock");
+import nock from "nock";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../src/";
 
-process.env["MINDEE_API_HOST"] = "local.mindee.net";
-
 describe("HTTP calls", () => {
-  async function sendRequest(http_code: number, http_result_file: string) {
+  before(function() {
+    process.env.MINDEE_API_HOST = "local.mindee.net";
+  });
+
+  after(function() {
+    delete process.env.MINDEE_API_HOST;
+  });
+
+  async function sendRequest(httpCode: number, httpResultFile: string) {
     const owner = "mindee";
     const urlName = "invoices";
     const version = "4";
 
     nock("https://local.mindee.net")
       .post(`/v1/products/${owner}/${urlName}/v${version}/predict`)
-      .replyWithFile(http_code, path.resolve(http_result_file));
+      .replyWithFile(httpCode, path.resolve(httpResultFile));
 
     const mindeeClient = new mindee.Client({ apiKey: "my-api-key", debug: true });
     const doc = mindeeClient.docFromPath(path.resolve("tests/data/file_types/pdf/blank_1.pdf"));
@@ -71,5 +77,37 @@ describe("HTTP calls", () => {
       expect(error.name).to.be.equals("MindeeHttp500Error");
       expect(error.code).to.be.equals(500);
     }
+  });
+});
+
+describe ("Endpoint parameters" , () => {
+  it ("should initialize default parameters properly", async () => {
+    const mindeeClient = new mindee.Client({ apiKey: "dummy-api-key" });
+    const customEndpoint = mindeeClient.createEndpoint(
+      "dummy-endpoint",
+      "dummy-account"
+    );
+    expect(customEndpoint.version).to.equal("1");
+    expect(customEndpoint.settings.timeout).to.equal(120);
+    expect(customEndpoint.settings.hostname).to.equal("api.mindee.net");
+    expect(customEndpoint.settings.apiKey).to.equal("dummy-api-key");
+  });
+
+  it ("should initialize environment parameters properly", async () => {
+    process.env.MINDEE_API_HOST = "dummy-host";
+    process.env.MINDEE_API_KEY = "dummy-key";
+    process.env.MINDEE_REQUEST_TIMEOUT = "30";
+    const mindeeClient = new mindee.Client();
+    const customEndpoint = mindeeClient.createEndpoint(
+      "dummy-endpoint",
+      "dummy-account"
+    );
+    expect(customEndpoint.version).to.equal("1");
+    expect(customEndpoint.settings.timeout).to.equal(30);
+    expect(customEndpoint.settings.hostname).to.equal("dummy-host");
+    expect(customEndpoint.settings.apiKey).to.equal("dummy-key");
+
+    delete process.env.MINDEE_API_HOST;
+    delete process.env.MINDEE_API_KEY;
   });
 });
