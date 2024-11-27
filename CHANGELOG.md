@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.19.0 - 2024-11-27
+### Changes
+* :coffin: remove support for international ID V1
+* :sparkles: add support for workflows
+* :sparkles: add configurable http request timeout
+### Fixes
+* :bug: fix http errors improperly showing as 500 in rare instances
+
+
 ## v4.18.1 - 2024-11-19
 ### Fixes
 * :bug: fix composed API server response not properly filling full_text_ocr in pages
