@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.20.0 - 2024-11-28
+### Changes
+* :sparkles: add support for French Health Card V1
+* :sparkles: add support for Driver License V1
+* :sparkles: add support for Payslip FR V3
+
+
 ## v4.19.0 - 2024-11-27
 ### Changes
 * :coffin: remove support for international ID V1
