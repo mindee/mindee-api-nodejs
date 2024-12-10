@@ -1,7 +1,7 @@
 import { PDFDocument } from "pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../../errors";
 import { InvoiceSplitterV1 } from "../../product";
-import { LocalInputSource } from "../../input/base";
+import { LocalInputSource } from "../../input";
 import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage";
 
 async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {

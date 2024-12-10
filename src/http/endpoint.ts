@@ -2,7 +2,7 @@ import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
 import { InputSource } from "../input";
-import { LocalInputSource } from "../input/base";
+import { LocalInputSource } from "../input";
 import { handleError } from "./error";
 import { ApiSettings } from "./apiSettings";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
