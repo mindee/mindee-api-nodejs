@@ -3,7 +3,7 @@ import { ApiSettings } from "./apiSettings";
 import { InputSource } from "../input";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { LocalInputSource } from "../input/base";
+import { LocalInputSource } from "../input";
 import { RequestOptions } from "https";
 import { isValidSyncResponse } from "./responseValidation";
 import { handleError } from "./error";

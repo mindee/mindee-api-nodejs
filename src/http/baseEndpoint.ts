@@ -3,7 +3,7 @@ import { logger } from "../logger";
 import { IncomingMessage, ClientRequest } from "http";
 import { request, RequestOptions } from "https";
 import { InputSource, PageOptions } from "../input";
-import { LocalInputSource } from "../input/base";
+import { LocalInputSource } from "../input";
 
 
 export interface EndpointResponse {

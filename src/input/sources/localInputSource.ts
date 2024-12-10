@@ -1,23 +1,17 @@
+import { errorHandler } from "../../errors/handler";
+import { logger } from "../../logger";
+import path from "path";
 import * as fileType from "file-type";
-import * as path from "path";
-import { PageOptions } from "./pageOptions";
-import { extractPages } from "../pdf";
-import { logger } from "../logger";
-import { errorHandler } from "../errors/handler";
-
-/**
- * @param {string} inputType - the type of input used in file ("base64", "path", "dummy").
- *                             NB: dummy is only used for tests purposes
- */
-interface InputConstructor {
-  inputType: string;
-}
-
-export const INPUT_TYPE_STREAM = "stream";
-export const INPUT_TYPE_BASE64 = "base64";
-export const INPUT_TYPE_BYTES = "bytes";
-export const INPUT_TYPE_PATH = "path";
-export const INPUT_TYPE_BUFFER = "buffer";
+import { PageOptions } from "../pageOptions";
+import { extractPages } from "../../pdf";
+import {
+  InputSource,
+  InputConstructor,
+  INPUT_TYPE_STREAM,
+  INPUT_TYPE_BASE64,
+  INPUT_TYPE_BYTES,
+  INPUT_TYPE_PATH, INPUT_TYPE_BUFFER
+} from "./inputSource";
 
 const MIMETYPES = new Map<string, string>([
   [".pdf", "application/pdf"],
@@ -36,14 +30,6 @@ const ALLOWED_INPUT_TYPES = [
   INPUT_TYPE_PATH,
   INPUT_TYPE_BUFFER,
 ];
-
-export abstract class InputSource {
-  fileObject: Buffer | string = "";
-
-  async init() {
-    throw new Error("not Implemented");
-  }
-}
 
 export abstract class LocalInputSource extends InputSource {
   public inputType: string;
