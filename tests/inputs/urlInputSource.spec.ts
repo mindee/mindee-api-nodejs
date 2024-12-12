@@ -47,6 +47,7 @@ describe("Test URL input source", () => {
         const urlInput = new UrlInput({ url });
         await urlInput.init();
         const localInput = await urlInput.asLocalInputSource();
+        await localInput.init();
 
         expect(localInput).to.be.instanceOf(BytesInput);
         expect(localInput.filename).to.equal("file.pdf");
@@ -68,6 +69,7 @@ describe("Test URL input source", () => {
 
         const urlInput = new UrlInput({ url: originalUrl });
         const localInput = await urlInput.asLocalInputSource();
+        await localInput.init();
 
         expect(localInput).to.be.instanceOf(LocalInputSource);
         expect(localInput.filename).to.equal("redirected.pdf");
@@ -102,6 +104,7 @@ describe("Test URL input source", () => {
 
         const urlInput = new UrlInput({ url });
         const localInput = await urlInput.asLocalInputSource({ filename: "custom.pdf" });
+        await localInput.init();
 
         expect(localInput.filename).to.equal("custom.pdf");
       });
@@ -115,7 +118,8 @@ describe("Test URL input source", () => {
         const urlInput = new UrlInput({ url });
 
         try {
-          await urlInput.asLocalInputSource({ filename: "invalid" });
+          const localInput = await urlInput.asLocalInputSource({ filename: "invalid" });
+          await localInput.init();
           expect.fail("Expected an error to be thrown");
         } catch (error) {
           expect(error).to.be.instanceOf(Error);

@@ -19,5 +19,5 @@ describe("UrlInput Integration Test", async () => {
     expect(localInput.filename).to.equal("invoice_5p.pdf");
     const result = await client.parse(InvoiceV4, localInput);
     expect(result.document.nPages).to.equal(5);
-  });
-}).timeout(60000);
+  }).timeout(60000);
+});
