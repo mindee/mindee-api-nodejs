@@ -42,22 +42,22 @@ const inputSource = mindeeClient.docFromUrl("https://my-url");
 
 A base64 encoded string:
 ```js
-const inputSource = mindeeClient.docFromBase64(myInputString, "my-file-name")
+const inputSource = mindeeClient.docFromBase64(myInputString, "my-file-name.ext")
 ```
 
 A byte sequence:
 ```js
-const inputSource = mindeeClient.docFromBytes(myInputBytes, "my-file-name")
+const inputSource = mindeeClient.docFromBytes(myInputBytes, "my-file-name.ext")
 ```
 
 A stream:
 ```js
-const inputSource = mindeeClient.docFromStream(myReadableStream, "my-file-name")
+const inputSource = mindeeClient.docFromStream(myReadableStream, "my-file-name.ext")
 ```
 
 A buffer:
 ```js
-const inputSource = mindeeClient.docFromBuffer(myBuffer, "my-file-name")
+const inputSource = mindeeClient.docFromBuffer(myBuffer, "my-file-name.ext")
 ```
 
 #### Region-Specific Documents
