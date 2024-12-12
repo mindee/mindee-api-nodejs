@@ -591,11 +591,11 @@ Job status: ${pollResults.job.status}.`
   }
 
   /**
-   * Load an input document from a bytes string.
-   * @param inputBytes input content, as readable bytes.
+   * Load an input document from bytes.
+   * @param inputBytes input content, as a Uint8Array or Buffer.
    * @param filename file name.
    */
-  docFromBytes(inputBytes: string, filename: string): BytesInput {
+  docFromBytes(inputBytes: Uint8Array, filename: string): BytesInput {
     return new BytesInput({
       inputBytes: inputBytes,
       filename: filename,

@@ -45,6 +45,11 @@ A base64 encoded string:
 const inputSource = mindeeClient.docFromBase64(myInputString, "my-file-name")
 ```
 
+A byte sequence:
+```js
+const inputSource = mindeeClient.docFromBytes(myInputBytes, "my-file-name")
+```
+
 A stream:
 ```js
 const inputSource = mindeeClient.docFromStream(myReadableStream, "my-file-name")
