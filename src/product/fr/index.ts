@@ -1,7 +1,6 @@
 export { BankAccountDetailsV1 } from "./bankAccountDetails/bankAccountDetailsV1";
 export { BankAccountDetailsV2 } from "./bankAccountDetails/bankAccountDetailsV2";
 export { CarteGriseV1 } from "./carteGrise/carteGriseV1";
-export { CarteVitaleV1 } from "./carteVitale/carteVitaleV1";
 export { EnergyBillV1 } from "./energyBill/energyBillV1";
 export { HealthCardV1 } from "./healthCard/healthCardV1";
 export { IdCardV1 } from "./idCard/idCardV1";
