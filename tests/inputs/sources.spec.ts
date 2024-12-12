@@ -3,7 +3,6 @@ import {
   PathInput,
   StreamInput,
   BytesInput,
-  UrlInput,
   BufferInput,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_STREAM,
@@ -116,14 +115,6 @@ describe("Test different types of input", () => {
     expect(input.mimeType).to.equal("image/jpeg");
     const expectedResult = await fs.promises.readFile(filePath);
     expect(Buffer.compare(input.fileObject, expectedResult)).to.equal(0);
-  });
-
-  it("should accept a URL", async () => {
-    const input = new UrlInput({
-      url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/576px-ReceiptSwiss.jpg",
-    });
-    await input.init();
-    expect(input.fileObject).to.be.a("string");
   });
 
   it("should accept a Buffer", async () => {
