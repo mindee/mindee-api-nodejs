@@ -107,15 +107,15 @@ describe("Test different types of input", () => {
     // type based on contents
     const filename = "receipt";
     const input = new BytesInput({
-      inputBytes: inputBytes.toString("hex"),
+      inputBytes: inputBytes,
       filename: filename,
     });
     await input.init();
-    expect(input.inputType).to.equals(INPUT_TYPE_BYTES);
-    expect(input.filename).to.equals(filename);
-    expect(input.mimeType).to.equals("image/jpeg");
+    expect(input.inputType).to.equal(INPUT_TYPE_BYTES);
+    expect(input.filename).to.equal(filename);
+    expect(input.mimeType).to.equal("image/jpeg");
     const expectedResult = await fs.promises.readFile(filePath);
-    expect(input.fileObject.toString()).to.eqls(expectedResult.toString());
+    expect(Buffer.compare(input.fileObject, expectedResult)).to.equal(0);
   });
 
   it("should accept a URL", async () => {
