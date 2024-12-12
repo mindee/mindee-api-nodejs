@@ -2,12 +2,12 @@ import { INPUT_TYPE_BYTES } from "./inputSource";
 import { LocalInputSource } from "./localInputSource";
 
 interface BytesInputProps {
-  inputBytes: string;
+  inputBytes: Uint8Array;
   filename: string;
 }
 
 export class BytesInput extends LocalInputSource {
-  private inputBytes: string;
+  private inputBytes: Uint8Array;
   fileObject: Buffer = Buffer.alloc(0);
 
   constructor({ inputBytes, filename }: BytesInputProps) {
@@ -19,9 +19,8 @@ export class BytesInput extends LocalInputSource {
   }
 
   async init() {
-    this.fileObject = Buffer.from(this.inputBytes, "hex");
+    this.fileObject = Buffer.from(this.inputBytes);
     this.mimeType = await this.checkMimetype();
-    // clear out the string
-    this.inputBytes = "";
+    this.inputBytes = new Uint8Array(0);
   }
 }
