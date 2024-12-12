@@ -111,8 +111,8 @@ const customEndpoint = mindeeClient.createEndpoint(
 );
 
 // Parse it
-const apiResponse = mindeeClient
-  .parse(
+const apiResponse = await mindeeClient
+  .enqueueAndParse(
     mindee.product.GeneratedV1,
     inputSource,
     {
