@@ -35,11 +35,6 @@ const apiResponse = mindeeClient.parse(mindee.product.InvoiceV4, inputSource);
 
 **Note:** Files can also be loaded from:
 
-A URL (`https` only): 
-```js
-const inputSource = mindeeClient.docFromUrl("https://my-url");
-```
-
 A base64 encoded string:
 ```js
 const inputSource = mindeeClient.docFromBase64(myInputString, "my-file-name.ext")
@@ -60,6 +55,20 @@ A buffer:
 const inputSource = mindeeClient.docFromBuffer(myBuffer, "my-file-name.ext")
 ```
 
+A URL (`https` only):
+```js
+const inputSource = mindeeClient.docFromUrl("https://my-url");
+```
+
+You can also load the document locally before sending it:
+```js
+const inputSource = mindeeClient.docFromUrl("https://my-url");
+await inputSource.init();
+const localInputSource = inputSource.asLocalInputSource();
+```
+
+**Note:** Files hidden behind redirections are rejected by the server; this solution helps to circumvent that issue.
+
 #### Region-Specific Documents
 
 Region-Specific Documents use the following syntax:
@@ -77,7 +86,7 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 const apiResponse = mindeeClient.parse(mindee.product.fr.IdCardV1, inputSource);
 ```
 
-#### Custom Documents (API Builder)
+#### Custom Documents (DocTI & Custom APIs)
 
 Custom documents will require you to provide their endpoint manually.
 
@@ -104,7 +113,7 @@ const customEndpoint = mindeeClient.createEndpoint(
 // Parse it
 const apiResponse = mindeeClient
   .parse(
-    mindee.product.CustomV1,
+    mindee.product.GeneratedV1,
     inputSource,
     {
       endpoint: customEndpoint
