@@ -68,9 +68,7 @@ export class UrlInput extends InputSource {
     const { filename, ...fetchOptions } = options;
     const { content, finalUrl } = await this.fetchFileContent(fetchOptions);
     const finalFilename = this.fillFilename(filename, finalUrl);
-    const bytesInput = new BytesInput({ inputBytes: content, filename: finalFilename });
-    await bytesInput.init();
-    return bytesInput;
+    return new BytesInput({ inputBytes: content, filename: finalFilename });
   }
 
   private static extractFilenameFromUrl(uri: string): string {
