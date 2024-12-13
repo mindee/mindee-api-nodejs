@@ -86,7 +86,7 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 const apiResponse = mindeeClient.parse(mindee.product.fr.IdCardV1, inputSource);
 ```
 
-#### Custom Documents (DocTI & Custom APIs)
+#### Custom Documents (docTI & Custom APIs)
 
 Custom documents will require you to provide their endpoint manually.
 

@@ -196,9 +196,9 @@ Simply setting the correct class and passing the document is enough:
 const respPromise = mindeeClient.parse(mindee.InvoiceV4, inputSource);
 ```
 
-### Custom Documents
+### Custom Documents (docTI)
 
-The endpoint to use must also be set in third argument of the `parse` method. This argument is an object:
+The endpoint to use must also be set in third argument of the `enqueueAndParse` method. This argument is an object:
 
 ```ts
 const customEndpoint = mindeeClient.createEndpoint(
@@ -206,8 +206,8 @@ const customEndpoint = mindeeClient.createEndpoint(
   "my-account",
   // "my-version" // Optional: set the version, defaults to "1"
 );
-const respPromise = mindeeClient.parse(
-  mindee.CustomV1,
+const respPromise = mindeeClient.enqueueAndParse(
+  mindee.GeneratedV1,
   inputSource,
   {
     endpoint: customEndpoint
@@ -215,7 +215,7 @@ const respPromise = mindeeClient.parse(
 );
 ```
 
-This is because the `CustomV1` class is enough to handle the return processing, but the actual endpoint needs to be specified.
+This is because the `GeneratedV1` class is enough to handle the return processing, but the actual endpoint needs to be specified.
 
 ## Retrieving the Response
 
