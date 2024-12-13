@@ -4,7 +4,7 @@ category: 622b805aaec68102ea7fcbc2
 slug: nodejs-api-builder
 parentDoc: 609809574212d40077a040f1
 ---
-> 🚧 This product is still supported, but is considered to be deprecated. If you are looking for the DocTI API documentation, you can find it [here](https://developers.mindee.com/docs/nodejs-generated-ocr).
+> 🚧 This product is still supported, but is considered to be deprecated. If you are looking for the docTI API documentation, you can find it [here](https://developers.mindee.com/docs/nodejs-generated-ocr).
 
 
 # Quick-Start

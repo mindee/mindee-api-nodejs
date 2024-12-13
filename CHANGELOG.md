@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v4.21.0 - 2024-12-13
+### Changes
+* :sparkles: allow local downloading of remote sources
+* :coffin: remove support for (FR) Carte Vitale V1 in favor of French Health Card V1
+### Fixes
+* :bug: fix broken loading from bytes
+
+
 ## v4.20.0 - 2024-11-28
 ### Changes
 * :sparkles: add support for French Health Card V1
