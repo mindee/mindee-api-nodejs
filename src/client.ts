@@ -345,7 +345,7 @@ export class Client {
     const newAsyncParams = { ...asyncParams };
     newAsyncParams.delaySec ??= 1.5;
     newAsyncParams.initialDelaySec ??= 2;
-    newAsyncParams.maxRetries ??= 60;
+    newAsyncParams.maxRetries ??= 80;
 
     if (newAsyncParams.delaySec < minDelaySec) {
       throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} second(s).`);
@@ -382,7 +382,7 @@ export class Client {
       pageOptions: undefined,
       initialDelaySec: 2,
       delaySec: 1.5,
-      maxRetries: 60,
+      maxRetries: 80,
       initialTimerOptions: undefined,
       recurringTimerOptions: undefined,
     }
