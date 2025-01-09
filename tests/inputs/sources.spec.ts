@@ -1,21 +1,32 @@
 import {
   Base64Input,
-  PathInput,
-  StreamInput,
-  BytesInput,
   BufferInput,
-  INPUT_TYPE_BYTES,
-  INPUT_TYPE_STREAM,
-  INPUT_TYPE_PATH,
+  BytesInput,
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BUFFER,
+  INPUT_TYPE_BYTES,
+  INPUT_TYPE_PATH,
+  INPUT_TYPE_STREAM,
+  PathInput,
+  StreamInput,
 } from "../../src/input";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
+import { loadImage } from "canvas";
 import { Buffer } from "node:buffer";
+import { compressImage } from "../../src/imageOperations";
+import { MindeeError } from "../../src/errors";
+import { compressPdf } from "../../src/pdf";
+import { extractTextFromPdf } from "../../src/pdf/pdfUtils";
 
 describe("Test different types of input", () => {
+  const resourcesPath = path.join(__dirname, "../data");
+  const outputPath = path.join(resourcesPath, "output");
+
+  before(async () => {
+    await fs.promises.mkdir(outputPath, { recursive: true });
+  });
   it("should accept base64 inputs", async () => {
     const b64Input = await fs.promises.readFile(
       path.join(__dirname, "../data/file_types/receipt.txt")
@@ -133,5 +144,206 @@ describe("Test different types of input", () => {
     expect(input.filename).to.equals(filename);
     expect(input.isPdf()).to.be.true;
     expect(input.fileObject).to.be.instanceOf(Buffer);
+  });
+
+
+  it("Image Quality Compress From Input Source", async () => {
+    const receiptInput = new PathInput({ inputPath: path.join(resourcesPath, "file_types/receipt.jpg") });
+    await receiptInput.init();
+    await receiptInput.compress(40);
+    await fs.promises.writeFile(path.join(outputPath, "compress_indirect.jpg"), receiptInput.fileObject);
+
+    const initialFileStats = await fs.promises.stat(path.join(resourcesPath, "file_types/receipt.jpg"));
+    const renderedFileStats = await fs.promises.stat(path.join(outputPath, "compress_indirect.jpg"));
+    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+  });
+
+  it("Image Quality Compresses From Compressor", async () => {
+    const receiptInput = new PathInput({ inputPath: path.join(resourcesPath, "file_types/receipt.jpg") });
+    await receiptInput.init();
+    const compresses = [
+      await compressImage(receiptInput.fileObject, 100),
+      await compressImage(receiptInput.fileObject),
+      await compressImage(receiptInput.fileObject, 50),
+      await compressImage(receiptInput.fileObject, 10),
+      await compressImage(receiptInput.fileObject, 1)
+    ];
+
+    const fileNames = ["compress100.jpg", "compress75.jpg", "compress50.jpg", "compress10.jpg", "compress1.jpg"];
+    for (let i = 0; i < compresses.length; i++) {
+      await fs.promises.writeFile(path.join(outputPath, fileNames[i]), compresses[i]);
+    }
+
+    const initialFileStats = await fs.promises.stat(path.join(resourcesPath, "file_types/receipt.jpg"));
+    const renderedFileStats = await Promise.all(
+      fileNames.map(fileName => fs.promises.stat(path.join(outputPath, fileName)))
+    );
+
+    expect(initialFileStats.size).to.be.lessThan(renderedFileStats[0].size);
+    expect(initialFileStats.size).to.be.lessThan(renderedFileStats[1].size);
+    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
+    expect(renderedFileStats[2].size).to.be.greaterThan(renderedFileStats[3].size);
+    expect(renderedFileStats[3].size).to.be.greaterThan(renderedFileStats[4].size);
+  });
+
+  it("Image Resize From InputSource", async () => {
+    const imageResizeInput = new PathInput({ inputPath: path.join(resourcesPath, "file_types/receipt.jpg") });
+    await imageResizeInput.init();
+
+    await imageResizeInput.compress(75, 250, 1000);
+    await fs.promises.writeFile(path.join(outputPath, "resize_indirect.jpg"), imageResizeInput.fileObject);
+
+    const initialFileStats = await fs.promises.stat(path.join(resourcesPath, "file_types/receipt.jpg"));
+    const renderedFileStats = await fs.promises.stat(path.join(outputPath, "resize_indirect.jpg"));
+    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+
+    // Load the image using canvas
+    const image = await loadImage(imageResizeInput.fileObject);
+
+    // Check dimensions
+    expect(image.width).to.be.equals(250);
+    expect(image.height).to.be.equals(333);
+  });
+
+  it("Image Resize From Compressor", async () => {
+    const imageResizeInput = new PathInput({ inputPath: path.join(resourcesPath, "file_types/receipt.jpg") });
+    await imageResizeInput.init();
+
+    const resizes = [
+      await compressImage(imageResizeInput.fileObject, 75, 500),
+      await compressImage(imageResizeInput.fileObject, 75, 250, 500),
+      await compressImage(imageResizeInput.fileObject, 75, 500, 250),
+      await compressImage(imageResizeInput.fileObject, 75, null, 250)
+    ];
+
+    const fileNames = ["resize500xnull.jpg", "resize250x500.jpg", "resize500x250.jpg", "resizenullx250.jpg"];
+    for (let i = 0; i < resizes.length; i++) {
+      await fs.promises.writeFile(path.join(outputPath, fileNames[i]), resizes[i]);
+    }
+
+    const initialFileStats = await fs.promises.stat(path.join(resourcesPath, "file_types/receipt.jpg"));
+    const renderedFileStats = await Promise.all(
+      fileNames.map(fileName => fs.promises.stat(path.join(outputPath, fileName)))
+    );
+
+    expect(initialFileStats.size).to.be.greaterThan(renderedFileStats[0].size);
+    expect(renderedFileStats[0].size).to.be.greaterThan(renderedFileStats[1].size);
+    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
+    expect(renderedFileStats[2].size).to.be.equals(renderedFileStats[3].size);
+  });
+
+
+  it("PDF Input Has Text", async () => {
+    const hasSourceTextPath = path.join(resourcesPath, "file_types/pdf/multipage.pdf");
+    const hasNoSourceTextPath = path.join(resourcesPath, "file_types/pdf/blank_1.pdf");
+    const hasNoSourceTextSinceItsImagePath = path.join(resourcesPath, "file_types/receipt.jpg");
+
+    const hasSourceTextInput = new PathInput({ inputPath: hasSourceTextPath });
+    const hasNoSourceTextInput = new PathInput({ inputPath: hasNoSourceTextPath });
+    const hasNoSourceTextSinceItsImageInput = new PathInput({ inputPath: hasNoSourceTextSinceItsImagePath });
+
+    await hasSourceTextInput.init();
+    await hasNoSourceTextInput.init();
+    await hasNoSourceTextSinceItsImageInput.init();
+
+    expect(await hasSourceTextInput.hasSourceText()).to.be.true;
+    expect(await hasNoSourceTextInput.hasSourceText()).to.be.false;
+    expect(await hasNoSourceTextSinceItsImageInput.hasSourceText()).to.be.false;
+  });
+
+  it("PDF Compress From InputSource", async () => {
+    const pdfResizeInput = new PathInput(
+      { inputPath: path.join(resourcesPath, "products/invoice_splitter/default_sample.pdf") }
+    );
+    await pdfResizeInput.init();
+
+    const compressedPdf = await compressPdf(pdfResizeInput.fileObject, 75);
+    await fs.promises.writeFile(path.join(outputPath, "resize_indirect.pdf"), compressedPdf);
+
+    const initialFileStats = await fs.promises.stat(
+      path.join(
+        resourcesPath,
+        "products/invoice_splitter/default_sample.pdf"
+      )
+    );
+    const renderedFileStats = await fs.promises.stat(path.join(outputPath, "resize_indirect.pdf"));
+
+    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+  });
+
+  it("PDF Compress From Compressor", async () => {
+    const pdfResizeInput = new PathInput(
+      { inputPath: path.join(resourcesPath, "products/invoice_splitter/default_sample.pdf") }
+    );
+    await pdfResizeInput.init();
+
+    const resizes = [
+      await compressPdf(pdfResizeInput.fileObject),
+      await compressPdf(pdfResizeInput.fileObject, 75),
+      await compressPdf(pdfResizeInput.fileObject, 50),
+      await compressPdf(pdfResizeInput.fileObject, 10)
+    ];
+
+    const fileNames = ["compress85.pdf", "compress75.pdf", "compress50.pdf", "compress10.pdf"];
+    for (let i = 0; i < resizes.length; i++) {
+      await fs.promises.writeFile(path.join(outputPath, fileNames[i]), resizes[i]);
+    }
+
+    const initialFileStats = await fs.promises.stat(
+      path.join(resourcesPath, "products/invoice_splitter/default_sample.pdf")
+    );
+    const renderedFileStats = await Promise.all(
+      fileNames.map(fileName => fs.promises.stat(path.join(outputPath, fileName)))
+    );
+
+    expect(initialFileStats.size).to.be.greaterThan(renderedFileStats[0].size);
+    expect(renderedFileStats[0].size).to.be.greaterThan(renderedFileStats[1].size);
+    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
+    expect(renderedFileStats[2].size).to.be.greaterThan(renderedFileStats[3].size);
+  });
+
+  it("PDF Compress With Text Keeps Text", async () => {
+    const initialWithText = new PathInput({ inputPath: path.join(resourcesPath, "file_types/pdf/multipage.pdf") });
+    await initialWithText.init();
+
+    const compressedWithText = await compressPdf(initialWithText.fileObject, 100, true, false);
+
+    const originalText = await extractTextFromPdf(initialWithText.fileObject);
+    const compressedText = await extractTextFromPdf(compressedWithText);
+
+    expect(compressedText).to.equal(originalText);
+  });
+
+  it("PDF Compress With Text Does Not Compress", async () => {
+    const initialWithText = new PathInput({ inputPath: path.join(resourcesPath, "file_types/pdf/multipage.pdf") });
+    await initialWithText.init();
+
+    const compressedWithText = await compressPdf(initialWithText.fileObject, 50);
+
+    expect(compressedWithText).to.deep.equal(initialWithText.fileObject);
+  });
+
+  after(async function () {
+    const createdFiles: string[] = [
+      "compress1.jpg",
+      "compress10.jpg",
+      "compress50.jpg",
+      "compress75.jpg",
+      "compress100.jpg",
+      "compress_indirect.jpg",
+      "resize250x500.jpg",
+      "resize500x250.jpg",
+      "resize500xnull.jpg",
+      "resize_indirect.jpg",
+      "resizenullx250.jpg",
+    ];
+    for (const filePath of createdFiles) {
+      try {
+        await fs.promises.unlink(path.join(resourcesPath, "output", filePath));
+      } catch (_error) {
+        void _error; // Gross.
+        throw new MindeeError(`Error during tests, Could not delete file '${filePath}'.`);
+      }
+    }
   });
 });
