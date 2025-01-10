@@ -2,7 +2,7 @@ import { PDFExtract, PDFExtractOptions, PDFExtractResult } from "pdf.js-extract"
 import { MindeePdfError } from "../errors/mindeeError";
 
 
-interface PageTextInfo {
+export interface PageTextInfo {
   pageNumber: number;
   content: Array<{
     str: string;
@@ -14,7 +14,7 @@ interface PageTextInfo {
   }>;
 }
 
-interface ExtractedPdfInfo {
+export interface ExtractedPdfInfo {
   pages: PageTextInfo[];
   getConcatenatedText: () => string;
 }

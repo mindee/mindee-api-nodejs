@@ -1,9 +1,9 @@
-import { PDFDocument, PDFPage, rgb } from "pdf-lib";
-import { createCanvas, loadImage } from "canvas";
-import { logger } from "../logger";
-import { hasSourceText } from "./pdfUtils";
-import * as fs from "node:fs/promises";
+import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "pdf-lib";
+import { PDFExtract, PDFExtractPage } from "pdf.js-extract";
 import sharp from "sharp";
+import { CanvasRenderingContext2D, createCanvas, Image } from "canvas";
+import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils";
+import { logger } from "../logger";
 
 /**
  * Compresses a PDF file.
@@ -17,123 +17,246 @@ import sharp from "sharp";
  */
 export async function compressPdf(
   pdfData: Buffer,
-  imageQuality = 0.85,
-  forceSourceTextCompression = false,
-  disableSourceText = true
+  imageQuality: number = 85,
+  forceSourceTextCompression: boolean = false,
+  disableSourceText: boolean = true
 ): Promise<Buffer> {
-  if (!forceSourceTextCompression && await hasSourceText(pdfData)) {
+  if (!forceSourceTextCompression && await hasSourceText(pdfData) && disableSourceText) {
     logger.warn("MINDEE WARNING: Found text inside of the provided PDF file. "
       + "Compression operation aborted since disableSourceText is set to 'true'."
     );
     return pdfData;
   }
 
-  const pdfDoc = await PDFDocument.load(pdfData);
-  const pages = pdfDoc.getPages();
-
-  for (let i = 0; i < pages.length; i++) {
-    await processPage(pdfDoc, pages[i], imageQuality, disableSourceText);
-  }
-
-  return Buffer.from(await pdfDoc.save());
-}
-
-/**
- * Process a single page of the PDF.
- *
- * @param pdfDoc The PDF document.
- * @param page The page to process.
- * @param imageQuality Quality for image compression (0-1).
- * @param disableSourceText Whether to disable source text.
- */
-async function processPage(
-  pdfDoc: PDFDocument,
-  page: PDFPage,
-  imageQuality: number,
-  disableSourceText: boolean
-): Promise<void> {
-  const { width, height } = page.getSize();
-
-  const pageImage = await generatePageImage(page, imageQuality);
+  let extractedText: ExtractedPdfInfo | null = null;
 
   if (disableSourceText) {
-    page.drawRectangle({
+    extractedText = await extractTextFromPdf(pdfData);
+  }
+  const pdfDoc = await PDFDocument.load(pdfData);
+  const pdfExtract = new PDFExtract();
+  const extractedData = await pdfExtract.extractBuffer(pdfData);
+
+  const compressedPages: Buffer[] = [];
+
+  for (let i = 0; i < pdfDoc.getPageCount(); i++) {
+    const page = pdfDoc.getPages()[i];
+    const { width, height } = page.getSize();
+
+    const canvas = createCanvas(width, height);
+    const ctx = canvas.getContext("2d");
+
+    const pageData: PDFExtractPage = extractedData.pages[i];
+    await renderPageToCanvas(ctx, pageData, width, height, disableSourceText);
+    if (!disableSourceText) {
+      await addTextToPdfPage(page, extractedText);
+    }
+
+    const compressedImage = await compressImage(canvas, imageQuality);
+    compressedPages.push(compressedImage);
+  }
+
+  const newPdfDoc = await PDFDocument.create();
+
+  for (const compressedPage of compressedPages) {
+    const image = await newPdfDoc.embedPng(compressedPage);
+    const page = newPdfDoc.addPage([image.width, image.height]);
+    page.drawImage(image, {
       x: 0,
       y: 0,
-      width: width,
-      height: height,
-      color: rgb(1, 1, 1), // White background
+      width: image.width,
+      height: image.height,
     });
   }
 
-  const image = await pdfDoc.embedJpg(pageImage);
-  page.drawImage(image, {
-    x: 0,
-    y: 0,
-    width: width,
-    height: height,
+  const compressedPdfBytes = await newPdfDoc.save();
+  return Buffer.from(compressedPdfBytes);
+}
+
+/**
+ * Renders a PDF page to a canvas context.
+ *
+ * @param ctx The 2D rendering context of the canvas.
+ * @param pageData The extracted page data from pdf.js-extract.
+ * @param width The width of the page.
+ * @param height The height of the page.
+ * @param disableSourceText If the PDF has source text, whether to re-apply it to the original or not.
+ */
+async function renderPageToCanvas(
+  ctx: CanvasRenderingContext2D,
+  pageData: PDFExtractPage,
+  width: number,
+  height: number,
+  disableSourceText: boolean
+): Promise<void> {
+  clearCanvas(ctx, width, height);
+  await renderImages(ctx, pageData.content, height);
+  renderVectorGraphics(ctx, pageData.content, height);
+  if (disableSourceText) {
+    renderText(ctx, pageData.content, height);
+  }
+}
+
+/**
+ * Clears the canvas by drawing white on it.
+ * @param ctx The 2D rendering context of the canvas.
+ * @param width Page width.
+ * @param height Page height.
+ */
+function clearCanvas(ctx: CanvasRenderingContext2D, width: number, height: number): void {
+  ctx.fillStyle = "white";
+  ctx.fillRect(0, 0, width, height);
+}
+
+/**
+ * Renders images in a canvas.
+ * @param ctx The 2D rendering context of the canvas.
+ * @param content Page contents.
+ * @param height Page height.
+ */
+async function renderImages(ctx: CanvasRenderingContext2D, content: any[], height: number): Promise<void> {
+  for (const item of content) {
+    if (item.type === "image") {
+      await drawImage(ctx, item, height);
+    }
+  }
+}
+
+/**
+ * Draws images in a canvas once.
+ * @param ctx The 2D rendering context of the canvas.
+ * @param item Individual image object.
+ * @param height Page height.
+ */
+async function drawImage(ctx: CanvasRenderingContext2D, item: any, height: number): Promise<void> {
+  const img = new Image();
+  img.src = item.src;
+  await new Promise<void>((resolve) => {
+    img.onload = () => {
+      ctx.drawImage(img, item.x, height - item.y - item.height, item.width, item.height);
+      resolve();
+    };
   });
 }
 
 /**
- * Converts a PDF page to an image buffer.
- *
- * @param page PDF Page to convert.
- * @param dpi DPI for the output image (higher values result in larger, more detailed images).
- * @returns A Promise containing the image buffer.
+ * Renders potential vector graphics on a page.
+ * @param ctx The 2D rendering context of the canvas.
+ * @param content Page contents.
+ * @param height Page height.
  */
-
-async function pdfPageToImageBuffer(page: PDFPage, dpi: number = 300): Promise<Buffer> {
-  try {
-    const { width, height } = page.getSize();
-    const scaleFactor = dpi / 72;
-
-    const tempPdf = await PDFDocument.create();
-    const [embeddedPage] = await tempPdf.embedPdf(page.doc, [0]);
-    const tempPage = tempPdf.addPage([width * scaleFactor, height * scaleFactor]);
-    tempPage.drawPage(embeddedPage, {
-      width: width * scaleFactor,
-      height: height * scaleFactor,
-    });
-
-    const pdfBytes = await tempPdf.save();
-    const sharpBytes = sharp(pdfBytes, { density: dpi });
-    const sharpPng = sharpBytes.png();
-    const pngBuffer = await sharpPng
-      .toBuffer();
-
-    return pngBuffer;
-  } catch (error) {
-    console.error("Error converting PDF page to image:", error);
-    throw error;
+function renderVectorGraphics(ctx: CanvasRenderingContext2D, content: any[], height: number): void {
+  for (const item of content) {
+    if (item.type === "path") {
+      drawPath(ctx, item, height);
+    }
   }
+}
+
+/**
+ * Draws a path on the canvas.
+ *
+ * @param ctx The 2D rendering context of the canvas.
+ * @param item Vector item to draw.
+ * @param height Page Height.
+ */
+function drawPath(ctx: CanvasRenderingContext2D, item: any, height: number): void {
+  ctx.beginPath();
+  for (const op of item.ops) {
+    switch (op.op) {
+    case "m":
+      ctx.moveTo(op.x, height - op.y);
+      break;
+    case "l":
+      ctx.lineTo(op.x, height - op.y);
+      break;
+    case "c":
+      ctx.bezierCurveTo(op.x1, height - op.y1, op.x2, height - op.y2, op.x, height - op.y);
+      break;
+    }
+  }
+  ctx.stroke();
+}
+
+/**
+ * Render text onto the page.
+ *
+ * @param ctx The 2D rendering context of the canvas.
+ * @param content Page contents.
+ * @param height Page height.
+ */
+function renderText(ctx: CanvasRenderingContext2D, content: any[], height: number): void {
+  for (const item of content) {
+    if (item.str) {
+      drawText(ctx, item, height);
+    }
+  }
+}
+
+/**
+ * Draws rasterized text on a page.
+ * @param ctx The 2D rendering context of the canvas.
+ * @param item Text item.
+ * @param height Page height.
+ */
+function drawText(ctx: CanvasRenderingContext2D, item: any, height: number): void {
+  ctx.font = `${item.fontName} ${item.fontSize}px`;
+  ctx.fillStyle = item.color || "black";
+  ctx.fillText(item.str, item.x, height - item.y);
 }
 
 
 /**
- * Generate an image of a PDF page.
+ * Compresses an image using sharp.
  *
- * @param page The PDF page.
- * @param quality Image quality (0-1).
- *
- * @returns A Promise containing a JPEG buffer of the page.
+ * @param canvas The canvas containing the image to compress.
+ * @param quality The quality of the compressed image (0-1).
+ * @returns A Promise containing a buffer with the compressed image.
  */
-async function generatePageImage(page: PDFPage, quality: number): Promise<Buffer> {
-  const { width, height } = page.getSize();
-  const imageBuffer = await pdfPageToImageBuffer(page);
-  const image = await loadImage(imageBuffer);
-
-  const canvas = createCanvas(Math.round(width), Math.round(height));
-  const ctx = canvas.getContext("2d");
-
-  ctx.drawImage(image, 0, 0, Math.round(width), Math.round(height));
-
-  return canvas.toBuffer("image/jpeg", { quality: quality });
+async function compressImage(
+  canvas: any,
+  quality: number
+): Promise<Buffer> {
+  const pngBuffer = canvas.toBuffer("image/png");
+  return await sharp(pngBuffer)
+    .png({ quality: quality })
+    .toBuffer();
 }
 
-// This function is not used in the provided code, but I'm including an updated version for completeness
-async function pdfToImage(pdfPath: string, pageNumber: number, dpi: number): Promise<Buffer> {
-  const pdfDoc = await PDFDocument.load(await fs.readFile(pdfPath));
-  const page = pdfDoc.getPage(pageNumber - 1);  // PDF pages are 0-indexed
-  return await pdfPageToImageBuffer(page, dpi);
+async function getFontFromName(fontName: string): Promise<PDFFont> {
+  const pdfDoc = await PDFDocument.create();
+  let font: PDFFont;
+  if (Object.values(StandardFonts).map(value => value.toString()).includes(fontName)) {
+    font = await pdfDoc.embedFont(fontName);
+  } else {
+    font = await pdfDoc.embedFont(StandardFonts.Helvetica); // Fallback font isn't supported.
+  }
+
+  return font;
+}
+
+/**
+ * Adds text to a specific page in the PDF document.
+ *
+ * @param page Handle for the PDF page.
+ * @param textInfo The text to add.
+ */
+async function addTextToPdfPage(
+  page: PDFPage,
+  textInfo: ExtractedPdfInfo | null
+): Promise<void> {
+  if (textInfo === null) {
+    return;
+  }
+  for (const textPages of textInfo.pages) {
+    for (const textPage of textPages.content) {
+      page.drawText(textPage.str, {
+        x: textPage.x,
+        y: textPage.y,
+        size: textPage.height,
+        color: rgb(0, 0, 0),
+        font: await getFontFromName(textPage.fontName)
+      });
+    }
+  }
 }
