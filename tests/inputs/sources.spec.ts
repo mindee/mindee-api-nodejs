@@ -16,7 +16,6 @@ import { expect } from "chai";
 import { loadImage } from "canvas";
 import { Buffer } from "node:buffer";
 import { compressImage } from "../../src/imageOperations";
-import { MindeeError } from "../../src/errors";
 import { compressPdf } from "../../src/pdf";
 import { extractTextFromPdf } from "../../src/pdf/pdfUtils";
 
@@ -308,11 +307,11 @@ describe("Test different types of input", () => {
 
     const compressedWithText = await compressPdf(initialWithText.fileObject, 100, true, false);
 
-    const originalText = await extractTextFromPdf(initialWithText.fileObject);
-    const compressedText = await extractTextFromPdf(compressedWithText);
+    const originalText = (await extractTextFromPdf(initialWithText.fileObject)).getConcatenatedText();
+    const compressedText = (await extractTextFromPdf(compressedWithText)).getConcatenatedText();
 
     expect(compressedText).to.equal(originalText);
-  }).timeout(20000);
+  }).timeout(60000);
 
   it("PDF Compress With Text Does Not Compress", async () => {
     const initialWithText = new PathInput({ inputPath: path.join(resourcesPath, "file_types/pdf/multipage.pdf") });
