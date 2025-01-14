@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.22.0 - 2025-01-14
+### Changes
+* :sparkles: add support for US Mail V3
+* :recycle: increase async retry timers
+
+
 ## v4.21.0 - 2024-12-13
 ### Changes
 * :sparkles: allow local downloading of remote sources
