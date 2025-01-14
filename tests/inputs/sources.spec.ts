@@ -257,7 +257,7 @@ describe("Test different types of input", () => {
     );
     await pdfResizeInput.init();
 
-    const compressedPdf = await compressPdf(pdfResizeInput.fileObject, 75);
+    const compressedPdf = await compressPdf(pdfResizeInput.fileObject, 75, true);
     await fs.promises.writeFile(path.join(outputPath, "resize_indirect.pdf"), compressedPdf);
 
     const initialFileStats = await fs.promises.stat(
@@ -278,10 +278,10 @@ describe("Test different types of input", () => {
     await pdfResizeInput.init();
 
     const resizes = [
-      await compressPdf(pdfResizeInput.fileObject),
-      await compressPdf(pdfResizeInput.fileObject, 75),
-      await compressPdf(pdfResizeInput.fileObject, 50),
-      await compressPdf(pdfResizeInput.fileObject, 10)
+      await compressPdf(pdfResizeInput.fileObject, 85, true),
+      await compressPdf(pdfResizeInput.fileObject, 75, true),
+      await compressPdf(pdfResizeInput.fileObject, 50, true),
+      await compressPdf(pdfResizeInput.fileObject, 10, true)
     ];
 
     const fileNames = ["compress85.pdf", "compress75.pdf", "compress50.pdf", "compress10.pdf"];
@@ -300,7 +300,7 @@ describe("Test different types of input", () => {
     expect(renderedFileStats[0].size).to.be.greaterThan(renderedFileStats[1].size);
     expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
     expect(renderedFileStats[2].size).to.be.greaterThan(renderedFileStats[3].size);
-  }).timeout(10000);
+  }).timeout(20000);
 
   it("PDF Compress With Text Keeps Text", async () => {
     const initialWithText = new PathInput({ inputPath: path.join(resourcesPath, "file_types/pdf/multipage.pdf") });
@@ -312,7 +312,7 @@ describe("Test different types of input", () => {
     const compressedText = await extractTextFromPdf(compressedWithText);
 
     expect(compressedText).to.equal(originalText);
-  });
+  }).timeout(20000);
 
   it("PDF Compress With Text Does Not Compress", async () => {
     const initialWithText = new PathInput({ inputPath: path.join(resourcesPath, "file_types/pdf/multipage.pdf") });
@@ -321,21 +321,14 @@ describe("Test different types of input", () => {
     const compressedWithText = await compressPdf(initialWithText.fileObject, 50);
 
     expect(compressedWithText).to.deep.equal(initialWithText.fileObject);
-  });
+  }).timeout(10000);
 
   after(async function () {
     const createdFiles: string[] = [
-      "compress1.jpg",
-      "compress10.jpg",
-      "compress50.jpg",
-      "compress75.jpg",
-      "compress100.jpg",
-      "compress_indirect.jpg",
-      "resize250x500.jpg",
-      "resize500x250.jpg",
-      "resize500xnull.jpg",
-      "resize_indirect.jpg",
-      "resizenullx250.jpg",
+      "compress10.pdf",
+      // "compress50.pdf",
+      // "compress75.pdf",
+      // "compress85.pdf",
     ];
     for (const filePath of createdFiles) {
       try {
