@@ -195,11 +195,7 @@ describe("Test different types of input", () => {
     const initialFileStats = await fs.promises.stat(path.join(resourcesPath, "file_types/receipt.jpg"));
     const renderedFileStats = await fs.promises.stat(path.join(outputPath, "resize_indirect.jpg"));
     expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
-
-    // Load the image using canvas
     const image = await loadImage(imageResizeInput.fileObject);
-
-    // Check dimensions
     expect(image.width).to.be.equals(250);
     expect(image.height).to.be.equals(333);
   });
