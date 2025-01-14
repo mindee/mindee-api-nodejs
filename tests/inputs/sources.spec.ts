@@ -326,16 +326,30 @@ describe("Test different types of input", () => {
   after(async function () {
     const createdFiles: string[] = [
       "compress10.pdf",
-      // "compress50.pdf",
-      // "compress75.pdf",
-      // "compress85.pdf",
+      "compress50.pdf",
+      "compress75.pdf",
+      "compress85.pdf",
+      "resize_indirect.pdf",
+      "compress1.jpg",
+      "compress10.jpg",
+      "compress50.jpg",
+      "compress75.jpg",
+      "compress100.jpg",
+      "compress_indirect.jpg",
+      "resize250x500.jpg",
+      "resize500x250.jpg",
+      "resize500xnull.jpg",
+      "resize_indirect.jpg",
+      "resizenullx250.jpg",
     ];
+
     for (const filePath of createdFiles) {
       try {
         await fs.promises.unlink(path.join(resourcesPath, "output", filePath));
-      } catch (_error) {
-        void _error; // Gross.
-        throw new MindeeError(`Error during tests, Could not delete file '${filePath}'.`);
+      } catch (error) {
+        if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
+          console.warn(`Could not delete file '${filePath}': ${(error as Error).message}`);
+        }
       }
     }
   });
