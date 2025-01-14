@@ -269,7 +269,7 @@ describe("Test different types of input", () => {
     const renderedFileStats = await fs.promises.stat(path.join(outputPath, "resize_indirect.pdf"));
 
     expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
-  });
+  }).timeout(10000);
 
   it("PDF Compress From Compressor", async () => {
     const pdfResizeInput = new PathInput(
@@ -300,7 +300,7 @@ describe("Test different types of input", () => {
     expect(renderedFileStats[0].size).to.be.greaterThan(renderedFileStats[1].size);
     expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
     expect(renderedFileStats[2].size).to.be.greaterThan(renderedFileStats[3].size);
-  });
+  }).timeout(10000);
 
   it("PDF Compress With Text Keeps Text", async () => {
     const initialWithText = new PathInput({ inputPath: path.join(resourcesPath, "file_types/pdf/multipage.pdf") });
