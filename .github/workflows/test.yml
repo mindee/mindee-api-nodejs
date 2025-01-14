@@ -26,6 +26,9 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
+      - name: Set up Poppler on ubuntu
+        run: sudo apt install -y poppler-utils
+
       - name: Install Node.js dependencies
         run: npm ci
 
