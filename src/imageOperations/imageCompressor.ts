@@ -2,6 +2,14 @@ import sharp from "sharp";
 import { Sharp, Metadata } from "sharp";
 import { MindeeImageError } from "../errors/mindeeError";
 
+/**
+ * Compresses an image with the given parameters.
+ *
+ * @param imageBuffer Buffer representation of an image.
+ * @param quality Quality to apply to the image (JPEG).
+ * @param maxWidth Maximum bound for width.
+ * @param maxHeight Maximum bound for height.
+ */
 export async function compressImage(
   imageBuffer: Buffer,
   quality:number = 85,

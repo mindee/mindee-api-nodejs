@@ -226,6 +226,13 @@ async function getFontFromName(fontName: string): Promise<PDFFont> {
   return font;
 }
 
+/**
+ * Rasterizes a PDF page.
+ *
+ * @param pdfData Buffer representation of the entire PDF file.
+ * @param index Index of the page to rasterize.
+ * @param quality Quality to apply during rasterization.
+ */
 async function rasterizePage(pdfData: Buffer, index: number, quality = 85): Promise<string> {
   const poppler = new Poppler();
   const tmpPdf = tmp.fileSync();
