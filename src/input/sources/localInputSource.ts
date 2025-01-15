@@ -1,9 +1,11 @@
 import { errorHandler } from "../../errors/handler";
 import { logger } from "../../logger";
+import { compressImage } from "../../imageOperations";
+import { compressPdf } from "../../pdf";
 import path from "path";
 import * as fileType from "file-type";
 import { PageOptions } from "../pageOptions";
-import { extractPages } from "../../pdf";
+import { extractPages, hasSourceText } from "../../pdf";
 import {
   InputSource,
   InputConstructor,
@@ -97,5 +99,49 @@ export abstract class LocalInputSource extends InputSource {
     }
     const processedPdf = await extractPages(this.fileObject, pageOptions);
     this.fileObject = processedPdf.file;
+  }
+
+  /**
+   * Compresses the file object, either as a PDF or an image.
+   *
+   * @param quality Quality of the compression. For images, this is the JPEG quality.
+   * For PDFs, this affects image quality within the PDF.
+   * @param maxWidth Maximum width for image resizing. Ignored for PDFs.
+   * @param maxHeight Maximum height for image resizing. Ignored for PDFs.
+   * @param forceSourceText For PDFs, whether to force compression even if source text is present.
+   * @param disableSourceText For PDFs, whether to disable source text during compression.
+   *
+   * @returns A Promise that resolves when the compression is complete.
+   */
+  async compress(
+    quality: number = 85,
+    maxWidth: number | null = null,
+    maxHeight: number | null = null,
+    forceSourceText: boolean = false,
+    disableSourceText: boolean = true
+  ) {
+    let buffer: Buffer;
+    if (typeof this.fileObject === "string") {
+      buffer = Buffer.from(this.fileObject);
+    } else {
+      buffer = this.fileObject;
+    }
+    if (this.isPdf()){
+      this.fileObject = await compressPdf(buffer, quality, forceSourceText, disableSourceText);
+    } else {
+      this.fileObject = await compressImage(buffer, quality, maxWidth, maxHeight);
+    }
+  }
+
+  /**
+   * Returns true if the object is a PDF and has source text. False otherwise.
+   * @return boolean
+   */
+  async hasSourceText() {
+    if (!this.isPdf()){
+      return false;
+    }
+    const buffer = typeof this.fileObject === "string" ? Buffer.from(this.fileObject) : this.fileObject;
+    return hasSourceText(buffer);
   }
 }
