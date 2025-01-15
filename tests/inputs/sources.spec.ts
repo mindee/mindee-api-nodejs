@@ -273,10 +273,10 @@ describe("Test different types of input", () => {
     await pdfResizeInput.init();
 
     const resizes = [
-      await compressPdf(pdfResizeInput.fileObject, 85, true),
-      await compressPdf(pdfResizeInput.fileObject, 75, true),
-      await compressPdf(pdfResizeInput.fileObject, 50, true),
-      await compressPdf(pdfResizeInput.fileObject, 10, true)
+      await compressPdf(pdfResizeInput.fileObject, 85),
+      await compressPdf(pdfResizeInput.fileObject, 75),
+      await compressPdf(pdfResizeInput.fileObject, 50),
+      await compressPdf(pdfResizeInput.fileObject, 10)
     ];
 
     const fileNames = ["compress85.pdf", "compress75.pdf", "compress50.pdf", "compress10.pdf"];

@@ -1,6 +1,6 @@
 import { logger } from "../logger";
 import tmp from "tmp";
-import { ExtractedPdfInfo, extractTextFromPdf } from "./pdfUtils";
+import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils";
 import * as fs from "node:fs";
 import { Poppler } from "node-poppler";
 import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "pdf-lib";
@@ -21,12 +21,20 @@ export async function compressPdf(
   disableSourceText: boolean = true
 ): Promise<Buffer> {
   handleCompressionWarnings(forceSourceTextCompression, disableSourceText);
-
-  if (!forceSourceTextCompression) {
-    logger.warn("Found text inside of the provided PDF file. Compression operation aborted since disableSourceText is "
-      + "set to 'true'."
-    );
-    return pdfData;
+  if (await hasSourceText(pdfData)) {
+    if (forceSourceTextCompression) {
+      if (!disableSourceText) {
+        logger.warn("Re-writing PDF source-text is an EXPERIMENTAL feature.");
+      } else {
+        logger.warn("Source file contains text, but disable_source_text flag. " +
+          "is set to false. Resulting file will not contain any embedded text.");
+      }
+    } else {
+      logger.warn("Found text inside of the provided PDF file. Compression operation aborted since disableSourceText "
+        + "is set to 'true'."
+      );
+      return pdfData;
+    }
   }
 
   const extractedText = disableSourceText ? await extractTextFromPdf(pdfData) : null;
