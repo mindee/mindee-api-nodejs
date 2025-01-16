@@ -18,7 +18,7 @@ export class Job {
   /** ID of the job. */
   id: string;
   /** Status of the job. */
-  status?: "waiting" | "processing" | "completed";
+  status?: "waiting" | "processing" | "completed" | "failed";
   /** The time taken to process the job, in milliseconds. */
   milliSecsTaken?: number;
 
