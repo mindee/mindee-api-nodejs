@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.23.0 - 2025-02-21
+### Changes
+* :sparkles: add support for image & PDF compression
+### Fixes
+* :bug: add missing 'failed' value to jobs
+
+
 ## v4.22.0 - 2025-01-14
 ### Changes
 * :sparkles: add support for US Mail V3
