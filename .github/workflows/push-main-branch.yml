@@ -1,0 +1,10 @@
+name: Push Main Branch
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  tag:
+    uses: mindee/client-lib-actions/.github/workflows/tag-version.yml@main

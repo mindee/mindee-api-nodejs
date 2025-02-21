@@ -1,15 +1,15 @@
-name: Documentation
+#
+# Publish Documentation to GitHub pages.
+#
+name: Publish Documentation
 
 on:
-  release:
-    types: [ published ]
-
-  # Allows running this workflow manually from the Actions tab
+  workflow_call:
   workflow_dispatch:
 
 jobs:
-  publish-docs:
-    name: Publish Docs
+  documentation:
+    name: Publish Documentation
     runs-on: ubuntu-latest
 
     steps:

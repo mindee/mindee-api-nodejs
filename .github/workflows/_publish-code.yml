@@ -1,11 +1,11 @@
 #
 # Publish releases to NPM
 #
-name: Publish
+name: Publish Code
 
 on:
-  release:
-    types: [ published ]
+  workflow_call:
+  workflow_dispatch:
 
 jobs:
   publish:

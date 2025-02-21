@@ -1,18 +1,23 @@
-name: Test
+name: Integration Test
 
 on:
   - push
 
 jobs:
   run-tests:
-    name: Run Tests
-    runs-on: ubuntu-latest
+    name: Run Integration Tests
+    timeout-minutes: 30
     strategy:
+      max-parallel: 4
       matrix:
+        os:
+          - "ubuntu-latest"
+          - "windows-latest"
+          - "macos-latest"
         node-version:
           - "18"
-          - "20"
           - "22"
+    runs-on: ${{ matrix.os }}
 
     steps:
       - name: Check out Git repository
@@ -26,9 +31,6 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - name: Set up Poppler on ubuntu
-        run: sudo apt install -y poppler-utils
-
       - name: Install Node.js dependencies
         run: npm ci
 
@@ -36,4 +38,7 @@ jobs:
         run: npm run build
 
       - name: Test code
-        run: npm run test
+        env:
+          MINDEE_API_KEY: ${{ secrets.MINDEE_API_KEY_SE_TESTS }}
+          WORKFLOW_ID: ${{ secrets.WORKFLOW_ID_SE_TESTS }}
+        run: npm run test-integration
