@@ -1,0 +1,10 @@
+name: Publish Guide to readme.com
+
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    uses: mindee/client-lib-actions/.github/workflows/publish-guide.yml@main
+    secrets: inherit
