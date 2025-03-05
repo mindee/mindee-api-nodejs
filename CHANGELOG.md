@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.23.1 - 2025-03-05
+### Changes
+* :recycle: remove superfluous canvas dependency
+* :memo: update doc
+
+
 ## v4.23.0 - 2025-02-21
 ### Changes
 * :sparkles: add support for image & PDF compression
