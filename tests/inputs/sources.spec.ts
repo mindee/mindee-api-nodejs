@@ -13,6 +13,7 @@ import {
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
+import sharp from "sharp";
 import { Buffer } from "node:buffer";
 import { compressImage } from "../../src/imageOperations";
 import { compressPdf } from "../../src/pdf";
@@ -194,6 +195,9 @@ describe("Test different types of input", () => {
     const initialFileStats = await fs.promises.stat(path.join(resourcesPath, "file_types/receipt.jpg"));
     const renderedFileStats = await fs.promises.stat(path.join(outputPath, "resize_indirect.jpg"));
     expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+    const metadata = await sharp(imageResizeInput.fileObject).metadata();
+    expect(metadata.width).to.equal(250);
+    expect(metadata.height).to.equal(333);
   });
 
   it("Image Resize From Compressor", async () => {
