@@ -2,15 +2,11 @@ import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**
- * The shipping company responsible for transporting the goods.
+ * List of page groups. Each group represents a single invoice within a multi-invoice document.
  */
-export class BillOfLadingV1Carrier {
-  /** The name of the carrier. */
-  name: string | null;
-  /** The professional number of the carrier. */
-  professionalNumber: string | null;
-  /** The Standard Carrier Alpha Code (SCAC) of the carrier. */
-  scac: string | null;
+export class InvoiceSplitterV1InvoicePageGroup {
+  /** List of page indexes that belong to the same invoice (group). */
+  pageIndexes: Array<number> | null;
   /** Confidence score */
   confidence: number = 0.0;
   /** The document page on which the information was found. */
@@ -22,9 +18,7 @@ export class BillOfLadingV1Carrier {
   polygon: Polygon = [];
 
   constructor({ prediction = {} }: StringDict) {
-    this.name = prediction["name"];
-    this.professionalNumber = prediction["professional_number"];
-    this.scac = prediction["scac"];
+    this.pageIndexes = prediction["page_indexes"];
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;
     if (prediction["polygon"]) {
@@ -37,9 +31,7 @@ export class BillOfLadingV1Carrier {
    */
   #printableValues() {
     return {
-      name: this.name ?? "",
-      professionalNumber: this.professionalNumber ?? "",
-      scac: this.scac ?? "",
+      pageIndexes: this.pageIndexes?.join(", ") ?? "",
     };
   }
 
@@ -49,23 +41,20 @@ export class BillOfLadingV1Carrier {
   toString(): string {
     const printable = this.#printableValues();
     return (
-      "Name: " +
-      printable.name +
-      ", Professional Number: " +
-      printable.professionalNumber +
-      ", SCAC: " +
-      printable.scac
+      "Page Indexes: " +
+      printable.pageIndexes
     );
   }
 
   /**
-   * Output in a format suitable for inclusion in a field list.
+   * Output in a format suitable for inclusion in an rST table.
    */
-  toFieldList(): string {
+  toTableLine(): string {
     const printable = this.#printableValues();
-    return `
-  :Name: ${printable.name}
-  :Professional Number: ${printable.professionalNumber}
-  :SCAC: ${printable.scac}`.trimEnd();
+    return (
+      "| " +
+      printable.pageIndexes.padEnd(72) +
+      " |"
+    );
   }
 }

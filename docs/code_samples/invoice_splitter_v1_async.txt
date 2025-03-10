@@ -8,14 +8,14 @@ const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 // Load a file from disk
 const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
-// Parse the file asynchronously.
-const asyncApiResponse = mindeeClient.enqueueAndParse(
+// Parse the file
+const apiResponse = mindeeClient.enqueueAndParse(
   mindee.product.InvoiceSplitterV1,
   inputSource
 );
 
 // Handle the response Promise
-asyncApiResponse.then((resp) => {
+apiResponse.then((resp) => {
   // print a string summary
   console.log(resp.document.toString());
 });

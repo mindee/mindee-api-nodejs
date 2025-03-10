@@ -1,4 +1,3 @@
-
 import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 

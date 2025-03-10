@@ -62,7 +62,7 @@ export async function extractInvoices(
   if (indexes instanceof InvoiceSplitterV1) {
     indexes.prediction.invoicePageGroups.map((invoicePageGroup) => {
       if (!strict || invoicePageGroup.confidence === 1) {
-        customIndexes.push(invoicePageGroup.pageIndexes);
+        customIndexes.push(invoicePageGroup.pageIndexes ?? []);
       }
     });
   } else {

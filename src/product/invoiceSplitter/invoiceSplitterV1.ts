@@ -2,7 +2,7 @@ import { Inference, StringDict, Page } from "../../parsing/common";
 import { InvoiceSplitterV1Document } from "./invoiceSplitterV1Document";
 
 /**
- * Inference prediction for Invoice Splitter, API version 1.
+ * Invoice Splitter API version 1 inference prediction.
  */
 export class InvoiceSplitterV1 extends Inference {
   /** The endpoint's name. */
@@ -16,17 +16,19 @@ export class InvoiceSplitterV1 extends Inference {
 
   constructor(rawPrediction: StringDict) {
     super(rawPrediction);
-    this.prediction = new InvoiceSplitterV1Document(
-      rawPrediction["prediction"]
-    );
-    this.pages = rawPrediction["pages"].map(
-      (page: StringDict) =>
-        new Page(
-          InvoiceSplitterV1Document,
-          page,
-          page["id"],
-          page["orientation"]
-        )
+    this.prediction = new InvoiceSplitterV1Document(rawPrediction["prediction"]);
+    rawPrediction["pages"].forEach(
+      (page: StringDict) => {
+        if (page.prediction !== undefined && page.prediction !== null &&
+          Object.keys(page.prediction).length > 0) {
+          this.pages.push(new Page(
+            InvoiceSplitterV1Document,
+            page,
+            page["id"],
+            page["orientation"]
+          ));
+        }
+      }
     );
   }
 }
