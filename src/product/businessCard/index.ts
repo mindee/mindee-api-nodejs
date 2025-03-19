@@ -1,1 +1,1 @@
-export { BusinessCardV1 } from "./businessCardV1";
+export { W9V1 } from "./w9V1";

@@ -18,29 +18,29 @@ import {
  * Receipt API version 5.3 document data.
  */
 export class ReceiptV5Document implements Prediction {
-  /** The purchase category among predefined classes. */
+  /** The purchase category of the receipt. */
   category: ClassificationField;
   /** The date the purchase was made. */
   date: DateField;
-  /** One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'. */
+  /** The type of receipt: EXPENSE RECEIPT or CREDIT CARD RECEIPT. */
   documentType: ClassificationField;
-  /** List of line item details. */
+  /** List of all line items on the receipt. */
   lineItems: ReceiptV5LineItem[] = [];
-  /** The locale detected on the document. */
+  /** The locale of the document. */
   locale: LocaleField;
   /** The receipt number or identifier. */
   receiptNumber: StringField;
-  /** The purchase subcategory among predefined classes for transport and food. */
+  /** The purchase subcategory of the receipt for transport and food. */
   subcategory: ClassificationField;
   /** The address of the supplier or merchant. */
   supplierAddress: StringField;
-  /** List of company registrations associated to the supplier. */
+  /** List of company registration numbers associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The name of the supplier or merchant. */
   supplierName: StringField;
   /** The phone number of the supplier or merchant. */
   supplierPhoneNumber: StringField;
-  /** List of tax lines information. */
+  /** The list of taxes present on the receipt. */
   taxes: Taxes;
   /** The time the purchase was made. */
   time: StringField;
@@ -50,7 +50,7 @@ export class ReceiptV5Document implements Prediction {
   totalAmount: AmountField;
   /** The net amount paid: does not include taxes, fees, and discounts. */
   totalNet: AmountField;
-  /** The total amount of taxes. */
+  /** The sum of all taxes. */
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

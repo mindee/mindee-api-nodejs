@@ -1,1 +1,1 @@
-export { InvoiceSplitterV1 } from "./invoiceSplitterV1";
+export { W9V1 } from "./w9V1";

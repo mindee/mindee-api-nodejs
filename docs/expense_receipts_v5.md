@@ -207,7 +207,7 @@ The `Taxes` field represents an array-like collection of `TaxField` objects. As 
 Fields which are specific to this product; they are not used in any other product.
 
 ### Line Items Field
-List of line item details.
+List of all line items on the receipt.
 
 A `ReceiptV5LineItem` implements the following attributes:
 
@@ -220,17 +220,17 @@ A `ReceiptV5LineItem` implements the following attributes:
 The following fields are extracted for Receipt V5:
 
 ## Purchase Category
-**category** ([ClassificationField](#classification-field)): The purchase category among predefined classes.
+**category** ([ClassificationField](#classification-field)): The purchase category of the receipt.
 
 #### Possible values include:
- - toll
- - food
- - parking
- - transport
- - accommodation
- - gasoline
- - telecom
- - miscellaneous
+ - 'toll'
+ - 'food'
+ - 'parking'
+ - 'transport'
+ - 'accommodation'
+ - 'gasoline'
+ - 'telecom'
+ - 'miscellaneous'
 
 ```js
 console.log(result.document.inference.prediction.category.value);
@@ -244,18 +244,18 @@ console.log(result.document.inference.prediction.date.value);
 ```
 
 ## Document Type
-**documentType** ([ClassificationField](#classification-field)): One of: 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+**documentType** ([ClassificationField](#classification-field)): The type of receipt: EXPENSE RECEIPT or CREDIT CARD RECEIPT.
 
 #### Possible values include:
- - expense_receipt
- - credit_card_receipt
+ - 'EXPENSE RECEIPT'
+ - 'CREDIT CARD RECEIPT'
 
 ```js
 console.log(result.document.inference.prediction.documentType.value);
 ```
 
 ## Line Items
-**lineItems** ([ReceiptV5LineItem](#line-items-field)[]): List of line item details.
+**lineItems** ([ReceiptV5LineItem](#line-items-field)[]): List of all line items on the receipt.
 
 ```js
 for (const lineItemsElem of result.document.inference.prediction.lineItems) {
@@ -264,7 +264,7 @@ for (const lineItemsElem of result.document.inference.prediction.lineItems) {
 ```
 
 ## Expense Locale
-**locale** ([LocaleField](#locale-field)): The locale detected on the document.
+**locale** ([LocaleField](#locale-field)): The locale of the document.
 
 ```js
 console.log(result.document.inference.prediction.locale.value);
@@ -278,14 +278,15 @@ console.log(result.document.inference.prediction.receiptNumber.value);
 ```
 
 ## Purchase Subcategory
-**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory among predefined classes for transport and food.
+**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory of the receipt for transport and food.
 
 #### Possible values include:
- - plane
- - taxi
- - train
- - restaurant
- - shopping
+ - 'plane'
+ - 'taxi'
+ - 'train'
+ - 'restaurant'
+ - 'shopping'
+ - null
 
 ```js
 console.log(result.document.inference.prediction.subcategory.value);
@@ -299,7 +300,7 @@ console.log(result.document.inference.prediction.supplierAddress.value);
 ```
 
 ## Supplier Company Registrations
-**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the supplier.
+**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registration numbers associated to the supplier.
 
 ```js
 for (const supplierCompanyRegistrationsElem of result.document.inference.prediction.supplierCompanyRegistrations) {
@@ -322,7 +323,7 @@ console.log(result.document.inference.prediction.supplierPhoneNumber.value);
 ```
 
 ## Taxes
-**taxes** ([TaxField](#taxes-field)[]): List of tax lines information.
+**taxes** ([TaxField](#taxes-field)[]): The list of taxes present on the receipt.
 
 ```js
 for (const taxesElem of result.document.inference.prediction.taxes) {
@@ -359,7 +360,7 @@ console.log(result.document.inference.prediction.totalNet.value);
 ```
 
 ## Total Tax
-**totalTax** ([AmountField](#amount-field)): The total amount of taxes.
+**totalTax** ([AmountField](#amount-field)): The sum of all taxes.
 
 ```js
 console.log(result.document.inference.prediction.totalTax.value);

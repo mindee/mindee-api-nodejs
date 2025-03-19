@@ -1,1 +1,1 @@
-export { ProofOfAddressV1 } from "./proofOfAddressV1";
+export { W9V1 } from "./w9V1";

@@ -1,1 +1,1 @@
-export { DeliveryNoteV1 } from "./deliveryNoteV1";
+export { W9V1 } from "./w9V1";

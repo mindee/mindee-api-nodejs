@@ -10,7 +10,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Delivery note API version 1.1 document data.
+ * Delivery note API version 1.2 document data.
  */
 export class DeliveryNoteV1Document implements Prediction {
   /** The address of the customer receiving the goods. */

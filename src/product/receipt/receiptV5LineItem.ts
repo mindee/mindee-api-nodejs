@@ -3,7 +3,7 @@ import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**
- * List of line item details.
+ * List of all line items on the receipt.
  */
 export class ReceiptV5LineItem {
   /** The item description. */

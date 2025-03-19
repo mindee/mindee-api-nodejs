@@ -177,9 +177,9 @@ console.log(result.document.inference.prediction.documentNumber.value);
 [📄](#page-level-fields "This field is only present on individual pages.")**documentSide** ([ClassificationField](#classification-field)): The sides of the document which are visible.
 
 #### Possible values include:
- - RECTO
- - VERSO
- - RECTO & VERSO
+ - 'RECTO'
+ - 'VERSO'
+ - 'RECTO & VERSO'
 
 ```js
 for (const documentSideElem of result.document.documentSide) {
@@ -191,8 +191,8 @@ for (const documentSideElem of result.document.documentSide) {
 [📄](#page-level-fields "This field is only present on individual pages.")**documentType** ([ClassificationField](#classification-field)): The document type or format.
 
 #### Possible values include:
- - NEW
- - OLD
+ - 'NEW'
+ - 'OLD'
 
 ```js
 for (const documentTypeElem of result.document.documentType) {

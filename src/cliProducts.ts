@@ -44,9 +44,29 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "Barcode Reader",
       docClass: product.BarcodeReaderV1,
-      allWords: true,
+      allWords: false,
       async: false,
       sync: true,
+    },
+  ],
+  [
+    "bill-of-lading",
+    {
+      displayName: "Bill of Lading",
+      docClass: product.BillOfLadingV1,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
+    "business-card",
+    {
+      displayName: "Business Card",
+      docClass: product.BusinessCardV1,
+      allWords: false,
+      async: true,
+      sync: false,
     },
   ],
   [
@@ -60,7 +80,27 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "financial",
+    "delivery-note",
+    {
+      displayName: "Delivery note",
+      docClass: product.DeliveryNoteV1,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
+    "driver-license",
+    {
+      displayName: "Driver License",
+      docClass: product.DriverLicenseV1,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
+    "financial-document",
     {
       displayName: "Financial Document",
       docClass: product.FinancialDocumentV1,
@@ -80,13 +120,23 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "fr-id-card",
+    "fr-carte-grise",
     {
-      displayName: "FR ID Card",
-      docClass: product.fr.IdCardV1,
+      displayName: "FR Carte Grise",
+      docClass: product.fr.CarteGriseV1,
       allWords: false,
       async: false,
       sync: true,
+    },
+  ],
+  [
+    "fr-energy-bill",
+    {
+      displayName: "FR Energy Bill",
+      docClass: product.fr.EnergyBillV1,
+      allWords: false,
+      async: true,
+      sync: false,
     },
   ],
   [
@@ -100,30 +150,30 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "fr-carte-grise",
+    "fr-carte-nationale-d-identite",
     {
-      displayName: "FR Carte Grise",
-      docClass: product.fr.CarteGriseV1,
+      displayName: "FR Carte Nationale d'Identité",
+      docClass: product.fr.IdCardV2,
       allWords: false,
       async: false,
       sync: true,
     },
   ],
   [
-    "eu-license-plate",
+    "fr-payslip",
     {
-      displayName: "EU License Plate",
-      docClass: product.eu.LicensePlateV1,
+      displayName: "FR Payslip",
+      docClass: product.fr.PayslipV3,
       allWords: false,
-      async: false,
-      sync: true,
+      async: true,
+      sync: false,
     },
   ],
   [
-    "driver-license",
+    "ind-passport-india",
     {
-      displayName: "Driver License",
-      docClass: product.DriverLicenseV1,
+      displayName: "IND Passport - India",
+      docClass: product.ind.IndianPassportV1,
       allWords: false,
       async: true,
       sync: false,
@@ -132,7 +182,7 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
   [
     "international-id",
     {
-      displayName: "International Id",
+      displayName: "International ID",
       docClass: product.InternationalIdV2,
       allWords: false,
       async: true,
@@ -145,7 +195,7 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       displayName: "Invoice",
       docClass: product.InvoiceV4,
       allWords: true,
-      async: false,
+      async: true,
       sync: true,
     },
   ],
@@ -170,6 +220,16 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "nutrition-facts-label",
+    {
+      displayName: "Nutrition Facts Label",
+      docClass: product.NutritionFactsLabelV1,
+      allWords: false,
+      async: true,
+      sync: false,
+    },
+  ],
+  [
     "passport",
     {
       displayName: "Passport",
@@ -180,12 +240,22 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
+    "proof-of-address",
+    {
+      displayName: "Proof of Address",
+      docClass: product.ProofOfAddressV1,
+      allWords: false,
+      async: false,
+      sync: true,
+    },
+  ],
+  [
     "receipt",
     {
-      displayName: "Expense Receipt",
+      displayName: "Receipt",
       docClass: product.ReceiptV5,
       allWords: true,
-      async: false,
+      async: true,
       sync: true,
     },
   ],
@@ -220,10 +290,10 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "us-mail",
+    "us-us-mail",
     {
-      displayName: "US Mail",
-      docClass: product.us.UsMailV2,
+      displayName: "US US Mail",
+      docClass: product.us.UsMailV3,
       allWords: false,
       async: true,
       sync: false,
@@ -235,8 +305,10 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       displayName: "US W9",
       docClass: product.us.W9V1,
       allWords: false,
-      async: true,
-      sync: false,
+      async: false,
+      sync: true,
     },
   ],
 ]);
+
+

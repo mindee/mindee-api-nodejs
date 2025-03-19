@@ -3,7 +3,7 @@ import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**
- * List of line item details.
+ * List of line item present on the document.
  */
 export class FinancialDocumentV1LineItem {
   /** The item description. */

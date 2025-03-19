@@ -1,1 +1,1 @@
-export { MultiReceiptsDetectorV1 } from "./multiReceiptsDetectorV1";
+export { W9V1 } from "./w9V1";

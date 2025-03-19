@@ -21,11 +21,11 @@ import {
 export class FinancialDocumentV1Document implements Prediction {
   /** The customer's address used for billing. */
   billingAddress: StringField;
-  /** The purchase category among predefined classes. */
+  /** The purchase category, only for receipts. */
   category: ClassificationField;
   /** The address of the customer. */
   customerAddress: StringField;
-  /** List of company registrations associated to the customer. */
+  /** List of company registration numbers associated to the customer. */
   customerCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The customer account number or identifier from the supplier. */
   customerId: StringField;
@@ -33,47 +33,50 @@ export class FinancialDocumentV1Document implements Prediction {
   customerName: StringField;
   /** The date the purchase was made. */
   date: DateField;
-  /** The document number or identifier. */
+  /** The document number or identifier (invoice number or receipt number). */
   documentNumber: StringField;
-  /** One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'. */
+  /**
+   * The type of the document: INVOICE or CREDIT NOTE if it is an invoice, CREDIT CARD RECEIPT or EXPENSE RECEIPT if it
+   * is a receipt.
+   */
   documentType: ClassificationField;
   /** The date on which the payment is due. */
   dueDate: DateField;
   /** The invoice number or identifier only if document is an invoice. */
   invoiceNumber: StringField;
-  /** List of line item details. */
+  /** List of line item present on the document. */
   lineItems: FinancialDocumentV1LineItem[] = [];
-  /** The locale detected on the document. */
+  /** The locale of the document. */
   locale: LocaleField;
   /** The date on which the payment is due / fullfilled. */
   paymentDate: DateField;
-  /** The purchase order number. */
+  /** The purchase order number, only if the document is an invoice. */
   poNumber: StringField;
   /** The receipt number or identifier only if document is a receipt. */
   receiptNumber: StringField;
-  /** List of Reference numbers, including PO number. */
+  /** List of Reference numbers, including PO number, only if the document is an invoice. */
   referenceNumbers: StringField[] = [];
   /** The customer's address used for shipping. */
   shippingAddress: StringField;
-  /** The purchase subcategory among predefined classes for transport and food. */
+  /** The purchase subcategory for transport and food, only for receipts. */
   subcategory: ClassificationField;
   /** The address of the supplier or merchant. */
   supplierAddress: StringField;
-  /** List of company registrations associated to the supplier. */
+  /** List of company registration numbers associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The email of the supplier or merchant. */
   supplierEmail: StringField;
   /** The name of the supplier or merchant. */
   supplierName: StringField;
-  /** List of payment details associated to the supplier. */
+  /** List of payment details associated to the supplier (only for invoices). */
   supplierPaymentDetails: PaymentDetailsField[] = [];
   /** The phone number of the supplier or merchant. */
   supplierPhoneNumber: StringField;
   /** The website URL of the supplier or merchant. */
   supplierWebsite: StringField;
-  /** List of tax lines information. */
+  /** List of all taxes on the document. */
   taxes: Taxes;
-  /** The time the purchase was made. */
+  /** The time the purchase was made (only for receipts). */
   time: StringField;
   /** The total amount of tip and gratuity */
   tip: AmountField;
@@ -81,7 +84,7 @@ export class FinancialDocumentV1Document implements Prediction {
   totalAmount: AmountField;
   /** The net amount paid: does not include taxes, fees, and discounts. */
   totalNet: AmountField;
-  /** The total amount of taxes. */
+  /** The sum of all taxes present on the document. */
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

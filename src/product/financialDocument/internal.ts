@@ -1,3 +1,3 @@
-export { FinancialDocumentV1 } from "./financialDocumentV1";
-export { FinancialDocumentV1Document } from "./financialDocumentV1Document";
-export { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
+export { W9V1 } from "./w9V1";
+export { W9V1Document } from "./w9V1Document";
+export { W9V1Page } from "./w9V1Page";
