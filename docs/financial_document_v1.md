@@ -251,7 +251,7 @@ The `Taxes` field represents an array-like collection of `TaxField` objects. As 
 Fields which are specific to this product; they are not used in any other product.
 
 ### Line Items Field
-List of line item details.
+List of line item present on the document.
 
 A `FinancialDocumentV1LineItem` implements the following attributes:
 
@@ -275,17 +275,17 @@ console.log(result.document.inference.prediction.billingAddress.value);
 ```
 
 ## Purchase Category
-**category** ([ClassificationField](#classification-field)): The purchase category among predefined classes.
+**category** ([ClassificationField](#classification-field)): The purchase category, only for receipts.
 
 #### Possible values include:
- - toll
- - food
- - parking
- - transport
- - accommodation
- - gasoline
- - telecom
- - miscellaneous
+ - 'toll'
+ - 'food'
+ - 'parking'
+ - 'transport'
+ - 'accommodation'
+ - 'gasoline'
+ - 'telecom'
+ - 'miscellaneous'
 
 ```js
 console.log(result.document.inference.prediction.category.value);
@@ -299,7 +299,7 @@ console.log(result.document.inference.prediction.customerAddress.value);
 ```
 
 ## Customer Company Registrations
-**customerCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the customer.
+**customerCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registration numbers associated to the customer.
 
 ```js
 for (const customerCompanyRegistrationsElem of result.document.inference.prediction.customerCompanyRegistrations) {
@@ -329,20 +329,20 @@ console.log(result.document.inference.prediction.date.value);
 ```
 
 ## Document Number
-**documentNumber** ([StringField](#string-field)): The document number or identifier.
+**documentNumber** ([StringField](#string-field)): The document number or identifier (invoice number or receipt number).
 
 ```js
 console.log(result.document.inference.prediction.documentNumber.value);
 ```
 
 ## Document Type
-**documentType** ([ClassificationField](#classification-field)): One of: 'INVOICE', 'CREDIT NOTE', 'CREDIT CARD RECEIPT', 'EXPENSE RECEIPT'.
+**documentType** ([ClassificationField](#classification-field)): The type of the document: INVOICE or CREDIT NOTE if it is an invoice, CREDIT CARD RECEIPT or EXPENSE RECEIPT if it is a receipt.
 
 #### Possible values include:
- - INVOICE
- - CREDIT NOTE
- - CREDIT CARD RECEIPT
- - EXPENSE RECEIPT
+ - 'INVOICE'
+ - 'CREDIT NOTE'
+ - 'CREDIT CARD RECEIPT'
+ - 'EXPENSE RECEIPT'
 
 ```js
 console.log(result.document.inference.prediction.documentType.value);
@@ -363,7 +363,7 @@ console.log(result.document.inference.prediction.invoiceNumber.value);
 ```
 
 ## Line Items
-**lineItems** ([FinancialDocumentV1LineItem](#line-items-field)[]): List of line item details.
+**lineItems** ([FinancialDocumentV1LineItem](#line-items-field)[]): List of line item present on the document.
 
 ```js
 for (const lineItemsElem of result.document.inference.prediction.lineItems) {
@@ -372,7 +372,7 @@ for (const lineItemsElem of result.document.inference.prediction.lineItems) {
 ```
 
 ## Locale
-**locale** ([LocaleField](#locale-field)): The locale detected on the document.
+**locale** ([LocaleField](#locale-field)): The locale of the document.
 
 ```js
 console.log(result.document.inference.prediction.locale.value);
@@ -386,7 +386,7 @@ console.log(result.document.inference.prediction.paymentDate.value);
 ```
 
 ## Purchase Order Number
-**poNumber** ([StringField](#string-field)): The purchase order number.
+**poNumber** ([StringField](#string-field)): The purchase order number, only if the document is an invoice.
 
 ```js
 console.log(result.document.inference.prediction.poNumber.value);
@@ -400,7 +400,7 @@ console.log(result.document.inference.prediction.receiptNumber.value);
 ```
 
 ## Reference Numbers
-**referenceNumbers** ([StringField](#string-field)[]): List of Reference numbers, including PO number.
+**referenceNumbers** ([StringField](#string-field)[]): List of Reference numbers, including PO number, only if the document is an invoice.
 
 ```js
 for (const referenceNumbersElem of result.document.inference.prediction.referenceNumbers) {
@@ -416,14 +416,15 @@ console.log(result.document.inference.prediction.shippingAddress.value);
 ```
 
 ## Purchase Subcategory
-**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory among predefined classes for transport and food.
+**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory for transport and food, only for receipts.
 
 #### Possible values include:
- - plane
- - taxi
- - train
- - restaurant
- - shopping
+ - 'plane'
+ - 'taxi'
+ - 'train'
+ - 'restaurant'
+ - 'shopping'
+ - null
 
 ```js
 console.log(result.document.inference.prediction.subcategory.value);
@@ -437,7 +438,7 @@ console.log(result.document.inference.prediction.supplierAddress.value);
 ```
 
 ## Supplier Company Registrations
-**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the supplier.
+**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registration numbers associated to the supplier.
 
 ```js
 for (const supplierCompanyRegistrationsElem of result.document.inference.prediction.supplierCompanyRegistrations) {
@@ -460,7 +461,7 @@ console.log(result.document.inference.prediction.supplierName.value);
 ```
 
 ## Supplier Payment Details
-**supplierPaymentDetails** ([PaymentDetailsField](#payment-details-field)[]): List of payment details associated to the supplier.
+**supplierPaymentDetails** ([PaymentDetailsField](#payment-details-field)[]): List of payment details associated to the supplier (only for invoices).
 
 ```js
 for (const supplierPaymentDetailsElem of result.document.inference.prediction.supplierPaymentDetails) {
@@ -486,7 +487,7 @@ console.log(result.document.inference.prediction.supplierWebsite.value);
 ```
 
 ## Taxes
-**taxes** ([TaxField](#taxes-field)[]): List of tax lines information.
+**taxes** ([TaxField](#taxes-field)[]): List of all taxes on the document.
 
 ```js
 for (const taxesElem of result.document.inference.prediction.taxes) {
@@ -495,7 +496,7 @@ for (const taxesElem of result.document.inference.prediction.taxes) {
 ```
 
 ## Purchase Time
-**time** ([StringField](#string-field)): The time the purchase was made.
+**time** ([StringField](#string-field)): The time the purchase was made (only for receipts).
 
 ```js
 console.log(result.document.inference.prediction.time.value);
@@ -523,7 +524,7 @@ console.log(result.document.inference.prediction.totalNet.value);
 ```
 
 ## Total Tax
-**totalTax** ([AmountField](#amount-field)): The total amount of taxes.
+**totalTax** ([AmountField](#amount-field)): The sum of all taxes present on the document.
 
 ```js
 console.log(result.document.inference.prediction.totalTax.value);

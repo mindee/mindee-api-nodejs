@@ -1,1 +1,1 @@
-export * as ind from "./indianPassport/internal";
+export * as indianPassport from "./indianPassport/internal";

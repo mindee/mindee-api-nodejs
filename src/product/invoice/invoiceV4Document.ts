@@ -19,11 +19,11 @@ import {
  * Invoice API version 4.9 document data.
  */
 export class InvoiceV4Document implements Prediction {
-  /** The customer's address used for billing. */
+  /** The customer billing address. */
   billingAddress: StringField;
   /** The address of the customer. */
   customerAddress: StringField;
-  /** List of company registrations associated to the customer. */
+  /** List of company registration numbers associated to the customer. */
   customerCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The customer account number or identifier from the supplier. */
   customerId: StringField;
@@ -31,45 +31,45 @@ export class InvoiceV4Document implements Prediction {
   customerName: StringField;
   /** The date the purchase was made. */
   date: DateField;
-  /** One of: 'INVOICE', 'CREDIT NOTE'. */
+  /** Document type: INVOICE or CREDIT NOTE. */
   documentType: ClassificationField;
   /** The date on which the payment is due. */
   dueDate: DateField;
   /** The invoice number or identifier. */
   invoiceNumber: StringField;
-  /** List of line item details. */
+  /** List of all the line items present on the invoice. */
   lineItems: InvoiceV4LineItem[] = [];
-  /** The locale detected on the document. */
+  /** The locale of the document. */
   locale: LocaleField;
-  /** The date on which the payment is due/ was full-filled. */
+  /** The date on which the payment is due / was full-filled. */
   paymentDate: DateField;
   /** The purchase order number. */
   poNumber: StringField;
-  /** List of Reference numbers, including PO number. */
+  /** List of all reference numbers on the invoice, including the purchase order number. */
   referenceNumbers: StringField[] = [];
   /** Customer's delivery address. */
   shippingAddress: StringField;
   /** The address of the supplier or merchant. */
   supplierAddress: StringField;
-  /** List of company registrations associated to the supplier. */
+  /** List of company registration numbers associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
-  /** The email of the supplier or merchant. */
+  /** The email address of the supplier or merchant. */
   supplierEmail: StringField;
   /** The name of the supplier or merchant. */
   supplierName: StringField;
-  /** List of payment details associated to the supplier. */
+  /** List of payment details associated to the supplier of the invoice. */
   supplierPaymentDetails: PaymentDetailsField[] = [];
   /** The phone number of the supplier or merchant. */
   supplierPhoneNumber: StringField;
   /** The website URL of the supplier or merchant. */
   supplierWebsite: StringField;
-  /** List of tax line details. */
+  /** List of taxes. Each item contains the detail of the tax. */
   taxes: Taxes;
-  /** The total amount paid: includes taxes, tips, fees, and other charges. */
+  /** The total amount of the invoice: includes taxes, tips, fees, and other charges. */
   totalAmount: AmountField;
-  /** The net amount paid: does not include taxes, fees, and discounts. */
+  /** The net amount of the invoice: does not include taxes, fees, and discounts. */
   totalNet: AmountField;
-  /** The total tax: includes all the taxes paid for this invoice. */
+  /** The total tax: the sum of all the taxes for this invoice. */
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

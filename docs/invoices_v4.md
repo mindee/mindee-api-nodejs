@@ -239,12 +239,12 @@ The `Taxes` field represents an array-like collection of `TaxField` objects. As 
 Fields which are specific to this product; they are not used in any other product.
 
 ### Line Items Field
-List of line item details.
+List of all the line items present on the invoice.
 
 A `InvoiceV4LineItem` implements the following attributes:
 
 * `description` (string): The item description.
-* `productCode` (string): The product code referring to the item.
+* `productCode` (string): The product code of the item.
 * `quantity` (number): The item quantity
 * `taxAmount` (number): The item tax amount.
 * `taxRate` (number): The item tax rate in percentage.
@@ -256,7 +256,7 @@ A `InvoiceV4LineItem` implements the following attributes:
 The following fields are extracted for Invoice V4:
 
 ## Billing Address
-**billingAddress** ([StringField](#string-field)): The customer's address used for billing.
+**billingAddress** ([StringField](#string-field)): The customer billing address.
 
 ```js
 console.log(result.document.inference.prediction.billingAddress.value);
@@ -270,7 +270,7 @@ console.log(result.document.inference.prediction.customerAddress.value);
 ```
 
 ## Customer Company Registrations
-**customerCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the customer.
+**customerCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registration numbers associated to the customer.
 
 ```js
 for (const customerCompanyRegistrationsElem of result.document.inference.prediction.customerCompanyRegistrations) {
@@ -300,11 +300,11 @@ console.log(result.document.inference.prediction.date.value);
 ```
 
 ## Document Type
-**documentType** ([ClassificationField](#classification-field)): One of: 'INVOICE', 'CREDIT NOTE'.
+**documentType** ([ClassificationField](#classification-field)): Document type: INVOICE or CREDIT NOTE.
 
 #### Possible values include:
- - INVOICE
- - CREDIT NOTE
+ - 'INVOICE'
+ - 'CREDIT NOTE'
 
 ```js
 console.log(result.document.inference.prediction.documentType.value);
@@ -325,7 +325,7 @@ console.log(result.document.inference.prediction.invoiceNumber.value);
 ```
 
 ## Line Items
-**lineItems** ([InvoiceV4LineItem](#line-items-field)[]): List of line item details.
+**lineItems** ([InvoiceV4LineItem](#line-items-field)[]): List of all the line items present on the invoice.
 
 ```js
 for (const lineItemsElem of result.document.inference.prediction.lineItems) {
@@ -334,14 +334,14 @@ for (const lineItemsElem of result.document.inference.prediction.lineItems) {
 ```
 
 ## Locale
-**locale** ([LocaleField](#locale-field)): The locale detected on the document.
+**locale** ([LocaleField](#locale-field)): The locale of the document.
 
 ```js
 console.log(result.document.inference.prediction.locale.value);
 ```
 
 ## Payment Date
-**paymentDate** ([DateField](#date-field)): The date on which the payment is due/ was full-filled.
+**paymentDate** ([DateField](#date-field)): The date on which the payment is due / was full-filled.
 
 ```js
 console.log(result.document.inference.prediction.paymentDate.value);
@@ -355,7 +355,7 @@ console.log(result.document.inference.prediction.poNumber.value);
 ```
 
 ## Reference Numbers
-**referenceNumbers** ([StringField](#string-field)[]): List of Reference numbers, including PO number.
+**referenceNumbers** ([StringField](#string-field)[]): List of all reference numbers on the invoice, including the purchase order number.
 
 ```js
 for (const referenceNumbersElem of result.document.inference.prediction.referenceNumbers) {
@@ -378,7 +378,7 @@ console.log(result.document.inference.prediction.supplierAddress.value);
 ```
 
 ## Supplier Company Registrations
-**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registrations associated to the supplier.
+**supplierCompanyRegistrations** ([CompanyRegistrationField](#company-registration-field)[]): List of company registration numbers associated to the supplier.
 
 ```js
 for (const supplierCompanyRegistrationsElem of result.document.inference.prediction.supplierCompanyRegistrations) {
@@ -387,7 +387,7 @@ for (const supplierCompanyRegistrationsElem of result.document.inference.predict
 ```
 
 ## Supplier Email
-**supplierEmail** ([StringField](#string-field)): The email of the supplier or merchant.
+**supplierEmail** ([StringField](#string-field)): The email address of the supplier or merchant.
 
 ```js
 console.log(result.document.inference.prediction.supplierEmail.value);
@@ -401,7 +401,7 @@ console.log(result.document.inference.prediction.supplierName.value);
 ```
 
 ## Supplier Payment Details
-**supplierPaymentDetails** ([PaymentDetailsField](#payment-details-field)[]): List of payment details associated to the supplier.
+**supplierPaymentDetails** ([PaymentDetailsField](#payment-details-field)[]): List of payment details associated to the supplier of the invoice.
 
 ```js
 for (const supplierPaymentDetailsElem of result.document.inference.prediction.supplierPaymentDetails) {
@@ -427,7 +427,7 @@ console.log(result.document.inference.prediction.supplierWebsite.value);
 ```
 
 ## Taxes
-**taxes** ([TaxField](#taxes-field)[]): List of tax line details.
+**taxes** ([TaxField](#taxes-field)[]): List of taxes. Each item contains the detail of the tax.
 
 ```js
 for (const taxesElem of result.document.inference.prediction.taxes) {
@@ -436,21 +436,21 @@ for (const taxesElem of result.document.inference.prediction.taxes) {
 ```
 
 ## Total Amount
-**totalAmount** ([AmountField](#amount-field)): The total amount paid: includes taxes, tips, fees, and other charges.
+**totalAmount** ([AmountField](#amount-field)): The total amount of the invoice: includes taxes, tips, fees, and other charges.
 
 ```js
 console.log(result.document.inference.prediction.totalAmount.value);
 ```
 
 ## Total Net
-**totalNet** ([AmountField](#amount-field)): The net amount paid: does not include taxes, fees, and discounts.
+**totalNet** ([AmountField](#amount-field)): The net amount of the invoice: does not include taxes, fees, and discounts.
 
 ```js
 console.log(result.document.inference.prediction.totalNet.value);
 ```
 
 ## Total Tax
-**totalTax** ([AmountField](#amount-field)): The total tax: includes all the taxes paid for this invoice.
+**totalTax** ([AmountField](#amount-field)): The total tax: the sum of all the taxes for this invoice.
 
 ```js
 console.log(result.document.inference.prediction.totalTax.value);

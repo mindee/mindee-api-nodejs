@@ -242,9 +242,9 @@ console.log(result.document.inference.prediction.documentLanguage.value);
 **documentType** ([ClassificationField](#classification-field)): The type of the document sent.
 
 #### Possible values include:
- - RESUME
- - MOTIVATION_LETTER
- - RECOMMENDATION_LETTER
+ - 'RESUME'
+ - 'MOTIVATION_LETTER'
+ - 'RECOMMENDATION_LETTER'
 
 ```js
 console.log(result.document.inference.prediction.documentType.value);

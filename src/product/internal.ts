@@ -8,6 +8,7 @@ export * as driverLicense from "./driverLicense/internal";
 export * as financialDocument from "./financialDocument/internal";
 export * as fr from "./fr/internal";
 export * as generated from "./generated/internal";
+export * as ind from "./ind/internal";
 export * as internationalId from "./internationalId/internal";
 export * as invoice from "./invoice/internal";
 export * as invoiceSplitter from "./invoiceSplitter/internal";

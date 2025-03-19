@@ -171,8 +171,8 @@ console.log(result.document.inference.prediction.fileNumber.value);
 **gender** ([ClassificationField](#classification-field)): The gender of the passport holder.
 
 #### Possible values include:
- - M
- - F
+ - 'M'
+ - 'F'
 
 ```js
 console.log(result.document.inference.prediction.gender.value);
@@ -266,8 +266,8 @@ console.log(result.document.inference.prediction.oldPassportPlaceOfIssue.value);
 **pageNumber** ([ClassificationField](#classification-field)): The page number of the passport document.
 
 #### Possible values include:
- - 1
- - 2
+ - '1'
+ - '2'
 
 ```js
 console.log(result.document.inference.prediction.pageNumber.value);

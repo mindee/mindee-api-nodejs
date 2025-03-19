@@ -3,12 +3,12 @@ import { StringDict } from "../../parsing/common";
 import { Polygon } from "../../geometry";
 
 /**
- * List of line item details.
+ * List of all the line items present on the invoice.
  */
 export class InvoiceV4LineItem {
   /** The item description. */
   description: string | null;
-  /** The product code referring to the item. */
+  /** The product code of the item. */
   productCode: string | null;
   /** The item quantity */
   quantity: number | null;
