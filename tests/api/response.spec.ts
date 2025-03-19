@@ -2,11 +2,11 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import { PredictResponse } from "../../src";
-import { CustomV1, InvoiceV4, ReceiptV4 } from "../../src/product";
+import { CustomV1, InvoiceV4, ReceiptV5 } from "../../src/product";
 import { LicensePlateV1 } from "../../src/product/eu";
 
 const dataPath = {
-  receiptV4: "tests/data/products/expense_receipts/response_v4/complete.json",
+  receiptV5: "tests/data/products/expense_receipts/response_v5/complete.json",
   invoiceV4: "tests/data/products/invoices/response_v4/complete.json",
   licensePlateV1: "tests/data/products/license_plates/response_v1/complete.json",
   customV1: "tests/data/products/custom/response_v1/complete.json",
@@ -14,9 +14,9 @@ const dataPath = {
 
 describe("Synchronous API predict response", () => {
   it("should build a Receipt response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV4));
+    const jsonData = await fs.readFile(path.resolve(dataPath.receiptV5));
     const httpResponse = JSON.parse(jsonData.toString());
-    const response = new PredictResponse(ReceiptV4, httpResponse);
+    const response = new PredictResponse(ReceiptV5, httpResponse);
     expect(response.document.inference.prediction).to.not.be.undefined;
     expect(response.document.inference.pages.length).to.be.equals(1);
     expect(response.document.nPages).to.be.equals(1);

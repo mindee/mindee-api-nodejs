@@ -14,7 +14,6 @@ export { MultiReceiptsDetectorV1 } from "./multiReceiptsDetector/multiReceiptsDe
 export { NutritionFactsLabelV1 } from "./nutritionFactsLabel/nutritionFactsLabelV1";
 export { PassportV1 } from "./passport/passportV1";
 export { ProofOfAddressV1 } from "./proofOfAddress/proofOfAddressV1";
-export { ReceiptV4 } from "./receipt/receiptV4";
 export { ReceiptV5 } from "./receipt/receiptV5";
 export { ResumeV1 } from "./resume/resumeV1";
 export * as eu from "./eu";
