@@ -310,5 +310,3 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
 ]);
-
-
