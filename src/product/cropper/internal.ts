@@ -1,3 +1,3 @@
-export { W9V1 } from "./w9V1";
-export { W9V1Document } from "./w9V1Document";
-export { W9V1Page } from "./w9V1Page";
+export { CropperV1 } from "./cropperV1";
+export { CropperV1Document } from "./cropperV1Document";
+export { CropperV1Page } from "./cropperV1Page";

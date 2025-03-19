@@ -1,1 +1,1 @@
-export { W9V1 } from "./w9V1";
+export { IndianPassportV1 } from "./indianPassportV1";

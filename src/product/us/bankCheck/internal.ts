@@ -1,3 +1,3 @@
-export { W9V1 } from "./w9V1";
-export { W9V1Document } from "./w9V1Document";
-export { W9V1Page } from "./w9V1Page";
+export { BankCheckV1 } from "./bankCheckV1";
+export { BankCheckV1Document } from "./bankCheckV1Document";
+export { BankCheckV1Page } from "./bankCheckV1Page";

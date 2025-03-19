@@ -1,1 +1,2 @@
-export { W9V1 } from "./w9V1";
+export { BankAccountDetailsV1 } from "./bankAccountDetailsV1";
+export { BankAccountDetailsV2 } from "./bankAccountDetailsV2";

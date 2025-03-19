@@ -1,3 +1,3 @@
-export { W9V1 } from "./w9V1";
-export { W9V1Document } from "./w9V1Document";
-export { W9V1Page } from "./w9V1Page";
+export { InvoiceV4 } from "./invoiceV4";
+export { InvoiceV4Document } from "./invoiceV4Document";
+export { InvoiceV4LineItem } from "./invoiceV4LineItem";

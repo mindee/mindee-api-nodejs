@@ -1,1 +1,2 @@
-export { W9V1 } from "./w9V1";
+export { IdCardV1 } from "./idCardV1";
+export { IdCardV2 } from "./idCardV2";

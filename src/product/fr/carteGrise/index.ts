@@ -1,1 +1,1 @@
-export { W9V1 } from "./w9V1";
+export { CarteGriseV1 } from "./carteGriseV1";

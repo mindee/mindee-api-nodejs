@@ -1,1 +1,1 @@
-export { W9V1 } from "./w9V1";
+export { CropperV1 } from "./cropperV1";

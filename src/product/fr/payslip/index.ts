@@ -1,1 +1,2 @@
-export { W9V1 } from "./w9V1";
+export { PayslipV2 } from "./payslipV2";
+export { PayslipV3 } from "./payslipV3";
