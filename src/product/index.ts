@@ -16,7 +16,6 @@ export { PassportV1 } from "./passport/passportV1";
 export { ProofOfAddressV1 } from "./proofOfAddress/proofOfAddressV1";
 export { ReceiptV5 } from "./receipt/receiptV5";
 export { ResumeV1 } from "./resume/resumeV1";
-export * as eu from "./eu";
 export * as fr from "./fr";
 export * as ind from "./ind";
 export * as us from "./us";

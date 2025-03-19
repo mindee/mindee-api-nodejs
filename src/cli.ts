@@ -116,16 +116,6 @@ const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "eu-license-plate",
-    {
-      displayName: "EU License Plate",
-      docClass: product.eu.LicensePlateV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
     "driver-license",
     {
       displayName: "Driver License",
