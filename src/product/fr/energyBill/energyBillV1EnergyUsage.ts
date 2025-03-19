@@ -6,6 +6,8 @@ import { Polygon } from "../../../geometry";
  * Details of energy consumption.
  */
 export class EnergyBillV1EnergyUsage {
+  /** The price per unit of energy consumed. */
+  consumption: number | null;
   /** Description or details of the energy usage. */
   description: string | null;
   /** The end date of the energy usage. */
@@ -16,6 +18,8 @@ export class EnergyBillV1EnergyUsage {
   taxRate: number | null;
   /** The total cost of energy consumed. */
   total: number | null;
+  /** The unit of measurement for energy consumption. */
+  unit: string | null;
   /** The price per unit of energy consumed. */
   unitPrice: number | null;
   /** Confidence score */
@@ -29,6 +33,15 @@ export class EnergyBillV1EnergyUsage {
   polygon: Polygon = [];
 
   constructor({ prediction = {} }: StringDict) {
+    if (
+      prediction["consumption"] !== undefined &&
+      prediction["consumption"] !== null &&
+      !isNaN(prediction["consumption"])
+    ) {
+      this.consumption = +parseFloat(prediction["consumption"]);
+    } else {
+      this.consumption = null;
+    }
     this.description = prediction["description"];
     this.endDate = prediction["end_date"];
     this.startDate = prediction["start_date"];
@@ -50,6 +63,7 @@ export class EnergyBillV1EnergyUsage {
     } else {
       this.total = null;
     }
+    this.unit = prediction["unit"];
     if (
       prediction["unit_price"] !== undefined &&
       prediction["unit_price"] !== null &&
@@ -71,6 +85,8 @@ export class EnergyBillV1EnergyUsage {
    */
   #printableValues() {
     return {
+      consumption:
+        this.consumption !== undefined ? floatToString(this.consumption) : "",
       description: this.description ?
         this.description.length <= 36 ?
           cleanSpecialChars(this.description) :
@@ -88,6 +104,11 @@ export class EnergyBillV1EnergyUsage {
         "",
       taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",
       total: this.total !== undefined ? floatToString(this.total) : "",
+      unit: this.unit ?
+        this.unit.length <= 15 ?
+          cleanSpecialChars(this.unit) :
+          cleanSpecialChars(this.unit).slice(0, 12) + "..." :
+        "",
       unitPrice: this.unitPrice !== undefined ? floatToString(this.unitPrice) : "",
     };
   }
@@ -98,7 +119,9 @@ export class EnergyBillV1EnergyUsage {
   toString(): string {
     const printable = this.#printableValues();
     return (
-      "Description: " +
+      "Consumption: " +
+      printable.consumption +
+      ", Description: " +
       printable.description +
       ", End Date: " +
       printable.endDate +
@@ -108,6 +131,8 @@ export class EnergyBillV1EnergyUsage {
       printable.taxRate +
       ", Total: " +
       printable.total +
+      ", Unit of Measure: " +
+      printable.unit +
       ", Unit Price: " +
       printable.unitPrice
     );
@@ -120,6 +145,8 @@ export class EnergyBillV1EnergyUsage {
     const printable = this.#printableValues();
     return (
       "| " +
+      printable.consumption.padEnd(11) +
+      " | " +
       printable.description.padEnd(36) +
       " | " +
       printable.endDate.padEnd(10) +
@@ -129,6 +156,8 @@ export class EnergyBillV1EnergyUsage {
       printable.taxRate.padEnd(8) +
       " | " +
       printable.total.padEnd(9) +
+      " | " +
+      printable.unit.padEnd(15) +
       " | " +
       printable.unitPrice.padEnd(10) +
       " |"

@@ -16,7 +16,7 @@ import {
 } from "../../../parsing/standard";
 
 /**
- * Energy Bill API version 1.0 document data.
+ * Energy Bill API version 1.2 document data.
  */
 export class EnergyBillV1Document implements Prediction {
   /** The unique identifier associated with a specific contract. */
@@ -150,13 +150,15 @@ export class EnergyBillV1Document implements Prediction {
     }
     let energyUsageSummary:string = "";
     if (this.energyUsage && this.energyUsage.length > 0) {
-      const energyUsageColSizes:number[] = [38, 12, 12, 10, 11, 12];
+      const energyUsageColSizes:number[] = [13, 38, 12, 12, 10, 11, 17, 12];
       energyUsageSummary += "\n" + lineSeparator(energyUsageColSizes, "-") + "\n  ";
+      energyUsageSummary += "| Consumption ";
       energyUsageSummary += "| Description                          ";
       energyUsageSummary += "| End Date   ";
       energyUsageSummary += "| Start Date ";
       energyUsageSummary += "| Tax Rate ";
       energyUsageSummary += "| Total     ";
+      energyUsageSummary += "| Unit of Measure ";
       energyUsageSummary += "| Unit Price ";
       energyUsageSummary += "|\n" + lineSeparator(energyUsageColSizes, "=");
       energyUsageSummary += this.energyUsage.map(

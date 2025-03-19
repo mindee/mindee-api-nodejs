@@ -9,7 +9,7 @@ export class EnergyBillV1MeterDetail {
   meterNumber: string | null;
   /** The type of energy meter. */
   meterType: string | null;
-  /** The unit of measurement for energy consumption, which can be kW, m³, or L. */
+  /** The unit of power for energy consumption. */
   unit: string | null;
   /** Confidence score */
   confidence: number = 0.0;
@@ -53,7 +53,7 @@ export class EnergyBillV1MeterDetail {
       printable.meterNumber +
       ", Meter Type: " +
       printable.meterType +
-      ", Unit of Measure: " +
+      ", Unit of Power: " +
       printable.unit
     );
   }
@@ -66,6 +66,6 @@ export class EnergyBillV1MeterDetail {
     return `
   :Meter Number: ${printable.meterNumber}
   :Meter Type: ${printable.meterType}
-  :Unit of Measure: ${printable.unit}`.trimEnd();
+  :Unit of Power: ${printable.unit}`.trimEnd();
   }
 }

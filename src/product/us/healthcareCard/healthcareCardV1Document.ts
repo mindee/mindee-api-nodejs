@@ -7,7 +7,7 @@ import { HealthcareCardV1Copay } from "./healthcareCardV1Copay";
 import { DateField, StringField } from "../../../parsing/standard";
 
 /**
- * Healthcare Card API version 1.0 document data.
+ * Healthcare Card API version 1.1 document data.
  */
 export class HealthcareCardV1Document implements Prediction {
   /** The name of the company that provides the healthcare plan. */
