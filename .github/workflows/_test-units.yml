@@ -1,7 +1,10 @@
+#
+# Run unit tests.
+#
 name: Test
 
 on:
-  - push
+  workflow_call:
 
 jobs:
   run-tests:
@@ -24,7 +27,7 @@ jobs:
           submodules: recursive
 
       - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"

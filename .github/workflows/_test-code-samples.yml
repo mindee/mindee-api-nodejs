@@ -1,9 +1,7 @@
 name: Test Code Samples
+
 on:
-  pull_request:
-  schedule:
-    - cron:  '0 23 * * *'
-  # Allow running this workflow manually from the Actions tab
+  workflow_call:
   workflow_dispatch:
 
 jobs:
@@ -24,7 +22,7 @@ jobs:
           submodules: recursive
 
       - name: Set up Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
