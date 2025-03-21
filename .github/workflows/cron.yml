@@ -6,7 +6,7 @@ on:
 
 jobs:
   test_regressions:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_test-regressions.yml@main
+    uses: mindee/mindee-api-nodejs/.github/workflows/_test-integrations.yml@main
     secrets: inherit
   test_code_samples:
     uses: mindee/mindee-api-nodejs/.github/workflows/_test-code-samples.yml@main
