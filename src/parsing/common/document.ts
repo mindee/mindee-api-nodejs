@@ -42,15 +42,13 @@ export class Document<T extends Inference> {
       const extras: Record<string, ExtraField> = {};
       Object.entries(httpResponse["extras"]).forEach(
         ([extraKey, extraValue]: [string, any]) => {
-          if (extraValue) {
-            switch (extraKey) {
-            case "cropper":
-              extras["cropper"] = new CropperExtra(extraValue as StringDict);
-              break;
-            case "full_text_ocr":
-              extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
-              break;
-            }
+          switch (extraKey) {
+          case "cropper":
+            extras["cropper"] = new CropperExtra(extraValue as StringDict);
+            break;
+          case "full_text_ocr":
+            extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
+            break;
           }
         }
       );
@@ -75,23 +73,16 @@ ${this.inference?.toString()}`;
   }
 
   private injectFullTextOcr(rawPrediction: StringDict) {
-
-    if (
-      !rawPrediction["inference"]["pages"][0]["full_text_ocr"] ||
-      rawPrediction["inference"]["pages"][0]["full_text_ocr"] === null ||
-      !rawPrediction["inference"]["pages"][0]["full_text_ocr"]["content"] ||
-      rawPrediction["inference"]["pages"][0]["full_text_ocr"]["content"] === null
-    ) {
-      return;
-    }
     if (
       rawPrediction["inference"]["pages"].length < 1 ||
       rawPrediction["inference"]["pages"][0]["extras"].length < 1 ||
-      !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"])
+      !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"]) ||
+        !rawPrediction["inference"]["pages"][0]["extras"]["full_text_ocr"] ||
+        !("content" in rawPrediction["inference"]["pages"][0]["extras"]["full_text_ocr"]) ||
+        !rawPrediction["inference"]["pages"][0]["extras"]["full_text_ocr"]["content"]
     ) {
       return;
     }
-
     const fullTextOcr = rawPrediction["inference"]["pages"].filter(
       (e: StringDict) => "extras" in e
     ).map(
