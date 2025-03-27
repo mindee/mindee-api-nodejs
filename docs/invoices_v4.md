@@ -229,6 +229,7 @@ Aside from the basic `Field` attributes, the tax field `TaxField` also implement
 * **rate** (`number`): the tax rate applied to an item can be expressed as a percentage. Can be `undefined`.
 * **code** (`string`): tax code (or equivalent, depending on the origin of the document). Can be `undefined`.
 * **base** (`number`): base amount used for the tax. Can be `undefined`.
+* **value** (`number`): the value of the tax. Can be `null`.
 
 > Note: currently `TaxField` is not used on its own, and is accessed through a parent `Taxes` object, an array-like structure.
 
