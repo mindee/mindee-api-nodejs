@@ -75,6 +75,15 @@ ${this.inference?.toString()}`;
   }
 
   private injectFullTextOcr(rawPrediction: StringDict) {
+
+    if (
+      !rawPrediction["inference"]["pages"][0]["full_text_ocr"] ||
+      rawPrediction["inference"]["pages"][0]["full_text_ocr"] === null ||
+      !rawPrediction["inference"]["pages"][0]["full_text_ocr"]["content"] ||
+      rawPrediction["inference"]["pages"][0]["full_text_ocr"]["content"] === null
+    ) {
+      return;
+    }
     if (
       rawPrediction["inference"]["pages"].length < 1 ||
       rawPrediction["inference"]["pages"][0]["extras"].length < 1 ||
@@ -82,6 +91,7 @@ ${this.inference?.toString()}`;
     ) {
       return;
     }
+
     const fullTextOcr = rawPrediction["inference"]["pages"].filter(
       (e: StringDict) => "extras" in e
     ).map(
