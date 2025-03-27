@@ -47,13 +47,15 @@ export class Page<T extends Prediction> {
       const extras: Record<string, ExtraField> = {};
       Object.entries(rawPrediction["extras"]).forEach(
         ([extraKey, extraValue]: [string, any]) => {
-          switch (extraKey) {
-          case "cropper":
-            extras["cropper"] = new CropperExtra(extraValue as StringDict);
-            break;
-          case "full_text_ocr":
-            extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
-            break;
+          if (extraValue) {
+            switch (extraKey) {
+            case "cropper":
+              extras["cropper"] = new CropperExtra(extraValue as StringDict);
+              break;
+            case "full_text_ocr":
+              extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
+              break;
+            }
           }
         }
       );
