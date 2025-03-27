@@ -80,10 +80,13 @@ ${this.prediction.toString()}
       return;
     }
     if (
-      rawPrediction["extras"] === null ||
+      !rawPrediction["extras"]
+      || rawPrediction["extras"] === null ||
+      !rawPrediction["extras"]["full_text_ocr"] ||
       rawPrediction["extras"]["full_text_ocr"] === null ||
+      !rawPrediction["extras"]["full_text_ocr"]["content"] ||
       rawPrediction["extras"]["full_text_ocr"]["content"] === null
-    ){
+    ) {
       return;
     }
     const fullTextOcr = rawPrediction["extras"]["full_text_ocr"]["content"];
