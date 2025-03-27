@@ -7,7 +7,6 @@
 * :sparkles: update US HealthcareCardV1 to V1.1
 * :coffin: remove support for EU Driver License
 * :coffin: remove support for License Plates
-* :coffin: remove support for PetrolReceiptV1
 * :coffin: remove support for ReceiptV4
 * :coffin: remove support for Proof of Address
 * :coffin: remove support for US Driver License
