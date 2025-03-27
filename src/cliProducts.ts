@@ -240,16 +240,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "proof-of-address",
-    {
-      displayName: "Proof of Address",
-      docClass: product.ProofOfAddressV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
     "receipt",
     {
       displayName: "Receipt",
@@ -297,16 +287,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       allWords: false,
       async: true,
       sync: false,
-    },
-  ],
-  [
-    "us-w9",
-    {
-      displayName: "US W9",
-      docClass: product.us.W9V1,
-      allWords: false,
-      async: false,
-      sync: true,
     },
   ],
 ]);

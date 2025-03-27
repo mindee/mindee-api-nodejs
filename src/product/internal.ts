@@ -15,7 +15,6 @@ export * as invoiceSplitter from "./invoiceSplitter/internal";
 export * as multiReceiptsDetector from "./multiReceiptsDetector/internal";
 export * as nutritionFactsLabel from "./nutritionFactsLabel/internal";
 export * as passport from "./passport/internal";
-export * as proofOfAddress from "./proofOfAddress/internal";
 export * as receipt from "./receipt/internal";
 export * as resume from "./resume/internal";
 export * as us from "./us/internal";
