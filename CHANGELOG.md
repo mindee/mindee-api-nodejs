@@ -1,5 +1,21 @@
 # CHANGELOG
 
+## v4.24.0 - 2025-03-27
+### Changes
+* :sparkles: update structure for InvoiceSplitterV1
+* :sparkles: update FR EnegryBillV1 to V1.2
+* :sparkles: update US HealthcareCardV1 to V1.1
+* :coffin: remove support for EU Driver License
+* :coffin: remove support for License Plates
+* :coffin: remove support for ReceiptV4
+* :coffin: remove support for Proof of Address
+* :coffin: remove support for US Driver License
+* :coffin: remove support for US W9V1
+### Fixes
+* :bug: fix invalid indexes of some products
+* :recycle: update CLI structure
+
+
 ## v4.23.1 - 2025-03-05
 ### Changes
 * :recycle: remove superfluous canvas dependency
