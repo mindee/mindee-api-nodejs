@@ -47,15 +47,13 @@ export class Page<T extends Prediction> {
       const extras: Record<string, ExtraField> = {};
       Object.entries(rawPrediction["extras"]).forEach(
         ([extraKey, extraValue]: [string, any]) => {
-          if (extraValue !== null) {
-            switch (extraKey) {
-            case "cropper":
-              extras["cropper"] = new CropperExtra(extraValue as StringDict);
-              break;
-            case "full_text_ocr":
-              extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
-              break;
-            }
+          switch (extraKey) {
+          case "cropper":
+            extras["cropper"] = new CropperExtra(extraValue as StringDict);
+            break;
+          case "full_text_ocr":
+            extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
+            break;
           }
         }
       );
@@ -79,6 +77,13 @@ ${this.prediction.toString()}
 
   private injectFullTextOcr(rawPrediction: StringDict) {
     if (!("extras" in rawPrediction) || !("full_text_ocr" in rawPrediction["extras"])) {
+      return;
+    }
+    if (
+      rawPrediction["extras"] === null ||
+      rawPrediction["extras"]["full_text_ocr"] === null ||
+      rawPrediction["extras"]["full_text_ocr"]["content"] === null
+    ){
       return;
     }
     const fullTextOcr = rawPrediction["extras"]["full_text_ocr"]["content"];

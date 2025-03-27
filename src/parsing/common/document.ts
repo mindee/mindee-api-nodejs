@@ -42,15 +42,13 @@ export class Document<T extends Inference> {
       const extras: Record<string, ExtraField> = {};
       Object.entries(httpResponse["extras"]).forEach(
         ([extraKey, extraValue]: [string, any]) => {
-          if (extraValue) {
-            switch (extraKey) {
-            case "cropper":
-              extras["cropper"] = new CropperExtra(extraValue as StringDict);
-              break;
-            case "full_text_ocr":
-              extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
-              break;
-            }
+          switch (extraKey) {
+          case "cropper":
+            extras["cropper"] = new CropperExtra(extraValue as StringDict);
+            break;
+          case "full_text_ocr":
+            extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
+            break;
           }
         }
       );
@@ -75,6 +73,13 @@ ${this.inference?.toString()}`;
   }
 
   private injectFullTextOcr(rawPrediction: StringDict) {
+    if (
+      rawPrediction["extras"] === null ||
+      rawPrediction["extras"]["full_text_ocr"] === null ||
+      rawPrediction["extras"]["full_text_ocr"]["content"] === null
+    ){
+      return;
+    }
     if (
       rawPrediction["inference"]["pages"].length < 1 ||
       rawPrediction["inference"]["pages"][0]["extras"].length < 1 ||
