@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.24.1 - 2025-03-27
+### Fixes
+* :bug: fix null objects being return in extras
+
+
 ## v4.24.0 - 2025-03-27
 ### Changes
 * :sparkles: update structure for InvoiceSplitterV1
