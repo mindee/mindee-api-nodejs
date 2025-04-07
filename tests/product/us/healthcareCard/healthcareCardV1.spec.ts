@@ -25,6 +25,7 @@ describe("HealthcareCardV1 Object initialization", async () => {
     expect(docPrediction.groupNumber.value).to.be.undefined;
     expect(docPrediction.payerId.value).to.be.undefined;
     expect(docPrediction.rxBin.value).to.be.undefined;
+    expect(docPrediction.rxId.value).to.be.undefined;
     expect(docPrediction.rxGrp.value).to.be.undefined;
     expect(docPrediction.rxPcn.value).to.be.undefined;
     expect(docPrediction.copays.length).to.be.equals(0);
