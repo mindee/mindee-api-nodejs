@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Invoice API version 4.9 document data.
+ * Invoice API version 4.10 document data.
  */
 export class InvoiceV4Document implements Prediction {
   /** The customer billing address. */
@@ -33,6 +33,8 @@ export class InvoiceV4Document implements Prediction {
   date: DateField;
   /** Document type: INVOICE or CREDIT NOTE. */
   documentType: ClassificationField;
+  /** Document type extended. */
+  documentTypeExtended: ClassificationField;
   /** The date on which the payment is due. */
   dueDate: DateField;
   /** The invoice number or identifier. */
@@ -105,6 +107,9 @@ export class InvoiceV4Document implements Prediction {
     });
     this.documentType = new ClassificationField({
       prediction: rawPrediction["document_type"],
+    });
+    this.documentTypeExtended = new ClassificationField({
+      prediction: rawPrediction["document_type_extended"],
     });
     this.dueDate = new DateField({
       prediction: rawPrediction["due_date"],
@@ -257,6 +262,7 @@ export class InvoiceV4Document implements Prediction {
 :Shipping Address: ${this.shippingAddress}
 :Billing Address: ${this.billingAddress}
 :Document Type: ${this.documentType}
+:Document Type Extended: ${this.documentTypeExtended}
 :Line Items: ${lineItemsSummary}`.trimEnd();
     return cleanOutString(outStr);
   }

@@ -16,7 +16,7 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Financial Document API version 1.11 document data.
+ * Financial Document API version 1.12 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
   /** The customer's address used for billing. */
@@ -40,6 +40,8 @@ export class FinancialDocumentV1Document implements Prediction {
    * is a receipt.
    */
   documentType: ClassificationField;
+  /** Document type extended. */
+  documentTypeExtended: ClassificationField;
   /** The date on which the payment is due. */
   dueDate: DateField;
   /** The invoice number or identifier only if document is an invoice. */
@@ -127,6 +129,9 @@ export class FinancialDocumentV1Document implements Prediction {
     });
     this.documentType = new ClassificationField({
       prediction: rawPrediction["document_type"],
+    });
+    this.documentTypeExtended = new ClassificationField({
+      prediction: rawPrediction["document_type_extended"],
     });
     this.dueDate = new DateField({
       prediction: rawPrediction["due_date"],
@@ -295,6 +300,7 @@ export class FinancialDocumentV1Document implements Prediction {
 :Shipping Address: ${this.shippingAddress}
 :Billing Address: ${this.billingAddress}
 :Document Type: ${this.documentType}
+:Document Type Extended: ${this.documentTypeExtended}
 :Purchase Subcategory: ${this.subcategory}
 :Purchase Category: ${this.category}
 :Total Tax: ${this.totalTax}

@@ -7,7 +7,7 @@ import { HealthcareCardV1Copay } from "./healthcareCardV1Copay";
 import { DateField, StringField } from "../../../parsing/standard";
 
 /**
- * Healthcare Card API version 1.1 document data.
+ * Healthcare Card API version 1.2 document data.
  */
 export class HealthcareCardV1Document implements Prediction {
   /** The name of the company that provides the healthcare plan. */
@@ -32,6 +32,8 @@ export class HealthcareCardV1Document implements Prediction {
   rxBin: StringField;
   /** The group number for prescription drug coverage. */
   rxGrp: StringField;
+  /** The ID number for prescription drug coverage. */
+  rxId: StringField;
   /** The PCN number for prescription drug coverage. */
   rxPcn: StringField;
 
@@ -92,6 +94,10 @@ export class HealthcareCardV1Document implements Prediction {
       prediction: rawPrediction["rx_grp"],
       pageId: pageId,
     });
+    this.rxId = new StringField({
+      prediction: rawPrediction["rx_id"],
+      pageId: pageId,
+    });
     this.rxPcn = new StringField({
       prediction: rawPrediction["rx_pcn"],
       pageId: pageId,
@@ -105,10 +111,10 @@ export class HealthcareCardV1Document implements Prediction {
     const dependents = this.dependents.join("\n             ");
     let copaysSummary:string = "";
     if (this.copays && this.copays.length > 0) {
-      const copaysColSizes:number[] = [14, 14];
+      const copaysColSizes:number[] = [14, 22];
       copaysSummary += "\n" + lineSeparator(copaysColSizes, "-") + "\n  ";
       copaysSummary += "| Service Fees ";
-      copaysSummary += "| Service Name ";
+      copaysSummary += "| Service Name         ";
       copaysSummary += "|\n" + lineSeparator(copaysColSizes, "=");
       copaysSummary += this.copays.map(
         (item) =>
@@ -123,6 +129,7 @@ export class HealthcareCardV1Document implements Prediction {
 :Group Number: ${this.groupNumber}
 :Payer ID: ${this.payerId}
 :RX BIN: ${this.rxBin}
+:RX ID: ${this.rxId}
 :RX GRP: ${this.rxGrp}
 :RX PCN: ${this.rxPcn}
 :copays: ${copaysSummary}

@@ -116,6 +116,15 @@ A `HealthcareCardV1Copay` implements the following attributes:
 * `serviceFees` (number): The price of service.
 * `serviceName` (string): The name of service of the copay.
 
+#### Possible values include:
+ - primary_care
+ - emergency_room
+ - urgent_care
+ - specialist
+ - office_visit
+ - prescription
+
+
 # Attributes
 The following fields are extracted for Healthcare Card V1:
 
@@ -198,6 +207,13 @@ console.log(result.document.inference.prediction.rxBin.value);
 
 ```js
 console.log(result.document.inference.prediction.rxGrp.value);
+```
+
+## RX ID
+**rxId** ([StringField](#string-field)): The ID number for prescription drug coverage.
+
+```js
+console.log(result.document.inference.prediction.rxId.value);
 ```
 
 ## RX PCN
