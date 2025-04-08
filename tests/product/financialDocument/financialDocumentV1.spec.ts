@@ -31,9 +31,14 @@ describe("Financial Document V1 Object initialization", async () => {
     expect(docPrediction.totalTax.value).to.be.undefined;
     expect(docPrediction.date.value).to.be.undefined;
     expect(docPrediction.invoiceNumber.value).to.be.undefined;
+    expect(docPrediction.billingAddress.value).to.be.undefined;
     expect(docPrediction.dueDate.value).to.be.undefined;
+    expect(docPrediction.documentNumber.value).to.be.undefined;
+    expect(docPrediction.documentType.value).to.be.eq("EXPENSE RECEIPT");
+    expect(docPrediction.documentTypeExtended.value).to.be.eq("EXPENSE RECEIPT");
     expect(docPrediction.supplierName.value).to.be.undefined;
     expect(docPrediction.supplierAddress.value).to.be.undefined;
+    expect(docPrediction.customerId.value).to.be.undefined;
     expect(docPrediction.customerName.value).to.be.undefined;
     expect(docPrediction.customerAddress.value).to.be.undefined;
     expect(docPrediction.customerCompanyRegistrations.length).to.be.eq(0);
