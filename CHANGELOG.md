@@ -5,6 +5,8 @@
 * :sparkles: add support for Financial Document V1.12
 * :sparkles: add support for Invoices V4.10
 * :sparkles: add support for US Healthcare Cards V1.2
+### Fixes
+* :arrow_up: upgrade mocha dependency
 
 
 ## v4.24.1 - 2025-03-27
