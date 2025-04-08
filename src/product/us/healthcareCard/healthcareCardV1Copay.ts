@@ -46,9 +46,9 @@ export class HealthcareCardV1Copay {
       serviceFees:
         this.serviceFees !== undefined ? floatToString(this.serviceFees) : "",
       serviceName: this.serviceName ?
-        this.serviceName.length <= 12 ?
+        this.serviceName.length <= 20 ?
           cleanSpecialChars(this.serviceName) :
-          cleanSpecialChars(this.serviceName).slice(0, 9) + "..." :
+          cleanSpecialChars(this.serviceName).slice(0, 17) + "..." :
         "",
     };
   }
@@ -75,7 +75,7 @@ export class HealthcareCardV1Copay {
       "| " +
       printable.serviceFees.padEnd(12) +
       " | " +
-      printable.serviceName.padEnd(12) +
+      printable.serviceName.padEnd(20) +
       " |"
     );
   }

@@ -111,10 +111,10 @@ export class HealthcareCardV1Document implements Prediction {
     const dependents = this.dependents.join("\n             ");
     let copaysSummary:string = "";
     if (this.copays && this.copays.length > 0) {
-      const copaysColSizes:number[] = [14, 14];
+      const copaysColSizes:number[] = [14, 22];
       copaysSummary += "\n" + lineSeparator(copaysColSizes, "-") + "\n  ";
       copaysSummary += "| Service Fees ";
-      copaysSummary += "| Service Name ";
+      copaysSummary += "| Service Name         ";
       copaysSummary += "|\n" + lineSeparator(copaysColSizes, "=");
       copaysSummary += this.copays.map(
         (item) =>
