@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.3.0 - 2025-04-08
+### Changes
+* :sparkles: add support for Financial Document V1.12
+* :sparkles: add support for Invoices V4.10
+* :sparkles: add support for US Healthcare Cards V1.2
+
+
 ## v4.24.1 - 2025-03-27
 ### Fixes
 * :bug: fix null objects being return in extras
