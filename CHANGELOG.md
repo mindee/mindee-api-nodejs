@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.26.0 - 2025-04-16
+### Changes
+* :sparkles: add support for rag param in workflow executions
+
+
 ## v4.25.0 - 2025-04-08
 ### Changes
 * :sparkles: add support for Financial Document V1.12
