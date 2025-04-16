@@ -5,6 +5,7 @@ import * as fs from "node:fs";
 import { Poppler } from "node-poppler";
 import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "pdf-lib";
 import { compressImage } from "../imageOperations";
+import { loadPdfWithFallback } from "./pdfOperation";
 
 /**
  * Compresses each page of a provided PDF buffer.
@@ -128,7 +129,7 @@ async function compressPagesWithQuality(
   disableSourceText: boolean,
   extractedText: ExtractedPdfInfo | null
 ): Promise<Buffer[]> {
-  const pdfDoc = await PDFDocument.load(pdfData);
+  const pdfDoc = await loadPdfWithFallback(pdfData);
   const compressedPages: Buffer[] = [];
 
   for (let i = 0; i < extractedPdfInfo.pages.length; i++) {

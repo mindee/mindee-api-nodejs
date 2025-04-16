@@ -3,6 +3,7 @@ import { MindeeError, MindeeMimeTypeError } from "../../errors";
 import { InvoiceSplitterV1 } from "../../product";
 import { LocalInputSource } from "../../input";
 import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage";
+import { loadPdfWithFallback } from "../../pdf/pdfOperation";
 
 async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
   if (invoicePageGroups.length === 0) {
@@ -35,7 +36,7 @@ async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
     throw new MindeeMimeTypeError("Invoice Splitter is only compatible with pdf documents.");
   }
 
-  const pdfDoc = await PDFDocument.load(inputFile.fileObject);
+  const pdfDoc = await loadPdfWithFallback(inputFile.fileObject);
   if (pdfDoc.getPageCount() < 2) {
     throw new MindeeError("Invoice Splitter is only compatible with multi-page-pdf documents.");
   }
