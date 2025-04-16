@@ -79,6 +79,10 @@ export interface WorkflowOptions extends BaseOptions {
    * A unique, encrypted URL for accessing the document validation interface without requiring authentication.
    */
   publicUrl?: string;
+  /**
+   * Whether to enable Retrieval-Augmented Generation.
+   */
+  rag?: boolean;
 }
 
 /**

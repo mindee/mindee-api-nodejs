@@ -16,7 +16,7 @@ describe("Workflow calls", () => {
     const response = await client.executeWorkflow(
       sample,
       process.env["WORKFLOW_ID"] ?? "",
-      { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low });
+      { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low, rag: true });
     expect(response.execution.priority).to.equal(ExecutionPriority.low);
     expect(response.execution.file.alias).to.equal(`node-${currentDateTime}`);
   }).timeout(60000);

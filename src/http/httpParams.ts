@@ -16,4 +16,5 @@ export interface WorkflowParams extends HTTPParams {
   alias?: string;
   priority?: ExecutionPriority;
   publicUrl?: string;
+  rag?: boolean;
 }
