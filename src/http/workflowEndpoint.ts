@@ -1,9 +1,8 @@
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
 import { ApiSettings } from "./apiSettings";
-import { InputSource } from "../input";
+import { InputSource, LocalInputSource } from "../input";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { LocalInputSource } from "../input";
 import { RequestOptions } from "https";
 import { isValidSyncResponse } from "./responseValidation";
 import { handleError } from "./error";
@@ -35,13 +34,7 @@ export class WorkflowEndpoint extends BaseEndpoint {
     if (params.pageOptions !== undefined) {
       await super.cutDocPages(params.inputDoc, params.pageOptions);
     }
-    const response = await this.#workflowReqPost(
-      params.inputDoc,
-      params.alias,
-      params.priority,
-      params.fullText,
-      params.publicUrl
-    );
+    const response = await this.#workflowReqPost(params);
     if (!isValidSyncResponse(response)) {
       handleError(this.urlRoot, response, response.messageObj?.statusMessage);
     }
@@ -51,20 +44,18 @@ export class WorkflowEndpoint extends BaseEndpoint {
 
   /**
    * Make a request to POST a document for workflow.
-   * @param input Input document.
-   * @param alias Alias for the document.
-   * @param priority Priority for the document.
-   * @param fullText Whether to include the fulltext in the response.
-   * @param publicUrl Optional verification Url.
+   *
+   * @param {WorkflowParams} params parameters relating to prediction options.
    */
-  #workflowReqPost(
-    input: InputSource,
-    alias: string | null = null,
-    priority: ExecutionPriority | null = null,
-    fullText: boolean = false,
-    publicUrl: string | null = null
-  ): Promise<EndpointResponse> {
-    return this.sendFileForPrediction(input, alias, priority, fullText, publicUrl);
+  #workflowReqPost(params: WorkflowParams): Promise<EndpointResponse> {
+    return this.sendFileForPrediction(
+      params.inputDoc,
+      params.alias,
+      params.priority,
+      params.fullText,
+      params.publicUrl,
+      params.rag
+    );
   }
 
   /**
@@ -81,12 +72,17 @@ export class WorkflowEndpoint extends BaseEndpoint {
     priority: ExecutionPriority | null = null,
     fullText: boolean = false,
     publicUrl: string | null = null,
+    rag: boolean | null = null,
   ): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const searchParams = new URLSearchParams();
 
       if (fullText) {
         searchParams.append("full_text_ocr", "true");
+      }
+
+      if (rag) {
+        searchParams.append("rag", "true");
       }
 
       const form = new FormData();
