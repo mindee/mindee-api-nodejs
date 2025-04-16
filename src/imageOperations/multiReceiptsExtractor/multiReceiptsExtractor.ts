@@ -6,6 +6,7 @@ import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage";
 import { LocalInputSource } from "../../input";
 import { extractFromPage } from "../common";
 import { PositionField } from "../../parsing/standard";
+import { loadPdfWithFallback } from "../../pdf/pdfOperation";
 
 /**
  * Given a page and a set of coordinates, extracts & assigns individual receipts to an ExtractedMultiReceiptImage
@@ -37,7 +38,7 @@ async function loadPdfDoc(inputFile: LocalInputSource) {
       '" Currently supported types are .png, .jpg and .pdf'
     );
   } else if (inputFile.isPdf()) {
-    pdfDoc = await PDFDocument.load(inputFile.fileObject);
+    pdfDoc = await loadPdfWithFallback(inputFile.fileObject);
   } else {
     pdfDoc = await PDFDocument.create();
     let image: PDFImage;

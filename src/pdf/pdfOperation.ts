@@ -3,11 +3,46 @@ import { PDFDocument } from "pdf-lib";
 import { PageOptions, PageOptionsOperation } from "../input";
 import { MindeeError } from "../errors";
 import { logger } from "../logger";
+import { Poppler } from "node-poppler";
+import { readFile, writeFile } from "fs/promises";
+import tmp from "tmp";
+import fs from "node:fs";
 
 export interface SplitPdf {
   file: Buffer;
   totalPagesRemoved: number;
 }
+
+/**
+ * Attempts to load the file using pdf-lib, and falls back to node-poppler if unable to.
+ * @param file File buffer to be opened.
+ */
+export async function loadPdfWithFallback(file: string | Buffer) {
+  const document = await PDFDocument.load(file, { ignoreEncryption: true });
+  if (!document.isEncrypted) {
+    return document;
+  }
+  const poppler = new Poppler();
+
+  const tmpPdfInput = tmp.fileSync();
+  const tmpPdfInputPath = tmpPdfInput.name;
+  const tmpPdfOutput = tmp.fileSync();
+  const tmpPdfOutputPath = tmpPdfOutput.name;
+
+  try {
+    await writeFile(tmpPdfInputPath, file);
+    await poppler.pdfToCairo(tmpPdfInputPath, tmpPdfOutputPath, {
+      pdfFile: true,
+      antialias: "default",
+    });
+
+    const convertedPdf = await readFile(tmpPdfOutputPath);
+    return await PDFDocument.load(convertedPdf, { ignoreEncryption: true });
+  } finally {
+    await fs.promises.unlink(tmpPdfInputPath);
+    await fs.promises.unlink(tmpPdfOutputPath);}
+}
+
 
 /**
  * Cut pages from a pdf file. If pages index are out of bound, it will throw an error.
@@ -19,9 +54,7 @@ export async function extractPages(
   file: Buffer,
   pageOptions: PageOptions
 ): Promise<SplitPdf> {
-  const currentPdf = await PDFDocument.load(file, {
-    ignoreEncryption: true,
-  });
+  const currentPdf = await loadPdfWithFallback(file);
 
   const newPdf = await PDFDocument.create();
 
@@ -84,8 +117,6 @@ export async function extractPages(
 }
 
 export async function countPages(file: Buffer): Promise<number> {
-  const currentPdf = await PDFDocument.load(file, {
-    ignoreEncryption: true,
-  });
+  const currentPdf = await loadPdfWithFallback(file);
   return currentPdf.getPageCount();
 }
