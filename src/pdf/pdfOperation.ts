@@ -4,7 +4,7 @@ import { PageOptions, PageOptionsOperation } from "../input";
 import { MindeeError } from "../errors";
 import { logger } from "../logger";
 import { Poppler } from "node-poppler";
-import { readFile, writeFile } from "fs/promises";
+import { readFile } from "fs/promises";
 import tmp from "tmp";
 import fs from "node:fs";
 
@@ -24,14 +24,11 @@ export async function loadPdfWithFallback(file: string | Buffer) {
   }
   const poppler = new Poppler();
 
-  const tmpPdfInput = tmp.fileSync();
-  const tmpPdfInputPath = tmpPdfInput.name;
   const tmpPdfOutput = tmp.fileSync();
   const tmpPdfOutputPath = tmpPdfOutput.name;
 
   try {
-    await writeFile(tmpPdfInputPath, file);
-    await poppler.pdfToCairo(tmpPdfInputPath, tmpPdfOutputPath, {
+    await poppler.pdfToCairo(file, tmpPdfOutputPath, {
       pdfFile: true,
       antialias: "default",
     });
@@ -39,8 +36,8 @@ export async function loadPdfWithFallback(file: string | Buffer) {
     const convertedPdf = await readFile(tmpPdfOutputPath);
     return await PDFDocument.load(convertedPdf, { ignoreEncryption: true });
   } finally {
-    await fs.promises.unlink(tmpPdfInputPath);
-    await fs.promises.unlink(tmpPdfOutputPath);}
+    await fs.promises.unlink(tmpPdfOutputPath);
+  }
 }
 
 
