@@ -18,6 +18,7 @@ import { Buffer } from "node:buffer";
 import { compressImage } from "../../src/imageOperations";
 import { compressPdf } from "../../src/pdf";
 import { extractTextFromPdf } from "../../src/pdf/pdfUtils";
+import { logger } from "../../src/logger";
 
 describe("Test different types of input", () => {
   const resourcesPath = path.join(__dirname, "../data");
@@ -343,7 +344,7 @@ describe("Test different types of input", () => {
         await fs.promises.unlink(path.join(resourcesPath, "output", filePath));
       } catch (error) {
         if ((error as NodeJS.ErrnoException).code !== "ENOENT") {
-          console.warn(`Could not delete file '${filePath}': ${(error as Error).message}`);
+          logger.warn(`Could not delete file '${filePath}': ${(error as Error).message}`);
         }
       }
     }

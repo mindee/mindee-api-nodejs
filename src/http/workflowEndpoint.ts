@@ -65,6 +65,7 @@ export class WorkflowEndpoint extends BaseEndpoint {
    * @param priority
    * @param fullText
    * @param publicUrl
+   * @param rag
    */
   protected sendFileForPrediction(
     input: InputSource,

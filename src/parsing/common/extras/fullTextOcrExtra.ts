@@ -7,9 +7,9 @@ export class FullTextOcrExtra extends ExtraField {
 
   constructor(rawPrediction: StringDict) {
     super();
-    if (rawPrediction["full_text_ocr"] !== undefined && rawPrediction["full_text_ocr"]["content"]) {
-      this.content = "content" in rawPrediction["full_text_ocr"] ? rawPrediction["full_text_ocr"]["content"] : "";
-      this.languages = "languages" in rawPrediction["full_text_ocr"] ? rawPrediction["full_text_ocr"]["languages"] : "";
+    if (rawPrediction["content"]) {
+      this.content = "content" in rawPrediction ? rawPrediction["content"] : "";
+      this.languages = "languages" in rawPrediction ? rawPrediction["languages"] : "";
     }
   }
 

@@ -1,11 +1,13 @@
 import { StringDict } from "../common";
-import { ExtraField } from "./extras/extras";
+import { ExtraField, Extras } from "./extras/extras";
 import { Page } from "./page";
 import type { Prediction } from "./prediction";
 import { Product } from "./product";
+import { CropperExtra, FullTextOcrExtra } from "./extras";
+import { RAGExtra } from "./extras/ragExtra";
 
-/** 
- * 
+/**
+ *
  * @typeParam DocT an extension of a `Prediction`. Is generic by default to
  * allow for easier optional `PageT` generic typing.
  * @typeParam PageT an extension of a `DocT` (`Prediction`). Should only be set
@@ -24,7 +26,7 @@ export abstract class Inference<
   /** A document's top-level `Prediction`. */
   prediction!: DocT;
   /** Extraneous fields relating to specific tools for some APIs. */
-  extras?: ExtraField[] = [];
+  extras?: Extras;
   /** Name of a document's endpoint. Has a default value for OTS APIs. */
   endpointName?: string;
   /** A document's version. Has a default value for OTS APIs. */
@@ -33,6 +35,29 @@ export abstract class Inference<
   constructor(rawPrediction: StringDict) {
     this.isRotationApplied = rawPrediction?.is_rotation_applied ?? undefined;
     this.product = rawPrediction?.product;
+
+    if (
+      rawPrediction["extras"] &&
+      Object.keys(rawPrediction["extras"].length > 0)
+    ) {
+      const extras: Record<string, ExtraField> = {};
+      Object.entries(rawPrediction["extras"]).forEach(
+        ([extraKey, extraValue]: [string, any]) => {
+          switch (extraKey) {
+          case "cropper":
+            extras.cropper = new CropperExtra(extraValue as StringDict);
+            break;
+          case "full_text_ocr":
+            extras.fullTextOcr = new FullTextOcrExtra(extraValue as StringDict);
+            break;
+          case "rag":
+            extras.rag = new RAGExtra(extraValue as StringDict);
+            break;
+          }
+        }
+      );
+      this.extras = extras;
+    }
   }
 
   /**
@@ -68,6 +93,7 @@ ${this.prediction.toString().length === 0 ? "" : this.prediction.toString() + "\
     return outStr.replace(lines, "\n");
   }
 }
+
 /**
  * Factory to allow for static-like property access syntax in TypeScript.
  * Used to retrieve endpoint data for standard products.

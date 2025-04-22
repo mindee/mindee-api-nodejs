@@ -3,6 +3,7 @@ import { ExtraField, Extras } from "./extras/extras";
 import { Inference } from "./inference";
 import { Ocr } from "./ocr";
 import { StringDict } from "./stringDict";
+import { RAGExtra } from "./extras/ragExtra";
 
 /**
  * Document prediction wrapper class. Holds the results of a parsed document.
@@ -13,7 +14,7 @@ export class Document<T extends Inference> {
   filename: string;
   /** Result of the base inference. */
   inference: T;
-  /** Id of the document as sent back by the server. */
+  /** ID of the document as sent back by the server. */
   id: string;
   /** Potential `Extras` fields sent back along the prediction. */
   extras?: Extras;
@@ -48,6 +49,9 @@ export class Document<T extends Inference> {
             break;
           case "full_text_ocr":
             extras["fullTextOcr"] = new FullTextOcrExtra(extraValue as StringDict);
+            break;
+          case "rag":
+            extras["rag"] = new RAGExtra(extraValue as StringDict);
             break;
           }
         }

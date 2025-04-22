@@ -42,6 +42,11 @@ interface BaseOptions {
    * This is done before sending the file to the server and is useful to avoid page limitations.
    */
   pageOptions?: PageOptions;
+
+  /**
+   * If set, will enable Retrieval-Augmented Generation (only works if a valid WorkflowId is set).
+   */
+  rag?: boolean;
 }
 
 /**
@@ -60,6 +65,10 @@ export interface PredictOptions extends BaseOptions {
    * Whether to include cropper results for each page.
    */
   cropper?: boolean;
+  /**
+   * The ID of the workflow.
+   */
+  workflowId?: string;
 }
 
 /**
@@ -79,10 +88,6 @@ export interface WorkflowOptions extends BaseOptions {
    * A unique, encrypted URL for accessing the document validation interface without requiring authentication.
    */
   publicUrl?: string;
-  /**
-   * Whether to enable Retrieval-Augmented Generation.
-   */
-  rag?: boolean;
 }
 
 /**
@@ -204,6 +209,9 @@ export class Client {
   ): Promise<AsyncPredictResponse<T>> {
     const endpoint =
     params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
+    if (params.workflowId) {
+      endpoint.useWorkflowId(params.workflowId);
+    }
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
@@ -213,6 +221,8 @@ export class Client {
       fullText: this.getBooleanParam(params.fullText),
       pageOptions: params?.pageOptions,
       cropper: this.getBooleanParam(params.cropper),
+      workflowId: params.workflowId,
+      rag: this.getBooleanParam(params.rag)
     });
 
     return new AsyncPredictResponse<T>(productClass, rawResponse.data);
@@ -392,7 +402,11 @@ export class Client {
     }
   ): Promise<AsyncPredictResponse<T>> {
     const validatedAsyncParams = this.#setAsyncParams(asyncParams);
-    const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(productClass, inputSource, asyncParams);
+    const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(
+      productClass,
+      inputSource,
+      asyncParams
+    );
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       throw Error("Enqueueing of the document failed.");
     }
