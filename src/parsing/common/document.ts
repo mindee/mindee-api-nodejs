@@ -92,8 +92,7 @@ ${this.inference?.toString()}`;
     ).map(
       (e: StringDict) => e["extras"]["full_text_ocr"]["content"]
     ).join("\n");
-    // eslint-disable-next-line @typescript-eslint/naming-convention
-    const artificialTextObj = { "full_text_ocr": { "content": fullTextOcr.length > 0 ? fullTextOcr : "" } };
+    const artificialTextObj = { "content": fullTextOcr.length > 0 ? fullTextOcr : "" };
     if (!this.extras) {
       this.extras = new Extras({ "fullTextOcr": new FullTextOcrExtra(artificialTextObj) });
     } else {
