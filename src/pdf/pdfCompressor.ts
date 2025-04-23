@@ -255,7 +255,7 @@ async function rasterizePage(pdfData: Buffer, index: number, quality = 85): Prom
 
     return jpegBuffer;
   } catch (error) {
-    console.error("Error rasterizing PDF:", error);
+    logger.error("Error rasterizing PDF:", error);
     throw error;
   } finally {
     tmpPdf.removeCallback();

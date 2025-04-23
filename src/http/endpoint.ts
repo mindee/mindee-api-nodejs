@@ -35,6 +35,14 @@ export class Endpoint extends BaseEndpoint {
   }
 
   /**
+   * Changes the url to a workflow ID.
+   * @param workflowId
+   */
+  useWorkflowId(workflowId: string) {
+    this.urlRoot = `/v1/workflows/${workflowId}`;
+  }
+
+  /**
    * Sends a document to the API and parses out the result.
    * Throws an error if the server's response contains one.
    * @param {PredictParams} params parameters relating to prediction options.
@@ -75,7 +83,8 @@ export class Endpoint extends BaseEndpoint {
       params.inputDoc,
       params.includeWords,
       params.fullText,
-      params.cropper
+      params.cropper,
+      params.rag
     );
     if (!isValidAsyncResponse(response)) {
       handleError(this.urlName, response, this.extractStatusMessage(response));
@@ -165,18 +174,23 @@ export class Endpoint extends BaseEndpoint {
    * @param includeWords
    * @param fullText
    * @param cropper
+   * @param rag
    */
   protected sendFileForPrediction(
     input: InputSource,
     predictUrl: string,
     includeWords: boolean = false,
     fullText: boolean = false,
-    cropper: boolean = false
+    cropper: boolean = false,
+    rag: boolean = false
   ): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const searchParams = new URLSearchParams();
       if (cropper) {
         searchParams.append("cropper", "true");
+      }
+      if (rag) {
+        searchParams.append("rag", "true");
       }
       if (fullText) {
         searchParams.append("full_text_ocr", "true");
@@ -236,19 +250,22 @@ export class Endpoint extends BaseEndpoint {
    * @param includeWords
    * @param fullText
    * @param cropper
+   * @param rag
    */
   #predictAsyncReqPost(
     input: InputSource,
     includeWords = false,
     fullText = false,
-    cropper = false
+    cropper = false,
+    rag = false
   ): Promise<EndpointResponse> {
     return this.sendFileForPrediction(
       input,
       "predict_async",
       includeWords,
       fullText,
-      cropper
+      cropper,
+      rag
     );
   }
 
