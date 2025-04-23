@@ -44,7 +44,7 @@ interface BaseOptions {
   pageOptions?: PageOptions;
 
   /**
-   * If set, will enable Retrieval-Augmented Generation (only works if a valid WorkflowId is set).
+   * If set, will enable Retrieval-Augmented Generation (only works if a valid workflowId is set).
    */
   rag?: boolean;
 }
