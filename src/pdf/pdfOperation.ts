@@ -1,5 +1,5 @@
 import { errorHandler } from "../errors/handler";
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from "@cantoo/pdf-lib";
 import { PageOptions, PageOptionsOperation } from "../input";
 import { MindeeError } from "../errors";
 import { logger } from "../logger";
@@ -21,6 +21,7 @@ export async function extractPages(
 ): Promise<SplitPdf> {
   const currentPdf = await PDFDocument.load(file, {
     ignoreEncryption: true,
+    password: ""
   });
 
   const newPdf = await PDFDocument.create();
@@ -86,6 +87,7 @@ export async function extractPages(
 export async function countPages(file: Buffer): Promise<number> {
   const currentPdf = await PDFDocument.load(file, {
     ignoreEncryption: true,
+    password: ""
   });
   return currentPdf.getPageCount();
 }

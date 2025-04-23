@@ -1,4 +1,4 @@
-import { PDFDocument } from "pdf-lib";
+import { PDFDocument } from "@cantoo/pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../../errors";
 import { InvoiceSplitterV1 } from "../../product";
 import { LocalInputSource } from "../../input";
@@ -35,7 +35,10 @@ async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
     throw new MindeeMimeTypeError("Invoice Splitter is only compatible with pdf documents.");
   }
 
-  const pdfDoc = await PDFDocument.load(inputFile.fileObject);
+  const pdfDoc = await PDFDocument.load(inputFile.fileObject, {
+    ignoreEncryption: true,
+    password: ""
+  });
   if (pdfDoc.getPageCount() < 2) {
     throw new MindeeError("Invoice Splitter is only compatible with multi-page-pdf documents.");
   }
