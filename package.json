@@ -1,6 +1,6 @@
 {
   "name": "mindee",
-  "version": "4.26.0",
+  "version": "4.27.0",
   "description": "Mindee Client Library for Node.js",
   "main": "src/index.js",
   "bin": "bin/mindee.js",
@@ -32,7 +32,7 @@
   },
   "author": {
     "name": "Mindee",
-    "email": "devrel@mindee.com",
+    "email": "opensource@mindee.com",
     "url": "https://mindee.com/"
   },
   "bugs": {

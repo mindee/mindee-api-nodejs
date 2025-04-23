@@ -1,5 +1,13 @@
 # CHANGELOG
 
+## v4.27.0 - 2025-04-23
+### Changes
+* :sparkles: add support for RAG polling
+* :sparkles: add extras accessor from inference
+### Fixes
+* :bug: fix improper deserialization of extras in some instances
+
+
 ## v4.26.0 - 2025-04-16
 ### Changes
 * :sparkles: add support for rag param in workflow executions
