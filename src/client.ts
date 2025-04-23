@@ -209,9 +209,6 @@ export class Client {
   ): Promise<AsyncPredictResponse<T>> {
     const endpoint =
     params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
-    if (params.workflowId) {
-      endpoint.useWorkflowId(params.workflowId);
-    }
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
@@ -221,8 +218,8 @@ export class Client {
       fullText: this.getBooleanParam(params.fullText),
       pageOptions: params?.pageOptions,
       cropper: this.getBooleanParam(params.cropper),
-      workflowId: params.workflowId,
-      rag: this.getBooleanParam(params.rag)
+      rag: this.getBooleanParam(params.rag),
+      workflowId: params.workflowId
     });
 
     return new AsyncPredictResponse<T>(productClass, rawResponse.data);
