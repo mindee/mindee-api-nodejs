@@ -1,4 +1,4 @@
-import { PDFDocument, PDFPage } from "pdf-lib";
+import { PDFDocument, PDFPage } from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
 
 /**
