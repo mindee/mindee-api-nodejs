@@ -1,8 +1,7 @@
 import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { InputSource } from "../input";
-import { LocalInputSource } from "../input";
+import { InputSource, LocalInputSource } from "../input";
 import { handleError } from "./error";
 import { ApiSettings } from "./apiSettings";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
@@ -84,7 +83,8 @@ export class Endpoint extends BaseEndpoint {
       params.includeWords,
       params.fullText,
       params.cropper,
-      params.rag
+      params.rag,
+      params.workflowId
     );
     if (!isValidAsyncResponse(response)) {
       handleError(this.urlName, response, this.extractStatusMessage(response));
@@ -175,6 +175,7 @@ export class Endpoint extends BaseEndpoint {
    * @param fullText
    * @param cropper
    * @param rag
+   * @param workflowId
    */
   protected sendFileForPrediction(
     input: InputSource,
@@ -182,7 +183,8 @@ export class Endpoint extends BaseEndpoint {
     includeWords: boolean = false,
     fullText: boolean = false,
     cropper: boolean = false,
-    rag: boolean = false
+    rag: boolean = false,
+    workflowId: string | undefined = undefined
   ): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const searchParams = new URLSearchParams();
@@ -209,8 +211,12 @@ export class Endpoint extends BaseEndpoint {
         form.append("include_mvision", "true");
       }
       const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
-
-      let path = `${this.urlRoot}/${predictUrl}`;
+      let path: string;
+      if (workflowId === undefined) {
+        path = `${this.urlRoot}/${predictUrl}`;
+      } else {
+        path = `/v1/workflows/${workflowId}/predict_async`;
+      }
       if (searchParams.toString().length > 0) {
         path += `?${searchParams}`;
       }
@@ -237,27 +243,29 @@ export class Endpoint extends BaseEndpoint {
    */
   #predictReqPost(
     input: InputSource,
-    includeWords = false,
-    fullText = false,
-    cropper = false
+    includeWords: boolean = false,
+    fullText: boolean = false,
+    cropper: boolean = false
   ): Promise<EndpointResponse> {
     return this.sendFileForPrediction(input, "predict", includeWords, fullText, cropper);
   }
 
-  /**
-   * Make a request to POST a document for async prediction.
-   * @param input
-   * @param includeWords
-   * @param fullText
-   * @param cropper
-   * @param rag
-   */
   #predictAsyncReqPost(
+    /**
+     * Make a request to POST a document for async prediction.
+     * @param input
+     * @param includeWords
+     * @param fullText
+     * @param cropper
+     * @param rag
+     * @param workflowId
+     */
     input: InputSource,
-    includeWords = false,
-    fullText = false,
-    cropper = false,
-    rag = false
+    includeWords: boolean = false,
+    fullText: boolean = false,
+    cropper: boolean = false,
+    rag: boolean = false,
+    workflowId: string | undefined = undefined
   ): Promise<EndpointResponse> {
     return this.sendFileForPrediction(
       input,
@@ -265,7 +273,8 @@ export class Endpoint extends BaseEndpoint {
       includeWords,
       fullText,
       cropper,
-      rag
+      rag,
+      workflowId
     );
   }
 
