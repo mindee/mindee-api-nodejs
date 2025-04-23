@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.27.1 - 2025-04-23
+### Fixes
+* :bug: fix workflow polling not working when ran with ts-node
+* :memo: add example script for workflow polling
+
+
 ## v4.27.0 - 2025-04-23
 ### Changes
 * :sparkles: add support for RAG polling
