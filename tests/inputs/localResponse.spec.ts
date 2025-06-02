@@ -2,12 +2,12 @@ import { LocalResponse } from "../../src";
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
 import { Client, PredictResponse, AsyncPredictResponse } from "../../src";
-import { InternationalIdV2, InvoiceV4 } from "../../src/product";
+import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "../../src/product";
 
 const signature: string = "5ed1673e34421217a5dbfcad905ee62261a3dd66c442f3edd19302072bbf70d0";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
 const filePath: string = "tests/data/async/get_completed_empty.json";
-const invoicePath: string = "tests/data/products/invoices/response_v4/complete.json";
+const multiReceiptsDetectorPath: string = "tests/data/products/multi_receipts_detector/response_v1/complete.json";
 const failedPath: string = "tests/data/async/get_failed_job_error.json";
 const internationalIdPath: string = "tests/data/products/international_id/response_v2/complete.json";
 
@@ -44,11 +44,11 @@ describe("A valid local response", () => {
   });
 
   it("should load into a sync prediction.", async () => {
-    const fileObj = await fs.readFile(invoicePath, { encoding: "utf-8" });
+    const fileObj = await fs.readFile(multiReceiptsDetectorPath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
     await localResponse.init();
     const dummyClient = new Client({ apiKey: "dummy-key" });
-    const prediction = await dummyClient.loadPrediction(InvoiceV4, localResponse);
+    const prediction = await dummyClient.loadPrediction(MultiReceiptsDetectorV1, localResponse);
     expect(prediction).to.be.an.instanceof(PredictResponse);
 
     expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));

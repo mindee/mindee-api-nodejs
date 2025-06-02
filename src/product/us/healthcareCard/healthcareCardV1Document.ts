@@ -7,12 +7,12 @@ import { HealthcareCardV1Copay } from "./healthcareCardV1Copay";
 import { DateField, StringField } from "../../../parsing/standard";
 
 /**
- * Healthcare Card API version 1.2 document data.
+ * Healthcare Card API version 1.3 document data.
  */
 export class HealthcareCardV1Document implements Prediction {
   /** The name of the company that provides the healthcare plan. */
   companyName: StringField;
-  /** Is a fixed amount for a covered service. */
+  /** Copayments for covered services. */
   copays: HealthcareCardV1Copay[] = [];
   /** The list of dependents covered by the healthcare plan. */
   dependents: StringField[] = [];
@@ -28,6 +28,8 @@ export class HealthcareCardV1Document implements Prediction {
   memberName: StringField;
   /** The unique identifier for the payer in the healthcare system. */
   payerId: StringField;
+  /** The name of the healthcare plan. */
+  planName: StringField;
   /** The BIN number for prescription drug coverage. */
   rxBin: StringField;
   /** The group number for prescription drug coverage. */
@@ -86,6 +88,10 @@ export class HealthcareCardV1Document implements Prediction {
       prediction: rawPrediction["payer_id"],
       pageId: pageId,
     });
+    this.planName = new StringField({
+      prediction: rawPrediction["plan_name"],
+      pageId: pageId,
+    });
     this.rxBin = new StringField({
       prediction: rawPrediction["rx_bin"],
       pageId: pageId,
@@ -122,6 +128,7 @@ export class HealthcareCardV1Document implements Prediction {
       ).join("");
     }
     const outStr = `:Company Name: ${this.companyName}
+:Plan Name: ${this.planName}
 :Member Name: ${this.memberName}
 :Member ID: ${this.memberId}
 :Issuer 80840: ${this.issuer80840}
@@ -132,7 +139,7 @@ export class HealthcareCardV1Document implements Prediction {
 :RX ID: ${this.rxId}
 :RX GRP: ${this.rxGrp}
 :RX PCN: ${this.rxPcn}
-:copays: ${copaysSummary}
+:Copays: ${copaysSummary}
 :Enrollment Date: ${this.enrollmentDate}`.trimEnd();
     return cleanOutString(outStr);
   }

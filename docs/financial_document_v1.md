@@ -65,12 +65,12 @@ apiResponse.then((resp) => {
 ########
 Document
 ########
-:Mindee ID: a80ac0ee-26f6-4e2e-988a-960b240d5ba7
+:Mindee ID: 6dd26385-719b-4527-bf6f-87d9da619de5
 :Filename: default_sample.jpg
 
 Inference
 #########
-:Product: mindee/financial_document v1.11
+:Product: mindee/financial_document v1.14
 :Rotation applied: Yes
 
 Prediction
@@ -106,6 +106,7 @@ Prediction
 :Shipping Address: 2019 Redbud Drive New York, NY 10011
 :Billing Address: 4312 Wood Road New York, NY 10031
 :Document Type: INVOICE
+:Document Type Extended: INVOICE
 :Purchase Subcategory:
 :Purchase Category: miscellaneous
 :Total Tax: 9.75
@@ -158,6 +159,7 @@ Page 0
 :Shipping Address: 2019 Redbud Drive New York, NY 10011
 :Billing Address: 4312 Wood Road New York, NY 10031
 :Document Type: INVOICE
+:Document Type Extended: INVOICE
 :Purchase Subcategory:
 :Purchase Category: miscellaneous
 :Total Tax: 9.75
@@ -194,6 +196,21 @@ A typical `Field` object will have the following attributes:
 
 
 Aside from the previous attributes, all basic fields have access to a `toString()` method that can be used to print their value as a string.
+
+
+### AddressField
+Aside from the basic `BaseField` attributes, the address field `AddressField` also implements the following:
+
+* **streetNumber** (`string`): String representation of the street number. Can be `null`.
+* **streetName** (`string`): Name of the street. Can be `null`.
+* **poBox** (`string`): String representation of the PO Box number. Can be `null`.
+* **addressComplement** (`string`): Address complement. Can be `null`.
+* **city** (`string`): City name. Can be `null`.
+* **postalCode** (`string`): String representation of the postal code. Can be `null`.
+* **state** (`string`): State name. Can be `null`.
+* **country** (`string`): Country name. Can be `null`.
+
+Note: The `value` field of an AddressField should be a concatenation of the rest of the values.
 
 
 ### Amount Field
@@ -269,14 +286,14 @@ A `FinancialDocumentV1LineItem` implements the following attributes:
 The following fields are extracted for Financial Document V1:
 
 ## Billing Address
-**billingAddress** ([StringField](#string-field)): The customer's address used for billing.
+**billingAddress** : The customer's address used for billing.
 
 ```js
 console.log(result.document.inference.prediction.billingAddress.value);
 ```
 
 ## Purchase Category
-**category** ([ClassificationField](#classification-field)): The purchase category, only for receipts.
+**category** ([ClassificationField](#classification-field)): The purchase category.
 
 #### Possible values include:
  - 'toll'
@@ -287,13 +304,16 @@ console.log(result.document.inference.prediction.billingAddress.value);
  - 'gasoline'
  - 'telecom'
  - 'miscellaneous'
+ - 'software'
+ - 'shopping'
+ - 'energy'
 
 ```js
 console.log(result.document.inference.prediction.category.value);
 ```
 
 ## Customer Address
-**customerAddress** ([StringField](#string-field)): The address of the customer.
+**customerAddress** : The address of the customer.
 
 ```js
 console.log(result.document.inference.prediction.customerAddress.value);
@@ -428,14 +448,14 @@ for (const referenceNumbersElem of result.document.inference.prediction.referenc
 ```
 
 ## Shipping Address
-**shippingAddress** ([StringField](#string-field)): The customer's address used for shipping.
+**shippingAddress** : The customer's address used for shipping.
 
 ```js
 console.log(result.document.inference.prediction.shippingAddress.value);
 ```
 
 ## Purchase Subcategory
-**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory for transport and food, only for receipts.
+**subcategory** ([ClassificationField](#classification-field)): The purchase subcategory for transport, food and shooping.
 
 #### Possible values include:
  - 'plane'
@@ -443,6 +463,15 @@ console.log(result.document.inference.prediction.shippingAddress.value);
  - 'train'
  - 'restaurant'
  - 'shopping'
+ - 'other'
+ - 'groceries'
+ - 'cultural'
+ - 'electronics'
+ - 'office_supplies'
+ - 'micromobility'
+ - 'car_rental'
+ - 'public'
+ - 'delivery'
  - null
 
 ```js
@@ -450,7 +479,7 @@ console.log(result.document.inference.prediction.subcategory.value);
 ```
 
 ## Supplier Address
-**supplierAddress** ([StringField](#string-field)): The address of the supplier or merchant.
+**supplierAddress** : The address of the supplier or merchant.
 
 ```js
 console.log(result.document.inference.prediction.supplierAddress.value);

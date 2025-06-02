@@ -79,6 +79,7 @@ ${this.inference?.toString()}`;
   private injectFullTextOcr(rawPrediction: StringDict) {
     if (
       rawPrediction["inference"]["pages"].length < 1 ||
+      !("extras" in rawPrediction["inference"]["pages"][0]) ||
       rawPrediction["inference"]["pages"][0]["extras"].length < 1 ||
       !("full_text_ocr" in rawPrediction["inference"]["pages"][0]["extras"]) ||
         !rawPrediction["inference"]["pages"][0]["extras"]["full_text_ocr"] ||

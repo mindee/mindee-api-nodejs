@@ -5,6 +5,7 @@ import {
 } from "../../parsing/common";
 import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
 import {
+  AddressField,
   AmountField,
   ClassificationField,
   CompanyRegistrationField,
@@ -16,15 +17,15 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Financial Document API version 1.12 document data.
+ * Financial Document API version 1.14 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
   /** The customer's address used for billing. */
-  billingAddress: StringField;
-  /** The purchase category, only for receipts. */
+  billingAddress: AddressField;
+  /** The purchase category. */
   category: ClassificationField;
   /** The address of the customer. */
-  customerAddress: StringField;
+  customerAddress: AddressField;
   /** List of company registration numbers associated to the customer. */
   customerCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The customer account number or identifier from the supplier. */
@@ -59,11 +60,11 @@ export class FinancialDocumentV1Document implements Prediction {
   /** List of Reference numbers, including PO number, only if the document is an invoice. */
   referenceNumbers: StringField[] = [];
   /** The customer's address used for shipping. */
-  shippingAddress: StringField;
-  /** The purchase subcategory for transport and food, only for receipts. */
+  shippingAddress: AddressField;
+  /** The purchase subcategory for transport, food and shooping. */
   subcategory: ClassificationField;
   /** The address of the supplier or merchant. */
-  supplierAddress: StringField;
+  supplierAddress: AddressField;
   /** List of company registration numbers associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The email of the supplier or merchant. */
@@ -90,14 +91,14 @@ export class FinancialDocumentV1Document implements Prediction {
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    this.billingAddress = new StringField({
+    this.billingAddress = new AddressField({
       prediction: rawPrediction["billing_address"],
       pageId: pageId,
     });
     this.category = new ClassificationField({
       prediction: rawPrediction["category"],
     });
-    this.customerAddress = new StringField({
+    this.customerAddress = new AddressField({
       prediction: rawPrediction["customer_address"],
       pageId: pageId,
     });
@@ -176,14 +177,14 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
-    this.shippingAddress = new StringField({
+    this.shippingAddress = new AddressField({
       prediction: rawPrediction["shipping_address"],
       pageId: pageId,
     });
     this.subcategory = new ClassificationField({
       prediction: rawPrediction["subcategory"],
     });
-    this.supplierAddress = new StringField({
+    this.supplierAddress = new AddressField({
       prediction: rawPrediction["supplier_address"],
       pageId: pageId,
     });

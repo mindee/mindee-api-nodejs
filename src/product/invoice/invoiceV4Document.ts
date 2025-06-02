@@ -5,6 +5,7 @@ import {
 } from "../../parsing/common";
 import { InvoiceV4LineItem } from "./invoiceV4LineItem";
 import {
+  AddressField,
   AmountField,
   ClassificationField,
   CompanyRegistrationField,
@@ -16,13 +17,15 @@ import {
 } from "../../parsing/standard";
 
 /**
- * Invoice API version 4.10 document data.
+ * Invoice API version 4.11 document data.
  */
 export class InvoiceV4Document implements Prediction {
   /** The customer billing address. */
-  billingAddress: StringField;
+  billingAddress: AddressField;
+  /** The purchase category. */
+  category: ClassificationField;
   /** The address of the customer. */
-  customerAddress: StringField;
+  customerAddress: AddressField;
   /** List of company registration numbers associated to the customer. */
   customerCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The customer account number or identifier from the supplier. */
@@ -50,9 +53,11 @@ export class InvoiceV4Document implements Prediction {
   /** List of all reference numbers on the invoice, including the purchase order number. */
   referenceNumbers: StringField[] = [];
   /** Customer's delivery address. */
-  shippingAddress: StringField;
+  shippingAddress: AddressField;
+  /** The purchase subcategory for transport, food and shopping. */
+  subcategory: ClassificationField;
   /** The address of the supplier or merchant. */
-  supplierAddress: StringField;
+  supplierAddress: AddressField;
   /** List of company registration numbers associated to the supplier. */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
   /** The email address of the supplier or merchant. */
@@ -75,11 +80,14 @@ export class InvoiceV4Document implements Prediction {
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    this.billingAddress = new StringField({
+    this.billingAddress = new AddressField({
       prediction: rawPrediction["billing_address"],
       pageId: pageId,
     });
-    this.customerAddress = new StringField({
+    this.category = new ClassificationField({
+      prediction: rawPrediction["category"],
+    });
+    this.customerAddress = new AddressField({
       prediction: rawPrediction["customer_address"],
       pageId: pageId,
     });
@@ -150,11 +158,14 @@ export class InvoiceV4Document implements Prediction {
             })
           )
       );
-    this.shippingAddress = new StringField({
+    this.shippingAddress = new AddressField({
       prediction: rawPrediction["shipping_address"],
       pageId: pageId,
     });
-    this.supplierAddress = new StringField({
+    this.subcategory = new ClassificationField({
+      prediction: rawPrediction["subcategory"],
+    });
+    this.supplierAddress = new AddressField({
       prediction: rawPrediction["supplier_address"],
       pageId: pageId,
     });
@@ -263,6 +274,8 @@ export class InvoiceV4Document implements Prediction {
 :Billing Address: ${this.billingAddress}
 :Document Type: ${this.documentType}
 :Document Type Extended: ${this.documentTypeExtended}
+:Purchase Subcategory: ${this.subcategory}
+:Purchase Category: ${this.category}
 :Line Items: ${lineItemsSummary}`.trimEnd();
     return cleanOutString(outStr);
   }

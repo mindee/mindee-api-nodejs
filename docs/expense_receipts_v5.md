@@ -232,6 +232,9 @@ The following fields are extracted for Receipt V5:
  - 'gasoline'
  - 'telecom'
  - 'miscellaneous'
+ - 'software'
+ - 'shopping'
+ - 'energy'
 
 ```js
 console.log(result.document.inference.prediction.category.value);
@@ -287,6 +290,15 @@ console.log(result.document.inference.prediction.receiptNumber.value);
  - 'train'
  - 'restaurant'
  - 'shopping'
+ - 'other'
+ - 'groceries'
+ - 'cultural'
+ - 'electronics'
+ - 'office_supplies'
+ - 'micromobility'
+ - 'car_rental'
+ - 'public'
+ - 'delivery'
  - null
 
 ```js
