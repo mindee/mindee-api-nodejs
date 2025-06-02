@@ -7,7 +7,7 @@ import { InvoiceSplitterV1InvoicePageGroup } from "./invoiceSplitterV1InvoicePag
 
 
 /**
- * Invoice Splitter API version 1.2 document data.
+ * Invoice Splitter API version 1.4 document data.
  */
 export class InvoiceSplitterV1Document implements Prediction {
   /** List of page groups. Each group represents a single invoice within a multi-invoice document. */

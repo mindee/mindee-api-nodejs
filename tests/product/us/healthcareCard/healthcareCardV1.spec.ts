@@ -18,6 +18,7 @@ describe("HealthcareCardV1 Object initialization", async () => {
     const doc = new mindee.Document(mindee.product.us.HealthcareCardV1, response.document);
     const docPrediction = doc.inference.prediction;
     expect(docPrediction.companyName.value).to.be.undefined;
+    expect(docPrediction.planName.value).to.be.undefined;
     expect(docPrediction.memberName.value).to.be.undefined;
     expect(docPrediction.memberId.value).to.be.undefined;
     expect(docPrediction.issuer80840.value).to.be.undefined;

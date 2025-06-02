@@ -3,12 +3,12 @@ import { StringDict } from "../../../parsing/common";
 import { Polygon } from "../../../geometry";
 
 /**
- * Is a fixed amount for a covered service.
+ * Copayments for covered services.
  */
 export class HealthcareCardV1Copay {
-  /** The price of service. */
+  /** The price of the service. */
   serviceFees: number | null;
-  /** The name of service of the copay. */
+  /** The name of the service. */
   serviceName: string | null;
   /** Confidence score */
   confidence: number = 0.0;

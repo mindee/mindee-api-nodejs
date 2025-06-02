@@ -33,10 +33,10 @@ describe("IndianPassportV1 Object initialization", async () => {
     expect(docPrediction.nameOfMother.value).to.be.undefined;
     expect(docPrediction.oldPassportDateOfIssue.value).to.be.undefined;
     expect(docPrediction.oldPassportNumber.value).to.be.undefined;
+    expect(docPrediction.oldPassportPlaceOfIssue.value).to.be.undefined;
     expect(docPrediction.address1.value).to.be.undefined;
     expect(docPrediction.address2.value).to.be.undefined;
     expect(docPrediction.address3.value).to.be.undefined;
-    expect(docPrediction.oldPassportPlaceOfIssue.value).to.be.undefined;
     expect(docPrediction.fileNumber.value).to.be.undefined;
   });
 
