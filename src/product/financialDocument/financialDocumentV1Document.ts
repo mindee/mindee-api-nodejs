@@ -5,6 +5,7 @@ import {
 } from "../../parsing/common";
 import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
 import {
+  AddressField,
   AmountField,
   ClassificationField,
   CompanyRegistrationField,

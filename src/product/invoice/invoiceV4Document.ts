@@ -5,6 +5,7 @@ import {
 } from "../../parsing/common";
 import { InvoiceV4LineItem } from "./invoiceV4LineItem";
 import {
+  AddressField,
   AmountField,
   ClassificationField,
   CompanyRegistrationField,
