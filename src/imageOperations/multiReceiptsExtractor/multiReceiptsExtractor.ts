@@ -1,4 +1,4 @@
-import { PDFDocument, PDFImage, PDFPage } from "pdf-lib";
+import { PDFDocument, PDFImage, PDFPage } from "@cantoo/pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../../errors";
 import { Polygon } from "../../geometry";
 import { MultiReceiptsDetectorV1 } from "../../product";
@@ -37,7 +37,10 @@ async function loadPdfDoc(inputFile: LocalInputSource) {
       '" Currently supported types are .png, .jpg and .pdf'
     );
   } else if (inputFile.isPdf()) {
-    pdfDoc = await PDFDocument.load(inputFile.fileObject);
+    pdfDoc = await PDFDocument.load(inputFile.fileObject, {
+      ignoreEncryption: true,
+      password: ""
+    });
   } else {
     pdfDoc = await PDFDocument.create();
     let image: PDFImage;

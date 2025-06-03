@@ -3,7 +3,7 @@ import tmp from "tmp";
 import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils";
 import * as fs from "node:fs";
 import { Poppler } from "node-poppler";
-import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "pdf-lib";
+import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "@cantoo/pdf-lib";
 import { compressImage } from "../imageOperations";
 
 /**
@@ -128,7 +128,10 @@ async function compressPagesWithQuality(
   disableSourceText: boolean,
   extractedText: ExtractedPdfInfo | null
 ): Promise<Buffer[]> {
-  const pdfDoc = await PDFDocument.load(pdfData);
+  const pdfDoc = await PDFDocument.load(pdfData, {
+    ignoreEncryption: true,
+    password: ""
+  });
   const compressedPages: Buffer[] = [];
 
   for (let i = 0; i < extractedPdfInfo.pages.length; i++) {
