@@ -12,22 +12,15 @@ const inputSource = mindeeClient.docFromPath(
   "/path/to/the/file.ext"
 );
 
-const customEndpoint = mindeeClient.createEndpoint(
-  "my-endpoint",
-  "my-account",
-  "my-version" // Defaults to "1"
-);
-
 // Configure the RAG-enabled workflow
 const workflowParams = {
   rag: true,
-  workflowId: workflowId,
-  endpoint: customEndpoint
+  workflowId: workflowId
 };
 
 // Parse the file asynchronously on a workflow queue
 const asyncApiResponse = mindeeClient.enqueueAndParse(
-  mindee.product.GeneratedV1,
+  mindee.product.FinancialDocumentV1,
   inputSource,
   workflowParams
 );
