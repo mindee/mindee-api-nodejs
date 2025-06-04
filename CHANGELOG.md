@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.28.0 - 2025-06-03
+### Changes
+* :sparkles: add support for address fields
+* :sparkles: add support for Financial Document V1.12
+* :sparkles: add support for Invoices V4.10
+* :sparkles: add support for US Healthcare Cards V1.2
+### Fixes
+* :bug: fix default-encrypted & XFA pdfs not opening
+
 ## v4.27.1 - 2025-04-23
 ### Fixes
 * :bug: fix workflow polling not working when ran with ts-node
