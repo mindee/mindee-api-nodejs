@@ -33,4 +33,11 @@ export class MindeePdfError extends MindeeError {
   }
 }
 
+export class MindeeApiV2Error extends MindeeError {
+  constructor(message: string) {
+    super(message);
+    this.name = "MindeeApiV2Error";
+  }
+}
+
 
