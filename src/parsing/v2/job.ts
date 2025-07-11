@@ -1,5 +1,7 @@
 import { StringDict } from "../common";
 import { ErrorResponse } from "./errorResponse";
+import { Webhook } from "./webhook";
+import { parseDate } from "../common/dateParser";
 
 /**
  * Job information for a V2 polling attempt.
@@ -33,7 +35,7 @@ export class Job {
   /**
    * Status of the job.
    */
-  public status: string;
+  public status?: string;
   /**
    * URL to poll for the job status.
    */
@@ -45,25 +47,26 @@ export class Job {
   /**
    * ID of webhooks associated with the job.
    */
-  public webhooks: Array<string>;
+  public webhooks: Array<Webhook>;
 
   constructor(serverResponse: StringDict) {
     this.id = serverResponse["id"];
-    this.status = serverResponse["status"];
-    if ("error" in serverResponse) {
+    if (serverResponse["status"] !== undefined) {
+      this.status = serverResponse["status"];
+    }
+    if (
+      serverResponse["error"] !== undefined &&
+      serverResponse["error"] !== null &&
+      Object.keys(serverResponse["error"]).length > 0
+    ) {
       this.error = new ErrorResponse(serverResponse["error"]);
     }
-    this.createdAt = serverResponse["created_at"] ? this.parseDate(serverResponse["created_at"]) : null;
+    this.createdAt = parseDate(serverResponse["created_at"]);
     this.modelId = serverResponse["model_id"];
     this.pollingUrl = serverResponse["polling_url"];
     this.filename = serverResponse["filename"];
     this.resultUrl = serverResponse["result_url"];
     this.alias = serverResponse["alias"];
     this.webhooks = serverResponse["webhooks"];
-  }
-
-  private parseDate(dateString: string | null): Date | null {
-    if (!dateString) return null;
-    return new Date(dateString);
   }
 }

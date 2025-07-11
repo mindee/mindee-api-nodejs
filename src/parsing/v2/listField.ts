@@ -3,6 +3,7 @@ import { StringDict } from "../common";
 import { BaseField } from "./baseField";
 import { ObjectField } from "./objectField";
 import { SimpleField } from "./simpleField";
+import { createField } from "./fieldFactory";
 
 export class ListField extends BaseField {
   /**
@@ -19,7 +20,7 @@ export class ListField extends BaseField {
       );
     }
     this.items = serverResponse["items"].map((item) => {
-      return BaseField.createField(item, indentLevel + 1);
+      return createField(item, indentLevel + 1);
     });
   }
 

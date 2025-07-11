@@ -5,7 +5,7 @@ import FormData from "form-data";
 import { RequestOptions } from "https";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
 import { LocalInputSource } from "../input";
-import { MindeeApiV2Error, MindeeHttpErrorV2 } from "../errors/mindeeError";
+import { MindeeHttpErrorV2 } from "../errors/mindeeError";
 import { logger } from "../logger";
 
 export class MindeeApiV2 {
@@ -65,8 +65,8 @@ export class MindeeApiV2 {
   }
 
   #processResponse<T extends JobResponse | InferenceResponse>
-  (result: EndpointResponse, responseType: new (data: { [key: string]: any; } ) => T): T {
-    if (result.messageObj?.statusCode && result.messageObj?.statusCode > 399) {
+  (result: EndpointResponse, responseType: new (data: { [key: string]: any; }) => T): T {
+    if (result.messageObj?.statusCode && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)) {
       throw new MindeeHttpErrorV2(
         result.messageObj?.statusCode ?? -1, result.messageObj?.statusMessage ?? "Unknown error."
       );
@@ -74,8 +74,9 @@ export class MindeeApiV2 {
     try {
       return new responseType(result.data);
     } catch (e) {
-      logger.error(`Raised '${e}' Couldn't deserialize response object:\n${result.data}`);
-      throw new MindeeApiV2Error("Couldn't deserialize response object.");
+      logger.error(`Raised '${e}' Couldn't deserialize response object:\n${JSON.stringify(result.data)}`);
+      throw e;
+      // throw new MindeeApiV2Error("Couldn't deserialize response object.");
     }
   }
 
@@ -125,7 +126,7 @@ export class MindeeApiV2 {
         method: "GET",
         headers: this.settings.baseHeaders,
         hostname: this.settings.hostname,
-        path: `/inferences/${queueId}`,
+        path: `/v2/inferences/${queueId}`,
       };
       const req = BaseEndpoint.readResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.
@@ -144,7 +145,7 @@ export class MindeeApiV2 {
         method: "GET",
         headers: this.settings.baseHeaders,
         hostname: this.settings.hostname,
-        path: `/jobs/${queueId}`,
+        path: `/v2/jobs/${queueId}`,
       };
       const req = BaseEndpoint.readResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.

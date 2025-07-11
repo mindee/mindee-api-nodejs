@@ -21,7 +21,7 @@ export class InferenceResult {
   }
 
   toString(): string {
-    let outStr: string = `:fields: ${this.fields}`;
+    let outStr: string = `:fields:\n${this.fields}`;
     if (this.options) {
       outStr += `\n:options: ${this.options}`;
     }

@@ -29,4 +29,18 @@ export class Inference {
       this.id = serverResponse["id"];
     }
   }
+
+  toString(): string {
+    return (
+      "Inference\n" +
+      "#########\n" +
+      `:model: ${this.model.id}\n` +
+      ":file:\n" +
+      `  :name: ${this.file.name}\n` +
+      `  :alias: ${this.file.alias}\n\n` +
+      "Result\n" +
+      "======\n" +
+      `${this.result}\n`
+    );
+  }
 }

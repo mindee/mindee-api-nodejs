@@ -1,0 +1,20 @@
+const mindee = require("mindee");
+// for TS or modules:
+// import * as mindee from "mindee";
+
+// Init a new client
+const mindeeClient = new mindee.ClientV2({ apiKey: "MY_API_KEY" });
+
+// Load a file from disk
+const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
+
+const apiResponse = mindeeClient.enqueueAndParse(
+  inputSource,
+  { modelId: "MY_MODEL_ID" }
+);
+
+// Handle the response Promise
+apiResponse.then((resp) => {
+  // print a string summary
+  console.log(resp.inference.toString());
+});
