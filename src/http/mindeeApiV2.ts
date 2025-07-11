@@ -38,7 +38,7 @@ export class MindeeApiV2 {
         result.data.error.message ?? "Unknown error."
       );
     }
-    return this.#processResponse(result, "job") as JobResponse;
+    return this.#processResponse(result, JobResponse);
   }
 
 
@@ -58,23 +58,21 @@ export class MindeeApiV2 {
     ) {
       const docId = queueResponse.messageObj.headers.location.split("/").pop();
       if (docId !== undefined) {
-        return this.#processResponse(await this.#documentGetReq(docId), "inference") as InferenceResponse;
+        return this.#processResponse(await this.#documentGetReq(docId), InferenceResponse);
       }
     }
-    return this.#processResponse(queueResponse, "job") as JobResponse;
+    return this.#processResponse(queueResponse, JobResponse);
   }
 
-  #processResponse(result: EndpointResponse, responseType: string): JobResponse | InferenceResponse {
+  #processResponse<T extends JobResponse | InferenceResponse>
+  (result: EndpointResponse, responseType: new (data: { [key: string]: any; } ) => T): T {
     if (result.messageObj?.statusCode && result.messageObj?.statusCode > 399) {
       throw new MindeeHttpErrorV2(
         result.messageObj?.statusCode ?? -1, result.messageObj?.statusMessage ?? "Unknown error."
       );
     }
     try {
-      if (responseType === "inference") {
-        return new InferenceResponse(result.data);
-      }
-      return new JobResponse(result.data);
+      return new responseType(result.data);
     } catch (e) {
       logger.error(`Raised '${e}' Couldn't deserialize response object:\n${result.data}`);
       throw new MindeeApiV2Error("Couldn't deserialize response object.");
