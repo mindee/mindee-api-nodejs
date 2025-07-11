@@ -2,13 +2,11 @@
 import { logger } from "../logger";
 import { BaseSettings, MindeeApiConstructorProps } from "./baseSettings";
 
-export const API_KEY_ENVVAR_NAME: string = "MINDEE_API_KEY";
-export const API_HOST_ENVVAR_NAME: string = "MINDEE_API_HOST";
-export const STANDARD_API_OWNER: string = "mindee";
-export const TIMEOUT_DEFAULT: number = 120;
-const DEFAULT_MINDEE_API_HOST: string = "api.mindee.net";
+export const API_KEY_ENVVAR_NAME: string = "MINDEE_V2_API_KEY";
+export const API_HOST_ENVVAR_NAME: string = "MINDEE_V2_API_HOST";
+const DEFAULT_MINDEE_API_HOST: string = "api-v2.mindee.net";
 
-export class ApiSettings extends BaseSettings {
+export class ApiSettingsV2 extends BaseSettings {
   apiKey: string;
   baseHeaders: Record<string, string>;
 
@@ -23,13 +21,13 @@ export class ApiSettings extends BaseSettings {
     }
     if (!this.apiKey || this.apiKey.length === 0) {
       throw new Error(
-        "Your API key could not be set, check your Client Configuration\n."
+        "Your API V2 key could not be set, check your Client Configuration\n."
         + `You can set this using the ${API_KEY_ENVVAR_NAME} environment variable.`
       );
     }
     this.baseHeaders = {
       "User-Agent": this.getUserAgent(),
-      Authorization: `Token ${apiKey}`,
+      Authorization: `${apiKey}`,
     };
   }
 
@@ -53,4 +51,6 @@ export class ApiSettings extends BaseSettings {
     }
     return DEFAULT_MINDEE_API_HOST;
   }
+
+
 }

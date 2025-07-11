@@ -32,7 +32,7 @@ export class WorkflowEndpoint extends BaseEndpoint {
   async executeWorkflow(params: WorkflowParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await super.cutDocPages(params.inputDoc, params.pageOptions);
+      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#workflowReqPost(params);
     if (!isValidSyncResponse(response)) {
@@ -117,7 +117,7 @@ export class WorkflowEndpoint extends BaseEndpoint {
         path: path,
         timeout: this.settings.timeout,
       };
-      const req = this.readResponse(options, resolve, reject);
+      const req = BaseEndpoint.readResponse(options, resolve, reject);
       form.pipe(req);
       // potential ECONNRESET if we don't end the request.
       req.end();

@@ -40,4 +40,15 @@ export class MindeeApiV2Error extends MindeeError {
   }
 }
 
+export class MindeeHttpErrorV2 extends MindeeError {
+  public code: number;
+  public detail: string;
+  constructor(code: number, detail: string) {
+    super(`HTTP ${code} - ${detail}`);
+    this.code = code;
+    this.detail = detail;
+    this.name = "MindeeHttpErrorV2";
+  }
+}
+
 

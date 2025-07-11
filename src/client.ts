@@ -1,14 +1,7 @@
-import { Readable } from "stream";
 import {
-  Base64Input,
-  BufferInput,
-  BytesInput,
   InputSource,
   LocalResponse,
   PageOptions,
-  PathInput,
-  StreamInput,
-  UrlInput,
 } from "./input";
 import { ApiSettings, Endpoint, EndpointResponse, STANDARD_API_OWNER } from "./http";
 import {
@@ -28,6 +21,7 @@ import { setTimeout } from "node:timers/promises";
 import { MindeeError } from "./errors";
 import { WorkflowResponse } from "./parsing/common/workflowResponse";
 import { WorkflowEndpoint } from "./http/workflowEndpoint";
+import { BaseClient } from "./baseClient";
 
 /**
  * Common options for workflows & predictions.
@@ -135,7 +129,7 @@ export interface ClientOptions {
  *
  * @category Client
  */
-export class Client {
+export class Client extends BaseClient {
   /** Key of the API. */
   protected apiKey: string;
 
@@ -149,6 +143,7 @@ export class Client {
       debug: false,
     }
   ) {
+    super();
     this.apiKey = apiKey ? apiKey : "";
     errorHandler.throwOnError = throwOnError ?? true;
     logger.level =
@@ -210,7 +205,7 @@ export class Client {
     const endpoint =
     params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
     if (inputSource === undefined) {
-      throw new Error("The 'parse' function requires an input document.");
+      throw new Error("The 'enqueue' function requires an input document.");
     }
     const rawResponse = await endpoint.predictAsync({
       inputDoc: inputSource,
@@ -285,7 +280,7 @@ export class Client {
   ): Promise<WorkflowResponse<GeneratedV1>> {
     const workflowEndpoint = new WorkflowEndpoint(this.#buildApiSettings(), workflowId);
     if (inputSource === undefined) {
-      throw new Error("The 'parse' function requires an input document.");
+      throw new Error("The 'executeWorkflow' function requires an input document.");
     }
     const rawResponse = await workflowEndpoint.executeWorkflow({
       inputDoc: inputSource,
@@ -402,7 +397,7 @@ export class Client {
     const enqueueResponse: AsyncPredictResponse<T> = await this.enqueue(
       productClass,
       inputSource,
-      asyncParams
+      validatedAsyncParams
     );
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       throw Error("Enqueueing of the document failed.");
@@ -411,21 +406,21 @@ export class Client {
     logger.debug(
       `Successfully enqueued document with job id: ${queueId}.`
     );
-    await setTimeout(validatedAsyncParams.initialDelaySec * 1000, undefined, asyncParams.initialTimerOptions);
+    await setTimeout(validatedAsyncParams.initialDelaySec * 1000, undefined, validatedAsyncParams.initialTimerOptions);
     let retryCounter: number = 1;
     let pollResults: AsyncPredictResponse<T>;
-    pollResults = await this.parseQueued(productClass, queueId, asyncParams);
+    pollResults = await this.parseQueued(productClass, queueId, validatedAsyncParams);
     while (retryCounter < validatedAsyncParams.maxRetries) {
       logger.debug(
         `Polling server for parsing result with queueId: ${queueId}.
-Attempt n°${retryCounter}/${asyncParams.maxRetries}.
+Attempt n°${retryCounter}/${validatedAsyncParams.maxRetries}.
 Job status: ${pollResults.job.status}.`
       );
       if (pollResults.job.status === "completed") {
         break;
       }
-      await setTimeout(validatedAsyncParams.delaySec * 1000, undefined, asyncParams.recurringTimerOptions);
-      pollResults = await this.parseQueued(productClass, queueId, asyncParams);
+      await setTimeout(validatedAsyncParams.delaySec * 1000, undefined, validatedAsyncParams.recurringTimerOptions);
+      pollResults = await this.parseQueued(productClass, queueId, validatedAsyncParams);
       retryCounter++;
     }
     if (pollResults.job.status !== "completed") {
@@ -569,73 +564,5 @@ Job status: ${pollResults.job.status}.`
     const [endpointName, endpointVersion] =
     InferenceFactory.getEndpoint(productClass);
     return [endpointName, endpointVersion];
-  }
-
-  /**
-   * Load an input document from a local path.
-   * @param inputPath
-   */
-  docFromPath(inputPath: string): PathInput {
-    return new PathInput({
-      inputPath: inputPath,
-    });
-  }
-
-  /**
-   * Load an input document from a base64 encoded string.
-   * @param inputString input content, as a string.
-   * @param filename file name.
-   */
-  docFromBase64(inputString: string, filename: string): Base64Input {
-    return new Base64Input({
-      inputString: inputString,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input document from a `stream.Readable` object.
-   * @param inputStream input content, as a readable stream.
-   * @param filename file name.
-   */
-  docFromStream(inputStream: Readable, filename: string): StreamInput {
-    return new StreamInput({
-      inputStream: inputStream,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input document from bytes.
-   * @param inputBytes input content, as a Uint8Array or Buffer.
-   * @param filename file name.
-   */
-  docFromBytes(inputBytes: Uint8Array, filename: string): BytesInput {
-    return new BytesInput({
-      inputBytes: inputBytes,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input document from a URL.
-   * @param url input url. Must be HTTPS.
-   */
-  docFromUrl(url: string): UrlInput {
-    return new UrlInput({
-      url: url,
-    });
-  }
-
-  /**
-   * Load an input document from a Buffer.
-   * @param buffer input content, as a buffer.
-   * @param filename file name.
-   */
-  docFromBuffer(buffer: Buffer, filename: string): BufferInput {
-    return new BufferInput({
-      buffer: buffer,
-      filename: filename,
-    });
   }
 }
