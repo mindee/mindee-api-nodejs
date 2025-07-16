@@ -67,8 +67,13 @@ export class MindeeApiV2 {
   #processResponse<T extends JobResponse | InferenceResponse>
   (result: EndpointResponse, responseType: new (data: { [key: string]: any; }) => T): T {
     if (result.messageObj?.statusCode && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)) {
+      if (result.data?.status !== null) {
+        throw new MindeeHttpErrorV2(
+          result.data?.status, result.data?.detail ?? "Unknown error."
+        );
+      }
       throw new MindeeHttpErrorV2(
-        result.messageObj?.statusCode ?? -1, result.messageObj?.statusMessage ?? "Unknown error."
+        result.messageObj?.statusCode ?? -1, result.data?.statusMessage ?? "Unknown error."
       );
     }
     try {
