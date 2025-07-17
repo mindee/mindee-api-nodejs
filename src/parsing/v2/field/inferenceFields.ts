@@ -2,13 +2,16 @@ import { StringDict } from "../../common";
 import type { ListField } from "./listField";
 import type { ObjectField } from "./objectField";
 import type { SimpleField } from "./simpleField";
+import { createField } from "./fieldFactory";
 
 
 export class InferenceFields extends Map<string, SimpleField | ObjectField | ListField> {
   protected _indentLevel: number;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {
-    super(Object.entries(serverResponse));
+    super(Object.entries(serverResponse).map( ([key, value]) => {
+      return [key, createField(value, 1)];
+    }));
     this._indentLevel = indentLevel;
   }
 

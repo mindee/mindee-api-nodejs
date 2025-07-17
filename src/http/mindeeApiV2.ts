@@ -25,9 +25,6 @@ export class MindeeApiV2 {
    */
   async reqPostInferenceEnqueue(inputDoc: LocalInputSource, params: InferenceParams): Promise<JobResponse> {
     await inputDoc.init();
-    if (params.pageOptions !== undefined) {
-      await BaseEndpoint.cutDocPages(inputDoc, params.pageOptions);
-    }
     if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
       throw new Error("Model ID must be provided");
     }
