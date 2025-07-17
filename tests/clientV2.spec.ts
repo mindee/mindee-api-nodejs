@@ -50,7 +50,7 @@ before(() => {
 });
 
 after(() => {
-  delete process.env.MINDEE_API_KEY;
+  delete process.env.MINDEE_V2_API_KEY;
   delete process.env.MINDEE_V2_BASE_URL;
   nock.cleanAll();
 });
