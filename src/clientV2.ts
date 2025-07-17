@@ -8,9 +8,10 @@ import { LOG_LEVELS, logger } from "./logger";
 
 import { setTimeout } from "node:timers/promises";
 import { MindeeError } from "./errors";
-import { InferenceResponse, JobResponse } from "./parsing/v2";
+import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/v2";
 import { MindeeApiV2 } from "./http/mindeeApiV2";
 import { BaseClient } from "./baseClient";
+import { MindeeHttpErrorV2 } from "./errors/mindeeError";
 
 /**
  * Asynchronous polling parameters.
@@ -106,18 +107,32 @@ export class ClientV2 extends BaseClient {
    * @category Asynchronous
    * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
-  async enqueue(
+  async enqueueInference(
     inputSource: LocalInputSource,
     params: InferencePredictOptions
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
     }
-    return await this.mindeeApi.predictAsyncReqPost(inputSource, params);
+    return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, params);
   }
 
   /**
-   * Polls a queue and returns its status as well as the inference results if the parsing is done.
+   * Retrieves an inference.
+   *
+   * @param inferenceId id of the queue to poll.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Asynchronous
+   * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
+   * parsing is complete.
+   */
+  async getInference(inferenceId: string): Promise<InferenceResponse> {
+    return await this.mindeeApi.reqGetInference(inferenceId);
+  }
+
+  /**
+   * Get the status of an inference that was previously enqueued.
+   * Can be used for polling.
    *
    * @param jobId id of the queue to poll.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
@@ -125,8 +140,8 @@ export class ClientV2 extends BaseClient {
    * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
    * parsing is complete.
    */
-  async parseQueued(jobId: string): Promise<JobResponse | InferenceResponse> {
-    return await this.mindeeApi.getQueuedDocument(jobId);
+  async getJob(jobId: string): Promise<JobResponse> {
+    return await this.mindeeApi.reqGetJob(jobId);
   }
 
   /**
@@ -195,12 +210,12 @@ export class ClientV2 extends BaseClient {
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
-  async enqueueAndParse(
+  async enqueueAndGetInference(
     inputDoc: LocalInputSource,
     params: InferencePredictOptions
   ): Promise<InferenceResponse> {
     const validatedAsyncParams = this.#setAsyncParams(params.pollingOptions);
-    const enqueueResponse: JobResponse = await this.enqueue(inputDoc, params);
+    const enqueueResponse: JobResponse = await this.enqueueInference(inputDoc, params);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${enqueueResponse.getRawHttp()}`);
       throw Error("Enqueueing of the document failed.");
@@ -212,11 +227,13 @@ export class ClientV2 extends BaseClient {
 
     await setTimeout(validatedAsyncParams.initialDelaySec * 1000, undefined, validatedAsyncParams.initialTimerOptions);
     let retryCounter: number = 1;
-    let pollResults: JobResponse | InferenceResponse;
-    pollResults = await this.parseQueued(queueId);
+    let pollResults: JobResponse  = await this.getJob(queueId);
     while (retryCounter < validatedAsyncParams.maxRetries) {
-      if (pollResults instanceof InferenceResponse) {
+      if (pollResults.job.status === "Failed") {
         break;
+      }
+      if (pollResults.job.status === "Processed") {
+        return this.getInference(pollResults.job.id);
       }
       logger.debug(
         `Polling server for parsing result with queueId: ${queueId}.
@@ -224,16 +241,17 @@ Attempt n°${retryCounter}/${validatedAsyncParams.maxRetries}.
 Job status: ${pollResults.job.status}.`
       );
       await setTimeout(validatedAsyncParams.delaySec * 1000, undefined, validatedAsyncParams.recurringTimerOptions);
-      pollResults = await this.parseQueued(queueId);
+      pollResults = await this.getJob(queueId);
       retryCounter++;
     }
-    if (pollResults instanceof JobResponse) {
-      throw Error(
-        "Asynchronous parsing request timed out after " +
-        validatedAsyncParams.delaySec * retryCounter +
-        " seconds"
-      );
+    const error: ErrorResponse | undefined = pollResults.job.error;
+    if (error) {
+      throw new MindeeHttpErrorV2(error.status, error.detail);
     }
-    return pollResults;
+    throw Error(
+      "Asynchronous parsing request timed out after " +
+      validatedAsyncParams.delaySec * retryCounter +
+      " seconds"
+    );
   }
 }

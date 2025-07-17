@@ -23,7 +23,7 @@ export class MindeeApiV2 {
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async predictAsyncReqPost(inputDoc: LocalInputSource, params: InferencePredictOptions): Promise<JobResponse> {
+  async reqPostInferenceEnqueue(inputDoc: LocalInputSource, params: InferencePredictOptions): Promise<JobResponse> {
     await inputDoc.init();
     if (params.pageOptions !== undefined) {
       await BaseEndpoint.cutDocPages(inputDoc, params.pageOptions);
@@ -43,24 +43,26 @@ export class MindeeApiV2 {
 
 
   /**
+   * Requests the job of a queued document from the API.
+   * Throws an error if the server's response contains one.
+   * @param inferenceId The document's ID in the queue.
+   * @category Asynchronous
+   * @returns a `Promise` containing either the parsed result, or information on the queue.
+   */
+  async reqGetInference(inferenceId: string): Promise<InferenceResponse> {
+    const queueResponse: EndpointResponse = await this.#inferenceResultReqGet(inferenceId, "inferences");
+    return this.#processResponse(queueResponse, InferenceResponse);
+  }
+
+  /**
    * Requests the results of a queued document from the API.
    * Throws an error if the server's response contains one.
    * @param jobId The document's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async getQueuedDocument(jobId: string): Promise<JobResponse | InferenceResponse> {
-    const queueResponse: EndpointResponse = await this.#documentQueueReqGet(jobId);
-    const queueStatusCode = queueResponse.messageObj.statusCode;
-    if (
-      queueStatusCode === 302 &&
-      queueResponse.messageObj.headers.location !== undefined
-    ) {
-      const docId = queueResponse.messageObj.headers.location.split("/").pop();
-      if (docId !== undefined) {
-        return this.#processResponse(await this.#documentGetReq(docId), InferenceResponse);
-      }
-    }
+  async reqGetJob(jobId: string): Promise<JobResponse> {
+    const queueResponse: EndpointResponse = await this.#inferenceResultReqGet(jobId, "jobs");
     return this.#processResponse(queueResponse, JobResponse);
   }
 
@@ -122,35 +124,19 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Make a request to GET a document.
-   * @param queueId
-   */
-  #documentGetReq(queueId: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `/v2/inferences/${queueId}`,
-      };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
-  }
-
-
-  /**
    * Make a request to GET the status of a document in the queue.
-   * @param queueId
+   * @param queueId ID of either the job or the inference.
+   * @param slug "jobs" or "inferences"...
+   * @category Asynchronous
+   * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  #documentQueueReqGet(queueId: string): Promise<EndpointResponse> {
+  #inferenceResultReqGet(queueId: string, slug: string): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const options = {
         method: "GET",
         headers: this.settings.baseHeaders,
         hostname: this.settings.hostname,
-        path: `/v2/jobs/${queueId}`,
+        path: `/v2/${slug}/${queueId}`,
       };
       const req = BaseEndpoint.readResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.

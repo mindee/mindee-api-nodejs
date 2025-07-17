@@ -8,8 +8,6 @@ import {
   LocalResponse,
   PathInput,
 } from "../src/input";
-import { JobResponse } from "../src/parsing/v2";
-import { Job } from "../src/parsing/v2";
 import assert from "node:assert/strict";
 /**
  * Injects a minimal set of environment variables so that the SDK behaves
@@ -81,7 +79,7 @@ describe("ClientV2", () => {
       const inputDoc = client.docFromPath(filePath);
 
       await assert.rejects(
-        client.enqueue(inputDoc, { modelId: "dummy-model" }),
+        client.enqueueInference(inputDoc, { modelId: "dummy-model" }),
         MindeeHttpErrorV2
       );
     });
@@ -90,7 +88,7 @@ describe("ClientV2", () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = client.docFromPath(filePath);
       await assert.rejects(
-        client.enqueueAndParse(
+        client.enqueueAndGetInference(
           inputDoc,
           { modelId: "dummy-model" }
         ),
@@ -126,7 +124,7 @@ describe("ClientV2", () => {
       });
 
       try {
-        await client.enqueue(input, { modelId: "dummy-model" });
+        await client.enqueueInference(input, { modelId: "dummy-model" });
         expect.fail("enqueue() should have thrown");
       } catch (err) {
         expect(err).to.be.instanceOf(MindeeHttpErrorV2);
@@ -137,14 +135,12 @@ describe("ClientV2", () => {
     });
 
     it("parseQueued(jobId) returns a fully-formed JobResponse", async () => {
-      const resp = await client.parseQueued(
+      const resp = await client.getJob(
         "12345678-1234-1234-1234-123456789ABC"
       );
 
-      expect(resp).to.be.instanceOf(JobResponse);
-      expect((resp as JobResponse).job).to.be.instanceOf(Job);
 
-      const job = (resp as JobResponse).job;
+      const job = resp.job;
       expect(job.id).to.equal("12345678-1234-1234-1234-123456789ABC");
       expect(job.modelId).to.equal("87654321-4321-4321-4321-CBA987654321");
       expect(job.filename).to.equal("default_sample.jpg");
