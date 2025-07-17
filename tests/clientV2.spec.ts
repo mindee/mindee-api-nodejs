@@ -145,7 +145,7 @@ describe("ClientV2", () => {
       expect(job.modelId).to.equal("87654321-4321-4321-4321-CBA987654321");
       expect(job.filename).to.equal("default_sample.jpg");
       expect(job.alias).to.equal("dummy-alias.jpg");
-      expect(job.createdAt?.toISOString()).to.equal("2025-07-03T12:27:58.974Z");
+      expect(job.createdAt?.toISOString()).to.equal("2025-07-03T14:27:58.974Z");
       expect(job.status).to.equal("Processing");
       expect(job.pollingUrl).to.equal(
         "https://api-v2.mindee.net/v2/jobs/12345678-1234-1234-1234-123456789ABC"
