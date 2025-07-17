@@ -43,6 +43,22 @@ describe("Workflow calls", () => {
     expect(response.document?.inference.extras?.rag).to.be.undefined;
   }).timeout(60000);
 
+  it("should poll with RAG disabled and OCR words", async () => {
+    const asyncParams: OptionalAsyncOptions = {
+      workflowId: workflowId,
+      allWords: true
+    };
+    const response = await client.enqueueAndParse(
+      FinancialDocumentV1,
+      sample,
+      asyncParams
+    );
+    expect(response.document?.toString()).to.not.be.empty;
+    expect(response.document?.inference.extras?.rag).to.be.undefined;
+    expect(response.document?.ocr).to.exist;
+    expect(response.document?.ocr?.toString()).to.not.be.empty;
+  }).timeout(60000);
+
   it("should poll with RAG enabled", async () => {
     const asyncParams: OptionalAsyncOptions = {
       workflowId: workflowId,
@@ -58,7 +74,7 @@ describe("Workflow calls", () => {
     expect(((response.document?.inference.extras?.rag) as RAGExtra).matchingDocumentId).to.not.be.empty;
   }).timeout(60000);
 
-  it("should poll with RAG and OCR words", async () => {
+  it("should poll with RAG enabled and OCR words", async () => {
     const asyncParams: OptionalAsyncOptions = {
       workflowId: workflowId,
       rag: true,
