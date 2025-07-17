@@ -1,5 +1,5 @@
 import { ApiSettingsV2 } from "./apiSettingsV2";
-import { InferencePredictOptions } from "../clientV2";
+import { InferenceParams } from "../clientV2";
 import { InferenceResponse, JobResponse } from "../parsing/v2";
 import FormData from "form-data";
 import { RequestOptions } from "https";
@@ -18,12 +18,12 @@ export class MindeeApiV2 {
   /**
    * Sends a file to the inference queue.
    * @param inputDoc Local file loaded as an input.
-   * @param params {InferencePredictOptions} parameters relating to the enqueueing options.
+   * @param params {InferenceParams} parameters relating to the enqueueing options.
    * @category V2
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostInferenceEnqueue(inputDoc: LocalInputSource, params: InferencePredictOptions): Promise<JobResponse> {
+  async reqPostInferenceEnqueue(inputDoc: LocalInputSource, params: InferenceParams): Promise<JobResponse> {
     await inputDoc.init();
     if (params.pageOptions !== undefined) {
       await BaseEndpoint.cutDocPages(inputDoc, params.pageOptions);
@@ -91,9 +91,9 @@ export class MindeeApiV2 {
    * Sends a document to the inference queue.
    *
    * @param inputDoc Local file loaded as an input.
-   * @param params {InferencePredictOptions} parameters relating to the enqueueing options.
+   * @param params {InferenceParams} parameters relating to the enqueueing options.
    */
-  #documentEnqueuePost(inputDoc: LocalInputSource, params: InferencePredictOptions): Promise<EndpointResponse> {
+  #documentEnqueuePost(inputDoc: LocalInputSource, params: InferenceParams): Promise<EndpointResponse> {
     const form = new FormData();
 
     form.append("model_id", params.modelId);

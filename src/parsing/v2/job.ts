@@ -1,6 +1,6 @@
 import { StringDict } from "../common";
 import { ErrorResponse } from "./errorResponse";
-import { Webhook } from "./webhook";
+import { JobResponseWebhook } from "./jobResponseWebhook";
 import { parseDate } from "../common/dateParser";
 
 /**
@@ -47,7 +47,7 @@ export class Job {
   /**
    * ID of webhooks associated with the job.
    */
-  public webhooks: Array<Webhook>;
+  public webhooks: Array<JobResponseWebhook>;
 
   constructor(serverResponse: StringDict) {
     this.id = serverResponse["id"];

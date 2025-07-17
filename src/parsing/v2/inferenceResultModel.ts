@@ -1,6 +1,6 @@
 import { StringDict } from "../common";
 
-export class InferenceModel {
+export class InferenceResultModel {
   /**
    * ID of the model.
    */

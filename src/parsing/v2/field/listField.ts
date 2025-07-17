@@ -1,5 +1,5 @@
-import { MindeeApiV2Error } from "../../errors/mindeeError";
-import { StringDict } from "../common";
+import { MindeeApiV2Error } from "../../../errors/mindeeError";
+import { StringDict } from "../../common";
 import { BaseField } from "./baseField";
 import { ObjectField } from "./objectField";
 import { SimpleField } from "./simpleField";

@@ -1,5 +1,5 @@
 import { BaseField } from "./baseField";
-import { StringDict } from "../common";
+import { StringDict } from "../../common";
 
 export class SimpleField extends BaseField {
   readonly value: string | number | boolean | null;

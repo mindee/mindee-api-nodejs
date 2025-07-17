@@ -1,7 +1,6 @@
 import {
   LocalInputSource,
   LocalResponse,
-  PageOptions,
 } from "./input";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
@@ -44,7 +43,7 @@ interface PollingOptions {
   }
 }
 
-export interface InferencePredictOptions {
+export interface InferenceParams {
   /** ID of the model. **Required**. */
   modelId: string;
   /** Enable Retrieval-Augmented Generation (RAG). */
@@ -53,8 +52,6 @@ export interface InferencePredictOptions {
   alias?: string;
   /** IDs of the webhooks that should receive the API response. */
   webhookIds?: string[];
-  /** Page-level inference options. */
-  pageOptions?: PageOptions;
   /** Polling options. */
   pollingOptions?: OptionalPollingOptions;
   /** Set to `false` if the file must remain open after parsing. */
@@ -109,7 +106,7 @@ export class ClientV2 extends BaseClient {
    */
   async enqueueInference(
     inputSource: LocalInputSource,
-    params: InferencePredictOptions
+    params: InferenceParams
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
@@ -212,7 +209,7 @@ export class ClientV2 extends BaseClient {
    */
   async enqueueAndGetInference(
     inputDoc: LocalInputSource,
-    params: InferencePredictOptions
+    params: InferenceParams
   ): Promise<InferenceResponse> {
     const validatedAsyncParams = this.#setAsyncParams(params.pollingOptions);
     const enqueueResponse: JobResponse = await this.enqueueInference(inputDoc, params);

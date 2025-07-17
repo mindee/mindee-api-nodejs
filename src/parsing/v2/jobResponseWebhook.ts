@@ -2,11 +2,11 @@ import { ErrorResponse } from "./errorResponse";
 import { StringDict, parseDate } from "../common";
 
 /**
- * Webhook information.
+ * JobResponseWebhook information.
  */
-export class Webhook {
+export class JobResponseWebhook {
   /**
-   * Webhook ID.
+   * JobResponseWebhook ID.
    */
   public id: string;
   /**

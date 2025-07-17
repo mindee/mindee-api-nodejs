@@ -1,7 +1,7 @@
 import { BaseField } from "./baseField";
 import { ListField } from "./listField";
 import { InferenceFields } from "./inferenceFields";
-import { StringDict } from "../common";
+import { StringDict } from "../../common";
 
 export class ObjectField extends BaseField {
   readonly fields: InferenceFields;

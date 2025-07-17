@@ -1,4 +1,4 @@
-import { StringDict } from "../common";
+import { StringDict } from "../../common";
 import type { ListField } from "./listField";
 import type { ObjectField } from "./objectField";
 import type { SimpleField } from "./simpleField";

@@ -1,8 +1,8 @@
 /**
  * Factory helper.
  */
-import { StringDict } from "../common";
-import { MindeeApiV2Error } from "../../errors/mindeeError";
+import { StringDict } from "../../common";
+import { MindeeApiV2Error } from "../../../errors/mindeeError";
 import { ListField } from "./listField";
 import { ObjectField } from "./objectField";
 import { SimpleField } from "./simpleField";

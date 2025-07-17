@@ -1,7 +1,7 @@
 import { StringDict } from "../common";
 import { RawText } from "./rawText";
 
-export class InferenceOptions {
+export class InferenceResultOptions {
   /**
    * List of texts found per page.
    */
