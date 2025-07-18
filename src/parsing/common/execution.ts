@@ -3,6 +3,7 @@ import { GeneratedV1Document } from "../../product/generated/generatedV1Document
 import { ExecutionFile } from "./executionFile";
 import { StringDict } from "./stringDict";
 import { ExecutionPriority } from "./executionPriority";
+import { parseDate } from "./dateParser";
 
 /**
  * Representation of an execution for a workflow.
@@ -50,23 +51,18 @@ export class Execution<T extends Inference> {
 
   constructor(inferenceClass: new (serverResponse: StringDict) => T, jsonResponse: StringDict) {
     this.batchName = jsonResponse["batch_name"];
-    this.createdAt = jsonResponse["created_at"] ? this.parseDate(jsonResponse["created_at"]) : null;
+    this.createdAt = parseDate(jsonResponse["created_at"]);
     this.file = jsonResponse["file"];
     this.id = jsonResponse["id"];
     this.inference = jsonResponse["inference"] ? new inferenceClass(jsonResponse["inference"]) : null;
     this.priority = jsonResponse["priority"];
-    this.reviewedAt = this.parseDate(jsonResponse["reviewed_at"]);
-    this.availableAt = this.parseDate(jsonResponse["available_at"]);
+    this.reviewedAt = parseDate(jsonResponse["reviewed_at"]);
+    this.availableAt = parseDate(jsonResponse["available_at"]);
     this.reviewedPrediction = jsonResponse["reviewed_prediction"] ?
       new GeneratedV1Document(jsonResponse["reviewed_prediction"]) : null;
     this.status = jsonResponse["status"];
     this.type = jsonResponse["type"];
-    this.uploadedAt = this.parseDate(jsonResponse["uploaded_at"]);
+    this.uploadedAt = parseDate(jsonResponse["uploaded_at"]);
     this.workflowId = jsonResponse["workflow_id"];
-  }
-
-  private parseDate(dateString: string | null): Date | null {
-    if (!dateString) return null;
-    return new Date(dateString);
   }
 }

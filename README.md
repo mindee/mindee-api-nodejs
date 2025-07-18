@@ -154,27 +154,6 @@ const apiResponse = mindeeClient.parse(
   });
 ```
 
-## Further Reading
-Complete details on the working of the library are available in the following guides: 
-
-* [Node.js Getting Started](https://developers.mindee.com/docs/nodejs-getting-started)
-* [Node.js Generated API](https://developers.mindee.com/docs/nodejs-generated-ocr)
-* [Node.js Custom OCR (Deprecated)](https://developers.mindee.com/docs/nodejs-api-builder)
-* [Node.js Invoice OCR](https://developers.mindee.com/docs/nodejs-invoice-ocr)
-* [Node.js International Id OCR](https://developers.mindee.com/docs/nodejs-international-id-ocr)
-* [Node.js Receipt OCR](https://developers.mindee.com/docs/nodejs-receipt-ocr)
-* [Node.js Resume OCR](https://developers.mindee.com/docs/nodejs-resume-ocr)
-* [Node.js Financial Document OCR](https://developers.mindee.com/docs/nodejs-financial-document-ocr)
-* [Node.js Passport OCR](https://developers.mindee.com/docs/nodejs-passport-ocr)
-* [Node.js FR Bank Account Detail OCR](https://developers.mindee.com/docs/nodejs-fr-bank-account-details-ocr)
-* [Node.js FR Health Card OCR](https://developers.mindee.com/docs/nodejs-fr-health-card-ocr)
-* [Node.js FR ID Card OCR](https://developers.mindee.com/docs/nodejs-fr-carte-nationale-didentite-ocr)
-* [Node.js US Bank Check OCR](https://developers.mindee.com/docs/nodejs-us-bank-check-ocr)
-* [Node.js Barcode Reader API](https://developers.mindee.com/docs/nodejs-barcode-reader-ocr)
-* [Node.js Cropper API](https://developers.mindee.com/docs/nodejs-cropper-ocr)
-* [Node.js Invoice Splitter API](https://developers.mindee.com/docs/nodejs-invoice-splitter-ocr)
-* [Node.js Multi Receipts Detector API](https://developers.mindee.com/docs/nodejs-multi-receipts-detector-ocr)
-
 You can also take a look at the **[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**.
 
 ## License
