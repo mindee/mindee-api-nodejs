@@ -29,7 +29,7 @@ export class ApiSettings extends BaseSettings {
     }
     this.baseHeaders = {
       "User-Agent": this.getUserAgent(),
-      Authorization: `Token ${apiKey}`,
+      Authorization: `Token ${this.apiKey}`,
     };
   }
 
