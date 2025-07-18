@@ -15,44 +15,32 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     this._indentLevel = indentLevel;
   }
 
-  toString(): string {
-    let outStr = "";
+  toString(indent: number = this._indentLevel): string {
+    if (this.size === 0) {
+      return "";
+    }
+
+    const padding = "  ".repeat(indent);
+    const lines: string[] = [];
 
     for (const [fieldKey, fieldValue] of this.entries()) {
-      const indent = " ".repeat(this._indentLevel);
+      let line = `${padding}:${fieldKey}:`;
 
-      if (
-        fieldValue &&
-        fieldValue.constructor.name === "ListField"
-      ) {
+      if (fieldValue.constructor.name === "ListField") {
         const listField = fieldValue as ListField;
-        let valueStr = indent;
-
         if (Array.isArray(listField.items) && listField.items.length > 0) {
-          valueStr = indent + listField.toString();
+          line += listField.toString();
         }
-
-        outStr += `${indent}:${fieldKey}: ${valueStr}`;
-      } else if (
-        fieldValue &&
-        fieldValue.constructor.name === "ObjectField"
-      ) {
-        const objectField = fieldValue as ObjectField;
-        outStr += `${indent}:${fieldKey}: ${objectField.fields.toString()}`;
-      } else if (
-        fieldValue &&
-        fieldValue.constructor.name === "SimpleField"
-      ) {
-        const simpleField = fieldValue as SimpleField;
-        const simpleStr = simpleField.toString();
-        outStr += `${indent}:${fieldKey}: ${simpleStr}`;
-      } else {
-        outStr += `${indent}:${fieldKey}: `;
+      } else if (fieldValue.constructor.name === "ObjectField") {
+        line += fieldValue.toString();
+      } else if (fieldValue.constructor.name === "SimpleField") {
+        const val = (fieldValue as SimpleField).value;
+        line += val !== null && val !== undefined ? " " + val.toString() : "";
       }
 
-      outStr += "\n";
+      lines.push(line);
     }
-    return outStr.trimEnd();
-  }
 
+    return lines.join("\n").trimEnd();
+  }
 }

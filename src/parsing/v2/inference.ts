@@ -34,13 +34,11 @@ export class Inference {
     return (
       "Inference\n" +
       "#########\n" +
-      `:model: ${this.model.id}\n` +
-      ":file:\n" +
-      `  :name: ${this.file.name}\n` +
-      `  :alias: ${this.file.alias}\n\n` +
-      "Result\n" +
-      "======\n" +
-      `${this.result}\n`
+      "Model\n" +
+      "=====\n" +
+      `:ID: ${this.model.id}\n\n` +
+      this.file.toString() + "\n" +
+      this.result + "\n"
     );
   }
 }

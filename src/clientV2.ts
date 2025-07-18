@@ -154,7 +154,7 @@ export class ClientV2 extends BaseClient {
     try {
       return new InferenceResponse(localResponse.asDict());
     } catch {
-      throw new MindeeError("No prediction found in local response.");
+      throw new MindeeError("No inference found in local response.");
     }
   }
 

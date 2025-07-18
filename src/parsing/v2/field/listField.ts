@@ -12,7 +12,7 @@ export class ListField extends BaseField {
   public items: Array<ListField | ObjectField | SimpleField>;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {
-    super(indentLevel);
+    super(serverResponse, indentLevel);
 
     if (!Array.isArray(serverResponse["items"])) {
       throw new MindeeApiV2Error(
@@ -25,12 +25,21 @@ export class ListField extends BaseField {
   }
 
   toString(): string {
-    if (this.items.length === 0) {
-      return "";
+    if (!this.items || this.items.length === 0) {
+      return "\n";
     }
-    const out = this.items
-      .map((item) => `* ${item.toString().slice(2)}`)
-      .join("");
-    return "\n" + out;
+
+    const parts: string[] = [""];
+    for (const item of this.items) {
+      if (!item) continue;
+
+      if (item instanceof ObjectField) {
+        parts.push(item.toStringFromList());
+      } else {
+        parts.push(item.toString());
+      }
+    }
+    return parts.join("\n  * ");
   }
+
 }

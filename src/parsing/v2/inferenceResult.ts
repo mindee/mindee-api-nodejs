@@ -21,10 +21,20 @@ export class InferenceResult {
   }
 
   toString(): string {
-    let outStr: string = `:fields:\n${this.fields}`;
+    const parts: string[] = [
+      "Fields",
+      "======",
+      this.fields.toString(),
+    ];
+
     if (this.options) {
-      outStr += `\n:options: ${this.options}`;
+      parts.push(
+        "Options",
+        "=======",
+        this.options.toString()
+      );
     }
-    return outStr;
+
+    return parts.join("\n");
   }
 }
