@@ -11,7 +11,11 @@ const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
 const apiResponse = mindeeClient.enqueueAndGetInference(
   inputSource,
-  { modelId: modelId, rag: false }
+  {
+    modelId: modelId,
+    // If set to `true`, will enable Retrieval-Augmented Generation.
+    rag: false
+  }
 );
 
 // Handle the response Promise

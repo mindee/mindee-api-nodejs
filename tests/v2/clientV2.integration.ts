@@ -28,10 +28,6 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
     modelId = process.env["MINDEE_V2_FINDOC_MODEL_ID"] ?? "";
 
-    if (apiKey.trim() === "" || modelId.trim() === "") {
-      throw new Error("No API key provided.");
-    }
-
     client = new ClientV2({ apiKey });
   });
 
