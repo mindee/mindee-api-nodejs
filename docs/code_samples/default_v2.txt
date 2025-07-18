@@ -4,13 +4,14 @@ const mindee = require("mindee");
 
 // Init a new client
 const mindeeClient = new mindee.ClientV2({ apiKey: "MY_API_KEY" });
+const modelId = "MY_MODEL_ID";
 
 // Load a file from disk
 const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
 
-const apiResponse = mindeeClient.enqueueAndParse(
+const apiResponse = mindeeClient.enqueueAndGetInference(
   inputSource,
-  { modelId: "MY_MODEL_ID" }
+  { modelId: modelId, rag: false }
 );
 
 // Handle the response Promise

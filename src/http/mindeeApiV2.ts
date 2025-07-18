@@ -5,7 +5,7 @@ import FormData from "form-data";
 import { RequestOptions } from "https";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
 import { LocalInputSource } from "../input";
-import { MindeeHttpErrorV2 } from "../errors/mindeeError";
+import { MindeeApiV2Error, MindeeHttpErrorV2 } from "../errors/mindeeError";
 import { logger } from "../logger";
 
 export class MindeeApiV2 {
@@ -79,8 +79,7 @@ export class MindeeApiV2 {
       return new responseType(result.data);
     } catch (e) {
       logger.error(`Raised '${e}' Couldn't deserialize response object:\n${JSON.stringify(result.data)}`);
-      throw e;
-      // throw new MindeeApiV2Error("Couldn't deserialize response object.");
+      throw new MindeeApiV2Error("Couldn't deserialize response object.");
     }
   }
 

@@ -1,12 +1,10 @@
 import {
   LocalInputSource,
-  LocalResponse,
 } from "./input";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 
 import { setTimeout } from "node:timers/promises";
-import { MindeeError } from "./errors";
 import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/v2";
 import { MindeeApiV2 } from "./http/mindeeApiV2";
 import { BaseClient } from "./baseClient";
@@ -139,23 +137,6 @@ export class ClientV2 extends BaseClient {
    */
   async getJob(jobId: string): Promise<JobResponse> {
     return await this.mindeeApi.reqGetJob(jobId);
-  }
-
-  /**
-   * Load an inference.
-   *
-   * @param localResponse Local response to load.
-   * @category V2
-   * @returns A valid prediction
-   */
-  loadInference(
-    localResponse: LocalResponse
-  ): InferenceResponse {
-    try {
-      return new InferenceResponse(localResponse.asDict());
-    } catch {
-      throw new MindeeError("No inference found in local response.");
-    }
   }
 
   /**

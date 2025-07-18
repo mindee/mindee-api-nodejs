@@ -17,10 +17,9 @@ const blankPath = path.join(findocPath, "blank.json");
 const completePath = path.join(findocPath, "complete.json");
 
 async function loadV2Inference(resourcePath: string): Promise<InferenceResponse> {
-  const dummyClient = new ClientV2({ apiKey: "dummy-key" });
   const localResponse = new LocalResponse(resourcePath);
   await localResponse.init();
-  return dummyClient.loadInference(localResponse);
+  return localResponse.deserializeResponse(InferenceResponse);
 }
 
 describe("inference", async () => {

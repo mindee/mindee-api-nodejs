@@ -2,13 +2,14 @@
 import { expect } from "chai";
 import nock from "nock";
 import path from "node:path";
-import { ClientV2 } from "../src";
-import { MindeeHttpErrorV2 } from "../src/errors/mindeeError";
+import { ClientV2 } from "../../src";
+import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 import {
   LocalResponse,
   PathInput,
-} from "../src/input";
+} from "../../src/input";
 import assert from "node:assert/strict";
+import { InferenceResponse } from "../../src/parsing/v2";
 /**
  * Injects a minimal set of environment variables so that the SDK behaves
  * as if it had been configured by the user.
@@ -44,21 +45,22 @@ function setNockInterceptors(): void {
     });
 }
 
-before(() => {
-  dummyEnvvars();
-  setNockInterceptors();
-});
-
-after(() => {
-  delete process.env.MINDEE_V2_API_KEY;
-  delete process.env.MINDEE_V2_BASE_URL;
-  nock.cleanAll();
-});
-const resourcesPath = path.join(__dirname, "./data");
+const resourcesPath = path.join(__dirname, "..", "data");
 const fileTypesDir = path.join(resourcesPath, "file_types");
 const v2DataDir = path.join(resourcesPath, "v2");
 
 describe("ClientV2", () => {
+  before(() => {
+    setNockInterceptors();
+    dummyEnvvars();
+  });
+
+  after(() => {
+    nock.cleanAll();
+    delete process.env.MINDEE_V2_API_KEY;
+    delete process.env.MINDEE_V2_API_HOST;
+  });
+
   describe("Client configured via environment variables", () => {
     let client: ClientV2;
 
@@ -96,7 +98,7 @@ describe("ClientV2", () => {
       );
     });
 
-    it("loadInference(LocalResponse) works on stored JSON fixtures", async () => {
+    it("loading an inference works on stored JSON fixtures", async () => {
       const jsonPath = path.join(
         v2DataDir,
         "products",
@@ -106,7 +108,7 @@ describe("ClientV2", () => {
 
       const localResp = new LocalResponse(jsonPath);
       await localResp.init();
-      const prediction = client.loadInference(localResp);
+      const prediction = localResp.deserializeResponse(InferenceResponse);
 
       expect(prediction.inference.model.id).to.equal(
         "12345678-1234-1234-1234-123456789abc"
