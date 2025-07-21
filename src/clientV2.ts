@@ -11,8 +11,38 @@ import { BaseClient } from "./baseClient";
 import { MindeeHttpErrorV2 } from "./errors/mindeeError";
 
 /**
- * Asynchronous polling parameters.
+ * Parameters for the internal polling loop in {@link ClientV2.enqueueAndGetInference | enqueueAndGetInference()} .
+ *
+ * Default behavior:
+ * - `initialDelaySec` = 2s
+ * - `delaySec` = 1.5s
+ * - `maxRetries` = 80
+ *
+ * Validation rules:
+ * - `initialDelaySec` >= 1
+ * - `delaySec` >= 1
+ * - `maxRetries` >= 2
+ *
+ * The `initialTimerOptions` and `recurringTimerOptions` objects let you pass an
+ * `AbortSignal` or make the timer `unref`-ed to the `setTimeout()`.
+ *
+ * @property initialDelaySec Number of seconds to wait **before the first poll**.
+ * @property delaySec Interval in seconds between two consecutive polls.
+ * @property maxRetries Maximum number of polling attempts (including the first one).
+ * @property initialTimerOptions Options passed to the initial `setTimeout()`.
+ * @property recurringTimerOptions Options passed to every recurring `setTimeout()`.
+ *
+ * @category ClientV2
+ * @example
+ * const params = {
+ *   initialDelaySec: 4,
+ *   delaySec: 2,
+ *   maxRetries: 50
+ * };
+ *
+ * const inference = await client.enqueueAndGetInference(inputDoc, params);
  */
+
 export interface PollingOptions {
   initialDelaySec?: number;
   delaySec?: number;
@@ -27,34 +57,63 @@ export interface PollingOptions {
   }
 }
 
-interface ValidatedPollingOptions extends PollingOptions{
+interface ValidatedPollingOptions extends PollingOptions {
   initialDelaySec: number;
   delaySec: number;
   maxRetries: number;
 }
 
+/**
+ * Parameters accepted by the asynchronous **inference** v2 endpoint.
+ *
+ * All fields are optional except `modelId`.
+ *
+ * @property modelId Identifier of the model that must process the document. **Required**.
+ * @property rag When `true`, activates Retrieval-Augmented Generation (RAG).
+ * @property alias Custom alias assigned to the uploaded document.
+ * @property webhookIds List of webhook UUIDs that will receive the final API response.
+ * @property pollingOptions Client-side polling configuration (see {@link PollingOptions}).
+ * @property closeFile By default the file is closed once the upload is finished, set to `false` to keep it open.
+ * @category ClientV2
+ * @example
+ * const params = {
+ *   modelId: "YOUR_MODEL_ID",
+ *   rag: true,
+ *   alias: "YOUR_ALIAS",
+ *   webhookIds: ["YOUR_WEBHOOK_ID_1", "YOUR_WEBHOOK_ID_2"],
+ *   pollingOptions: {
+ *     initialDelaySec: 2,
+ *     delaySec: 1.5,
+ *   }
+ * };
+ */
 export interface InferenceParameters {
-  /** ID of the model. **Required**. */
   modelId: string;
-  /** Enable Retrieval-Augmented Generation (RAG). */
   rag?: boolean;
-  /** Optional alias for the file. */
   alias?: string;
-  /** IDs of the webhooks that should receive the API response. */
   webhookIds?: string[];
-  /** Polling options. */
   pollingOptions?: PollingOptions;
-  /** Set to `false` if the file must remain open after parsing. */
   closeFile?: boolean;
 }
 
-
+/**
+ * Options for the V2 Mindee Client.
+ *
+ * @property apiKey Your API key for all endpoints.
+ * @property throwOnError Raise an `Error` on errors.
+ * @property debug Log debug messages.
+ *
+ * @category ClientV2
+ * @example
+ * const client = new MindeeClientV2({
+ *   apiKey: "YOUR_API_KEY",
+ *   throwOnError: true,
+ *   debug: false
+ * });
+ */
 export interface ClientOptions {
-  /** Your API key for all endpoints. */
   apiKey?: string;
-  /** Raise an `Error` on errors. */
   throwOnError?: boolean;
-  /** Log debug messages. */
   debug?: boolean;
 }
 
@@ -197,7 +256,7 @@ export class ClientV2 extends BaseClient {
 
     await setTimeout(validatedAsyncParams.initialDelaySec * 1000, undefined, validatedAsyncParams.initialTimerOptions);
     let retryCounter: number = 1;
-    let pollResults: JobResponse  = await this.getJob(queueId);
+    let pollResults: JobResponse = await this.getJob(queueId);
     while (retryCounter < validatedAsyncParams.maxRetries) {
       if (pollResults.job.status === "Failed") {
         break;
