@@ -1,5 +1,6 @@
 export * as product from "./product";
 export { Client, PredictOptions } from "./client";
+export { ClientV2, InferenceParameters, PollingOptions } from "./clientV2";
 export {
   AsyncPredictResponse,
   PredictResponse,

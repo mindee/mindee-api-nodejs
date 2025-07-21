@@ -51,7 +51,7 @@ export class Endpoint extends BaseEndpoint {
   async predict(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await super.cutDocPages(params.inputDoc, params.pageOptions);
+      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictReqPost(
       params.inputDoc,
@@ -76,7 +76,7 @@ export class Endpoint extends BaseEndpoint {
   async predictAsync(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await super.cutDocPages(params.inputDoc, params.pageOptions);
+      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictAsyncReqPost(
       params.inputDoc,
@@ -227,7 +227,7 @@ export class Endpoint extends BaseEndpoint {
         path: path,
         timeout: this.settings.timeout,
       };
-      const req = this.readResponse(options, resolve, reject);
+      const req = BaseEndpoint.readResponse(options, resolve, reject);
       form.pipe(req);
       // potential ECONNRESET if we don't end the request.
       req.end();
@@ -290,7 +290,7 @@ export class Endpoint extends BaseEndpoint {
         hostname: this.settings.hostname,
         path: `${this.urlRoot}/documents/queue/${queueId}`,
       };
-      const req = this.readResponse(options, resolve, reject);
+      const req = BaseEndpoint.readResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.
       req.end();
     });
@@ -308,7 +308,7 @@ export class Endpoint extends BaseEndpoint {
         hostname: this.settings.hostname,
         path: `${this.urlRoot}/documents/${documentId}`,
       };
-      const req = this.readResponse(options, resolve, reject);
+      const req = BaseEndpoint.readResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.
       req.end();
     });
@@ -327,7 +327,7 @@ export class Endpoint extends BaseEndpoint {
         hostname: this.settings.hostname,
         path: `/v1/documents/${documentId}/feedback`,
       };
-      const req: ClientRequest = this.readResponse(options, resolve, reject);
+      const req: ClientRequest = BaseEndpoint.readResponse(options, resolve, reject);
       req.write(JSON.stringify(feedback));
 
       // potential ECONNRESET if we don't end the request.

@@ -1,4 +1,4 @@
-import { TaxField } from "../../src/parsing/standard";
+import { TaxField } from "../../../src/parsing/standard";
 import { expect } from "chai";
 
 describe("Test Tax field", () => {

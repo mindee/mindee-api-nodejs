@@ -1,4 +1,4 @@
-import { LocaleField } from "../../src/parsing/standard";
+import { LocaleField } from "../../../src/parsing/standard";
 import { expect } from "chai";
 
 describe("Test LocaleField field", () => {

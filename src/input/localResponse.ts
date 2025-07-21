@@ -3,6 +3,7 @@ import * as fs from "node:fs/promises";
 import { StringDict } from "../parsing/common";
 import { MindeeError } from "../errors";
 import { Buffer } from "buffer";
+import { CommonResponse } from "../parsing/v2";
 
 /**
  * Local response loaded from a file.
@@ -79,4 +80,24 @@ export class LocalResponse {
     return signature === this.getHmacSignature(secretKey);
   }
 
+  /**
+   * Deserialize the loaded local response into the requested CommonResponse`-derived class.
+   *
+   * Typically used when dealing with V2 webhook callbacks.
+   *
+   * @typeParam ResponseT - A class that extends `CommonResponse`.
+   * @param responseClass - The constructor of the class into which
+   *                        the payload should be deserialized.
+   * @returns An instance of `responseClass` populated with the file content.
+   * @throws MindeeError If the provided class cannot be instantiated.
+   */
+  public deserializeResponse<ResponseT extends CommonResponse>(
+    responseClass: new (serverResponse: StringDict) => ResponseT
+  ): ResponseT {
+    try {
+      return new responseClass(this.asDict());
+    } catch {
+      throw new MindeeError("Invalid class specified for deserialization.");
+    }
+  }
 }

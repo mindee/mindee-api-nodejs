@@ -34,9 +34,9 @@ export abstract class BaseEndpoint {
    * @param inputDoc input document.
    * @param pageOptions page cutting options.
    */
-  protected async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
+  public static async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
-      await inputDoc.cutPdf(pageOptions);
+      await inputDoc.applyPageOptions(pageOptions);
     }
   }
 
@@ -47,7 +47,7 @@ export abstract class BaseEndpoint {
    * @param reject promise rejection reason.
    * @returns the processed request.
    */
-  protected readResponse(
+  public static readResponse(
     options: RequestOptions,
     resolve: (value: EndpointResponse | PromiseLike<EndpointResponse>) => void,
     reject: (reason?: any) => void

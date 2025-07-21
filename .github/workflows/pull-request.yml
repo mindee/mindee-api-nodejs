@@ -3,18 +3,22 @@ name: Pull Request
 on:
   pull_request:
 
+permissions:
+  contents: read
+  pull-requests: read
+
 jobs:
   static_analysis:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_static-analysis.yml@main
+    uses: ./.github/workflows/_static-analysis.yml
   test_units:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_test-units.yml@main
+    uses: ./.github/workflows/_test-units.yml
     needs: static_analysis
     secrets: inherit
   test_integrations:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_test-integrations.yml@main
+    uses: ./.github/workflows/_test-integrations.yml
     needs: test_units
     secrets: inherit
   test_code_samples:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_test-code-samples.yml@main
+    uses: ./.github/workflows/_test-code-samples.yml
     needs: test_units
     secrets: inherit
