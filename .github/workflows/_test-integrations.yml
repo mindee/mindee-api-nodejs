@@ -20,7 +20,7 @@ jobs:
           - "macos-latest"
         node-version:
           - "18"
-          - "22"
+          - "24"
     runs-on: ${{ matrix.os }}
 
     steps:

@@ -3,163 +3,39 @@
 # Mindee API Helper Library for Node.js
 Quickly and easily connect to Mindee's API services using Node.js.
 
-## Quick Start
-Here's the TL;DR of getting started.
+## Mindee API Versions
+This client library has support for both Mindee platform versions.
 
-First, get an [API Key](https://developers.mindee.com/docs/create-api-key)
+### Latest - V2
+This is the new platform located here:
 
-Then, install this library:
-```shell
-npm install mindee
-```
+https://app.mindee.com
 
-Finally, Node.js away!
+It uses **API version 2**.
 
-### Loading a File and Parsing It
+Consult the
+**[Latest Documentation](https://docs.mindee.com/integrations/client-libraries-sdk)**
 
-#### Global Documents
-```js
-const mindee = require("mindee");
-// for TS or modules:
-// import * as mindee from "mindee";
 
-// Init a new client
-const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+### Legacy - V1
+This is the legacy platform located here:
 
-// Load a file from disk
-const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
+https://platform.mindee.com/
 
-// Parse it on the API of your choice
-const apiResponse = mindeeClient.parse(mindee.product.InvoiceV4, inputSource);
-```
+It uses **API version 1**.
 
-**Note:** Files can also be loaded from:
+Consult the
+**[Legacy Documentation](https://developers.mindee.com/docs/nodejs-getting-started)**
 
-A base64 encoded string:
-```js
-const inputSource = mindeeClient.docFromBase64(myInputString, "my-file-name.ext")
-```
+## Additional Information
 
-A byte sequence:
-```js
-const inputSource = mindeeClient.docFromBytes(myInputBytes, "my-file-name.ext")
-```
+**[Source Code](https://github.com/mindee/mindee-api-nodejs)**
 
-A stream:
-```js
-const inputSource = mindeeClient.docFromStream(myReadableStream, "my-file-name.ext")
-```
+**[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**
 
-A buffer:
-```js
-const inputSource = mindeeClient.docFromBuffer(myBuffer, "my-file-name.ext")
-```
+**[Feedback](https://feedback.mindee.com/)**
 
-A URL (`https` only):
-```js
-const inputSource = mindeeClient.docFromUrl("https://my-url");
-```
-
-You can also load the document locally before sending it:
-```js
-const inputSource = mindeeClient.docFromUrl("https://my-url");
-await inputSource.init();
-const localInputSource = inputSource.asLocalInputSource();
-```
-
-**Note:** Files hidden behind redirections are rejected by the server; this solution helps to circumvent that issue.
-
-#### Region-Specific Documents
-
-Region-Specific Documents use the following syntax:
-
-```js
-const mindee = require("mindee");
-// for TS or modules:
-// import * as mindee from "mindee";
-
-const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
-
-const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
-
-// The IdCardV1 product belongs to mindee.product.fr, not mindee.product itself
-const apiResponse = mindeeClient.parse(mindee.product.fr.IdCardV1, inputSource);
-```
-
-#### Custom Documents (docTI & Custom APIs)
-
-Custom documents will require you to provide their endpoint manually.
-
-```js
-const mindee = require("mindee");
-// for TS or modules:
-// import * as mindee from "mindee";
-
-// Init a new client
-const mindeeClient = new mindee.Client({
-  apiKey: "my-api-key"
-});
-
-// Load a file from disk
-const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
-
-// Create a custom endpoint for your product
-const customEndpoint = mindeeClient.createEndpoint(
-  "my-endpoint",
-  "my-account",
-  "my-version" // will default to 1 if not provided
-);
-
-// Parse it
-const apiResponse = await mindeeClient
-  .enqueueAndParse(
-    mindee.product.GeneratedV1,
-    inputSource,
-    {
-      endpoint: customEndpoint
-    }
-  );
-```
-
-### Handling the Return
-```js
-// Handle the response Promise
-apiResponse.then((resp) => {
-    // print a string summary
-    console.log(resp.document.toString());
-
-    // individual pages (array)
-    console.log(res.document.inference.pages);
-});
-```
-
-### Additional Options
-Options to pass when sending a file to be parsed.
-
-#### Page Options
-Allows only sending certain pages in a PDF.
-
-In this example we only send the first, penultimate, and last pages:
-
-```js
-const apiResponse = mindeeClient.parse(
-  mindee.product.InvoiceV4,
-  inputSource,
-  {
-    pageOptions: {
-      pageIndexes: [0, -2, -1],
-      operation: mindee.PageOptionsOperation.KeepOnly,
-      onMinPages: 2
-    }
-  });
-```
-
-You can also take a look at the **[Reference Documentation](https://mindee.github.io/mindee-api-nodejs/)**.
-
-## License
+### License
 Copyright © Mindee
 
 Available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
-
-## Questions?
-[Join our Slack](https://join.slack.com/t/mindee-community/shared_invite/zt-2d0ds7dtz-DPAF81ZqTy20chsYpQBW5g)
