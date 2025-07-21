@@ -1,5 +1,16 @@
 # CHANGELOG
 
+## v4.29.0-rc1 - 2025-07-21
+### Changes
+* :sparkles: add support for V2 client
+* :recycle: tweak CI & testing
+* :recycle: deprecate `cutPdf()` in favor of `applyPageOperations()` in `LocalInputSource`
+* :recycle: refactor some internals to account for new changes
+
+### Fixes
+* :bug: fix bug where polling parameters could ignore validation checks on V1
+
+
 ## v4.28.0 - 2025-06-03
 ### Changes
 * :sparkles: add support for address fields
