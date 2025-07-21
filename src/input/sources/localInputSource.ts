@@ -91,7 +91,7 @@ export abstract class LocalInputSource extends InputSource {
    * Cut PDF pages.
    * @param pageOptions
    */
-  async cutPdf(pageOptions: PageOptions) {
+  async applyPageOptions(pageOptions: PageOptions) {
     if (!(this.fileObject instanceof Buffer)) {
       throw new Error(
         `Cannot modify an input source of type ${this.inputType}.`
@@ -99,6 +99,15 @@ export abstract class LocalInputSource extends InputSource {
     }
     const processedPdf = await extractPages(this.fileObject, pageOptions);
     this.fileObject = processedPdf.file;
+  }
+
+  /**
+   * Cut PDF pages.
+   * @param pageOptions
+   * @deprecated Deprecated in favor of {@link LocalInputSource.applyPageOptions applyPageOptions()}.
+   */
+  async cutPdf(pageOptions: PageOptions) {
+    return this.applyPageOptions(pageOptions);
   }
 
   /**

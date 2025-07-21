@@ -36,7 +36,7 @@ export abstract class BaseEndpoint {
    */
   public static async cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
     if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
-      await inputDoc.cutPdf(pageOptions);
+      await inputDoc.applyPageOptions(pageOptions);
     }
   }
 
