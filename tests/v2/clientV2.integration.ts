@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import path from "node:path";
 
-import { ClientV2, InferenceParams } from "../../src";
+import { ClientV2, InferenceParameters } from "../../src";
 import { PathInput } from "../../src/input";
 import { SimpleField } from "../../src/parsing/v2/field";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
@@ -33,7 +33,7 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
 
   it("Empty, multi-page PDF – enqueue & parse must succeed", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const params: InferenceParams = { modelId };
+    const params: InferenceParameters = { modelId };
 
     const response = await client.enqueueAndGetInference(source, params);
 
@@ -50,7 +50,7 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
 
   it("Filled, single-page image – enqueue & parse must succeed", async () => {
     const source = new PathInput({ inputPath: sampleImagePath });
-    const params: InferenceParams = { modelId, rag: false };
+    const params: InferenceParameters = { modelId, rag: false };
 
     const response = await client.enqueueAndGetInference(source, params);
 
@@ -65,7 +65,7 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
 
   it("Invalid model ID – enqueue must raise 422", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const badParams: InferenceParams = { modelId: "INVALID MODEL ID" };
+    const badParams: InferenceParameters = { modelId: "INVALID MODEL ID" };
 
     try {
       await client.enqueueInference(source, badParams);

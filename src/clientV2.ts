@@ -13,7 +13,7 @@ import { MindeeHttpErrorV2 } from "./errors/mindeeError";
 /**
  * Asynchronous polling parameters.
  */
-interface OptionalPollingOptions {
+export interface PollingOptions {
   initialDelaySec?: number;
   delaySec?: number;
   maxRetries?: number;
@@ -27,21 +27,13 @@ interface OptionalPollingOptions {
   }
 }
 
-interface PollingOptions {
+interface ValidatedPollingOptions extends PollingOptions{
   initialDelaySec: number;
   delaySec: number;
   maxRetries: number;
-  initialTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  };
-  recurringTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  }
 }
 
-export interface InferenceParams {
+export interface InferenceParameters {
   /** ID of the model. **Required**. */
   modelId: string;
   /** Enable Retrieval-Augmented Generation (RAG). */
@@ -51,7 +43,7 @@ export interface InferenceParams {
   /** IDs of the webhooks that should receive the API response. */
   webhookIds?: string[];
   /** Polling options. */
-  pollingOptions?: OptionalPollingOptions;
+  pollingOptions?: PollingOptions;
   /** Set to `false` if the file must remain open after parsing. */
   closeFile?: boolean;
 }
@@ -104,7 +96,7 @@ export class ClientV2 extends BaseClient {
    */
   async enqueueInference(
     inputSource: LocalInputSource,
-    params: InferenceParams
+    params: InferenceParameters
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
@@ -144,11 +136,11 @@ export class ClientV2 extends BaseClient {
    * @param asyncParams parameters related to asynchronous parsing
    * @returns A valid `AsyncOptions`.
    */
-  #setAsyncParams(asyncParams: OptionalPollingOptions | undefined = undefined): PollingOptions {
+  #setAsyncParams(asyncParams: PollingOptions | undefined = undefined): ValidatedPollingOptions {
     const minDelaySec = 1;
     const minInitialDelay = 1;
     const minRetries = 2;
-    let newAsyncParams: OptionalPollingOptions;
+    let newAsyncParams: PollingOptions;
     if (asyncParams === undefined) {
       newAsyncParams = {
         delaySec: 1.5,
@@ -174,7 +166,7 @@ export class ClientV2 extends BaseClient {
         throw Error(`Cannot set retry to less than ${minRetries}.`);
       }
     }
-    return newAsyncParams as PollingOptions;
+    return newAsyncParams as ValidatedPollingOptions;
   }
 
   /**
@@ -190,7 +182,7 @@ export class ClientV2 extends BaseClient {
    */
   async enqueueAndGetInference(
     inputDoc: LocalInputSource,
-    params: InferenceParams
+    params: InferenceParameters
   ): Promise<InferenceResponse> {
     const validatedAsyncParams = this.#setAsyncParams(params.pollingOptions);
     const enqueueResponse: JobResponse = await this.enqueueInference(inputDoc, params);
