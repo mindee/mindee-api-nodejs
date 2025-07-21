@@ -8,7 +8,7 @@ const modelId = "MY_MODEL_ID";
 
 // Load a file from disk
 const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
-const params: mindee.InferenceParameters = {
+const params = {
   modelId: modelId,
   // If set to `true`, will enable Retrieval-Augmented Generation.
   rag: false
