@@ -13,7 +13,7 @@ describe("High level multi-page operations", () => {
       inputPath: path.join(__dirname, "../data/file_types/pdf/multipage.pdf"),
     });
     await input.init();
-    await input.cutPdf({
+    await input.applyPageOptions({
       operation: PageOptionsOperation.KeepOnly,
       pageIndexes: [0, -2, -1],
       onMinPages: 5,
