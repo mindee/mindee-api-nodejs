@@ -10,7 +10,7 @@ const modelId = "MY_MODEL_ID";
 const mindeeClient = new mindee.ClientV2({ apiKey: apiKey });
 
 // Load a file from disk
-const inputSource = mindeeClient.docFromPath(filePath);
+const inputSource = mindeeClient.sourceFromPath(filePath);
 const params = {
   modelId: modelId,
   // If set to `true`, will enable Retrieval-Augmented Generation.

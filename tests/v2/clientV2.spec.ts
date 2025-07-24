@@ -78,7 +78,7 @@ describe("ClientV2", () => {
 
     it("enqueue(path) rejects with MindeeHttpErrorV2 on 4xx", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = client.docFromPath(filePath);
+      const inputDoc = client.sourceFromPath(filePath);
 
       await assert.rejects(
         client.enqueueInference(inputDoc, { modelId: "dummy-model" }),
@@ -88,7 +88,7 @@ describe("ClientV2", () => {
 
     it("enqueueAndParse(path) rejects with MindeeHttpErrorV2 on 4xx", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = client.docFromPath(filePath);
+      const inputDoc = client.sourceFromPath(filePath);
       await assert.rejects(
         client.enqueueAndGetInference(
           inputDoc,
