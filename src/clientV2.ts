@@ -1,5 +1,5 @@
 import {
-  Base64Input, BufferInput, BytesInput,
+  Base64Input, BufferInput, BytesInput, InputSource,
   LocalInputSource, PathInput, StreamInput, UrlInput,
 } from "./input";
 import { errorHandler } from "./errors/handler";
@@ -148,13 +148,13 @@ export class ClientV2 {
 
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param inputSource file to parse.
+   * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
    * @category Asynchronous
    * @returns a `Promise` containing the job (queue) corresponding to a document.
    */
   async enqueueInference(
-    inputSource: LocalInputSource,
+    inputSource: InputSource,
     params: InferenceParameters
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
@@ -240,7 +240,7 @@ export class ClientV2 {
    * @returns a `Promise` containing parsing results.
    */
   async enqueueAndGetInference(
-    inputDoc: LocalInputSource,
+    inputDoc: InputSource,
     params: InferenceParameters
   ): Promise<InferenceResponse> {
     const validatedAsyncParams = this.#setAsyncParams(params.pollingOptions);

@@ -2,7 +2,7 @@ import { expect } from "chai";
 import path from "node:path";
 
 import { ClientV2, InferenceParameters } from "../../src";
-import { PathInput } from "../../src/input";
+import { PathInput, UrlInput } from "../../src/input";
 import { SimpleField } from "../../src/parsing/v2/field";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 
@@ -85,4 +85,17 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
       expect((err as MindeeHttpErrorV2).status).to.equal(422);
     }
   }).timeout(60000);
+
+  it("HTTPS URL – enqueue & parse must succeed", async () => {
+    const url =
+      "https://upload.wikimedia.org/wikipedia/commons/1/1d/Blank_Page.pdf";
+    const source = new UrlInput({ url });
+    const params: InferenceParameters = { modelId };
+
+    const response = await client.enqueueAndGetInference(source, params);
+
+    expect(response).to.exist;
+    expect(response.inference).to.exist;
+  }).timeout(60000);
+
 });
