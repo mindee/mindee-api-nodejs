@@ -1,6 +1,6 @@
 import {
   Base64Input, BufferInput, BytesInput, InputSource,
-  LocalInputSource, PathInput, StreamInput, UrlInput,
+  PathInput, StreamInput, UrlInput,
 } from "./input";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
