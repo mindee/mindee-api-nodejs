@@ -1,6 +1,6 @@
 {
   "name": "mindee",
-  "version": "4.29.0-rc1",
+  "version": "4.29.0-rc2",
   "description": "Mindee Client Library for Node.js",
   "main": "src/index.js",
   "bin": "bin/mindee.js",
