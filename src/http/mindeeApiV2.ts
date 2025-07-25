@@ -4,7 +4,7 @@ import { InferenceResponse, JobResponse } from "../parsing/v2";
 import FormData from "form-data";
 import { RequestOptions } from "https";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { LocalInputSource } from "../input";
+import { InputSource, LocalInputSource, UrlInput } from "../input";
 import { MindeeApiV2Error, MindeeHttpErrorV2 } from "../errors/mindeeError";
 import { logger } from "../logger";
 
@@ -17,18 +17,18 @@ export class MindeeApiV2 {
 
   /**
    * Sends a file to the inference queue.
-   * @param inputDoc Local file loaded as an input.
+   * @param inputSource Local file loaded as an input.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    * @category V2
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostInferenceEnqueue(inputDoc: LocalInputSource, params: InferenceParameters): Promise<JobResponse> {
-    await inputDoc.init();
+  async reqPostInferenceEnqueue(inputSource: InputSource, params: InferenceParameters): Promise<JobResponse> {
+    await inputSource.init();
     if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
       throw new Error("Model ID must be provided");
     }
-    const result: EndpointResponse = await this.#documentEnqueuePost(inputDoc, params);
+    const result: EndpointResponse = await this.#documentEnqueuePost(inputSource, params);
     if (result.data.error?.code !== undefined) {
       throw new MindeeHttpErrorV2(
         result.data.error.code,
@@ -86,10 +86,10 @@ export class MindeeApiV2 {
   /**
    * Sends a document to the inference queue.
    *
-   * @param inputDoc Local file loaded as an input.
+   * @param inputSource Local or remote file as an input.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    */
-  #documentEnqueuePost(inputDoc: LocalInputSource, params: InferenceParameters): Promise<EndpointResponse> {
+  #documentEnqueuePost(inputSource: InputSource, params: InferenceParameters): Promise<EndpointResponse> {
     const form = new FormData();
 
     form.append("model_id", params.modelId);
@@ -99,9 +99,13 @@ export class MindeeApiV2 {
     if (params.webhookIds && params.webhookIds.length > 0) {
       form.append("webhook_ids", params.webhookIds.join(","));
     }
-    form.append("file", inputDoc.fileObject, {
-      filename: inputDoc.filename,
-    });
+    if (inputSource instanceof LocalInputSource) {
+      form.append("file", inputSource.fileObject, {
+        filename: inputSource.filename,
+      });
+    } else {
+      form.append("url", (inputSource as UrlInput).url);
+    }
     const path = "/v2/inferences/enqueue";
     const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
     const options: RequestOptions = {

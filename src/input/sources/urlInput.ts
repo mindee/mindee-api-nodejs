@@ -8,7 +8,7 @@ import { IncomingMessage } from "http";
 import { BytesInput } from "./bytesInput";
 
 export class UrlInput extends InputSource {
-  private readonly url: string;
+  public readonly url: string;
 
   constructor({ url }: { url: string }) {
     super();

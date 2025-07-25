@@ -1,7 +1,7 @@
-import { BaseField } from "./baseField";
 import { StringDict } from "../../common";
+import { DynamicField } from "./dynamicField";
 
-export class SimpleField extends BaseField {
+export class SimpleField extends DynamicField {
   readonly value: string | number | boolean | null;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {
