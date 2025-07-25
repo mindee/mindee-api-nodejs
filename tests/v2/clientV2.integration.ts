@@ -87,8 +87,7 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
   }).timeout(60000);
 
   it("HTTPS URL – enqueue & parse must succeed", async () => {
-    const url =
-      "https://upload.wikimedia.org/wikipedia/commons/1/1d/Blank_Page.pdf";
+    const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
     const source = new UrlInput({ url });
     const params: InferenceParameters = { modelId };
 
