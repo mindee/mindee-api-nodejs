@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## v4.29.0-rc2 - 2025-07-25
+### Changes
+* :recycle: harmonize with other client libraries
+
 ## v4.29.0-rc1 - 2025-07-21
 ### Changes
 * :sparkles: add support for V2 client
