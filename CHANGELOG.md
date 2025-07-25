@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.29.0-rc3 - 2025-07-25
+### Changes
+* :sparkles: add support for URL input source
+### Fixes
+* :arrow_up: bump dependencies to cover vulnerabilities
+
+
 ## v4.29.0-rc2 - 2025-07-25
 ### Changes
 * :recycle: harmonize with other client libraries
