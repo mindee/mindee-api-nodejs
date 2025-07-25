@@ -2,12 +2,15 @@ const mindee = require("mindee");
 // for TS or modules:
 // import * as mindee from "mindee";
 
-// Init a new client
-const mindeeClient = new mindee.ClientV2({ apiKey: "MY_API_KEY" });
+const apiKey = "MY_API_KEY";
+const filePath = "/path/to/the/file.ext";
 const modelId = "MY_MODEL_ID";
 
+// Init a new client
+const mindeeClient = new mindee.ClientV2({ apiKey: apiKey });
+
 // Load a file from disk
-const inputSource = mindeeClient.docFromPath("/path/to/the/file.ext");
+const inputSource = mindeeClient.sourceFromPath(filePath);
 const params = {
   modelId: modelId,
   // If set to `true`, will enable Retrieval-Augmented Generation.
