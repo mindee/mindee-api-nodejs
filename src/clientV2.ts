@@ -124,7 +124,7 @@ export interface ClientOptions {
  * @category ClientV2
  */
 export class ClientV2 {
-  /** Key of the API. */
+  /** Mindee API handler. */
   protected mindeeApi: MindeeApiV2;
 
   /**
