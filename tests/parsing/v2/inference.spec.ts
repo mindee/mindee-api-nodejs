@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import path from "node:path";
 import { InferenceResponse } from "../../../src/parsing/v2";
-import { ClientV2, LocalResponse } from "../../../src";
+import { LocalResponse } from "../../../src";
 import { ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
 import { promises as fs } from "node:fs";
 
@@ -69,6 +69,8 @@ describe("inference", async () => {
       expect(file).to.not.be.undefined;
       expect(file.name).to.eq("complete.jpg");
       expect(file.alias ?? null).to.be.null;
+      expect(file.pageCount).to.eq(1);
+      expect(file.mimeType).to.eq("image/jpeg");
 
       const fields = inf.result.fields;
       expect(fields).to.be.not.empty;
