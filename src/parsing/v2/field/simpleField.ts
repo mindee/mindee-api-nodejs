@@ -11,8 +11,15 @@ export class SimpleField extends DynamicField {
   }
 
   toString(): string {
-    return this.value !== null && this.value !== undefined
-      ? this.value.toString()
-      : "";
+    if (this.value === null) {
+      return "";
+    }
+    if (typeof this.value === "number" && Number.isInteger(this.value)) {
+      return this.value.toString() + ".0";
+    }
+    if (typeof this.value === "boolean") {
+      return this.value ? "True" : "False";
+    }
+    return this.value.toString();
   }
 }

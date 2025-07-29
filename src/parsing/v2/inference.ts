@@ -1,17 +1,17 @@
 import { StringDict } from "../common";
-import { InferenceResultModel } from "./inferenceResultModel";
+import { InferenceModel } from "./inferenceModel";
 import { InferenceResult } from "./inferenceResult";
-import { InferenceResultFile } from "./inferenceResultFile";
+import { InferenceFile } from "./inferenceFile";
 
 export class Inference {
   /**
    * Model info for the inference.
    */
-  public model: InferenceResultModel;
+  public model: InferenceModel;
   /**
    * File info for the inference.
    */
-  public file: InferenceResultFile;
+  public file: InferenceFile;
   /**
    * Result of the inference.
    */
@@ -22,8 +22,8 @@ export class Inference {
   public id?: string;
 
   constructor(serverResponse: StringDict) {
-    this.model = new InferenceResultModel(serverResponse["model"]);
-    this.file = new InferenceResultFile(serverResponse["file"]);
+    this.model = new InferenceModel(serverResponse["model"]);
+    this.file = new InferenceFile(serverResponse["file"]);
     this.result = new InferenceResult(serverResponse["result"]);
     if ("id" in serverResponse) {
       this.id = serverResponse["id"];

@@ -34,8 +34,8 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
       } else if (fieldValue.constructor.name === "ObjectField") {
         line += fieldValue.toString();
       } else if (fieldValue.constructor.name === "SimpleField") {
-        const val = (fieldValue as SimpleField).value;
-        line += val !== null && val !== undefined ? " " + val.toString() : "";
+        const val = fieldValue.toString();
+        line += val.length > 0 ? " " + val.toString() : "";
       }
 
       lines.push(line);

@@ -1,8 +1,8 @@
 export { CommonResponse } from "./commonResponse";
 export { ErrorResponse } from "./errorResponse";
 export { Inference } from "./inference";
-export { InferenceResultFile } from "./inferenceResultFile";
-export { InferenceResultModel } from "./inferenceResultModel";
+export { InferenceFile } from "./inferenceFile";
+export { InferenceModel } from "./inferenceModel";
 export { InferenceResultOptions } from "./inferenceResultOptions";
 export { InferenceResponse } from "./inferenceResponse";
 export { InferenceResult } from "./inferenceResult";

@@ -1,7 +1,7 @@
 import { StringDict } from "../common";
 import { ErrorResponse } from "./errorResponse";
 import { JobResponseWebhook } from "./jobResponseWebhook";
-import { parseDate } from "../common/dateParser";
+import { parseDate } from "../common";
 
 /**
  * Job information for a V2 polling attempt.

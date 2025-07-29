@@ -1,6 +1,6 @@
 import { StringDict } from "../common";
 
-export class InferenceResultFile {
+export class InferenceFile {
   /**
    * Name of the file.
    */
