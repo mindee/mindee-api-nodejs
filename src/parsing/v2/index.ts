@@ -9,4 +9,4 @@ export { InferenceResult } from "./inferenceResult";
 export { Job } from "./job";
 export { JobResponse } from "./jobResponse";
 export { RawText } from "./rawText";
-export { JobResponseWebhook } from "./jobResponseWebhook";
+export { JobWebhook } from "./jobWebhook";
