@@ -154,7 +154,24 @@ describe("inference", async () => {
       const response = await loadV2Inference(standardFieldPath);
       const fields = response.inference.result.fields;
 
-      expect(fields.get("field_simple")).to.be.instanceOf(SimpleField);
+      expect(fields.get("field_simple_string")).to.be.instanceOf(SimpleField);
+      const simpleFieldStr = fields.get("field_simple_string") as SimpleField;
+      expect(simpleFieldStr.value).to.be.eq("field_simple_string-value");
+      expect(fields.get("field_simple_float")).to.be.instanceOf(SimpleField);
+      const simpleFieldFloat = fields.get("field_simple_float") as SimpleField;
+      expect(simpleFieldFloat.value).to.be.eq(1.1);
+      expect(fields.get("field_simple_int")).to.be.instanceOf(SimpleField);
+      const simpleFieldInt = fields.get("field_simple_int") as SimpleField;
+      expect(simpleFieldInt.value).to.be.eq(12.0);
+      expect(fields.get("field_simple_zero")).to.be.instanceOf(SimpleField);
+      const simpleFieldZero = fields.get("field_simple_zero") as SimpleField;
+      expect(simpleFieldZero.value).to.be.eq(0);
+      expect(fields.get("field_simple_bool")).to.be.instanceOf(SimpleField);
+      const simpleFieldBool = fields.get("field_simple_bool") as SimpleField;
+      expect(simpleFieldBool.value).to.be.eq(true);
+      expect(fields.get("field_simple_null")).to.be.instanceOf(SimpleField);
+      const simpleFieldNull = fields.get("field_simple_null") as SimpleField;
+      expect(simpleFieldNull.value).to.be.eq(null);
       expect(fields.get("field_object")).to.be.instanceOf(ObjectField);
       expect(fields.get("field_simple_list")).to.be.instanceOf(ListField);
       expect(fields.get("field_object_list")).to.be.instanceOf(ListField);
