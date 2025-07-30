@@ -2,6 +2,7 @@
 
 ## v4.29.0-rc4 - 2025-07-29
 ### Changes
+* :sparkles: add support for page count & mime type + fix syntaxes
 * :recycle: update internal field syntaxes to match other SDKs
 * :recycle: upgrade toString() display for most fields
 * :recycle: fix internals & upgrade tests
