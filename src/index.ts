@@ -9,6 +9,17 @@ export {
   Document,
   Page,
 } from "./parsing/common";
-export { InputSource, PageOptions, PageOptionsOperation, LocalResponse } from "./input";
+export {
+  InputSource,
+  Base64Input,
+  BufferInput,
+  BytesInput,
+  PathInput,
+  StreamInput,
+  UrlInput,
+  PageOptions,
+  PageOptionsOperation,
+  LocalResponse
+} from "./input";
 export * as internal from "./internal";
 export * as imageOperations from "./imageOperations";

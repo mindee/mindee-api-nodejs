@@ -2,12 +2,8 @@
 import { expect } from "chai";
 import nock from "nock";
 import path from "node:path";
-import { ClientV2 } from "../../src";
+import { ClientV2, LocalResponse, PathInput } from "../../src";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
-import {
-  LocalResponse,
-  PathInput,
-} from "../../src/input";
 import assert from "node:assert/strict";
 import { InferenceResponse } from "../../src/parsing/v2";
 /**

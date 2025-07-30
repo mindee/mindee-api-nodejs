@@ -1,8 +1,7 @@
 import { expect } from "chai";
 import path from "node:path";
 
-import { ClientV2, InferenceParameters } from "../../src";
-import { PathInput, UrlInput } from "../../src/input";
+import { ClientV2, InferenceParameters, PathInput, UrlInput } from "../../src";
 import { SimpleField } from "../../src/parsing/v2/field";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 
