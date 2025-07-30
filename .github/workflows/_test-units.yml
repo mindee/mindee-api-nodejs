@@ -34,9 +34,8 @@ jobs:
 
       - name: Set up Poppler on ubuntu
         run: |
-            sudo apt update # Seems like poppler-utils isn't being properly installed whenit updates on the apt store
-            sudo apt upgrade
-            sudo apt install -y poppler-utils
+            sudo apt-get update
+            sudo apt-get install -y poppler-utils
 
       - name: Install Node.js dependencies
         run: npm ci
