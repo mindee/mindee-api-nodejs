@@ -10,20 +10,20 @@ const modelId = "MY_MODEL_ID";
 const mindeeClient = new mindee.ClientV2({ apiKey: apiKey });
 
 // Load a file from disk
-const inputSource = mindeeClient.sourceFromPath(filePath);
-const params = {
+const inputSource = new mindee.PathInput({ inputPath: filePath });
+const inferenceParams = {
   modelId: modelId,
   // If set to `true`, will enable Retrieval-Augmented Generation.
   rag: false
 };
 
-const apiResponse = mindeeClient.enqueueAndGetInference(
+const response = mindeeClient.enqueueAndGetInference(
   inputSource,
-  params
+  inferenceParams
 );
 
 // Handle the response Promise
-apiResponse.then((resp) => {
+response.then((resp) => {
   // print a string summary
   console.log(resp.inference.toString());
 });
