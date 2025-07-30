@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.29.0-rc5 - 2025-07-30
+### Changes
+* :recycle: allow direct import of input sources
+
+
 ## v4.29.0-rc4 - 2025-07-29
 ### Changes
 * :sparkles: add support for page count & mime type + fix syntaxes
