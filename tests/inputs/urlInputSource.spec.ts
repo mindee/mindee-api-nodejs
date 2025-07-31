@@ -1,4 +1,5 @@
-import { BytesInput, LocalInputSource, UrlInput } from "../../src/input";
+import { BytesInput, UrlInput } from "../../src";
+import { LocalInputSource } from "../../src/input";
 import { expect } from "chai";
 import nock from "nock";
 
