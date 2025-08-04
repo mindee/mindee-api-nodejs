@@ -97,7 +97,7 @@ export class LocalResponse {
     try {
       return new responseClass(this.asDict());
     } catch {
-      throw new MindeeError("Invalid class specified for deserialization.");
+      throw new MindeeError("Invalid response provided.");
     }
   }
 }

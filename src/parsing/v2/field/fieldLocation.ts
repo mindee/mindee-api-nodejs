@@ -12,9 +12,9 @@ export class FieldLocation {
   readonly page: number | undefined;
 
   constructor(serverResponse: StringDict) {
-    this.polygon = new Polygon(serverResponse["polygon"]);
-    this.page = "number" in serverResponse &&
-    typeof serverResponse["page"] === "number" ? serverResponse["page"] : undefined;
+    console.log("paj???", serverResponse["page"]);
+    this.polygon = serverResponse["polygon"] as Polygon;
+    this.page = "page" in serverResponse ? serverResponse["page"] : undefined;
   }
 
   toString(): string {

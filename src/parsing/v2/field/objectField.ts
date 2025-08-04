@@ -1,8 +1,8 @@
 import { InferenceFields } from "./inferenceFields";
 import { StringDict } from "../../common";
-import { DynamicField } from "./dynamicField";
+import { BaseField } from "./baseField";
 
-export class ObjectField extends DynamicField {
+export class ObjectField extends BaseField {
   readonly fields: InferenceFields;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {

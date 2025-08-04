@@ -2,8 +2,9 @@ import { expect } from "chai";
 import path from "node:path";
 import { InferenceResponse } from "../../../src/parsing/v2";
 import { LocalResponse } from "../../../src";
-import { ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
+import { FieldConfidence, ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
 import { promises as fs } from "node:fs";
+import { Polygon } from "../../../src/geometry";
 
 const resourcesPath = path.join(__dirname, "..", "..", "data");
 const v2DataDir = path.join(resourcesPath, "v2");
@@ -12,6 +13,7 @@ const inferencePath = path.join(v2DataDir, "inference");
 const deepNestedFieldPath = path.join(inferencePath, "deep_nested_fields.json");
 const standardFieldPath = path.join(inferencePath, "standard_field_types.json");
 const standardFieldRstPath = path.join(inferencePath, "standard_field_types.rst");
+const locationFieldPath = path.join(findocPath, "complete_with_coordinates.json");
 const rawTextPath = path.join(inferencePath, "raw_texts.json");
 const blankPath = path.join(findocPath, "blank.json");
 const completePath = path.join(findocPath, "complete.json");
@@ -206,6 +208,39 @@ describe("inference", async () => {
 
       expect(response.inference).to.not.be.null;
       expect(response.inference.toString()).to.be.eq(rstString);
+    }).timeout(10000);
+  });
+
+  describe("field locations and confidence", async () => {
+    it("to be properly exposed", async () => {
+      const response = await loadV2Inference(locationFieldPath);
+
+      expect(response.inference).to.not.be.null;
+
+      const dateField = response.inference.result.fields.get("date") as SimpleField;
+      expect(dateField.locations).to.exist;
+      expect(dateField.locations![0]).to.exist;
+      expect(dateField.locations![0].page).to.equal(0);
+
+      const polygon: Polygon = dateField.locations![0].polygon!;
+
+      expect(polygon[0].length).to.equal(2);
+
+      expect(polygon[0][0]).to.equal(0.948979073166918);
+      expect(polygon[0][1]).to.equal(0.23097924535067715);
+
+      expect(polygon[1][0]).to.equal(0.85422);
+      expect(polygon[1][1]).to.equal(0.230072);
+
+      expect(polygon[2][0]).to.equal(0.8540899268330819);
+      expect(polygon[2][1]).to.equal(0.24365775464932288);
+
+      expect(polygon[3][0]).to.equal(0.948849);
+      expect(polygon[3][1]).to.equal(0.244565);
+
+      expect(dateField.confidence).to.equal(FieldConfidence.medium);
+      expect(String(dateField.confidence)).to.equal("Medium");
+
     }).timeout(10000);
   });
 });
