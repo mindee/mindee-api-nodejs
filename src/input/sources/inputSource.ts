@@ -14,9 +14,13 @@ export const INPUT_TYPE_BUFFER = "buffer";
 
 export abstract class InputSource {
   fileObject: Buffer | string = "";
+  protected initialized: boolean = false;
 
   async init() {
     throw new Error("not Implemented");
   }
-}
 
+  public isInitialized() {
+    return this.initialized;
+  }
+}

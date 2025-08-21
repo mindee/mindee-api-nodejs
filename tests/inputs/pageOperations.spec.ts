@@ -12,7 +12,6 @@ describe("High level multi-page operations", () => {
     const input = new PathInput({
       inputPath: path.join(__dirname, "../data/file_types/pdf/multipage.pdf"),
     });
-    await input.init();
     await input.applyPageOptions({
       operation: PageOptionsOperation.KeepOnly,
       pageIndexes: [0, -2, -1],

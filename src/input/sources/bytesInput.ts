@@ -22,5 +22,6 @@ export class BytesInput extends LocalInputSource {
     this.fileObject = Buffer.from(this.inputBytes);
     this.mimeType = await this.checkMimetype();
     this.inputBytes = new Uint8Array(0);
+    this.initialized = true;
   }
 }

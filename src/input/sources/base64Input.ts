@@ -23,5 +23,6 @@ export class Base64Input extends LocalInputSource {
     this.mimeType = await this.checkMimetype();
     // clear out the string
     this.inputString = "";
+    this.initialized = true;
   }
 }

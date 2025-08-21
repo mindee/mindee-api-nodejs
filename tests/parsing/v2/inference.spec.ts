@@ -1,7 +1,6 @@
 import { expect } from "chai";
 import path from "node:path";
-import { InferenceResponse } from "../../../src/parsing/v2";
-import { LocalResponse } from "../../../src";
+import { LocalResponse, InferenceResponse } from "../../../src";
 import { FieldConfidence, ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
 import { promises as fs } from "node:fs";
 import { Polygon } from "../../../src/geometry";
@@ -238,8 +237,11 @@ describe("inference", async () => {
       expect(polygon[3][0]).to.equal(0.948849);
       expect(polygon[3][1]).to.equal(0.244565);
 
-      expect(dateField.confidence).to.equal(FieldConfidence.medium);
-      expect(String(dateField.confidence)).to.equal("Medium");
+      const isCertainEnum = dateField.confidence === FieldConfidence.Medium;
+      expect(isCertainEnum).to.be.true;
+
+      const isCertainStr = dateField.confidence === "Medium";
+      expect(isCertainStr).to.be.true;
 
     }).timeout(10000);
   });

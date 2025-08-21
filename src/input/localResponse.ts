@@ -12,6 +12,7 @@ import { CommonResponse } from "../parsing/v2";
 export class LocalResponse {
   private file: Buffer;
   private readonly inputHandle: Buffer | string;
+  protected initialized = false;
 
   /**
    * Creates an instance of LocalResponse.
@@ -39,13 +40,17 @@ export class LocalResponse {
     } else {
       throw new MindeeError("Incompatible type for input.");
     }
+    this.initialized = true;
   }
 
   /**
    * Returns the dictionary representation of the file.
    * @returns A JSON-like object.
    */
-  asDict(): StringDict {
+  async asDict(): Promise<StringDict> {
+    if (!this.initialized) {
+      await this.init();
+    }
     try {
       const content = this.file.toString("utf-8");
       return JSON.parse(content);
@@ -60,6 +65,11 @@ export class LocalResponse {
    * @returns The HMAC signature of the local response.
    */
   getHmacSignature(secretKey: string | Buffer | Uint8Array): string {
+    if (!this.initialized) {
+      throw new Error(
+        "The `init()` method must be called before calling `getHmacSignature()`."
+      );
+    }
     const algorithm = "sha256";
     try {
       const hmac = crypto.createHmac(algorithm, secretKey);
@@ -76,7 +86,12 @@ export class LocalResponse {
    * @param signature - The signature to be compared with.
    * @returns True if the HMAC signature is valid.
    */
-  isValidHmacSignature(secretKey: string | Buffer | Uint8Array, signature: string): boolean {
+  public isValidHmacSignature(secretKey: string | Buffer | Uint8Array, signature: string): boolean {
+    if (!this.initialized) {
+      throw new Error(
+        "The `init()` method must be called before calling `isValidHmacSignature()`."
+      );
+    }
     return signature === this.getHmacSignature(secretKey);
   }
 
@@ -90,11 +105,11 @@ export class LocalResponse {
    * @returns An instance of `responseClass` populated with the file content.
    * @throws MindeeError If the provided class cannot be instantiated.
    */
-  public deserializeResponse<ResponseT extends CommonResponse>(
+  public async deserializeResponse<ResponseT extends CommonResponse>(
     responseClass: new (serverResponse: StringDict) => ResponseT
-  ): ResponseT {
+  ): Promise<ResponseT> {
     try {
-      return new responseClass(this.asDict());
+      return new responseClass(await this.asDict());
     } catch {
       throw new MindeeError("Invalid response provided.");
     }

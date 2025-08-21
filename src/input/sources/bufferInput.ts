@@ -17,5 +17,6 @@ export class BufferInput extends LocalInputSource {
 
   async init(): Promise<void> {
     this.mimeType = await this.checkMimetype();
+    this.initialized = true;
   }
 }
