@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.29.0-rc6 - 2025-08-22
+### Changes
+* :recycle: rework local and input sources
+
+
 ## v4.29.0-rc5 - 2025-07-30
 ### Changes
 * :recycle: allow direct import of input sources
