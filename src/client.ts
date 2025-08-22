@@ -255,10 +255,11 @@ export class Client {
      * @returns A valid prediction
      */
     try {
-      if (Object.prototype.hasOwnProperty.call(localResponse.asDict(), "job")) {
-        return new AsyncPredictResponse(productClass, localResponse.asDict());
+      const asDict = await localResponse.asDict();
+      if (Object.prototype.hasOwnProperty.call(asDict, "job")) {
+        return new AsyncPredictResponse(productClass, asDict);
       }
-      return new PredictResponse(productClass, localResponse.asDict());
+      return new PredictResponse(productClass, asDict);
     } catch {
       throw new MindeeError("No prediction found in local response.");
     }

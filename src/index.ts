@@ -1,5 +1,5 @@
 export * as product from "./product";
-export { Client, PredictOptions } from "./client";
+export { Client, PredictOptions, WorkflowOptions } from "./client";
 export { ClientV2, InferenceParameters, PollingOptions } from "./clientV2";
 export {
   AsyncPredictResponse,
@@ -9,6 +9,10 @@ export {
   Document,
   Page,
 } from "./parsing/common";
+export {
+  InferenceResponse,
+  JobResponse,
+} from "./parsing/v2";
 export {
   InputSource,
   Base64Input,

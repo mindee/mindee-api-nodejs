@@ -24,5 +24,6 @@ export class PathInput extends LocalInputSource {
     logger.debug(`Loading from: ${this.inputPath}`);
     this.fileObject = Buffer.from(await fs.readFile(this.inputPath));
     this.mimeType = await this.checkMimetype();
+    this.initialized = true;
   }
 }

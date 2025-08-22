@@ -1,7 +1,4 @@
-import {
-  Base64Input, BufferInput, BytesInput, InputSource,
-  PathInput, StreamInput, UrlInput,
-} from "./input";
+import { InputSource } from "./input";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 
@@ -9,7 +6,6 @@ import { setTimeout } from "node:timers/promises";
 import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/v2";
 import { MindeeApiV2 } from "./http/mindeeApiV2";
 import { MindeeHttpErrorV2 } from "./errors/mindeeError";
-import { Readable } from "stream";
 
 /**
  * Parameters for the internal polling loop in {@link ClientV2.enqueueAndGetInference | enqueueAndGetInference()} .
@@ -160,6 +156,9 @@ export class ClientV2 {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
     }
+    if (!inputSource.isInitialized()) {
+      await inputSource.init();
+    }
     return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, params);
   }
 
@@ -232,7 +231,7 @@ export class ClientV2 {
    * Send a document to an endpoint and poll the server until the result is sent or
    * until the maximum number of tries is reached.
    *
-   * @param inputDoc document to parse.
+   * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
    *
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
@@ -240,11 +239,11 @@ export class ClientV2 {
    * @returns a `Promise` containing parsing results.
    */
   async enqueueAndGetInference(
-    inputDoc: InputSource,
+    inputSource: InputSource,
     params: InferenceParameters
   ): Promise<InferenceResponse> {
     const validatedAsyncParams = this.#setAsyncParams(params.pollingOptions);
-    const enqueueResponse: JobResponse = await this.enqueueInference(inputDoc, params);
+    const enqueueResponse: JobResponse = await this.enqueueInference(inputSource, params);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${enqueueResponse.getRawHttp()}`);
       throw Error("Enqueueing of the document failed.");
@@ -282,73 +281,5 @@ Job status: ${pollResults.job.status}.`
       validatedAsyncParams.delaySec * retryCounter +
       " seconds"
     );
-  }
-
-  /**
-   * Load an input source from a local path.
-   * @param inputPath
-   */
-  sourceFromPath(inputPath: string): PathInput {
-    return new PathInput({
-      inputPath: inputPath,
-    });
-  }
-
-  /**
-   * Load an input source from a base64 encoded string.
-   * @param inputString input content, as a string.
-   * @param filename file name.
-   */
-  sourceFromBase64(inputString: string, filename: string): Base64Input {
-    return new Base64Input({
-      inputString: inputString,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input source from a `stream.Readable` object.
-   * @param inputStream input content, as a readable stream.
-   * @param filename file name.
-   */
-  sourceFromStream(inputStream: Readable, filename: string): StreamInput {
-    return new StreamInput({
-      inputStream: inputStream,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input source from bytes.
-   * @param inputBytes input content, as a Uint8Array or Buffer.
-   * @param filename file name.
-   */
-  sourceFromBytes(inputBytes: Uint8Array, filename: string): BytesInput {
-    return new BytesInput({
-      inputBytes: inputBytes,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input source from a Buffer.
-   * @param buffer input content, as a buffer.
-   * @param filename file name.
-   */
-  sourceFromBuffer(buffer: Buffer, filename: string): BufferInput {
-    return new BufferInput({
-      buffer: buffer,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input source from a URL.
-   * @param url input url. Must be HTTPS.
-   */
-  sourceFromUrl(url: string): UrlInput {
-    return new UrlInput({
-      url: url,
-    });
   }
 }

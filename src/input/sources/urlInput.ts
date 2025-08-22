@@ -20,6 +20,7 @@ export class UrlInput extends InputSource {
       throw new Error("URL must be HTTPS");
     }
     this.fileObject = this.url;
+    this.initialized = true;
   }
 
   private async fetchFileContent(options: {

@@ -22,6 +22,7 @@ export class StreamInput extends LocalInputSource {
   async init() {
     this.fileObject = await this.stream2buffer(this.inputStream);
     this.mimeType = await this.checkMimetype();
+    this.initialized = true;
   }
 
   async stream2buffer(stream: Readable): Promise<Buffer> {

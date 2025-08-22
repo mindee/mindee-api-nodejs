@@ -56,11 +56,7 @@ export abstract class LocalInputSource extends InputSource {
     logger.debug(`Loading file from: ${inputType}`);
   }
 
-  isPdf(): boolean {
-    return this.mimeType === "application/pdf";
-  }
-
-  async checkMimetype(): Promise<string> {
+  protected async checkMimetype(): Promise<string> {
     if (!(this.fileObject instanceof Buffer)) {
       throw new Error(
         `MIME type cannot be verified on input source of type ${this.inputType}.`
@@ -87,11 +83,23 @@ export abstract class LocalInputSource extends InputSource {
     return mimeType;
   }
 
+  isPdf(): boolean {
+    if (!this.initialized) {
+      throw new Error(
+        "The `init()` method must be called before calling `isPdf()`."
+      );
+    }
+    return this.mimeType === "application/pdf";
+  }
+
   /**
    * Cut PDF pages.
    * @param pageOptions
    */
-  async applyPageOptions(pageOptions: PageOptions) {
+  public async applyPageOptions(pageOptions: PageOptions) {
+    if (!this.initialized) {
+      await this.init();
+    }
     if (!(this.fileObject instanceof Buffer)) {
       throw new Error(
         `Cannot modify an input source of type ${this.inputType}.`
@@ -104,7 +112,7 @@ export abstract class LocalInputSource extends InputSource {
   /**
    * Cut PDF pages.
    * @param pageOptions
-   * @deprecated Deprecated in favor of {@link LocalInputSource.applyPageOptions applyPageOptions()}.
+   * @deprecated Deprecated in favor of {@link LocalInputSource.applyPageOptions}.
    */
   async cutPdf(pageOptions: PageOptions) {
     return this.applyPageOptions(pageOptions);
@@ -122,13 +130,16 @@ export abstract class LocalInputSource extends InputSource {
    *
    * @returns A Promise that resolves when the compression is complete.
    */
-  async compress(
+  public async compress(
     quality: number = 85,
     maxWidth: number | null = null,
     maxHeight: number | null = null,
     forceSourceText: boolean = false,
     disableSourceText: boolean = true
   ) {
+    if (!this.initialized) {
+      await this.init();
+    }
     let buffer: Buffer;
     if (typeof this.fileObject === "string") {
       buffer = Buffer.from(this.fileObject);
@@ -146,7 +157,10 @@ export abstract class LocalInputSource extends InputSource {
    * Returns true if the object is a PDF and has source text. False otherwise.
    * @return boolean
    */
-  async hasSourceText() {
+  public async hasSourceText() {
+    if (!this.initialized) {
+      await this.init();
+    }
     if (!this.isPdf()){
       return false;
     }

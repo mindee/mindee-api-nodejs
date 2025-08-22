@@ -2,10 +2,10 @@
 import { expect } from "chai";
 import nock from "nock";
 import path from "node:path";
-import { ClientV2, LocalResponse, PathInput } from "../../src";
+import { ClientV2, LocalResponse, PathInput, InferenceResponse } from "../../src";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 import assert from "node:assert/strict";
-import { InferenceResponse } from "../../src/parsing/v2";
+
 /**
  * Injects a minimal set of environment variables so that the SDK behaves
  * as if it had been configured by the user.
@@ -74,7 +74,7 @@ describe("ClientV2", () => {
 
     it("enqueue(path) rejects with MindeeHttpErrorV2 on 4xx", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = client.sourceFromPath(filePath);
+      const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
         client.enqueueInference(inputDoc, { modelId: "dummy-model" }),
@@ -84,7 +84,7 @@ describe("ClientV2", () => {
 
     it("enqueueAndParse(path) rejects with MindeeHttpErrorV2 on 4xx", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = client.sourceFromPath(filePath);
+      const inputDoc = new PathInput({ inputPath: filePath });
       await assert.rejects(
         client.enqueueAndGetInference(
           inputDoc,
@@ -102,11 +102,10 @@ describe("ClientV2", () => {
         "complete.json"
       );
 
-      const localResp = new LocalResponse(jsonPath);
-      await localResp.init();
-      const prediction = localResp.deserializeResponse(InferenceResponse);
+      const localResponse = new LocalResponse(jsonPath);
+      const response: InferenceResponse = await localResponse.deserializeResponse(InferenceResponse);
 
-      expect(prediction.inference.model.id).to.equal(
+      expect(response.inference.model.id).to.equal(
         "12345678-1234-1234-1234-123456789abc"
       );
     });

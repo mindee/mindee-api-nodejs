@@ -2,13 +2,13 @@ import {
   Base64Input,
   BufferInput,
   BytesInput,
+  PathInput,
+  StreamInput,
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BUFFER,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH,
   INPUT_TYPE_STREAM,
-  PathInput,
-  StreamInput,
 } from "../../src/input";
 import * as fs from "fs";
 import * as path from "path";
@@ -149,7 +149,6 @@ describe("Test different types of input", () => {
 
   it("Image Quality Compress From Input Source", async () => {
     const receiptInput = new PathInput({ inputPath: path.join(resourcesPath, "file_types/receipt.jpg") });
-    await receiptInput.init();
     await receiptInput.compress(40);
     await fs.promises.writeFile(path.join(outputPath, "compress_indirect.jpg"), receiptInput.fileObject);
 
@@ -237,10 +236,6 @@ describe("Test different types of input", () => {
     const hasSourceTextInput = new PathInput({ inputPath: hasSourceTextPath });
     const hasNoSourceTextInput = new PathInput({ inputPath: hasNoSourceTextPath });
     const hasNoSourceTextSinceItsImageInput = new PathInput({ inputPath: hasNoSourceTextSinceItsImagePath });
-
-    await hasSourceTextInput.init();
-    await hasNoSourceTextInput.init();
-    await hasNoSourceTextSinceItsImageInput.init();
 
     expect(await hasSourceTextInput.hasSourceText()).to.be.true;
     expect(await hasNoSourceTextInput.hasSourceText()).to.be.false;
