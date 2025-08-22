@@ -119,7 +119,6 @@ describe("ClientV2", () => {
           "default_sample.jpg"
         ),
       });
-
       try {
         await client.enqueueInference(input, { modelId: "dummy-model" });
         expect.fail("enqueue() should have thrown");
@@ -135,8 +134,6 @@ describe("ClientV2", () => {
       const resp = await client.getJob(
         "12345678-1234-1234-1234-123456789ABC"
       );
-
-
       const job = resp.job;
       expect(job.id).to.equal("12345678-1234-1234-1234-123456789ABC");
       expect(job.modelId).to.equal("87654321-4321-4321-4321-CBA987654321");
