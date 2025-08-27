@@ -11,6 +11,42 @@ export class ListField extends BaseField {
    */
   public items: Array<ListField | ObjectField | SimpleField>;
 
+  /**
+   * SimpleField items from the list.
+   */
+  public get simpleItems(): Array<SimpleField> {
+    const result: Array<SimpleField> = [];
+
+    for (const item of this.items) {
+      if (item instanceof SimpleField) {
+        result.push(item);
+      } else {
+        throw new MindeeApiV2Error(
+          `All items must be SimpleField, found item of type ${item.constructor.name}.`
+        );
+      }
+    }
+    return result;
+  }
+
+  /**
+   * SimpleField items from the list.
+   */
+  public get objectItems(): Array<ObjectField> {
+    const result: Array<ObjectField> = [];
+
+    for (const item of this.items) {
+      if (item instanceof ObjectField) {
+        result.push(item);
+      } else {
+        throw new MindeeApiV2Error(
+          `All items must be ObjectField, found item of type ${item.constructor.name}.`
+        );
+      }
+    }
+    return result;
+  }
+
   constructor(serverResponse: StringDict, indentLevel = 0) {
     super(serverResponse, indentLevel);
 

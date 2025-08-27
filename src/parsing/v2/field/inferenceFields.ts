@@ -15,6 +15,39 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     this._indentLevel = indentLevel;
   }
 
+  getSimpleField(fieldName: string): SimpleField {
+    const field = this.get(fieldName);
+    if (field === undefined) {
+      throw new Error(`The field '${fieldName}' was not found.`);
+    }
+    if (field.constructor.name !== "SimpleField") {
+      throw new Error(`The field '${fieldName}' is not a SimpleField.`);
+    }
+    return field as SimpleField;
+  }
+
+  getObjectField(fieldName: string): ObjectField {
+    const field = this.get(fieldName);
+    if (field === undefined) {
+      throw new Error(`The field '${fieldName}' was not found.`);
+    }
+    if (field.constructor.name !== "ObjectField") {
+      throw new Error(`The field '${fieldName}' is not an ObjectField.`);
+    }
+    return field as ObjectField;
+  }
+
+  getListField(fieldName: string): ListField {
+    const field = this.get(fieldName);
+    if (field === undefined) {
+      throw new Error(`The field '${fieldName}' was not found.`);
+    }
+    if (field.constructor.name !== "ListField") {
+      throw new Error(`The field '${fieldName}' is not a ListField.`);
+    }
+    return field as ListField;
+  }
+
   toString(indent: number = this._indentLevel): string {
     if (this.size === 0) {
       return "";
