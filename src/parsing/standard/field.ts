@@ -14,7 +14,7 @@ export class Field extends BaseField {
    * Contains the relative vertices coordinates (points) of a polygon containing
    * the field in the document.
    */
-  polygon: Polygon = [];
+  polygon: Polygon = new Polygon();
   /** The confidence score of the prediction. */
   confidence: number;
 
