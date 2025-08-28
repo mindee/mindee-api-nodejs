@@ -57,27 +57,27 @@ describe("inference", async () => {
 
     it("should load a complete inference with valid properties", async () => {
       const response = await loadV2Inference(completePath);
-      const inf = response.inference;
+      const inference = response.inference;
 
-      expect(inf).to.not.be.undefined;
-      expect(inf.id).to.eq("12345678-1234-1234-1234-123456789abc");
+      expect(inference).to.not.be.undefined;
+      expect(inference.id).to.eq("12345678-1234-1234-1234-123456789abc");
 
-      const model = inf.model;
+      const model = inference.model;
       expect(model).to.not.be.undefined;
       expect(model.id).to.eq("12345678-1234-1234-1234-123456789abc");
 
-      const file = inf.file;
+      const file = inference.file;
       expect(file).to.not.be.undefined;
       expect(file.name).to.eq("complete.jpg");
       expect(file.alias ?? null).to.be.null;
       expect(file.pageCount).to.eq(1);
       expect(file.mimeType).to.eq("image/jpeg");
 
-      const fields = inf.result.fields;
+      const fields = inference.result.fields;
       expect(fields).to.be.not.empty;
       expect(fields.size).to.be.eq(21);
 
-      const dateField = fields.get("date") as SimpleField;
+      const dateField = fields.getSimpleField("date");
       expect(dateField).to.not.be.undefined;
       expect(dateField.value).to.eq("2019-11-02");
 
@@ -85,7 +85,7 @@ describe("inference", async () => {
       const taxes = fields.get("taxes");
       expect(taxes).to.be.instanceOf(ListField);
 
-      const taxesList = taxes as ListField;
+      const taxesList = fields.getListField("taxes");
       expect(taxesList.items).to.have.lengthOf(1);
       expect(taxes?.toString()).to.be.a("string").and.not.be.empty;
 
@@ -95,24 +95,24 @@ describe("inference", async () => {
       const taxItemObj = firstTaxItem as ObjectField;
       expect(taxItemObj.fields.size).to.eq(3);
 
-      const baseField = taxItemObj.fields.get("base") as SimpleField;
+      const baseField = taxItemObj.fields.getSimpleField("base");
       expect(baseField.value).to.eq(31.5);
 
       expect(fields.has("supplier_address")).to.be.true;
       const supplierAddress = fields.get("supplier_address");
       expect(supplierAddress).to.be.instanceOf(ObjectField);
 
-      const supplierObj = supplierAddress as ObjectField;
-      const countryField = supplierObj.fields.get("country") as SimpleField;
+      const supplierObj = fields.getObjectField("supplier_address");
+      const countryField = supplierObj.fields.getSimpleField("country");
       expect(countryField.value).to.eq("USA");
       expect(countryField.toString()).to.eq("USA");
       expect(supplierAddress?.toString()).to.be.a("string").and.not.be.empty;
 
-      const customerAddr = fields.get("customer_address") as ObjectField;
-      const cityField = customerAddr.fields.get("city") as SimpleField;
+      const customerAddr = fields.getObjectField("customer_address");
+      const cityField = customerAddr.fields.getSimpleField("city");
       expect(cityField.value).to.eq("New York");
 
-      expect(inf.result.options).to.be.undefined;
+      expect(inference.result.options).to.be.undefined;
     });
   });
 
@@ -123,22 +123,22 @@ describe("inference", async () => {
       expect(fields.get("field_simple")).to.be.an.instanceof(SimpleField);
       expect(fields.get("field_object")).to.be.an.instanceof(ObjectField);
 
-      const fieldObject = fields.get("field_object") as ObjectField;
+      const fieldObject = fields.getObjectField("field_object");
       const lvl1 = fieldObject.fields;
 
       expect(lvl1.get("sub_object_list")).to.be.an.instanceof(ListField);
       expect(lvl1.get("sub_object_object")).to.be.an.instanceof(ObjectField);
 
-      const subObjectObject = lvl1.get("sub_object_object") as ObjectField;
+      const subObjectObject = lvl1.getObjectField("sub_object_object");
       const lvl2 = subObjectObject.fields;
 
       expect(
         lvl2.get("sub_object_object_sub_object_list")
       ).to.be.an.instanceof(ListField);
 
-      const nestedList = lvl2.get(
+      const nestedList = lvl2.getListField(
         "sub_object_object_sub_object_list"
-      ) as ListField;
+      );
       expect(nestedList.items).to.not.be.empty;
       expect(nestedList.items[0]).to.be.an.instanceof(ObjectField);
 
@@ -153,31 +153,86 @@ describe("inference", async () => {
   });
 
   describe("standard field types", async () => {
-    it("should recognize all field variants", async () => {
+    it("should recognize simple fields", async () => {
       const response = await loadV2Inference(standardFieldPath);
       const fields = response.inference.result.fields;
 
       expect(fields.get("field_simple_string")).to.be.instanceOf(SimpleField);
-      const simpleFieldStr = fields.get("field_simple_string") as SimpleField;
+      const simpleFieldStr = fields.getSimpleField("field_simple_string");
       expect(simpleFieldStr.value).to.be.eq("field_simple_string-value");
       expect(fields.get("field_simple_float")).to.be.instanceOf(SimpleField);
-      const simpleFieldFloat = fields.get("field_simple_float") as SimpleField;
+      const simpleFieldFloat = fields.getSimpleField("field_simple_float");
       expect(simpleFieldFloat.value).to.be.eq(1.1);
       expect(fields.get("field_simple_int")).to.be.instanceOf(SimpleField);
-      const simpleFieldInt = fields.get("field_simple_int") as SimpleField;
+      const simpleFieldInt = fields.getSimpleField("field_simple_int");
       expect(simpleFieldInt.value).to.be.eq(12.0);
       expect(fields.get("field_simple_zero")).to.be.instanceOf(SimpleField);
-      const simpleFieldZero = fields.get("field_simple_zero") as SimpleField;
+      const simpleFieldZero = fields.getSimpleField("field_simple_zero");
       expect(simpleFieldZero.value).to.be.eq(0);
       expect(fields.get("field_simple_bool")).to.be.instanceOf(SimpleField);
-      const simpleFieldBool = fields.get("field_simple_bool") as SimpleField;
+      const simpleFieldBool = fields.getSimpleField("field_simple_bool");
       expect(simpleFieldBool.value).to.be.eq(true);
       expect(fields.get("field_simple_null")).to.be.instanceOf(SimpleField);
-      const simpleFieldNull = fields.get("field_simple_null") as SimpleField;
+      const simpleFieldNull = fields.getSimpleField("field_simple_null");
       expect(simpleFieldNull.value).to.be.eq(null);
-      expect(fields.get("field_object")).to.be.instanceOf(ObjectField);
+    });
+
+    it("should recognize simple list fields", async () => {
+      const response = await loadV2Inference(standardFieldPath);
+      const fields = response.inference.result.fields;
+
       expect(fields.get("field_simple_list")).to.be.instanceOf(ListField);
+      const fieldSimpleList = fields.getListField("field_simple_list");
+      expect(fieldSimpleList.items.length).to.be.eq(2);
+      const subFields = fieldSimpleList.simpleItems;
+      expect(subFields.length).to.be.eq(2);
+
+      for (const subField of subFields) {
+        expect(subField.value).to.be.not.null;
+      }
+    });
+
+    it("should recognize object fields", async () => {
+      const response = await loadV2Inference(standardFieldPath);
+      const fields = response.inference.result.fields;
+
+      expect(fields.get("field_object")).to.be.instanceOf(ObjectField);
+      const objectField = fields.getObjectField("field_object");
+      expect(objectField.fields.size).to.be.eq(2);
+      const subFields = objectField.simpleFields;
+      expect(subFields.size).to.be.eq(2);
+
+      const subField1 = subFields.get("subfield_1");
+      expect(subField1?.value).to.be.not.null;
+
+      subFields.forEach((subField, fieldName) => {
+        expect(fieldName.startsWith("subfield_")).to.be.true;
+        expect(subField.value).to.be.not.null;
+      });
+    });
+
+    it("should recognize object list fields", async () => {
+      const response = await loadV2Inference(standardFieldPath);
+      const fields = response.inference.result.fields;
+
       expect(fields.get("field_object_list")).to.be.instanceOf(ListField);
+      const fieldObjectList = fields.getListField("field_object_list");
+      expect(fieldObjectList.items.length).to.be.eq(2);
+      const objectItems = fieldObjectList.objectItems;
+      expect(objectItems.length).to.be.eq(2);
+
+      for (const itemField of objectItems) {
+        const subFields = itemField.simpleFields;
+        expect(subFields).to.be.not.null;
+
+        const subField1 = subFields.get("subfield_1");
+        expect(subField1?.value).to.be.not.null;
+
+        subFields.forEach((subField, fieldName) => {
+          expect(fieldName.startsWith("subfield_")).to.be.true;
+          expect(subField.value).to.be.not.null;
+        });
+      }
     });
   });
 
