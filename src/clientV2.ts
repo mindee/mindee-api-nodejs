@@ -70,6 +70,9 @@ interface ValidatedPollingOptions extends PollingOptions {
  * @property alias Custom alias assigned to the uploaded document.
  * @property webhookIds List of webhook UUIDs that will receive the final API response.
  * @property pollingOptions Client-side polling configuration (see {@link PollingOptions}).
+ * @property polygon When `true`, activates location data on compatible plans.
+ * @property confidence When `true`, activates confidence scores on compatible plans.
+ * @property rawText When `true`, retrieves the text data on compatible plans.
  * @property closeFile By default the file is closed once the upload is finished, set to `false` to keep it open.
  * @category ClientV2
  * @example
@@ -81,7 +84,11 @@ interface ValidatedPollingOptions extends PollingOptions {
  *   pollingOptions: {
  *     initialDelaySec: 2,
  *     delaySec: 1.5,
- *   }
+ *   },
+ *   polygons: true,
+ *   confidence: true,
+ *   rawText: true,
+ *   closeFile: false,
  * };
  */
 export interface InferenceParameters {
@@ -90,6 +97,9 @@ export interface InferenceParameters {
   alias?: string;
   webhookIds?: string[];
   pollingOptions?: PollingOptions;
+  polygon?: boolean;
+  confidence?: boolean;
+  rawText?: boolean;
   closeFile?: boolean;
 }
 

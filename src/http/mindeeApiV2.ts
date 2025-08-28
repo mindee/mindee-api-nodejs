@@ -96,6 +96,15 @@ export class MindeeApiV2 {
     if (params.rag) {
       form.append("rag", "true");
     }
+    if (params.polygon) {
+      form.append("polygon", "true");
+    }
+    if (params.confidence) {
+      form.append("confidence", "true");
+    }
+    if (params.rawText) {
+      form.append("raw_text", "true");
+    }
     if (params.webhookIds && params.webhookIds.length > 0) {
       form.append("webhook_ids", params.webhookIds.join(","));
     }
