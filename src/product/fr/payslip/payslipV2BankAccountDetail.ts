@@ -19,7 +19,7 @@ export class PayslipV2BankAccountDetail {
    * Contains the relative vertices coordinates (points) of a polygon containing
    * the field in the document.
    */
-  polygon: Polygon = [];
+  polygon: Polygon = new Polygon();
 
   constructor({ prediction = {} }: StringDict) {
     this.bankName = prediction["bank_name"];

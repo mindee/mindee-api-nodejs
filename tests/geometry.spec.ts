@@ -4,32 +4,32 @@ import { expect } from "chai";
 describe("Geometry functions", () => {
   // 90° rectangle, overlaps polygonB
   function polygonA(): geometry.Polygon {
-    return [
+    return new geometry.Polygon(
       [0.123, 0.53],
       [0.175, 0.53],
       [0.175, 0.546],
       [0.123, 0.546],
-    ];
+    );
   }
 
   // 90° rectangle, overlaps polygonA
   function polygonB(): geometry.Polygon {
-    return [
+    return new geometry.Polygon(
       [0.124, 0.535],
       [0.19, 0.535],
       [0.19, 0.546],
       [0.124, 0.546],
-    ];
+    );
   }
 
   // not 90° rectangle, doesn't overlap any polygons
   function polygonC(): geometry.Polygon {
-    return [
+    return new geometry.Polygon(
       [0.205, 0.407],
       [0.379, 0.407],
       [0.381, 0.43],
       [0.207, 0.43],
-    ];
+    );
   }
 
   it("should get a polygon's bbox", () => {

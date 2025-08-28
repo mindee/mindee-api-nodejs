@@ -1,5 +1,5 @@
 import { BaseFieldConstructor } from "../standard";
-import { Polygon, getBoundingBox } from "../../geometry";
+import { Polygon, getBoundingBox, BoundingBox } from "../../geometry";
 import { StringDict } from "../common";
 
 export class ListFieldValue {
@@ -14,12 +14,12 @@ export class ListFieldValue {
    * Contains exactly 4 relative vertices coordinates (points) of a right
    * rectangle containing the word in the document.
    */
-  bbox: Polygon = [];
+  bbox?: BoundingBox;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing
    * the word in the document.
    */
-  polygon: Polygon = [];
+  polygon: Polygon = new Polygon();
   /** The document page on which the information was found. */
   pageId?: number;
 

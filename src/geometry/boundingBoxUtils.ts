@@ -13,12 +13,12 @@ export function getBoundingBox(polygon: Polygon): BoundingBox {
  * Given a BBox, generate the associated bounding box.
  */
 export function getBoundingBoxFromBBox(bbox: BBox): BoundingBox {
-  return [
+  return new BoundingBox(
     [bbox.xMin, bbox.yMin],
     [bbox.xMax, bbox.yMin],
     [bbox.xMax, bbox.yMax],
     [bbox.xMin, bbox.yMax],
-  ];
+  );
 }
 
 /**

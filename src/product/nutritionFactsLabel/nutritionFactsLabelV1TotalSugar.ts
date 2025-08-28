@@ -21,7 +21,7 @@ export class NutritionFactsLabelV1TotalSugar {
    * Contains the relative vertices coordinates (points) of a polygon containing
    * the field in the document.
    */
-  polygon: Polygon = [];
+  polygon: Polygon = new Polygon();
 
   constructor({ prediction = {} }: StringDict) {
     if (

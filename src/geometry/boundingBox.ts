@@ -1,4 +1,5 @@
 import { Point } from "./point";
+import { Polygon } from "./polygon";
 
 /** A simple bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */
 export class BBox {
@@ -16,4 +17,8 @@ export class BBox {
 }
 
 /** A bounding box defined by 4 points. */
-export type BoundingBox = [Point, Point, Point, Point];
+export class BoundingBox extends Polygon {
+  constructor(topLeft: Point, topRight: Point, bottomRight: Point, bottomLeft: Point) {
+    super(topLeft, topRight, bottomRight, bottomLeft);
+  }
+}
