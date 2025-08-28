@@ -67,6 +67,9 @@ interface ValidatedPollingOptions extends PollingOptions {
  *
  * @property modelId Identifier of the model that must process the document. **Required**.
  * @property rag When `true`, activates Retrieval-Augmented Generation (RAG).
+ * @property polygon When `true`, activates location data on compatible plans.
+ * @property confidence When `true`, activates confidence scores on compatible plans.
+ * @property rawText When `true`, retrieves the text data on compatible plans.
  * @property alias Custom alias assigned to the uploaded document.
  * @property webhookIds List of webhook UUIDs that will receive the final API response.
  * @property pollingOptions Client-side polling configuration (see {@link PollingOptions}).
@@ -76,17 +79,24 @@ interface ValidatedPollingOptions extends PollingOptions {
  * const params = {
  *   modelId: "YOUR_MODEL_ID",
  *   rag: true,
+ *   polygon: true,
+ *   confidence: true,
+ *   rawText: true,
  *   alias: "YOUR_ALIAS",
  *   webhookIds: ["YOUR_WEBHOOK_ID_1", "YOUR_WEBHOOK_ID_2"],
  *   pollingOptions: {
  *     initialDelaySec: 2,
  *     delaySec: 1.5,
- *   }
+ *   },
+ *   closeFile: false,
  * };
  */
 export interface InferenceParameters {
   modelId: string;
   rag?: boolean;
+  polygon?: boolean;
+  confidence?: boolean;
+  rawText?: boolean;
   alias?: string;
   webhookIds?: string[];
   pollingOptions?: PollingOptions;
