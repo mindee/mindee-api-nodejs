@@ -1,6 +1,5 @@
 import { MinMax } from "./minMax";
 import { Point } from "./point";
-import { Polygon } from "./polygon";
 
 /**
  * Get the central point (centroid) given a list of points.
@@ -38,7 +37,7 @@ export function getMinMaxY(vertices: Array<Point>): MinMax {
 /**
  * Determine if a Point is within a Polygon's Y axis.
  */
-export function isPointInPolygonY(centroid: Point, polygon: Polygon): boolean {
+export function isPointInPolygonY(centroid: Point, polygon: Array<Point>): boolean {
   const yCoords = getMinMaxY(polygon);
   return isPointInY(centroid, yCoords.min, yCoords.max);
 }
@@ -48,7 +47,7 @@ export function isPointInPolygonY(centroid: Point, polygon: Polygon): boolean {
  *
  * Can be used to order (sort) words in the same column.
  */
-export function relativeY(polygon: Polygon): number {
+export function relativeY(polygon: Array<Point>): number {
   const sum: number = polygon
     .map((point) => point[1])
     .reduce((prev, cur) => prev + cur);
@@ -77,7 +76,7 @@ export function getMinMaxX(vertices: Array<Point>): MinMax {
 /**
  * Determine if a Point is within a Polygon's X axis.
  */
-export function isPointInPolygonX(centroid: Point, polygon: Polygon): boolean {
+export function isPointInPolygonX(centroid: Point, polygon: Array<Point>): boolean {
   const xCoords = getMinMaxX(polygon);
   return isPointInX(centroid, xCoords.min, xCoords.max);
 }
@@ -87,14 +86,14 @@ export function isPointInPolygonX(centroid: Point, polygon: Polygon): boolean {
  *
  * Can be used to order (sort) words in the same line.
  */
-export function relativeX(polygon: Polygon): number {
+export function relativeX(polygon: Array<Point>): number {
   const sum: number = polygon
     .map((point) => point[0])
     .reduce((prev, cur) => prev + cur);
   return polygon.length * sum;
 }
 
-export function getMinYCoordinate(polygon: Polygon): number {
+export function getMinYCoordinate(polygon: Array<Point>): number {
   return polygon.sort((point1, point2) => {
     if (point1[1] < point2[1]) {
       return -1;
@@ -105,7 +104,7 @@ export function getMinYCoordinate(polygon: Polygon): number {
   })[0][1];
 }
 
-export function getMinXCoordinate(polygon: Polygon): number {
+export function getMinXCoordinate(polygon: Array<Point>): number {
   return polygon.sort((point1, point2) => {
     if (point1[0] < point2[0]) {
       return -1;
@@ -116,7 +115,7 @@ export function getMinXCoordinate(polygon: Polygon): number {
   })[0][0];
 }
 
-export function compareOnY(polygon1: Polygon, polygon2: Polygon): number {
+export function compareOnY(polygon1: Array<Point>, polygon2: Array<Point>): number {
   const sort: number =
     getMinYCoordinate(polygon1) - getMinYCoordinate(polygon2);
   if (sort === 0) {
@@ -125,7 +124,7 @@ export function compareOnY(polygon1: Polygon, polygon2: Polygon): number {
   return sort < 0 ? -1 : 1;
 }
 
-export function compareOnX(polygon1: Polygon, polygon2: Polygon): number {
+export function compareOnX(polygon1: Array<Point>, polygon2: Array<Point>): number {
   const sort: number =
     getMinXCoordinate(polygon1) - getMinXCoordinate(polygon2);
   if (sort === 0) {
