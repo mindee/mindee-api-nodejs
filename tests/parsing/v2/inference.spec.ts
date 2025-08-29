@@ -87,6 +87,7 @@ describe("inference", async () => {
 
       const taxesList = fields.getListField("taxes");
       expect(taxesList.items).to.have.lengthOf(1);
+      expect(taxesList.objectItems).to.have.lengthOf(1);
       expect(taxes?.toString()).to.be.a("string").and.not.be.empty;
 
       const firstTaxItem = taxesList.items[0];
@@ -160,21 +161,39 @@ describe("inference", async () => {
       expect(fields.get("field_simple_string")).to.be.instanceOf(SimpleField);
       const simpleFieldStr = fields.getSimpleField("field_simple_string");
       expect(simpleFieldStr.value).to.be.eq("field_simple_string-value");
+      expect(simpleFieldStr.stringValue).to.be.eq("field_simple_string-value");
+      expect(() => simpleFieldStr.numberValue).to.throw("Value is not a number");
+      expect(() => simpleFieldStr.booleanValue).to.throw("Value is not a boolean");
+
       expect(fields.get("field_simple_float")).to.be.instanceOf(SimpleField);
       const simpleFieldFloat = fields.getSimpleField("field_simple_float");
       expect(simpleFieldFloat.value).to.be.eq(1.1);
+      expect(simpleFieldFloat.numberValue).to.be.eq(1.1);
+      expect(() => simpleFieldFloat.stringValue).to.throw("Value is not a string");
+      expect(() => simpleFieldFloat.booleanValue).to.throw("Value is not a boolean");
+
       expect(fields.get("field_simple_int")).to.be.instanceOf(SimpleField);
       const simpleFieldInt = fields.getSimpleField("field_simple_int");
       expect(simpleFieldInt.value).to.be.eq(12.0);
+
       expect(fields.get("field_simple_zero")).to.be.instanceOf(SimpleField);
       const simpleFieldZero = fields.getSimpleField("field_simple_zero");
       expect(simpleFieldZero.value).to.be.eq(0);
+      expect(simpleFieldZero.numberValue).to.be.eq(0);
+
       expect(fields.get("field_simple_bool")).to.be.instanceOf(SimpleField);
       const simpleFieldBool = fields.getSimpleField("field_simple_bool");
       expect(simpleFieldBool.value).to.be.eq(true);
+      expect(simpleFieldBool.booleanValue).to.be.eq(true);
+      expect(() => simpleFieldBool.stringValue).to.throw("Value is not a string");
+      expect(() => simpleFieldBool.numberValue).to.throw("Value is not a number");
+
       expect(fields.get("field_simple_null")).to.be.instanceOf(SimpleField);
       const simpleFieldNull = fields.getSimpleField("field_simple_null");
       expect(simpleFieldNull.value).to.be.eq(null);
+      expect(simpleFieldNull.stringValue).to.be.eq(null);
+      expect(simpleFieldNull.numberValue).to.be.eq(null);
+      expect(simpleFieldNull.booleanValue).to.be.eq(null);
     });
 
     it("should recognize simple list fields", async () => {
