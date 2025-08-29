@@ -3,7 +3,6 @@ export { ErrorResponse } from "./errorResponse";
 export { Inference } from "./inference";
 export { InferenceFile } from "./inferenceFile";
 export { InferenceModel } from "./inferenceModel";
-export { InferenceResultOptions } from "./inferenceResultOptions";
 export { InferenceResponse } from "./inferenceResponse";
 export { InferenceResult } from "./inferenceResult";
 export { Job } from "./job";

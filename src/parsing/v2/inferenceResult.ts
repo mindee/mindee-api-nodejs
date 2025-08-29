@@ -1,5 +1,4 @@
-import { InferenceFields } from "./field/inferenceFields";
-import { InferenceResultOptions } from "./inferenceResultOptions";
+import { InferenceFields } from "./field";
 import { StringDict } from "../common";
 import { RawText } from "./rawText";
 
@@ -8,12 +7,11 @@ export class InferenceResult {
    * Fields contained in the inference.
    */
   public fields: InferenceFields;
-  public rawText?: RawText;
 
   /**
-   * Potential options retrieved alongside the inference.
+   * Raw text extracted from all pages.
    */
-  public options?: InferenceResultOptions;
+  public rawText?: RawText;
 
   constructor(serverResponse: StringDict) {
     this.fields = new InferenceFields(serverResponse["fields"]);
@@ -28,15 +26,6 @@ export class InferenceResult {
       "======",
       this.fields.toString(),
     ];
-
-    if (this.options) {
-      parts.push(
-        "Options",
-        "=======",
-        this.options.toString()
-      );
-    }
-
     return parts.join("\n");
   }
 }

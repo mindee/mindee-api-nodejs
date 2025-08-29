@@ -2,6 +2,9 @@ import { StringDict } from "../common";
 import { RawTextPage } from "./rawTextPage";
 
 export class RawText {
+  /**
+   * List of pages with their extracted text content.
+   */
   pages: Array<RawTextPage>;
 
   constructor(serverResponse: StringDict) {
