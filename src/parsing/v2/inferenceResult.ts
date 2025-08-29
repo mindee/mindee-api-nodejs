@@ -1,12 +1,14 @@
 import { InferenceFields } from "./field/inferenceFields";
 import { InferenceResultOptions } from "./inferenceResultOptions";
 import { StringDict } from "../common";
+import { RawText } from "./rawText";
 
 export class InferenceResult {
   /**
    * Fields contained in the inference.
    */
   public fields: InferenceFields;
+  public rawText?: RawText;
 
   /**
    * Potential options retrieved alongside the inference.
@@ -15,8 +17,8 @@ export class InferenceResult {
 
   constructor(serverResponse: StringDict) {
     this.fields = new InferenceFields(serverResponse["fields"]);
-    if (serverResponse["options"]) {
-      this.options = new InferenceResultOptions(serverResponse["options"]);
+    if (serverResponse["raw_text"]) {
+      this.rawText = new RawText(serverResponse["raw_text"]);
     }
   }
 

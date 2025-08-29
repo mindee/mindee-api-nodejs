@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import path from "node:path";
-import { LocalResponse, InferenceResponse } from "../../../src";
+import { LocalResponse, InferenceResponse, RawText } from "../../../src";
 import { FieldConfidence, ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
 import { promises as fs } from "node:fs";
 import { Polygon } from "../../../src/geometry";
@@ -236,22 +236,19 @@ describe("inference", async () => {
     });
   });
 
-  describe("options", async () => {
-    it("raw texts should be exposed", async () => {
+  describe("raw text", async () => {
+    it("raw text should be exposed", async () => {
       const response = await loadV2Inference(rawTextPath);
-      const opts = response.inference.result.options;
+      const rawText = response.inference.result.rawText;
 
-      expect(opts).to.not.be.undefined;
-      const rawTexts =
-        (opts as any).rawTexts ?? (opts as any).getRawTexts?.() ?? [];
+      expect(rawText).to.be.instanceOf(RawText);
 
-      expect(rawTexts).to.be.an("array").and.have.lengthOf(2);
+      const pages = rawText?.pages;
+      if (pages === undefined) throw new Error("pages is undefined");
 
-      const first = rawTexts[0];
-      expect(first.page).to.eq(0);
-      expect(first.content).to.eq(
-        "This is the raw text of the first page..."
-      );
+      expect(pages).to.be.an("array").and.have.lengthOf(2);
+      const first = pages[0];
+      expect(first.content).to.eq("This is the raw text of the first page...");
     });
   });
 
