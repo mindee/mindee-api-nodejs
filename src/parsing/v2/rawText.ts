@@ -1,21 +1,12 @@
 import { StringDict } from "../common";
-
+import { RawTextPage } from "./rawTextPage";
 
 export class RawText {
-  /**
-   * The page number the text was found on.
-   */
-  public page: number;
-  /**
-   * The text content found on the page.
-   */
-  public content: string;
+  pages: Array<RawTextPage>;
 
-  /**
-   * @param serverResponse JSON response from the server.
-   */
   constructor(serverResponse: StringDict) {
-    this.page = serverResponse["page"];
-    this.content = serverResponse["content"];
+    this.pages = serverResponse["pages"] ? serverResponse["pages"].map(
+      (rawTextPage: StringDict) => new RawTextPage(rawTextPage)
+    ) : [];
   }
 }

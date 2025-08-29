@@ -10,8 +10,10 @@ export {
   Page,
 } from "./parsing/common";
 export {
+  InferenceFile,
   InferenceResponse,
   JobResponse,
+  RawText,
 } from "./parsing/v2";
 export {
   InputSource,
