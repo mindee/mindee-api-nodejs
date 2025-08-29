@@ -112,7 +112,7 @@ describe("inference", async () => {
       const cityField = customerAddr.fields.getSimpleField("city");
       expect(cityField.value).to.eq("New York");
 
-      expect(inference.result.options).to.be.undefined;
+      expect(inference.result.rawText).to.be.undefined;
     });
   });
 

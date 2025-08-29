@@ -37,14 +37,14 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     const response = await client.enqueueAndGetInference(source, params);
 
     expect(response).to.exist;
-    const inf = response.inference;
-    expect(inf).to.exist;
+    const inference = response.inference;
+    expect(inference).to.exist;
 
-    expect(inf.file?.name).to.equal("multipage_cut-2.pdf");
-    expect(inf.model?.id).to.equal(modelId);
+    expect(inference.file?.name).to.equal("multipage_cut-2.pdf");
+    expect(inference.model?.id).to.equal(modelId);
 
-    expect(inf.result).to.exist;
-    expect(inf.result.options).to.be.undefined;
+    expect(inference.result).to.exist;
+    expect(inference.result.rawText).to.be.undefined;
   }).timeout(60000);
 
   it("Filled, single-page image – enqueue & parse must succeed", async () => {
@@ -53,11 +53,14 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
 
     const response = await client.enqueueAndGetInference(source, params);
 
-    const inf = response.inference;
-    expect(inf.file?.name).to.equal("default_sample.jpg");
-    expect(inf.model?.id).to.equal(modelId);
+    const inference = response.inference;
+    expect(inference.file?.name).to.equal("default_sample.jpg");
+    expect(inference.model?.id).to.equal(modelId);
 
-    const supplierField = inf.result.fields.get("supplier_name") as SimpleField;
+    expect(inference.result).to.exist;
+    expect(inference.result.rawText).to.be.undefined;
+
+    const supplierField = inference.result.fields.get("supplier_name") as SimpleField;
     expect(supplierField).to.be.instanceOf(SimpleField);
     expect(supplierField.value).to.equal("John Smith");
   }).timeout(60000);
