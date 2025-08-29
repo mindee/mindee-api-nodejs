@@ -1,5 +1,14 @@
 # CHANGELOG
 
+## v4.29.0 - 2025-08-29
+### Changes
+* :sparkles: add typed accessors for fields, list, object
+* :sparkles: add typed value accessors
+* :sparkles: add geometry methods to polygon class
+### Fixes
+* :bug: Polygon and BoundingBox should be a real classes
+
+
 ## v4.29.0-rc6 - 2025-08-22
 ### Changes
 * :recycle: rework local and input sources
@@ -35,7 +44,6 @@
 * :recycle: tweak CI & testing
 * :recycle: deprecate `cutPdf()` in favor of `applyPageOperations()` in `LocalInputSource`
 * :recycle: refactor some internals to account for new changes
-
 ### Fixes
 * :bug: fix bug where polling parameters could ignore validation checks on V1
 
@@ -178,7 +186,6 @@
 * :sparkles: add support for FR Payslips V1
 * :sparkles: add support for Nutrition Facts Label V1
 * :recycle: refactor internals to accommodate for new changes
-
 ### Fixes
 * :bug: fix float numbers not containing more 3 decimals in some instances
 * :bug: fix boolean field display issues
@@ -224,7 +231,6 @@
 * :sparkles: add support for HMAC validation for webhooks
 * :sparkles: add support for US Mail V2
 * :sparkles: add support for boolean fields
-
 ### Fixes
 * :recycle: fixed Locale display
 
@@ -242,7 +248,6 @@
 # v4.10.0 - 2024-04-12
 ### Changes
 * :sparkles: update Invoice to v4.5 (#264)
-
 ### Fixes
 * :bug: fix error management not following intended flow (#267)
 * :recycle: deprecated old error handler (#266)
@@ -261,14 +266,12 @@
 * :sparkles: add support for resume V1
 * :sparkles: add support for International ID v2
 * :sparkles: add support for EU Driver License V1
-
 ### Fixes
 :memo: misc doc fixes
 
 ## v4.8.2 - 2024-02-09
 ### Changes
 * :recycle: increased update time for async retries
-
 ### Fixes
 * :bug: fixed improper float parsing for Generated list objects
 * :bug: typescript should now allow the use of default values for enqueueAndParse() async options
@@ -292,7 +295,6 @@
 * :recycle: add CLI entry for generated APIs
 * :memo: add documentation entry for generated APIs
 * :recycle: expose a bit more of our internals for easier use (#247)
-
 ### Fixes
 * :memo: fix invoice v4 md doc
 
@@ -339,7 +341,6 @@
 ## v4.3.2 - 2023-11-07
 ### Changes
 * :recycle: update invoice splitter
-
 ### Fixes
 * :bug: fix display issues when products didn't have pages
 * :memo: fix doc typos
@@ -369,7 +370,6 @@
 * :sparkles: add support for FR Id Card V2
 * :sparkles: add support for OTS Cropper V1
 * :memo: update documentation
-
 ### Fixes
 * :bug: fix missing position field display issues
 * :bug: fix issues with asynchronous timeouts crashing in some instances
@@ -378,7 +378,6 @@
 ## v4.1.1 - 2023-09-04
 ### Changes
 * :recycle: tweaked timer management in async
-
 ### Fixes
 * :bug: fix ocr option not being generated as an Ocr object
 
@@ -395,7 +394,6 @@
 * :recycle: remove deprecated examples
 * :recycle: update linting rules
 * :arrow_up: update testing library
-
 ### Fixes
 * :bug: fix miscellaneous bugs related to http parsing issues
 
@@ -403,7 +401,6 @@
 ## v4.0.2 - 2023-08-24
 ### Changes
 * :recycle: updated technical documentation
-
 ### Fixes
 * :bug: fix url source document not being sent properly
 
@@ -418,7 +415,6 @@
 * :art: :boom: harmonize response types with other libraries
 * :art: :boom: change endpoint management & syntax
 * :art: :boom: move products to `product` module
-
 ### Changes
 * :sparkles: add full support for page-specific attributes
 * :sparkles: add support for FR Id Card
@@ -439,7 +435,6 @@
 ## v3.10.1 - 2023-07-04
 ### Changes
 * :arrow_up: update dependencies
-
 ### Fixes
 * :pencil2: added missing entry in changelog
 
@@ -455,8 +450,6 @@
 ### Changes
 * :sparkles: support for financial document v1.1
 * :recycle: change http status code handling for async requests
-
-
 ### Fixes
 * :bug: fix typing in PaymentDetails
 * :bug: locale value should always be set
@@ -472,7 +465,6 @@
 ## v3.7.4 - 2023-04-20
 ### Changes
 * :white_check_mark: minor improvements to tests
-
 ### Fixes
 * :bug: fix for options not being passed properly in the CLI tool
 
@@ -502,7 +494,6 @@
 * :art: harmonize bbox and bounding box terminology
 * :arrow_up: update test files, minor updates to string output
 * :label: classification fields are always strings
-
 ### Fixes
 * :bug: fix error message for missing API key, document type may be undefined
 
@@ -532,7 +523,6 @@ Usage is otherwise identical.
 ### Changes
 * :memo: updates to class documentation
 * :sparkles: Add invoice splitter support (beta)
-
 ### Fixes
 * :bug: fix for CLI command option description
 
@@ -593,7 +583,6 @@ Usage is otherwise identical.
 * :sparkles: Document (endpoints) are now versioned, providing better backward-compatible support.
 * :recycle: Pass the document class instead of the response class to the `parse` method.
 * :recycle: Some methods and parameters renamed for better clarity.
-
 ### Changes
 * :sparkles: New URL input source, `docFromUrl`.
 * :sparkles: Add support for expense receipts V4
@@ -630,14 +619,13 @@ It's **not** backwards compatible with previous versions.
 
 
 ## v1.4.0
+### Changes
+* :sparkles: Add TIFF and HEIC support
+* :white_check_mark: fully test PDF cut function
 ### Fixes
 * :bug: cut/merge pages of an encrypted PDF leads to unexpected results
 * :bug: logger not activating in some cases
 * :bug: align PDF cut/merge with other client libs
-
-### Changes
-* :sparkles: Add TIFF and HEIC support
-* :white_check_mark: fully test PDF cut function
 
 
 ## v1.3.3
