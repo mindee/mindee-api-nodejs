@@ -10,6 +10,36 @@ export class SimpleField extends BaseField {
       serverResponse["value"] !== undefined ? (serverResponse["value"] as any) : null;
   }
 
+  /**
+   * Retrieves a string field value as a string.
+   */
+  public get stringValue(): string | null {
+    if (this.value !== null && typeof this.value !== "string") {
+      throw new Error("Value is not a string");
+    }
+    return this.value as string;
+  }
+
+  /**
+   * Retrieves a number field value as a number.
+   */
+  public get numberValue(): number | null {
+    if (this.value !== null && typeof this.value !== "number") {
+      throw new Error("Value is not a number");
+    }
+    return this.value as number;
+  }
+
+  /**
+   * Retrieves a boolean field value as a boolean.
+   */
+  public get booleanValue(): boolean | null {
+    if (this.value !== null && typeof this.value !== "boolean") {
+      throw new Error("Value is not a boolean");
+    }
+    return this.value as boolean;
+  }
+
   toString(): string {
     if (this.value === null) {
       return "";
