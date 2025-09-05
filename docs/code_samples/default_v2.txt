@@ -12,8 +12,10 @@ const mindeeClient = new mindee.ClientV2({ apiKey: apiKey });
 // Set inference parameters
 const inferenceParams = {
   modelId: modelId,
-  // Enhance extraction accuracy with Retrieval-Augmented Generation.
+
   // Options: set to `true` or `false` to override defaults
+
+  // Enhance extraction accuracy with Retrieval-Augmented Generation.
   rag: undefined,
   // Extract the full text content from the document as strings.
   rawText: undefined,
