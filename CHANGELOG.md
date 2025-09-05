@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.30.0 - 2025-09-04
+### Changes
+* :sparkles: add support for inference options
+* :recycle: refactor rst display to match other SDKs
+
+
 ## v4.29.0 - 2025-08-29
 ### Changes
 * :sparkles: add typed accessors for fields, list, object
