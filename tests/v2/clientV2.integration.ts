@@ -30,9 +30,17 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     client = new ClientV2({ apiKey });
   });
 
-  it("Empty, multi-page PDF – enqueue & parse must succeed", async () => {
+  it("Empty, multi-page PDF – enqueue & get inference must succeed", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const params: InferenceParameters = { modelId };
+    const params: InferenceParameters = {
+      modelId,
+      rag: false,
+      rawText: false,
+      polygon: false,
+      confidence: false,
+      webhookIds: [],
+      alias: "ts_integration_empty_multiple"
+    };
 
     const response = await client.enqueueAndGetInference(source, params);
 
@@ -41,15 +49,29 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     expect(inference).to.exist;
 
     expect(inference.file?.name).to.equal("multipage_cut-2.pdf");
+    expect(inference.file.pageCount).to.equal(2);
     expect(inference.model?.id).to.equal(modelId);
 
     expect(inference.result).to.exist;
     expect(inference.result.rawText).to.be.undefined;
+    expect(inference.activeOptions).to.not.be.null;
+    expect(inference.activeOptions?.rag).to.be.false;
+    expect(inference.activeOptions?.rawText).to.be.false;
+    expect(inference.activeOptions?.polygon).to.be.false;
+    expect(inference.activeOptions?.confidence).to.be.false;
   }).timeout(60000);
 
-  it("Filled, single-page image – enqueue & parse must succeed", async () => {
+  it("Filled, single-page image – enqueue & get inference must succeed", async () => {
     const source = new PathInput({ inputPath: sampleImagePath });
-    const params: InferenceParameters = { modelId, rag: false };
+    const params: InferenceParameters = {
+      modelId,
+      rag: false,
+      rawText: true,
+      polygon: false,
+      confidence: false,
+      webhookIds: [],
+      alias: "ts_integration_filled_single"
+    };
 
     const response = await client.enqueueAndGetInference(source, params);
 
@@ -58,12 +80,22 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     expect(inference.model?.id).to.equal(modelId);
 
     expect(inference.result).to.exist;
-    expect(inference.result.rawText).to.be.undefined;
+    expect(inference.result.rawText).to.exist;
 
     const supplierField = inference.result.fields.get("supplier_name") as SimpleField;
     expect(supplierField).to.be.instanceOf(SimpleField);
     expect(supplierField.value).to.equal("John Smith");
-  }).timeout(60000);
+
+
+    expect(inference.result.rawText).to.exist;
+    expect(inference.activeOptions).to.not.be.null;
+    expect(inference.activeOptions?.rag).to.be.false;
+    expect(inference.activeOptions?.rawText).to.be.true;
+    expect(inference.activeOptions?.polygon).to.be.false;
+    expect(inference.activeOptions?.confidence).to.be.false;
+
+    expect(inference.result.rawText?.pages).to.have.lengthOf(1);
+  }).timeout(120000);
 
   it("Invalid model ID – enqueue must raise 422", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
@@ -88,10 +120,18 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     }
   }).timeout(60000);
 
-  it("HTTPS URL – enqueue & parse must succeed", async () => {
+  it("HTTPS URL – enqueue & get inference must succeed", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
     const source = new UrlInput({ url });
-    const params: InferenceParameters = { modelId };
+    const params: InferenceParameters = {
+      modelId,
+      rag: false,
+      rawText: false,
+      polygon: false,
+      confidence: false,
+      webhookIds: [],
+      alias: "ts_integration_url_source"
+    };
 
     const response = await client.enqueueAndGetInference(source, params);
 

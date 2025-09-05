@@ -60,7 +60,7 @@ describe("inference", async () => {
       const inference = response.inference;
 
       expect(inference).to.not.be.undefined;
-      expect(inference.id).to.eq("12345678-1234-1234-1234-123456789abc");
+      expect(inference.model.id).to.eq("12345678-1234-1234-1234-123456789abc");
 
       const model = inference.model;
       expect(model).to.not.be.undefined;

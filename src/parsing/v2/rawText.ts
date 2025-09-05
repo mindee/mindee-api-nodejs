@@ -12,4 +12,8 @@ export class RawText {
       (rawTextPage: StringDict) => new RawTextPage(rawTextPage)
     ) : [];
   }
+
+  toString(): string {
+    return this.pages.map(page => page.toString()).join("\n\n");
+  }
 }

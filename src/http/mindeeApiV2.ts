@@ -93,9 +93,19 @@ export class MindeeApiV2 {
     const form = new FormData();
 
     form.append("model_id", params.modelId);
-    if (params.rag) {
-      form.append("rag", "true");
+    if (params.rag !== undefined && params.rag !== null) {
+      form.append("rag", params.rag.toString());
     }
+    if (params.polygon !== undefined && params.polygon !== null) {
+      form.append("polygon", params.polygon.toString().toLowerCase());
+    }
+    if (params.confidence !== undefined && params.confidence !== null) {
+      form.append("confidence", params.confidence.toString().toLowerCase());
+    }
+    if (params.rawText !== undefined && params.rawText !== null) {
+      form.append("raw_text", params.rawText.toString().toLowerCase());
+    }
+
     if (params.webhookIds && params.webhookIds.length > 0) {
       form.append("webhook_ids", params.webhookIds.join(","));
     }
