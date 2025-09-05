@@ -21,6 +21,6 @@ export class InferenceResult {
   }
 
   toString(): string {
-    return "Fields\n======";
+    return `Fields\n======\n${this.fields}`;
   }
 }

@@ -26,11 +26,11 @@ export class InferenceActiveOptions {
   }
 
   toString(): string {
-    return "Active Options" +
-      "==============" +
-      `:Raw Text: ${this.rawText}` +
-      `:Polygon: ${this.polygon}` +
-      `:Confidence: ${this.confidence}` +
-      `:RAG: ${this.rag}`;
+    return "Active Options\n" +
+      "==============\n" +
+      `:Raw Text: ${this.rawText ? "True" : "False"}\n` +
+      `:Polygon: ${this.polygon ? "True" : "False"}\n` +
+      `:Confidence: ${this.confidence ? "True" : "False"}\n` +
+      `:RAG: ${this.rag ? "True" : "False"}\n`;
   }
 }

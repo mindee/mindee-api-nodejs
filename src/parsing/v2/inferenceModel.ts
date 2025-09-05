@@ -13,6 +13,6 @@ export class InferenceModel {
   toString(): string {
     return "Model\n" +
       "=====\n" +
-      `Model ID: ${this.id}`;
+      `:ID: ${this.id}\n`;
   }
 }
