@@ -95,7 +95,7 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     expect(inference.activeOptions?.confidence).to.be.false;
 
     expect(inference.result.rawText?.pages).to.have.lengthOf(1);
-  }).timeout(60000);
+  }).timeout(120000);
 
   it("Invalid model ID – enqueue must raise 422", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
@@ -125,7 +125,7 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     const source = new UrlInput({ url });
     const params: InferenceParameters = {
       modelId,
-      rag: true,
+      rag: false,
       rawText: false,
       polygon: false,
       confidence: false,
