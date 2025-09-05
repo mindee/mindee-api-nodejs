@@ -9,4 +9,10 @@ export class InferenceModel {
   constructor(serverResponse: StringDict) {
     this.id = serverResponse["id"];
   }
+
+  toString(): string {
+    return "Model\n" +
+      "=====\n" +
+      `Model ID: ${this.id}`;
+  }
 }

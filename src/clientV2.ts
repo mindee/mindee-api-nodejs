@@ -66,7 +66,11 @@ interface ValidatedPollingOptions extends PollingOptions {
  * All fields are optional except `modelId`.
  *
  * @property modelId Identifier of the model that must process the document. **Required**.
- * @property rag When `true`, activates Retrieval-Augmented Generation (RAG).
+ * @property rag Enhance extraction accuracy with Retrieval-Augmented Generation.
+ * @property rawText Extract the full text content from the document as strings, and fill the `raw_text` attribute.
+ * @property polygon Calculate bounding box polygons for all fields, and fill their `locations` attribute.
+ * @property confidence Boost the precision and accuracy of all extractions.
+ *     Calculate confidence scores for all fields and fill their `confidence` attribute.
  * @property alias Custom alias assigned to the uploaded document.
  * @property webhookIds List of webhook UUIDs that will receive the final API response.
  * @property pollingOptions Client-side polling configuration (see {@link PollingOptions}).
@@ -87,6 +91,9 @@ interface ValidatedPollingOptions extends PollingOptions {
 export interface InferenceParameters {
   modelId: string;
   rag?: boolean;
+  rawText?: boolean;
+  polygon?: boolean;
+  confidence?: boolean;
   alias?: string;
   webhookIds?: string[];
   pollingOptions?: PollingOptions;

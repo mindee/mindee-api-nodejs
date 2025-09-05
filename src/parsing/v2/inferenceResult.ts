@@ -21,11 +21,6 @@ export class InferenceResult {
   }
 
   toString(): string {
-    const parts: string[] = [
-      "Fields",
-      "======",
-      this.fields.toString(),
-    ];
-    return parts.join("\n");
+    return "Fields\n======";
   }
 }

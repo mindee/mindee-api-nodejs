@@ -6,7 +6,7 @@ end_of_line = lf
 insert_final_newline = true
 trim_trailing_whitespace = true
 
-[*.{js,json,ts,tsx}]
+[*.{js,json,ts,tsx,txt}]
 indent_style = space
 indent_size = 2
 
