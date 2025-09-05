@@ -13,13 +13,14 @@ const mindeeClient = new mindee.ClientV2({ apiKey: apiKey });
 const inferenceParams = {
   modelId: modelId,
   // Enhance extraction accuracy with Retrieval-Augmented Generation.
+  // Options: set to `true` or `false` to override defaults
   rag: undefined,
   // Extract the full text content from the document as strings.
   rawText: undefined,
-  # Calculate bounding box polygons for all fields.
+  // Calculate bounding box polygons for all fields.
   polygon: undefined,
-  # Boost the precision and accuracy of all extractions.
-  # Calculate confidence scores for all fields.
+  // Boost the precision and accuracy of all extractions.
+  // Calculate confidence scores for all fields.
   confidence: undefined,
 };
 
