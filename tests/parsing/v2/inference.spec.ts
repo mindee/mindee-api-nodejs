@@ -162,6 +162,7 @@ describe("inference", async () => {
       const simpleFieldStr = fields.getSimpleField("field_simple_string");
       expect(simpleFieldStr.value).to.be.eq("field_simple_string-value");
       expect(simpleFieldStr.stringValue).to.be.eq("field_simple_string-value");
+      expect(simpleFieldStr.confidence).to.be.eq(FieldConfidence.Certain);
       expect(() => simpleFieldStr.numberValue).to.throw("Value is not a number");
       expect(() => simpleFieldStr.booleanValue).to.throw("Value is not a boolean");
 
@@ -169,15 +170,18 @@ describe("inference", async () => {
       const simpleFieldFloat = fields.getSimpleField("field_simple_float");
       expect(simpleFieldFloat.value).to.be.eq(1.1);
       expect(simpleFieldFloat.numberValue).to.be.eq(1.1);
+      expect(simpleFieldFloat.confidence).to.be.eq(FieldConfidence.High);
       expect(() => simpleFieldFloat.stringValue).to.throw("Value is not a string");
       expect(() => simpleFieldFloat.booleanValue).to.throw("Value is not a boolean");
 
       expect(fields.get("field_simple_int")).to.be.instanceOf(SimpleField);
       const simpleFieldInt = fields.getSimpleField("field_simple_int");
+      expect(simpleFieldInt.confidence).to.be.eq(FieldConfidence.Medium);
       expect(simpleFieldInt.value).to.be.eq(12.0);
 
       expect(fields.get("field_simple_zero")).to.be.instanceOf(SimpleField);
       const simpleFieldZero = fields.getSimpleField("field_simple_zero");
+      expect(simpleFieldZero.confidence).to.be.eq(FieldConfidence.Low);
       expect(simpleFieldZero.value).to.be.eq(0);
       expect(simpleFieldZero.numberValue).to.be.eq(0);
 
@@ -223,6 +227,7 @@ describe("inference", async () => {
 
       const subField1 = subFields.get("subfield_1");
       expect(subField1?.value).to.be.not.null;
+      expect(subField1?.confidence).to.be.eq(FieldConfidence.High);
 
       subFields.forEach((subField, fieldName) => {
         expect(fieldName.startsWith("subfield_")).to.be.true;
@@ -308,11 +313,18 @@ describe("inference", async () => {
       expect(polygon[3][0]).to.equal(0.948849);
       expect(polygon[3][1]).to.equal(0.244565);
 
-      const isCertainEnum = dateField.confidence === FieldConfidence.Medium;
-      expect(isCertainEnum).to.be.true;
+      const eqConfidenceEnum = dateField.confidence === FieldConfidence.Medium;
+      expect(eqConfidenceEnum).to.be.true;
 
-      const isCertainStr = dateField.confidence === "Medium";
-      expect(isCertainStr).to.be.true;
+      expect(dateField.confidence === "Medium").to.be.true;
+      expect(FieldConfidence.toInt(dateField.confidence) === 2).to.be.true;
+
+      expect(FieldConfidence.greaterThan(dateField.confidence, FieldConfidence.Low)).to.be.true;
+      expect(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Low)).to.be.true;
+      expect(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Medium)).to.be.true;
+      expect(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Medium)).to.be.true;
+      expect(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Certain)).to.be.true;
+      expect(FieldConfidence.lessThan(dateField.confidence, FieldConfidence.Certain)).to.be.true;
 
     }).timeout(10000);
   });
