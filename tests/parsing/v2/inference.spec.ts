@@ -313,11 +313,18 @@ describe("inference", async () => {
       expect(polygon[3][0]).to.equal(0.948849);
       expect(polygon[3][1]).to.equal(0.244565);
 
-      const isCertainEnum = dateField.confidence === FieldConfidence.Medium;
-      expect(isCertainEnum).to.be.true;
+      const eqConfidenceEnum = dateField.confidence === FieldConfidence.Medium;
+      expect(eqConfidenceEnum).to.be.true;
 
-      const isCertainStr = dateField.confidence === "Medium";
-      expect(isCertainStr).to.be.true;
+      expect(dateField.confidence === "Medium").to.be.true;
+      expect(FieldConfidence.toInt(dateField.confidence) === 2).to.be.true;
+
+      expect(FieldConfidence.greaterThan(dateField.confidence, FieldConfidence.Low)).to.be.true;
+      expect(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Low)).to.be.true;
+      expect(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Medium)).to.be.true;
+      expect(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Medium)).to.be.true;
+      expect(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Certain)).to.be.true;
+      expect(FieldConfidence.lessThan(dateField.confidence, FieldConfidence.Certain)).to.be.true;
 
     }).timeout(10000);
   });
