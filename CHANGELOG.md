@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.31.0 - 2025-10-07
+### Changes
+* :sparkles: allow comparing v2 field confidence
+* :coffin: remove obsolete US Mail V2
+
+
 ## v4.30.0 - 2025-09-04
 ### Changes
 * :sparkles: add support for inference options
