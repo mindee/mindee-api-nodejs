@@ -163,9 +163,7 @@ export class ClientV2 {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
     }
-    if (!inputSource.isInitialized()) {
-      await inputSource.init();
-    }
+    await inputSource.init();
     return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, params);
   }
 

@@ -1,5 +1,6 @@
 import { LocalInputSource } from "./localInputSource";
 import { INPUT_TYPE_BASE64 } from "./inputSource";
+import { logger } from "../../logger";
 
 interface Base64InputProps {
   inputString: string;
@@ -19,6 +20,10 @@ export class Base64Input extends LocalInputSource {
   }
 
   async init() {
+    if (this.initialized) {
+      return;
+    }
+    logger.debug("Loading from base64");
     this.fileObject = Buffer.from(this.inputString, "base64");
     this.mimeType = await this.checkMimetype();
     // clear out the string

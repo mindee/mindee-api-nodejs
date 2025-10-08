@@ -1,5 +1,6 @@
 import { INPUT_TYPE_BYTES } from "./inputSource";
 import { LocalInputSource } from "./localInputSource";
+import { logger } from "../../logger";
 
 interface BytesInputProps {
   inputBytes: Uint8Array;
@@ -19,6 +20,10 @@ export class BytesInput extends LocalInputSource {
   }
 
   async init() {
+    if (this.initialized) {
+      return;
+    }
+    logger.debug("Loading from bytes");
     this.fileObject = Buffer.from(this.inputBytes);
     this.mimeType = await this.checkMimetype();
     this.inputBytes = new Uint8Array(0);

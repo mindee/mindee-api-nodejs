@@ -1,6 +1,7 @@
 import { Readable } from "stream";
 import { LocalInputSource } from "./localInputSource";
 import { INPUT_TYPE_STREAM } from "./inputSource";
+import { logger } from "../../logger";
 
 interface StreamInputProps {
   inputStream: Readable;
@@ -20,6 +21,10 @@ export class StreamInput extends LocalInputSource {
   }
 
   async init() {
+    if (this.initialized) {
+      return;
+    }
+    logger.debug("Loading from stream");
     this.fileObject = await this.stream2buffer(this.inputStream);
     this.mimeType = await this.checkMimetype();
     this.initialized = true;

@@ -1,9 +1,10 @@
 import { expect } from "chai";
 import path from "node:path";
 
-import { ClientV2, InferenceParameters, PathInput, UrlInput } from "../../src";
+import { ClientV2, InferenceParameters, PathInput, UrlInput, Base64Input } from "../../src";
 import { SimpleField } from "../../src/parsing/v2/field";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
+import * as fs from "node:fs";
 
 describe("MindeeClientV2 – integration tests (V2)", () => {
   let client: ClientV2;
@@ -22,6 +23,11 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     "financial_document",
     "default_sample.jpg",
   );
+  const sampleBase64Path = path.join(
+    dataDir,
+    "file_types",
+    "receipt.txt",
+  );
 
   beforeEach(async () => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
@@ -30,7 +36,7 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     client = new ClientV2({ apiKey });
   });
 
-  it("Empty, multi-page PDF – enqueue & get inference must succeed", async () => {
+  it("Empty, multi-page PDF – PathInput - enqueueAndGetInference must succeed", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
     const params: InferenceParameters = {
       modelId,
@@ -61,16 +67,16 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     expect(inference.activeOptions?.confidence).to.be.false;
   }).timeout(60000);
 
-  it("Filled, single-page image – enqueue & get inference must succeed", async () => {
+  it("Filled, single-page image – PathInput - enqueueAndGetInference must succeed", async () => {
     const source = new PathInput({ inputPath: sampleImagePath });
     const params: InferenceParameters = {
       modelId,
       rag: false,
       rawText: true,
-      polygon: false,
+      polygon: true,
       confidence: false,
       webhookIds: [],
-      alias: "ts_integration_filled_single"
+      alias: "ts_integration_binary_filled_single"
     };
 
     const response = await client.enqueueAndGetInference(source, params);
@@ -86,15 +92,47 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     expect(supplierField).to.be.instanceOf(SimpleField);
     expect(supplierField.value).to.equal("John Smith");
 
-
     expect(inference.result.rawText).to.exist;
     expect(inference.activeOptions).to.not.be.null;
     expect(inference.activeOptions?.rag).to.be.false;
     expect(inference.activeOptions?.rawText).to.be.true;
-    expect(inference.activeOptions?.polygon).to.be.false;
+    expect(inference.activeOptions?.polygon).to.be.true;
     expect(inference.activeOptions?.confidence).to.be.false;
 
     expect(inference.result.rawText?.pages).to.have.lengthOf(1);
+  }).timeout(120000);
+
+  it("Filled, single-page image – Base64Input - enqueueAndGetInference must succeed", async () => {
+    const data = fs.readFileSync(sampleBase64Path, "utf8");
+    const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
+    const params: InferenceParameters = {
+      modelId,
+      rag: false,
+      rawText: false,
+      polygon: false,
+      confidence: false,
+      webhookIds: [],
+      alias: "ts_integration_base64_filled_single"
+    };
+
+    const response = await client.enqueueAndGetInference(source, params);
+
+    const inference = response.inference;
+    expect(inference.file?.name).to.equal("receipt.jpg");
+    expect(inference.model?.id).to.equal(modelId);
+
+    expect(inference.result).to.exist;
+    expect(inference.result.rawText).to.be.undefined;
+
+    const supplierField = inference.result.fields.get("supplier_name") as SimpleField;
+    expect(supplierField).to.be.instanceOf(SimpleField);
+    expect(supplierField.value).to.equal("Clachan");
+
+    expect(inference.activeOptions).to.not.be.null;
+    expect(inference.activeOptions?.rag).to.be.false;
+    expect(inference.activeOptions?.rawText).to.be.false;
+    expect(inference.activeOptions?.polygon).to.be.false;
+    expect(inference.activeOptions?.confidence).to.be.false;
   }).timeout(120000);
 
   it("Invalid model ID – enqueue must raise 422", async () => {
