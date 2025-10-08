@@ -6,6 +6,7 @@ import { writeFile } from "fs/promises";
 import { request as httpsRequest } from "https";
 import { IncomingMessage } from "http";
 import { BytesInput } from "./bytesInput";
+import { logger } from "../../logger";
 
 export class UrlInput extends InputSource {
   public readonly url: string;
@@ -16,6 +17,10 @@ export class UrlInput extends InputSource {
   }
 
   async init() {
+    if (this.initialized) {
+      return;
+    }
+    logger.debug(`source URL: ${this.url}`);
     if (!this.url.toLowerCase().startsWith("https")) {
       throw new Error("URL must be HTTPS");
     }

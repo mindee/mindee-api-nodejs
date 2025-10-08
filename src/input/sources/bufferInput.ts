@@ -1,5 +1,6 @@
 import { LocalInputSource } from "./localInputSource";
 import { INPUT_TYPE_BUFFER } from "./inputSource";
+import { logger } from "../../logger";
 
 interface BufferInputProps {
   buffer: Buffer;
@@ -16,6 +17,10 @@ export class BufferInput extends LocalInputSource {
   }
 
   async init(): Promise<void> {
+    if (this.initialized) {
+      return;
+    }
+    logger.debug("Loading from buffer");
     this.mimeType = await this.checkMimetype();
     this.initialized = true;
   }
