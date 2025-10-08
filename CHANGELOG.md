@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.31.1 - 2025-10-08
+### Fixes
+* :bug: make sure input sources are only initialized once
+
+
 ## v4.31.0 - 2025-10-07
 ### Changes
 * :sparkles: allow comparing v2 field confidence
