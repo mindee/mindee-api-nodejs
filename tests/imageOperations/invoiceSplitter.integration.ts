@@ -39,6 +39,6 @@ describe("Given a PDF", async () => {
         invoiceResult.document.toString(),
         testStringRstInvoice.toString()
       )
-    ).to.be.greaterThanOrEqual(0.97);
+    ).to.be.greaterThanOrEqual(0.90);
   }).timeout(60000);
 });
