@@ -64,10 +64,6 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<ExtractedPd
   };
 }
 
-
-
-
-
 /**
  * Checks if a PDF contains source text.
  *

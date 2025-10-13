@@ -35,79 +35,89 @@ describe("Test different types of input", () => {
     // don't provide an extension to see if we can detect MIME
     // type based on contents
     const filename = "receipt";
-    const input = new Base64Input({
+    const inputSource = new Base64Input({
       inputString: b64String,
       filename: filename,
     });
-    await input.init();
-    expect(input.inputType).to.equals(INPUT_TYPE_BASE64);
-    expect(input.filename).to.equals(filename);
-    expect(input.mimeType).to.equals("image/jpeg");
+    await inputSource.init();
+    expect(inputSource.inputType).to.equals(INPUT_TYPE_BASE64);
+    expect(inputSource.filename).to.equals(filename);
+    expect(inputSource.mimeType).to.equals("image/jpeg");
+    expect(inputSource.isPdf()).to.false;
+    expect(await inputSource.getPageCount()).to.equals(1);
     // we need to insert a newline very 76 chars to match the format
     // of the input file.
-    const expectedString = input.fileObject
+    const expectedString = inputSource.fileObject
       .toString("base64")
       .replace(/(.{76})/gm, "$1\n");
     expect(expectedString).to.eqls(b64String);
   });
 
   it("should accept JPEG files from a path", async () => {
-    const input = new PathInput({
+    const inputSource = new PathInput({
       inputPath: path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg"),
     });
-    await input.init();
+    await inputSource.init();
 
     const expectedResult = await fs.promises.readFile(
       path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg")
     );
-    expect(input.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(input.filename).to.equals("default_sample.jpg");
-    expect(input.mimeType).to.equals("image/jpeg");
-    expect(input.fileObject).to.eqls(expectedResult);
+    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
+    expect(inputSource.filename).to.equals("default_sample.jpg");
+    expect(inputSource.mimeType).to.equals("image/jpeg");
+    expect(inputSource.isPdf()).to.false;
+    expect(await inputSource.getPageCount()).to.equals(1);
+    expect(inputSource.fileObject).to.eqls(expectedResult);
   });
 
   it("should accept TIFF from a path", async () => {
-    const input = new PathInput({
+    const inputSource = new PathInput({
       inputPath: path.join(__dirname, "../data/file_types/receipt.tif"),
     });
-    await input.init();
+    await inputSource.init();
     const expectedResult = await fs.promises.readFile(
       path.join(__dirname, "../data/file_types/receipt.tif")
     );
-    expect(input.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(input.filename).to.equals("receipt.tif");
-    expect(input.mimeType).to.equals("image/tiff");
-    expect(input.fileObject).to.eqls(expectedResult);
+    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
+    expect(inputSource.filename).to.equals("receipt.tif");
+    expect(inputSource.mimeType).to.equals("image/tiff");
+    expect(inputSource.isPdf()).to.false;
+    expect(await inputSource.getPageCount()).to.equals(1);
+    expect(inputSource.fileObject).to.eqls(expectedResult);
   });
 
   it("should accept HEIC from a path", async () => {
-    const input = new PathInput({
+    const inputSource = new PathInput({
       inputPath: path.join(__dirname, "../data/file_types/receipt.heic"),
     });
-    await input.init();
+    await inputSource.init();
     const expectedResult = await fs.promises.readFile(
       path.join(__dirname, "../data/file_types/receipt.heic")
     );
-    expect(input.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(input.filename).to.equals("receipt.heic");
-    expect(input.mimeType).to.equals("image/heic");
-    expect(input.fileObject).to.eqls(expectedResult);
+    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
+    expect(inputSource.filename).to.equals("receipt.heic");
+    expect(inputSource.mimeType).to.equals("image/heic");
+    expect(inputSource.isPdf()).to.false;
+    expect(await inputSource.getPageCount()).to.equals(1);
+    expect(inputSource.fileObject).to.eqls(expectedResult);
   });
 
   it("should accept read streams", async () => {
     const filePath = path.join(__dirname, "../data/products/expense_receipts/default_sample.jpg");
     const stream = fs.createReadStream(filePath);
     const filename = "default_sample.jpg";
-    const input = new StreamInput({
+    const inputSource = new StreamInput({
       inputStream: stream,
       filename: filename,
     });
-    await input.init();
-    expect(input.inputType).to.equals(INPUT_TYPE_STREAM);
-    expect(input.filename).to.equals(filename);
-    expect(input.mimeType).to.equals("image/jpeg");
+    await inputSource.init();
+    expect(inputSource.inputType).to.equals(INPUT_TYPE_STREAM);
+    expect(inputSource.filename).to.equals(filename);
+    expect(inputSource.mimeType).to.equals("image/jpeg");
+    expect(inputSource.isPdf()).to.false;
+    expect(await inputSource.getPageCount()).to.equals(1);
     const expectedResult = await fs.promises.readFile(filePath);
-    expect(input.fileObject.toString()).to.eqls(expectedResult.toString());
+    expect(inputSource.fileObject.toString()).to.eqls(expectedResult.toString());
   });
 
   it("should accept raw bytes", async () => {
@@ -116,16 +126,18 @@ describe("Test different types of input", () => {
     // don't provide an extension to see if we can detect MIME
     // type based on contents
     const filename = "receipt";
-    const input = new BytesInput({
+    const inputSource = new BytesInput({
       inputBytes: inputBytes,
       filename: filename,
     });
-    await input.init();
-    expect(input.inputType).to.equal(INPUT_TYPE_BYTES);
-    expect(input.filename).to.equal(filename);
-    expect(input.mimeType).to.equal("image/jpeg");
+    await inputSource.init();
+    expect(inputSource.inputType).to.equal(INPUT_TYPE_BYTES);
+    expect(inputSource.filename).to.equal(filename);
+    expect(inputSource.mimeType).to.equal("image/jpeg");
+    expect(inputSource.isPdf()).to.false;
+    expect(await inputSource.getPageCount()).to.equals(1);
     const expectedResult = await fs.promises.readFile(filePath);
-    expect(Buffer.compare(input.fileObject, expectedResult)).to.equal(0);
+    expect(Buffer.compare(inputSource.fileObject, expectedResult)).to.equal(0);
   });
 
   it("should accept a Buffer", async () => {
@@ -135,15 +147,16 @@ describe("Test different types of input", () => {
         path.join(__dirname, "../data/products/invoices/invoice_10p.pdf")
       )
     );
-    const input = new BufferInput({
+    const inputSource = new BufferInput({
       buffer: buffer,
       filename: filename,
     });
-    await input.init();
-    expect(input.inputType).to.equals(INPUT_TYPE_BUFFER);
-    expect(input.filename).to.equals(filename);
-    expect(input.isPdf()).to.be.true;
-    expect(input.fileObject).to.be.instanceOf(Buffer);
+    await inputSource.init();
+    expect(inputSource.inputType).to.equals(INPUT_TYPE_BUFFER);
+    expect(inputSource.filename).to.equals(filename);
+    expect(inputSource.isPdf()).to.be.true;
+    expect(await inputSource.getPageCount()).to.equals(10);
+    expect(inputSource.fileObject).to.be.instanceOf(Buffer);
   });
 
 
