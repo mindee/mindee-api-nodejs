@@ -1,7 +1,7 @@
 import { errorHandler } from "../../errors/handler";
 import { logger } from "../../logger";
 import { compressImage } from "../../imageOperations";
-import { compressPdf } from "../../pdf";
+import { compressPdf, countPages } from "../../pdf";
 import path from "path";
 import * as fileType from "file-type";
 import { PageOptions } from "../pageOptions";
@@ -83,6 +83,22 @@ export abstract class LocalInputSource extends InputSource {
     return mimeType;
   }
 
+  /**
+   * Returns the file object as a Buffer.
+   * @returns Buffer representation of the file object
+   * @protected
+   */
+  protected getBuffer(): Buffer {
+    if (typeof this.fileObject === "string") {
+      return Buffer.from(this.fileObject);
+    }
+    return this.fileObject;
+  }
+
+  /**
+   * Determines whether the current file is a PDF.
+   * @returns {boolean} Returns true if the file is a PDF; otherwise, returns false.
+   */
   isPdf(): boolean {
     if (!this.initialized) {
       throw new Error(
@@ -97,15 +113,9 @@ export abstract class LocalInputSource extends InputSource {
    * @param pageOptions
    */
   public async applyPageOptions(pageOptions: PageOptions) {
-    if (!this.initialized) {
-      await this.init();
-    }
-    if (!(this.fileObject instanceof Buffer)) {
-      throw new Error(
-        `Cannot modify an input source of type ${this.inputType}.`
-      );
-    }
-    const processedPdf = await extractPages(this.fileObject, pageOptions);
+    await this.init();
+    const buffer = this.getBuffer();
+    const processedPdf = await extractPages(buffer, pageOptions);
     this.fileObject = processedPdf.file;
   }
 
@@ -137,15 +147,8 @@ export abstract class LocalInputSource extends InputSource {
     forceSourceText: boolean = false,
     disableSourceText: boolean = true
   ) {
-    if (!this.initialized) {
-      await this.init();
-    }
-    let buffer: Buffer;
-    if (typeof this.fileObject === "string") {
-      buffer = Buffer.from(this.fileObject);
-    } else {
-      buffer = this.fileObject;
-    }
+    await this.init();
+    const buffer = this.getBuffer();
     if (this.isPdf()){
       this.fileObject = await compressPdf(buffer, quality, forceSourceText, disableSourceText);
     } else {
@@ -158,13 +161,25 @@ export abstract class LocalInputSource extends InputSource {
    * @return boolean
    */
   public async hasSourceText() {
-    if (!this.initialized) {
-      await this.init();
-    }
+    await this.init();
     if (!this.isPdf()){
       return false;
     }
-    const buffer = typeof this.fileObject === "string" ? Buffer.from(this.fileObject) : this.fileObject;
+    const buffer = this.getBuffer();
     return hasSourceText(buffer);
+  }
+
+  /**
+   * Returns the number of pages in the input source.
+   * For PDFs, returns the actual page count. For images, returns 1.
+   * @return Promise<number> The number of pages
+   */
+  public async getPageCount(): Promise<number> {
+    await this.init();
+    if (!this.isPdf()) {
+      return 1;
+    }
+    const buffer = this.getBuffer();
+    return countPages(buffer);
   }
 }

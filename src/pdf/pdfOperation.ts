@@ -84,6 +84,11 @@ export async function extractPages(
   return { file: fileBuffer, totalPagesRemoved: sumRemovedPages };
 }
 
+/**
+ * Count the number of pages in a pdf file.
+ * @param file
+ * @returns the number of pages in the file.
+ */
 export async function countPages(file: Buffer): Promise<number> {
   const currentPdf = await PDFDocument.load(file, {
     ignoreEncryption: true,
