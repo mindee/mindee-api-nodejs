@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.32.0 - 2025-10-13
+### Changes
+* :sparkles: add getting page count of a local source
+
+
 ## v4.31.1 - 2025-10-08
 ### Fixes
 * :bug: make sure input sources are only initialized once
