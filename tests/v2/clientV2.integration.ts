@@ -1,12 +1,20 @@
 import { expect } from "chai";
 import path from "node:path";
 
-import { ClientV2, InferenceParameters, PathInput, UrlInput, Base64Input } from "../../src";
+import {
+  ClientV2,
+  InferenceParameters,
+  PathInput,
+  UrlInput,
+  Base64Input,
+  InferenceResponse,
+} from "../../src";
+import { Inference } from "../../src/parsing/v2";
 import { SimpleField } from "../../src/parsing/v2/field";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 import * as fs from "node:fs";
 
-describe("MindeeClientV2 – integration tests (V2)", () => {
+describe("MindeeV2 – Client Integration Tests", () => {
   let client: ClientV2;
   let modelId: string;
 
@@ -51,8 +59,8 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
     const response = await client.enqueueAndGetInference(source, params);
 
     expect(response).to.exist;
-    const inference = response.inference;
-    expect(inference).to.exist;
+    expect(response.inference).to.be.instanceOf(Inference);
+    const inference: Inference = response.inference;
 
     expect(inference.file?.name).to.equal("multipage_cut-2.pdf");
     expect(inference.file.pageCount).to.equal(2);
@@ -81,7 +89,8 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
 
     const response = await client.enqueueAndGetInference(source, params);
 
-    const inference = response.inference;
+    expect(response.inference).to.be.instanceOf(Inference);
+    const inference: Inference = response.inference;
     expect(inference.file?.name).to.equal("default_sample.jpg");
     expect(inference.model?.id).to.equal(modelId);
 
@@ -117,7 +126,8 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
 
     const response = await client.enqueueAndGetInference(source, params);
 
-    const inference = response.inference;
+    expect(response.inference).to.be.instanceOf(Inference);
+    const inference: Inference = response.inference;
     expect(inference.file?.name).to.equal("receipt.jpg");
     expect(inference.model?.id).to.equal(modelId);
 
@@ -137,24 +147,32 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
 
   it("Invalid model ID – enqueue must raise 422", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const badParams: InferenceParameters = { modelId: "INVALID MODEL ID" };
+    const badParams: InferenceParameters = { modelId: "00000000-0000-0000-0000-000000000000" };
 
     try {
       await client.enqueueInference(source, badParams);
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       expect(err).to.be.instanceOf(MindeeHttpErrorV2);
-      expect((err as MindeeHttpErrorV2).status).to.equal(422);
+      const errObj = err as MindeeHttpErrorV2;
+      expect(errObj.status).to.equal(422);
+      expect(errObj.code.startsWith("422-")).to.be.true;
+      expect(errObj.title).to.be.a("string");
+      expect(errObj.detail).to.be.a("string");
     }
   }).timeout(60000);
 
-  it("Invalid job ID – getInference must raise 404", async () => {
+  it("Invalid job ID – getInference must raise 422", async () => {
     try {
       await client.getInference("00000000-0000-0000-0000-000000000000");
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       expect(err).to.be.instanceOf(MindeeHttpErrorV2);
-      expect((err as MindeeHttpErrorV2).status).to.equal(422);
+      const errObj = err as MindeeHttpErrorV2;
+      expect(errObj.status).to.equal(422);
+      expect(errObj.code.startsWith("422-")).to.be.true;
+      expect(errObj.title).to.be.a("string");
+      expect(errObj.detail).to.be.a("string");
     }
   }).timeout(60000);
 
@@ -171,10 +189,10 @@ describe("MindeeClientV2 – integration tests (V2)", () => {
       alias: "ts_integration_url_source"
     };
 
-    const response = await client.enqueueAndGetInference(source, params);
+    const response: InferenceResponse = await client.enqueueAndGetInference(source, params);
 
     expect(response).to.exist;
-    expect(response.inference).to.exist;
+    expect(response.inference).to.be.instanceOf(Inference);
   }).timeout(60000);
 
 });

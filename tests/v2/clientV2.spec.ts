@@ -5,6 +5,7 @@ import path from "node:path";
 import { ClientV2, LocalResponse, PathInput, InferenceResponse } from "../../src";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 import assert from "node:assert/strict";
+import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index";
 
 /**
  * Injects a minimal set of environment variables so that the SDK behaves
@@ -41,11 +42,9 @@ function setNockInterceptors(): void {
     });
 }
 
-const resourcesPath = path.join(__dirname, "..", "data");
-const fileTypesDir = path.join(resourcesPath, "file_types");
-const v2DataDir = path.join(resourcesPath, "v2");
+const fileTypesDir = path.join(RESOURCE_PATH, "file_types");
 
-describe("ClientV2", () => {
+describe("MindeeV2 - ClientV2", () => {
   before(() => {
     setNockInterceptors();
     dummyEnvvars();
@@ -96,7 +95,7 @@ describe("ClientV2", () => {
 
     it("loading an inference works on stored JSON fixtures", async () => {
       const jsonPath = path.join(
-        v2DataDir,
+        V2_RESOURCE_PATH,
         "products",
         "financial_document",
         "complete.json"
@@ -113,7 +112,7 @@ describe("ClientV2", () => {
     it("bubble-up HTTP errors with details", async () => {
       const input = new PathInput({
         inputPath: path.join(
-          v2DataDir,
+          V2_RESOURCE_PATH,
           "products",
           "financial_document",
           "default_sample.jpg"

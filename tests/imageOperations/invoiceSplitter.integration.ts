@@ -4,6 +4,7 @@ import { expect } from "chai";
 import { levenshteinRatio } from "../testingUtilities";
 import { promises as fs } from "fs";
 import path from "path";
+import { RESOURCE_PATH } from "../index";
 
 describe("Given a PDF", async () => {
   let client: mindee.Client;
@@ -14,11 +15,13 @@ describe("Given a PDF", async () => {
 
   it("should extract invoices in strict mode.", async () => {
     const sample = client.docFromPath(
-      "tests/data/products/invoice_splitter/default_sample.pdf"
+      path.join(RESOURCE_PATH, "products/invoice_splitter/default_sample.pdf")
     );
     await sample.init();
 
-    const response = await client.enqueueAndParse(mindee.product.InvoiceSplitterV1, sample);
+    const response = await client.enqueueAndParse(
+      mindee.product.InvoiceSplitterV1, sample
+    );
     const invoiceSplitterInference = response.document?.inference;
     expect(invoiceSplitterInference).to.be.an.instanceof(InvoiceSplitterV1);
     const invoices = await mindee.imageOperations.extractInvoices(
@@ -31,7 +34,7 @@ describe("Given a PDF", async () => {
 
     const invoiceResult = await client.parse(mindee.product.InvoiceV4, invoices[0].asSource());
     const testStringRstInvoice = await fs.readFile(
-      path.join("tests/data/products/invoices/response_v4/summary_full_invoice_p1.rst")
+      path.join(RESOURCE_PATH, "products/invoices/response_v4/summary_full_invoice_p1.rst")
     );
 
     expect(

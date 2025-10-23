@@ -3,12 +3,13 @@ import * as path from "path";
 import * as fs from "fs";
 import { expect } from "chai";
 import { PageOptions, PageOptionsOperation } from "../../src";
-import { PathInput } from "../../src/input";
+import { PathInput } from "../../src";
+import { RESOURCE_PATH } from "../index";
 
 describe("Test pdf operation", () => {
   it("should cut a PDF to get 2 pages", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),
     });
     await inputSource.init();
 
@@ -24,7 +25,7 @@ describe("Test pdf operation", () => {
 
   it("should cut a PDF to get only the first page", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),
     });
     await inputSource.init();
 
@@ -40,7 +41,7 @@ describe("Test pdf operation", () => {
 
   it("should not cut a PDF but throw exception because index page out of range", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage_cut-1.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-1.pdf"),
     });
     await inputSource.init();
 
@@ -59,7 +60,7 @@ describe("Test pdf operation", () => {
 
   it("should not cut a PDF but throw exception because too many indexes compare to the total of pages", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage_cut-1.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-1.pdf"),
     });
     await inputSource.init();
 
@@ -79,7 +80,7 @@ describe("Test pdf operation", () => {
 
   it("should remove pages from a PDF", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),
     });
     await inputSource.init();
 
@@ -97,7 +98,7 @@ describe("Test pdf operation", () => {
 
   it("should not remove pages from a PDF because min pages are not met", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage_cut-2.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-2.pdf"),
     });
     await inputSource.init();
 
@@ -113,7 +114,7 @@ describe("Test pdf operation", () => {
 
   it("should not cut pages from a PDF because min pages are not met", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage_cut-2.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-2.pdf"),
     });
     await inputSource.init();
 
@@ -129,7 +130,7 @@ describe("Test pdf operation", () => {
 
   it("should cut the first and the 2 last pages from a PDF", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(__dirname, "../data/file_types/pdf/multipage.pdf"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),
     });
     await inputSource.init();
 
@@ -147,7 +148,7 @@ describe("Test pdf operation", () => {
     const lengthRE = /(?<=\/FlateDecode[\s\S]\/Length )\d{1,3}/gm;
 
     const expectedResult = await fs.promises.readFile(
-      path.join(__dirname, "../data/file_types/pdf/multipage_cut-3.pdf"),
+      path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-3.pdf"),
       "utf-8"
     );
 
