@@ -1,5 +1,6 @@
 export { CommonResponse } from "./commonResponse";
-export { ErrorResponse } from "./errorResponse";
+export { ErrorResponse, ErrorDetails } from "./errorResponse";
+export { ErrorItem } from "./errorItem";
 export { Inference } from "./inference";
 export { InferenceActiveOptions } from "./inferenceActiveOptions";
 export { InferenceFile } from "./inferenceFile";

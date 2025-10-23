@@ -1,3 +1,5 @@
+import { ErrorDetails, ErrorResponse } from "../parsing/v2";
+
 /**
  * Main Mindee Error custom class.
  */
@@ -40,15 +42,18 @@ export class MindeeApiV2Error extends MindeeError {
   }
 }
 
-export class MindeeHttpErrorV2 extends MindeeError {
+export class MindeeHttpErrorV2 extends MindeeError implements ErrorDetails {
   public status: number;
   public detail: string;
-  constructor(status: number, detail: string) {
-    super(`HTTP ${status} - ${detail}`);
-    this.status = status;
-    this.detail = detail;
+  public title: string;
+  public code: string;
+
+  constructor(error: ErrorResponse) {
+    super(`HTTP ${error.status} :: ${error.title} - ${error.detail}`);
+    this.status = error.status;
+    this.detail = error.detail;
+    this.title = error.title;
+    this.code = error.code;
     this.name = "MindeeHttpErrorV2";
   }
 }
-
-

@@ -3,12 +3,13 @@ import { promises as fs } from "fs";
 import path from "path";
 import { InvoiceSplitterV1 } from "../../src/product";
 import { extractInvoices } from "../../src/imageOperations";
-import { PathInput } from "../../src/input";
+import { PathInput } from "../../src";
+import { RESOURCE_PATH } from "../index";
 
 const dataPath = {
-  complete: "tests/data/products/invoice_splitter/response_v1/complete.json",
-  fileSample: "tests/data/products/invoice_splitter/invoice_5p.pdf"
-}
+  complete: path.join(RESOURCE_PATH, "products/invoice_splitter/response_v1/complete.json"),
+  fileSample: path.join(RESOURCE_PATH, "products/invoice_splitter/invoice_5p.pdf"),
+};
 
 describe("A multi-page invoice document", () => {
   it("should be split properly.", async () => {

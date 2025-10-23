@@ -1,6 +1,6 @@
 import { ApiSettingsV2 } from "./apiSettingsV2";
 import { InferenceParameters } from "../clientV2";
-import { InferenceResponse, JobResponse } from "../parsing/v2";
+import { ErrorResponse, InferenceResponse, JobResponse } from "../parsing/v2";
 import FormData from "form-data";
 import { RequestOptions } from "https";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
@@ -29,11 +29,8 @@ export class MindeeApiV2 {
       throw new Error("Model ID must be provided");
     }
     const result: EndpointResponse = await this.#documentEnqueuePost(inputSource, params);
-    if (result.data.error?.code !== undefined) {
-      throw new MindeeHttpErrorV2(
-        result.data.error.code,
-        result.data.error.message ?? "Unknown error."
-      );
+    if (result.data.error !== undefined) {
+      throw new MindeeHttpErrorV2(result.data.error);
     }
     return this.#processResponse(result, JobResponse);
   }
@@ -56,7 +53,7 @@ export class MindeeApiV2 {
    * Throws an error if the server's response contains one.
    * @param jobId The document's ID in the queue.
    * @category Asynchronous
-   * @returns a `Promise` containing either the parsed result, or information on the queue.
+   * @returns a `Promise` containing information on the queue.
    */
   async reqGetJob(jobId: string): Promise<JobResponse> {
     const queueResponse: EndpointResponse = await this.#inferenceResultReqGet(jobId, "jobs");
@@ -67,12 +64,17 @@ export class MindeeApiV2 {
   (result: EndpointResponse, responseType: new (data: { [key: string]: any; }) => T): T {
     if (result.messageObj?.statusCode && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)) {
       if (result.data?.status !== null) {
-        throw new MindeeHttpErrorV2(
-          result.data?.status, result.data?.detail ?? "Unknown error."
-        );
+        throw new MindeeHttpErrorV2(new ErrorResponse(result.data));
       }
       throw new MindeeHttpErrorV2(
-        result.messageObj?.statusCode ?? -1, result.data?.statusMessage ?? "Unknown error."
+        new ErrorResponse(
+          {
+            status: result.messageObj?.statusCode ?? -1,
+            title: "Unknown Error",
+            detail: result.data?.detail ?? "The server returned an Unknown error.",
+            code: `${result.messageObj?.statusCode ?? -1}-000`,
+          }
+        )
       );
     }
     try {
@@ -89,7 +91,10 @@ export class MindeeApiV2 {
    * @param inputSource Local or remote file as an input.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    */
-  #documentEnqueuePost(inputSource: InputSource, params: InferenceParameters): Promise<EndpointResponse> {
+  #documentEnqueuePost(
+    inputSource: InputSource,
+    params: InferenceParameters
+  ): Promise<EndpointResponse> {
     const form = new FormData();
 
     form.append("model_id", params.modelId);

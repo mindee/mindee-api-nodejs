@@ -270,7 +270,7 @@ export class ClientV2 {
       }
       logger.debug(
         `Polling server for parsing result with queueId: ${queueId}.
-Attempt n°${retryCounter}/${validatedAsyncParams.maxRetries}.
+Attempt no. ${retryCounter} of ${validatedAsyncParams.maxRetries}.
 Job status: ${pollResults.job.status}.`
       );
       await setTimeout(validatedAsyncParams.delaySec * 1000, undefined, validatedAsyncParams.recurringTimerOptions);
@@ -279,7 +279,7 @@ Job status: ${pollResults.job.status}.`
     }
     const error: ErrorResponse | undefined = pollResults.job.error;
     if (error) {
-      throw new MindeeHttpErrorV2(error.status, error.detail);
+      throw new MindeeHttpErrorV2(error);
     }
     throw Error(
       "Asynchronous parsing request timed out after " +
