@@ -6,7 +6,7 @@ import { OptionalAsyncOptions } from "../../../src/client";
 import { FinancialDocumentV1 } from "../../../src/product";
 import { RAGExtra } from "../../../src/parsing/common/extras/ragExtra";
 import path from "path";
-import { RESOURCE_PATH } from "../../index";
+import { V1_PRODUCT_PATH } from "../../index";
 
 describe("MindeeV1 - Workflow calls", () => {
   let client: mindee.Client;
@@ -17,7 +17,7 @@ describe("MindeeV1 - Workflow calls", () => {
     client = new mindee.Client();
     workflowId = process.env["WORKFLOW_ID"] ?? "";
     sample = client.docFromPath(
-      path.join(RESOURCE_PATH, "products/financial_document/default_sample.jpg")
+      path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")
     );
     await sample.init();
   });

@@ -19,7 +19,7 @@ import { compressImage } from "../../src/imageOperations";
 import { compressPdf } from "../../src/pdf";
 import { extractTextFromPdf } from "../../src/pdf/pdfUtils";
 import { logger } from "../../src/logger";
-import { RESOURCE_PATH } from "../index";
+import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index";
 
 describe("Test different types of input", () => {
   const outputPath = path.join(RESOURCE_PATH, "output");
@@ -55,12 +55,12 @@ describe("Test different types of input", () => {
 
   it("should accept JPEG files from a path", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(RESOURCE_PATH, "products/expense_receipts/default_sample.jpg"),
+      inputPath: path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg"),
     });
     await inputSource.init();
 
     const expectedResult = await fs.promises.readFile(
-      path.join(RESOURCE_PATH, "products/expense_receipts/default_sample.jpg")
+      path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg")
     );
     expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
     expect(inputSource.filename).to.equals("default_sample.jpg");
@@ -103,7 +103,7 @@ describe("Test different types of input", () => {
   });
 
   it("should accept read streams", async () => {
-    const filePath = path.join(RESOURCE_PATH, "products/expense_receipts/default_sample.jpg");
+    const filePath = path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg");
     const stream = fs.createReadStream(filePath);
     const filename = "default_sample.jpg";
     const inputSource = new StreamInput({
@@ -121,7 +121,7 @@ describe("Test different types of input", () => {
   });
 
   it("should accept raw bytes", async () => {
-    const filePath = path.join(RESOURCE_PATH, "products/expense_receipts/default_sample.jpg");
+    const filePath = path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg");
     const inputBytes = await fs.promises.readFile(filePath);
     // don't provide an extension to see if we can detect MIME
     // type based on contents
@@ -144,7 +144,7 @@ describe("Test different types of input", () => {
     const filename = "invoice_01.pdf";
     const buffer = Buffer.from(
       await fs.promises.readFile(
-        path.join(RESOURCE_PATH, "products/invoices/invoice_10p.pdf")
+        path.join(V1_PRODUCT_PATH, "invoices/invoice_10p.pdf")
       )
     );
     const inputSource = new BufferInput({
@@ -257,7 +257,7 @@ describe("Test different types of input", () => {
 
   it("PDF Compress From InputSource", async () => {
     const pdfResizeInput = new PathInput(
-      { inputPath: path.join(RESOURCE_PATH, "products/invoice_splitter/default_sample.pdf") }
+      { inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf") }
     );
     await pdfResizeInput.init();
 
@@ -267,10 +267,7 @@ describe("Test different types of input", () => {
     await fs.promises.writeFile(path.join(outputPath, "resize_indirect.pdf"), compressedPdf);
 
     const initialFileStats = await fs.promises.stat(
-      path.join(
-        RESOURCE_PATH,
-        "products/invoice_splitter/default_sample.pdf"
-      )
+      path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
     );
     const renderedFileStats = await fs.promises.stat(
       path.join(outputPath, "resize_indirect.pdf")
@@ -280,7 +277,7 @@ describe("Test different types of input", () => {
 
   it("PDF Compress From Compressor", async () => {
     const pdfResizeInput = new PathInput(
-      { inputPath: path.join(RESOURCE_PATH, "products/invoice_splitter/default_sample.pdf") }
+      { inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf") }
     );
     await pdfResizeInput.init();
 
@@ -297,7 +294,7 @@ describe("Test different types of input", () => {
     }
 
     const initialFileStats = await fs.promises.stat(
-      path.join(RESOURCE_PATH, "products/invoice_splitter/default_sample.pdf")
+      path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
     );
     const renderedFileStats = await Promise.all(
       fileNames.map(fileName => fs.promises.stat(path.join(outputPath, fileName)))

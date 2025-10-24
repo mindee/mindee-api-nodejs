@@ -3,12 +3,12 @@ import * as path from "path";
 import { expect } from "chai";
 import { PredictResponse } from "../../../src";
 import { CustomV1, InvoiceV4, ReceiptV5 } from "../../../src/product";
-import { RESOURCE_PATH } from "../../index";
+import { V1_PRODUCT_PATH } from "../../index";
 
 const dataPath = {
-  receiptV5: path.join(RESOURCE_PATH, "products/expense_receipts/response_v5/complete.json"),
-  invoiceV4: path.join(RESOURCE_PATH, "products/invoices/response_v4/complete.json"),
-  customV1: path.join(RESOURCE_PATH, "products/custom/response_v1/complete.json"),
+  receiptV5: path.join(V1_PRODUCT_PATH, "expense_receipts/response_v5/complete.json"),
+  invoiceV4: path.join(V1_PRODUCT_PATH, "invoices/response_v4/complete.json"),
+  customV1: path.join(V1_PRODUCT_PATH, "custom/response_v1/complete.json"),
 };
 
 describe("MindeeV1 - Synchronous API predict response", () => {

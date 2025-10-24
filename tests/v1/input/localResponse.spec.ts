@@ -1,23 +1,22 @@
-import { LocalResponse } from "../../src";
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { Client, PredictResponse, AsyncPredictResponse, InferenceResponse } from "../../src";
-import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "../../src/product";
+import { Client, PredictResponse, AsyncPredictResponse, LocalResponse } from "../../../src";
+import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "../../../src/product";
 import path from "path";
-import { RESOURCE_PATH } from "../index";
+import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index";
 
 const signature: string = "5ed1673e34421217a5dbfcad905ee62261a3dd66c442f3edd19302072bbf70d0";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
-const filePath: string = path.join(RESOURCE_PATH, "/async/get_completed_empty.json");
+const filePath: string = path.join(V1_RESOURCE_PATH, "async/get_completed_empty.json");
 const multiReceiptsDetectorPath: string = path.join(
-  RESOURCE_PATH, "products/multi_receipts_detector/response_v1/complete.json"
+  V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/complete.json"
 );
-const failedPath: string = path.join(RESOURCE_PATH, "async/get_failed_job_error.json");
+const failedPath: string = path.join(V1_RESOURCE_PATH, "async/get_failed_job_error.json");
 const internationalIdPath: string = path.join(
-  RESOURCE_PATH, "products/international_id/response_v2/complete.json"
+  V1_PRODUCT_PATH, "international_id/response_v2/complete.json"
 );
 
-describe("A valid local response", () => {
+describe("MindeeV1 - Load Local Response", () => {
   it("should load a string properly.", async () => {
     const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
@@ -75,15 +74,5 @@ describe("A valid local response", () => {
     expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
 
     expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
-  });
-
-  it("should deserialize a prediction.", async () => {
-    const filePath  = "tests/data/v2/inference/standard_field_types.json";
-    const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
-    const localResponse = new LocalResponse(fileObj);
-    const response = await localResponse.deserializeResponse(InferenceResponse);
-    expect(response).to.be.an.instanceof(InferenceResponse);
-
-    expect(JSON.stringify(response.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
   });
 });

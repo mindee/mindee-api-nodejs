@@ -2,21 +2,30 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../../src";
+import { V1_PRODUCT_PATH } from "../../../index";
 
 const dataPath = {
-  receiptComplete:
-    "tests/data/products/financial_document/response_v1/complete_receipt.json",
-  invoiceComplete:
-    "tests/data/products/financial_document/response_v1/complete_invoice.json",
-  empty: "tests/data/products/financial_document/response_v1/empty.json",
-  invoiceDocString:
-    "tests/data/products/financial_document/response_v1/summary_full_invoice.rst",
-  receiptDocString:
-    "tests/data/products/financial_document/response_v1/summary_full_receipt.rst",
-  page0InvoiceString:
-    "tests/data/products/financial_document/response_v1/summary_page0_invoice.rst",
-  page0ReceiptString:
-    "tests/data/products/financial_document/response_v1/summary_page0_receipt.rst",
+  receiptComplete: path.join(
+    V1_PRODUCT_PATH, "financial_document/response_v1/complete_receipt.json"
+  ),
+  invoiceComplete: path.join(
+    V1_PRODUCT_PATH, "financial_document/response_v1/complete_invoice.json"
+  ),
+  empty: path.join(
+    V1_PRODUCT_PATH, "financial_document/response_v1/empty.json"
+  ),
+  invoiceDocString: path.join(
+    V1_PRODUCT_PATH, "financial_document/response_v1/summary_full_invoice.rst"
+  ),
+  receiptDocString: path.join(
+    V1_PRODUCT_PATH, "financial_document/response_v1/summary_full_receipt.rst"
+  ),
+  page0InvoiceString: path.join(
+    V1_PRODUCT_PATH, "financial_document/response_v1/summary_page0_invoice.rst"
+  ),
+  page0ReceiptString: path.join(
+    V1_PRODUCT_PATH, "financial_document/response_v1/summary_page0_receipt.rst"
+  ),
 };
 
 describe("Financial Document V1 Object initialization", async () => {

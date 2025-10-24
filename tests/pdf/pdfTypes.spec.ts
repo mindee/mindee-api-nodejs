@@ -5,7 +5,7 @@ import * as pdf from "../../src/pdf";
 import { PageOptions } from "../../src/input";
 import { PageOptionsOperation } from "../../src";
 import * as fs from "node:fs";
-import {RESOURCE_PATH} from "../index";
+import { RESOURCE_PATH } from "../index";
 
 describe("Test pdf lib", () => {
   let client: mindee.Client;

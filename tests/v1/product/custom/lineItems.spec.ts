@@ -2,14 +2,16 @@ import { promises as fs } from "fs";
 import { expect } from "chai";
 import { CustomV1 } from "../../../../src/product";
 import { CustomLine } from "../../../../src/parsing/custom";
+import { V1_PRODUCT_PATH } from "../../../index";
+import path from "node:path";
 
 const dataPath = {
   singleTable01:
-    "tests/data/products/custom/response_v1/line_items/single_table_01.json",
+    path.join(V1_PRODUCT_PATH, "custom/response_v1/line_items/single_table_01.json"),
 };
 const dataPathV2 = {
   singleTable01:
-    "tests/data/products/custom/response_v2/line_items/single_table_01.json",
+    path.join(V1_PRODUCT_PATH, "custom/response_v2/line_items/single_table_01.json"),
 };
 
 describe("Custom Document Line Items", async () => {

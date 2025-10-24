@@ -1,15 +1,16 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { ReceiptV5 } from "../../../../src/product";
-import { Document } from "../../../../src";
+import { ReceiptV5 } from "../../../src/product";
+import { Document } from "../../../src";
+import { RESOURCE_PATH } from "../../index";
 
 const dataPath = {
-  complete: "tests/data/extras/ocr/complete.json",
-  docString: "tests/data/extras/ocr/ocr.txt"
+  complete: path.join(RESOURCE_PATH, "v1/extras/ocr/complete.json"),
+  docString: path.join(RESOURCE_PATH, "v1/extras/ocr/ocr.txt"),
 };
 
-describe("When getting all lines in an OCR", () => {
+describe("MindeeV1 - When getting all lines in an OCR", () => {
   it("should not affect word order", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());

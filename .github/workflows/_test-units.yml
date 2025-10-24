@@ -10,7 +10,6 @@ jobs:
   run-tests:
     name: Run Tests
     strategy:
-      max-parallel: 4
       matrix:
         os:
           - "ubuntu-latest"

@@ -10,7 +10,7 @@ import { RESOURCE_PATH } from "../../index";
 describe("MindeeV1 - Asynchronous API predict response", () => {
   it("should parse a successful enqueue", async () => {
     const jsonData = await fs.readFile(
-      path.join(RESOURCE_PATH, "async/post_success.json")
+      path.join(RESOURCE_PATH, "v1/async/post_success.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
@@ -26,7 +26,7 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
 
   it("should parse a failed enqueue", async () => {
     const jsonData = await fs.readFile(
-      path.join(RESOURCE_PATH, "async/post_fail_forbidden.json")
+      path.join(RESOURCE_PATH, "v1/async/post_fail_forbidden.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
@@ -36,7 +36,7 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
 
   it("should parse a failed job", async () => {
     const jsonData = await fs.readFile(
-      path.join(RESOURCE_PATH, "async/get_failed_job_error.json")
+      path.join(RESOURCE_PATH, "v1/async/get_failed_job_error.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
@@ -46,7 +46,7 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
 
   it("should parse a job in progress", async () => {
     const jsonData = await fs.readFile(
-      path.join(RESOURCE_PATH, "async/get_processing.json")
+      path.join(RESOURCE_PATH, "v1/async/get_processing.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
@@ -62,7 +62,7 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
 
   it("should parse a completed job", async () => {
     const jsonData = await fs.readFile(
-      path.join(RESOURCE_PATH, "async/get_completed.json")
+      path.join(RESOURCE_PATH, "v1/async/get_completed.json")
     );
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
