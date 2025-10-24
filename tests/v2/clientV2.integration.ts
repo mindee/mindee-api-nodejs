@@ -13,26 +13,25 @@ import { Inference } from "../../src/parsing/v2";
 import { SimpleField } from "../../src/parsing/v2/field";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 import * as fs from "node:fs";
+import { RESOURCE_PATH, V2_PRODUCT_PATH } from "../index";
 
 describe("MindeeV2 – Client Integration Tests", () => {
   let client: ClientV2;
   let modelId: string;
 
-  const dataDir = path.join(__dirname, "..", "data");
   const emptyPdfPath = path.join(
-    dataDir,
+    RESOURCE_PATH,
     "file_types",
     "pdf",
     "multipage_cut-2.pdf",
   );
   const sampleImagePath = path.join(
-    dataDir,
-    "products",
+    V2_PRODUCT_PATH,
     "financial_document",
     "default_sample.jpg",
   );
   const sampleBase64Path = path.join(
-    dataDir,
+    RESOURCE_PATH,
     "file_types",
     "receipt.txt",
   );

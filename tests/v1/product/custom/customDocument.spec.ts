@@ -3,24 +3,25 @@ import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../../src";
 import { CustomV1Document } from "../../../../src/product/custom/customV1Document";
-import { Page } from "../../../../src/parsing/common";
-import { CropperExtra } from "../../../../src/parsing/common/extras/cropperExtra";
+import { Page } from "../../../../src";
+import { CropperExtra } from "../../../../src/parsing/common/extras";
 import { CustomV1 } from "../../../../src/product";
+import { V1_PRODUCT_PATH } from "../../../index";
 
 const dataPath = {
-  complete: "tests/data/products/custom/response_v1/complete.json",
-  empty: "tests/data/products/custom/response_v1/empty.json",
-  docString: "tests/data/products/custom/response_v1/summary_full.rst",
-  page0String: "tests/data/products/custom/response_v1/summary_page0.rst",
-  page1String: "tests/data/products/custom/response_v1/summary_page1.rst",
+  complete: path.join(V1_PRODUCT_PATH, "custom/response_v1/complete.json"),
+  empty: path.join(V1_PRODUCT_PATH, "custom/response_v1/empty.json"),
+  docString: path.join(V1_PRODUCT_PATH, "custom/response_v1/summary_full.rst"),
+  page0String: path.join(V1_PRODUCT_PATH, "custom/response_v1/summary_page0.rst"),
+  page1String: path.join(V1_PRODUCT_PATH, "custom/response_v1/summary_page1.rst"),
 };
 
 const dataPathV2 = {
-  complete: "tests/data/products/custom/response_v2/complete.json",
-  empty: "tests/data/products/custom/response_v2/empty.json",
-  docString: "tests/data/products/custom/response_v2/summary_full.rst",
-  page0String: "tests/data/products/custom/response_v2/summary_page0.rst",
-  page1String: "tests/data/products/custom/response_v2/summary_page1.rst",
+  complete: path.join(V1_PRODUCT_PATH, "custom/response_v2/complete.json"),
+  empty: path.join(V1_PRODUCT_PATH, "custom/response_v2/empty.json"),
+  docString: path.join(V1_PRODUCT_PATH, "custom/response_v2/summary_full.rst"),
+  page0String: path.join(V1_PRODUCT_PATH, "custom/response_v2/summary_page0.rst"),
+  page1String: path.join(V1_PRODUCT_PATH, "custom/response_v2/summary_page1.rst"),
 };
 
 describe("Custom Document Object initialization", async () => {

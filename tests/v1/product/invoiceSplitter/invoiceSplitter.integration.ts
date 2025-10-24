@@ -1,12 +1,12 @@
-import * as mindee from "../../src/";
-import { InvoiceSplitterV1 } from "../../src/product";
+import * as mindee from "../../../../src";
+import { InvoiceSplitterV1 } from "../../../../src/product";
 import { expect } from "chai";
-import { levenshteinRatio } from "../testingUtilities";
+import { levenshteinRatio } from "../../../testingUtilities";
 import { promises as fs } from "fs";
 import path from "path";
-import { RESOURCE_PATH } from "../index";
+import { V1_PRODUCT_PATH } from "../../../index";
 
-describe("Given a PDF", async () => {
+describe("MindeeV1 - InvoiceSplitterV1 Integration Tests", async () => {
   let client: mindee.Client;
 
   beforeEach(() => {
@@ -15,7 +15,7 @@ describe("Given a PDF", async () => {
 
   it("should extract invoices in strict mode.", async () => {
     const sample = client.docFromPath(
-      path.join(RESOURCE_PATH, "products/invoice_splitter/default_sample.pdf")
+      path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
     );
     await sample.init();
 
@@ -34,7 +34,7 @@ describe("Given a PDF", async () => {
 
     const invoiceResult = await client.parse(mindee.product.InvoiceV4, invoices[0].asSource());
     const testStringRstInvoice = await fs.readFile(
-      path.join(RESOURCE_PATH, "products/invoices/response_v4/summary_full_invoice_p1.rst")
+      path.join(V1_PRODUCT_PATH, "invoices/response_v4/summary_full_invoice_p1.rst")
     );
 
     expect(

@@ -11,7 +11,8 @@ describe("MindeeV1 - URL Input Integration Test", async () => {
     }
     const client = new Client({ apiKey });
     const remoteInput = new UrlInput({
-      url: "https://github.com/mindee/client-lib-test-data/blob/main/products/invoice_splitter/invoice_5p.pdf?raw=true"
+      url: "https://github.com/mindee/client-lib-test-data/blob/main/v1/" +
+        "products/invoice_splitter/invoice_5p.pdf?raw=true"
     });
     await remoteInput.init();
     const localInput = await remoteInput.asLocalInputSource();

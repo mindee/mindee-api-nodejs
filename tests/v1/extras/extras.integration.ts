@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as mindee from "../../../src";
 import path from "path";
-import { RESOURCE_PATH } from "../../index";
+import { V1_PRODUCT_PATH } from "../../index";
 
 
 describe("MindeeV1 - Extras Integration Tests", async () => {
@@ -13,7 +13,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
 
   it("should send cropper extra", async () => {
     const sample = client.docFromPath(
-      path.join(RESOURCE_PATH, "products/invoices/default_sample.jpg")
+      path.join(V1_PRODUCT_PATH, "invoices/default_sample.jpg")
     );
     await sample.init();
     const response = await client.parse(
@@ -24,7 +24,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
 
   it("should send full text OCR extra", async () => {
     const sample = client.docFromPath(
-      path.join(RESOURCE_PATH, "products/international_id/default_sample.jpg")
+      path.join(V1_PRODUCT_PATH, "international_id/default_sample.jpg")
     );
     await sample.init();
     const response = await client.enqueueAndParse(
@@ -36,7 +36,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
 
   it("should send OCR words synchronously", async () => {
     const sample = client.docFromPath(
-      path.join(RESOURCE_PATH, "products/financial_document/default_sample.jpg")
+      path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")
     );
     await sample.init();
     const response = await client.parse(
@@ -49,7 +49,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
 
   it("should send OCR words asynchronously", async () => {
     const sample = client.docFromPath(
-      path.join(RESOURCE_PATH, "products/financial_document/default_sample.jpg")
+      path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")
     );
     await sample.init();
     const response = await client.enqueueAndParse(

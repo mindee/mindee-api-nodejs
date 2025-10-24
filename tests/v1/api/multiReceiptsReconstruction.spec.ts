@@ -5,15 +5,15 @@ import { Document } from "../../../src";
 import { MultiReceiptsDetectorV1 } from "../../../src/product";
 import { extractReceipts } from "../../../src/imageOperations";
 import { PathInput } from "../../../src";
-import { RESOURCE_PATH } from "../../index";
+import { V1_PRODUCT_PATH } from "../../index";
 
 describe("MindeeV1 - A Multi-Receipt Document", () => {
   it("should be split into the proper receipts", async () => {
     const jsonData = await fs.readFile(
-      path.resolve("tests/data/products/multi_receipts_detector/response_v1/complete.json")
+      path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/complete.json")
     );
     const sourceDoc = new PathInput(
-      { inputPath: path.join(RESOURCE_PATH, "products/multi_receipts_detector/default_sample.jpg") }
+      { inputPath: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/default_sample.jpg") }
     );
     await sourceDoc.init();
     const response = JSON.parse(jsonData.toString());

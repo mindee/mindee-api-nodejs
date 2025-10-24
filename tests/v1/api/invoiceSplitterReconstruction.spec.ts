@@ -5,13 +5,14 @@ import { Document } from "../../../src";
 import { InvoiceSplitterV1 } from "../../../src/product";
 import { extractInvoices } from "../../../src/imageOperations";
 import { PathInput } from "../../../src";
+import { V1_PRODUCT_PATH } from "../../index";
 
 describe("MindeeV1 - A Multipage Invoice Document", () => {
   it("should be split into the proper invoices", async () => {
     const jsonData = await fs.readFile(
-      path.resolve("tests/data/products/invoice_splitter/response_v1/complete.json")
+      path.join(V1_PRODUCT_PATH, "invoice_splitter/response_v1/complete.json")
     );
-    const sourceDoc = new PathInput({ inputPath: path.resolve("tests/data/products/invoice_splitter/invoice_5p.pdf") });
+    const sourceDoc = new PathInput({ inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/invoice_5p.pdf") });
     await sourceDoc.init();
     const response = JSON.parse(jsonData.toString());
     const doc = new Document(InvoiceSplitterV1, response.document);
@@ -30,9 +31,9 @@ describe("MindeeV1 - A Multipage Invoice Document", () => {
   });
   it("should be split differently if confidences are taken into account.", async () => {
     const jsonData = await fs.readFile(
-      path.resolve("tests/data/products/invoice_splitter/response_v1/complete.json")
+      path.resolve(V1_PRODUCT_PATH, "invoice_splitter/response_v1/complete.json")
     );
-    const sourceDoc = new PathInput({ inputPath: path.resolve("tests/data/products/invoice_splitter/invoice_5p.pdf") });
+    const sourceDoc = new PathInput({ inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/invoice_5p.pdf") });
     await sourceDoc.init();
     const response = JSON.parse(jsonData.toString());
     const doc = new Document(InvoiceSplitterV1, response.document);

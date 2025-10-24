@@ -4,13 +4,13 @@ import path from "path";
 import { MultiReceiptsDetectorV1 } from "../../src/product";
 import { extractReceipts } from "../../src/imageOperations";
 import { PathInput } from "../../src";
-import { RESOURCE_PATH } from "../index";
+import { V1_PRODUCT_PATH } from "../index";
 
 const dataPath = {
-  complete: path.join(RESOURCE_PATH, "products/multi_receipts_detector/response_v1/complete.json"),
-  fileSample: path.join(RESOURCE_PATH, "products/multi_receipts_detector/default_sample.jpg"),
-  completeMultiPage: path.join(RESOURCE_PATH, "products/multi_receipts_detector/response_v1/multipage_sample.json"),
-  multiPageSample: path.join(RESOURCE_PATH, "products/multi_receipts_detector/multipage_sample.pdf"),
+  complete: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/complete.json"),
+  fileSample: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/default_sample.jpg"),
+  completeMultiPage: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/multipage_sample.json"),
+  multiPageSample: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
 };
 
 describe("A single-page multi-receipts document", () => {
