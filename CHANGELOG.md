@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.33.0 - 2025-10-27
+### Changes
+* :sparkles: add more details to V2 errors
+* :sparkles: add RAG metadata in V2 results
+
+
 ## v4.32.0 - 2025-10-13
 ### Changes
 * :sparkles: add getting page count of a local source
@@ -12,7 +18,7 @@
 
 ## v4.31.0 - 2025-10-07
 ### Changes
-* :sparkles: allow comparing v2 field confidence
+* :sparkles: allow comparing V2 field confidence
 * :coffin: remove obsolete US Mail V2
 
 
