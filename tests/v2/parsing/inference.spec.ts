@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import path from "node:path";
-import { LocalResponse, InferenceResponse, RawText } from "../../../src";
+import { LocalResponse, InferenceResponse, RawText, RagMetadata } from "../../../src";
 import { FieldConfidence, ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
 import { promises as fs } from "node:fs";
 import { Polygon } from "../../../src/geometry";
@@ -12,9 +12,6 @@ const deepNestedFieldPath = path.join(inferencePath, "deep_nested_fields.json");
 const standardFieldPath = path.join(inferencePath, "standard_field_types.json");
 const standardFieldRstPath = path.join(inferencePath, "standard_field_types.rst");
 const locationFieldPath = path.join(findocPath, "complete_with_coordinates.json");
-const rawTextPath = path.join(inferencePath, "raw_texts.json");
-const blankPath = path.join(findocPath, "blank.json");
-const completePath = path.join(findocPath, "complete.json");
 
 async function loadV2Inference(resourcePath: string): Promise<InferenceResponse> {
   const localResponse = new LocalResponse(resourcePath);
@@ -22,10 +19,12 @@ async function loadV2Inference(resourcePath: string): Promise<InferenceResponse>
   return localResponse.deserializeResponse(InferenceResponse);
 }
 
-describe("inference", async () => {
-  describe("simple", async () => {
+describe("MindeeV2 - Inference Response", async () => {
+  describe("Financial Document", async () => {
     it("should load a blank inference with valid properties", async () => {
-      const response = await loadV2Inference(blankPath);
+      const response = await loadV2Inference(
+        path.join(findocPath, "blank.json")
+      );
       const fields = response.inference.result.fields;
 
       expect(fields).to.be.not.empty;
@@ -55,7 +54,9 @@ describe("inference", async () => {
     });
 
     it("should load a complete inference with valid properties", async () => {
-      const response = await loadV2Inference(completePath);
+      const response = await loadV2Inference(
+        path.join(findocPath, "complete.json")
+      );
       const inference = response.inference;
 
       expect(inference).to.not.be.undefined;
@@ -116,7 +117,7 @@ describe("inference", async () => {
     });
   });
 
-  describe("nested", async () => {
+  describe("Deeply Nested", async () => {
     it("should load a deep nested object", async () => {
       const response = await loadV2Inference(deepNestedFieldPath);
       const fields = response.inference.result.fields;
@@ -152,7 +153,7 @@ describe("inference", async () => {
     });
   });
 
-  describe("standard field types", async () => {
+  describe("Standard Field Types", async () => {
     it("should recognize simple fields", async () => {
       const response = await loadV2Inference(standardFieldPath);
       const fields = response.inference.result.fields;
@@ -259,11 +260,14 @@ describe("inference", async () => {
     });
   });
 
-  describe("raw text", async () => {
+  describe("Raw Text", async () => {
     it("raw text should be exposed", async () => {
-      const response = await loadV2Inference(rawTextPath);
-      const rawText = response.inference.result.rawText;
+      const response = await loadV2Inference(
+        path.join(inferencePath, "raw_texts.json")
+      );
+      expect(response.inference.result.rag).to.be.undefined;
 
+      const rawText = response.inference.result.rawText;
       expect(rawText).to.be.instanceOf(RawText);
 
       const pages = rawText?.pages;
@@ -275,7 +279,18 @@ describe("inference", async () => {
     });
   });
 
-  describe("rst display", async () => {
+  describe("RAG Metadata", async () => {
+    it("RAG metadata should be exposed", async () => {
+      const response = await loadV2Inference(
+        path.join(inferencePath, "rag_matched.json")
+      );
+      const rag = response.inference.result.rag;
+      expect(rag).to.be.instanceOf(RagMetadata);
+      expect(rag?.retrievedDocumentId).to.eq("12345abc-1234-1234-1234-123456789abc");
+    });
+  });
+
+  describe("RST Display", async () => {
     it("to be properly exposed", async () => {
       const response = await loadV2Inference(standardFieldPath);
       const rstString = await fs.readFile(standardFieldRstPath, "utf8");
@@ -285,7 +300,7 @@ describe("inference", async () => {
     }).timeout(10000);
   });
 
-  describe("field locations and confidence", async () => {
+  describe("Field Locations and Confidence", async () => {
     it("to be properly exposed", async () => {
       const response = await loadV2Inference(locationFieldPath);
 

@@ -12,7 +12,7 @@ async function loadV2Job(resourcePath: string): Promise<JobResponse> {
   return localResponse.deserializeResponse(JobResponse);
 }
 
-describe("job", async () => {
+describe("MindeeV2 - Job Response", async () => {
   describe("OK", async () => {
     it("should load when status is Processing", async () => {
       const response = await loadV2Job(
