@@ -2,7 +2,7 @@ import nock from "nock";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "../../../src";
-import { RESOURCE_PATH } from "../../index";
+import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index";
 
 describe("MindeeV1 - HTTP calls", () => {
   before(function() {
@@ -31,7 +31,7 @@ describe("MindeeV1 - HTTP calls", () => {
 
   it("should fail on 400 response with object", async () => {
     try {
-      await sendRequest(400, path.join(RESOURCE_PATH, "errors/error_400_with_object_in_detail.json"));
+      await sendRequest(400, path.join(V1_RESOURCE_PATH, "errors/error_400_with_object_in_detail.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp400Error");
       expect(error.code).to.be.equals(400);
@@ -42,7 +42,7 @@ describe("MindeeV1 - HTTP calls", () => {
 
   it("should fail on 401 response", async () => {
     try {
-      await sendRequest(401, path.join(RESOURCE_PATH, "errors/error_401_no_token.json"));
+      await sendRequest(401, path.join(V1_RESOURCE_PATH, "errors/error_401_no_token.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp401Error");
       expect(error.code).to.be.equals(401);
@@ -53,7 +53,7 @@ describe("MindeeV1 - HTTP calls", () => {
 
   it("should fail on 429 response", async () => {
     try {
-      await sendRequest(429, path.join(RESOURCE_PATH, "errors/error_429_too_many_requests.json"));
+      await sendRequest(429, path.join(V1_RESOURCE_PATH, "errors/error_429_too_many_requests.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp429Error");
       expect(error.code).to.be.equals(429);
@@ -63,7 +63,7 @@ describe("MindeeV1 - HTTP calls", () => {
   });
   it("should fail on 500 response", async () => {
     try {
-      await sendRequest(500, path.join(RESOURCE_PATH, "errors/error_500_inference_fail.json"));
+      await sendRequest(500, path.join(V1_RESOURCE_PATH, "errors/error_500_inference_fail.json"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp500Error");
       expect(error.code).to.be.equals(500);
@@ -74,7 +74,7 @@ describe("MindeeV1 - HTTP calls", () => {
 
   it("should fail on HTML response", async () => {
     try {
-      await sendRequest(500, path.join(RESOURCE_PATH, "errors/error_50x.html"));
+      await sendRequest(500, path.join(V1_RESOURCE_PATH, "errors/error_50x.html"));
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp500Error");
       expect(error.code).to.be.equals(500);

@@ -5,7 +5,7 @@ import { InferenceResponse, LocalResponse } from "../../../src";
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index";
 
-const signature: string = "839dff294b71cb2c6972534d2c9c1d2684fd284f42a68891196612219046971c";
+const signature: string = "a1bc9012fa63539d602f163d8980604a0cf2b2ae88e56009cfa1db33382736cf";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
 const filePath: string = path.join(V2_RESOURCE_PATH, "inference/standard_field_types.json");
 
