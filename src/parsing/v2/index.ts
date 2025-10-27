@@ -11,3 +11,4 @@ export { Job } from "./job";
 export { JobResponse } from "./jobResponse";
 export { RawText } from "./rawText";
 export { JobWebhook } from "./jobWebhook";
+export { RagMetadata } from "./ragMetadata";

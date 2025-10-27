@@ -14,6 +14,7 @@ export {
   InferenceResponse,
   JobResponse,
   RawText,
+  RagMetadata,
 } from "./parsing/v2";
 export {
   InputSource,
