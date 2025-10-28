@@ -1,4 +1,4 @@
-import { ErrorDetails, ErrorResponse } from "../parsing/v2";
+import { ErrorDetails, ErrorResponse, ErrorItem } from "../parsing/v2";
 
 /**
  * Main Mindee Error custom class.
@@ -47,13 +47,15 @@ export class MindeeHttpErrorV2 extends MindeeError implements ErrorDetails {
   public detail: string;
   public title: string;
   public code: string;
+  public errors: ErrorItem[];
 
   constructor(error: ErrorResponse) {
-    super(`HTTP ${error.status} :: ${error.title} - ${error.detail}`);
+    super(`HTTP ${error.status} - ${error.title} :: ${error.code} - ${error.detail}`);
     this.status = error.status;
     this.detail = error.detail;
     this.title = error.title;
     this.code = error.code;
+    this.errors = error.errors;
     this.name = "MindeeHttpErrorV2";
   }
 }
