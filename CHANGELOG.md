@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.33.1 - 2025-10-28
+### Changes
+* :loud_sound: add error code to v2 exceptions
+
+
 ## v4.33.0 - 2025-10-27
 ### Changes
 * :sparkles: add more details to V2 errors
