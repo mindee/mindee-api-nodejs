@@ -18,6 +18,10 @@ export interface ErrorDetails {
    * A machine-readable code specific to the occurrence of the problem.
    */
   code: string;
+  /**
+   * A machine-readable code specific to the occurrence of the problem.
+   */
+  errors: ErrorItem[];
 }
 
 /**
@@ -28,10 +32,7 @@ export class ErrorResponse implements ErrorDetails {
   detail: string;
   title: string;
   code: string;
-  /**
-   * A machine-readable code specific to the occurrence of the problem.
-   */
-  public errors: ErrorItem[];
+  errors: ErrorItem[];
 
   /**
    * @param serverResponse JSON response from the server.

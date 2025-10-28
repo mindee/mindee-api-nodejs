@@ -158,6 +158,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       expect(errObj.code.startsWith("422-")).to.be.true;
       expect(errObj.title).to.be.a("string");
       expect(errObj.detail).to.be.a("string");
+      expect(errObj.errors).to.be.instanceOf(Array);
     }
   }).timeout(60000);
 
@@ -172,6 +173,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       expect(errObj.code.startsWith("422-")).to.be.true;
       expect(errObj.title).to.be.a("string");
       expect(errObj.detail).to.be.a("string");
+      expect(errObj.errors).to.be.instanceOf(Array);
     }
   }).timeout(60000);
 

@@ -280,13 +280,22 @@ describe("MindeeV2 - Inference Response", async () => {
   });
 
   describe("RAG Metadata", async () => {
-    it("RAG metadata should be exposed", async () => {
+    it("RAG metadata when matched", async () => {
       const response = await loadV2Inference(
         path.join(inferencePath, "rag_matched.json")
       );
       const rag = response.inference.result.rag;
       expect(rag).to.be.instanceOf(RagMetadata);
       expect(rag?.retrievedDocumentId).to.eq("12345abc-1234-1234-1234-123456789abc");
+    });
+
+    it("RAG metadata when not matched", async () => {
+      const response = await loadV2Inference(
+        path.join(inferencePath, "rag_not_matched.json")
+      );
+      const rag = response.inference.result.rag;
+      expect(rag).to.be.instanceOf(RagMetadata);
+      expect(rag?.retrievedDocumentId).to.be.undefined;
     });
   });
 
