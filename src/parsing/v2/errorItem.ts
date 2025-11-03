@@ -1,8 +1,11 @@
 import { StringDict } from "../common";
 
+/**
+ * Explicit details on a problem.
+ */
 export class ErrorItem {
   /**
-   * The HTTP status code returned by the server.
+   * A JSON Pointer to the location of the body property.
    */
   public pointer?: string;
   /**

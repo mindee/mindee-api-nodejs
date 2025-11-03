@@ -19,7 +19,7 @@ export interface ErrorDetails {
    */
   code: string;
   /**
-   * A machine-readable code specific to the occurrence of the problem.
+   * A list of explicit error details.
    */
   errors: ErrorItem[];
 }
