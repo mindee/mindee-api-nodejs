@@ -82,6 +82,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       rawText: true,
       polygon: true,
       confidence: false,
+      textContext: "this is an invoice",
       webhookIds: [],
       alias: "ts_integration_binary_filled_single"
     };
