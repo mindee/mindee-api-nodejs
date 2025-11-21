@@ -76,7 +76,7 @@ describe("MindeeV2 - ClientV2", () => {
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueueInference(inputDoc, { modelId: "dummy-model" }),
+        client.enqueueInference(inputDoc, { modelId: "dummy-model", textContext: "hello" }),
         MindeeHttpErrorV2
       );
     });
@@ -87,7 +87,7 @@ describe("MindeeV2 - ClientV2", () => {
       await assert.rejects(
         client.enqueueAndGetInference(
           inputDoc,
-          { modelId: "dummy-model" }
+          { modelId: "dummy-model", rag: false }
         ),
         MindeeHttpErrorV2
       );

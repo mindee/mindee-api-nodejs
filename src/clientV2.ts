@@ -23,12 +23,6 @@ import { MindeeHttpErrorV2 } from "./errors/mindeeError";
  * The `initialTimerOptions` and `recurringTimerOptions` objects let you pass an
  * `AbortSignal` or make the timer `unref`-ed to the `setTimeout()`.
  *
- * @property initialDelaySec Number of seconds to wait **before the first poll**.
- * @property delaySec Interval in seconds between two consecutive polls.
- * @property maxRetries Maximum number of polling attempts (including the first one).
- * @property initialTimerOptions Options passed to the initial `setTimeout()`.
- * @property recurringTimerOptions Options passed to every recurring `setTimeout()`.
- *
  * @category ClientV2
  * @example
  * const params = {
@@ -41,13 +35,18 @@ import { MindeeHttpErrorV2 } from "./errors/mindeeError";
  */
 
 export interface PollingOptions {
+  /** Number of seconds to wait *before the first poll*. */
   initialDelaySec?: number;
+  /** Interval in seconds between two consecutive polls. */
   delaySec?: number;
+  /** Maximum number of polling attempts (including the first one). */
   maxRetries?: number;
+  /** Options passed to the initial `setTimeout()`. */
   initialTimerOptions?: {
     ref?: boolean,
     signal?: AbortSignal
   };
+  /** Options passed to every recurring `setTimeout()`. */
   recurringTimerOptions?: {
     ref?: boolean,
     signal?: AbortSignal
@@ -65,16 +64,6 @@ interface ValidatedPollingOptions extends PollingOptions {
  *
  * All fields are optional except `modelId`.
  *
- * @property modelId Identifier of the model that must process the document. **Required**.
- * @property rag Enhance extraction accuracy with Retrieval-Augmented Generation.
- * @property rawText Extract the full text content from the document as strings, and fill the `raw_text` attribute.
- * @property polygon Calculate bounding box polygons for all fields, and fill their `locations` attribute.
- * @property confidence Boost the precision and accuracy of all extractions.
- *     Calculate confidence scores for all fields and fill their `confidence` attribute.
- * @property alias Custom alias assigned to the uploaded document.
- * @property webhookIds List of webhook UUIDs that will receive the final API response.
- * @property pollingOptions Client-side polling configuration (see {@link PollingOptions}).
- * @property closeFile By default the file is closed once the upload is finished, set to `false` to keep it open.
  * @category ClientV2
  * @example
  * const params = {
@@ -89,23 +78,34 @@ interface ValidatedPollingOptions extends PollingOptions {
  * };
  */
 export interface InferenceParameters {
+  /** Model ID to use for the inference. **Required** */
   modelId: string;
+  /** Use Retrieval-Augmented Generation during inference. */
   rag?: boolean;
+  /** Extract the entire text from the document as strings, and fill the `rawText` attribute. */
   rawText?: boolean;
+  /** Calculate bounding box polygons for values, and fill the `locations` attribute of fields. */
   polygon?: boolean;
+  /** Calculate confidence scores for values, and fill the `confidence` attribute of fields.
+   * Useful for automation.*/
   confidence?: boolean;
+  /** Use an alias to link the file to your own DB. If empty, no alias will be used. */
   alias?: string;
+  /** Additional text context used by the model during inference.
+   * *Not recommended*, for specific use only. */
+  textContext?: string;
+  /** Webhook IDs to call after all processing is finished.
+   * If empty, no webhooks will be used. */
   webhookIds?: string[];
+  /** Client-side polling configuration (see {@link PollingOptions}). */
   pollingOptions?: PollingOptions;
+  /** By default, the file is closed once the upload is finished.
+   * Set to `false` to keep it open. */
   closeFile?: boolean;
 }
 
 /**
  * Options for the V2 Mindee Client.
- *
- * @property apiKey Your API key for all endpoints.
- * @property throwOnError Raise an `Error` on errors.
- * @property debug Log debug messages.
  *
  * @category ClientV2
  * @example
@@ -116,8 +116,11 @@ export interface InferenceParameters {
  * });
  */
 export interface ClientOptions {
+  /** Your API key for all endpoints. */
   apiKey?: string;
+  /** Raise an `Error` on errors. */
   throwOnError?: boolean;
+  /** Log debug messages. */
   debug?: boolean;
 }
 
