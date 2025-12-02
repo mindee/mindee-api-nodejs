@@ -16,6 +16,9 @@ async function assertLocalResponse(localResponse: LocalResponse) {
   expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
   expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
   expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+  const inferenceResponse = await localResponse.deserializeResponse(InferenceResponse);
+  expect(inferenceResponse).to.be.an.instanceof(InferenceResponse);
+  expect(inferenceResponse.inference).to.not.be.null;
 }
 
 describe("MindeeV2 - Load Local Response", () => {

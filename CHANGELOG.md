@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.34.0 - 2025-12-02
+### Changes
+* :sparkles: add support for text context
+
+
 ## v4.33.1 - 2025-10-28
 ### Changes
 * :loud_sound: add error code to v2 exceptions
