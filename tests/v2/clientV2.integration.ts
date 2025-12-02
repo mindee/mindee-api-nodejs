@@ -72,6 +72,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     expect(inference.activeOptions?.rawText).to.be.false;
     expect(inference.activeOptions?.polygon).to.be.false;
     expect(inference.activeOptions?.confidence).to.be.false;
+    expect(inference.activeOptions?.textContext).to.be.false;
   }).timeout(60000);
 
   it("Filled, single-page image – PathInput - enqueueAndGetInference must succeed", async () => {
@@ -107,6 +108,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     expect(inference.activeOptions?.rawText).to.be.true;
     expect(inference.activeOptions?.polygon).to.be.true;
     expect(inference.activeOptions?.confidence).to.be.false;
+    expect(inference.activeOptions?.textContext).to.be.true;
 
     expect(inference.result.rawText?.pages).to.have.lengthOf(1);
   }).timeout(120000);
@@ -143,6 +145,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     expect(inference.activeOptions?.rawText).to.be.false;
     expect(inference.activeOptions?.polygon).to.be.false;
     expect(inference.activeOptions?.confidence).to.be.false;
+    expect(inference.activeOptions?.textContext).to.be.false;
   }).timeout(120000);
 
   it("Invalid model ID – enqueue must raise 422", async () => {
