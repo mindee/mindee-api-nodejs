@@ -18,11 +18,17 @@ export class InferenceActiveOptions {
    */
   public confidence: boolean;
 
+  /**
+   * Whether the text context feature was activated.
+   */
+  public textContext: boolean;
+
   constructor(serverResponse: StringDict) {
     this.rag = serverResponse["rag"];
     this.rawText = serverResponse["raw_text"];
     this.polygon = serverResponse["polygon"];
     this.confidence = serverResponse["confidence"];
+    this.textContext = serverResponse["text_context"];
   }
 
   toString(): string {

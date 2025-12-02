@@ -4,40 +4,34 @@ import { InferenceResponse, LocalResponse } from "../../../src";
 
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index";
+import { Buffer } from "node:buffer";
 
-const signature: string = "a1bc9012fa63539d602f163d8980604a0cf2b2ae88e56009cfa1db33382736cf";
+const signature: string = "b82a515c832fd2c4f4ce3a7e6f53c12e8d10e19223f6cf0e3a9809a7a3da26be";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
 const filePath: string = path.join(V2_RESOURCE_PATH, "inference/standard_field_types.json");
+
+async function assertLocalResponse(localResponse: LocalResponse) {
+  await localResponse.init();
+  expect(localResponse.asDict()).to.not.be.null;
+  expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
+  expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
+  expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+}
 
 describe("MindeeV2 - Load Local Response", () => {
   it("should load a string properly.", async () => {
     const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
-    const localResponse = new LocalResponse(fileObj);
-    await localResponse.init();
-    expect(localResponse.asDict()).to.not.be.null;
-    expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
-    expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
-    expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+    await assertLocalResponse(new LocalResponse(fileObj));
   });
 
   it("should load a file properly.", async () => {
-    const localResponse = new LocalResponse(filePath);
-    await localResponse.init();
-    expect(localResponse.asDict()).to.not.be.null;
-    expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
-    expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
-    expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+    await assertLocalResponse(new LocalResponse(filePath));
   });
 
   it("should load a buffer properly.", async () => {
     const fileStr = (await fs.readFile(filePath, { encoding: "utf-8" })).replace(/\r/g, "").replace(/\n/g, "");
     const fileBuffer = Buffer.from(fileStr, "utf-8");
-    const localResponse = new LocalResponse(fileBuffer);
-    await localResponse.init();
-    expect(localResponse.asDict()).to.not.be.null;
-    expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
-    expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
-    expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+    await assertLocalResponse(new LocalResponse(fileBuffer));
   });
 
   it("should deserialize a prediction.", async () => {
