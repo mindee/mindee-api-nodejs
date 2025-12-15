@@ -12,9 +12,9 @@ export async function extractFromPage(
   polygons: Polygon[]) {
   const { width, height } = pdfPage.getSize();
   const extractedElements :Uint8Array[] = [];
-  // Simulacrum of 72=>300 DPI upscale for when the pages are rasterized.
+  // Manual upscale.
   // Fixes issues with the OCR.
-  const qualityScale = 300/72;
+  const qualityScale = 5;
 
   for (const polygon of polygons) {
     const tempPdf = await PDFDocument.create();
