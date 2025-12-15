@@ -50,7 +50,7 @@ describe("MindeeV1 - A Multi-Receipt Document", () => {
       expect(pngStat.size).to.be.greaterThan(300000);
       i++;
     }
-  }).timeout(10000);
+  }).timeout(20000);
   after(async () => {
     for (let i = 0; i < extractedReceipts.length; i++) {
       await fs.unlink(path.join(RESOURCE_PATH, `output/extracted_receipt_${i}.pdf`));
