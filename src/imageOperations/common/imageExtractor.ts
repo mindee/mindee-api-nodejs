@@ -12,6 +12,10 @@ export async function extractFromPage(
   polygons: Polygon[]) {
   const { width, height } = pdfPage.getSize();
   const extractedElements :Uint8Array[] = [];
+  // Simulacrum of 72=>300 DPI upscale for when the pages are rasterized.
+  // Fixes issues with the OCR.
+  const qualityScale = 300/72;
+
   for (const polygon of polygons) {
     const tempPdf = await PDFDocument.create();
 
@@ -23,11 +27,11 @@ export async function extractFromPage(
       top: height - (getMinMaxY(polygon).min * height),
       bottom: height - (getMinMaxY(polygon).max * height),
     });
-    const samplePage = tempPdf.addPage([newWidth, newHeight]);
+    const samplePage = tempPdf.addPage([newWidth * qualityScale, newHeight * qualityScale]);
     samplePage.drawPage(cropped,
       {
-        width: newWidth,
-        height: newHeight,
+        width: newWidth * qualityScale,
+        height: newHeight * qualityScale,
       });
     extractedElements.push(await tempPdf.save());
   }
