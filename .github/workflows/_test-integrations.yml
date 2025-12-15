@@ -34,14 +34,28 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - name: Set up Poppler on ubuntu
+      - name: Install Node.js dependencies
+        run: npm ci
+      - name: Install Poppler (Linux)
         if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y poppler-utils
 
-      - name: Install Node.js dependencies
-        run: npm ci
+      - name: Install Poppler (macOS)
+        if: runner.os == 'macOS'
+        run: |
+          brew update
+          brew install poppler
+
+      - name: Install Poppler (Windows)
+        if: runner.os == 'Windows'
+        shell: pwsh
+        run: |
+          choco install poppler -y --no-progress
+          # Chocolatey shims are usually already on PATH, but this makes it explicit:
+          "$env:ChocolateyInstall\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+          pdfinfo -v
 
       - name: Compilation
         run: npm run build
