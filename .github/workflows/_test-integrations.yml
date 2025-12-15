@@ -53,10 +53,20 @@ jobs:
         shell: pwsh
         run: |
           choco install poppler -y --no-progress
-          # Chocolatey shims are usually already on PATH, but this makes it explicit:
-          "$env:ChocolateyInstall\bin" | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
-          pdfinfo -v
 
+          $root = Join-Path $env:ChocolateyInstall 'lib\poppler\tools'
+          $exe  = Get-ChildItem $root -Recurse -Filter pdfinfo.exe | Select-Object -First 1
+          if (-not $exe) { throw "pdfinfo.exe not found under $root" }
+
+          $bin = Split-Path $exe.FullName
+
+          # Available immediately in this step:
+          $env:PATH = "$bin;$env:PATH"
+
+          # Available in later steps:
+          $bin | Out-File -FilePath $env:GITHUB_PATH -Encoding utf8 -Append
+
+          pdfinfo -v
       - name: Compilation
         run: npm run build
 
