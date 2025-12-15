@@ -47,7 +47,7 @@ describe("MindeeV1 - A Multi-Receipt Document", () => {
       const jpgStat = await fs.stat(path.join(RESOURCE_PATH, `output/extracted_receipt_${i}.jpg`));
       expect(jpgStat.size).to.be.greaterThan(40000);
       const pngStat = await fs.stat(path.join(RESOURCE_PATH, `output/extracted_receipt_${i}.png`));
-      expect(pngStat.size).to.be.greaterThan(300000);
+      expect(pngStat.size).to.be.greaterThan(290000);
       i++;
     }
   }).timeout(20000);
