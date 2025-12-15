@@ -15,7 +15,7 @@ import {
   INPUT_TYPE_PATH, INPUT_TYPE_BUFFER
 } from "./inputSource";
 
-const MIMETYPES = new Map<string, string>([
+export const MIMETYPES = new Map<string, string>([
   [".pdf", "application/pdf"],
   [".heic", "image/heic"],
   [".jpg", "image/jpeg"],
