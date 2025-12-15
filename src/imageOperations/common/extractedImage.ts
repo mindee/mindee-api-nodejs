@@ -7,7 +7,6 @@ import { BufferInput } from "../../input";
 import { MIMETYPES } from "../../input/sources/localInputSource";
 import { Poppler } from "node-poppler";
 import { writeFile } from "fs/promises";
-import * as os from "node:os";
 
 /**
  * Generic class for image extraction
@@ -36,9 +35,7 @@ export class ExtractedImage {
     try {
       let outputBuffer: Buffer = this.buffer;
       if (fileExt !== ".pdf") {
-        const popplerPath = os.platform() === "linux" ? "/usr/bin" : undefined;
-
-        const poppler = new Poppler(popplerPath);
+        const poppler = new Poppler();
         const options: Record<string, unknown> = {
           firstPageToConvert: 1,
           lastPageToConvert: 1,

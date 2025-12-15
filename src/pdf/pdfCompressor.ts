@@ -5,7 +5,6 @@ import * as fs from "node:fs";
 import { Poppler } from "node-poppler";
 import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "@cantoo/pdf-lib";
 import { compressImage } from "../imageOperations";
-import * as os from "node:os";
 
 /**
  * Compresses each page of a provided PDF buffer.
@@ -238,9 +237,7 @@ async function getFontFromName(fontName: string): Promise<PDFFont> {
  * @param quality Quality to apply during rasterization.
  */
 async function rasterizePage(pdfData: Buffer, index: number, quality = 85): Promise<string> {
-  const popplerPath = os.platform() === "linux" ? "/usr/bin" : undefined;
-
-  const poppler = new Poppler(popplerPath);
+  const poppler = new Poppler();
   const tmpPdf = tmp.fileSync();
   const tempPdfPath = tmpPdf.name;
   const antialiasOption: "fast" | "best" | "default" | "good" | "gray" | "none" | "subpixel" = "best";
