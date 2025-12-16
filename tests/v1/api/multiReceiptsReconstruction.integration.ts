@@ -32,7 +32,6 @@ describe("MindeeV1 - A Multi-Receipt Image", () => {
     let i = 0;
     for (const extractedReceipt of extractedReceipts) {
       const localInput = extractedReceipt.asSource();
-      extractedReceipt.saveToFile(path.join(RESOURCE_PATH, `output/extracted_receipt${i}.pdf`));
       receiptsResults.push(await client.parse(ReceiptV5, localInput));
       i++;
       await setTimeout(1000);
@@ -129,8 +128,6 @@ describe("MindeeV1 - A Single-Receipt Image", () => {
     const receiptResult = await client.parse(ReceiptV5, receipts[0].asSource());
     expect(receiptResult.document.inference.prediction.lineItems.length).to.be.equals(1);
     expect(receiptResult.document.inference.prediction.lineItems[0].totalAmount).to.be.equals(10.2);
-    receipts[0].saveToFile(path.join(RESOURCE_PATH, "output/debug_taxes.pdf"));
-    await receipts[0].saveToFileAsync(path.join(RESOURCE_PATH, "output/debug_taxes.jpg"));
     expect(receiptResult.document.inference.prediction.taxes.length).to.be.equals(1);
     expect(receiptResult.document.inference.prediction.taxes[0].value).to.be.equals(1.7);
   }).timeout(60000);
