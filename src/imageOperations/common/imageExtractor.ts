@@ -15,17 +15,27 @@ export async function extractFromPage(
   // Manual upscale.
   // Fixes issues with the OCR.
   const qualityScale = 300/72;
+  const padding = 0.02;
 
   for (const polygon of polygons) {
     const tempPdf = await PDFDocument.create();
 
-    const newWidth = width * (getMinMaxX(polygon).max - getMinMaxX(polygon).min);
-    const newHeight = height * (getMinMaxY(polygon).max - getMinMaxY(polygon).min);
+    const xLimits = getMinMaxX(polygon);
+    const yLimits = getMinMaxY(polygon);
+
+    const minX = Math.max(0, xLimits.min - padding);
+    const maxX = Math.min(1, xLimits.max + padding);
+    const minY = Math.max(0, yLimits.min - padding);
+    const maxY = Math.min(1, yLimits.max + padding);
+
+    const newWidth = width * (maxX - minX);
+    const newHeight = height * (maxY - minY);
+
     const cropped = await tempPdf.embedPage(pdfPage, {
-      left: getMinMaxX(polygon).min * width,
-      right: getMinMaxX(polygon).max * width,
-      top: height - (getMinMaxY(polygon).min * height),
-      bottom: height - (getMinMaxY(polygon).max * height),
+      left: minX * width,
+      right: maxX * width,
+      top: height - (minY * height),
+      bottom: height - (maxY * height),
     });
     const samplePage = tempPdf.addPage([newWidth * qualityScale, newHeight * qualityScale]);
 
