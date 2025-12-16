@@ -1,4 +1,4 @@
-import { PDFDocument, PDFPage, rgb } from "@cantoo/pdf-lib";
+import { PDFDocument, PDFPage } from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
 
 /**
@@ -14,7 +14,7 @@ export async function extractFromPage(
   const extractedElements :Uint8Array[] = [];
   // Manual upscale.
   // Fixes issues with the OCR.
-  const qualityScale = 5;
+  const qualityScale = 300/72;
 
   for (const polygon of polygons) {
     const tempPdf = await PDFDocument.create();

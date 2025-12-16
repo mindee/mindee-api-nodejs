@@ -23,22 +23,25 @@ describe("MindeeV1 - A Multi-Receipt Image", () => {
   it("should send to the server and cut properly", async () => {
     const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
     expect(multiReceiptResult.document?.inference.prediction.receipts.length).to.be.equals(6);
+    expect(multiReceiptResult.document?.inference.pages[0].orientation?.value).to.be.equals(90);
     const receipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
     expect(receipts.length).to.be.equals(6);
     const extractedReceipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
     expect(extractedReceipts.length).to.be.equals(6);
     const receiptsResults = [];
+    let i = 0;
     for (const extractedReceipt of extractedReceipts) {
       const localInput = extractedReceipt.asSource();
+      extractedReceipt.saveToFile(path.join(RESOURCE_PATH, `output/extracted_receipt${i}.pdf`));
       receiptsResults.push(await client.parse(ReceiptV5, localInput));
+      i++;
       await setTimeout(1000);
     }
 
     expect(receiptsResults[0].document.inference.prediction.lineItems.length).to.be.equals(0);
 
-    // NOTE: disabled because flaky?
-    // expect(receiptsResults[1].document.inference.prediction.lineItems.length).to.be.equals(1);
-    // expect(receiptsResults[1].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(21.5);
+    expect(receiptsResults[1].document.inference.prediction.lineItems.length).to.be.equals(1);
+    expect(receiptsResults[1].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(21.5);
 
     expect(receiptsResults[2].document.inference.prediction.lineItems.length).to.be.equals(2);
     expect(receiptsResults[2].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(11.5);
@@ -70,6 +73,8 @@ describe("MindeeV1 - A Multi-Receipt Document", () => {
     expect(multiReceiptResult.document?.inference.prediction.receipts.length).to.be.equals(5);
     const extractedReceipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
     expect(extractedReceipts.length).to.be.equals(5);
+    expect(multiReceiptResult.document?.inference.pages[0].orientation?.value).to.be.equals(0);
+    expect(multiReceiptResult.document?.inference.pages[1].orientation?.value).to.be.equals(0);
     const receiptsResults = [];
     for (const extractedReceipt of extractedReceipts) {
       const localInput = extractedReceipt.asSource();
