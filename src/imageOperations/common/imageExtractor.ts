@@ -40,8 +40,6 @@ export async function extractFromPage(
       {
         width: newWidth * qualityScale,
         height: newHeight * qualityScale,
-        xScale: qualityScale,
-        yScale: qualityScale,
       });
     extractedElements.push(await tempPdf.save());
   }
