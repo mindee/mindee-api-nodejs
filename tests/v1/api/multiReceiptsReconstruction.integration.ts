@@ -29,11 +29,9 @@ describe("MindeeV1 - A Multi-Receipt Image", () => {
     const extractedReceipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
     expect(extractedReceipts.length).to.be.equals(6);
     const receiptsResults = [];
-    let i = 0;
     for (const extractedReceipt of extractedReceipts) {
       const localInput = extractedReceipt.asSource();
       receiptsResults.push(await client.parse(ReceiptV5, localInput));
-      i++;
       await setTimeout(1000);
     }
 
