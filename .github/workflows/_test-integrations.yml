@@ -50,27 +50,7 @@ jobs:
 
       - name: Install Poppler (Windows)
         if: runner.os == 'Windows'
-        shell: pwsh
-        run: |
-          $headers = @{ "User-Agent" = "github-actions" }
-          $rel = Invoke-RestMethod -Headers $headers https://api.github.com/repos/oschwartz10612/poppler-windows/releases/latest
-          $asset = $rel.assets | Where-Object { $_.name -like "Release-*.zip" } | Select-Object -First 1
-          if (-not $asset) { throw "No Release-*.zip asset found in latest poppler-windows release." }
-
-          $zip = Join-Path $env:RUNNER_TEMP $asset.name
-          Invoke-WebRequest -Headers $headers $asset.browser_download_url -OutFile $zip
-
-          $dest = Join-Path $env:RUNNER_TEMP "poppler"
-          Expand-Archive -Path $zip -DestinationPath $dest -Force
-
-          $exe = Get-ChildItem $dest -Recurse -Filter pdfinfo.exe | Select-Object -First 1
-          if (-not $exe) { throw "pdfinfo.exe not found after extraction." }
-
-          $bin = $exe.Directory.FullName
-          $env:PATH = "$bin;$env:PATH"                         # for this step
-          $bin | Out-File $env:GITHUB_PATH -Encoding utf8 -Append # for later steps
-
-          pdfinfo -v
+        run: choco install poppler --yes --no-progress
 
       - name: Compilation
         run: npm run build
