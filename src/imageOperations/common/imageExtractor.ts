@@ -1,4 +1,4 @@
-import { PDFDocument, PDFPage } from "@cantoo/pdf-lib";
+import { PDFDocument, PDFPage, rgb } from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
 
 /**
@@ -28,6 +28,15 @@ export async function extractFromPage(
       bottom: height - (getMinMaxY(polygon).max * height),
     });
     const samplePage = tempPdf.addPage([newWidth * qualityScale, newHeight * qualityScale]);
+
+    samplePage.drawRectangle({
+      x: 0,
+      y: 0,
+      width: newWidth * qualityScale,
+      height: newHeight * qualityScale,
+      color: rgb(1, 1, 1),
+    });
+
     samplePage.drawPage(cropped,
       {
         width: newWidth * qualityScale,
