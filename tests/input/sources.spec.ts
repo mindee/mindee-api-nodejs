@@ -102,6 +102,22 @@ describe("Test different types of input", () => {
     expect(inputSource.fileObject).to.eqls(expectedResult);
   });
 
+  it("should accept WEBP from a path", async () => {
+    const inputSource = new PathInput({
+      inputPath: path.join(RESOURCE_PATH, "file_types/receipt.webp"),
+    });
+    await inputSource.init();
+    const expectedResult = await fs.promises.readFile(
+      path.join(RESOURCE_PATH, "file_types/receipt.webp")
+    );
+    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
+    expect(inputSource.filename).to.equals("receipt.webp");
+    expect(inputSource.mimeType).to.equals("image/webp");
+    expect(inputSource.isPdf()).to.false;
+    expect(await inputSource.getPageCount()).to.equals(1);
+    expect(inputSource.fileObject).to.eqls(expectedResult);
+  });
+
   it("should accept read streams", async () => {
     const filePath = path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg");
     const stream = fs.createReadStream(filePath);
