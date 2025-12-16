@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## v4.35.0 - 2025-12-16
+### Changes
+* :sparkles: add multi-receipt custom file saving formats
+### Fixes
+* :bug: fix image extractor dropping quality of extracted PDFs
+
+
 ## v4.34.0 - 2025-12-02
 ### Changes
 * :sparkles: add support for text context
