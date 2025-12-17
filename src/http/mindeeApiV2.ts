@@ -4,7 +4,7 @@ import { ErrorResponse, InferenceResponse, JobResponse } from "../parsing/v2";
 import FormData from "form-data";
 import { RequestOptions } from "https";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { InputSource, LocalInputSource, UrlInput } from "../input";
+import { DataSchema, InputSource, LocalInputSource, UrlInput } from "../input";
 import { MindeeApiV2Error, MindeeHttpErrorV2 } from "../errors/mindeeError";
 import { logger } from "../logger";
 
@@ -112,6 +112,13 @@ export class MindeeApiV2 {
     }
     if (params.textContext !== undefined && params.textContext !== null) {
       form.append("text_context", params.textContext);
+    }
+    if (params.dataSchema !== undefined && params.dataSchema !== null) {
+      if (params.dataSchema instanceof DataSchema || typeof params.dataSchema === "string" ){
+        form.append("data_schema", params.dataSchema.toString());
+      } else {
+        form.append("data_schema", JSON.stringify(params.dataSchema.toString()));
+      }
     }
     if (params.webhookIds && params.webhookIds.length > 0) {
       form.append("webhook_ids", params.webhookIds.join(","));
