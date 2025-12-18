@@ -1,4 +1,5 @@
 import { StringDict } from "../parsing/common";
+import { MindeeError } from "../errors";
 
 export class DataSchemaField {
   /**
@@ -95,7 +96,10 @@ export class DataSchemaReplace {
   fields: Array<DataSchemaField>;
 
   constructor(dataSchemaReplace: StringDict) {
-    if (dataSchemaReplace["fields"] && dataSchemaReplace["fields"].length === 0) {
+    if (!dataSchemaReplace || !dataSchemaReplace.fields ) {
+      throw new MindeeError("Invalid Data Schema provided.");
+    }
+    if (dataSchemaReplace["fields"].length === 0) {
       throw new TypeError("Data schema replacement fields cannot be empty.");
     }
     this.fields = dataSchemaReplace["fields"].map((field: StringDict) => (new DataSchemaField(field)));

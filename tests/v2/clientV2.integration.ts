@@ -13,7 +13,7 @@ import { Inference } from "../../src/parsing/v2";
 import { SimpleField } from "../../src/parsing/v2/field";
 import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 import * as fs from "node:fs";
-import { RESOURCE_PATH, V2_PRODUCT_PATH } from "../index";
+import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index";
 
 describe("MindeeV2 – Client Integration Tests", () => {
   let client: ClientV2;
@@ -35,12 +35,19 @@ describe("MindeeV2 – Client Integration Tests", () => {
     "file_types",
     "receipt.txt",
   );
+  const dataSchemaReplacePath = path.join(
+    V2_RESOURCE_PATH, "inference/data_schema_replace_param.json"
+  );
+  let dataSchemaReplace: string;
 
   beforeEach(async () => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
     modelId = process.env["MINDEE_V2_FINDOC_MODEL_ID"] ?? "";
 
     client = new ClientV2({ apiKey });
+  });
+  before(async () => {
+    dataSchemaReplace = fs.readFileSync(dataSchemaReplacePath).toString();
   });
 
   it("Empty, multi-page PDF – PathInput - enqueueAndGetInference must succeed", async () => {
@@ -198,6 +205,27 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(Inference);
+  }).timeout(60000);
+
+  it("Data Schema Override - Overrides the data schema successfully", async () => {
+    const source = new PathInput({ inputPath: emptyPdfPath });
+    const params: InferenceParameters = {
+      modelId,
+      rag: false,
+      rawText: false,
+      confidence: false,
+      polygon: false,
+      webhookIds: [],
+      dataSchema: dataSchemaReplace,
+      alias: "ts_integration_data_schema_replace"
+    };
+    const response = await client.enqueueAndGetInference(source, params);
+
+    expect(response).to.exist;
+    expect(response.inference).to.be.instanceOf(Inference);
+    expect(response.inference.result.fields.get("test")).to.exist;
+    expect(response.inference.result.fields.get("test")).to.be.equals("a test value");
+
   }).timeout(60000);
 
 });
