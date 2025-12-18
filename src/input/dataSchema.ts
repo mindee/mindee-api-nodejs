@@ -100,7 +100,7 @@ export class DataSchemaReplace {
       throw new MindeeError("Invalid Data Schema provided.");
     }
     if (dataSchemaReplace["fields"].length === 0) {
-      throw new TypeError("Data schema replacement fields cannot be empty.");
+      throw new TypeError("Data Schema replacement fields cannot be empty.");
     }
     this.fields = dataSchemaReplace["fields"].map((field: StringDict) => (new DataSchemaField(field)));
   }
