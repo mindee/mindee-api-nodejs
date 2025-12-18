@@ -223,8 +223,8 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(Inference);
-    expect(response.inference.result.fields.get("test")).to.exist;
-    expect(response.inference.result.fields.get("test")).to.be.equals("a test value");
+    expect(response.inference.result.fields.get("test_replace")).to.exist;
+    expect((response.inference.result.fields.get("test_replace") as SimpleField).value).to.be.equals("a test value");
 
   }).timeout(60000);
 
