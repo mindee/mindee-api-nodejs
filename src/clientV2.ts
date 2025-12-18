@@ -159,6 +159,18 @@ export class ClientV2 {
   }
 
   /**
+   * Checks the Data Schema.
+   * @param params Input Inference parameters.
+   */
+  validateDataSchema(params: InferenceParameters): void {
+    if (params.dataSchema !== undefined && params.dataSchema !== null){
+      if (!(params.dataSchema instanceof DataSchema)){
+        params.dataSchema = new DataSchema(params.dataSchema);
+      }
+    }
+  }
+
+  /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
@@ -172,7 +184,9 @@ export class ClientV2 {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
     }
+    this.validateDataSchema(params);
     await inputSource.init();
+
     return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, params);
   }
 
