@@ -15,6 +15,25 @@ import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
 import * as fs from "node:fs";
 import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index";
 
+function check422(err: unknown) {
+  expect(err).to.be.instanceOf(MindeeHttpErrorV2);
+  const errObj = err as MindeeHttpErrorV2;
+  expect(errObj.status).to.equal(422);
+  expect(errObj.code.startsWith("422-")).to.be.true;
+  expect(errObj.title).to.be.a("string");
+  expect(errObj.detail).to.be.a("string");
+  expect(errObj.errors).to.be.instanceOf(Array);
+}
+
+function checkEmptyActiveOptions(inference: Inference) {
+  expect(inference.activeOptions).to.not.be.null;
+  expect(inference.activeOptions?.rag).to.be.false;
+  expect(inference.activeOptions?.rawText).to.be.false;
+  expect(inference.activeOptions?.polygon).to.be.false;
+  expect(inference.activeOptions?.confidence).to.be.false;
+  expect(inference.activeOptions?.textContext).to.be.false;
+}
+
 describe("MindeeV2 – Client Integration Tests", () => {
   let client: ClientV2;
   let modelId: string;
@@ -74,12 +93,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
     expect(inference.result).to.exist;
     expect(inference.result.rawText).to.be.undefined;
-    expect(inference.activeOptions).to.not.be.null;
-    expect(inference.activeOptions?.rag).to.be.false;
-    expect(inference.activeOptions?.rawText).to.be.false;
-    expect(inference.activeOptions?.polygon).to.be.false;
-    expect(inference.activeOptions?.confidence).to.be.false;
-    expect(inference.activeOptions?.textContext).to.be.false;
+    checkEmptyActiveOptions(inference);
   }).timeout(60000);
 
   it("Filled, single-page image – PathInput - enqueueAndGetInference must succeed", async () => {
@@ -147,12 +161,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     expect(supplierField).to.be.instanceOf(SimpleField);
     expect(supplierField.value).to.equal("Clachan");
 
-    expect(inference.activeOptions).to.not.be.null;
-    expect(inference.activeOptions?.rag).to.be.false;
-    expect(inference.activeOptions?.rawText).to.be.false;
-    expect(inference.activeOptions?.polygon).to.be.false;
-    expect(inference.activeOptions?.confidence).to.be.false;
-    expect(inference.activeOptions?.textContext).to.be.false;
+    checkEmptyActiveOptions(inference);
   }).timeout(120000);
 
   it("Invalid model ID – enqueue must raise 422", async () => {
@@ -163,13 +172,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       await client.enqueueInference(source, badParams);
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
-      expect(err).to.be.instanceOf(MindeeHttpErrorV2);
-      const errObj = err as MindeeHttpErrorV2;
-      expect(errObj.status).to.equal(422);
-      expect(errObj.code.startsWith("422-")).to.be.true;
-      expect(errObj.title).to.be.a("string");
-      expect(errObj.detail).to.be.a("string");
-      expect(errObj.errors).to.be.instanceOf(Array);
+      check422(err);
     }
   }).timeout(60000);
 
@@ -178,13 +181,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       await client.getInference("00000000-0000-0000-0000-000000000000");
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
-      expect(err).to.be.instanceOf(MindeeHttpErrorV2);
-      const errObj = err as MindeeHttpErrorV2;
-      expect(errObj.status).to.equal(422);
-      expect(errObj.code.startsWith("422-")).to.be.true;
-      expect(errObj.title).to.be.a("string");
-      expect(errObj.detail).to.be.a("string");
-      expect(errObj.errors).to.be.instanceOf(Array);
+      check422(err);
     }
   }).timeout(60000);
 
