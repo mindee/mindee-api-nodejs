@@ -113,6 +113,9 @@ export class MindeeApiV2 {
     if (params.textContext !== undefined && params.textContext !== null) {
       form.append("text_context", params.textContext);
     }
+    if (params.dataSchema !== undefined && params.dataSchema !== null) {
+      form.append("data_schema", params.dataSchema.toString());
+    }
     if (params.webhookIds && params.webhookIds.length > 0) {
       form.append("webhook_ids", params.webhookIds.join(","));
     }

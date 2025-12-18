@@ -1,4 +1,4 @@
-import { InputSource } from "./input";
+import { DataSchema, InputSource } from "./input";
 import { errorHandler } from "./errors/handler";
 import { LOG_LEVELS, logger } from "./logger";
 
@@ -6,6 +6,7 @@ import { setTimeout } from "node:timers/promises";
 import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/v2";
 import { MindeeApiV2 } from "./http/mindeeApiV2";
 import { MindeeHttpErrorV2 } from "./errors/mindeeError";
+import { StringDict } from "./parsing/common";
 
 /**
  * Parameters for the internal polling loop in {@link ClientV2.enqueueAndGetInference | enqueueAndGetInference()} .
@@ -102,6 +103,11 @@ export interface InferenceParameters {
   /** By default, the file is closed once the upload is finished.
    * Set to `false` to keep it open. */
   closeFile?: boolean;
+  /**
+   * Dynamic changes to the data schema of the model for this inference.
+   * Not recommended, for specific use only.
+   */
+  dataSchema?: DataSchema|StringDict|string;
 }
 
 /**
@@ -153,6 +159,18 @@ export class ClientV2 {
   }
 
   /**
+   * Checks the Data Schema.
+   * @param params Input Inference parameters.
+   */
+  validateDataSchema(params: InferenceParameters): void {
+    if (params.dataSchema !== undefined && params.dataSchema !== null){
+      if (!(params.dataSchema instanceof DataSchema)){
+        params.dataSchema = new DataSchema(params.dataSchema);
+      }
+    }
+  }
+
+  /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
@@ -166,7 +184,9 @@ export class ClientV2 {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
     }
+    this.validateDataSchema(params);
     await inputSource.init();
+
     return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, params);
   }
 
