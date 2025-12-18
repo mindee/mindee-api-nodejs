@@ -4,7 +4,7 @@ import { ErrorResponse, InferenceResponse, JobResponse } from "../parsing/v2";
 import FormData from "form-data";
 import { RequestOptions } from "https";
 import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { DataSchema, InputSource, LocalInputSource, UrlInput } from "../input";
+import { InputSource, LocalInputSource, UrlInput } from "../input";
 import { MindeeApiV2Error, MindeeHttpErrorV2 } from "../errors/mindeeError";
 import { logger } from "../logger";
 
