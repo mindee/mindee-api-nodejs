@@ -18,31 +18,32 @@ describe("MindeeV2 - Inference Parameter", () => {
     expectedDataSchemaObject = new DataSchema(expectedDataSchemaDict);
   });
 
-  it("shouldn't replace when unset", async () => {
-    const params: InferenceParameters = {
-      modelId: "test-model-id",
-    };
+  describe("dataSchema", () => {
+    it("shouldn't replace when unset", async () => {
+      const params: InferenceParameters = {
+        modelId: "test-model-id",
+      };
 
-    expect(params.dataSchema).to.be.undefined;
+      expect(params.dataSchema).to.be.undefined;
+    });
+
+    it("should equate no matter the type", async () => {
+      const paramsDict: InferenceParameters = {
+        modelId: "test-model-id",
+        dataSchema: expectedDataSchemaDict,
+      };
+      const paramsString: InferenceParameters = {
+        modelId: "test-model-id",
+        dataSchema: expectedDataSchemaString,
+      };
+      const paramsObject: InferenceParameters = {
+        modelId: "test-model-id",
+        dataSchema: expectedDataSchemaObject,
+      };
+
+      expect(JSON.stringify(paramsDict.dataSchema)).to.eq(expectedDataSchemaString);
+      expect(paramsObject.dataSchema?.toString()).to.eq(expectedDataSchemaString);
+      expect(paramsString.dataSchema?.toString()).to.eq(expectedDataSchemaString);
+    });
   });
-
-  it("should equate no matter the type", async () => {
-    const paramsDict: InferenceParameters = {
-      modelId: "test-model-id",
-      dataSchema: expectedDataSchemaDict,
-    };
-    const paramsString: InferenceParameters = {
-      modelId: "test-model-id",
-      dataSchema: expectedDataSchemaString,
-    };
-    const paramsObject: InferenceParameters = {
-      modelId: "test-model-id",
-      dataSchema: expectedDataSchemaObject,
-    };
-
-    expect(JSON.stringify(paramsDict.dataSchema)).to.eq(expectedDataSchemaString);
-    expect(paramsObject.dataSchema?.toString()).to.eq(expectedDataSchemaString);
-    expect(paramsString.dataSchema?.toString()).to.eq(expectedDataSchemaString);
-  });
-
 });

@@ -126,8 +126,8 @@ export class DataSchema {
   constructor(dataSchema: StringDict | string) {
     if (typeof dataSchema === "string") {
       this.replace = new DataSchemaReplace(JSON.parse(dataSchema)["replace"]);
-    } else if (dataSchema["replace"] instanceof DataSchemaReplace) {
-      this.replace = dataSchema["replace"];
+    } else if (dataSchema instanceof DataSchema) {
+      this.replace = dataSchema.replace;
     } else {
       this.replace = new DataSchemaReplace(dataSchema["replace"] as StringDict);
     }
