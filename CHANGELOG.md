@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.36.0 - 2025-12-19
+### Changes
+* :sparkles: add support for dataschema param
+
+
 ## v4.35.0 - 2025-12-16
 ### Changes
 * :sparkles: add multi-receipt custom file saving formats
