@@ -80,31 +80,21 @@ export async function extractReceipts(
       (receipt: PositionField) => {
         // receipt.boundingBox is in the format [[x1,y1], [x2,y2], [x3,y3], [x4,y4]]
         // it must be rotated counter clock wise based on page orientation
-        if (pageOrientation === 90) {
-          return [
-            [receipt.boundingBox[0][1], 1 - receipt.boundingBox[0][0]],
-            [receipt.boundingBox[1][1], 1 - receipt.boundingBox[1][0]],
-            [receipt.boundingBox[2][1], 1 - receipt.boundingBox[2][0]],
-            [receipt.boundingBox[3][1], 1 - receipt.boundingBox[3][0]],
-          ] as Polygon;
-        }
-        if (pageOrientation === 180) {
-          return [
-            [1 - receipt.boundingBox[0][0], 1 - receipt.boundingBox[0][1]],
-            [1 - receipt.boundingBox[1][0], 1 - receipt.boundingBox[1][1]],
-            [1 - receipt.boundingBox[2][0], 1 - receipt.boundingBox[2][1]],
-            [1 - receipt.boundingBox[3][0], 1 - receipt.boundingBox[3][1]],
-          ] as Polygon;
-        }
-        if (pageOrientation === 270) {
-          return [
-            [1 - receipt.boundingBox[0][1], receipt.boundingBox[0][0]],
-            [1 - receipt.boundingBox[1][1], receipt.boundingBox[1][0]],
-            [1 - receipt.boundingBox[2][1], receipt.boundingBox[2][0]],
-            [1 - receipt.boundingBox[3][1], receipt.boundingBox[3][0]],
-          ] as Polygon;
-        }
-        return receipt.boundingBox;
+  const [[x1, y1], [x2, y2], [x3, y3], [x4, y4]] = receipt.boundingBox;
+
+  if (pageOrientation === 90) {
+    return [[y1, 1 - x1], [y2, 1 - x2], [y3, 1 - x3], [y4, 1 - x4]] as Polygon;
+  }
+
+  if (pageOrientation === 180) {
+    return [[1 - x1, 1 - y1], [1 - x2, 1 - y2], [1 - x3, 1 - y3], [1 - x4, 1 - y4]] as Polygon;
+  }
+
+  if (pageOrientation === 270) {
+    return [[1 - y1, x1], [1 - y2, x2], [1 - y3, x3], [1 - y4, x4]] as Polygon;
+  }
+
+  return receipt.boundingBox;
       }
     );
     const extractedReceipts = await extractReceiptsFromPage(page, receiptPositions, pageId);
