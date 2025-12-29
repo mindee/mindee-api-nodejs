@@ -74,8 +74,38 @@ export async function extractReceipts(
   const pdfDoc = await loadPdfDoc(inputFile);
   for (let pageId = 0; pageId < pdfDoc.getPageCount(); pageId++) {
     const [page] = await pdfDoc.copyPages(pdfDoc, [pageId]);
+    const pageOrientation = inference.pages[pageId].orientation!.value;
+
     const receiptPositions = inference.pages[pageId].prediction.receipts.map(
-      (receipt: PositionField) => receipt.boundingBox
+      (receipt: PositionField) => {
+        // receipt.boundingBox is in the format [[x1,y1], [x2,y2], [x3,y3], [x4,y4]]
+        // it must be rotated counter clock wise based on page orientation
+        if (pageOrientation === 90) {
+          return [
+            [receipt.boundingBox[0][1], 1 - receipt.boundingBox[0][0]],
+            [receipt.boundingBox[1][1], 1 - receipt.boundingBox[1][0]],
+            [receipt.boundingBox[2][1], 1 - receipt.boundingBox[2][0]],
+            [receipt.boundingBox[3][1], 1 - receipt.boundingBox[3][0]],
+          ] as Polygon;
+        }
+        if (pageOrientation === 180) {
+          return [
+            [1 - receipt.boundingBox[0][0], 1 - receipt.boundingBox[0][1]],
+            [1 - receipt.boundingBox[1][0], 1 - receipt.boundingBox[1][1]],
+            [1 - receipt.boundingBox[2][0], 1 - receipt.boundingBox[2][1]],
+            [1 - receipt.boundingBox[3][0], 1 - receipt.boundingBox[3][1]],
+          ] as Polygon;
+        }
+        if (pageOrientation === 270) {
+          return [
+            [1 - receipt.boundingBox[0][1], receipt.boundingBox[0][0]],
+            [1 - receipt.boundingBox[1][1], receipt.boundingBox[1][0]],
+            [1 - receipt.boundingBox[2][1], receipt.boundingBox[2][0]],
+            [1 - receipt.boundingBox[3][1], receipt.boundingBox[3][0]],
+          ] as Polygon;
+        }
+        return receipt.boundingBox;
+      }
     );
     const extractedReceipts = await extractReceiptsFromPage(page, receiptPositions, pageId);
     images.push(...extractedReceipts);
