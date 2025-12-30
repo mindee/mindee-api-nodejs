@@ -1,4 +1,4 @@
-import { PDFDocument, PDFImage, PDFPage } from "@cantoo/pdf-lib";
+import { PDFDocument, PDFImage, PDFPage, degrees } from "@cantoo/pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "../../errors";
 import { Polygon } from "../../geometry";
 import { MultiReceiptsDetectorV1 } from "../../product";
@@ -74,6 +74,7 @@ export async function extractReceipts(
   const pdfDoc = await loadPdfDoc(inputFile);
   for (let pageId = 0; pageId < pdfDoc.getPageCount(); pageId++) {
     const [page] = await pdfDoc.copyPages(pdfDoc, [pageId]);
+    page.setRotation(degrees(inference.pages[pageId].orientation?.value ?? 0));
     const receiptPositions = inference.pages[pageId].prediction.receipts.map(
       (receipt: PositionField) => receipt.boundingBox
     );
