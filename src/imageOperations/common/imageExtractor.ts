@@ -1,5 +1,6 @@
 import { PDFDocument, PDFPage } from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
+import { adjustForRotation } from "../../geometry/polygonUtils";
 
 /**
  * Extracts elements from a page based off of a list of bounding boxes.
@@ -15,8 +16,11 @@ export async function extractFromPage(
   // Manual upscale.
   // Fixes issues with the OCR.
   const qualityScale = 300/72;
+  const orientation = pdfPage.getRotation().angle;
 
-  for (const polygon of polygons) {
+  for (const origPolygon of polygons) {
+    const polygon = adjustForRotation(origPolygon, orientation);
+
     const tempPdf = await PDFDocument.create();
 
     const newWidth = width * (getMinMaxX(polygon).max - getMinMaxX(polygon).min);

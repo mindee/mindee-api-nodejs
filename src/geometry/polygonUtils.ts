@@ -145,6 +145,6 @@ export function adjustForRotation(polygon: Array<Point>, orientation: number): A
   if (orientation === 270) {
     return polygon.map(([x, y]) => [1 - y, x]);
   }
-  
+
   return polygon;
 }
