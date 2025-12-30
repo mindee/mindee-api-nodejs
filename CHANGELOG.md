@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v4.36.1 - 2025-12-30
+### Fixes
+* :bug: extracted images should take rotation into account
+* :recycle: fix minor issues with param syntaxes
+
+
 ## v4.36.0 - 2025-12-19
 ### Changes
 * :sparkles: add support for dataschema param
