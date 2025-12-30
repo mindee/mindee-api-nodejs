@@ -132,3 +132,19 @@ export function compareOnX(polygon1: Array<Point>, polygon2: Array<Point>): numb
   }
   return sort < 0 ? -1 : 1;
 }
+
+export function adjustForRotation(polygon: Array<Point>, orientation: number): Array<Point> {
+  if (orientation === 90) {
+    return polygon.map(([x, y]) => [y, 1 - x]);
+  }
+
+  if (orientation === 180) {
+    return polygon.map(([x, y]) => [1 - x, 1 - y]);
+  }
+
+  if (orientation === 270) {
+    return polygon.map(([x, y]) => [1 - y, x]);
+  }
+  
+  return polygon;
+}
