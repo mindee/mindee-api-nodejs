@@ -57,13 +57,14 @@ rotations.forEach(({ angle, suffix }) => {
         await extractedReceipt.saveToFileAsync(path.join(RESOURCE_PATH, `output/${outputPrefix}.jpg`));
 
         const pdfStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.pdf`));
+        // Arbitrary to assert noticeable discrepancies between OSes
         expect(pdfStat.size).to.be.greaterThan(500000);
 
         const jpgStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.jpg`));
         expect(jpgStat.size).to.be.greaterThan(40000);
 
         const pngStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.png`));
-        expect(pngStat.size).to.be.greaterThan(285000);
+        expect(pngStat.size).to.be.greaterThan(290000);
         i++;
       }
     }).timeout(20000);

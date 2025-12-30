@@ -1,4 +1,4 @@
-import { PDFDocument, PDFPage } from "@cantoo/pdf-lib";
+import { PDFDocument, PDFPage, degrees } from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
 import { adjustForRotation } from "../../geometry/polygonUtils";
 
@@ -31,20 +31,60 @@ export async function extractFromPage(
       top: height - (getMinMaxY(polygon).min * height),
       bottom: height - (getMinMaxY(polygon).max * height),
     });
-    const samplePage = tempPdf.addPage([newWidth * qualityScale, newHeight * qualityScale]);
+
+    // Determine the final page dimensions based on orientation
+    let finalWidth: number;
+    let finalHeight: number;
+    if (orientation === 90 || orientation === 270) {
+      // For 90/270 rotations, swap width and height
+      finalWidth = newHeight * qualityScale;
+      finalHeight = newWidth * qualityScale;
+    } else {
+      finalWidth = newWidth * qualityScale;
+      finalHeight = newHeight * qualityScale;
+    }
+
+    const samplePage = tempPdf.addPage([finalWidth, finalHeight]);
 
     samplePage.drawRectangle({
       x: 0,
       y: 0,
-      width: newWidth * qualityScale,
-      height: newHeight * qualityScale,
+      width: finalWidth,
+      height: finalHeight,
     });
 
-    samplePage.drawPage(cropped,
-      {
+    // Draw the cropped page with rotation applied
+    if (orientation === 0) {
+      samplePage.drawPage(cropped, {
         width: newWidth * qualityScale,
         height: newHeight * qualityScale,
       });
+    } else if (orientation === 90) {
+      samplePage.drawPage(cropped, {
+        x: 0,
+        y: finalHeight,
+        width: newWidth * qualityScale,
+        height: newHeight * qualityScale,
+        rotate: degrees(270),
+      });
+    } else if (orientation === 180) {
+      samplePage.drawPage(cropped, {
+        x: finalWidth,
+        y: finalHeight,
+        width: newWidth * qualityScale,
+        height: newHeight * qualityScale,
+        rotate: degrees(180),
+      });
+    } else if (orientation === 270) {
+      samplePage.drawPage(cropped, {
+        x: finalWidth,
+        y: 0,
+        width: newWidth * qualityScale,
+        height: newHeight * qualityScale,
+        rotate: degrees(90),
+      });
+    }
+
     extractedElements.push(await tempPdf.save());
   }
   return extractedElements;
