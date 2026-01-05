@@ -14,10 +14,9 @@ describe("MindeeV1 - InvoiceSplitterV1 Integration Tests", async () => {
   });
 
   it("should extract invoices in strict mode.", async () => {
-    const sample = client.docFromPath(
-      path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
-    );
-    await sample.init();
+    const sample = new mindee.PathInput({
+      inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
+    });
 
     const response = await client.enqueueAndParse(
       mindee.product.InvoiceSplitterV1, sample
@@ -32,7 +31,9 @@ describe("MindeeV1 - InvoiceSplitterV1 Integration Tests", async () => {
     expect(invoices[0].asSource().filename).to.eq("invoice_p_0-0.pdf");
     expect(invoices[1].asSource().filename).to.eq("invoice_p_1-1.pdf");
 
-    const invoiceResult = await client.parse(mindee.product.InvoiceV4, invoices[0].asSource());
+    const invoiceResult = await client.parse(
+      mindee.product.InvoiceV4, invoices[0].asSource()
+    );
     const testStringRstInvoice = await fs.readFile(
       path.join(V1_PRODUCT_PATH, "invoices/response_v4/summary_full_invoice_p1.rst")
     );

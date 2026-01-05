@@ -1,7 +1,7 @@
 import { Command, OptionValues, Option } from "commander";
 import { AsyncPredictResponse, Document, Inference, StringDict } from "./parsing/common";
 import { Client, PredictOptions } from "./client";
-import { PageOptions, PageOptionsOperation } from "./input";
+import { PageOptions, PageOptionsOperation, PathInput } from "./input";
 import * as console from "console";
 import { CLI_COMMAND_CONFIG, COMMAND_CUSTOM, COMMAND_GENERATED, ProductConfig } from "./cliProducts";
 
@@ -56,7 +56,7 @@ async function callParse<T extends Inference>(
   const mindeeClient = initClient(options);
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
-  const inputSource = mindeeClient.docFromPath(inputPath);
+  const inputSource = new PathInput({ inputPath: inputPath });
   let response;
   if (command === COMMAND_CUSTOM || command === COMMAND_GENERATED) {
     const customEndpoint = mindeeClient.createEndpoint(
@@ -89,7 +89,7 @@ async function callEnqueueAndParse<T extends Inference>(
   const mindeeClient = initClient(options);
   const predictParams = getPredictParams(options);
   const pageOptions = getPageOptions(options);
-  const inputSource = mindeeClient.docFromPath(inputPath);
+  const inputSource = new PathInput({ inputPath: inputPath });
   let response: AsyncPredictResponse<T>;
   if (command === COMMAND_CUSTOM || command === COMMAND_GENERATED) {
     const customEndpoint = mindeeClient.createEndpoint(

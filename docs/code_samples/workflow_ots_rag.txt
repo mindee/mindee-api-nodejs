@@ -8,8 +8,8 @@ const workflowId: string = "workflow-id";
 const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
 
 // Load a file from disk
-const inputSource = mindeeClient.docFromPath(
-  "/path/to/the/file.ext"
+const inputSource = new mindee.PathInput(
+  { inputPath: "/path/to/the/file.ext" }
 );
 
 // Configure the RAG-enabled workflow

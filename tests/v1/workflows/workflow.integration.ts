@@ -16,9 +16,9 @@ describe("MindeeV1 - Workflow calls", () => {
   beforeEach(async () => {
     client = new mindee.Client();
     workflowId = process.env["WORKFLOW_ID"] ?? "";
-    sample = client.docFromPath(
-      path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")
-    );
+    sample = new mindee.PathInput({
+      inputPath: path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")
+    });
     await sample.init();
   });
 

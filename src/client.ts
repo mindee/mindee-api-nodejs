@@ -570,6 +570,7 @@ Job status: ${pollResults.job.status}.`
   /**
    * Load an input document from a local path.
    * @param inputPath
+   * @deprecated Use `new mindee.PathInput()` instead.
    */
   docFromPath(inputPath: string): PathInput {
     return new PathInput({
@@ -581,6 +582,7 @@ Job status: ${pollResults.job.status}.`
    * Load an input document from a base64 encoded string.
    * @param inputString input content, as a string.
    * @param filename file name.
+   * @deprecated Use `new mindee.Base64Input()` instead.
    */
   docFromBase64(inputString: string, filename: string): Base64Input {
     return new Base64Input({
@@ -593,6 +595,7 @@ Job status: ${pollResults.job.status}.`
    * Load an input document from a `stream.Readable` object.
    * @param inputStream input content, as a readable stream.
    * @param filename file name.
+   * @deprecated Use `new mindee.StreamInput()` instead.
    */
   docFromStream(inputStream: Readable, filename: string): StreamInput {
     return new StreamInput({
@@ -605,6 +608,7 @@ Job status: ${pollResults.job.status}.`
    * Load an input document from bytes.
    * @param inputBytes input content, as a Uint8Array or Buffer.
    * @param filename file name.
+   * @deprecated Use `new mindee.BytesInput()` instead.
    */
   docFromBytes(inputBytes: Uint8Array, filename: string): BytesInput {
     return new BytesInput({
@@ -616,6 +620,7 @@ Job status: ${pollResults.job.status}.`
   /**
    * Load an input document from a URL.
    * @param url input url. Must be HTTPS.
+   * @deprecated Use `new mindee.UrlInput()` instead.
    */
   docFromUrl(url: string): UrlInput {
     return new UrlInput({
@@ -627,6 +632,7 @@ Job status: ${pollResults.job.status}.`
    * Load an input document from a Buffer.
    * @param buffer input content, as a buffer.
    * @param filename file name.
+   * @deprecated Use `new mindee.BufferInput()` instead.
    */
   docFromBuffer(buffer: Buffer, filename: string): BufferInput {
     return new BufferInput({
