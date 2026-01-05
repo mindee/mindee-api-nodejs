@@ -22,7 +22,7 @@ export class ApiSettingsV2 extends BaseSettings {
     }
     if (!this.apiKey || this.apiKey.length === 0) {
       throw new MindeeApiV2Error(
-        "Your API V2 key could not be set, check your Client Configuration\n."
+        "Your V2 API key could not be set, check your Client Configuration\n."
         + `You can set this using the ${API_V2_KEY_ENVVAR_NAME} environment variable.`
       );
     }
@@ -37,7 +37,7 @@ export class ApiSettingsV2 extends BaseSettings {
     const envVarValue = process.env[API_V2_KEY_ENVVAR_NAME];
     if (envVarValue) {
       logger.debug(
-        `Set API key from environment: ${API_V2_KEY_ENVVAR_NAME}`
+        "Set the V2 API key from the environment"
       );
       return envVarValue;
     }
@@ -47,7 +47,7 @@ export class ApiSettingsV2 extends BaseSettings {
   protected hostnameFromEnv(): string {
     const envVarValue = process.env[API_V2_HOST_ENVVAR_NAME];
     if (envVarValue) {
-      logger.debug(`Set the API hostname to ${envVarValue}`);
+      logger.debug(`Set the V2 API hostname from the environment to: ${envVarValue}`);
       return envVarValue;
     }
     return DEFAULT_MINDEE_API_HOST;

@@ -1,6 +1,7 @@
 export { AddressField } from "./addressField.js";
 export { AmountField } from "./amount.js";
-export { BaseField, BaseFieldConstructor } from "./base.js";
+export { BaseField } from "./base.js";
+export type { BaseFieldConstructor } from "./base.js";
 export { BooleanField } from "./boolean.js";
 export { ClassificationField } from "./classification.js";
 export { CompanyRegistrationField } from "./companyRegistration.js";
@@ -11,4 +12,4 @@ export { Taxes, TaxField } from "./tax.js";
 export { StringField } from "./text.js";
 export { PaymentDetailsField } from "./paymentDetails.js";
 export { PositionField } from "./position.js";
-export { Word } from "./word.js";
+export type { Word } from "./word.js";

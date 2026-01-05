@@ -2,10 +2,10 @@
 import { expect } from "chai";
 import nock from "nock";
 import path from "node:path";
-import { ClientV2, LocalResponse, PathInput, InferenceResponse } from "../../src";
-import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
+import { ClientV2, LocalResponse, PathInput, InferenceResponse } from "@/index.js";
+import { MindeeHttpErrorV2 } from "@/errors/mindeeError.js";
 import assert from "node:assert/strict";
-import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index";
+import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
 
 /**
  * Injects a minimal set of environment variables so that the SDK behaves
@@ -20,7 +20,9 @@ function setNockInterceptors(): void {
   nock("https://dummy-url")
     .persist()
     .post(/.*/)
-    .reply(400, { status: 400, detail: "forced failure from test" });
+    .reply(400, {
+      status: 400, detail: "forced failure from test", title: "Bad Request", code: "400-001"
+    });
 
   nock("https://dummy-url")
     .persist()
@@ -60,7 +62,7 @@ describe("MindeeV2 - ClientV2", () => {
     let client: ClientV2;
 
     beforeEach(() => {
-      client = new ClientV2({ apiKey: "dummy" });
+      client = new ClientV2({ apiKey: "dummy", debug: true });
     });
 
     it("inherits base URL, token & headers from the env / options", () => {

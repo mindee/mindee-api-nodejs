@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { promises as fs } from "fs";
 import path from "path";
-import { MultiReceiptsDetectorV1 } from "../../src/product";
-import { extractReceipts } from "../../src/imageOperations";
-import { PathInput } from "../../src";
-import { V1_PRODUCT_PATH } from "../index";
+import { MultiReceiptsDetectorV1 } from "@/product/index.js";
+import { extractReceipts } from "@/imageOperations/index.js";
+import { PathInput } from "@/index.js";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
 const dataPath = {
   complete: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/complete.json"),

@@ -1,10 +1,10 @@
-import * as mindee from "../../../../src";
-import { InvoiceSplitterV1 } from "../../../../src/product";
+import * as mindee from "@/index.js";
+import { InvoiceSplitterV1 } from "@/product/index.js";
 import { expect } from "chai";
 import { levenshteinRatio } from "../../../testingUtilities";
 import { promises as fs } from "fs";
 import path from "path";
-import { V1_PRODUCT_PATH } from "../../../index";
+import { V1_PRODUCT_PATH } from "../../../index.js";
 
 describe("MindeeV1 - InvoiceSplitterV1 Integration Tests", async () => {
   let client: mindee.Client;

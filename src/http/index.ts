@@ -1,8 +1,8 @@
 export { Endpoint } from "./endpoint.js";
-export { EndpointResponse } from "./baseEndpoint.js";
+export type { EndpointResponse } from "./baseEndpoint.js";
 export {
   STANDARD_API_OWNER,
-  API_KEY_ENVVAR_NAME,
+  API_V1_KEY_ENVVAR_NAME,
   ApiSettings,
 } from "./apiSettings.js";
 export {
@@ -22,4 +22,4 @@ export {
   isValidAsyncResponse,
   cleanRequestData,
 } from "./responseValidation.js";
-export { PredictParams, WorkflowParams } from "./httpParams.js";
+export type { PredictParams, WorkflowParams } from "./httpParams.js";

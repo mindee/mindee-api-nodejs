@@ -1,6 +1,8 @@
 export * as product from "./product/index.js";
-export { Client, PredictOptions, WorkflowOptions } from "./client.js";
-export { ClientV2, InferenceParameters, PollingOptions } from "./clientV2.js";
+export { Client } from "./client.js";
+export type { PredictOptions, WorkflowOptions } from "./client.js";
+export { ClientV2 } from "./clientV2.js";
+export type { InferenceParameters, PollingOptions } from "./clientV2.js";
 export {
   AsyncPredictResponse,
   PredictResponse,
@@ -8,7 +10,7 @@ export {
   Prediction,
   Document,
   Page,
-} from "@/parsing/common/index.js";
+} from "./parsing/common/index.js";
 export {
   InferenceFile,
   InferenceResponse,
@@ -23,9 +25,8 @@ export {
   BytesInput,
   PathInput,
   StreamInput,
-  UrlInput,
-  PageOptions,
-  PageOptionsOperation,
+  UrlInput, PageOptionsOperation,
   LocalResponse
 } from "./input/index.js";
+export type { PageOptions } from "./input/index.js";
 export * as imageOperations from "./imageOperations/index.js";

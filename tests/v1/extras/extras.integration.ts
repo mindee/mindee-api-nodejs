@@ -1,7 +1,7 @@
 import { expect } from "chai";
-import * as mindee from "../../../src";
+import * as mindee from "@/index.js";
 import path from "path";
-import { V1_PRODUCT_PATH } from "../../index";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
 
 describe("MindeeV1 - Extras Integration Tests", async () => {

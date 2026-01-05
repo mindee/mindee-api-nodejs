@@ -66,13 +66,14 @@ export abstract class BaseEndpoint {
       });
       res.on("end", function () {
         logger.debug("Parsing the response ...");
-        // handle empty responses from server, for example in the case of redirects
+        // handle empty responses from server, for example, in the case of redirects
         if (!responseBody) {
           responseBody = "{}";
         }
         try {
           const parsedResponse = JSON.parse(responseBody);
           try {
+            logger.debug("JSON parsed successfully, returning object.");
             resolve({
               messageObj: res,
               data: parsedResponse,
@@ -83,7 +84,6 @@ export abstract class BaseEndpoint {
           }
         } catch {
           logger.error("Could not parse the return as JSON.");
-          logger.debug(responseBody);
           resolve({
             messageObj: res,
             data: { reconstructedResponse: responseBody },
@@ -92,6 +92,7 @@ export abstract class BaseEndpoint {
       });
     });
     req.on("error", (err: any) => {
+      logger.error(`Unhandled error occurred: ${err}`);
       reject(err);
     });
     return req;

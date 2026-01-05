@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { Document } from "../../../src";
-import { InvoiceSplitterV1 } from "../../../src/product";
-import { extractInvoices } from "../../../src/imageOperations";
-import { PathInput } from "../../../src";
-import { V1_PRODUCT_PATH } from "../../index";
+import { Document } from "@/index.js";
+import { InvoiceSplitterV1 } from "@/product/index.js";
+import { extractInvoices } from "@/imageOperations/index.js";
+import { PathInput } from "@/index.js";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
 describe("MindeeV1 - A Multipage Invoice Document", () => {
 

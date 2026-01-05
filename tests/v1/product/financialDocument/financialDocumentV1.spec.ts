@@ -1,8 +1,8 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import * as mindee from "../../../../src";
-import { V1_PRODUCT_PATH } from "../../../index";
+import * as mindee from "@/index.js";
+import { V1_PRODUCT_PATH } from "../../../index.js";
 
 const dataPath = {
   receiptComplete: path.join(

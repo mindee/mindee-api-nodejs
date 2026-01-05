@@ -155,7 +155,7 @@ export class ClientV2 {
       debug ?? process.env.MINDEE_DEBUG
         ? LOG_LEVELS["debug"]
         : LOG_LEVELS["warn"];
-    logger.debug("ClientV2 initialized");
+    logger.debug("Client V2 Initialized");
   }
 
   /**

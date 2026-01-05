@@ -2,9 +2,9 @@ import { expect } from "chai";
 import nock from "nock";
 import { promises as fs } from "fs";
 import path from "path";
-import { GeneratedV1 } from "../../../src/product";
-import { WorkflowResponse } from "../../../src/parsing/common/workflowResponse";
-import { V1_RESOURCE_PATH } from "../../index";
+import { GeneratedV1 } from "@/product/index.js";
+import { WorkflowResponse } from "@/parsing/common/index.js";
+import { V1_RESOURCE_PATH } from "../../index.js";
 
 describe("MindeeV1 - Workflow executions", () => {
   it("should deserialize response correctly when sending a document to an execution", async () => {

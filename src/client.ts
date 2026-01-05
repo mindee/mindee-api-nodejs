@@ -18,16 +18,15 @@ import {
   FeedbackResponse,
   Inference,
   PredictResponse,
-  StringDict
-} from "@/parsing/common/index.js";
+  StringDict,
+  WorkflowResponse,
+} from "./parsing/common/index.js";
 import { errorHandler } from "./errors/handler.js";
 import { LOG_LEVELS, logger } from "./logger.js";
 import { InferenceFactory } from "./parsing/common/inference.js";
 import { GeneratedV1 } from "./product/index.js";
-
 import { setTimeout } from "node:timers/promises";
 import { MindeeError } from "./errors/index.js";
-import { WorkflowResponse } from "./parsing/common/workflowResponse.js";
 import { WorkflowEndpoint } from "./http/workflowEndpoint.js";
 import { Readable } from "stream";
 
@@ -157,7 +156,7 @@ export class Client {
     debug ?? process.env.MINDEE_DEBUG
       ? LOG_LEVELS["debug"]
       : LOG_LEVELS["warn"];
-    logger.debug("Client initialized");
+    logger.debug("Client V1 Initialized");
   }
 
   /**
@@ -549,7 +548,7 @@ Job status: ${pollResults.job.status}.`
     if (productClass.name === "CustomV1") {
       if (!accountName || accountName.length === 0) {
         logger.debug(
-          `Warning: no account name provided for custom build, ${STANDARD_API_OWNER} will be used by default`
+          `No account name provided for custom build, ${STANDARD_API_OWNER} will be used by default`
         );
         return STANDARD_API_OWNER;
       }

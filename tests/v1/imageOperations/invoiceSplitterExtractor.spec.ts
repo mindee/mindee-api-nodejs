@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import { promises as fs } from "fs";
 import path from "path";
-import { InvoiceSplitterV1 } from "../../src/product";
-import { extractInvoices } from "../../src/imageOperations";
-import { PathInput } from "../../src";
-import { V1_PRODUCT_PATH } from "../index";
+import { InvoiceSplitterV1 } from "@/product/index.js";
+import { extractInvoices } from "@/imageOperations/index.js";
+import { PathInput } from "@/index.js";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
 const dataPath = {
   complete: path.join(V1_PRODUCT_PATH, "invoice_splitter/response_v1/complete.json"),

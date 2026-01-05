@@ -1,14 +1,14 @@
-import * as mindee from "../../src";
+import * as mindee from "@/index.js";
 import path from "path";
 import { expect } from "chai";
-import * as pdf from "../../src/pdf";
-import { PageOptions } from "../../src/input";
-import {PageOptionsOperation, PathInput} from "../../src";
-import * as fs from "node:fs";
-import { RESOURCE_PATH } from "../index";
+import * as pdf from "@/pdf/index.js";
+import { PageOptions } from "@/input/index.js";
+import { PageOptionsOperation, PathInput } from "@/index.js";
+import { RESOURCE_PATH } from "../index.js";
 
 describe("Test pdf lib", () => {
   let client: mindee.Client;
+
   beforeEach(async () => {
     client = new mindee.Client();
   });

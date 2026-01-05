@@ -62,7 +62,6 @@ export class Endpoint extends BaseEndpoint {
     if (!isValidSyncResponse(response)) {
       handleError(this.urlName, response, this.extractStatusMessage(response));
     }
-
     return response;
   }
 
@@ -143,7 +142,6 @@ export class Endpoint extends BaseEndpoint {
     if (!isValidAsyncResponse(response)) {
       handleError("document", response, this.extractStatusMessage(response));
     }
-
     return response;
   }
 
@@ -163,7 +161,6 @@ export class Endpoint extends BaseEndpoint {
     if (!isValidSyncResponse(response)) {
       handleError("feedback", response, this.extractStatusMessage(response));
     }
-
     return response;
   }
 

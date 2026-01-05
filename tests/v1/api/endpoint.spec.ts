@@ -1,8 +1,8 @@
 import nock from "nock";
 import * as path from "path";
 import { expect } from "chai";
-import * as mindee from "../../../src";
-import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index";
+import { Client, PathInput, product } from "@/index.js";
+import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 
 describe("MindeeV1 - HTTP calls", () => {
   before(function() {
@@ -18,15 +18,16 @@ describe("MindeeV1 - HTTP calls", () => {
     const urlName = "invoices";
     const version = "4";
 
+    nock.disableNetConnect();
     nock("https://local.mindee.net")
       .post(`/v1/products/${owner}/${urlName}/v${version}/predict`)
       .replyWithFile(httpCode, path.resolve(httpResultFile));
 
-    const mindeeClient = new mindee.Client({ apiKey: "my-api-key", debug: true });
-    const doc = new mindee.PathInput({
+    const mindeeClient = new Client({ apiKey: "my-api-key", debug: true });
+    const doc = new PathInput({
       inputPath: path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf")
     });
-    return await mindeeClient.parse(mindee.product.InvoiceV4, doc);
+    return await mindeeClient.parse(product.InvoiceV4, doc);
   }
 
   it("should fail on 400 response with object", async () => {
@@ -35,7 +36,8 @@ describe("MindeeV1 - HTTP calls", () => {
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp400Error");
       expect(error.code).to.be.equals(400);
-      expect(error.message).to.be.undefined;
+      // nock adds a server message
+      expect(error.message).to.be.equals("Bad Request");
       expect(error.details).to.deep.equal({ document: ["error message"] });
     }
   });
@@ -67,8 +69,8 @@ describe("MindeeV1 - HTTP calls", () => {
     } catch (error: any) {
       expect(error.name).to.be.equals("MindeeHttp500Error");
       expect(error.code).to.be.equals(500);
-      expect(error.details).to.be.equals("Can not run prediction: ");
       expect(error.message).to.be.equals("Inference failed");
+      expect(error.details).to.be.equals("Can not run prediction: ");
     }
   });
 
@@ -84,7 +86,7 @@ describe("MindeeV1 - HTTP calls", () => {
 
 describe ("Endpoint parameters" , () => {
   it ("should initialize default parameters properly", async () => {
-    const mindeeClient = new mindee.Client({ apiKey: "dummy-api-key" });
+    const mindeeClient = new Client({ apiKey: "dummy-api-key", debug: true });
     const customEndpoint = mindeeClient.createEndpoint(
       "dummy-endpoint",
       "dummy-account"
@@ -99,7 +101,8 @@ describe ("Endpoint parameters" , () => {
     process.env.MINDEE_API_HOST = "dummy-host";
     process.env.MINDEE_API_KEY = "dummy-key";
     process.env.MINDEE_REQUEST_TIMEOUT = "30";
-    const mindeeClient = new mindee.Client();
+
+    const mindeeClient = new Client({ debug: true });
     const customEndpoint = mindeeClient.createEndpoint(
       "dummy-endpoint",
       "dummy-account"

@@ -1,4 +1,4 @@
-import { Client } from "../src";
+import { Client } from "@/client.js";
 import { expect } from "chai";
 
 describe("Test client initialization", () => {

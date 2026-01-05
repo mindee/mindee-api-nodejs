@@ -1,5 +1,6 @@
 export { CommonResponse } from "./commonResponse.js";
-export { ErrorResponse, ErrorDetails } from "./errorResponse.js";
+export { ErrorResponse } from "./errorResponse.js";
+export type { ErrorDetails } from "./errorResponse.js";
 export { ErrorItem } from "./errorItem.js";
 export { Inference } from "./inference.js";
 export { InferenceActiveOptions } from "./inferenceActiveOptions.js";

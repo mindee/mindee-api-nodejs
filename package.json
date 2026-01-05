@@ -7,18 +7,15 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "build": "tsc --build",
-    "build-for-dist": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
+    "build": "tsc --build && tsc-alias",
+    "build-for-dist": "tsc --build && tsc-alias && cp LICENSE README.md CHANGELOG.md ./dist",
     "clean": "rm -rf ./dist ./docs/_build",
-    "test": "mocha \"tests/**/*.spec.ts\" --config .mocharc.json",
+    "test": "mocha \"tests/**/*.spec.ts\"",
     "test-integration": "mocha \"tests/**/*.integration.ts\"",
-    "lint": "eslint './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
+    "lint": "tsc --noEmit && eslint './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
     "lint-fix": "eslint './src/**/*.ts' --fix",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/"
-  },
-  "ts-node": {
-    "require": ["tsconfig-paths/register"]
   },
   "files": [
     "src/*",

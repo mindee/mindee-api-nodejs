@@ -1,5 +1,5 @@
-import { BytesInput, UrlInput } from "../../src";
-import { LocalInputSource } from "../../src/input";
+import { BytesInput, UrlInput } from "@/index.js";
+import { LocalInputSource } from "@/input/index.js";
 import { expect } from "chai";
 import nock from "nock";
 

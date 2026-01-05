@@ -18,5 +18,5 @@ export {
   getBoundingBoxFromBBox,
   mergeBbox,
 } from "./boundingBoxUtils.js";
-export { MinMax } from "./minMax.js";
-export { Point } from "./point.js";
+export type { MinMax } from "./minMax.js";
+export type { Point } from "./point.js";
