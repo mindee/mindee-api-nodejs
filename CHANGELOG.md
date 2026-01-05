@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.36.2 - 2026-01-05
+### Changes
+* :wastebasket: deprecate docFromXxx methods
+
+
 ## v4.36.1 - 2025-12-30
 ### Fixes
 * :bug: extracted images should take rotation into account
