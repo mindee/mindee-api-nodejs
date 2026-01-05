@@ -1,12 +1,16 @@
-const { Client, product, imageOperations } = require("mindee");
+const { Client, product, imageOperations, PathInput } = require("mindee");
 const { setTimeout } = require("node:timers/promises");
 
 async function parseInvoicesWithCustomSplitsThreshold(customSplits) {
   // fill in your API key or add it as an environment variable
   const mindeeClient = new Client();
 
-  const invoiceFile = mindeeClient.docFromPath("path/to/your/file.ext");
-  let invoices = await imageOperations.extractInvoices(invoiceFile, customSplits);
+  // Load a file from disk
+  const inputSource = new PathInput(
+    { inputPath: "/path/to/the/file.ext" }
+  );
+
+  let invoices = await imageOperations.extractInvoices(inputSource, customSplits);
   for (const invoice of invoices) {
     // optional: save the documents locally
     invoice.saveToFile(`/tmp/invoice_p_${invoice.pageIdMin}-${invoice.pageIdMax}.pdf`);

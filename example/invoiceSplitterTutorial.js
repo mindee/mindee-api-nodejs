@@ -1,13 +1,19 @@
-const { Client, product, imageOperations } = require("mindee");
+const { Client, product, imageOperations, PathInput } = require("mindee");
 const { setTimeout } = require("node:timers/promises");
 
 async function parseInvoices() {
   // fill in your API key or add it as an environment variable
   const mindeeClient = new Client();
 
-  const invoiceFile = mindeeClient.docFromPath("path/to/your/file.ext");
-  const resp = await mindeeClient.enqueueAndParse(product.InvoiceSplitterV1, invoiceFile);
-  let invoices = await imageOperations.extractInvoices(invoiceFile, resp.document.inference);
+  // Load a file from disk
+  const inputSource = new PathInput(
+    { inputPath: "/path/to/the/file.ext" }
+  );
+
+  const resp = await mindeeClient.enqueueAndParse(
+    product.InvoiceSplitterV1, inputSource
+  );
+  let invoices = await imageOperations.extractInvoices(inputSource, resp.document.inference);
   for (const invoice of invoices) {
     // optional: save the documents locally
     invoice.saveToFile(`/tmp/invoice_p_${invoice.pageIdMin}-${invoice.pageIdMax}.pdf`);

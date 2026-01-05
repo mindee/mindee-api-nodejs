@@ -5,6 +5,7 @@ import { promises as fs } from "fs";
 import { createReadStream } from "node:fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../index";
+import { PathInput, Base64Input, BufferInput, BytesInput, UrlInput } from "../../../src";
 
 describe("MindeeV1 - File Input Integration Tests", async () => {
   let client: mindee.Client;
@@ -16,7 +17,7 @@ describe("MindeeV1 - File Input Integration Tests", async () => {
   });
 
   it("should send a document from a direct path", async () => {
-    const pathInput = client.docFromPath(filePath);
+    const pathInput = new PathInput({ inputPath: filePath });
     await pathInput.init();
     const result = await client.parse(InvoiceV4, pathInput);
     expect(result.document.id).to.be.a("string");
@@ -25,7 +26,7 @@ describe("MindeeV1 - File Input Integration Tests", async () => {
   it("should send a base64 document", async () => {
     const content = await fs.readFile(filePath);
     const base64Content = content.toString("base64");
-    const base64Input = client.docFromBase64(base64Content, "testFile.jpg");
+    const base64Input = new Base64Input({ inputString: base64Content, filename: "testFile.jpg" });
     const result = await client.parse(InvoiceV4, base64Input);
     expect(result.document.id).to.be.a("string");
   }).timeout(60000);
@@ -37,7 +38,7 @@ describe("MindeeV1 - File Input Integration Tests", async () => {
       chunks.push(chunk);
     }
     const buffer = Buffer.concat(chunks);
-    const streamInput = client.docFromBuffer(buffer, "testFile.jpg");
+    const streamInput = new BufferInput({ buffer: buffer, filename: "testFile.jpg" });
     const result = await client.parse(InvoiceV4, streamInput);
     expect(result.document.id).to.be.a("string");
   }).timeout(60000);
@@ -45,14 +46,14 @@ describe("MindeeV1 - File Input Integration Tests", async () => {
 
   it("should send a document from bytes", async () => {
     const inputBytes = await fs.readFile(filePath);
-    const bytesInput = client.docFromBytes(inputBytes, "testFile.jpg");
+    const bytesInput = new BytesInput({ inputBytes: inputBytes, filename: "testFile.jpg" });
     const result = await client.parse(InvoiceV4, bytesInput);
     expect(result.document.id).to.be.a("string");
   }).timeout(60000);
 
   it("should send a document from buffer", async () => {
     const buffer = await fs.readFile(filePath);
-    const bufferInput = client.docFromBuffer(buffer, "testFile.jpg");
+    const bufferInput = new BufferInput({ buffer: buffer, filename: "testFile.jpg" });
     await bufferInput.init();
     const result = await client.parse(InvoiceV4, bufferInput);
     expect(result.document.id).to.be.a("string");
@@ -61,7 +62,7 @@ describe("MindeeV1 - File Input Integration Tests", async () => {
   it("should send a document from a URL", async () => {
     const url = "https://raw.githubusercontent.com/mindee/client-lib-test-data/" +
       "refs/heads/main/v1/products/invoice_splitter/invoice_5p.pdf";
-    const urlInput = client.docFromUrl(url);
+    const urlInput = new UrlInput({ url: url });
     await urlInput.init();
     const result = await client.parse(InvoiceV4, urlInput);
     expect(result.document.id).to.be.a("string");

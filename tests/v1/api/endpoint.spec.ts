@@ -23,9 +23,9 @@ describe("MindeeV1 - HTTP calls", () => {
       .replyWithFile(httpCode, path.resolve(httpResultFile));
 
     const mindeeClient = new mindee.Client({ apiKey: "my-api-key", debug: true });
-    const doc = mindeeClient.docFromPath(
-      path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf")
-    );
+    const doc = new mindee.PathInput({
+      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf")
+    });
     return await mindeeClient.parse(mindee.product.InvoiceV4, doc);
   }
 
