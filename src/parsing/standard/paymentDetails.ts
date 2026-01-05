@@ -1,5 +1,5 @@
-import { StringDict } from "../common";
-import { Field } from "./field";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Field } from "./field.js";
 
 /**
  * @property {StringDict} constructor.prediction - Prediction object from HTTP response

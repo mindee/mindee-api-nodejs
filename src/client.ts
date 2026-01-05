@@ -2,8 +2,16 @@ import {
   InputSource,
   LocalResponse,
   PageOptions,
-} from "./input";
-import { ApiSettings, Endpoint, EndpointResponse, STANDARD_API_OWNER } from "./http";
+  Base64Input,
+  BufferInput,
+  BytesInput,
+  PathInput,
+  StreamInput,
+  UrlInput,
+} from "./input/index.js";
+import {
+  ApiSettings, Endpoint, EndpointResponse, STANDARD_API_OWNER
+} from "./http/index.js";
 import {
   AsyncPredictResponse,
   ExecutionPriority,
@@ -11,17 +19,16 @@ import {
   Inference,
   PredictResponse,
   StringDict
-} from "./parsing/common";
-import { errorHandler } from "./errors/handler";
-import { LOG_LEVELS, logger } from "./logger";
-import { InferenceFactory } from "./parsing/common/inference";
-import { CustomV1, GeneratedV1 } from "./product";
+} from "@/parsing/common/index.js";
+import { errorHandler } from "./errors/handler.js";
+import { LOG_LEVELS, logger } from "./logger.js";
+import { InferenceFactory } from "./parsing/common/inference.js";
+import { GeneratedV1 } from "./product/index.js";
 
 import { setTimeout } from "node:timers/promises";
-import { MindeeError } from "./errors";
-import { WorkflowResponse } from "./parsing/common/workflowResponse";
-import { WorkflowEndpoint } from "./http/workflowEndpoint";
-import { Base64Input, BufferInput, BytesInput, PathInput, StreamInput, UrlInput } from "./input";
+import { MindeeError } from "./errors/index.js";
+import { WorkflowResponse } from "./parsing/common/workflowResponse.js";
+import { WorkflowEndpoint } from "./http/workflowEndpoint.js";
 import { Readable } from "stream";
 
 /**
@@ -488,7 +495,7 @@ Job status: ${pollResults.job.status}.`
     endpointVersion?: string
   ): Endpoint {
     const cleanAccountName: string = this.#cleanAccountName(
-      CustomV1,
+      GeneratedV1,
       accountName
     );
     if (!endpointName || endpointName.length === 0) {

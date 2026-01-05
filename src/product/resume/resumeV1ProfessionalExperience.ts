@@ -1,7 +1,7 @@
 
-import { cleanSpecialChars } from "../../parsing/common";
-import { StringDict } from "../../parsing/common";
-import { Polygon } from "../../geometry";
+import { cleanSpecialChars } from "@/parsing/common/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Polygon } from "@/geometry/index.js";
 
 /**
  * The list of the candidate's professional experiences.

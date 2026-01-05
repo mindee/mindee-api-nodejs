@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { InternationalIdV2Document } from "./internationalIdV2Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { InternationalIdV2Document } from "./internationalIdV2Document.js";
 
 /**
  * International ID API version 2 inference prediction.

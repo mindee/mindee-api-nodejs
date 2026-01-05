@@ -1,11 +1,11 @@
 /**
  * Factory helper.
  */
-import { StringDict } from "../../common";
-import { MindeeApiV2Error } from "../../../errors/mindeeError";
-import { ListField } from "./listField";
-import { ObjectField } from "./objectField";
-import { SimpleField } from "./simpleField";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { MindeeApiV2Error } from "@/errors/index.js";
+import { ListField } from "./listField.js";
+import { ObjectField } from "./objectField.js";
+import { SimpleField } from "./simpleField.js";
 
 export function createField(serverResponse: StringDict, indentLevel = 0) {
   if (typeof serverResponse !== "object" || serverResponse === null) {

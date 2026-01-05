@@ -1,14 +1,14 @@
 import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { InputSource, LocalInputSource } from "../input";
-import { handleError } from "./error";
-import { ApiSettings } from "./apiSettings";
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { StringDict } from "../parsing/common";
+import { InputSource, LocalInputSource } from "@/input/index.js";
+import { handleError } from "./error.js";
+import { ApiSettings } from "./apiSettings.js";
+import { BaseEndpoint, EndpointResponse } from "./baseEndpoint.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 import { ClientRequest } from "http";
-import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation";
-import { PredictParams } from "./httpParams";
+import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation.js";
+import { PredictParams } from "./httpParams.js";
 
 /**
  * Endpoint for a product (OTS or Custom).

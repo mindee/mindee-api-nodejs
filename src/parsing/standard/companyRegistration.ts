@@ -1,6 +1,6 @@
-import { Field } from "./field";
-import { BaseFieldConstructor } from "./base";
-import { cleanOutString } from "../common";
+import { Field } from "./field.js";
+import { BaseFieldConstructor } from "./base.js";
+import { cleanOutString } from "@/parsing/common/index.js";
 
 /**
  * A company registration item.

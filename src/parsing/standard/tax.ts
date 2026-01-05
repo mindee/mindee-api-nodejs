@@ -1,6 +1,6 @@
-import { floatToString, StringDict } from "../common";
-import { Field } from "./field";
-import { BaseFieldConstructor } from "./base";
+import { floatToString, StringDict } from "@/parsing/common/index.js";
+import { Field } from "./field.js";
+import { BaseFieldConstructor } from "./base.js";
 
 /**
  * @property {string} constructor.rateKey - Key to use to get the tax rate in the prediction dict.

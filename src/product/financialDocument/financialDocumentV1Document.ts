@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../parsing/common";
-import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem";
+} from "@/parsing/common/index.js";
+import { FinancialDocumentV1LineItem } from "./financialDocumentV1LineItem.js";
 import {
   AddressField,
   AmountField,
@@ -14,7 +14,7 @@ import {
   PaymentDetailsField,
   StringField,
   Taxes,
-} from "../../parsing/standard";
+} from "@/parsing/standard/index.js";
 
 /**
  * Financial Document API version 1.14 document data.

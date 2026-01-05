@@ -1,7 +1,7 @@
-import { StringDict, cleanOutString } from "../../parsing/common";
-import { PositionField } from "../../parsing/standard";
+import { StringDict, cleanOutString } from "@/parsing/common/index.js";
+import { PositionField } from "@/parsing/standard/index.js";
 
-import { CropperV1Document } from "./cropperV1Document";
+import { CropperV1Document } from "./cropperV1Document.js";
 
 /**
  * Cropper API version 1.1 page data.

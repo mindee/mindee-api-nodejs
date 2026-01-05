@@ -1,6 +1,6 @@
-import { Word } from "../standard";
-import { StringDict } from "./stringDict";
-import { OcrPage } from "./ocrPage";
+import { Word } from "../standard/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { OcrPage } from "./ocrPage.js";
 
 export class MvisionV1 {
   /** List of words found on the page. */

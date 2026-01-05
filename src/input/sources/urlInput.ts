@@ -1,12 +1,12 @@
-import { InputSource } from "./inputSource";
+import { InputSource } from "./inputSource.js";
 import { URL } from "url";
 import { basename, extname } from "path";
 import { randomBytes } from "crypto";
 import { writeFile } from "fs/promises";
 import { request as httpsRequest } from "https";
 import { IncomingMessage } from "http";
-import { BytesInput } from "./bytesInput";
-import { logger } from "../../logger";
+import { BytesInput } from "./bytesInput.js";
+import { logger } from "@/logger.js";
 
 export class UrlInput extends InputSource {
   public readonly url: string;

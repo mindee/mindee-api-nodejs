@@ -1,6 +1,6 @@
-import { LocalInputSource } from "./localInputSource";
-import { INPUT_TYPE_BASE64 } from "./inputSource";
-import { logger } from "../../logger";
+import { LocalInputSource } from "./localInputSource.js";
+import { INPUT_TYPE_BASE64 } from "./inputSource.js";
+import { logger } from "@/logger.js";
 
 interface Base64InputProps {
   inputString: string;

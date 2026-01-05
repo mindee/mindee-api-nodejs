@@ -1,12 +1,12 @@
-import { ApiSettingsV2 } from "./apiSettingsV2";
-import { InferenceParameters } from "../clientV2";
-import { ErrorResponse, InferenceResponse, JobResponse } from "../parsing/v2";
+import { ApiSettingsV2 } from "./apiSettingsV2.js";
+import { InferenceParameters } from "@/clientV2.js";
+import { ErrorResponse, InferenceResponse, JobResponse } from "@/parsing/v2/index.js";
 import FormData from "form-data";
 import { RequestOptions } from "https";
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { InputSource, LocalInputSource, UrlInput } from "../input";
-import { MindeeApiV2Error, MindeeHttpErrorV2 } from "../errors/mindeeError";
-import { logger } from "../logger";
+import { BaseEndpoint, EndpointResponse } from "./baseEndpoint.js";
+import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
+import { MindeeApiV2Error, MindeeHttpErrorV2 } from "@/errors/index.js";
+import { logger } from "@/logger.js";
 
 export class MindeeApiV2 {
   settings: ApiSettingsV2;

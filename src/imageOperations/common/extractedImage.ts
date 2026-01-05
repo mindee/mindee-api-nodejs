@@ -1,10 +1,10 @@
 import { Buffer } from "node:buffer";
-import { MindeeError } from "../../errors";
+import { MindeeError } from "@/errors/index.js";
 import { writeFileSync } from "node:fs";
 import path from "node:path";
-import { logger } from "../../logger";
-import { BufferInput } from "../../input";
-import { MIMETYPES } from "../../input/sources/localInputSource";
+import { logger } from "@/logger.js";
+import { BufferInput } from "@/input/index.js";
+import { MIMETYPES } from "@/input/sources/localInputSource.js";
 import { Poppler } from "node-poppler";
 import { writeFile } from "fs/promises";
 

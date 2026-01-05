@@ -1,8 +1,8 @@
-import { errorHandler } from "../errors/handler";
+import { errorHandler } from "@/errors/handler.js";
 import { PDFDocument } from "@cantoo/pdf-lib";
-import { PageOptions, PageOptionsOperation } from "../input";
-import { MindeeError } from "../errors";
-import { logger } from "../logger";
+import { PageOptions, PageOptionsOperation } from "@/input/pageOptions.js";
+import { MindeeError } from "@/errors/index.js";
+import { logger } from "@/logger.js";
 
 export interface SplitPdf {
   file: Buffer;

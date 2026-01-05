@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { PayslipV2Document } from "./payslipV2Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { PayslipV2Document } from "./payslipV2Document.js";
 
 /**
  * Payslip API version 2 inference prediction.

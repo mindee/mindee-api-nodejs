@@ -1,9 +1,8 @@
-export { BankAccountDetailsV1 } from "./bankAccountDetails/bankAccountDetailsV1";
-export { BankAccountDetailsV2 } from "./bankAccountDetails/bankAccountDetailsV2";
-export { CarteGriseV1 } from "./carteGrise/carteGriseV1";
-export { EnergyBillV1 } from "./energyBill/energyBillV1";
-export { HealthCardV1 } from "./healthCard/healthCardV1";
-export { IdCardV1 } from "./idCard/idCardV1";
-export { IdCardV2 } from "./idCard/idCardV2";
-export { PayslipV2 } from "./payslip/payslipV2";
-export { PayslipV3 } from "./payslip/payslipV3";
+export { BankAccountDetailsV1 } from "./bankAccountDetails/index.js";
+export { BankAccountDetailsV2 } from "./bankAccountDetails/index.js";
+export { EnergyBillV1 } from "./energyBill/index.js";
+export { HealthCardV1 } from "./healthCard/index.js";
+export { IdCardV1 } from "./idCard/index.js";
+export { IdCardV2 } from "./idCard/index.js";
+export { PayslipV2 } from "./payslip/index.js";
+export { PayslipV3 } from "./payslip/index.js";

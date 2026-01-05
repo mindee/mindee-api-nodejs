@@ -1,4 +1,4 @@
-import { StringDict } from "../common";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 /**
  * Explicit details on a problem.

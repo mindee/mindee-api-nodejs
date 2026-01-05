@@ -1,9 +1,9 @@
-import { MindeeApiV2Error } from "../../../errors/mindeeError";
-import { StringDict } from "../../common";
-import { BaseField } from "./baseField";
-import { ObjectField } from "./objectField";
-import { SimpleField } from "./simpleField";
-import { createField } from "./fieldFactory";
+import { MindeeApiV2Error } from "@/errors/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { BaseField } from "./baseField.js";
+import { ObjectField } from "./objectField.js";
+import { SimpleField } from "./simpleField.js";
+import { createField } from "./fieldFactory.js";
 
 export class ListField extends BaseField {
   /**

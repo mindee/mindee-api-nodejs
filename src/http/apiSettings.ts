@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/naming-convention */
-import { logger } from "../logger";
-import { BaseSettings, MindeeApiConstructorProps } from "./baseSettings";
+import { logger } from "@/logger.js";
+import { BaseSettings, MindeeApiConstructorProps } from "./baseSettings.js";
 
 export const API_KEY_ENVVAR_NAME: string = "MINDEE_API_KEY";
 export const API_HOST_ENVVAR_NAME: string = "MINDEE_API_HOST";

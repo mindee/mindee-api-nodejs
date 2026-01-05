@@ -1,6 +1,6 @@
-import { Prediction, cleanOutString } from "../../../src/parsing/common";
-import { GeneratedListField, GeneratedObjectField } from "../../../src/parsing/generated";
-import { StringField } from "../../../src/parsing/standard";
+import { Prediction, cleanOutString } from "@/parsing/common/index.js";
+import { GeneratedListField, GeneratedObjectField } from "@/parsing/generated/index.js";
+import { StringField } from "@/parsing/standard/index.js";
 
 
 export class GeneratedV1Prediction implements Prediction {

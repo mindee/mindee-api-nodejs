@@ -1,4 +1,4 @@
-export { Polygon } from "./polygon";
+export { Polygon } from "./polygon.js";
 export {
   compareOnX,
   compareOnY,
@@ -9,14 +9,14 @@ export {
   relativeY,
   getMinMaxX,
   getMinMaxY,
-} from "./polygonUtils";
-export { BoundingBox, BBox } from "./boundingBox";
+} from "./polygonUtils.js";
+export { BoundingBox, BBox } from "./boundingBox.js";
 export {
   getBbox,
   getBBoxForPolygons,
   getBoundingBox,
   getBoundingBoxFromBBox,
   mergeBbox,
-} from "./boundingBoxUtils";
-export { MinMax } from "./minMax";
-export { Point } from "./point";
+} from "./boundingBoxUtils.js";
+export { MinMax } from "./minMax.js";
+export { Point } from "./point.js";

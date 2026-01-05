@@ -1,8 +1,7 @@
-import { CropperExtra, FullTextOcrExtra } from "./extras";
-import { ExtraField, Extras } from "./extras/extras";
-import { OrientationField } from "./orientation";
-import { Prediction } from "./prediction";
-import { StringDict } from "./stringDict";
+import { CropperExtra, FullTextOcrExtra, ExtraField, Extras } from "./extras/index.js";
+import { OrientationField } from "./orientation.js";
+import { Prediction } from "./prediction.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 
 /**

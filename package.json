@@ -5,6 +5,7 @@
   "main": "src/index.js",
   "bin": "bin/mindee.js",
   "license": "MIT",
+  "type": "module",
   "scripts": {
     "build": "tsc --build",
     "build-for-dist": "tsc --build && cp LICENSE README.md CHANGELOG.md ./dist",
@@ -15,6 +16,9 @@
     "lint-fix": "eslint './src/**/*.ts' --fix",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/"
+  },
+  "ts-node": {
+    "require": ["tsconfig-paths/register"]
   },
   "files": [
     "src/*",
@@ -58,8 +62,8 @@
   "dependencies": {
     "@cantoo/pdf-lib": "^2.3.2",
     "commander": "~9.4.1",
-    "file-type": "~16.5.4",
-    "form-data": "~3.0.1",
+    "file-type": "~18.7",
+    "form-data": "~3.0.4",
     "node-poppler": "^7.2.2",
     "pdf.js-extract": "^0.2.1",
     "sharp": "^0.33.5",
@@ -72,6 +76,7 @@
     "api",
     "client",
     "client library",
-    "nodejs"
+    "nodejs",
+    "sdk"
   ]
 }

@@ -1,6 +1,6 @@
-import { Field } from "./field";
-import { BaseFieldConstructor } from "./base";
-import { floatToString } from "../common";
+import { Field } from "./field.js";
+import { BaseFieldConstructor } from "./base.js";
+import { floatToString } from "@/parsing/common/index.js";
 
 /**
  * A field containing an amount value.

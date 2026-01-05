@@ -1,10 +1,10 @@
-export { Endpoint } from "./endpoint";
-export { EndpointResponse } from "./baseEndpoint";
+export { Endpoint } from "./endpoint.js";
+export { EndpointResponse } from "./baseEndpoint.js";
 export {
   STANDARD_API_OWNER,
   API_KEY_ENVVAR_NAME,
   ApiSettings,
-} from "./apiSettings";
+} from "./apiSettings.js";
 export {
   MindeeHttpError,
   MindeeHttp400Error,
@@ -16,10 +16,10 @@ export {
   MindeeHttp500Error,
   MindeeHttp504Error,
   handleError,
-} from "./error";
+} from "./error.js";
 export {
   isValidSyncResponse,
   isValidAsyncResponse,
   cleanRequestData,
-} from "./responseValidation";
-export { PredictParams, WorkflowParams } from "./httpParams";
+} from "./responseValidation.js";
+export { PredictParams, WorkflowParams } from "./httpParams.js";

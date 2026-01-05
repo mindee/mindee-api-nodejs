@@ -1,5 +1,5 @@
-import { ApiResponse } from "../apiResponse";
-import { StringDict } from "../stringDict";
+import { ApiResponse } from "../apiResponse.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 /**
  * Wrapper for feedback response.

@@ -1,4 +1,4 @@
-import { ExtractedImage } from "../common/extractedImage";
+import { ExtractedImage } from "@/imageOperations/common/extractedImage.js";
 
 /**
  * Wrapper class for extracted invoice pages.

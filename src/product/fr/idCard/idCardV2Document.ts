@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,
-} from "../../../parsing/common";
-import { DateField, StringField } from "../../../parsing/standard";
+} from "@/parsing/common/index.js";
+import { DateField, StringField } from "@/parsing/standard/index.js";
 
 /**
  * Carte Nationale d'Identité API version 2.0 document data.

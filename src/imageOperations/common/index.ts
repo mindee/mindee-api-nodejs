@@ -1,2 +1,2 @@
-export { ExtractedImage } from "./extractedImage";
-export { extractFromPage } from "./imageExtractor";
+export { ExtractedImage } from "./extractedImage.js";
+export { extractFromPage } from "./imageExtractor.js";

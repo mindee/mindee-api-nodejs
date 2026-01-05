@@ -1,9 +1,8 @@
-import { ApiSettings } from "./apiSettings";
-import { logger } from "../logger";
+import { ApiSettings } from "./apiSettings.js";
+import { logger } from "@/logger.js";
 import { IncomingMessage, ClientRequest } from "http";
 import { request, RequestOptions } from "https";
-import { InputSource, PageOptions } from "../input";
-import { LocalInputSource } from "../input";
+import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 
 
 export interface EndpointResponse {

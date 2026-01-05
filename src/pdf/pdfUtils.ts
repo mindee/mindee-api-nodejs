@@ -1,5 +1,5 @@
 import { PDFExtract, PDFExtractOptions, PDFExtractResult } from "pdf.js-extract";
-import { MindeePdfError } from "../errors/mindeeError";
+import { MindeePdfError } from "@/errors/index.js";
 
 
 export interface PageTextInfo {

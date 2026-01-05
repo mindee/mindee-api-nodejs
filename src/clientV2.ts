@@ -1,12 +1,12 @@
-import { DataSchema, InputSource } from "./input";
-import { errorHandler } from "./errors/handler";
-import { LOG_LEVELS, logger } from "./logger";
+import { DataSchema, InputSource } from "./input/index.js";
+import { errorHandler } from "./errors/handler.js";
+import { LOG_LEVELS, logger } from "./logger.js";
 
 import { setTimeout } from "node:timers/promises";
-import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/v2";
-import { MindeeApiV2 } from "./http/mindeeApiV2";
-import { MindeeHttpErrorV2 } from "./errors/mindeeError";
-import { StringDict } from "./parsing/common";
+import { ErrorResponse, InferenceResponse, JobResponse } from "@/parsing/v2/index.js";
+import { MindeeApiV2 } from "./http/mindeeApiV2.js";
+import { MindeeHttpErrorV2 } from "@/errors/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 /**
  * Parameters for the internal polling loop in {@link ClientV2.enqueueAndGetInference | enqueueAndGetInference()} .

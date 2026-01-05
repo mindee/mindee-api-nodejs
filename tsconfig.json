@@ -1,19 +1,22 @@
 {
   "compilerOptions": {
     "lib": ["ES2020"],
-    "module": "commonjs",
+    "module": "Node18",
     "target": "ES2020",
 
     "strict": true,
     "esModuleInterop": true,
     "skipLibCheck": true,
     "forceConsistentCasingInFileNames": true,
-    "moduleResolution": "node",
+    "moduleResolution": "Node16",
 
     "resolveJsonModule": true,
     "declaration": true,
     "outDir": "dist",
     "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"]
+    },
     "sourceMap": false,
     "newLine": "lf",
   },

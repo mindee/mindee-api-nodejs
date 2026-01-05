@@ -1,10 +1,10 @@
-import { StringDict } from "../common";
-import { ExtraField, Extras } from "./extras/extras";
-import { Page } from "./page";
-import type { Prediction } from "./prediction";
-import { Product } from "./product";
-import { CropperExtra, FullTextOcrExtra } from "./extras";
-import { RAGExtra } from "./extras/ragExtra";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Page } from "./page.js";
+import type { Prediction } from "./prediction.js";
+import { Product } from "./product.js";
+import {
+  CropperExtra, FullTextOcrExtra, ExtraField, Extras, RAGExtra
+} from "./extras/index.js";
 
 /**
  *

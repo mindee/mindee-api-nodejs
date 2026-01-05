@@ -1,6 +1,6 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { CropperV1Document } from "./cropperV1Document";
-import { CropperV1Page } from "./cropperV1Page";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { CropperV1Document } from "./cropperV1Document.js";
+import { CropperV1Page } from "./cropperV1Page.js";
 
 /**
  * Cropper API version 1 inference prediction.

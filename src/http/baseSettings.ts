@@ -1,6 +1,6 @@
-import { version as sdkVersion } from "../../package.json";
+import packageJson from "../../package.json" with { type: "json" };
 import * as os from "os";
-import { TIMEOUT_DEFAULT } from "./apiSettings";
+import { TIMEOUT_DEFAULT } from "./apiSettings.js";
 
 export interface MindeeApiConstructorProps {
   apiKey?: string;
@@ -26,7 +26,7 @@ export abstract class BaseSettings {
     else if (platform.includes("bsd")) {
       platform = "bsd";
     }
-    return `mindee-api-nodejs@v${sdkVersion} nodejs-${
+    return `mindee-api-nodejs@v${packageJson.version} nodejs-${
       process.version
     } ${platform}`;
   }

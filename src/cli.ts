@@ -1,12 +1,13 @@
 import { Command, OptionValues, Option } from "commander";
-import { AsyncPredictResponse, Document, Inference, StringDict } from "./parsing/common";
-import { Client, PredictOptions } from "./client";
-import { PageOptions, PageOptionsOperation, PathInput } from "./input";
+import { AsyncPredictResponse, Document, Inference, StringDict } from "@/parsing/common/index.js";
+import { Client, PredictOptions } from "./client.js";
+import { PageOptions, PageOptionsOperation, PathInput } from "./input/index.js";
 import * as console from "console";
-import { CLI_COMMAND_CONFIG, COMMAND_CUSTOM, COMMAND_GENERATED, ProductConfig } from "./cliProducts";
+import {
+  CLI_COMMAND_CONFIG, COMMAND_CUSTOM, COMMAND_GENERATED, ProductConfig
+} from "./cliProducts.js";
 
 const program = new Command();
-
 
 
 //

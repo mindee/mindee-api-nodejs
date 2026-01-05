@@ -1,6 +1,6 @@
 import sharp from "sharp";
 import { Sharp, Metadata } from "sharp";
-import { MindeeImageError } from "../errors/mindeeError";
+import { MindeeImageError } from "@/errors/index.js";
 
 /**
  * Compresses an image with the given parameters.

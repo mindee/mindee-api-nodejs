@@ -1,4 +1,4 @@
-import { BaseField, BaseFieldConstructor } from "../standard";
+import { BaseField, BaseFieldConstructor } from "@/parsing/standard/index.js";
 
 interface OrientationFieldConstructor extends BaseFieldConstructor {
   pageId: number;

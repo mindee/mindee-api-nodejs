@@ -1,14 +1,14 @@
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { ApiSettings } from "./apiSettings";
-import { InputSource, LocalInputSource } from "../input";
+import { BaseEndpoint, EndpointResponse } from "./baseEndpoint.js";
+import { ApiSettings } from "./apiSettings.js";
+import { InputSource, LocalInputSource } from "@/input/index.js";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
 import { RequestOptions } from "https";
-import { isValidSyncResponse } from "./responseValidation";
-import { handleError } from "./error";
+import { isValidSyncResponse } from "./responseValidation.js";
+import { handleError } from "./error.js";
 
-import { WorkflowParams } from "./httpParams";
-import { ExecutionPriority } from "../parsing/common";
+import { WorkflowParams } from "./httpParams.js";
+import { ExecutionPriority } from "@/parsing/common/index.js";
 
 /**
  * Endpoint for a workflow.

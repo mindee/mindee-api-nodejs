@@ -1,7 +1,7 @@
-import { StringDict } from "./stringDict";
-import { ApiResponse } from "./apiResponse";
-import { Execution } from "./execution";
-import { Inference } from "./inference";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { ApiResponse } from "./apiResponse.js";
+import { Execution } from "./execution.js";
+import { Inference } from "./inference.js";
 
 
 /** Wrapper for workflow requests.

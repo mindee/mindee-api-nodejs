@@ -1,5 +1,5 @@
-import { InputSource, PageOptions } from "../input";
-import { ExecutionPriority } from "../parsing/common";
+import { InputSource, PageOptions } from "@/input/index.js";
+import { ExecutionPriority } from "@/parsing/common/index.js";
 
 interface HTTPParams {
   inputDoc: InputSource;

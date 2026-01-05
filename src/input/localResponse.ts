@@ -1,9 +1,9 @@
 import * as crypto from "crypto";
 import * as fs from "node:fs/promises";
-import { StringDict } from "../parsing/common";
-import { MindeeError } from "../errors";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { MindeeError } from "../errors/index.js";
 import { Buffer } from "buffer";
-import { CommonResponse } from "../parsing/v2";
+import { CommonResponse } from "../parsing/v2/index.js";
 
 /**
  * Local response loaded from a file.

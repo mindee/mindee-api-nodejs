@@ -1,5 +1,5 @@
-import { StringDict } from "../../common";
-import { BaseField } from "./baseField";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { BaseField } from "./baseField.js";
 
 export class SimpleField extends BaseField {
   readonly value: string | number | boolean | null;
