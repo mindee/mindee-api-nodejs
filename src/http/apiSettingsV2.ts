@@ -32,7 +32,6 @@ export class ApiSettingsV2 extends BaseSettings {
     };
   }
 
-
   protected apiKeyFromEnv(): string {
     const envVarValue = process.env[API_V2_KEY_ENVVAR_NAME];
     if (envVarValue) {
@@ -52,6 +51,5 @@ export class ApiSettingsV2 extends BaseSettings {
     }
     return DEFAULT_MINDEE_API_HOST;
   }
-
 
 }

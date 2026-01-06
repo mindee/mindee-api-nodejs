@@ -5,7 +5,6 @@ import { BaseSettings, MindeeApiConstructorProps } from "./baseSettings.js";
 export const API_V1_KEY_ENVVAR_NAME: string = "MINDEE_API_KEY";
 export const API_V1_HOST_ENVVAR_NAME: string = "MINDEE_API_HOST";
 export const STANDARD_API_OWNER: string = "mindee";
-export const TIMEOUT_DEFAULT: number = 120;
 const DEFAULT_MINDEE_API_HOST: string = "api.mindee.net";
 
 export class ApiSettings extends BaseSettings {
@@ -32,7 +31,6 @@ export class ApiSettings extends BaseSettings {
       Authorization: `Token ${this.apiKey}`,
     };
   }
-
 
   protected apiKeyFromEnv(): string {
     const envVarValue = process.env[API_V1_KEY_ENVVAR_NAME];

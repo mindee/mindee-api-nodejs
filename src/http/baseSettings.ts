@@ -1,6 +1,6 @@
 import packageJson from "../../package.json" with { type: "json" };
 import * as os from "os";
-import { TIMEOUT_DEFAULT } from "./apiSettings.js";
+import { TIMEOUT_DEFAULT } from "./apiCore.js";
 
 export interface MindeeApiConstructorProps {
   apiKey?: string;

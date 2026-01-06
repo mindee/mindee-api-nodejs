@@ -3,7 +3,7 @@ import { InferenceParameters } from "@/clientV2.js";
 import { ErrorResponse, InferenceResponse, JobResponse } from "@/parsing/v2/index.js";
 import FormData from "form-data";
 import { RequestOptions } from "https";
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint.js";
+import { sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
 import { MindeeApiV2Error, MindeeHttpErrorV2 } from "@/errors/index.js";
 import { logger } from "@/logger.js";
@@ -136,7 +136,7 @@ export class MindeeApiV2 {
       timeout: this.settings.timeout,
     };
     return new Promise((resolve, reject) => {
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
+      const req = sendRequestAndReadResponse(options, resolve, reject);
       form.pipe(req);
       // potential ECONNRESET if we don't end the request.
       req.end();
@@ -158,7 +158,7 @@ export class MindeeApiV2 {
         hostname: this.settings.hostname,
         path: `/v2/${slug}/${queueId}`,
       };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
+      const req = sendRequestAndReadResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.
       req.end();
     });

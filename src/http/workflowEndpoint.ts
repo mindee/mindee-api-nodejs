@@ -1,4 +1,4 @@
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint.js";
+import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
 import { ApiSettings } from "./apiSettings.js";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { URLSearchParams } from "url";
@@ -6,21 +6,25 @@ import FormData from "form-data";
 import { RequestOptions } from "https";
 import { isValidSyncResponse } from "./responseValidation.js";
 import { handleError } from "./error.js";
-
 import { WorkflowParams } from "./httpParams.js";
 import { ExecutionPriority } from "@/parsing/common/index.js";
 
 /**
  * Endpoint for a workflow.
  */
-export class WorkflowEndpoint extends BaseEndpoint {
+export class WorkflowEndpoint {
+  /** Settings relating to the API. */
+  settings: ApiSettings;
+  /** Root of the URL for API calls. */
+  urlRoot: string;
+
   constructor(
     settings: ApiSettings,
     workflowId: string
   ) {
-    super(settings, `/v1/workflows/${workflowId}/executions`);
+    this.settings = settings;
+    this.urlRoot = `/v1/workflows/${workflowId}/executions`;
   }
-
 
   /**
    * Sends a document to a workflow execution.
@@ -32,13 +36,12 @@ export class WorkflowEndpoint extends BaseEndpoint {
   async executeWorkflow(params: WorkflowParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
+      await cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#workflowReqPost(params);
     if (!isValidSyncResponse(response)) {
       handleError(this.urlRoot, response, response.messageObj?.statusMessage);
     }
-
     return response;
   }
 
@@ -81,7 +84,6 @@ export class WorkflowEndpoint extends BaseEndpoint {
       if (fullText) {
         searchParams.append("full_text_ocr", "true");
       }
-
       if (rag) {
         searchParams.append("rag", "true");
       }
@@ -94,7 +96,6 @@ export class WorkflowEndpoint extends BaseEndpoint {
       } else {
         form.append("document", input.fileObject);
       }
-
       if (alias) {
         form.append("alias", alias);
       }
@@ -117,7 +118,7 @@ export class WorkflowEndpoint extends BaseEndpoint {
         path: path,
         timeout: this.settings.timeout,
       };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
+      const req = sendRequestAndReadResponse(options, resolve, reject);
       form.pipe(req);
       // potential ECONNRESET if we don't end the request.
       req.end();

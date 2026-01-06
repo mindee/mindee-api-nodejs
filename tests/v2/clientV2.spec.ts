@@ -13,18 +13,18 @@ import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
  */
 function dummyEnvvars(): void {
   process.env.MINDEE_V2_API_KEY = "dummy";
-  process.env.MINDEE_V2_API_HOST = "dummy-url";
+  process.env.MINDEE_V2_API_HOST = "v2-dummy-host";
 }
 
 function setNockInterceptors(): void {
-  nock("https://dummy-url")
+  nock("https://v2-dummy-host")
     .persist()
     .post(/.*/)
     .reply(400, {
       status: 400, detail: "forced failure from test", title: "Bad Request", code: "400-001"
     });
 
-  nock("https://dummy-url")
+  nock("https://v2-dummy-host")
     .persist()
     .get(/.*/)
     .reply(200, {
@@ -68,22 +68,26 @@ describe("MindeeV2 - ClientV2", () => {
     it("inherits base URL, token & headers from the env / options", () => {
       const api = (client as any).mindeeApi;
       expect(api.settings.apiKey).to.equal("dummy");
-      expect(api.settings.hostname).to.equal("dummy-url");
+      expect(api.settings.hostname).to.equal("v2-dummy-host");
       expect(api.settings.baseHeaders.Authorization).to.equal("dummy");
       expect(api.settings.baseHeaders["User-Agent"]).to.match(/mindee/i);
     });
 
-    it("enqueue(path) rejects with MindeeHttpErrorV2 on 4xx", async () => {
+    it("enqueue(path) rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
         client.enqueueInference(inputDoc, { modelId: "dummy-model", textContext: "hello" }),
-        MindeeHttpErrorV2
+        (error: any) => {
+          assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
+          assert.strictEqual(error.status, 400);
+          return true;
+        }
       );
     });
 
-    it("enqueueAndParse(path) rejects with MindeeHttpErrorV2 on 4xx", async () => {
+    it("enqueueAndParse(path) rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
       await assert.rejects(
@@ -91,7 +95,11 @@ describe("MindeeV2 - ClientV2", () => {
           inputDoc,
           { modelId: "dummy-model", rag: false }
         ),
-        MindeeHttpErrorV2
+        (error: any) => {
+          assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
+          assert.strictEqual(error.status, 400);
+          return true;
+        }
       );
     });
 
@@ -120,15 +128,15 @@ describe("MindeeV2 - ClientV2", () => {
           "default_sample.jpg"
         ),
       });
-      try {
-        await client.enqueueInference(input, { modelId: "dummy-model" });
-        expect.fail("enqueue() should have thrown");
-      } catch (err) {
-        expect(err).to.be.instanceOf(MindeeHttpErrorV2);
-        const httpErr = err as MindeeHttpErrorV2;
-        expect(httpErr.status).to.equal(400);
-        expect(httpErr.detail).to.equal("forced failure from test");
-      }
+      await assert.rejects(
+        client.enqueueInference(input, { modelId: "dummy-model" }),
+        (error: any) => {
+          expect(error).to.be.instanceOf(MindeeHttpErrorV2);
+          expect(error.status).to.equal(400);
+          expect(error.detail).to.equal("forced failure from test");
+          return true;
+        }
+      );
     });
 
     it("parseQueued(jobId) returns a fully-formed JobResponse", async () => {

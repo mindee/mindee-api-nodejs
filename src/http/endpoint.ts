@@ -4,7 +4,7 @@ import FormData from "form-data";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { handleError } from "./error.js";
 import { ApiSettings } from "./apiSettings.js";
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint.js";
+import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
 import { StringDict } from "@/parsing/common/stringDict.js";
 import { ClientRequest } from "http";
 import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation.js";
@@ -13,7 +13,11 @@ import { PredictParams } from "./httpParams.js";
 /**
  * Endpoint for a product (OTS or Custom).
  */
-export class Endpoint extends BaseEndpoint {
+export class Endpoint {
+  /** Settings relating to the API. */
+  settings: ApiSettings;
+  /** Root of the URL for API calls. */
+  urlRoot: string;
   /** URL of a product. */
   urlName: string;
   /** Account owning the product. */
@@ -27,18 +31,11 @@ export class Endpoint extends BaseEndpoint {
     version: string,
     settings: ApiSettings
   ) {
-    super(settings, `/v1/products/${owner}/${urlName}/v${version}`);
+    this.settings = settings;
+    this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
-  }
-
-  /**
-   * Changes the url to a workflow ID.
-   * @param workflowId
-   */
-  useWorkflowId(workflowId: string) {
-    this.urlRoot = `/v1/workflows/${workflowId}`;
   }
 
   /**
@@ -51,7 +48,7 @@ export class Endpoint extends BaseEndpoint {
   async predict(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
+      await cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictReqPost(
       params.inputDoc,
@@ -75,7 +72,7 @@ export class Endpoint extends BaseEndpoint {
   async predictAsync(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
+      await cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictAsyncReqPost(
       params.inputDoc,
@@ -224,7 +221,7 @@ export class Endpoint extends BaseEndpoint {
         path: path,
         timeout: this.settings.timeout,
       };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
+      const req = sendRequestAndReadResponse(options, resolve, reject);
       form.pipe(req);
       // potential ECONNRESET if we don't end the request.
       req.end();
@@ -287,7 +284,7 @@ export class Endpoint extends BaseEndpoint {
         hostname: this.settings.hostname,
         path: `${this.urlRoot}/documents/queue/${queueId}`,
       };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
+      const req = sendRequestAndReadResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.
       req.end();
     });
@@ -305,7 +302,7 @@ export class Endpoint extends BaseEndpoint {
         hostname: this.settings.hostname,
         path: `${this.urlRoot}/documents/${documentId}`,
       };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
+      const req = sendRequestAndReadResponse(options, resolve, reject);
       // potential ECONNRESET if we don't end the request.
       req.end();
     });
@@ -324,7 +321,7 @@ export class Endpoint extends BaseEndpoint {
         hostname: this.settings.hostname,
         path: `/v1/documents/${documentId}/feedback`,
       };
-      const req: ClientRequest = BaseEndpoint.readResponse(options, resolve, reject);
+      const req: ClientRequest = sendRequestAndReadResponse(options, resolve, reject);
       req.write(JSON.stringify(feedback));
 
       // potential ECONNRESET if we don't end the request.
