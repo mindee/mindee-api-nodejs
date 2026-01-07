@@ -271,7 +271,6 @@ export class Client {
     }
   }
 
-
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param inputSource file to send to the API.

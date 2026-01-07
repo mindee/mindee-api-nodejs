@@ -2,24 +2,41 @@ import { expect } from "chai";
 import nock from "nock";
 import { promises as fs } from "fs";
 import path from "path";
-import { GeneratedV1 } from "@/product/index.js";
-import { WorkflowResponse } from "@/parsing/common/index.js";
-import { V1_RESOURCE_PATH } from "../../index.js";
+import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
+import { Client, PathInput } from "@/index.js";
+
+
+async function setNockInterceptor(httpCode: number, jsonFilePath: string) {
+  const mockResponse = JSON.parse(await fs.readFile(jsonFilePath, "utf-8"));
+  nock("https://v1-dummy-host")
+    .post(/v1\/workflows\/.*/)
+    .reply(httpCode, mockResponse);
+}
+
+async function executeWorkflow(doc: PathInput, workflowId: string) {
+  const client = new Client({ apiKey: "my-api-key", debug: true });
+  return await client.executeWorkflow(doc, workflowId);
+}
 
 describe("MindeeV1 - Workflow executions", () => {
+  const doc = new PathInput({
+    inputPath: path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf")
+  });
+
+  beforeEach(function() {
+    process.env.MINDEE_API_HOST = "v1-dummy-host";
+  });
+
+  afterEach(function() {
+    delete process.env.MINDEE_API_HOST;
+  });
+
   it("should deserialize response correctly when sending a document to an execution", async () => {
     const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success.json");
-    const mockResponse = JSON.parse(await fs.readFile(jsonFilePath, "utf-8"));
-
-    nock("https://api.mindee.net")
-      .post("/v1/workflows/execute")
-      .reply(202, mockResponse);
-
-    const mockedExecution = new WorkflowResponse(
-      GeneratedV1,
-      mockResponse
+    await setNockInterceptor(202, jsonFilePath);
+    const mockedExecution = await executeWorkflow(
+      doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
     );
-
     expect(mockedExecution).to.not.be.null;
     expect(mockedExecution.apiRequest).to.not.be.null;
     expect(mockedExecution.execution.batchName).to.be.null;
@@ -40,17 +57,10 @@ describe("MindeeV1 - Workflow executions", () => {
   it("should deserialize response correctly when sending a document to an execution with priority and alias",
     async () => {
       const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success_low_priority.json");
-      const mockResponse = JSON.parse(await fs.readFile(jsonFilePath, "utf-8"));
-
-      nock("https://api.mindee.net")
-        .post("/v1/workflows/execute")
-        .reply(200, mockResponse);
-
-      const mockedExecution = new WorkflowResponse(
-        GeneratedV1,
-        mockResponse
+      await setNockInterceptor(200, jsonFilePath);
+      const mockedExecution = await executeWorkflow(
+        doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
       );
-
       expect(mockedExecution).to.not.be.null;
       expect(mockedExecution.apiRequest).to.not.be.null;
       expect(mockedExecution.execution.batchName).to.be.null;

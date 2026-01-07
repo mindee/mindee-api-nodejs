@@ -9,7 +9,7 @@ import {
 } from "@/http/index.js";
 
 
-async function setNockInterceptors(httpCode: number, httpResultFile: string) {
+function setNockInterceptors(httpCode: number, httpResultFile: string) {
   nock("https://v1-dummy-host")
     .post(/.*/)
     .replyWithFile(
@@ -22,16 +22,17 @@ describe("MindeeV1 - HTTP calls", () => {
     inputPath: path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf")
   });
 
-  beforeEach(function() {
+  beforeEach(async function() {
     process.env.MINDEE_API_HOST = "v1-dummy-host";
   });
 
-  afterEach(function() {
+  afterEach(async function() {
+    nock.cleanAll();
     delete process.env.MINDEE_API_HOST;
   });
 
   it("should fail on 400 response with object", async () => {
-    await setNockInterceptors(400, "errors/error_400_with_object_in_detail.json");
+    setNockInterceptors(400, "errors/error_400_with_object_in_detail.json");
     const client = new Client({ apiKey: "my-api-key", debug: true });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
@@ -47,7 +48,7 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   it("should fail on 401 response", async () => {
-    await setNockInterceptors(401, "errors/error_401_no_token.json");
+    setNockInterceptors(401, "errors/error_401_no_token.json");
     const client = new Client({ apiKey: "my-api-key", debug: true });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
@@ -60,7 +61,7 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   it("should fail on 429 response", async () => {
-    await setNockInterceptors(429, "errors/error_429_too_many_requests.json");
+    setNockInterceptors(429, "errors/error_429_too_many_requests.json");
     const client = new Client({ apiKey: "my-api-key", debug: true });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
@@ -73,7 +74,7 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   it("should fail on 500 response", async () => {
-    await setNockInterceptors(500, "errors/error_500_inference_fail.json");
+    setNockInterceptors(500, "errors/error_500_inference_fail.json");
     const client = new Client({ apiKey: "my-api-key", debug: true });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
@@ -86,7 +87,7 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   it("should fail on HTML response", async () => {
-    await setNockInterceptors(500, "errors/error_50x.html");
+    setNockInterceptors(500, "errors/error_50x.html");
     const client = new Client({ apiKey: "my-api-key", debug: true });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
