@@ -1,13 +1,13 @@
-import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
-import { ApiSettings } from "./apiSettings.js";
-import { InputSource, LocalInputSource } from "@/input/index.js";
+import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
-import { RequestOptions } from "https";
-import { isValidSyncResponse } from "./responseValidation.js";
+import { InputSource, LocalInputSource } from "@/input/index.js";
+import { ExecutionPriority } from "@/parsing/common/index.js";
+import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
+import { ApiSettings } from "./apiSettings.js";
 import { handleError } from "./error.js";
 import { WorkflowParams } from "./httpParams.js";
-import { ExecutionPriority } from "@/parsing/common/index.js";
+import { isValidSyncResponse } from "./responseValidation.js";
 
 /**
  * Endpoint for a workflow.
@@ -80,7 +80,6 @@ export class WorkflowEndpoint {
   ): Promise<EndpointResponse> {
     return new Promise((resolve, reject) => {
       const searchParams = new URLSearchParams();
-
       if (fullText) {
         searchParams.append("full_text_ocr", "true");
       }
@@ -105,12 +104,14 @@ export class WorkflowEndpoint {
       if (priority) {
         form.append("priority", priority.toString());
       }
+
       const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
 
       let path = this.urlRoot;
       if (searchParams.toString().length > 0) {
         path += `?${searchParams}`;
       }
+
       const options: RequestOptions = {
         method: "POST",
         headers: headers,

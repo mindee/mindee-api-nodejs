@@ -2,13 +2,12 @@ import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
 import FormData from "form-data";
 import { InputSource, LocalInputSource } from "@/input/index.js";
-import { handleError } from "./error.js";
-import { ApiSettings } from "./apiSettings.js";
-import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
 import { StringDict } from "@/parsing/common/stringDict.js";
-import { ClientRequest } from "http";
-import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation.js";
+import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
+import { ApiSettings } from "./apiSettings.js";
+import { handleError } from "./error.js";
 import { PredictParams } from "./httpParams.js";
+import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation.js";
 
 /**
  * Endpoint for a product (OTS or Custom).
@@ -200,11 +199,12 @@ export class Endpoint {
       } else {
         form.append("document", input.fileObject);
       }
-
       if (includeWords) {
         form.append("include_mvision", "true");
       }
+
       const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
+
       let path: string;
       if (workflowId === undefined) {
         path = `${this.urlRoot}/${predictUrl}`;
@@ -214,6 +214,7 @@ export class Endpoint {
       if (searchParams.toString().length > 0) {
         path += `?${searchParams}`;
       }
+
       const options: RequestOptions = {
         method: "POST",
         headers: headers,
@@ -321,9 +322,8 @@ export class Endpoint {
         hostname: this.settings.hostname,
         path: `/v1/documents/${documentId}/feedback`,
       };
-      const req: ClientRequest = sendRequestAndReadResponse(options, resolve, reject);
+      const req = sendRequestAndReadResponse(options, resolve, reject);
       req.write(JSON.stringify(feedback));
-
       // potential ECONNRESET if we don't end the request.
       req.end();
     });

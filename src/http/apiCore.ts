@@ -74,6 +74,7 @@ export function sendRequestAndReadResponse(
     });
   });
   req.on("error", (err: any) => {
+    logger.debug(err);
     logger.error(`Unhandled error occurred: ${err}`);
     reject(err);
   });
