@@ -38,10 +38,8 @@ describe("MindeeV1 - HTTP calls", () => {
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
         expect(error).to.be.instanceOf(MindeeHttp400Error);
-        expect(error.status).to.equal(400);
         expect(error.code).to.be.equals(400);
-        // nock adds a server message
-        //expect(error.message).to.be.equals("Bad Request");
+        expect(error.message).to.be.equals("Bad Request");
         expect(error.details).to.deep.equal({ document: ["error message"] });
         return true;
       });
@@ -57,6 +55,7 @@ describe("MindeeV1 - HTTP calls", () => {
         expect(error.code).to.be.equals(401);
         expect(error.message).to.be.equals("Authorization required");
         expect(error.details).to.be.equals("No token provided");
+        return true;
       });
   });
 
@@ -70,6 +69,7 @@ describe("MindeeV1 - HTTP calls", () => {
         expect(error.code).to.be.equals(429);
         expect(error.message).to.be.equals("Too many requests");
         expect(error.details).to.be.equals("Too Many Requests.");
+        return true;
       });
   });
 
@@ -83,6 +83,7 @@ describe("MindeeV1 - HTTP calls", () => {
         expect(error.code).to.be.equals(500);
         expect(error.message).to.be.equals("Inference failed");
         expect(error.details).to.be.equals("Can not run prediction: ");
+        return true;
       });
   });
 
@@ -94,6 +95,7 @@ describe("MindeeV1 - HTTP calls", () => {
       (error: any) => {
         expect(error).to.be.instanceOf(MindeeHttp500Error);
         expect(error.code).to.be.equals(500);
+        return true;
       });
   });
 });
