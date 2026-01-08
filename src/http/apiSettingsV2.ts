@@ -8,18 +8,13 @@ export const API_V2_HOST_ENVVAR_NAME: string = "MINDEE_V2_API_HOST";
 const DEFAULT_MINDEE_API_HOST: string = "api-v2.mindee.net";
 
 export class ApiSettingsV2 extends BaseSettings {
-  apiKey: string;
   baseHeaders: Record<string, string>;
 
   constructor({
-    apiKey = "",
+    apiKey,
+    dispatcher,
   }: MindeeApiConstructorProps) {
-    super();
-    if (!apiKey || apiKey.length === 0) {
-      this.apiKey = this.apiKeyFromEnv();
-    } else {
-      this.apiKey = apiKey;
-    }
+    super(apiKey, dispatcher);
     if (!this.apiKey || this.apiKey.length === 0) {
       throw new MindeeApiV2Error(
         "Your V2 API key could not be set, check your Client Configuration\n."

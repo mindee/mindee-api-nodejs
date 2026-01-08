@@ -1,6 +1,4 @@
-import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
-import FormData from "form-data";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { ExecutionPriority } from "@/parsing/common/index.js";
 import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
@@ -70,7 +68,7 @@ export class WorkflowEndpoint {
    * @param publicUrl
    * @param rag
    */
-  protected sendFileForPrediction(
+  protected async sendFileForPrediction(
     input: InputSource,
     alias: string | null = null,
     priority: ExecutionPriority | null = null,
@@ -78,51 +76,42 @@ export class WorkflowEndpoint {
     publicUrl: string | null = null,
     rag: boolean | null = null,
   ): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const searchParams = new URLSearchParams();
-      if (fullText) {
-        searchParams.append("full_text_ocr", "true");
-      }
-      if (rag) {
-        searchParams.append("rag", "true");
-      }
+    const searchParams = new URLSearchParams();
+    if (fullText) {
+      searchParams.append("full_text_ocr", "true");
+    }
+    if (rag) {
+      searchParams.append("rag", "true");
+    }
 
-      const form = new FormData();
-      if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
-        form.append("document", input.fileObject, {
-          filename: input.filename,
-        });
-      } else {
-        form.append("document", input.fileObject);
-      }
-      if (alias) {
-        form.append("alias", alias);
-      }
-      if (publicUrl) {
-        form.append("public_url", publicUrl);
-      }
-      if (priority) {
-        form.append("priority", priority.toString());
-      }
+    const form = new FormData();
+    if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
+      form.append("document", new Blob([input.fileObject]), input.filename);
+    } else {
+      form.append("document", input.fileObject);
+    }
+    if (alias) {
+      form.append("alias", alias);
+    }
+    if (publicUrl) {
+      form.append("public_url", publicUrl);
+    }
+    if (priority) {
+      form.append("priority", priority.toString());
+    }
 
-      const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
+    let path = this.urlRoot;
+    if (searchParams.toString().length > 0) {
+      path += `?${searchParams}`;
+    }
 
-      let path = this.urlRoot;
-      if (searchParams.toString().length > 0) {
-        path += `?${searchParams}`;
-      }
-
-      const options: RequestOptions = {
-        method: "POST",
-        headers: headers,
-        hostname: this.settings.hostname,
-        path: path,
-        timeout: this.settings.timeout,
-      };
-      const req = sendRequestAndReadResponse(options, resolve, reject);
-      form.pipe(req);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+    const options = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: path,
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 }

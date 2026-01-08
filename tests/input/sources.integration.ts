@@ -4,7 +4,7 @@ import { expect } from "chai";
 import { promises as fs } from "fs";
 import { createReadStream } from "node:fs";
 import path from "path";
-import { V1_PRODUCT_PATH } from "../../index.js";
+import { V1_PRODUCT_PATH } from "../index.js";
 import { PathInput, Base64Input, BufferInput, BytesInput, UrlInput } from "@/index.js";
 
 describe("MindeeV1 - File Input Integration Tests", async () => {

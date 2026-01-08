@@ -1,16 +1,26 @@
+import { Dispatcher, getGlobalDispatcher } from "undici";
 import packageJson from "../../package.json" with { type: "json" };
 import * as os from "os";
 import { TIMEOUT_DEFAULT } from "./apiCore.js";
 
 export interface MindeeApiConstructorProps {
   apiKey?: string;
+  dispatcher?: Dispatcher;
 }
 
 export abstract class BaseSettings {
+  apiKey: string;
   hostname: string;
   timeout: number;
+  dispatcher: Dispatcher;
 
-  protected constructor() {
+  protected constructor(apiKey?: string, dispatcher?: Dispatcher) {
+    if (apiKey === undefined || !apiKey || apiKey.length === 0) {
+      this.apiKey = this.apiKeyFromEnv();
+    } else {
+      this.apiKey = apiKey;
+    }
+    this.dispatcher = dispatcher ?? getGlobalDispatcher();
     this.hostname = this.hostnameFromEnv();
     this.timeout = process.env.MINDEE_REQUEST_TIMEOUT ? parseInt(process.env.MINDEE_REQUEST_TIMEOUT) : TIMEOUT_DEFAULT;
   }

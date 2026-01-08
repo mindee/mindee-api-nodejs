@@ -1,4 +1,3 @@
-import * as mindee from "@/index.js";
 import path from "path";
 import { expect } from "chai";
 import * as pdf from "@/pdf/index.js";
@@ -7,11 +6,7 @@ import { PageOptionsOperation, PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";
 
 describe("Test pdf lib", () => {
-  let client: mindee.Client;
 
-  beforeEach(async () => {
-    client = new mindee.Client();
-  });
   it("should open a simple XFA form PDF.", async () => {
     const inputDoc = new PathInput(
       { inputPath: path.join(RESOURCE_PATH, "file_types/pdf/XfaForm.pdf") }

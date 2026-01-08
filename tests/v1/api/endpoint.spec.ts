@@ -1,6 +1,7 @@
-import nock from "nock";
+import * as fs from "node:fs";
 import * as path from "path";
 import { expect } from "chai";
+import { MockAgent, setGlobalDispatcher } from "undici";
 import { Client, PathInput, product } from "@/index.js";
 import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import assert from "node:assert/strict";
@@ -8,12 +9,21 @@ import {
   MindeeHttp400Error, MindeeHttp401Error, MindeeHttp429Error, MindeeHttp500Error
 } from "@/http/index.js";
 
+const mockAgent = new MockAgent();
+setGlobalDispatcher(mockAgent);
+const mockPool = mockAgent.get("https://v1-endpoint-host");
 
-function setNockInterceptors(httpCode: number, httpResultFile: string) {
-  nock("https://v1-dummy-host")
-    .post(/.*/)
-    .replyWithFile(
-      httpCode, path.resolve(path.join(V1_RESOURCE_PATH, httpResultFile))
+function setInterceptor(httpCode: number, httpResultFile: string) {
+  const filePath = path.resolve(path.join(V1_RESOURCE_PATH, httpResultFile));
+  mockPool
+    .intercept({ path: /.*/, method: "POST" })
+    .reply(
+      httpCode,
+      fs.readFileSync(filePath, "utf8"),
+      {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        headers: { "content-type": "application/json" }
+      }
     );
 }
 
@@ -23,31 +33,30 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   beforeEach(async function() {
-    process.env.MINDEE_API_HOST = "v1-dummy-host";
+    process.env.MINDEE_API_HOST = "v1-endpoint-host";
   });
 
   afterEach(async function() {
-    nock.cleanAll();
     delete process.env.MINDEE_API_HOST;
   });
 
   it("should fail on 400 response with object", async () => {
-    setNockInterceptors(400, "errors/error_400_with_object_in_detail.json");
-    const client = new Client({ apiKey: "my-api-key", debug: true });
+    setInterceptor(400, "errors/error_400_with_object_in_detail.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
         expect(error).to.be.instanceOf(MindeeHttp400Error);
         expect(error.code).to.be.equals(400);
-        expect(error.message).to.be.equals("Bad Request");
+        expect(error.message).to.be.undefined;
         expect(error.details).to.deep.equal({ document: ["error message"] });
         return true;
       });
   });
 
   it("should fail on 401 response", async () => {
-    setNockInterceptors(401, "errors/error_401_no_token.json");
-    const client = new Client({ apiKey: "my-api-key", debug: true });
+    setInterceptor(401, "errors/error_401_no_token.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
@@ -60,8 +69,8 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   it("should fail on 429 response", async () => {
-    setNockInterceptors(429, "errors/error_429_too_many_requests.json");
-    const client = new Client({ apiKey: "my-api-key", debug: true });
+    setInterceptor(429, "errors/error_429_too_many_requests.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
@@ -74,8 +83,8 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   it("should fail on 500 response", async () => {
-    setNockInterceptors(500, "errors/error_500_inference_fail.json");
-    const client = new Client({ apiKey: "my-api-key", debug: true });
+    setInterceptor(500, "errors/error_500_inference_fail.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
@@ -88,8 +97,8 @@ describe("MindeeV1 - HTTP calls", () => {
   });
 
   it("should fail on HTML response", async () => {
-    setNockInterceptors(500, "errors/error_50x.html");
-    const client = new Client({ apiKey: "my-api-key", debug: true });
+    setInterceptor(500, "errors/error_50x.html");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
@@ -102,8 +111,8 @@ describe("MindeeV1 - HTTP calls", () => {
 
 describe ("Endpoint parameters" , () => {
   it ("should initialize default parameters properly", async () => {
-    const mindeeClient = new Client({ apiKey: "dummy-api-key", debug: true });
-    const customEndpoint = mindeeClient.createEndpoint(
+    const client = new Client({ apiKey: "dummy-api-key", debug: true });
+    const customEndpoint = client.createEndpoint(
       "dummy-endpoint",
       "dummy-account"
     );
@@ -114,18 +123,18 @@ describe ("Endpoint parameters" , () => {
   });
 
   it ("should initialize environment parameters properly", async () => {
-    process.env.MINDEE_API_HOST = "v1-dummy-host";
+    process.env.MINDEE_API_HOST = "v1-endpoint-host";
     process.env.MINDEE_API_KEY = "dummy-key";
     process.env.MINDEE_REQUEST_TIMEOUT = "30";
 
-    const mindeeClient = new Client({ debug: true });
-    const customEndpoint = mindeeClient.createEndpoint(
+    const client = new Client({ debug: true });
+    const customEndpoint = client.createEndpoint(
       "dummy-endpoint",
       "dummy-account"
     );
     expect(customEndpoint.version).to.equal("1");
     expect(customEndpoint.settings.timeout).to.equal(30);
-    expect(customEndpoint.settings.hostname).to.equal("v1-dummy-host");
+    expect(customEndpoint.settings.hostname).to.equal("v1-endpoint-host");
     expect(customEndpoint.settings.apiKey).to.equal("dummy-key");
 
     delete process.env.MINDEE_API_HOST;

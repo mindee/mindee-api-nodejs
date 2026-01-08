@@ -1,20 +1,23 @@
 import { expect } from "chai";
-import nock from "nock";
+import { MockAgent, setGlobalDispatcher } from "undici";
 import { promises as fs } from "fs";
 import path from "path";
 import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import { Client, PathInput } from "@/index.js";
 
+const mockAgent = new MockAgent();
+setGlobalDispatcher(mockAgent);
+const mockPool = mockAgent.get("https://v1-workflow-host");
 
-async function setNockInterceptor(httpCode: number, jsonFilePath: string) {
+async function setInterceptor(httpCode: number, jsonFilePath: string) {
   const mockResponse = JSON.parse(await fs.readFile(jsonFilePath, "utf-8"));
-  nock("https://v1-dummy-host")
-    .post(/v1\/workflows\/.*/)
+  mockPool
+    .intercept({ path: /v1\/workflows\/.*/, method: "POST" })
     .reply(httpCode, mockResponse);
 }
 
 async function executeWorkflow(doc: PathInput, workflowId: string) {
-  const client = new Client({ apiKey: "my-api-key", debug: true });
+  const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
   return await client.executeWorkflow(doc, workflowId);
 }
 
@@ -24,7 +27,7 @@ describe("MindeeV1 - Workflow executions", () => {
   });
 
   beforeEach(function() {
-    process.env.MINDEE_API_HOST = "v1-dummy-host";
+    process.env.MINDEE_API_HOST = "v1-workflow-host";
   });
 
   afterEach(function() {
@@ -33,7 +36,7 @@ describe("MindeeV1 - Workflow executions", () => {
 
   it("should deserialize response correctly when sending a document to an execution", async () => {
     const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success.json");
-    await setNockInterceptor(202, jsonFilePath);
+    await setInterceptor(202, jsonFilePath);
     const mockedExecution = await executeWorkflow(
       doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
     );
@@ -57,7 +60,7 @@ describe("MindeeV1 - Workflow executions", () => {
   it("should deserialize response correctly when sending a document to an execution with priority and alias",
     async () => {
       const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success_low_priority.json");
-      await setNockInterceptor(200, jsonFilePath);
+      await setInterceptor(200, jsonFilePath);
       const mockedExecution = await executeWorkflow(
         doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
       );

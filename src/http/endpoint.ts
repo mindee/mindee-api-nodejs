@@ -1,6 +1,4 @@
-import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
-import FormData from "form-data";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { StringDict } from "@/parsing/common/stringDict.js";
 import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
@@ -170,7 +168,7 @@ export class Endpoint {
    * @param rag
    * @param workflowId
    */
-  protected sendFileForPrediction(
+  protected async sendFileForPrediction(
     input: InputSource,
     predictUrl: string,
     includeWords: boolean = false,
@@ -179,54 +177,46 @@ export class Endpoint {
     rag: boolean = false,
     workflowId: string | undefined = undefined
   ): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const searchParams = new URLSearchParams();
-      if (cropper) {
-        searchParams.append("cropper", "true");
-      }
-      if (rag) {
-        searchParams.append("rag", "true");
-      }
-      if (fullText) {
-        searchParams.append("full_text_ocr", "true");
-      }
+    const searchParams = new URLSearchParams();
+    if (cropper) {
+      searchParams.append("cropper", "true");
+    }
+    if (rag) {
+      searchParams.append("rag", "true");
+    }
+    if (fullText) {
+      searchParams.append("full_text_ocr", "true");
+    }
 
-      const form = new FormData();
-      if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
-        form.append("document", input.fileObject, {
-          filename: input.filename,
-        });
-      } else {
-        form.append("document", input.fileObject);
-      }
-      if (includeWords) {
-        form.append("include_mvision", "true");
-      }
+    const form = new FormData();
+    if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
+      form.set("document", new Blob([input.fileObject]), input.filename);
+    } else {
+      form.append("document", input.fileObject);
+    }
+    if (includeWords) {
+      form.append("include_mvision", "true");
+    }
 
-      const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
+    let path: string;
+    if (workflowId === undefined) {
+      path = `${this.urlRoot}/${predictUrl}`;
+    } else {
+      path = `/v1/workflows/${workflowId}/predict_async`;
+    }
+    if (searchParams.toString().length > 0) {
+      path += `?${searchParams}`;
+    }
 
-      let path: string;
-      if (workflowId === undefined) {
-        path = `${this.urlRoot}/${predictUrl}`;
-      } else {
-        path = `/v1/workflows/${workflowId}/predict_async`;
-      }
-      if (searchParams.toString().length > 0) {
-        path += `?${searchParams}`;
-      }
-
-      const options: RequestOptions = {
-        method: "POST",
-        headers: headers,
-        hostname: this.settings.hostname,
-        path: path,
-        timeout: this.settings.timeout,
-      };
-      const req = sendRequestAndReadResponse(options, resolve, reject);
-      form.pipe(req);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+    const options = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: path,
+      timeout: this.settings.timeout,
+      body: form,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
   /**
@@ -277,36 +267,28 @@ export class Endpoint {
    * Make a request to GET the status of a document in the queue.
    * @param queueId
    */
-  #documentQueueReqGet(queueId: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `${this.urlRoot}/documents/queue/${queueId}`,
-      };
-      const req = sendRequestAndReadResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async #documentQueueReqGet(queueId: string): Promise<EndpointResponse> {
+    const options = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `${this.urlRoot}/documents/queue/${queueId}`,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
   /**
    * Make a request to GET a document.
    * @param documentId
    */
-  #documentGetReq(documentId: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `${this.urlRoot}/documents/${documentId}`,
-      };
-      const req = sendRequestAndReadResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async #documentGetReq(documentId: string): Promise<EndpointResponse> {
+    const options = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `${this.urlRoot}/documents/${documentId}`,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
   /**
@@ -314,18 +296,14 @@ export class Endpoint {
    * @param documentId
    * @param feedback
    */
-  #documentFeedbackPutReq(documentId: string, feedback: StringDict): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "PUT",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `/v1/documents/${documentId}/feedback`,
-      };
-      const req = sendRequestAndReadResponse(options, resolve, reject);
-      req.write(JSON.stringify(feedback));
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async #documentFeedbackPutReq(documentId: string, feedback: StringDict): Promise<EndpointResponse> {
+    const options = {
+      method: "PUT",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v1/documents/${documentId}/feedback`,
+      body: JSON.stringify(feedback),
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 }

@@ -8,18 +8,13 @@ export const STANDARD_API_OWNER: string = "mindee";
 const DEFAULT_MINDEE_API_HOST: string = "api.mindee.net";
 
 export class ApiSettings extends BaseSettings {
-  apiKey: string;
   baseHeaders: Record<string, string>;
 
   constructor({
-    apiKey = "",
+    apiKey,
+    dispatcher,
   }: MindeeApiConstructorProps) {
-    super();
-    if (!apiKey || apiKey.length === 0) {
-      this.apiKey = this.apiKeyFromEnv();
-    } else {
-      this.apiKey = apiKey;
-    }
+    super(apiKey, dispatcher);
     if (!this.apiKey || this.apiKey.length === 0) {
       throw new Error(
         "Your V1 API key could not be set, check your Client Configuration\n."

@@ -1,3 +1,4 @@
+import { Dispatcher } from "undici";
 import {
   InputSource,
   LocalResponse,
@@ -36,7 +37,6 @@ interface BaseOptions {
    * This is done before sending the file to the server and is useful to avoid page limitations.
    */
   pageOptions?: PageOptions;
-
   /**
    * If set, will enable Retrieval-Augmented Generation (only works if a valid workflowId is set).
    */
@@ -122,6 +122,8 @@ export interface ClientOptions {
   throwOnError?: boolean;
   /** Log debug messages. */
   debug?: boolean;
+  /** Custom dispatcher for HTTP requests. */
+  dispatcher?: Dispatcher;
 }
 
 /**
@@ -130,23 +132,26 @@ export interface ClientOptions {
  * @category Client
  */
 export class Client {
-  /** Key of the API. */
-  protected apiKey: string;
+  /** Mindee V1 API settings. */
+  protected apiSettings: ApiSettings;
 
   /**
    * @param {ClientOptions} options options for the initialization of a client.
    */
   constructor(
-    { apiKey, throwOnError, debug }: ClientOptions = {
-      apiKey: "",
+    { apiKey, throwOnError, debug, dispatcher }: ClientOptions = {
+      apiKey: undefined,
       throwOnError: true,
       debug: false,
+      dispatcher: undefined,
     }
   ) {
-    this.apiKey = apiKey ? apiKey : "";
+    this.apiSettings = new ApiSettings({
+      apiKey: apiKey,
+      dispatcher: dispatcher,
+    });
     errorHandler.throwOnError = throwOnError ?? true;
-    logger.level =
-    debug ?? process.env.MINDEE_DEBUG
+    logger.level = debug ?? process.env.MINDEE_DEBUG
       ? LOG_LEVELS["debug"]
       : LOG_LEVELS["warn"];
     logger.debug("Client V1 Initialized");
@@ -276,7 +281,7 @@ export class Client {
     workflowId: string,
     params: WorkflowOptions = {}
   ): Promise<WorkflowResponse<GeneratedV1>> {
-    const workflowEndpoint = new WorkflowEndpoint(this.#buildApiSettings(), workflowId);
+    const workflowEndpoint = new WorkflowEndpoint(this.apiSettings, workflowId);
     if (inputSource === undefined) {
       throw new Error("The 'executeWorkflow' function requires an input document.");
     }
@@ -456,18 +461,8 @@ Job status: ${pollResults.job.status}.`
       endpointName,
       accountName,
       endpointVersion,
-      this.#buildApiSettings()
+      this.apiSettings
     );
-  }
-
-  /**
-   * Builds a document endpoint.
-   * @returns a custom `Endpoint` object.
-   */
-  #buildApiSettings(): ApiSettings {
-    return new ApiSettings({
-      apiKey: this.apiKey,
-    });
   }
 
   /**
@@ -484,17 +479,13 @@ Job status: ${pollResults.job.status}.`
     accountName: string,
     endpointVersion?: string
   ): Endpoint {
-    const cleanAccountName: string = this.#cleanAccountName(
-      GeneratedV1,
-      accountName
-    );
     if (!endpointName || endpointName.length === 0) {
       throw new Error("Missing parameter 'endpointName' for custom build!");
     }
     let cleanEndpointVersion: string;
     if (!endpointVersion || endpointVersion.length === 0) {
       logger.debug(
-        "Warning: No version provided for a custom build, will attempt to poll version 1 by default."
+        "No version provided for a custom build, will poll using version 1 by default."
       );
       cleanEndpointVersion = "1";
     } else {
@@ -502,7 +493,7 @@ Job status: ${pollResults.job.status}.`
     }
     return this.#buildProductEndpoint(
       endpointName,
-      cleanAccountName,
+      accountName,
       cleanEndpointVersion
     );
   }
@@ -522,32 +513,8 @@ Job status: ${pollResults.job.status}.`
   }
 
   /**
-   * Checks that an account name is provided for custom builds, and sets the default one otherwise.
-   * @param productClass product class to use for calling  the API and parsing the response.
-   * @param accountName name of the account's holder. Only required on custom builds.
-   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   *
-   * @returns the name of the account. Sends an error if one isn't provided for a custom build.
-   */
-  #cleanAccountName<T extends Inference>(
-    productClass: new (httpResponse: StringDict) => T,
-    accountName?: string
-  ): string {
-    if (productClass.name === "CustomV1") {
-      if (!accountName || accountName.length === 0) {
-        logger.debug(
-          `No account name provided for custom build, ${STANDARD_API_OWNER} will be used by default`
-        );
-        return STANDARD_API_OWNER;
-      }
-      return accountName;
-    }
-    return STANDARD_API_OWNER;
-  }
-
-  /**
    * Get the name and version of an OTS endpoint.
-   * @param productClass product class to use for calling  the API and parsing the response.
+   * @param productClass product class to use for calling the API and parsing the response.
    *  Mandatory to retrieve default OTS endpoint data.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    *

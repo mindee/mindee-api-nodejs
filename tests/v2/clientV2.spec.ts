@@ -1,11 +1,14 @@
-/* eslint-disable @typescript-eslint/naming-convention,camelcase */
 import { expect } from "chai";
-import nock from "nock";
+import { MockAgent, setGlobalDispatcher } from "undici";
 import path from "node:path";
 import { ClientV2, LocalResponse, PathInput, InferenceResponse } from "@/index.js";
 import { MindeeHttpErrorV2 } from "@/errors/mindeeError.js";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
+
+const mockAgent = new MockAgent();
+setGlobalDispatcher(mockAgent);
+const mockPool = mockAgent.get("https://v2-client-host");
 
 /**
  * Injects a minimal set of environment variables so that the SDK behaves
@@ -13,20 +16,19 @@ import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
  */
 function dummyEnvvars(): void {
   process.env.MINDEE_V2_API_KEY = "dummy";
-  process.env.MINDEE_V2_API_HOST = "v2-dummy-host";
+  process.env.MINDEE_V2_API_HOST = "v2-client-host";
 }
 
 function setNockInterceptors(): void {
-  nock("https://v2-dummy-host")
-    .persist()
-    .post(/.*/)
-    .reply(400, {
-      status: 400, detail: "forced failure from test", title: "Bad Request", code: "400-001"
-    });
+  mockPool
+    .intercept({ path: /.*/, method: "POST" })
+    .reply(
+      400,
+      { status: 400, detail: "forced failure from test", title: "Bad Request", code: "400-001" }
+    );
 
-  nock("https://v2-dummy-host")
-    .persist()
-    .get(/.*/)
+  mockPool
+    .intercept({ path: /.*/, method: "GET" })
     .reply(200, {
       job: {
         id: "12345678-1234-1234-1234-123456789ABC",
@@ -48,12 +50,10 @@ const fileTypesDir = path.join(RESOURCE_PATH, "file_types");
 
 describe("MindeeV2 - ClientV2", () => {
   before(() => {
-    setNockInterceptors();
     dummyEnvvars();
   });
 
   after(() => {
-    nock.cleanAll();
     delete process.env.MINDEE_V2_API_KEY;
     delete process.env.MINDEE_V2_API_HOST;
   });
@@ -62,13 +62,14 @@ describe("MindeeV2 - ClientV2", () => {
     let client: ClientV2;
 
     beforeEach(() => {
-      client = new ClientV2({ apiKey: "dummy", debug: true });
+      setNockInterceptors();
+      client = new ClientV2({ apiKey: "dummy", debug: true, dispatcher: mockAgent });
     });
 
     it("inherits base URL, token & headers from the env / options", () => {
       const api = (client as any).mindeeApi;
       expect(api.settings.apiKey).to.equal("dummy");
-      expect(api.settings.hostname).to.equal("v2-dummy-host");
+      expect(api.settings.hostname).to.equal("v2-client-host");
       expect(api.settings.baseHeaders.Authorization).to.equal("dummy");
       expect(api.settings.baseHeaders["User-Agent"]).to.match(/mindee/i);
     });

@@ -1,12 +1,11 @@
 import { logger } from "@/logger.js";
-import { IncomingMessage, ClientRequest } from "http";
-import { request, RequestOptions } from "https";
+import { request, Dispatcher } from "undici";
 import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 
 export const TIMEOUT_DEFAULT: number = 120;
 
 export interface EndpointResponse {
-  messageObj: IncomingMessage;
+  messageObj: any,
   data: { [key: string]: any };
 }
 
@@ -23,60 +22,47 @@ export async function cutDocPages(inputDoc: InputSource, pageOptions: PageOption
 
 /**
  * Reads a response from the API and processes it.
+ * @param dispatcher custom dispatcher to use for the request.
  * @param options options related to the request itself.
- * @param resolve the resolved response
- * @param reject promise rejection reason.
  * @returns the processed request.
  */
-export function sendRequestAndReadResponse(
-  options: RequestOptions,
-  resolve: (value: EndpointResponse | PromiseLike<EndpointResponse>) => void,
-  reject: (reason?: any) => void
-): ClientRequest {
-  logger.debug(
-    `${options.method}: https://${options.hostname}${options.path}`
+export async function sendRequestAndReadResponse(
+  dispatcher: Dispatcher,
+  options: any,
+): Promise<EndpointResponse> {
+  const url: string = `https://${options.hostname}${options.path}`;
+  logger.debug(`${options.method}: ${url}`);
+
+  const response = await request(
+    url,
+    {
+      method: options.method,
+      headers: options.headers,
+      bodyTimeout: options.timeout,
+      body: options.body,
+      throwOnError: false,
+      dispatcher: dispatcher
+    }
   );
+  logger.debug("Parsing the response ...");
 
-  const req = request(options, function (res: IncomingMessage) {
-    // when the encoding is set, data chunks will be strings
-    res.setEncoding("utf-8");
-
-    let responseBody = "";
-    res.on("data", function (chunk: string) {
-      logger.debug("Receiving data ...");
-      responseBody += chunk;
-    });
-    res.on("end", function () {
-      logger.debug("Parsing the response ...");
-      // handle empty responses from server, for example, in the case of redirects
-      if (!responseBody) {
-        responseBody = "{}";
-      }
-      try {
-        const parsedResponse = JSON.parse(responseBody);
-        try {
-          logger.debug("JSON parsed successfully, returning object.");
-          resolve({
-            messageObj: res,
-            data: parsedResponse,
-          });
-        } catch (error) {
-          logger.error("Could not construct the return object.");
-          reject(error);
-        }
-      } catch {
-        logger.error("Could not parse the return as JSON.");
-        resolve({
-          messageObj: res,
-          data: { reconstructedResponse: responseBody },
-        });
-      }
-    });
-  });
-  req.on("error", (err: any) => {
-    logger.debug(err);
-    logger.error(`Unhandled error occurred: ${err}`);
-    reject(err);
-  });
-  return req;
+  let responseBody: string = await response.body.text();
+  // handle empty responses from server, for example, in the case of redirects
+  if (!responseBody) {
+    responseBody = "{}";
+  }
+  try {
+    const parsedResponse = JSON.parse(responseBody);
+    logger.debug("JSON parsed successfully, returning object.");
+    return {
+      messageObj: response,
+      data: parsedResponse,
+    };
+  } catch {
+    logger.error("Could not parse the return as JSON.");
+    return {
+      messageObj: response,
+      data: { reconstructedResponse: responseBody },
+    };
+  }
 }
