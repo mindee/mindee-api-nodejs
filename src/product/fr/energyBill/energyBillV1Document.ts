@@ -2,18 +2,18 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../../parsing/common";
-import { EnergyBillV1EnergySupplier } from "./energyBillV1EnergySupplier";
-import { EnergyBillV1EnergyConsumer } from "./energyBillV1EnergyConsumer";
-import { EnergyBillV1Subscription } from "./energyBillV1Subscription";
-import { EnergyBillV1EnergyUsage } from "./energyBillV1EnergyUsage";
-import { EnergyBillV1TaxesAndContribution } from "./energyBillV1TaxesAndContribution";
-import { EnergyBillV1MeterDetail } from "./energyBillV1MeterDetail";
+} from "@/parsing/common/index.js";
+import { EnergyBillV1EnergySupplier } from "./energyBillV1EnergySupplier.js";
+import { EnergyBillV1EnergyConsumer } from "./energyBillV1EnergyConsumer.js";
+import { EnergyBillV1Subscription } from "./energyBillV1Subscription.js";
+import { EnergyBillV1EnergyUsage } from "./energyBillV1EnergyUsage.js";
+import { EnergyBillV1TaxesAndContribution } from "./energyBillV1TaxesAndContribution.js";
+import { EnergyBillV1MeterDetail } from "./energyBillV1MeterDetail.js";
 import {
   AmountField,
   DateField,
   StringField,
-} from "../../../parsing/standard";
+} from "@/parsing/standard/index.js";
 
 /**
  * Energy Bill API version 1.2 document data.

@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { ResumeV1Document } from "./resumeV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { ResumeV1Document } from "./resumeV1Document.js";
 
 /**
  * Resume API version 1 inference prediction.

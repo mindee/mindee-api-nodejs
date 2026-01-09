@@ -1,6 +1,6 @@
-import { CommonResponse } from "./commonResponse";
-import { StringDict } from "../common";
-import { Job } from "./job";
+import { CommonResponse } from "./commonResponse.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Job } from "./job.js";
 
 export class JobResponse extends CommonResponse {
   /**

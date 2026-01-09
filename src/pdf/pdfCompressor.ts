@@ -1,10 +1,10 @@
-import { logger } from "../logger";
+import { logger } from "@/logger.js";
 import tmp from "tmp";
-import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils";
+import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils.js";
 import * as fs from "node:fs";
 import { Poppler } from "node-poppler";
 import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "@cantoo/pdf-lib";
-import { compressImage } from "../imageOperations";
+import { compressImage } from "@/imageOperations/imageCompressor.js";
 
 /**
  * Compresses each page of a provided PDF buffer.

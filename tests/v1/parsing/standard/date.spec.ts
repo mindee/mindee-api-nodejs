@@ -1,4 +1,4 @@
-import { DateField } from "../../../../src/parsing/standard";
+import { DateField } from "@/parsing/standard/index.js";
 import { expect } from "chai";
 
 describe("Test Date field", () => {

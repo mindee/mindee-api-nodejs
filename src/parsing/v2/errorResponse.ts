@@ -1,5 +1,5 @@
-import { StringDict } from "../common";
-import { ErrorItem } from "./errorItem";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { ErrorItem } from "./errorItem.js";
 
 export interface ErrorDetails {
   /**

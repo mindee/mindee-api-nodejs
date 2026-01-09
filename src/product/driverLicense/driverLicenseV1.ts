@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { DriverLicenseV1Document } from "./driverLicenseV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { DriverLicenseV1Document } from "./driverLicenseV1Document.js";
 
 /**
  * Driver License API version 1 inference prediction.

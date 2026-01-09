@@ -1,2 +1,2 @@
-export { GeneratedObjectField, isGeneratedObject } from "./generatedObject";
-export { GeneratedListField } from "./generatedList";
+export { GeneratedObjectField, isGeneratedObject } from "./generatedObject.js";
+export { GeneratedListField } from "./generatedList.js";

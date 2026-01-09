@@ -1,4 +1,4 @@
-import { Prediction } from "../../parsing/common";
+import { Prediction } from "@/parsing/common/index.js";
 
 
 /**

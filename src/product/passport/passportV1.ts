@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { PassportV1Document } from "./passportV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { PassportV1Document } from "./passportV1Document.js";
 
 /**
  * Passport API version 1 inference prediction.

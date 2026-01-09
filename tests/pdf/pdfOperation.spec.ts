@@ -1,10 +1,10 @@
-import * as pdf from "../../src/pdf";
+import * as pdf from "@/pdf/index.js";
 import * as path from "path";
 import * as fs from "fs";
 import { expect } from "chai";
-import { PageOptions, PageOptionsOperation } from "../../src";
-import { PathInput } from "../../src";
-import { RESOURCE_PATH } from "../index";
+import { PageOptions, PageOptionsOperation } from "@/index.js";
+import { PathInput } from "@/index.js";
+import { RESOURCE_PATH } from "../index.js";
 
 describe("Test pdf operation", () => {
   it("should cut a PDF to get 2 pages", async () => {

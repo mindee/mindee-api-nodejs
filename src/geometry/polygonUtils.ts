@@ -1,5 +1,5 @@
-import { MinMax } from "./minMax";
-import { Point } from "./point";
+import { MinMax } from "./minMax.js";
+import { Point } from "./point.js";
 
 /**
  * Get the central point (centroid) given a list of points.

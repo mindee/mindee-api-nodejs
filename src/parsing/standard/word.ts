@@ -1,4 +1,4 @@
-import * as geometry from "../../geometry";
+import * as geometry from "@/geometry/index.js";
 
 export type Word = {
   /**

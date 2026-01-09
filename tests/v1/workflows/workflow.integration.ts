@@ -1,12 +1,12 @@
-import * as mindee from "../../../src";
-import { ExecutionPriority } from "../../../src/parsing/common";
+import * as mindee from "@/index.js";
+import { ExecutionPriority } from "@/parsing/common/index.js";
 import { expect } from "chai";
-import { LocalInputSource } from "../../../src/input";
-import { OptionalAsyncOptions } from "../../../src/client";
-import { FinancialDocumentV1 } from "../../../src/product";
-import { RAGExtra } from "../../../src/parsing/common/extras/ragExtra";
+import { LocalInputSource } from "@/input/index.js";
+import { OptionalAsyncOptions } from "@/client.js";
+import { FinancialDocumentV1 } from "@/product/index.js";
+import { RAGExtra } from "@/parsing/common/extras/ragExtra.js";
 import path from "path";
-import { V1_PRODUCT_PATH } from "../../index";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
 describe("MindeeV1 - Workflow calls", () => {
   let client: mindee.Client;

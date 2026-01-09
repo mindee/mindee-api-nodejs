@@ -1,19 +1,20 @@
-import { InputSource } from "./inputSource";
+import { InputSource } from "./inputSource.js";
 import { URL } from "url";
 import { basename, extname } from "path";
 import { randomBytes } from "crypto";
 import { writeFile } from "fs/promises";
-import { request as httpsRequest } from "https";
-import { IncomingMessage } from "http";
-import { BytesInput } from "./bytesInput";
-import { logger } from "../../logger";
+import {  request, Dispatcher, getGlobalDispatcher } from "undici";
+import { BytesInput } from "./bytesInput.js";
+import { logger } from "@/logger.js";
 
 export class UrlInput extends InputSource {
   public readonly url: string;
+  public readonly dispatcher;
 
-  constructor({ url }: { url: string }) {
+  constructor({ url, dispatcher }: { url: string, dispatcher?: Dispatcher }) {
     super();
     this.url = url;
+    this.dispatcher = dispatcher ?? getGlobalDispatcher();
   }
 
   async init() {
@@ -102,7 +103,6 @@ export class UrlInput extends InputSource {
         UrlInput.getFileExtension(filename || "") || undefined
       );
     }
-
     return filename;
   }
 
@@ -114,26 +114,28 @@ export class UrlInput extends InputSource {
     maxRedirects: number
   ): Promise<{ content: Buffer; finalUrl: string }> {
     const parsedUrl = new URL(url);
-    const options = {
-      hostname: parsedUrl.hostname,
-      path: parsedUrl.pathname + parsedUrl.search,
-      method: "GET",
-      headers: headers,
-      auth: auth,
-    };
 
-    const response = await new Promise<IncomingMessage>((resolve, reject) => {
-      const req = httpsRequest(options, resolve);
-      req.on("error", reject);
-      req.end();
-    });
+    const response = await request(
+      parsedUrl,
+      {
+        method: "GET",
+        headers: headers,
+        throwOnError: false,
+        dispatcher: this.dispatcher,
+      }
+    );
 
     if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400) {
+      logger.debug(`Redirecting to: ${response.headers.location}`);
       if (redirects === maxRedirects) {
-        throw new Error(`Can't reach URL after ${redirects} out of ${maxRedirects} redirects, aborting operation.`);
+        throw new Error(
+          `Can't reach URL after ${redirects} out of ${maxRedirects} redirects, aborting operation.`
+        );
       }
       if (response.headers.location) {
-        return await this.makeRequest(response.headers.location, auth, headers, redirects + 1, maxRedirects);
+        return await this.makeRequest(
+          response.headers.location.toString(), auth, headers, redirects + 1, maxRedirects
+        );
       }
       throw new Error("Redirect location not found");
     }
@@ -141,11 +143,7 @@ export class UrlInput extends InputSource {
     if (!response.statusCode || response.statusCode >= 400 || response.statusCode < 200) {
       throw new Error(`Couldn't retrieve file from server, error code ${response.statusCode}.`);
     }
-
-    const chunks: Buffer[] = [];
-    for await (const chunk of response) {
-      chunks.push(chunk);
-    }
-    return { content: Buffer.concat(chunks), finalUrl: url };
+    const arrayBuffer = await response.body.arrayBuffer();
+    return { content: Buffer.from(arrayBuffer), finalUrl: url };
   }
 }

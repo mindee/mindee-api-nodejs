@@ -2,15 +2,15 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../../parsing/common";
-import { PayslipV3PayPeriod } from "./payslipV3PayPeriod";
-import { PayslipV3Employee } from "./payslipV3Employee";
-import { PayslipV3Employer } from "./payslipV3Employer";
-import { PayslipV3BankAccountDetail } from "./payslipV3BankAccountDetail";
-import { PayslipV3Employment } from "./payslipV3Employment";
-import { PayslipV3SalaryDetail } from "./payslipV3SalaryDetail";
-import { PayslipV3PayDetail } from "./payslipV3PayDetail";
-import { PayslipV3PaidTimeOff } from "./payslipV3PaidTimeOff";
+} from "@/parsing/common/index.js";
+import { PayslipV3PayPeriod } from "./payslipV3PayPeriod.js";
+import { PayslipV3Employee } from "./payslipV3Employee.js";
+import { PayslipV3Employer } from "./payslipV3Employer.js";
+import { PayslipV3BankAccountDetail } from "./payslipV3BankAccountDetail.js";
+import { PayslipV3Employment } from "./payslipV3Employment.js";
+import { PayslipV3SalaryDetail } from "./payslipV3SalaryDetail.js";
+import { PayslipV3PayDetail } from "./payslipV3PayDetail.js";
+import { PayslipV3PaidTimeOff } from "./payslipV3PaidTimeOff.js";
 
 
 /**

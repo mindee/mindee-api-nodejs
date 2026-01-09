@@ -1,4 +1,4 @@
-import { StringDict } from "./stringDict";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 /**
  * Representation of an execution's file info.

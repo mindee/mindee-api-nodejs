@@ -1,6 +1,6 @@
-import { LocalInputSource } from "./localInputSource";
-import { INPUT_TYPE_BUFFER } from "./inputSource";
-import { logger } from "../../logger";
+import { LocalInputSource } from "./localInputSource.js";
+import { INPUT_TYPE_BUFFER } from "./inputSource.js";
+import { logger } from "@/logger.js";
 
 interface BufferInputProps {
   buffer: Buffer;

@@ -1,9 +1,9 @@
-import { ApiRequest } from "./apiRequest";
-import { StringDict } from "./stringDict";
+import { ApiRequest } from "./apiRequest.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 
 /** Base wrapper for API requests.
- * 
+ *
  * @category API Response
  */
 export abstract class ApiResponse {

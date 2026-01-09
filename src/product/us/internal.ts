@@ -1,3 +1,2 @@
-export * as bankCheck from "./bankCheck/internal";
-export * as healthcareCard from "./healthcareCard/internal";
-export * as usMail from "./usMail/internal";
+export * as bankCheck from "./bankCheck/index.js";
+export * as usMail from "./usMail/index.js";

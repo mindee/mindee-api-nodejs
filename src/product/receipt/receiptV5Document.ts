@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../parsing/common";
-import { ReceiptV5LineItem } from "./receiptV5LineItem";
+} from "@/parsing/common/index.js";
+import { ReceiptV5LineItem } from "./receiptV5LineItem.js";
 import {
   AmountField,
   ClassificationField,
@@ -12,7 +12,7 @@ import {
   LocaleField,
   StringField,
   Taxes,
-} from "../../parsing/standard";
+} from "@/parsing/standard/index.js";
 
 /**
  * Receipt API version 5.4 document data.

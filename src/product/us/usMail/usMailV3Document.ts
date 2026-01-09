@@ -2,10 +2,10 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../../parsing/common";
-import { UsMailV3SenderAddress } from "./usMailV3SenderAddress";
-import { UsMailV3RecipientAddress } from "./usMailV3RecipientAddress";
-import { BooleanField, StringField } from "../../../parsing/standard";
+} from "@/parsing/common/index.js";
+import { UsMailV3SenderAddress } from "./usMailV3SenderAddress.js";
+import { UsMailV3RecipientAddress } from "./usMailV3RecipientAddress.js";
+import { BooleanField, StringField } from "@/parsing/standard/index.js";
 
 /**
  * US Mail API version 3.0 document data.

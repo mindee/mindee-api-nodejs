@@ -1,7 +1,7 @@
-import { ApiResponse } from "./apiResponse";
-import { StringDict } from "./stringDict";
-import { Inference } from "./inference";
-import { Document } from "./document";
+import { ApiResponse } from "./apiResponse.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Inference } from "./inference.js";
+import { Document } from "./document.js";
 
 /** Wrapper for asynchronous request queues. Holds information regarding a job (queue).
  *

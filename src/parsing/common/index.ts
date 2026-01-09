@@ -1,16 +1,18 @@
-export { Document } from "./document";
-export { Execution } from "./execution";
-export { ExecutionFile } from "./executionFile";
-export { ExecutionPriority } from "./executionPriority";
-export { Inference } from "./inference";
-export { FeedbackResponse } from "./feedback/feedbackResponse";
-export { OrientationField } from "./orientation";
-export { StringDict } from "./stringDict";
-export { AsyncPredictResponse } from "./asyncPredictResponse";
-export { PredictResponse } from "./predictResponse";
-export { Prediction } from "./prediction";
-export { Page } from "./page";
-export { cleanOutString, lineSeparator } from "./summaryHelper";
-export * as extras from "./extras";
-export { floatToString, cleanSpecialChars } from "./summaryHelper";
-export { parseDate } from "./dateParser";
+export { Document } from "./document.js";
+export { Execution } from "./execution.js";
+export { ExecutionFile } from "./executionFile.js";
+export { ExecutionPriority } from "./executionPriority.js";
+export { Inference } from "./inference.js";
+export { FeedbackResponse } from "./feedback/feedbackResponse.js";
+export { OrientationField } from "./orientation.js";
+export type { StringDict } from "./stringDict.js";
+export { AsyncPredictResponse } from "./asyncPredictResponse.js";
+export { PredictResponse } from "./predictResponse.js";
+export { Prediction } from "./prediction.js";
+export { Page } from "./page.js";
+export {
+  cleanOutString, lineSeparator, floatToString, cleanSpecialChars
+} from "./summaryHelper.js";
+export * as extras from "./extras/index.js";
+export { parseDate } from "./dateParser.js";
+export { WorkflowResponse } from "./workflowResponse.js";

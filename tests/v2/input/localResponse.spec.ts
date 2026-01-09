@@ -1,9 +1,9 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { InferenceResponse, LocalResponse } from "../../../src";
+import { InferenceResponse, LocalResponse } from "@/index.js";
 
 import path from "path";
-import { V2_RESOURCE_PATH } from "../../index";
+import { V2_RESOURCE_PATH } from "../../index.js";
 import { Buffer } from "node:buffer";
 
 const signature: string = "1df388c992d87897fe61dfc56c444c58fc3c7369c31e2b5fd20d867695e93e85";

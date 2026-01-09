@@ -1,6 +1,6 @@
-import { StringDict } from "../common";
-import { StringField } from "../standard";
-import { GeneratedObjectField, isGeneratedObject } from "./generatedObject";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { StringField } from "@/parsing/standard/index.js";
+import { GeneratedObjectField, isGeneratedObject } from "./generatedObject.js";
 
 export interface GeneratedListFieldConstructor {
   prediction: StringDict[];

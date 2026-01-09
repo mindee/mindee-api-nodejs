@@ -1,5 +1,5 @@
-import { ErrorResponse } from "./errorResponse";
-import { StringDict, parseDate } from "../common";
+import { ErrorResponse } from "./errorResponse.js";
+import { StringDict, parseDate } from "@/parsing/common/index.js";
 
 /**
  * JobWebhook information.

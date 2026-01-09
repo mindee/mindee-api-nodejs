@@ -1,5 +1,5 @@
-import { ExtraField } from "./extras";
-import { StringDict } from "../stringDict";
+import { ExtraField } from "./extras.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 export class RAGExtra extends ExtraField {
   /**

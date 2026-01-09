@@ -1,4 +1,4 @@
-import { BaseField, BaseFieldConstructor } from "./base";
+import { BaseField, BaseFieldConstructor } from "./base.js";
 
 /**
  * The locale detected on the document.

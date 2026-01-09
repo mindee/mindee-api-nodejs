@@ -1,7 +1,7 @@
-import { InferenceFields } from "./inferenceFields";
-import { StringDict } from "../../common";
-import { BaseField } from "./baseField";
-import type { SimpleField } from "./simpleField";
+import { InferenceFields } from "./inferenceFields.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { BaseField } from "./baseField.js";
+import type { SimpleField } from "./simpleField.js";
 
 export class ObjectField extends BaseField {
   readonly fields: InferenceFields;

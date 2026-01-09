@@ -1,4 +1,4 @@
-import { EndpointResponse } from "./baseEndpoint";
+import { EndpointResponse } from "./apiCore.js";
 
 /**
  * Checks if the synchronous response is valid. Returns True if the response is valid.

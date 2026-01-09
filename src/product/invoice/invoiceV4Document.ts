@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../parsing/common";
-import { InvoiceV4LineItem } from "./invoiceV4LineItem";
+} from "@/parsing/common/index.js";
+import { InvoiceV4LineItem } from "./invoiceV4LineItem.js";
 import {
   AddressField,
   AmountField,
@@ -14,7 +14,7 @@ import {
   PaymentDetailsField,
   StringField,
   Taxes,
-} from "../../parsing/standard";
+} from "@/parsing/standard/index.js";
 
 /**
  * Invoice API version 4.11 document data.

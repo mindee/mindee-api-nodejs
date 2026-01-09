@@ -1,6 +1,6 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { IdCardV2Document } from "./idCardV2Document";
-import { IdCardV2Page } from "./idCardV2Page";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { IdCardV2Document } from "./idCardV2Document.js";
+import { IdCardV2Page } from "./idCardV2Page.js";
 
 /**
  * Carte Nationale d'Identité API version 2 inference prediction.

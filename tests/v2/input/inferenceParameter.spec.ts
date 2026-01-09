@@ -1,9 +1,9 @@
-import { StringDict } from "../../../src/parsing/common";
+import { StringDict } from "@/parsing/common/index.js";
 import path from "path";
-import { V2_RESOURCE_PATH } from "../../index";
-import { InferenceParameters } from "../../../src";
+import { V2_RESOURCE_PATH } from "../../index.js";
+import { InferenceParameters } from "@/index.js";
 import { expect } from "chai";
-import { DataSchema } from "../../../src/input";
+import { DataSchema } from "@/input/index.js";
 import { promises as fs } from "fs";
 
 let expectedDataSchemaDict: StringDict;

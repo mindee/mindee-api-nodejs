@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { CarteGriseV1Document } from "./carteGriseV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { CarteGriseV1Document } from "./carteGriseV1Document.js";
 
 /**
  * Carte Grise API version 1 inference prediction.

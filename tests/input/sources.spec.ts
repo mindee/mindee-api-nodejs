@@ -1,26 +1,26 @@
+import { Readable } from "stream";
 import {
   Base64Input,
   BufferInput,
   BytesInput,
+  PathInput,
+  StreamInput,
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BUFFER,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH,
   INPUT_TYPE_STREAM,
-  PathInput,
-  StreamInput,
-} from "../../src/input";
+} from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import sharp from "sharp";
 import { Buffer } from "node:buffer";
-import { compressImage } from "../../src/imageOperations";
-import { compressPdf } from "../../src/pdf";
-import { extractTextFromPdf } from "../../src/pdf/pdfUtils";
-import { logger } from "../../src/logger";
-import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index";
-import { Readable } from "stream";
+import { compressImage } from "@/imageOperations/index.js";
+import { compressPdf } from "@/pdf/index.js";
+import { extractTextFromPdf } from "@/pdf/pdfUtils.js";
+import { logger } from "@/logger.js";
+import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
 
 describe("Test different types of input", () => {
   const outputPath = path.join(RESOURCE_PATH, "output");

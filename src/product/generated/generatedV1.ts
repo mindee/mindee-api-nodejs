@@ -1,6 +1,6 @@
-import { Inference, Page, StringDict } from "../../../src/parsing/common";
-import { GeneratedV1Document } from "./generatedV1Document";
-import { GeneratedV1Page } from "./generatedV1Page";
+import { Inference, Page, StringDict } from "@/parsing/common/index.js";
+import { GeneratedV1Document } from "./generatedV1Document.js";
+import { GeneratedV1Page } from "./generatedV1Page.js";
 
 /**
  * Generated API V1 inference results.

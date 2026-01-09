@@ -1,5 +1,5 @@
-import { Polygon } from "../../../geometry";
-import { StringDict } from "../../common";
+import { Polygon } from "@/geometry/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 /**
  * Location of a field.
