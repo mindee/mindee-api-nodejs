@@ -111,6 +111,7 @@ export class WorkflowEndpoint {
       hostname: this.settings.hostname,
       path: path,
       timeout: this.settings.timeout,
+      body: form,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
