@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { BarcodeReaderV1Document } from "./barcodeReaderV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { BarcodeReaderV1Document } from "./barcodeReaderV1Document.js";
 
 /**
  * Barcode Reader API version 1 inference prediction.

@@ -1,28 +1,28 @@
+import { Dispatcher } from "undici";
 import {
   InputSource,
   LocalResponse,
   PageOptions,
-} from "./input";
-import { ApiSettings, Endpoint, EndpointResponse, STANDARD_API_OWNER } from "./http";
+} from "./input/index.js";
+import {
+  ApiSettings, Endpoint, EndpointResponse, STANDARD_API_OWNER
+} from "./http/index.js";
 import {
   AsyncPredictResponse,
   ExecutionPriority,
   FeedbackResponse,
   Inference,
   PredictResponse,
-  StringDict
-} from "./parsing/common";
-import { errorHandler } from "./errors/handler";
-import { LOG_LEVELS, logger } from "./logger";
-import { InferenceFactory } from "./parsing/common/inference";
-import { CustomV1, GeneratedV1 } from "./product";
-
+  StringDict,
+  WorkflowResponse,
+} from "./parsing/common/index.js";
+import { errorHandler } from "./errors/handler.js";
+import { LOG_LEVELS, logger } from "./logger.js";
+import { InferenceFactory } from "./parsing/common/inference.js";
+import { GeneratedV1 } from "./product/index.js";
 import { setTimeout } from "node:timers/promises";
-import { MindeeError } from "./errors";
-import { WorkflowResponse } from "./parsing/common/workflowResponse";
-import { WorkflowEndpoint } from "./http/workflowEndpoint";
-import { Base64Input, BufferInput, BytesInput, PathInput, StreamInput, UrlInput } from "./input";
-import { Readable } from "stream";
+import { MindeeError } from "./errors/index.js";
+import { WorkflowEndpoint } from "./http/workflowEndpoint.js";
 
 /**
  * Common options for workflows & predictions.
@@ -37,7 +37,6 @@ interface BaseOptions {
    * This is done before sending the file to the server and is useful to avoid page limitations.
    */
   pageOptions?: PageOptions;
-
   /**
    * If set, will enable Retrieval-Augmented Generation (only works if a valid workflowId is set).
    */
@@ -123,6 +122,8 @@ export interface ClientOptions {
   throwOnError?: boolean;
   /** Log debug messages. */
   debug?: boolean;
+  /** Custom dispatcher for HTTP requests. */
+  dispatcher?: Dispatcher;
 }
 
 /**
@@ -131,26 +132,29 @@ export interface ClientOptions {
  * @category Client
  */
 export class Client {
-  /** Key of the API. */
-  protected apiKey: string;
+  /** Mindee V1 API settings. */
+  protected apiSettings: ApiSettings;
 
   /**
    * @param {ClientOptions} options options for the initialization of a client.
    */
   constructor(
-    { apiKey, throwOnError, debug }: ClientOptions = {
-      apiKey: "",
+    { apiKey, throwOnError, debug, dispatcher }: ClientOptions = {
+      apiKey: undefined,
       throwOnError: true,
       debug: false,
+      dispatcher: undefined,
     }
   ) {
-    this.apiKey = apiKey ? apiKey : "";
+    this.apiSettings = new ApiSettings({
+      apiKey: apiKey,
+      dispatcher: dispatcher,
+    });
     errorHandler.throwOnError = throwOnError ?? true;
-    logger.level =
-    debug ?? process.env.MINDEE_DEBUG
+    logger.level = debug ?? process.env.MINDEE_DEBUG
       ? LOG_LEVELS["debug"]
       : LOG_LEVELS["warn"];
-    logger.debug("Client initialized");
+    logger.debug("Client V1 Initialized");
   }
 
   /**
@@ -174,8 +178,7 @@ export class Client {
       pageOptions: undefined,
     }
   ): Promise<PredictResponse<T>> {
-    const endpoint: Endpoint =
-    params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
+    const endpoint: Endpoint = params?.endpoint ?? this.#initializeOTSEndpoint<T>(productClass);
     if (inputSource === undefined) {
       throw new Error("The 'parse' function requires an input document.");
     }
@@ -265,7 +268,6 @@ export class Client {
     }
   }
 
-
   /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param inputSource file to send to the API.
@@ -279,7 +281,7 @@ export class Client {
     workflowId: string,
     params: WorkflowOptions = {}
   ): Promise<WorkflowResponse<GeneratedV1>> {
-    const workflowEndpoint = new WorkflowEndpoint(this.#buildApiSettings(), workflowId);
+    const workflowEndpoint = new WorkflowEndpoint(this.apiSettings, workflowId);
     if (inputSource === undefined) {
       throw new Error("The 'executeWorkflow' function requires an input document.");
     }
@@ -459,18 +461,8 @@ Job status: ${pollResults.job.status}.`
       endpointName,
       accountName,
       endpointVersion,
-      this.#buildApiSettings()
+      this.apiSettings
     );
-  }
-
-  /**
-   * Builds a document endpoint.
-   * @returns a custom `Endpoint` object.
-   */
-  #buildApiSettings(): ApiSettings {
-    return new ApiSettings({
-      apiKey: this.apiKey,
-    });
   }
 
   /**
@@ -487,17 +479,13 @@ Job status: ${pollResults.job.status}.`
     accountName: string,
     endpointVersion?: string
   ): Endpoint {
-    const cleanAccountName: string = this.#cleanAccountName(
-      CustomV1,
-      accountName
-    );
     if (!endpointName || endpointName.length === 0) {
       throw new Error("Missing parameter 'endpointName' for custom build!");
     }
     let cleanEndpointVersion: string;
     if (!endpointVersion || endpointVersion.length === 0) {
       logger.debug(
-        "Warning: No version provided for a custom build, will attempt to poll version 1 by default."
+        "No version provided for a custom build, will poll using version 1 by default."
       );
       cleanEndpointVersion = "1";
     } else {
@@ -505,7 +493,7 @@ Job status: ${pollResults.job.status}.`
     }
     return this.#buildProductEndpoint(
       endpointName,
-      cleanAccountName,
+      accountName,
       cleanEndpointVersion
     );
   }
@@ -516,9 +504,6 @@ Job status: ${pollResults.job.status}.`
   #initializeOTSEndpoint<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T
   ): Endpoint {
-    if (productClass.name === "CustomV1") {
-      throw new Error("Incorrect parameters for Custom build.");
-    }
     const [endpointName, endpointVersion] = this.#getOtsEndpoint<T>(productClass);
     return this.#buildProductEndpoint(
       endpointName,
@@ -528,32 +513,8 @@ Job status: ${pollResults.job.status}.`
   }
 
   /**
-   * Checks that an account name is provided for custom builds, and sets the default one otherwise.
-   * @param productClass product class to use for calling  the API and parsing the response.
-   * @param accountName name of the account's holder. Only required on custom builds.
-   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   *
-   * @returns the name of the account. Sends an error if one isn't provided for a custom build.
-   */
-  #cleanAccountName<T extends Inference>(
-    productClass: new (httpResponse: StringDict) => T,
-    accountName?: string
-  ): string {
-    if (productClass.name === "CustomV1") {
-      if (!accountName || accountName.length === 0) {
-        logger.debug(
-          `Warning: no account name provided for custom build, ${STANDARD_API_OWNER} will be used by default`
-        );
-        return STANDARD_API_OWNER;
-      }
-      return accountName;
-    }
-    return STANDARD_API_OWNER;
-  }
-
-  /**
    * Get the name and version of an OTS endpoint.
-   * @param productClass product class to use for calling  the API and parsing the response.
+   * @param productClass product class to use for calling the API and parsing the response.
    *  Mandatory to retrieve default OTS endpoint data.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    *
@@ -565,79 +526,5 @@ Job status: ${pollResults.job.status}.`
     const [endpointName, endpointVersion] =
     InferenceFactory.getEndpoint(productClass);
     return [endpointName, endpointVersion];
-  }
-
-  /**
-   * Load an input document from a local path.
-   * @param inputPath
-   * @deprecated Use `new mindee.PathInput()` instead.
-   */
-  docFromPath(inputPath: string): PathInput {
-    return new PathInput({
-      inputPath: inputPath,
-    });
-  }
-
-  /**
-   * Load an input document from a base64 encoded string.
-   * @param inputString input content, as a string.
-   * @param filename file name.
-   * @deprecated Use `new mindee.Base64Input()` instead.
-   */
-  docFromBase64(inputString: string, filename: string): Base64Input {
-    return new Base64Input({
-      inputString: inputString,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input document from a `stream.Readable` object.
-   * @param inputStream input content, as a readable stream.
-   * @param filename file name.
-   * @deprecated Use `new mindee.StreamInput()` instead.
-   */
-  docFromStream(inputStream: Readable, filename: string): StreamInput {
-    return new StreamInput({
-      inputStream: inputStream,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input document from bytes.
-   * @param inputBytes input content, as a Uint8Array or Buffer.
-   * @param filename file name.
-   * @deprecated Use `new mindee.BytesInput()` instead.
-   */
-  docFromBytes(inputBytes: Uint8Array, filename: string): BytesInput {
-    return new BytesInput({
-      inputBytes: inputBytes,
-      filename: filename,
-    });
-  }
-
-  /**
-   * Load an input document from a URL.
-   * @param url input url. Must be HTTPS.
-   * @deprecated Use `new mindee.UrlInput()` instead.
-   */
-  docFromUrl(url: string): UrlInput {
-    return new UrlInput({
-      url: url,
-    });
-  }
-
-  /**
-   * Load an input document from a Buffer.
-   * @param buffer input content, as a buffer.
-   * @param filename file name.
-   * @deprecated Use `new mindee.BufferInput()` instead.
-   */
-  docFromBuffer(buffer: Buffer, filename: string): BufferInput {
-    return new BufferInput({
-      buffer: buffer,
-      filename: filename,
-    });
   }
 }

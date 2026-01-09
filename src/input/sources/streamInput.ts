@@ -1,7 +1,7 @@
 import { Readable } from "stream";
-import { LocalInputSource } from "./localInputSource";
-import { INPUT_TYPE_STREAM } from "./inputSource";
-import { logger } from "../../logger";
+import { LocalInputSource } from "./localInputSource.js";
+import { INPUT_TYPE_STREAM } from "./inputSource.js";
+import { logger } from "@/logger.js";
 
 interface StreamInputProps {
   inputStream: Readable;

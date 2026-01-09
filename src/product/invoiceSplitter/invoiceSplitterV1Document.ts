@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../parsing/common";
-import { InvoiceSplitterV1InvoicePageGroup } from "./invoiceSplitterV1InvoicePageGroup";
+} from "@/parsing/common/index.js";
+import { InvoiceSplitterV1InvoicePageGroup } from "./invoiceSplitterV1InvoicePageGroup.js";
 
 
 /**

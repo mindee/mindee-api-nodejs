@@ -1,9 +1,9 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { Client, PredictResponse, AsyncPredictResponse, LocalResponse } from "../../../src";
-import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "../../../src/product";
+import { Client, PredictResponse, AsyncPredictResponse, LocalResponse } from "@/index.js";
+import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/product/index.js";
 import path from "path";
-import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index";
+import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index.js";
 
 const signature: string = "5ed1673e34421217a5dbfcad905ee62261a3dd66c442f3edd19302072bbf70d0";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";

@@ -1,6 +1,6 @@
-import { cleanSpecialChars, floatToString } from "../../../parsing/common";
-import { StringDict } from "../../../parsing/common";
-import { Polygon } from "../../../geometry";
+import { cleanSpecialChars, floatToString } from "@/parsing/common/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Polygon } from "@/geometry/index.js";
 
 /**
  * The subscription details fee for the energy service.

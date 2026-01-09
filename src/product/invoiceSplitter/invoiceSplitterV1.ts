@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { InvoiceSplitterV1Document } from "./invoiceSplitterV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { InvoiceSplitterV1Document } from "./invoiceSplitterV1Document.js";
 
 /**
  * Invoice Splitter API version 1 inference prediction.

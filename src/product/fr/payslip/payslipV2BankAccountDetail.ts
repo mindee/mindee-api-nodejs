@@ -1,5 +1,5 @@
-import { StringDict } from "../../../parsing/common";
-import { Polygon } from "../../../geometry";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Polygon } from "@/geometry/index.js";
 
 /**
  * Information about the employee's bank account.

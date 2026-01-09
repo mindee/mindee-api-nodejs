@@ -1,6 +1,6 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { BankCheckV1Document } from "./bankCheckV1Document";
-import { BankCheckV1Page } from "./bankCheckV1Page";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { BankCheckV1Document } from "./bankCheckV1Document.js";
+import { BankCheckV1Page } from "./bankCheckV1Page.js";
 
 /**
  * Bank Check API version 1 inference prediction.

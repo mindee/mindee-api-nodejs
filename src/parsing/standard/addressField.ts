@@ -1,4 +1,4 @@
-import { StringField, FieldConstructor } from "./text";
+import { StringField, FieldConstructor } from "./text.js";
 
 /**
  * A field containing a detailed address value broken down into components

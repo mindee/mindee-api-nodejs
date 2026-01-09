@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { HealthCardV1Document } from "./healthCardV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { HealthCardV1Document } from "./healthCardV1Document.js";
 
 /**
  * Health Card API version 1 inference prediction.

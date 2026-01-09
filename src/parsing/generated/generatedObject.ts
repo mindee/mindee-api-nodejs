@@ -1,5 +1,5 @@
-import { StringDict } from "../common";
-import { BaseFieldConstructor, PositionField } from "../standard";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { BaseFieldConstructor, PositionField } from "@/parsing/standard/index.js";
 
 
 /** A JSON-like object, with miscellaneous values. */

@@ -1,5 +1,5 @@
-import { StringDict } from "../stringDict";
-import { ExtraField } from "./extras";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { ExtraField } from "./extras.js";
 
 export class FullTextOcrExtra extends ExtraField {
   content?: string;

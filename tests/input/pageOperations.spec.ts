@@ -2,11 +2,11 @@ import {
   PathInput,
   PageOptionsOperation,
   INPUT_TYPE_PATH,
-} from "../../src/input";
+} from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { RESOURCE_PATH } from "../index";
+import { RESOURCE_PATH } from "../index.js";
 
 describe("High level multi-page operations", () => {
   it("should cut a PDF", async () => {

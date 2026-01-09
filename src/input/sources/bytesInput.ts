@@ -1,6 +1,6 @@
-import { INPUT_TYPE_BYTES } from "./inputSource";
-import { LocalInputSource } from "./localInputSource";
-import { logger } from "../../logger";
+import { INPUT_TYPE_BYTES } from "./inputSource.js";
+import { LocalInputSource } from "./localInputSource.js";
+import { logger } from "@/logger.js";
 
 interface BytesInputProps {
   inputBytes: Uint8Array;

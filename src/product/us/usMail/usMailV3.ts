@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { UsMailV3Document } from "./usMailV3Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { UsMailV3Document } from "./usMailV3Document.js";
 
 /**
  * US Mail API version 3 inference prediction.

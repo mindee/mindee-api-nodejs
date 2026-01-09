@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { MultiReceiptsDetectorV1Document } from "./multiReceiptsDetectorV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { MultiReceiptsDetectorV1Document } from "./multiReceiptsDetectorV1Document.js";
 
 /**
  * Multi Receipts Detector API version 1 inference prediction.

@@ -1,5 +1,5 @@
-import { StringDict } from "../common";
-import { Polygon } from "../../geometry";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Polygon } from "@/geometry/index.js";
 
 export interface PositionFieldConstructor {
   prediction: StringDict;

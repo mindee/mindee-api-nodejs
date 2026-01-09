@@ -1,5 +1,5 @@
-import { StringDict } from "../../../parsing/common";
-import { Polygon } from "../../../geometry";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Polygon } from "@/geometry/index.js";
 
 /**
  * Full extraction of BBAN, including: branch code, bank code, account and key.

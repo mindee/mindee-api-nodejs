@@ -1,7 +1,6 @@
-import { StringDict, cleanOutString } from "../../../parsing/common";
-import { ClassificationField } from "../../../parsing/standard";
-
-import { IdCardV1Document } from "./idCardV1Document";
+import { StringDict, cleanOutString } from "@/parsing/common/index.js";
+import { ClassificationField } from "@/parsing/standard/index.js";
+import { IdCardV1Document } from "./idCardV1Document.js";
 
 /**
  * Carte Nationale d'Identité API version 1.1 page data.

@@ -1,4 +1,4 @@
-import { ErrorDetails, ErrorResponse, ErrorItem } from "../parsing/v2";
+import { ErrorDetails, ErrorResponse, ErrorItem } from "@/parsing/v2/index.js";
 
 /**
  * Main Mindee Error custom class.

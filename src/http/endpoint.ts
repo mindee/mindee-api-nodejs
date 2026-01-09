@@ -1,19 +1,20 @@
-import { RequestOptions } from "https";
 import { URLSearchParams } from "url";
-import FormData from "form-data";
-import { InputSource, LocalInputSource } from "../input";
-import { handleError } from "./error";
-import { ApiSettings } from "./apiSettings";
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { StringDict } from "../parsing/common";
-import { ClientRequest } from "http";
-import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation";
-import { PredictParams } from "./httpParams";
+import { InputSource, LocalInputSource } from "@/input/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
+import { ApiSettings } from "./apiSettings.js";
+import { handleError } from "./error.js";
+import { PredictParams } from "./httpParams.js";
+import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation.js";
 
 /**
  * Endpoint for a product (OTS or Custom).
  */
-export class Endpoint extends BaseEndpoint {
+export class Endpoint {
+  /** Settings relating to the API. */
+  settings: ApiSettings;
+  /** Root of the URL for API calls. */
+  urlRoot: string;
   /** URL of a product. */
   urlName: string;
   /** Account owning the product. */
@@ -27,18 +28,11 @@ export class Endpoint extends BaseEndpoint {
     version: string,
     settings: ApiSettings
   ) {
-    super(settings, `/v1/products/${owner}/${urlName}/v${version}`);
+    this.settings = settings;
+    this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
-  }
-
-  /**
-   * Changes the url to a workflow ID.
-   * @param workflowId
-   */
-  useWorkflowId(workflowId: string) {
-    this.urlRoot = `/v1/workflows/${workflowId}`;
   }
 
   /**
@@ -51,7 +45,7 @@ export class Endpoint extends BaseEndpoint {
   async predict(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
+      await cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictReqPost(
       params.inputDoc,
@@ -62,7 +56,6 @@ export class Endpoint extends BaseEndpoint {
     if (!isValidSyncResponse(response)) {
       handleError(this.urlName, response, this.extractStatusMessage(response));
     }
-
     return response;
   }
 
@@ -76,7 +69,7 @@ export class Endpoint extends BaseEndpoint {
   async predictAsync(params: PredictParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
+      await cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictAsyncReqPost(
       params.inputDoc,
@@ -143,7 +136,6 @@ export class Endpoint extends BaseEndpoint {
     if (!isValidAsyncResponse(response)) {
       handleError("document", response, this.extractStatusMessage(response));
     }
-
     return response;
   }
 
@@ -163,7 +155,6 @@ export class Endpoint extends BaseEndpoint {
     if (!isValidSyncResponse(response)) {
       handleError("feedback", response, this.extractStatusMessage(response));
     }
-
     return response;
   }
 
@@ -177,7 +168,7 @@ export class Endpoint extends BaseEndpoint {
    * @param rag
    * @param workflowId
    */
-  protected sendFileForPrediction(
+  protected async sendFileForPrediction(
     input: InputSource,
     predictUrl: string,
     includeWords: boolean = false,
@@ -186,52 +177,46 @@ export class Endpoint extends BaseEndpoint {
     rag: boolean = false,
     workflowId: string | undefined = undefined
   ): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const searchParams = new URLSearchParams();
-      if (cropper) {
-        searchParams.append("cropper", "true");
-      }
-      if (rag) {
-        searchParams.append("rag", "true");
-      }
-      if (fullText) {
-        searchParams.append("full_text_ocr", "true");
-      }
+    const searchParams = new URLSearchParams();
+    if (cropper) {
+      searchParams.set("cropper", "true");
+    }
+    if (rag) {
+      searchParams.set("rag", "true");
+    }
+    if (fullText) {
+      searchParams.set("full_text_ocr", "true");
+    }
 
-      const form = new FormData();
-      if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
-        form.append("document", input.fileObject, {
-          filename: input.filename,
-        });
-      } else {
-        form.append("document", input.fileObject);
-      }
+    const form = new FormData();
+    if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
+      form.set("document", new Blob([input.fileObject]), input.filename);
+    } else {
+      form.set("document", input.fileObject);
+    }
+    if (includeWords) {
+      form.set("include_mvision", "true");
+    }
 
-      if (includeWords) {
-        form.append("include_mvision", "true");
-      }
-      const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
-      let path: string;
-      if (workflowId === undefined) {
-        path = `${this.urlRoot}/${predictUrl}`;
-      } else {
-        path = `/v1/workflows/${workflowId}/predict_async`;
-      }
-      if (searchParams.toString().length > 0) {
-        path += `?${searchParams}`;
-      }
-      const options: RequestOptions = {
-        method: "POST",
-        headers: headers,
-        hostname: this.settings.hostname,
-        path: path,
-        timeout: this.settings.timeout,
-      };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
-      form.pipe(req);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+    let path: string;
+    if (workflowId === undefined) {
+      path = `${this.urlRoot}/${predictUrl}`;
+    } else {
+      path = `/v1/workflows/${workflowId}/predict_async`;
+    }
+    if (searchParams.toString().length > 0) {
+      path += `?${searchParams}`;
+    }
+
+    const options = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: path,
+      timeout: this.settings.timeout,
+      body: form,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
   /**
@@ -282,36 +267,30 @@ export class Endpoint extends BaseEndpoint {
    * Make a request to GET the status of a document in the queue.
    * @param queueId
    */
-  #documentQueueReqGet(queueId: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `${this.urlRoot}/documents/queue/${queueId}`,
-      };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async #documentQueueReqGet(queueId: string): Promise<EndpointResponse> {
+    const options = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `${this.urlRoot}/documents/queue/${queueId}`,
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
   /**
    * Make a request to GET a document.
    * @param documentId
    */
-  #documentGetReq(documentId: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `${this.urlRoot}/documents/${documentId}`,
-      };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async #documentGetReq(documentId: string): Promise<EndpointResponse> {
+    const options = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `${this.urlRoot}/documents/${documentId}`,
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
   /**
@@ -319,19 +298,15 @@ export class Endpoint extends BaseEndpoint {
    * @param documentId
    * @param feedback
    */
-  #documentFeedbackPutReq(documentId: string, feedback: StringDict): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "PUT",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `/v1/documents/${documentId}/feedback`,
-      };
-      const req: ClientRequest = BaseEndpoint.readResponse(options, resolve, reject);
-      req.write(JSON.stringify(feedback));
-
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async #documentFeedbackPutReq(documentId: string, feedback: StringDict): Promise<EndpointResponse> {
+    const options = {
+      method: "PUT",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v1/documents/${documentId}/feedback`,
+      body: JSON.stringify(feedback),
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 }

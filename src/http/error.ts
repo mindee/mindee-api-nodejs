@@ -1,7 +1,7 @@
-import { MindeeError } from "../errors";
-import { errorHandler } from "../errors/handler";
-import { StringDict } from "../parsing/common";
-import { EndpointResponse } from "./baseEndpoint";
+import { MindeeError } from "@/errors/index.js";
+import { errorHandler } from "@/errors/handler.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { EndpointResponse } from "./apiCore.js";
 
 export function handleError(
   urlName: string,

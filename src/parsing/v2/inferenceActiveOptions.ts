@@ -1,5 +1,5 @@
-import { StringDict } from "../common";
-import { DataSchemaActiveOption } from "./dataSchemaActiveOption";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { DataSchemaActiveOption } from "./dataSchemaActiveOption.js";
 
 export class InferenceActiveOptions {
   /**

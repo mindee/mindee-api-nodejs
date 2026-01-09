@@ -2,12 +2,12 @@ import {
   Prediction,
   StringDict,
   cleanOutString,
-} from "../../../parsing/common";
+} from "@/parsing/common/index.js";
 import {
   ClassificationField,
   DateField,
   StringField,
-} from "../../../parsing/standard";
+} from "@/parsing/standard/index.js";
 
 /**
  * Passport - India API version 1.2 document data.

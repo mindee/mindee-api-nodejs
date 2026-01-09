@@ -1,4 +1,4 @@
-import { BaseField, BaseFieldConstructor } from "./base";
+import { BaseField, BaseFieldConstructor } from "./base.js";
 
 /**
  * Represents a classifier value.

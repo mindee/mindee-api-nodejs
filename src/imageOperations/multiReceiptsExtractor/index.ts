@@ -1,2 +1,2 @@
-export { extractReceipts } from "./multiReceiptsExtractor";
-export { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage";
+export { extractReceipts } from "./multiReceiptsExtractor.js";
+export { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage.js";

@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import path from "node:path";
-import { LocalResponse, InferenceResponse, RawText, RagMetadata } from "../../../src";
-import { FieldConfidence, ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
+import { LocalResponse, InferenceResponse, RawText, RagMetadata } from "@/index.js";
+import { FieldConfidence, ListField, ObjectField, SimpleField } from "@/parsing/v2/field/index.js";
 import { promises as fs } from "node:fs";
-import { Polygon } from "../../../src/geometry";
-import { V2_RESOURCE_PATH } from "../../index";
+import { Polygon } from "@/geometry/index.js";
+import { V2_RESOURCE_PATH } from "../../index.js";
 
 const findocPath = path.join(V2_RESOURCE_PATH, "products", "financial_document");
 const inferencePath = path.join(V2_RESOURCE_PATH, "inference");

@@ -2,12 +2,12 @@ import {
   Prediction,
   StringDict,
   cleanOutString,
-} from "../../../parsing/common";
+} from "@/parsing/common/index.js";
 import {
   AmountField,
   DateField,
   StringField,
-} from "../../../parsing/standard";
+} from "@/parsing/standard/index.js";
 
 /**
  * Bank Check API version 1.1 document data.

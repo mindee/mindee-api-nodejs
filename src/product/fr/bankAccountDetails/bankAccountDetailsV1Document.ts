@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,
-} from "../../../parsing/common";
-import { StringField } from "../../../parsing/standard";
+} from "@/parsing/common/index.js";
+import { StringField } from "@/parsing/standard/index.js";
 
 /**
  * Bank Account Details API version 1.0 document data.

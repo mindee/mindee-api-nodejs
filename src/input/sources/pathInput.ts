@@ -1,7 +1,7 @@
-import { INPUT_TYPE_PATH } from "./inputSource";
-import { LocalInputSource } from "./localInputSource";
+import { INPUT_TYPE_PATH } from "./inputSource.js";
+import { LocalInputSource } from "./localInputSource.js";
 import path from "path";
-import { logger } from "../../logger";
+import { logger } from "@/logger.js";
 import { promises as fs } from "fs";
 
 interface PathInputProps {

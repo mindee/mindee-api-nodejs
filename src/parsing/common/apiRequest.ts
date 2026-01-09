@@ -1,7 +1,7 @@
-import { StringDict } from "./stringDict";
+import { StringDict } from "@/parsing/common/stringDict.js";
 /**
  * Holds the information relating to an API HTTP request.
- * 
+ *
  * @category API Response
  */
 export class ApiRequest {

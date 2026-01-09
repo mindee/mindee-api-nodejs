@@ -1,1 +1,1 @@
-export * as indianPassport from "./indianPassport/internal";
+export * as indianPassport from "./indianPassport/index.js";

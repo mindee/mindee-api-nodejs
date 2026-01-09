@@ -2,13 +2,13 @@ import {
   Prediction,
   StringDict,
   cleanOutString,lineSeparator,
-} from "../../parsing/common";
-import { ResumeV1SocialNetworksUrl } from "./resumeV1SocialNetworksUrl";
-import { ResumeV1Language } from "./resumeV1Language";
-import { ResumeV1Education } from "./resumeV1Education";
-import { ResumeV1ProfessionalExperience } from "./resumeV1ProfessionalExperience";
-import { ResumeV1Certificate } from "./resumeV1Certificate";
-import { ClassificationField, StringField } from "../../parsing/standard";
+} from "@/parsing/common/index.js";
+import { ResumeV1SocialNetworksUrl } from "./resumeV1SocialNetworksUrl.js";
+import { ResumeV1Language } from "./resumeV1Language.js";
+import { ResumeV1Education } from "./resumeV1Education.js";
+import { ResumeV1ProfessionalExperience } from "./resumeV1ProfessionalExperience.js";
+import { ResumeV1Certificate } from "./resumeV1Certificate.js";
+import { ClassificationField, StringField } from "@/parsing/standard/index.js";
 
 /**
  * Resume API version 1.2 document data.

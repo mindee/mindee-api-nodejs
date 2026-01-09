@@ -1,5 +1,5 @@
-import { BaseField, BaseFieldConstructor } from "./base";
-import { Polygon, BoundingBox, getBoundingBox } from "../../geometry";
+import { BaseField, BaseFieldConstructor } from "./base.js";
+import { Polygon, BoundingBox, getBoundingBox } from "@/geometry/index.js";
 
 /**
  * A basic field with position and page information.

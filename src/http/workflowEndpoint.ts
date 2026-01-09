@@ -1,26 +1,28 @@
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { ApiSettings } from "./apiSettings";
-import { InputSource, LocalInputSource } from "../input";
 import { URLSearchParams } from "url";
-import FormData from "form-data";
-import { RequestOptions } from "https";
-import { isValidSyncResponse } from "./responseValidation";
-import { handleError } from "./error";
-
-import { WorkflowParams } from "./httpParams";
-import { ExecutionPriority } from "../parsing/common";
+import { InputSource, LocalInputSource } from "@/input/index.js";
+import { ExecutionPriority } from "@/parsing/common/index.js";
+import { cutDocPages, sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
+import { ApiSettings } from "./apiSettings.js";
+import { handleError } from "./error.js";
+import { WorkflowParams } from "./httpParams.js";
+import { isValidSyncResponse } from "./responseValidation.js";
 
 /**
  * Endpoint for a workflow.
  */
-export class WorkflowEndpoint extends BaseEndpoint {
+export class WorkflowEndpoint {
+  /** Settings relating to the API. */
+  settings: ApiSettings;
+  /** Root of the URL for API calls. */
+  urlRoot: string;
+
   constructor(
     settings: ApiSettings,
     workflowId: string
   ) {
-    super(settings, `/v1/workflows/${workflowId}/executions`);
+    this.settings = settings;
+    this.urlRoot = `/v1/workflows/${workflowId}/executions`;
   }
-
 
   /**
    * Sends a document to a workflow execution.
@@ -32,13 +34,12 @@ export class WorkflowEndpoint extends BaseEndpoint {
   async executeWorkflow(params: WorkflowParams): Promise<EndpointResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await BaseEndpoint.cutDocPages(params.inputDoc, params.pageOptions);
+      await cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#workflowReqPost(params);
     if (!isValidSyncResponse(response)) {
       handleError(this.urlRoot, response, response.messageObj?.statusMessage);
     }
-
     return response;
   }
 
@@ -67,7 +68,7 @@ export class WorkflowEndpoint extends BaseEndpoint {
    * @param publicUrl
    * @param rag
    */
-  protected sendFileForPrediction(
+  protected async sendFileForPrediction(
     input: InputSource,
     alias: string | null = null,
     priority: ExecutionPriority | null = null,
@@ -75,52 +76,43 @@ export class WorkflowEndpoint extends BaseEndpoint {
     publicUrl: string | null = null,
     rag: boolean | null = null,
   ): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const searchParams = new URLSearchParams();
+    const searchParams = new URLSearchParams();
+    if (fullText) {
+      searchParams.set("full_text_ocr", "true");
+    }
+    if (rag) {
+      searchParams.set("rag", "true");
+    }
 
-      if (fullText) {
-        searchParams.append("full_text_ocr", "true");
-      }
+    const form = new FormData();
+    if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
+      form.set("document", new Blob([input.fileObject]), input.filename);
+    } else {
+      form.set("document", input.fileObject);
+    }
+    if (alias) {
+      form.set("alias", alias);
+    }
+    if (publicUrl) {
+      form.set("public_url", publicUrl);
+    }
+    if (priority) {
+      form.set("priority", priority.toString());
+    }
 
-      if (rag) {
-        searchParams.append("rag", "true");
-      }
+    let path = this.urlRoot;
+    if (searchParams.toString().length > 0) {
+      path += `?${searchParams}`;
+    }
 
-      const form = new FormData();
-      if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
-        form.append("document", input.fileObject, {
-          filename: input.filename,
-        });
-      } else {
-        form.append("document", input.fileObject);
-      }
-
-      if (alias) {
-        form.append("alias", alias);
-      }
-      if (publicUrl) {
-        form.append("public_url", publicUrl);
-      }
-      if (priority) {
-        form.append("priority", priority.toString());
-      }
-      const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
-
-      let path = this.urlRoot;
-      if (searchParams.toString().length > 0) {
-        path += `?${searchParams}`;
-      }
-      const options: RequestOptions = {
-        method: "POST",
-        headers: headers,
-        hostname: this.settings.hostname,
-        path: path,
-        timeout: this.settings.timeout,
-      };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
-      form.pipe(req);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+    const options = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: path,
+      timeout: this.settings.timeout,
+      body: form,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 }
