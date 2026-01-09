@@ -9,7 +9,7 @@ import { logger } from "@/logger.js";
 
 export class UrlInput extends InputSource {
   public readonly url: string;
-  public readonly dispatcher: Dispatcher = getGlobalDispatcher();
+  public readonly dispatcher;
 
   constructor({ url, dispatcher }: { url: string, dispatcher?: Dispatcher }) {
     super();
@@ -103,7 +103,6 @@ export class UrlInput extends InputSource {
         UrlInput.getFileExtension(filename || "") || undefined
       );
     }
-
     return filename;
   }
 
@@ -127,8 +126,11 @@ export class UrlInput extends InputSource {
     );
 
     if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400) {
+      logger.debug(`Redirecting to: ${response.headers.location}`);
       if (redirects === maxRedirects) {
-        throw new Error(`Can't reach URL after ${redirects} out of ${maxRedirects} redirects, aborting operation.`);
+        throw new Error(
+          `Can't reach URL after ${redirects} out of ${maxRedirects} redirects, aborting operation.`
+        );
       }
       if (response.headers.location) {
         return await this.makeRequest(
@@ -141,6 +143,7 @@ export class UrlInput extends InputSource {
     if (!response.statusCode || response.statusCode >= 400 || response.statusCode < 200) {
       throw new Error(`Couldn't retrieve file from server, error code ${response.statusCode}.`);
     }
-    return { content: response.body.read(), finalUrl: url };
+    const arrayBuffer = await response.body.arrayBuffer();
+    return { content: Buffer.from(arrayBuffer), finalUrl: url };
   }
 }

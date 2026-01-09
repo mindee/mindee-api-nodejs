@@ -4,7 +4,7 @@ import { Client } from "@/index.js";
 import { InvoiceV4 } from "@/product/index.js";
 
 describe("MindeeV1 - URL Input Integration Test", async () => {
-  it("should retrieve and parse a remote file", async () => {
+  it("should retrieve and parse a remote file with redirection", async () => {
     const apiKey = process.env.MINDEE_API_KEY;
     if (!apiKey) {
       throw new Error("MINDEE_API_KEY environment variable is not set");

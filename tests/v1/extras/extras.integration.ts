@@ -20,7 +20,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
       mindee.product.InvoiceV4, sample, { cropper: true }
     );
     expect(response.document.inference.pages[0]?.extras?.cropper).to.exist;
-  }).timeout(60000);
+  }).timeout(70000);
 
   it("should send full text OCR extra", async () => {
     const sample = new mindee.PathInput({
@@ -32,7 +32,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     );
     expect(response.document?.extras?.fullTextOcr).to.exist;
 
-  }).timeout(60000);
+  }).timeout(70000);
 
   it("should send OCR words synchronously", async () => {
     const sample = new mindee.PathInput({
@@ -45,7 +45,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     expect(response.document?.ocr).to.exist;
     expect(response.document?.ocr?.toString()).to.not.be.empty;
 
-  }).timeout(65000);
+  }).timeout(70000);
 
   it("should send OCR words asynchronously", async () => {
     const sample = new mindee.PathInput({
@@ -58,5 +58,5 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     expect(response.document?.ocr).to.exist;
     expect(response.document?.ocr?.toString()).to.not.be.empty;
 
-  }).timeout(65000);
+  }).timeout(70000);
 });
