@@ -1,6 +1,6 @@
 import { PDFDocument } from "@cantoo/pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "@/errors/index.js";
-import { InvoiceSplitterV1 } from "@/product/index.js";
+import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage.js";
 

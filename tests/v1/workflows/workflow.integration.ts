@@ -1,10 +1,10 @@
 import * as mindee from "@/index.js";
-import { ExecutionPriority } from "@/parsing/common/index.js";
+import { ExecutionPriority } from "@/v1/parsing/common/index.js";
 import { expect } from "chai";
 import { LocalInputSource } from "@/input/index.js";
 import { OptionalAsyncOptions } from "@/client.js";
-import { FinancialDocumentV1 } from "@/product/index.js";
-import { RAGExtra } from "@/parsing/common/extras/ragExtra.js";
+import { FinancialDocumentV1 } from "@/v1/product/index.js";
+import { RAGExtra } from "@/v1/parsing/common/extras/ragExtra.js";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 

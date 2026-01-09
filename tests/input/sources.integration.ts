@@ -1,5 +1,5 @@
 import * as mindee from "@/index.js";
-import { InvoiceV4 } from "@/product/index.js";
+import { InvoiceV4 } from "@/v1/product/index.js";
 import { expect } from "chai";
 import { promises as fs } from "fs";
 import { createReadStream } from "node:fs";

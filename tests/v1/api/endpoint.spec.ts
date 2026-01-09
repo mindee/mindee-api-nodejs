@@ -7,7 +7,7 @@ import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import assert from "node:assert/strict";
 import {
   MindeeHttp400Error, MindeeHttp401Error, MindeeHttp429Error, MindeeHttp500Error
-} from "@/http/index.js";
+} from "@/v1/http/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);

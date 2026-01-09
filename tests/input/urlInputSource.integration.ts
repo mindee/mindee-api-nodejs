@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import { UrlInput } from "@/index.js";
 import { Client } from "@/index.js";
-import { InvoiceV4 } from "@/product/index.js";
+import { InvoiceV4 } from "@/v1/product/index.js";
 
 describe("MindeeV1 - URL Input Integration Test", async () => {
   it("should retrieve and parse a remote file with redirection", async () => {

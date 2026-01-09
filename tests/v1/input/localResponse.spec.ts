@@ -1,8 +1,9 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { Client, PredictResponse, AsyncPredictResponse, LocalResponse } from "@/index.js";
-import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/product/index.js";
 import path from "path";
+import { AsyncPredictResponse, LocalResponseV1, PredictResponse } from "@/v1/index.js";
+import { Client } from "@/index.js";
+import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index.js";
 
 const signature: string = "5ed1673e34421217a5dbfcad905ee62261a3dd66c442f3edd19302072bbf70d0";
@@ -19,7 +20,7 @@ const internationalIdPath: string = path.join(
 describe("MindeeV1 - Load Local Response", () => {
   it("should load a string properly.", async () => {
     const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
-    const localResponse = new LocalResponse(fileObj);
+    const localResponse = new LocalResponseV1(fileObj);
     await localResponse.init();
     expect(localResponse.asDict()).to.not.be.null;
     expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
@@ -28,7 +29,7 @@ describe("MindeeV1 - Load Local Response", () => {
   });
 
   it("should load a file properly.", async () => {
-    const localResponse = new LocalResponse(filePath);
+    const localResponse = new LocalResponseV1(filePath);
     await localResponse.init();
     expect(localResponse.asDict()).to.not.be.null;
     expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
@@ -39,7 +40,7 @@ describe("MindeeV1 - Load Local Response", () => {
   it("should load a buffer properly.", async () => {
     const fileStr = (await fs.readFile(filePath, { encoding: "utf-8" })).replace(/\r/g, "").replace(/\n/g, "");
     const fileBuffer = Buffer.from(fileStr, "utf-8");
-    const localResponse = new LocalResponse(fileBuffer);
+    const localResponse = new LocalResponseV1(fileBuffer);
     await localResponse.init();
     expect(localResponse.asDict()).to.not.be.null;
     expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
@@ -49,7 +50,7 @@ describe("MindeeV1 - Load Local Response", () => {
 
   it("should load into a sync prediction.", async () => {
     const fileObj = await fs.readFile(multiReceiptsDetectorPath, { encoding: "utf-8" });
-    const localResponse = new LocalResponse(fileObj);
+    const localResponse = new LocalResponseV1(fileObj);
     const dummyClient = new Client({ apiKey: "dummy-key" });
     const prediction = await dummyClient.loadPrediction(MultiReceiptsDetectorV1, localResponse);
     expect(prediction).to.be.an.instanceof(PredictResponse);
@@ -59,7 +60,7 @@ describe("MindeeV1 - Load Local Response", () => {
 
   it("should load a failed prediction.", async () => {
     const fileObj = await fs.readFile(failedPath, { encoding: "utf-8" });
-    const localResponse = new LocalResponse(fileObj);
+    const localResponse = new LocalResponseV1(fileObj);
     const dummyClient = new Client({ apiKey: "dummy-key" });
     const prediction = await dummyClient.loadPrediction(InvoiceV4, localResponse);
     expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
@@ -68,7 +69,7 @@ describe("MindeeV1 - Load Local Response", () => {
 
   it("should load into an async prediction.", async () => {
     const fileObj = await fs.readFile(internationalIdPath, { encoding: "utf-8" });
-    const localResponse = new LocalResponse(fileObj);
+    const localResponse = new LocalResponseV1(fileObj);
     const dummyClient = new Client({ apiKey: "dummy-key" });
     const prediction = await dummyClient.loadPrediction(InternationalIdV2, localResponse);
     expect(prediction).to.be.an.instanceof(AsyncPredictResponse);

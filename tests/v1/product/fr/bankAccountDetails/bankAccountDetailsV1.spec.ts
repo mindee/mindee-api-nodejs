@@ -4,7 +4,6 @@ import { V1_PRODUCT_PATH } from "../../../../index.js";
 import { expect } from "chai";
 import * as mindee from "@/index.js";
 
-
 const dataPath = {
   complete: path.join(V1_PRODUCT_PATH, "bank_account_details/response_v1/complete.json"),
   empty: path.join(V1_PRODUCT_PATH, "bank_account_details/response_v1/empty.json"),

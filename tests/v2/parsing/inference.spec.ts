@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import path from "node:path";
-import { LocalResponse, InferenceResponse, RawText, RagMetadata } from "@/index.js";
-import { FieldConfidence, ListField, ObjectField, SimpleField } from "@/parsing/v2/field/index.js";
+import { LocalResponseV2, InferenceResponse, RawText, RagMetadata } from "@/v2/index.js";
+import { FieldConfidence, ListField, ObjectField, SimpleField } from "@/v2/parsing/field/index.js";
 import { promises as fs } from "node:fs";
 import { Polygon } from "@/geometry/index.js";
 import { V2_RESOURCE_PATH } from "../../index.js";
@@ -14,7 +14,7 @@ const standardFieldRstPath = path.join(inferencePath, "standard_field_types.rst"
 const locationFieldPath = path.join(findocPath, "complete_with_coordinates.json");
 
 async function loadV2Inference(resourcePath: string): Promise<InferenceResponse> {
-  const localResponse = new LocalResponse(resourcePath);
+  const localResponse = new LocalResponseV2(resourcePath);
   await localResponse.init();
   return localResponse.deserializeResponse(InferenceResponse);
 }

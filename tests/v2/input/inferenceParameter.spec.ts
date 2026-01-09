@@ -1,4 +1,4 @@
-import { StringDict } from "@/parsing/common/index.js";
+import { StringDict } from "@/parsing/index.js";
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { InferenceParameters } from "@/index.js";
