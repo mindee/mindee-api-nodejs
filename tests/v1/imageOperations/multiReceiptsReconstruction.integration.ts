@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as path from "path";
 import { Client, PathInput } from "@/index.js";
-import { MultiReceiptsDetectorV1, ReceiptV5 } from "@/product/index.js";
+import { MultiReceiptsDetectorV1, ReceiptV5 } from "@/v1/product/index.js";
 import { extractReceipts } from "@/imageOperations/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 import { LocalInputSource } from "@/input/index.js";

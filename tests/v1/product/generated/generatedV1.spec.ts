@@ -3,10 +3,10 @@ import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "@/index.js";
 import { Page } from "@/index.js";
-import { GeneratedV1 } from "@/product/index.js";
-import { GeneratedListField, GeneratedObjectField } from "@/parsing/generated";
-import { GeneratedV1Page } from "@/product/generated/generatedV1Page";
-import { StringField } from "@/parsing/standard/index.js";
+import { GeneratedV1 } from "@/v1/product/index.js";
+import { GeneratedListField, GeneratedObjectField } from "@/v1/parsing/generated";
+import { GeneratedV1Page } from "@/v1/product/generated/generatedV1Page";
+import { StringField } from "@/v1/parsing/standard/index.js";
 import { V1_PRODUCT_PATH } from "../../../index.js";
 
 const dataPathInternationalId = {

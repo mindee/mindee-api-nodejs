@@ -1,9 +1,0 @@
-export { BankAccountDetailsV1 } from "./bankAccountDetails/index.js";
-export { BankAccountDetailsV2 } from "./bankAccountDetails/index.js";
-export { EnergyBillV1 } from "./energyBill/index.js";
-export { HealthCardV1 } from "./healthCard/index.js";
-export { IdCardV1 } from "./idCard/index.js";
-export { IdCardV2 } from "./idCard/index.js";
-export { PayslipV2 } from "./payslip/index.js";
-export { PayslipV3 } from "./payslip/index.js";
-export { CarteGriseV1 } from "./carteGrise/index.js";

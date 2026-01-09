@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { Field } from "@/parsing/standard/index.js";
+import { Field } from "@/v1/parsing/standard/index.js";
 
 describe("Test different inits of Field", () => {
   it("Should create a Field", () => {

@@ -1,4 +1,4 @@
-import { StringDict } from "@/parsing/common/stringDict.js";
+import { StringDict } from "@/parsing/stringDict.js";
 import { MindeeError } from "../errors/index.js";
 
 export class DataSchemaField {

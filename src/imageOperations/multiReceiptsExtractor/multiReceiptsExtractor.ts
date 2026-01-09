@@ -1,11 +1,11 @@
 import { PDFDocument, PDFImage, PDFPage, degrees } from "@cantoo/pdf-lib";
 import { MindeeError, MindeeMimeTypeError } from "@/errors/index.js";
 import { Polygon } from "@/geometry/index.js";
-import { MultiReceiptsDetectorV1 } from "@/product/index.js";
+import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage.js";
 import { LocalInputSource } from "@/input/index.js";
-import { extractFromPage } from "../common/index.js";
-import { PositionField } from "@/parsing/standard/index.js";
+import { extractFromPage } from "@/imageOperations/index.js";
+import { PositionField } from "@/v1/parsing/standard/index.js";
 
 /**
  * Given a page and a set of coordinates, extracts & assigns individual receipts to an ExtractedMultiReceiptImage

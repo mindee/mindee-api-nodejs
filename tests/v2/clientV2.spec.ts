@@ -1,10 +1,11 @@
 import { expect } from "chai";
 import { MockAgent, setGlobalDispatcher } from "undici";
 import path from "node:path";
-import { ClientV2, LocalResponse, PathInput, InferenceResponse } from "@/index.js";
-import { MindeeHttpErrorV2 } from "@/errors/mindeeError.js";
+import { ClientV2, PathInput, InferenceResponse } from "@/index.js";
+import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
+import { LocalResponseV2 } from "@/v2/localResponse.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
@@ -112,7 +113,7 @@ describe("MindeeV2 - ClientV2", () => {
         "complete.json"
       );
 
-      const localResponse = new LocalResponse(jsonPath);
+      const localResponse = new LocalResponseV2(jsonPath);
       const response: InferenceResponse = await localResponse.deserializeResponse(InferenceResponse);
 
       expect(response.inference.model.id).to.equal(

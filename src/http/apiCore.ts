@@ -13,7 +13,7 @@ export interface RequestOptions {
   body?: any;
 }
 
-export interface EndpointResponse {
+export interface BaseHttpResponse {
   messageObj: any;
   data: { [key: string]: any };
 }
@@ -38,7 +38,7 @@ export async function cutDocPages(inputDoc: InputSource, pageOptions: PageOption
 export async function sendRequestAndReadResponse(
   dispatcher: Dispatcher,
   options: RequestOptions,
-): Promise<EndpointResponse> {
+): Promise<BaseHttpResponse> {
   const url: string = `https://${options.hostname}${options.path}`;
   logger.debug(`${options.method}: ${url}`);
 

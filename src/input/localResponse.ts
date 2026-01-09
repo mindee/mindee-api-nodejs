@@ -1,15 +1,14 @@
 import * as crypto from "crypto";
 import * as fs from "node:fs/promises";
-import { StringDict } from "@/parsing/common/stringDict.js";
+import { StringDict } from "@/parsing/stringDict.js";
 import { MindeeError } from "../errors/index.js";
 import { Buffer } from "buffer";
-import { CommonResponse } from "../parsing/v2/index.js";
 
 /**
  * Local response loaded from a file.
  * Note: Has to be initialized through init() before use.
  */
-export class LocalResponse {
+export abstract class LocalResponse {
   private file: Buffer;
   private readonly inputHandle: Buffer | string;
   protected initialized = false;
@@ -60,7 +59,7 @@ export class LocalResponse {
   }
 
   /**
-   * Returns the HMAC signature of the local response, from the secret key provided.
+   * Returns the HMAC signature of the local response from the secret key provided.
    * @param secretKey - Secret key, either a string or a byte/byte array.
    * @returns The HMAC signature of the local response.
    */
@@ -93,25 +92,5 @@ export class LocalResponse {
       );
     }
     return signature === this.getHmacSignature(secretKey);
-  }
-
-  /**
-   * Deserialize the loaded local response into the requested CommonResponse-derived class.
-   *
-   * Typically used when dealing with V2 webhook callbacks.
-   *
-   * @typeParam ResponseT - A class that extends `CommonResponse`.
-   * @param responseClass - The constructor of the class into which the payload should be deserialized.
-   * @returns An instance of `responseClass` populated with the file content.
-   * @throws MindeeError If the provided class cannot be instantiated.
-   */
-  public async deserializeResponse<ResponseT extends CommonResponse>(
-    responseClass: new (serverResponse: StringDict) => ResponseT
-  ): Promise<ResponseT> {
-    try {
-      return new responseClass(await this.asDict());
-    } catch {
-      throw new MindeeError("Invalid response provided.");
-    }
   }
 }
