@@ -10,7 +10,7 @@ import { logger } from "@/logger.js";
 export class MindeeApiV2 {
   settings: ApiSettingsV2;
 
-  constructor(dispatcher: Dispatcher, apiKey?: string) {
+  constructor(dispatcher?: Dispatcher, apiKey?: string) {
     this.settings = new ApiSettingsV2({ dispatcher: dispatcher, apiKey: apiKey });
   }
 
@@ -119,9 +119,9 @@ export class MindeeApiV2 {
       form.append("webhook_ids", params.webhookIds.join(","));
     }
     if (inputSource instanceof LocalInputSource) {
-      form.append("file", new Blob([inputSource.fileObject]), inputSource.filename);
+      form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
     } else {
-      form.append("url", (inputSource as UrlInput).url);
+      form.set("url", (inputSource as UrlInput).url);
     }
     const path = "/v2/inferences/enqueue";
     const options = {

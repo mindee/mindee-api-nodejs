@@ -7,7 +7,6 @@
 import * as product from "@/product/index.js";
 import { Inference, StringDict } from "@/parsing/common/index.js";
 
-export const COMMAND_CUSTOM = "custom";
 export const COMMAND_GENERATED = "generated";
 
 export interface ProductConfig<T extends Inference = Inference> {

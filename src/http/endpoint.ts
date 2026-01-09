@@ -192,7 +192,7 @@ export class Endpoint {
     if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
       form.set("document", new Blob([input.fileObject]), input.filename);
     } else {
-      form.append("document", input.fileObject);
+      form.set("document", input.fileObject);
     }
     if (includeWords) {
       form.append("include_mvision", "true");

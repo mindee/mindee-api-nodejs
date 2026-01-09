@@ -151,7 +151,7 @@ export class ClientV2 {
       dispatcher: undefined,
     }
   ) {
-    this.mindeeApi = new MindeeApiV2(dispatcher ?? new Dispatcher(), apiKey);
+    this.mindeeApi = new MindeeApiV2(dispatcher, apiKey);
     errorHandler.throwOnError = throwOnError ?? true;
     logger.level =
       debug ?? process.env.MINDEE_DEBUG

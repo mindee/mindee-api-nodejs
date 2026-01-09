@@ -108,11 +108,6 @@ export class InferenceFactory {
   public static getEndpoint<T extends Inference>(
     inferenceClass: new (httpResponse: StringDict) => T
   ): [string, string] {
-    if (inferenceClass.name === "CustomV1") {
-      throw new Error(
-        "Cannot process custom endpoint as OTS API endpoints. Please provide an endpoint name & version manually."
-      );
-    }
     const emptyProduct = new inferenceClass({
       prediction: {},
       pages: [],
