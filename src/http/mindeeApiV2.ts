@@ -129,6 +129,7 @@ export class MindeeApiV2 {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: path,
+      body: form,
       timeout: this.settings.timeout,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
@@ -147,6 +148,7 @@ export class MindeeApiV2 {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `/v2/${slug}/${queueId}`,
+      timeout: this.settings.timeout,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }

@@ -2,9 +2,9 @@
 import { logger } from "@/logger.js";
 import { BaseSettings, MindeeApiConstructorProps } from "./baseSettings.js";
 
-export const API_V1_KEY_ENVVAR_NAME: string = "MINDEE_API_KEY";
-export const API_V1_HOST_ENVVAR_NAME: string = "MINDEE_API_HOST";
 export const STANDARD_API_OWNER: string = "mindee";
+const API_V1_KEY_ENVVAR_NAME: string = "MINDEE_API_KEY";
+const API_V1_HOST_ENVVAR_NAME: string = "MINDEE_API_HOST";
 const DEFAULT_MINDEE_API_HOST: string = "api.mindee.net";
 
 export class ApiSettings extends BaseSettings {

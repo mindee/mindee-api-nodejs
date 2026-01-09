@@ -273,6 +273,7 @@ export class Endpoint {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `${this.urlRoot}/documents/queue/${queueId}`,
+      timeout: this.settings.timeout,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
@@ -287,6 +288,7 @@ export class Endpoint {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `${this.urlRoot}/documents/${documentId}`,
+      timeout: this.settings.timeout,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
@@ -303,6 +305,7 @@ export class Endpoint {
       hostname: this.settings.hostname,
       path: `/v1/documents/${documentId}/feedback`,
       body: JSON.stringify(feedback),
+      timeout: this.settings.timeout,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }

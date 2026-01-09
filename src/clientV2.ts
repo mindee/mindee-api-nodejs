@@ -145,7 +145,7 @@ export class ClientV2 {
    */
   constructor(
     { apiKey, throwOnError, debug, dispatcher }: ClientOptions = {
-      apiKey: "",
+      apiKey: undefined,
       throwOnError: true,
       debug: false,
       dispatcher: undefined,

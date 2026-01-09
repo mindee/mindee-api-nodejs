@@ -2,7 +2,6 @@ export { Endpoint } from "./endpoint.js";
 export type { EndpointResponse } from "./apiCore.js";
 export {
   STANDARD_API_OWNER,
-  API_V1_KEY_ENVVAR_NAME,
   ApiSettings,
 } from "./apiSettings.js";
 export {

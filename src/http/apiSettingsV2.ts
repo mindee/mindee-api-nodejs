@@ -3,8 +3,8 @@ import { logger } from "@/logger.js";
 import { BaseSettings, MindeeApiConstructorProps } from "./baseSettings.js";
 import { MindeeApiV2Error } from "@/errors/index.js";
 
-export const API_V2_KEY_ENVVAR_NAME: string = "MINDEE_V2_API_KEY";
-export const API_V2_HOST_ENVVAR_NAME: string = "MINDEE_V2_API_HOST";
+const API_V2_KEY_ENVVAR_NAME: string = "MINDEE_V2_API_KEY";
+const API_V2_HOST_ENVVAR_NAME: string = "MINDEE_V2_API_HOST";
 const DEFAULT_MINDEE_API_HOST: string = "api-v2.mindee.net";
 
 export class ApiSettingsV2 extends BaseSettings {
@@ -23,7 +23,7 @@ export class ApiSettingsV2 extends BaseSettings {
     }
     this.baseHeaders = {
       "User-Agent": this.getUserAgent(),
-      Authorization: `${apiKey}`,
+      Authorization: `${this.apiKey}`,
     };
   }
 

@@ -227,7 +227,7 @@ function addPredictAction(prog: Command) {
   }
 }
 
-export function cli() {
+export function cliV1() {
   program.name("mindee")
     .description("Command line interface for Mindee products.")
     .option("-d, --debug", "high verbosity mode");

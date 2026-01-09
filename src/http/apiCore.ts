@@ -4,8 +4,17 @@ import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 
 export const TIMEOUT_DEFAULT: number = 120;
 
+export interface RequestOptions {
+  hostname: string;
+  path: string;
+  method: any;
+  timeout: number;
+  headers: any;
+  body?: any;
+}
+
 export interface EndpointResponse {
-  messageObj: any,
+  messageObj: any;
   data: { [key: string]: any };
 }
 
@@ -28,7 +37,7 @@ export async function cutDocPages(inputDoc: InputSource, pageOptions: PageOption
  */
 export async function sendRequestAndReadResponse(
   dispatcher: Dispatcher,
-  options: any,
+  options: RequestOptions,
 ): Promise<EndpointResponse> {
   const url: string = `https://${options.hostname}${options.path}`;
   logger.debug(`${options.method}: ${url}`);
