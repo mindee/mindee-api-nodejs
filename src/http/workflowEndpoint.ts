@@ -78,26 +78,26 @@ export class WorkflowEndpoint {
   ): Promise<EndpointResponse> {
     const searchParams = new URLSearchParams();
     if (fullText) {
-      searchParams.append("full_text_ocr", "true");
+      searchParams.set("full_text_ocr", "true");
     }
     if (rag) {
-      searchParams.append("rag", "true");
+      searchParams.set("rag", "true");
     }
 
     const form = new FormData();
     if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
-      form.append("document", new Blob([input.fileObject]), input.filename);
+      form.set("document", new Blob([input.fileObject]), input.filename);
     } else {
-      form.append("document", input.fileObject);
+      form.set("document", input.fileObject);
     }
     if (alias) {
-      form.append("alias", alias);
+      form.set("alias", alias);
     }
     if (publicUrl) {
-      form.append("public_url", publicUrl);
+      form.set("public_url", publicUrl);
     }
     if (priority) {
-      form.append("priority", priority.toString());
+      form.set("priority", priority.toString());
     }
 
     let path = this.urlRoot;

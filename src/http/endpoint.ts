@@ -179,13 +179,13 @@ export class Endpoint {
   ): Promise<EndpointResponse> {
     const searchParams = new URLSearchParams();
     if (cropper) {
-      searchParams.append("cropper", "true");
+      searchParams.set("cropper", "true");
     }
     if (rag) {
-      searchParams.append("rag", "true");
+      searchParams.set("rag", "true");
     }
     if (fullText) {
-      searchParams.append("full_text_ocr", "true");
+      searchParams.set("full_text_ocr", "true");
     }
 
     const form = new FormData();
@@ -195,7 +195,7 @@ export class Endpoint {
       form.set("document", input.fileObject);
     }
     if (includeWords) {
-      form.append("include_mvision", "true");
+      form.set("include_mvision", "true");
     }
 
     let path: string;

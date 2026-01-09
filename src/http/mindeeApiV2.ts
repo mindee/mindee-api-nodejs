@@ -96,27 +96,27 @@ export class MindeeApiV2 {
   ): Promise<EndpointResponse> {
     const form = new FormData();
 
-    form.append("model_id", params.modelId);
+    form.set("model_id", params.modelId);
     if (params.rag !== undefined && params.rag !== null) {
-      form.append("rag", params.rag.toString());
+      form.set("rag", params.rag.toString());
     }
     if (params.polygon !== undefined && params.polygon !== null) {
-      form.append("polygon", params.polygon.toString().toLowerCase());
+      form.set("polygon", params.polygon.toString().toLowerCase());
     }
     if (params.confidence !== undefined && params.confidence !== null) {
-      form.append("confidence", params.confidence.toString().toLowerCase());
+      form.set("confidence", params.confidence.toString().toLowerCase());
     }
     if (params.rawText !== undefined && params.rawText !== null) {
-      form.append("raw_text", params.rawText.toString().toLowerCase());
+      form.set("raw_text", params.rawText.toString().toLowerCase());
     }
     if (params.textContext !== undefined && params.textContext !== null) {
-      form.append("text_context", params.textContext);
+      form.set("text_context", params.textContext);
     }
     if (params.dataSchema !== undefined && params.dataSchema !== null) {
-      form.append("data_schema", params.dataSchema.toString());
+      form.set("data_schema", params.dataSchema.toString());
     }
     if (params.webhookIds && params.webhookIds.length > 0) {
-      form.append("webhook_ids", params.webhookIds.join(","));
+      form.set("webhook_ids", params.webhookIds.join(","));
     }
     if (inputSource instanceof LocalInputSource) {
       form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
