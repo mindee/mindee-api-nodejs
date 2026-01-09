@@ -1,5 +1,5 @@
 import * as mindee from "@/index.js";
-import { InvoiceSplitterV1 } from "@/product/index.js";
+import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { expect } from "chai";
 import { levenshteinRatio } from "../../../testingUtilities";
 import { promises as fs } from "fs";

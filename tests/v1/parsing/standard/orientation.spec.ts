@@ -1,4 +1,4 @@
-import { OrientationField } from "@/parsing/common/index.js";
+import { OrientationField } from "@/v1/parsing/common/index.js";
 import { expect } from "chai";
 
 describe("Test Orientation field", () => {

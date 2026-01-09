@@ -1,5 +1,5 @@
 #!/usr/bin/env node
 
-import { cliV2 } from "@/cliV2.js";
+import { cli } from "@/v2/cli.js";
 
-cliV2();
+cli();

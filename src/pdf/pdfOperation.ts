@@ -10,10 +10,10 @@ export interface SplitPdf {
 }
 
 /**
- * Cut pages from a pdf file. If pages index are out of bound, it will throw an error.
+ * Cut pages from a PDF file. If pages indexes are out of bounds, it will throw an error.
  * @param file
  * @param pageOptions
- * @returns the new cut pdf file.
+ * @returns the new cut PDF file.
  */
 export async function extractPages(
   file: Buffer,
@@ -85,7 +85,7 @@ export async function extractPages(
 }
 
 /**
- * Count the number of pages in a pdf file.
+ * Count the number of pages in a PDF file.
  * @param file
  * @returns the number of pages in the file.
  */

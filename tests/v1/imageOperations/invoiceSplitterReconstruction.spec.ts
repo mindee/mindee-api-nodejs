@@ -2,7 +2,7 @@ import { expect } from "chai";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { Document } from "@/index.js";
-import { InvoiceSplitterV1 } from "@/product/index.js";
+import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { extractInvoices } from "@/imageOperations/index.js";
 import { PathInput } from "@/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";

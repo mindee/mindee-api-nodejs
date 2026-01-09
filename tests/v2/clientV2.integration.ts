@@ -9,9 +9,9 @@ import {
   Base64Input,
   InferenceResponse,
 } from "@/index.js";
-import { Inference } from "@/parsing/v2/index.js";
-import { SimpleField } from "@/parsing/v2/field/index.js";
-import { MindeeHttpErrorV2 } from "@/errors/mindeeError.js";
+import { Inference } from "@/v2/parsing/index.js";
+import { SimpleField } from "@/v2/parsing/field/index.js";
+import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import * as fs from "node:fs";
 import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index.js";
 
