@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { InvoiceV4Document } from "./invoiceV4Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { InvoiceV4Document } from "./invoiceV4Document.js";
 
 /**
  * Invoice API version 4 inference prediction.

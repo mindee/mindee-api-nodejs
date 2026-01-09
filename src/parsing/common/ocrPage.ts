@@ -3,9 +3,9 @@ import {
   compareOnY,
   getCentroid,
   isPointInPolygonY,
-} from "../../geometry";
-import { Word } from "../standard";
-import { StringDict } from "./stringDict";
+} from "@/geometry/index.js";
+import { Word } from "@/parsing/standard/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 export class OcrPage {
   /** Flat list of all words read */

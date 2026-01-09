@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,
-} from "../../parsing/common";
-import { DateField, StringField } from "../../parsing/standard";
+} from "@/parsing/common/index.js";
+import { DateField, StringField } from "@/parsing/standard/index.js";
 
 /**
  * Driver License API version 1.0 document data.

@@ -1,1 +1,1 @@
-export { IndianPassportV1 } from "./indianPassport/indianPassportV1";
+export { IndianPassportV1 } from "./indianPassport/index.js";

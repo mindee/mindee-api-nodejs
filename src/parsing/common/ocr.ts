@@ -1,5 +1,5 @@
-import { StringDict } from "./stringDict";
-import { MvisionV1 } from "./mvisionV1";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { MvisionV1 } from "./mvisionV1.js";
 
 export class Ocr {
   /** Default Mindee OCR */

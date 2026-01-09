@@ -1,18 +1,17 @@
-import { ApiSettingsV2 } from "./apiSettingsV2";
-import { InferenceParameters } from "../clientV2";
-import { ErrorResponse, InferenceResponse, JobResponse } from "../parsing/v2";
-import FormData from "form-data";
-import { RequestOptions } from "https";
-import { BaseEndpoint, EndpointResponse } from "./baseEndpoint";
-import { InputSource, LocalInputSource, UrlInput } from "../input";
-import { MindeeApiV2Error, MindeeHttpErrorV2 } from "../errors/mindeeError";
-import { logger } from "../logger";
+import { ApiSettingsV2 } from "./apiSettingsV2.js";
+import { Dispatcher } from "undici";
+import { InferenceParameters } from "@/clientV2.js";
+import { ErrorResponse, InferenceResponse, JobResponse } from "@/parsing/v2/index.js";
+import { sendRequestAndReadResponse, EndpointResponse } from "./apiCore.js";
+import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
+import { MindeeApiV2Error, MindeeHttpErrorV2 } from "@/errors/index.js";
+import { logger } from "@/logger.js";
 
 export class MindeeApiV2 {
   settings: ApiSettingsV2;
 
-  constructor(apiKey?: string) {
-    this.settings = new ApiSettingsV2({ apiKey: apiKey });
+  constructor(dispatcher?: Dispatcher, apiKey?: string) {
+    this.settings = new ApiSettingsV2({ dispatcher: dispatcher, apiKey: apiKey });
   }
 
   /**
@@ -91,56 +90,49 @@ export class MindeeApiV2 {
    * @param inputSource Local or remote file as an input.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    */
-  #documentEnqueuePost(
+  async #documentEnqueuePost(
     inputSource: InputSource,
     params: InferenceParameters
   ): Promise<EndpointResponse> {
     const form = new FormData();
 
-    form.append("model_id", params.modelId);
+    form.set("model_id", params.modelId);
     if (params.rag !== undefined && params.rag !== null) {
-      form.append("rag", params.rag.toString());
+      form.set("rag", params.rag.toString());
     }
     if (params.polygon !== undefined && params.polygon !== null) {
-      form.append("polygon", params.polygon.toString().toLowerCase());
+      form.set("polygon", params.polygon.toString().toLowerCase());
     }
     if (params.confidence !== undefined && params.confidence !== null) {
-      form.append("confidence", params.confidence.toString().toLowerCase());
+      form.set("confidence", params.confidence.toString().toLowerCase());
     }
     if (params.rawText !== undefined && params.rawText !== null) {
-      form.append("raw_text", params.rawText.toString().toLowerCase());
+      form.set("raw_text", params.rawText.toString().toLowerCase());
     }
     if (params.textContext !== undefined && params.textContext !== null) {
-      form.append("text_context", params.textContext);
+      form.set("text_context", params.textContext);
     }
     if (params.dataSchema !== undefined && params.dataSchema !== null) {
-      form.append("data_schema", params.dataSchema.toString());
+      form.set("data_schema", params.dataSchema.toString());
     }
     if (params.webhookIds && params.webhookIds.length > 0) {
-      form.append("webhook_ids", params.webhookIds.join(","));
+      form.set("webhook_ids", params.webhookIds.join(","));
     }
     if (inputSource instanceof LocalInputSource) {
-      form.append("file", inputSource.fileObject, {
-        filename: inputSource.filename,
-      });
+      form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
     } else {
-      form.append("url", (inputSource as UrlInput).url);
+      form.set("url", (inputSource as UrlInput).url);
     }
     const path = "/v2/inferences/enqueue";
-    const headers = { ...this.settings.baseHeaders, ...form.getHeaders() };
-    const options: RequestOptions = {
+    const options = {
       method: "POST",
-      headers: headers,
+      headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: path,
+      body: form,
       timeout: this.settings.timeout,
     };
-    return new Promise((resolve, reject) => {
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
-      form.pipe(req);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
   /**
@@ -150,17 +142,14 @@ export class MindeeApiV2 {
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  #inferenceResultReqGet(queueId: string, slug: string): Promise<EndpointResponse> {
-    return new Promise((resolve, reject) => {
-      const options = {
-        method: "GET",
-        headers: this.settings.baseHeaders,
-        hostname: this.settings.hostname,
-        path: `/v2/${slug}/${queueId}`,
-      };
-      const req = BaseEndpoint.readResponse(options, resolve, reject);
-      // potential ECONNRESET if we don't end the request.
-      req.end();
-    });
+  async #inferenceResultReqGet(queueId: string, slug: string): Promise<EndpointResponse> {
+    const options = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/${slug}/${queueId}`,
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 }

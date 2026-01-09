@@ -4,10 +4,9 @@
 // The Map's key is the command name as it will appear on the console.
 //
 
-import * as product from "./product";
-import { Inference, StringDict } from "./parsing/common";
+import * as product from "@/product/index.js";
+import { Inference, StringDict } from "@/parsing/common/index.js";
 
-export const COMMAND_CUSTOM = "custom";
 export const COMMAND_GENERATED = "generated";
 
 export interface ProductConfig<T extends Inference = Inference> {
@@ -19,16 +18,6 @@ export interface ProductConfig<T extends Inference = Inference> {
 }
 
 export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
-  [
-    COMMAND_CUSTOM,
-    {
-      displayName: "Custom Document",
-      docClass: product.CustomV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
   [
     COMMAND_GENERATED,
     {
@@ -50,26 +39,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "bill-of-lading",
-    {
-      displayName: "Bill of Lading",
-      docClass: product.BillOfLadingV1,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
-  [
-    "business-card",
-    {
-      displayName: "Business Card",
-      docClass: product.BusinessCardV1,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
-  [
     "cropper",
     {
       displayName: "Cropper",
@@ -77,16 +46,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       allWords: false,
       async: false,
       sync: true,
-    },
-  ],
-  [
-    "delivery-note",
-    {
-      displayName: "Delivery note",
-      docClass: product.DeliveryNoteV1,
-      allWords: false,
-      async: true,
-      sync: false,
     },
   ],
   [
@@ -114,16 +73,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     {
       displayName: "FR Bank Account Details",
       docClass: product.fr.BankAccountDetailsV2,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
-    "fr-carte-grise",
-    {
-      displayName: "FR Carte Grise",
-      docClass: product.fr.CarteGriseV1,
       allWords: false,
       async: false,
       sync: true,
@@ -220,16 +169,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "nutrition-facts-label",
-    {
-      displayName: "Nutrition Facts Label",
-      docClass: product.NutritionFactsLabelV1,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
-  [
     "passport",
     {
       displayName: "Passport",
@@ -267,16 +206,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       allWords: false,
       async: false,
       sync: true,
-    },
-  ],
-  [
-    "us-healthcare-card",
-    {
-      displayName: "US Healthcare Card",
-      docClass: product.us.HealthcareCardV1,
-      allWords: false,
-      async: true,
-      sync: false,
     },
   ],
   [

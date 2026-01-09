@@ -1,5 +1,5 @@
-import { StringDict } from "../common";
-import { RawTextPage } from "./rawTextPage";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { RawTextPage } from "./rawTextPage.js";
 
 export class RawText {
   /**

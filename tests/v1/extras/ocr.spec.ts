@@ -1,9 +1,9 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { ReceiptV5 } from "../../../src/product";
-import { Document } from "../../../src";
-import { RESOURCE_PATH } from "../../index";
+import { ReceiptV5 } from "@/product/index.js";
+import { Document } from "@/index.js";
+import { RESOURCE_PATH } from "../../index.js";
 
 const dataPath = {
   complete: path.join(RESOURCE_PATH, "v1/extras/ocr/complete.json"),

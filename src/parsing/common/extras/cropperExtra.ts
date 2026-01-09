@@ -1,7 +1,7 @@
-import { PositionField } from "../../standard";
-import { StringDict } from "../stringDict";
-import { cleanOutString } from "../summaryHelper";
-import { ExtraField } from "./extras";
+import { PositionField } from "@/parsing/standard/position.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { cleanOutString } from "../summaryHelper.js";
+import { ExtraField } from "./extras.js";
 
 export class CropperExtra extends ExtraField {
   cropping: PositionField[] = [];

@@ -1,13 +1,13 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import * as mindee from "../../../../src";
-import { Page } from "../../../../src";
-import { GeneratedV1 } from "../../../../src/product";
-import { GeneratedListField, GeneratedObjectField } from "../../../../src/parsing/generated";
-import { GeneratedV1Page } from "../../../../src/product/generated/generatedV1Page";
-import { StringField } from "../../../../src/parsing/standard";
-import { V1_PRODUCT_PATH } from "../../../index";
+import * as mindee from "@/index.js";
+import { Page } from "@/index.js";
+import { GeneratedV1 } from "@/product/index.js";
+import { GeneratedListField, GeneratedObjectField } from "@/parsing/generated";
+import { GeneratedV1Page } from "@/product/generated/generatedV1Page";
+import { StringField } from "@/parsing/standard/index.js";
+import { V1_PRODUCT_PATH } from "../../../index.js";
 
 const dataPathInternationalId = {
   complete: path.join(V1_PRODUCT_PATH, "generated/response_v1/complete_international_id_v1.json"),

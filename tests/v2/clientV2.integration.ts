@@ -8,12 +8,12 @@ import {
   UrlInput,
   Base64Input,
   InferenceResponse,
-} from "../../src";
-import { Inference } from "../../src/parsing/v2";
-import { SimpleField } from "../../src/parsing/v2/field";
-import { MindeeHttpErrorV2 } from "../../src/errors/mindeeError";
+} from "@/index.js";
+import { Inference } from "@/parsing/v2/index.js";
+import { SimpleField } from "@/parsing/v2/field/index.js";
+import { MindeeHttpErrorV2 } from "@/errors/mindeeError.js";
 import * as fs from "node:fs";
-import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index";
+import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index.js";
 
 function check422(err: unknown) {
   expect(err).to.be.instanceOf(MindeeHttpErrorV2);
@@ -63,7 +63,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
     modelId = process.env["MINDEE_V2_FINDOC_MODEL_ID"] ?? "";
 
-    client = new ClientV2({ apiKey });
+    client = new ClientV2({ apiKey: apiKey, debug: true });
   });
   before(async () => {
     dataSchemaReplace = fs.readFileSync(dataSchemaReplacePath).toString();

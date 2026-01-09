@@ -2,8 +2,8 @@ import {
   Prediction,
   StringDict,
   cleanOutString,
-} from "../../parsing/common";
-import { PositionField } from "../../parsing/standard";
+} from "@/parsing/common/index.js";
+import { PositionField } from "@/parsing/standard/index.js";
 
 /**
  * Multi Receipts Detector API version 1.1 document data.

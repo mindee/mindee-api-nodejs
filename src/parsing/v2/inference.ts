@@ -1,8 +1,8 @@
-import { StringDict } from "../common";
-import { InferenceModel } from "./inferenceModel";
-import { InferenceResult } from "./inferenceResult";
-import { InferenceFile } from "./inferenceFile";
-import { InferenceActiveOptions } from "./inferenceActiveOptions";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { InferenceModel } from "./inferenceModel.js";
+import { InferenceResult } from "./inferenceResult.js";
+import { InferenceFile } from "./inferenceFile.js";
+import { InferenceActiveOptions } from "./inferenceActiveOptions.js";
 
 export class Inference {
   /**

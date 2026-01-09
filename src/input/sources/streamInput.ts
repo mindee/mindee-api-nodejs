@@ -1,8 +1,8 @@
 import { Readable } from "stream";
-import { LocalInputSource } from "./localInputSource";
-import { INPUT_TYPE_STREAM } from "./inputSource";
-import { logger } from "../../logger";
-import { MindeeError } from "../../errors";
+import { LocalInputSource } from "./localInputSource.js";
+import { INPUT_TYPE_STREAM } from "./inputSource.js";
+import { logger } from "@/logger.js";
+import { MindeeError } from "@/errors/index.js";
 
 interface StreamInputProps {
   inputStream: Readable;

@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { BankAccountDetailsV2Document } from "./bankAccountDetailsV2Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { BankAccountDetailsV2Document } from "./bankAccountDetailsV2Document.js";
 
 /**
  * Bank Account Details API version 2 inference prediction.

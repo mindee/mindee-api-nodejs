@@ -1,91 +1,118 @@
-import nock from "nock";
+import * as fs from "node:fs";
 import * as path from "path";
 import { expect } from "chai";
-import * as mindee from "../../../src";
-import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index";
+import { MockAgent, setGlobalDispatcher } from "undici";
+import { Client, PathInput, product } from "@/index.js";
+import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
+import assert from "node:assert/strict";
+import {
+  MindeeHttp400Error, MindeeHttp401Error, MindeeHttp429Error, MindeeHttp500Error
+} from "@/http/index.js";
+
+const mockAgent = new MockAgent();
+setGlobalDispatcher(mockAgent);
+const mockPool = mockAgent.get("https://v1-endpoint-host");
+
+function setInterceptor(httpCode: number, httpResultFile: string) {
+  const filePath = path.resolve(path.join(V1_RESOURCE_PATH, httpResultFile));
+  mockPool
+    .intercept({ path: /.*/, method: "POST" })
+    .reply(
+      httpCode,
+      fs.readFileSync(filePath, "utf8"),
+      {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        headers: { "content-type": "application/json" }
+      }
+    );
+}
 
 describe("MindeeV1 - HTTP calls", () => {
-  before(function() {
-    process.env.MINDEE_API_HOST = "local.mindee.net";
+  const doc = new PathInput({
+    inputPath: path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf")
   });
 
-  after(function() {
+  beforeEach(async function() {
+    process.env.MINDEE_API_HOST = "v1-endpoint-host";
+  });
+
+  afterEach(async function() {
     delete process.env.MINDEE_API_HOST;
   });
 
-  async function sendRequest(httpCode: number, httpResultFile: string) {
-    const owner = "mindee";
-    const urlName = "invoices";
-    const version = "4";
-
-    nock("https://local.mindee.net")
-      .post(`/v1/products/${owner}/${urlName}/v${version}/predict`)
-      .replyWithFile(httpCode, path.resolve(httpResultFile));
-
-    const mindeeClient = new mindee.Client({ apiKey: "my-api-key", debug: true });
-    const doc = new mindee.PathInput({
-      inputPath: path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf")
-    });
-    return await mindeeClient.parse(mindee.product.InvoiceV4, doc);
-  }
-
   it("should fail on 400 response with object", async () => {
-    try {
-      await sendRequest(400, path.join(V1_RESOURCE_PATH, "errors/error_400_with_object_in_detail.json"));
-    } catch (error: any) {
-      expect(error.name).to.be.equals("MindeeHttp400Error");
-      expect(error.code).to.be.equals(400);
-      expect(error.message).to.be.undefined;
-      expect(error.details).to.deep.equal({ document: ["error message"] });
-    }
+    setInterceptor(400, "errors/error_400_with_object_in_detail.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
+    await assert.rejects(
+      client.parse(product.InvoiceV4, doc),
+      (error: any) => {
+        expect(error).to.be.instanceOf(MindeeHttp400Error);
+        expect(error.code).to.be.equals(400);
+        expect(error.message).to.be.undefined;
+        expect(error.details).to.deep.equal({ document: ["error message"] });
+        return true;
+      });
   });
 
   it("should fail on 401 response", async () => {
-    try {
-      await sendRequest(401, path.join(V1_RESOURCE_PATH, "errors/error_401_no_token.json"));
-    } catch (error: any) {
-      expect(error.name).to.be.equals("MindeeHttp401Error");
-      expect(error.code).to.be.equals(401);
-      expect(error.message).to.be.equals("Authorization required");
-      expect(error.details).to.be.equals("No token provided");
-    }
+    setInterceptor(401, "errors/error_401_no_token.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
+    await assert.rejects(
+      client.parse(product.InvoiceV4, doc),
+      (error: any) => {
+        expect(error).to.be.instanceOf(MindeeHttp401Error);
+        expect(error.code).to.be.equals(401);
+        expect(error.message).to.be.equals("Authorization required");
+        expect(error.details).to.be.equals("No token provided");
+        return true;
+      });
   });
 
   it("should fail on 429 response", async () => {
-    try {
-      await sendRequest(429, path.join(V1_RESOURCE_PATH, "errors/error_429_too_many_requests.json"));
-    } catch (error: any) {
-      expect(error.name).to.be.equals("MindeeHttp429Error");
-      expect(error.code).to.be.equals(429);
-      expect(error.message).to.be.equals("Too many requests");
-      expect(error.details).to.be.equals("Too Many Requests.");
-    }
+    setInterceptor(429, "errors/error_429_too_many_requests.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
+    await assert.rejects(
+      client.parse(product.InvoiceV4, doc),
+      (error: any) => {
+        expect(error).to.be.instanceOf(MindeeHttp429Error);
+        expect(error.code).to.be.equals(429);
+        expect(error.message).to.be.equals("Too many requests");
+        expect(error.details).to.be.equals("Too Many Requests.");
+        return true;
+      });
   });
+
   it("should fail on 500 response", async () => {
-    try {
-      await sendRequest(500, path.join(V1_RESOURCE_PATH, "errors/error_500_inference_fail.json"));
-    } catch (error: any) {
-      expect(error.name).to.be.equals("MindeeHttp500Error");
-      expect(error.code).to.be.equals(500);
-      expect(error.details).to.be.equals("Can not run prediction: ");
-      expect(error.message).to.be.equals("Inference failed");
-    }
+    setInterceptor(500, "errors/error_500_inference_fail.json");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
+    await assert.rejects(
+      client.parse(product.InvoiceV4, doc),
+      (error: any) => {
+        expect(error).to.be.instanceOf(MindeeHttp500Error);
+        expect(error.code).to.be.equals(500);
+        expect(error.message).to.be.equals("Inference failed");
+        expect(error.details).to.be.equals("Can not run prediction: ");
+        return true;
+      });
   });
 
   it("should fail on HTML response", async () => {
-    try {
-      await sendRequest(500, path.join(V1_RESOURCE_PATH, "errors/error_50x.html"));
-    } catch (error: any) {
-      expect(error.name).to.be.equals("MindeeHttp500Error");
-      expect(error.code).to.be.equals(500);
-    }
+    setInterceptor(500, "errors/error_50x.html");
+    const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
+    await assert.rejects(
+      client.parse(product.InvoiceV4, doc),
+      (error: any) => {
+        expect(error).to.be.instanceOf(MindeeHttp500Error);
+        expect(error.code).to.be.equals(500);
+        return true;
+      });
   });
 });
 
 describe ("Endpoint parameters" , () => {
   it ("should initialize default parameters properly", async () => {
-    const mindeeClient = new mindee.Client({ apiKey: "dummy-api-key" });
-    const customEndpoint = mindeeClient.createEndpoint(
+    const client = new Client({ apiKey: "dummy-api-key", debug: true });
+    const customEndpoint = client.createEndpoint(
       "dummy-endpoint",
       "dummy-account"
     );
@@ -96,17 +123,18 @@ describe ("Endpoint parameters" , () => {
   });
 
   it ("should initialize environment parameters properly", async () => {
-    process.env.MINDEE_API_HOST = "dummy-host";
+    process.env.MINDEE_API_HOST = "v1-endpoint-host";
     process.env.MINDEE_API_KEY = "dummy-key";
     process.env.MINDEE_REQUEST_TIMEOUT = "30";
-    const mindeeClient = new mindee.Client();
-    const customEndpoint = mindeeClient.createEndpoint(
+
+    const client = new Client({ debug: true });
+    const customEndpoint = client.createEndpoint(
       "dummy-endpoint",
       "dummy-account"
     );
     expect(customEndpoint.version).to.equal("1");
     expect(customEndpoint.settings.timeout).to.equal(30);
-    expect(customEndpoint.settings.hostname).to.equal("dummy-host");
+    expect(customEndpoint.settings.hostname).to.equal("v1-endpoint-host");
     expect(customEndpoint.settings.apiKey).to.equal("dummy-key");
 
     delete process.env.MINDEE_API_HOST;

@@ -1,12 +1,12 @@
-import { DataSchema, InputSource } from "./input";
-import { errorHandler } from "./errors/handler";
-import { LOG_LEVELS, logger } from "./logger";
-
+import { Dispatcher } from "undici";
+import { DataSchema, InputSource } from "./input/index.js";
+import { errorHandler } from "./errors/handler.js";
+import { LOG_LEVELS, logger } from "./logger.js";
 import { setTimeout } from "node:timers/promises";
-import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/v2";
-import { MindeeApiV2 } from "./http/mindeeApiV2";
-import { MindeeHttpErrorV2 } from "./errors/mindeeError";
-import { StringDict } from "./parsing/common";
+import { ErrorResponse, InferenceResponse, JobResponse } from "@/parsing/v2/index.js";
+import { MindeeApiV2 } from "./http/mindeeApiV2.js";
+import { MindeeHttpErrorV2 } from "@/errors/index.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 /**
  * Parameters for the internal polling loop in {@link ClientV2.enqueueAndGetInference | enqueueAndGetInference()} .
@@ -128,6 +128,7 @@ export interface ClientOptions {
   throwOnError?: boolean;
   /** Log debug messages. */
   debug?: boolean;
+  dispatcher?: Dispatcher;
 }
 
 /**
@@ -136,26 +137,27 @@ export interface ClientOptions {
  * @category ClientV2
  */
 export class ClientV2 {
-  /** Mindee API handler. */
+  /** Mindee V2 API handler. */
   protected mindeeApi: MindeeApiV2;
 
   /**
    * @param {ClientOptions} options options for the initialization of a client.
    */
   constructor(
-    { apiKey, throwOnError, debug }: ClientOptions = {
-      apiKey: "",
+    { apiKey, throwOnError, debug, dispatcher }: ClientOptions = {
+      apiKey: undefined,
       throwOnError: true,
       debug: false,
+      dispatcher: undefined,
     }
   ) {
-    this.mindeeApi = new MindeeApiV2(apiKey);
+    this.mindeeApi = new MindeeApiV2(dispatcher, apiKey);
     errorHandler.throwOnError = throwOnError ?? true;
     logger.level =
       debug ?? process.env.MINDEE_DEBUG
         ? LOG_LEVELS["debug"]
         : LOG_LEVELS["warn"];
-    logger.debug("ClientV2 initialized");
+    logger.debug("Client V2 Initialized");
   }
 
   /**

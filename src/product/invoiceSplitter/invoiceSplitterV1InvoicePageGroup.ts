@@ -1,5 +1,5 @@
-import { StringDict } from "../../parsing/common";
-import { Polygon } from "../../geometry";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { Polygon } from "@/geometry/index.js";
 
 /**
  * List of page groups. Each group represents a single invoice within a multi-invoice document.

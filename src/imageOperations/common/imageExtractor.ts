@@ -1,6 +1,6 @@
 import { PDFDocument, PDFPage, degrees } from "@cantoo/pdf-lib";
-import { getMinMaxX, getMinMaxY, Polygon } from "../../geometry";
-import { adjustForRotation } from "../../geometry/polygonUtils";
+import { getMinMaxX, getMinMaxY, Polygon } from "@/geometry/index.js";
+import { adjustForRotation } from "@/geometry/polygonUtils.js";
 
 /**
  * Extracts elements from a page based off of a list of bounding boxes.

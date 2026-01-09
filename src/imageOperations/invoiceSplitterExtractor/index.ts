@@ -1,2 +1,2 @@
-export { extractInvoices } from "./invoiceSplitterExtractor";
-export { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage";
+export { extractInvoices } from "./invoiceSplitterExtractor.js";
+export { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage.js";

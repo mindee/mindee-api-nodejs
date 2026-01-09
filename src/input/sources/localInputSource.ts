@@ -1,11 +1,10 @@
-import { errorHandler } from "../../errors/handler";
-import { logger } from "../../logger";
-import { compressImage } from "../../imageOperations";
-import { compressPdf, countPages } from "../../pdf";
+import { errorHandler } from "@/errors/handler.js";
+import { logger } from "@/logger.js";
+import { compressImage } from "@/imageOperations/index.js";
+import { compressPdf, countPages, extractPages, hasSourceText } from "@/pdf/index.js";
 import path from "path";
-import * as fileType from "file-type";
-import { PageOptions } from "../pageOptions";
-import { extractPages, hasSourceText } from "../../pdf";
+import { fileTypeFromBuffer } from "file-type";
+import { PageOptions } from "../pageOptions.js";
 import {
   InputSource,
   InputConstructor,
@@ -13,7 +12,7 @@ import {
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH, INPUT_TYPE_BUFFER
-} from "./inputSource";
+} from "./inputSource.js";
 
 export const MIMETYPES = new Map<string, string>([
   [".pdf", "application/pdf"],
@@ -67,7 +66,7 @@ export abstract class LocalInputSource extends InputSource {
     if (fileExt) {
       mimeType = MIMETYPES.get(fileExt.toLowerCase()) || "";
     } else {
-      const guess = await fileType.fromBuffer(this.fileObject);
+      const guess = await fileTypeFromBuffer(this.fileObject);
       if (guess !== undefined) {
         mimeType = guess.mime;
       } else {

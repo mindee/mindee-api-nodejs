@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { ReceiptV5Document } from "./receiptV5Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { ReceiptV5Document } from "./receiptV5Document.js";
 
 /**
  * Receipt API version 5 inference prediction.

@@ -1,11 +1,11 @@
 import { expect } from "chai";
-import { AsyncPredictResponse } from "../../../src";
+import { AsyncPredictResponse } from "@/index.js";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { StringDict } from "../../../src/parsing/common";
-import { InvoiceSplitterV1 } from "../../../src/product";
-import { cleanRequestData, isValidAsyncResponse } from "../../../src/http";
-import { RESOURCE_PATH } from "../../index";
+import { StringDict } from "@/parsing/common/index.js";
+import { InvoiceSplitterV1 } from "@/product/index.js";
+import { cleanRequestData, isValidAsyncResponse } from "@/http/index.js";
+import { RESOURCE_PATH } from "../../index.js";
 
 describe("MindeeV1 - Asynchronous API predict response", () => {
   it("should parse a successful enqueue", async () => {

@@ -1,9 +1,8 @@
-import { CropperExtra, FullTextOcrExtra } from "./extras";
-import { ExtraField, Extras } from "./extras/extras";
-import { Inference } from "./inference";
-import { Ocr } from "./ocr";
-import { StringDict } from "./stringDict";
-import { RAGExtra } from "./extras/ragExtra";
+import { CropperExtra, FullTextOcrExtra, ExtraField, Extras } from "./extras/index.js";
+import { Inference } from "./inference.js";
+import { Ocr } from "./ocr.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { RAGExtra } from "./extras/ragExtra.js";
 
 /**
  * Document prediction wrapper class. Holds the results of a parsed document.

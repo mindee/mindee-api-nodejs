@@ -1,6 +1,6 @@
-import { CommonResponse } from "./commonResponse";
-import { Inference } from "./inference";
-import { StringDict } from "../common";
+import { CommonResponse } from "./commonResponse.js";
+import { Inference } from "./inference.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
 
 export class InferenceResponse extends CommonResponse {
   /**

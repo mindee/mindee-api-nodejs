@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../parsing/common";
-import { FinancialDocumentV1Document } from "./financialDocumentV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { FinancialDocumentV1Document } from "./financialDocumentV1Document.js";
 
 /**
  * Financial Document API version 1 inference prediction.

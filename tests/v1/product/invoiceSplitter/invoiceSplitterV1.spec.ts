@@ -1,8 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { V1_PRODUCT_PATH } from "../../../index";
+import { V1_PRODUCT_PATH } from "../../../index.js";
 import { expect } from "chai";
-import * as mindee from "../../../../src";
+import * as mindee from "@/index.js";
 
 
 const dataPath = {

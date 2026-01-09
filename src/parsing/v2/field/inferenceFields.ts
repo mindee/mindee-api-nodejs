@@ -1,8 +1,8 @@
-import { StringDict } from "../../common";
-import type { ListField } from "./listField";
-import type { ObjectField } from "./objectField";
-import type { SimpleField } from "./simpleField";
-import { createField } from "./fieldFactory";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import type { ListField } from "./listField.js";
+import type { ObjectField } from "./objectField.js";
+import type { SimpleField } from "./simpleField.js";
+import { createField } from "./fieldFactory.js";
 
 
 export class InferenceFields extends Map<string, SimpleField | ObjectField | ListField> {

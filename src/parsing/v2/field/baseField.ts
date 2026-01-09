@@ -1,6 +1,6 @@
-import { FieldConfidence } from "./fieldConfidence";
-import { StringDict } from "../../common";
-import { FieldLocation } from "./fieldLocation";
+import { FieldConfidence } from "./fieldConfidence.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { FieldLocation } from "./fieldLocation.js";
 
 export abstract class BaseField {
   protected _indentLevel: number;

@@ -1,5 +1,7 @@
-import { ApiResponse } from "./apiResponse";
-import { Document, Inference, StringDict } from ".";
+import { ApiResponse } from "./apiResponse.js";
+import { Document } from "./document.js";
+import { Inference } from "./inference.js";
+import { StringDict } from "./stringDict.js";
 
 /** Wrapper for synchronous prediction response.
  *

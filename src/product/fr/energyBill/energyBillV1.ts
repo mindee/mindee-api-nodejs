@@ -1,5 +1,5 @@
-import { Inference, StringDict, Page } from "../../../parsing/common";
-import { EnergyBillV1Document } from "./energyBillV1Document";
+import { Inference, StringDict, Page } from "@/parsing/common/index.js";
+import { EnergyBillV1Document } from "./energyBillV1Document.js";
 
 /**
  * Energy Bill API version 1 inference prediction.

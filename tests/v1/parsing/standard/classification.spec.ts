@@ -1,4 +1,4 @@
-import { ClassificationField } from "../../../../src/parsing/standard";
+import { ClassificationField } from "@/parsing/standard/index.js";
 import { expect } from "chai";
 
 describe("Test Classification field", () => {

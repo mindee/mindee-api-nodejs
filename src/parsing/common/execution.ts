@@ -1,9 +1,9 @@
-import { Inference } from "./inference";
-import { GeneratedV1Document } from "../../product/generated/generatedV1Document";
-import { ExecutionFile } from "./executionFile";
-import { StringDict } from "./stringDict";
-import { ExecutionPriority } from "./executionPriority";
-import { parseDate } from "./dateParser";
+import { Inference } from "./inference.js";
+import { GeneratedV1Document } from "@/product/generated/generatedV1Document.js";
+import { ExecutionFile } from "./executionFile.js";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { ExecutionPriority } from "./executionPriority.js";
+import { parseDate } from "./dateParser.js";
 
 /**
  * Representation of an execution for a workflow.

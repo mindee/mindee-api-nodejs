@@ -1,7 +1,6 @@
-import { StringDict, cleanOutString } from "../../../parsing/common";
-import { PositionField } from "../../../parsing/standard";
-
-import { BankCheckV1Document } from "./bankCheckV1Document";
+import { StringDict, cleanOutString } from "@/parsing/common/index.js";
+import { PositionField } from "@/parsing/standard/index.js";
+import { BankCheckV1Document } from "./bankCheckV1Document.js";
 
 /**
  * Bank Check API version 1.1 page data.

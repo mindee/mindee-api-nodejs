@@ -1,7 +1,7 @@
-import { StringDict } from "../../../src/parsing/common";
-import { GeneratedListField, GeneratedObjectField, isGeneratedObject } from "../../../src/parsing/generated";
-import { StringField } from "../../../src/parsing/standard";
-import { GeneratedV1Prediction } from "./generatedV1Prediction";
+import { StringDict } from "@/parsing/common/stringDict.js";
+import { GeneratedListField, GeneratedObjectField, isGeneratedObject } from "@/parsing/generated/index.js";
+import { StringField } from "@/parsing/standard/index.js";
+import { GeneratedV1Prediction } from "./generatedV1Prediction.js";
 
 /**
  * Generated V1 document prediction results.

@@ -1,8 +1,8 @@
 import { PDFDocument } from "@cantoo/pdf-lib";
-import { MindeeError, MindeeMimeTypeError } from "../../errors";
-import { InvoiceSplitterV1 } from "../../product";
-import { LocalInputSource } from "../../input";
-import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage";
+import { MindeeError, MindeeMimeTypeError } from "@/errors/index.js";
+import { InvoiceSplitterV1 } from "@/product/index.js";
+import { LocalInputSource } from "@/input/index.js";
+import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage.js";
 
 async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
   if (invoicePageGroups.length === 0) {
