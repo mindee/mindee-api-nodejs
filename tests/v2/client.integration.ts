@@ -2,7 +2,7 @@ import { expect } from "chai";
 import path from "node:path";
 
 import {
-  ClientV2,
+  Client,
   InferenceParameters,
   PathInput,
   UrlInput,
@@ -35,7 +35,7 @@ function checkEmptyActiveOptions(inference: Inference) {
 }
 
 describe("MindeeV2 – Client Integration Tests", () => {
-  let client: ClientV2;
+  let client: Client;
   let modelId: string;
 
   const emptyPdfPath = path.join(
@@ -63,7 +63,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
     modelId = process.env["MINDEE_V2_FINDOC_MODEL_ID"] ?? "";
 
-    client = new ClientV2({ apiKey: apiKey, debug: true });
+    client = new Client({ apiKey: apiKey, debug: true });
   });
   before(async () => {
     dataSchemaReplace = fs.readFileSync(dataSchemaReplacePath).toString();

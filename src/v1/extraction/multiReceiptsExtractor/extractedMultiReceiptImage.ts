@@ -1,4 +1,4 @@
-import { ExtractedImage } from "@/imageOperations/extractedImage.js";
+import { ExtractedImage } from "@/image/index.js";
 
 /**
  * Wrapper class for extracted multiple-receipts images.

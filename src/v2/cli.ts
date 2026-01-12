@@ -1,5 +1,5 @@
 import { Command, OptionValues } from "commander";
-import { ClientV2 } from "./clientV2.js";
+import { Client } from "./client.js";
 import { PathInput } from "../input/index.js";
 import * as console from "console";
 import { Inference } from "@/v2/parsing/index.js";
@@ -11,8 +11,8 @@ const program = new Command();
 // EXECUTE THE COMMANDS
 //
 
-function initClient(options: OptionValues): ClientV2 {
-  return new ClientV2({
+function initClient(options: OptionValues): Client {
+  return new Client({
     apiKey: options.apiKey,
     debug: options.debug,
   });

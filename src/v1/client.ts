@@ -2,11 +2,9 @@ import { setTimeout } from "node:timers/promises";
 import { Dispatcher } from "undici";
 import {
   InputSource,
-  LocalResponse,
   PageOptions,
 } from "@/input/index.js";
 import { BaseHttpResponse } from "@/http/index.js";
-import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
 import {
@@ -246,29 +244,6 @@ export class Client {
     params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
-  }
-
-  async loadPrediction<T extends Inference>(
-    productClass: new (httpResponse: StringDict) => T,
-    localResponse: LocalResponse
-  ) {
-    /**
-     * Load a prediction.
-     *
-     * @param productClass Product class to use for calling the API and parsing the response.
-     * @param localResponse Local response to load.
-     * @category Asynchronous
-     * @returns A valid prediction
-     */
-    try {
-      const asDict = await localResponse.asDict();
-      if (Object.prototype.hasOwnProperty.call(asDict, "job")) {
-        return new AsyncPredictResponse(productClass, asDict);
-      }
-      return new PredictResponse(productClass, asDict);
-    } catch {
-      throw new MindeeError("No prediction found in local response.");
-    }
   }
 
   /**

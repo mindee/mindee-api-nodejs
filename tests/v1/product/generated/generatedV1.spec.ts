@@ -2,10 +2,10 @@ import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
 import * as mindee from "@/index.js";
-import { Page } from "@/index.js";
+import { Page } from "@/v1/index.js";
 import { GeneratedV1 } from "@/v1/product/index.js";
-import { GeneratedListField, GeneratedObjectField } from "@/v1/parsing/generated";
-import { GeneratedV1Page } from "@/v1/product/generated/generatedV1Page";
+import { GeneratedListField, GeneratedObjectField } from "@/v1/parsing/generated/index.js";
+import { GeneratedV1Page } from "@/v1/product/generated/generatedV1Page.js";
 import { StringField } from "@/v1/parsing/standard/index.js";
 import { V1_PRODUCT_PATH } from "../../../index.js";
 
@@ -30,7 +30,7 @@ describe("Generated Document Object initialization on an OTS invoice", async () 
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(dataPathInvoice.empty);
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.Document(GeneratedV1, response.document);
+    const doc = new mindee.v1.Document(GeneratedV1, response.document);
     expect(doc.inference.prediction.fields.get("customer_address").value).to.be.undefined;
     expect(doc.inference.prediction.fields.get("customer_company_registrations").values.length).to.equals(0);
     expect(doc.inference.prediction.fields.get("customer_name").value).to.be.undefined;
@@ -99,7 +99,7 @@ describe("Generated Document Object initialization on an OTS invoice", async () 
   it("should load a complete document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPathInvoice.complete));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.Document(GeneratedV1, response.document);
+    const doc = new mindee.v1.Document(GeneratedV1, response.document);
     expect(doc.inference.prediction.fields.get("customer_address").value).to.equals(
       "1954 Bloon Street West Toronto, ON, M6P 3K9 Canada"
     );
@@ -152,7 +152,7 @@ describe("Generated Document Object initialization on an International ID", asyn
   it("should load an empty document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPathInternationalId.empty));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.Document(GeneratedV1, response.document);
+    const doc = new mindee.v1.Document(GeneratedV1, response.document);
     const docString = await fs.readFile(path.join(dataPathInternationalId.emptyDocString));
     expect(doc.inference.prediction.fields.get("document_type")).to.be.an.instanceOf(StringField);
     expect(doc.inference.prediction.fields.get("document_type").value).to.be.undefined;
@@ -191,7 +191,7 @@ describe("Generated Document Object initialization on an International ID", asyn
   it("should load a complete document prediction", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPathInternationalId.complete));
     const response = JSON.parse(jsonDataNA.toString());
-    const doc = new mindee.Document(GeneratedV1, response.document);
+    const doc = new mindee.v1.Document(GeneratedV1, response.document);
     expect(doc.inference.prediction.fields.get("document_type")).to.be.an.instanceOf(StringField);
     expect(doc.inference.prediction.fields.get("document_type").value).to.equals("NATIONAL_ID_CARD");
     expect(doc.inference.prediction.fields.get("document_number")).to.be.an.instanceOf(StringField);

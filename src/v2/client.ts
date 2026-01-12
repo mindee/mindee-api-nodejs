@@ -1,64 +1,14 @@
-import { Dispatcher } from "undici";
-import { DataSchema, InputSource } from "../input/index.js";
-import { errorHandler } from "../errors/handler.js";
-import { LOG_LEVELS, logger } from "../logger.js";
 import { setTimeout } from "node:timers/promises";
-import { ErrorResponse, InferenceResponse, JobResponse } from "@/v2/parsing/index.js";
-import { MindeeApiV2 } from "./http/mindeeApiV2.js";
-import { MindeeHttpErrorV2 } from "@/v2/http/errors.js";
+import { Dispatcher } from "undici";
+import { InputSource } from "@/input/index.js";
+import { errorHandler } from "@/errors/handler.js";
+import { LOG_LEVELS, logger } from "@/logger.js";
 import { StringDict } from "@/parsing/stringDict.js";
-
-/**
- * Parameters for the internal polling loop in {@link ClientV2.enqueueAndGetInference | enqueueAndGetInference()}.
- *
- * Default behavior:
- * - `initialDelaySec` = 2s
- * - `delaySec` = 1.5s
- * - `maxRetries` = 80
- *
- * Validation rules:
- * - `initialDelaySec` >= 1
- * - `delaySec` >= 1
- * - `maxRetries` >= 2
- *
- * The `initialTimerOptions` and `recurringTimerOptions` objects let you pass an
- * `AbortSignal` or make the timer `unref`-ed to the `setTimeout()`.
- *
- * @category ClientV2
- * @example
- * const params = {
- *   initialDelaySec: 4,
- *   delaySec: 2,
- *   maxRetries: 50
- * };
- *
- * const inference = await client.enqueueAndGetInference(inputDoc, params);
- */
-
-export interface PollingOptions {
-  /** Number of seconds to wait *before the first poll*. */
-  initialDelaySec?: number;
-  /** Interval in seconds between two consecutive polls. */
-  delaySec?: number;
-  /** Maximum number of polling attempts (including the first one). */
-  maxRetries?: number;
-  /** Options passed to the initial `setTimeout()`. */
-  initialTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  };
-  /** Options passed to every recurring `setTimeout()`. */
-  recurringTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  }
-}
-
-interface ValidatedPollingOptions extends PollingOptions {
-  initialDelaySec: number;
-  delaySec: number;
-  maxRetries: number;
-}
+import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/index.js";
+import { MindeeApiV2 } from "./http/mindeeApiV2.js";
+import { MindeeHttpErrorV2 } from "./http/errors.js";
+import { PollingOptions, DataSchema } from "./client/index.js";
+import { setAsyncParams } from "./client/pollingOptions.js";
 
 /**
  * Parameters accepted by the asynchronous **inference** v2 endpoint.
@@ -128,6 +78,7 @@ export interface ClientOptions {
   throwOnError?: boolean;
   /** Log debug messages. */
   debug?: boolean;
+  /** Custom Dispatcher instance for the HTTP requests. */
   dispatcher?: Dispatcher;
 }
 
@@ -136,7 +87,7 @@ export interface ClientOptions {
  *
  * @category ClientV2
  */
-export class ClientV2 {
+export class Client {
   /** Mindee V2 API handler. */
   protected mindeeApi: MindeeApiV2;
 
@@ -220,44 +171,6 @@ export class ClientV2 {
   }
 
   /**
-   * Checks the values for asynchronous parsing. Returns their corrected value if they are undefined.
-   * @param asyncParams parameters related to asynchronous parsing
-   * @returns A valid `AsyncOptions`.
-   */
-  #setAsyncParams(asyncParams: PollingOptions | undefined = undefined): ValidatedPollingOptions {
-    const minDelaySec = 1;
-    const minInitialDelay = 1;
-    const minRetries = 2;
-    let newAsyncParams: PollingOptions;
-    if (asyncParams === undefined) {
-      newAsyncParams = {
-        delaySec: 1.5,
-        initialDelaySec: 2,
-        maxRetries: 80
-      };
-    } else {
-      newAsyncParams = { ...asyncParams };
-      if (
-        !newAsyncParams.delaySec ||
-        !newAsyncParams.initialDelaySec ||
-        !newAsyncParams.maxRetries
-      ) {
-        throw Error("Invalid polling options.");
-      }
-      if (newAsyncParams.delaySec < minDelaySec) {
-        throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} second(s).`);
-      }
-      if (newAsyncParams.initialDelaySec < minInitialDelay) {
-        throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} second(s).`);
-      }
-      if (newAsyncParams.maxRetries < minRetries) {
-        throw Error(`Cannot set retry to less than ${minRetries}.`);
-      }
-    }
-    return newAsyncParams as ValidatedPollingOptions;
-  }
-
-  /**
    * Send a document to an endpoint and poll the server until the result is sent or
    * until the maximum number of tries is reached.
    *
@@ -272,7 +185,7 @@ export class ClientV2 {
     inputSource: InputSource,
     params: InferenceParameters
   ): Promise<InferenceResponse> {
-    const validatedAsyncParams = this.#setAsyncParams(params.pollingOptions);
+    const validatedAsyncParams = setAsyncParams(params.pollingOptions);
     const enqueueResponse: JobResponse = await this.enqueueInference(inputSource, params);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${enqueueResponse.getRawHttp()}`);

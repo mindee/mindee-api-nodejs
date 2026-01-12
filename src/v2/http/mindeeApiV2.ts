@@ -1,6 +1,6 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
-import { InferenceParameters } from "@/v2/clientV2.js";
+import { InferenceParameters } from "@/v2/client.js";
 import { ErrorResponse, InferenceResponse, JobResponse } from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";

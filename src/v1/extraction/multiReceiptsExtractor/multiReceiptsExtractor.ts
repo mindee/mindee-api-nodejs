@@ -4,7 +4,7 @@ import { Polygon } from "@/geometry/index.js";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage.js";
 import { LocalInputSource } from "@/input/index.js";
-import { extractFromPage } from "@/imageOperations/index.js";
+import { extractFromPage } from "@/image/index.js";
 import { PositionField } from "@/v1/parsing/standard/index.js";
 
 /**

@@ -1,13 +1,13 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { MindeeError } from "@/errors/index.js";
 import { CommonResponse } from "@/v2/parsing/index.js";
-import { LocalResponse } from "@/input/index.js";
+import { LocalResponseBase } from "@/parsing/localResponseBase.js";
 
 /**
  * Local response loaded from a file.
  * Note: Has to be initialized through init() before use.
  */
-export class LocalResponseV2 extends LocalResponse {
+export class LocalResponse extends LocalResponseBase {
 
   /**
    * Deserialize the loaded local response into the requested CommonResponse-derived class.

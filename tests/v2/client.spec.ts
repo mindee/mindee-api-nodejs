@@ -1,11 +1,11 @@
 import { expect } from "chai";
 import { MockAgent, setGlobalDispatcher } from "undici";
 import path from "node:path";
-import { ClientV2, PathInput, InferenceResponse } from "@/index.js";
+import { Client, PathInput, InferenceResponse } from "@/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
-import { LocalResponseV2 } from "@/v2/localResponse.js";
+import { LocalResponse } from "@/v2/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
@@ -60,11 +60,11 @@ describe("MindeeV2 - ClientV2", () => {
   });
 
   describe("Client configured via environment variables", () => {
-    let client: ClientV2;
+    let client: Client;
 
     beforeEach(() => {
       setNockInterceptors();
-      client = new ClientV2({ apiKey: "dummy", debug: true, dispatcher: mockAgent });
+      client = new Client({ apiKey: "dummy", debug: true, dispatcher: mockAgent });
     });
 
     it("inherits base URL, token & headers from the env / options", () => {
@@ -113,7 +113,7 @@ describe("MindeeV2 - ClientV2", () => {
         "complete.json"
       );
 
-      const localResponse = new LocalResponseV2(jsonPath);
+      const localResponse = new LocalResponse(jsonPath);
       const response: InferenceResponse = await localResponse.deserializeResponse(InferenceResponse);
 
       expect(response.inference.model.id).to.equal(

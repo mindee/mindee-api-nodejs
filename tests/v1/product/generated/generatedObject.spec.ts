@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { GeneratedObjectField } from "@/v1/parsing/generated";
+import { GeneratedObjectField } from "@/v1/parsing/generated/index.js";
 
 describe("Generated Object Field", async () => {
   it("should properly format booleans.", async () => {

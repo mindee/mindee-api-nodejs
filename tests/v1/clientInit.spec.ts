@@ -1,4 +1,4 @@
-import { Client } from "@/index.js";
+import { Client } from "@/v1/index.js";
 import { expect } from "chai";
 import assert from "node:assert/strict";
 

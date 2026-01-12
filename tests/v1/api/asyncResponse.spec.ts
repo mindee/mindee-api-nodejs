@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { AsyncPredictResponse } from "@/index.js";
+import { AsyncPredictResponse } from "@/v1/index.js";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { StringDict } from "@/v1/parsing/common/index.js";

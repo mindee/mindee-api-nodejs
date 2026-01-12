@@ -1,10 +1,10 @@
 import { expect } from "chai";
 import * as path from "path";
-import { Client, PathInput } from "@/index.js";
+import { Client } from "@/v1/index.js";
 import { MultiReceiptsDetectorV1, ReceiptV5 } from "@/v1/product/index.js";
-import { extractReceipts } from "@/imageOperations/index.js";
+import { extractReceipts } from "@/v1/extraction/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
-import { LocalInputSource } from "@/input/index.js";
+import { LocalInputSource, PathInput } from "@/input/index.js";
 import { setTimeout } from "node:timers/promises";
 
 const apiKey = process.env.MINDEE_API_KEY;

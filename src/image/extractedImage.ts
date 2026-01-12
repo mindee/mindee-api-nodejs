@@ -3,8 +3,7 @@ import { MindeeError } from "@/errors/index.js";
 import { writeFileSync } from "node:fs";
 import path from "node:path";
 import { logger } from "@/logger.js";
-import { BufferInput } from "@/input/index.js";
-import { MIMETYPES } from "@/input/sources/localInputSource.js";
+import { BufferInput, MIMETYPES } from "@/input/index.js";
 import { Poppler } from "node-poppler";
 import { writeFile } from "fs/promises";
 
@@ -14,7 +13,6 @@ import { writeFile } from "fs/promises";
 export class ExtractedImage {
   public buffer: Buffer;
   protected internalFileName: string;
-
 
   protected constructor(buffer: Uint8Array, fileName: string) {
     this.buffer = Buffer.from(buffer);
@@ -65,7 +63,6 @@ export class ExtractedImage {
     }
   }
 
-
   /**
    * Attempts to saves the document to a file synchronously.
    * Throws an error if the file extension is not supported or if the file could not be saved to disk for some reason.
@@ -91,7 +88,6 @@ export class ExtractedImage {
       }
     }
   }
-
 
   /**
    * Return the file as a Mindee-compatible BufferInput source.

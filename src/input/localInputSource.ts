@@ -1,10 +1,10 @@
 import { errorHandler } from "@/errors/handler.js";
 import { logger } from "@/logger.js";
-import { compressImage } from "@/imageOperations/index.js";
+import { compressImage } from "@/image/index.js";
 import { compressPdf, countPages, extractPages, hasSourceText } from "@/pdf/index.js";
 import path from "path";
 import { fileTypeFromBuffer } from "file-type";
-import { PageOptions } from "../pageOptions.js";
+import { PageOptions } from "../input/pageOptions.js";
 import {
   InputSource,
   InputConstructor,
@@ -24,6 +24,7 @@ export const MIMETYPES = new Map<string, string>([
   [".tiff", "image/tiff"],
   [".webp", "image/webp"],
 ]);
+
 const ALLOWED_INPUT_TYPES = [
   INPUT_TYPE_STREAM,
   INPUT_TYPE_BASE64,

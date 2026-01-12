@@ -1,6 +1,6 @@
 import { expect } from "chai";
 import { UrlInput } from "@/index.js";
-import { Client } from "@/index.js";
+import { Client } from "@/v1/index.js";
 import { InvoiceV4 } from "@/v1/product/index.js";
 
 describe("MindeeV1 - URL Input Integration Test", async () => {

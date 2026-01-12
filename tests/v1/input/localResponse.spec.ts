@@ -1,8 +1,7 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
 import path from "path";
-import { AsyncPredictResponse, LocalResponseV1, PredictResponse } from "@/v1/index.js";
-import { Client } from "@/index.js";
+import { AsyncPredictResponse, LocalResponse, PredictResponse } from "@/v1/index.js";
 import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index.js";
 
@@ -20,7 +19,7 @@ const internationalIdPath: string = path.join(
 describe("MindeeV1 - Load Local Response", () => {
   it("should load a string properly.", async () => {
     const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
-    const localResponse = new LocalResponseV1(fileObj);
+    const localResponse = new LocalResponse(fileObj);
     await localResponse.init();
     expect(localResponse.asDict()).to.not.be.null;
     expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
@@ -29,7 +28,7 @@ describe("MindeeV1 - Load Local Response", () => {
   });
 
   it("should load a file properly.", async () => {
-    const localResponse = new LocalResponseV1(filePath);
+    const localResponse = new LocalResponse(filePath);
     await localResponse.init();
     expect(localResponse.asDict()).to.not.be.null;
     expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
@@ -40,7 +39,7 @@ describe("MindeeV1 - Load Local Response", () => {
   it("should load a buffer properly.", async () => {
     const fileStr = (await fs.readFile(filePath, { encoding: "utf-8" })).replace(/\r/g, "").replace(/\n/g, "");
     const fileBuffer = Buffer.from(fileStr, "utf-8");
-    const localResponse = new LocalResponseV1(fileBuffer);
+    const localResponse = new LocalResponse(fileBuffer);
     await localResponse.init();
     expect(localResponse.asDict()).to.not.be.null;
     expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
@@ -50,9 +49,8 @@ describe("MindeeV1 - Load Local Response", () => {
 
   it("should load into a sync prediction.", async () => {
     const fileObj = await fs.readFile(multiReceiptsDetectorPath, { encoding: "utf-8" });
-    const localResponse = new LocalResponseV1(fileObj);
-    const dummyClient = new Client({ apiKey: "dummy-key" });
-    const prediction = await dummyClient.loadPrediction(MultiReceiptsDetectorV1, localResponse);
+    const localResponse = new LocalResponse(fileObj);
+    const prediction = await localResponse.loadPrediction(MultiReceiptsDetectorV1);
     expect(prediction).to.be.an.instanceof(PredictResponse);
 
     expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
@@ -60,18 +58,16 @@ describe("MindeeV1 - Load Local Response", () => {
 
   it("should load a failed prediction.", async () => {
     const fileObj = await fs.readFile(failedPath, { encoding: "utf-8" });
-    const localResponse = new LocalResponseV1(fileObj);
-    const dummyClient = new Client({ apiKey: "dummy-key" });
-    const prediction = await dummyClient.loadPrediction(InvoiceV4, localResponse);
+    const localResponse = new LocalResponse(fileObj);
+    const prediction = await localResponse.loadPrediction(InvoiceV4);
     expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
     expect((prediction as AsyncPredictResponse<InvoiceV4>).job.status).to.be.eq("failed");
   });
 
   it("should load into an async prediction.", async () => {
     const fileObj = await fs.readFile(internationalIdPath, { encoding: "utf-8" });
-    const localResponse = new LocalResponseV1(fileObj);
-    const dummyClient = new Client({ apiKey: "dummy-key" });
-    const prediction = await dummyClient.loadPrediction(InternationalIdV2, localResponse);
+    const localResponse = new LocalResponse(fileObj);
+    const prediction = await localResponse.loadPrediction(InternationalIdV2);
     expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
 
     expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));

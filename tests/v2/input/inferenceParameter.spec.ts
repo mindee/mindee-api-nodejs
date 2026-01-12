@@ -3,7 +3,7 @@ import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { InferenceParameters } from "@/index.js";
 import { expect } from "chai";
-import { DataSchema } from "@/input/index.js";
+import { DataSchema } from "@/index.js";
 import { promises as fs } from "fs";
 
 let expectedDataSchemaDict: StringDict;

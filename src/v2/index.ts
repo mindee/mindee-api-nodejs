@@ -1,7 +1,7 @@
 export * as http from "./http/index.js";
 export * as parsing from "./parsing/index.js";
-export { LocalResponseV2 } from "./localResponse.js";
-export { ClientV2 } from "./clientV2.js";
+export { LocalResponse } from "./parsing/localResponse.js";
+export { Client } from "./client.js";
 export {
   InferenceFile,
   InferenceResponse,
@@ -10,3 +10,6 @@ export {
   RagMetadata,
   ErrorResponse,
 } from "./parsing/index.js";
+export type { InferenceParameters } from "./client.js";
+export { DataSchema } from "./client/index.js";
+export type { PollingOptions } from "./client/index.js";

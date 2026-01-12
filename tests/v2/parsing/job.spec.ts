@@ -1,4 +1,4 @@
-import { JobResponse, LocalResponseV2, ErrorResponse } from "@/v2/index.js";
+import { JobResponse, LocalResponse, ErrorResponse } from "@/v2/index.js";
 import path from "node:path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { expect } from "chai";
@@ -6,7 +6,7 @@ import { expect } from "chai";
 const jobPath = path.join(V2_RESOURCE_PATH, "job");
 
 async function loadV2Job(resourcePath: string): Promise<JobResponse> {
-  const localResponse = new LocalResponseV2(resourcePath);
+  const localResponse = new LocalResponse(resourcePath);
   await localResponse.init();
   return localResponse.deserializeResponse(JobResponse);
 }

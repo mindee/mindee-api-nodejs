@@ -16,7 +16,7 @@ describe("MindeeV1 - InternationalIdV2 Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.Document(mindee.product.InternationalIdV2, response.document);
+    const doc = new mindee.v1.Document(mindee.v1.product.InternationalIdV2, response.document);
     const docPrediction = doc.inference.prediction;
     expect(docPrediction.documentNumber.value).to.be.undefined;
     expect(docPrediction.surnames.length).to.be.equals(0);
@@ -39,7 +39,7 @@ describe("MindeeV1 - InternationalIdV2 Object initialization", async () => {
   it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.Document(mindee.product.InternationalIdV2, response.document);
+    const doc = new mindee.v1.Document(mindee.v1.product.InternationalIdV2, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
