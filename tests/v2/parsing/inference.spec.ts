@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import path from "node:path";
-import { LocalResponse, InferenceResponse, RawText, RagMetadata } from "@/index.js";
-import { FieldConfidence, ListField, ObjectField, SimpleField } from "@/parsing/v2/field/index.js";
+import { LocalResponse, InferenceResponse, RawText, RagMetadata } from "@/v2/index.js";
+import { FieldConfidence, ListField, ObjectField, SimpleField } from "@/v2/parsing/field/index.js";
 import { promises as fs } from "node:fs";
 import { Polygon } from "@/geometry/index.js";
 import { V2_RESOURCE_PATH } from "../../index.js";

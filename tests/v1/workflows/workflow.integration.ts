@@ -1,20 +1,20 @@
 import * as mindee from "@/index.js";
-import { ExecutionPriority } from "@/parsing/common/index.js";
+import { ExecutionPriority } from "@/v1/parsing/common/index.js";
 import { expect } from "chai";
 import { LocalInputSource } from "@/input/index.js";
-import { OptionalAsyncOptions } from "@/client.js";
-import { FinancialDocumentV1 } from "@/product/index.js";
-import { RAGExtra } from "@/parsing/common/extras/ragExtra.js";
+import { OptionalAsyncOptions } from "@/v1/index.js";
+import { FinancialDocumentV1 } from "@/v1/product/index.js";
+import { RAGExtra } from "@/v1/parsing/common/extras/ragExtra.js";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
 describe("MindeeV1 - Workflow calls", () => {
-  let client: mindee.Client;
+  let client: mindee.v1.Client;
   let sample: LocalInputSource;
   let workflowId: string;
 
   beforeEach(async () => {
-    client = new mindee.Client();
+    client = new mindee.v1.Client();
     workflowId = process.env["WORKFLOW_ID"] ?? "";
     sample = new mindee.PathInput({
       inputPath: path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")

@@ -1,6 +1,6 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { InferenceResponse, LocalResponse } from "@/index.js";
+import { InferenceResponse, LocalResponse } from "@/v2/index.js";
 
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";

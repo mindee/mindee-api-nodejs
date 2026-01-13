@@ -2,12 +2,13 @@ import * as fs from "node:fs";
 import * as path from "path";
 import { expect } from "chai";
 import { MockAgent, setGlobalDispatcher } from "undici";
-import { Client, PathInput, product } from "@/index.js";
+import { PathInput } from "@/index.js";
+import { Client, product } from "@/v1/index.js";
 import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import assert from "node:assert/strict";
 import {
   MindeeHttp400Error, MindeeHttp401Error, MindeeHttp429Error, MindeeHttp500Error
-} from "@/http/index.js";
+} from "@/v1/http/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);

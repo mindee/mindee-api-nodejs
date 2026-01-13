@@ -1,7 +1,7 @@
 import path from "path";
 import { expect } from "chai";
 import { promises as fs } from "fs";
-import { FeedbackResponse } from "@/parsing/common/index.js";
+import { FeedbackResponse } from "@/v1/parsing/common/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
 describe("MindeeV1 - Feedback response", () => {
