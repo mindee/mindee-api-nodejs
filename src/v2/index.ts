@@ -10,6 +10,5 @@ export {
   RagMetadata,
   ErrorResponse,
 } from "./parsing/index.js";
-export type { InferenceParameters } from "./client.js";
-export { DataSchema } from "./client/index.js";
+export { InferenceParameters, DataSchema } from "./client/index.js";
 export type { PollingOptions } from "./client/index.js";
