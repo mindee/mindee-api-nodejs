@@ -1,16 +1,16 @@
 import * as mindee from "@/index.js";
-import { InvoiceSplitterV1 } from "@/product/index.js";
+import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { expect } from "chai";
-import { levenshteinRatio } from "../../../testingUtilities";
+import { levenshteinRatio } from "../../../testingUtilities.js";
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../index.js";
 
 describe("MindeeV1 - InvoiceSplitterV1 Integration Tests", async () => {
-  let client: mindee.Client;
+  let client: mindee.v1.Client;
 
   beforeEach(() => {
-    client = new mindee.Client();
+    client = new mindee.v1.Client();
   });
 
   it("should extract invoices in strict mode.", async () => {
@@ -19,11 +19,11 @@ describe("MindeeV1 - InvoiceSplitterV1 Integration Tests", async () => {
     });
 
     const response = await client.enqueueAndParse(
-      mindee.product.InvoiceSplitterV1, sample
+      mindee.v1.product.InvoiceSplitterV1, sample
     );
     const invoiceSplitterInference = response.document?.inference;
     expect(invoiceSplitterInference).to.be.an.instanceof(InvoiceSplitterV1);
-    const invoices = await mindee.imageOperations.extractInvoices(
+    const invoices = await mindee.v1.extraction.extractInvoices(
       sample,
       invoiceSplitterInference as InvoiceSplitterV1
     );
@@ -32,7 +32,7 @@ describe("MindeeV1 - InvoiceSplitterV1 Integration Tests", async () => {
     expect(invoices[1].asSource().filename).to.eq("invoice_p_1-1.pdf");
 
     const invoiceResult = await client.parse(
-      mindee.product.InvoiceV4, invoices[0].asSource()
+      mindee.v1.product.InvoiceV4, invoices[0].asSource()
     );
     const testStringRstInvoice = await fs.readFile(
       path.join(V1_PRODUCT_PATH, "invoices/response_v4/summary_full_invoice_p1.rst")

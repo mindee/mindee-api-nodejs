@@ -1,9 +1,9 @@
 import { expect } from "chai";
-import { AsyncPredictResponse } from "@/index.js";
+import { AsyncPredictResponse } from "@/v1/index.js";
 import { promises as fs } from "fs";
 import * as path from "path";
-import { StringDict } from "@/parsing/common/index.js";
-import { InvoiceSplitterV1 } from "@/product/index.js";
+import { StringDict } from "@/v1/parsing/common/index.js";
+import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { cleanRequestData, isValidAsyncResponse } from "@/http/index.js";
 import { RESOURCE_PATH } from "../../index.js";
 

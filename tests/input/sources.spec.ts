@@ -15,7 +15,7 @@ import * as path from "path";
 import { expect } from "chai";
 import sharp from "sharp";
 import { Buffer } from "node:buffer";
-import { compressImage } from "@/imageOperations/index.js";
+import { compressImage } from "@/image/index.js";
 import { compressPdf } from "@/pdf/index.js";
 import { extractTextFromPdf } from "@/pdf/pdfUtils.js";
 import { logger } from "@/logger.js";

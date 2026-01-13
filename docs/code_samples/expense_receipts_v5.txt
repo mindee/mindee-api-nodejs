@@ -3,7 +3,9 @@ const mindee = require("mindee");
 // import * as mindee from "mindee";
 
 // Init a new client
-const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+const mindeeClient = new mindee.v1.Client(
+  { apiKey: "my-api-key" }
+);
 
 // Load a file from disk
 const inputSource = new mindee.PathInput(
@@ -12,7 +14,7 @@ const inputSource = new mindee.PathInput(
 
 // Parse the file
 const apiResponse = mindeeClient.parse(
-  mindee.product.ReceiptV5,
+  mindee.v1.product.ReceiptV5,
   inputSource
 );
 

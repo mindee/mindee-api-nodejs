@@ -5,10 +5,10 @@ import { V1_PRODUCT_PATH } from "../../index.js";
 
 
 describe("MindeeV1 - Extras Integration Tests", async () => {
-  let client: mindee.Client;
+  let client: mindee.v1.Client;
 
   beforeEach(() => {
-    client = new mindee.Client();
+    client = new mindee.v1.Client();
   });
 
   it("should send cropper extra", async () => {
@@ -17,7 +17,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     });
     await sample.init();
     const response = await client.parse(
-      mindee.product.InvoiceV4, sample, { cropper: true }
+      mindee.v1.product.InvoiceV4, sample, { cropper: true }
     );
     expect(response.document.inference.pages[0]?.extras?.cropper).to.exist;
   }).timeout(70000);
@@ -28,7 +28,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     });
     await sample.init();
     const response = await client.enqueueAndParse(
-      mindee.product.InternationalIdV2, sample, { fullText: true }
+      mindee.v1.product.InternationalIdV2, sample, { fullText: true }
     );
     expect(response.document?.extras?.fullTextOcr).to.exist;
 
@@ -40,7 +40,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     });
     await sample.init();
     const response = await client.parse(
-      mindee.product.FinancialDocumentV1, sample, { allWords: true }
+      mindee.v1.product.FinancialDocumentV1, sample, { allWords: true }
     );
     expect(response.document?.ocr).to.exist;
     expect(response.document?.ocr?.toString()).to.not.be.empty;
@@ -53,7 +53,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     });
     await sample.init();
     const response = await client.enqueueAndParse(
-      mindee.product.FinancialDocumentV1, sample, { allWords: true }
+      mindee.v1.product.FinancialDocumentV1, sample, { allWords: true }
     );
     expect(response.document?.ocr).to.exist;
     expect(response.document?.ocr?.toString()).to.not.be.empty;
