@@ -1,8 +1,8 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { PredictResponse } from "@/index.js";
-import { InvoiceV4, ReceiptV5 } from "@/product/index.js";
+import { PredictResponse } from "@/v1/index.js";
+import { InvoiceV4, ReceiptV5 } from "@/v1/product/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
 const dataPath = {

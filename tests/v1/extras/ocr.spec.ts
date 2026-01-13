@@ -1,8 +1,8 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { ReceiptV5 } from "@/product/index.js";
-import { Document } from "@/index.js";
+import { ReceiptV5 } from "@/v1/product/index.js";
+import { Document } from "@/v1/index.js";
 import { RESOURCE_PATH } from "../../index.js";
 
 const dataPath = {

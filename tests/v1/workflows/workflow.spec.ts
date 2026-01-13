@@ -3,7 +3,8 @@ import { MockAgent, setGlobalDispatcher } from "undici";
 import { promises as fs } from "fs";
 import path from "path";
 import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
-import { Client, PathInput } from "@/index.js";
+import { Client } from "@/v1/index.js";
+import { PathInput } from "@/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);

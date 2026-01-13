@@ -16,7 +16,7 @@ describe("MindeeV1 - UsMailV3 Object initialization", async () => {
   it("should load an empty document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.empty));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.Document(mindee.product.us.UsMailV3, response.document);
+    const doc = new mindee.v1.Document(mindee.v1.product.us.UsMailV3, response.document);
     const docPrediction = doc.inference.prediction;
     expect(docPrediction.senderName.value).to.be.undefined;
     expect(docPrediction.senderAddress.city).to.be.null;
@@ -32,7 +32,7 @@ describe("MindeeV1 - UsMailV3 Object initialization", async () => {
   it("should load a complete document prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
-    const doc = new mindee.Document(mindee.product.us.UsMailV3, response.document);
+    const doc = new mindee.v1.Document(mindee.v1.product.us.UsMailV3, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
     expect(doc.toString()).to.be.equals(docString.toString());
   });
