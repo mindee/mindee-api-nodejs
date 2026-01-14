@@ -54,7 +54,7 @@ export abstract class LocalInputSource extends InputSource {
       );
     }
     this.inputType = inputType;
-    logger.debug(`Loading file from: ${inputType}`);
+    logger.debug(`New local input source of type: ${inputType}`);
   }
 
   protected async checkMimetype(): Promise<string> {

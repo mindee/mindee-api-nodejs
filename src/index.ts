@@ -19,7 +19,7 @@ export * as v2 from "./v2/index.js";
 export {
   Client,
   InferenceFile,
-  InferenceResponse,
+  ExtractionResponse,
   JobResponse,
   RawText,
   RagMetadata,

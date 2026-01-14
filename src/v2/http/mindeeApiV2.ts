@@ -1,10 +1,18 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
-import { InferenceParameters } from "@/v2/client/index.js";
-import { ErrorResponse, InferenceResponse, JobResponse } from "@/v2/parsing/index.js";
+import { InferenceParameters, UtilityParameters } from "@/v2/client/index.js";
+import {
+  BaseResponse,
+  ErrorResponse,
+  ResponseConstructor,
+  JobResponse,
+  CropResponse,
+  OcrResponse,
+  SplitResponse, ExtractionResponse, BaseInferenceResponse,
+} from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
-import { MindeeConfigurationError, MindeeDeserializationError } from "@/errors/index.js";
+import { MindeeDeserializationError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
 
@@ -16,36 +24,76 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Sends a file to the inference queue.
+   * Sends a file to the extraction inference queue.
    * @param inputSource Local file loaded as an input.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    * @category V2
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostInferenceEnqueue(inputSource: InputSource, params: InferenceParameters): Promise<JobResponse> {
+  async reqPostInferenceEnqueue(
+    inputSource: InputSource, params: InferenceParameters
+  ): Promise<JobResponse> {
     await inputSource.init();
-    if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
-      throw new MindeeConfigurationError("Model ID must be provided");
-    }
-    const result: BaseHttpResponse = await this.#documentEnqueuePost(inputSource, params);
+    const result: BaseHttpResponse = await this.#inferenceEnqueuePost(inputSource, params);
     if (result.data.error !== undefined) {
       throw new MindeeHttpErrorV2(result.data.error);
     }
     return this.#processResponse(result, JobResponse);
   }
 
+  /**
+   * Sends a file to the utility inference queue.
+   * @param inputSource Local file loaded as an input.
+   * @param params {UtilityParameters} parameters relating to the enqueueing options.
+   * @category V2
+   * @throws Error if the server's response contains one.
+   * @returns a `Promise` containing a job response.
+   */
+  async reqPostUtilityEnqueue(
+    inputSource: InputSource, params: UtilityParameters
+  ): Promise<JobResponse> {
+    await inputSource.init();
+    const result: BaseHttpResponse = await this.#utilityEnqueuePost(inputSource, "crop", params);
+    if (result.data.error !== undefined) {
+      throw new MindeeHttpErrorV2(result.data.error);
+    }
+    return this.#processResponse(result, JobResponse);
+  }
 
   /**
    * Requests the job of a queued document from the API.
    * Throws an error if the server's response contains one.
+   * @param responseType
    * @param inferenceId The document's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async reqGetInference(inferenceId: string): Promise<InferenceResponse> {
-    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, "inferences");
-    return this.#processResponse(queueResponse, InferenceResponse);
+  async reqGetInference<T extends BaseInferenceResponse>(
+    responseType: ResponseConstructor<T>,
+    inferenceId: string,
+  ): Promise<T> {
+    let slug: string;
+    // this is disgusting, look into a more elegant way of linking the response type to the slug
+    switch (responseType as any) {
+    case CropResponse:
+      slug = "utilities/crop";
+      break;
+    case OcrResponse:
+      slug = "utilities/ocr";
+      break;
+    case SplitResponse:
+      slug = "utilities/split";
+      break;
+    case ExtractionResponse:
+      slug = "inferences";
+      break;
+    default:
+      slug = "inferences";
+      break;
+    }
+    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, slug);
+    return this.#processResponse(queueResponse, responseType);
   }
 
   /**
@@ -60,8 +108,10 @@ export class MindeeApiV2 {
     return this.#processResponse(queueResponse, JobResponse);
   }
 
-  #processResponse<T extends JobResponse | InferenceResponse>
-  (result: BaseHttpResponse, responseType: new (data: { [key: string]: any; }) => T): T {
+  #processResponse<T extends BaseResponse>(
+    result: BaseHttpResponse,
+    responseType: ResponseConstructor<T>,
+  ): T {
     if (result.messageObj?.statusCode && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)) {
       if (result.data?.status !== null) {
         throw new MindeeHttpErrorV2(new ErrorResponse(result.data));
@@ -89,9 +139,45 @@ export class MindeeApiV2 {
    * Sends a document to the inference queue.
    *
    * @param inputSource Local or remote file as an input.
+   * @param slug Slug of the utility to enqueue.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    */
-  async #documentEnqueuePost(
+  async #utilityEnqueuePost(
+    inputSource: InputSource,
+    slug: string,
+    params: UtilityParameters
+  ): Promise<BaseHttpResponse> {
+    const form = new FormData();
+
+    form.set("model_id", params.modelId);
+    if (params.webhookIds && params.webhookIds.length > 0) {
+      form.set("webhook_ids", params.webhookIds.join(","));
+    }
+    if (inputSource instanceof LocalInputSource) {
+      form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
+    } else {
+      form.set("url", (inputSource as UrlInput).url);
+    }
+    const path = `/v2/utilities/${slug}/enqueue`;
+    const options = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: path,
+      body: form,
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
+  }
+
+
+  /**
+   * Sends a document to the inference queue.
+   *
+   * @param inputSource Local or remote file as an input.
+   * @param params {InferenceParameters} parameters relating to the enqueueing options.
+   */
+  async #inferenceEnqueuePost(
     inputSource: InputSource,
     params: InferenceParameters
   ): Promise<BaseHttpResponse> {

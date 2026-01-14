@@ -4,3 +4,5 @@ export { FieldLocation } from "./fieldLocation.js";
 export { ListField } from "./listField.js";
 export { ObjectField } from "./objectField.js";
 export { SimpleField } from "./simpleField.js";
+export { RawText } from "./rawText.js";
+export { RagMetadata } from "./ragMetadata.js";

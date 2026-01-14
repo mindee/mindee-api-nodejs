@@ -4,7 +4,7 @@ export { LocalResponse } from "./parsing/localResponse.js";
 export { Client } from "./client.js";
 export {
   InferenceFile,
-  InferenceResponse,
+  ExtractionResponse,
   JobResponse,
   RawText,
   RagMetadata,
