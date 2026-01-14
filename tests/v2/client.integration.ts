@@ -71,7 +71,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
   it("Empty, multi-page PDF – PathInput - enqueueAndGetInference must succeed", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const params: InferenceParameters = {
+    const params = {
       modelId,
       rag: false,
       rawText: false,
@@ -80,7 +80,6 @@ describe("MindeeV2 – Client Integration Tests", () => {
       webhookIds: [],
       alias: "ts_integration_empty_multiple"
     };
-
     const response = await client.enqueueAndGetInference(source, params);
 
     expect(response).to.exist;
@@ -98,7 +97,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
   it("Filled, single-page image – PathInput - enqueueAndGetInference must succeed", async () => {
     const source = new PathInput({ inputPath: sampleImagePath });
-    const params: InferenceParameters = {
+    const params = {
       modelId,
       rag: false,
       rawText: true,
@@ -137,7 +136,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("Filled, single-page image – Base64Input - enqueueAndGetInference must succeed", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
     const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
-    const params: InferenceParameters = {
+    const params = new InferenceParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -145,7 +144,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       confidence: false,
       webhookIds: [],
       alias: "ts_integration_base64_filled_single"
-    };
+    });
 
     const response = await client.enqueueAndGetInference(source, params);
 
@@ -166,7 +165,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
   it("Invalid model ID – enqueue must raise 422", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const badParams: InferenceParameters = { modelId: "00000000-0000-0000-0000-000000000000" };
+    const badParams = { modelId: "00000000-0000-0000-0000-000000000000" };
 
     try {
       await client.enqueueInference(source, badParams);
@@ -188,7 +187,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("HTTPS URL – enqueue & get inference must succeed", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
     const source = new UrlInput({ url });
-    const params: InferenceParameters = {
+    const params = new InferenceParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -196,8 +195,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       confidence: false,
       webhookIds: [],
       alias: "ts_integration_url_source"
-    };
-
+    });
     const response: InferenceResponse = await client.enqueueAndGetInference(source, params);
 
     expect(response).to.exist;
@@ -206,7 +204,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
   it("Data Schema Override - Overrides the data schema successfully", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const params: InferenceParameters = {
+    const params = new InferenceParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -215,7 +213,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       webhookIds: [],
       dataSchema: dataSchemaReplace,
       alias: "ts_integration_data_schema_replace"
-    };
+    });
     const response = await client.enqueueAndGetInference(source, params);
 
     expect(response).to.exist;
