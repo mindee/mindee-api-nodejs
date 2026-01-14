@@ -6,43 +6,35 @@ export class DataSchemaField {
    * Display name for the field, also impacts inference results.
    */
   public title: string;
-
   /**
    * Name of the field in the data schema.
    */
   public name: string;
-
   /**
    * Whether this field can contain multiple values.
    */
   public isArray: boolean;
-
   /**
    * Data type of the field.
    */
   public type: string;
-
   /**
    * Allowed values when type is `classification`. Leave empty for other types.
    */
   public classificationValues?: Array<string>;
-
   /**
    * Whether to remove duplicate values in the array.
    * Only applicable if `is_array` is True.
    */
   public uniqueValues?: boolean;
-
   /**
    * Detailed description of what this field represents.
    */
   public description?: string;
-
   /**
    * Optional extraction guidelines.
    */
   public guidelines?: string;
-
   /**
    * Subfields when type is `nested_object`. Leave empty for other types.
    */

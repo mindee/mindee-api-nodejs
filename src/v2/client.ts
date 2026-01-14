@@ -3,62 +3,10 @@ import { Dispatcher } from "undici";
 import { InputSource } from "@/input/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
-import { StringDict } from "@/parsing/stringDict.js";
 import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { PollingOptions, DataSchema } from "./client/index.js";
-import { setAsyncParams } from "./client/pollingOptions.js";
-
-/**
- * Parameters accepted by the asynchronous **inference** v2 endpoint.
- *
- * All fields are optional except `modelId`.
- *
- * @category ClientV2
- * @example
- * const params = {
- *   modelId: "YOUR_MODEL_ID",
- *   rag: true,
- *   alias: "YOUR_ALIAS",
- *   webhookIds: ["YOUR_WEBHOOK_ID_1", "YOUR_WEBHOOK_ID_2"],
- *   pollingOptions: {
- *     initialDelaySec: 2,
- *     delaySec: 1.5,
- *   }
- * };
- */
-export interface InferenceParameters {
-  /** Model ID to use for the inference. **Required** */
-  modelId: string;
-  /** Use Retrieval-Augmented Generation during inference. */
-  rag?: boolean;
-  /** Extract the entire text from the document as strings, and fill the `rawText` attribute. */
-  rawText?: boolean;
-  /** Calculate bounding box polygons for values, and fill the `locations` attribute of fields. */
-  polygon?: boolean;
-  /** Calculate confidence scores for values, and fill the `confidence` attribute of fields.
-   * Useful for automation.*/
-  confidence?: boolean;
-  /** Use an alias to link the file to your own DB. If empty, no alias will be used. */
-  alias?: string;
-  /** Additional text context used by the model during inference.
-   * *Not recommended*, for specific use only. */
-  textContext?: string;
-  /** Webhook IDs to call after all processing is finished.
-   * If empty, no webhooks will be used. */
-  webhookIds?: string[];
-  /** Client-side polling configuration (see {@link PollingOptions}). */
-  pollingOptions?: PollingOptions;
-  /** By default, the file is closed once the upload is finished.
-   * Set to `false` to keep it open. */
-  closeFile?: boolean;
-  /**
-   * Dynamic changes to the data schema of the model for this inference.
-   * Not recommended, for specific use only.
-   */
-  dataSchema?: DataSchema|StringDict|string;
-}
+import { InferenceParameters } from "./client/index.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -112,18 +60,6 @@ export class Client {
   }
 
   /**
-   * Checks the Data Schema.
-   * @param params Input Inference parameters.
-   */
-  validateDataSchema(params: InferenceParameters): void {
-    if (params.dataSchema !== undefined && params.dataSchema !== null){
-      if (!(params.dataSchema instanceof DataSchema)){
-        params.dataSchema = new DataSchema(params.dataSchema);
-      }
-    }
-  }
-
-  /**
    * Send the document to an asynchronous endpoint and return its ID in the queue.
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
@@ -132,15 +68,18 @@ export class Client {
    */
   async enqueueInference(
     inputSource: InputSource,
-    params: InferenceParameters
+    params: InferenceParameters| ConstructorParameters<typeof InferenceParameters>[0]
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new Error("The 'enqueue' function requires an input document.");
     }
-    this.validateDataSchema(params);
+    const inferenceParams = params instanceof InferenceParameters
+      ? params
+      : new InferenceParameters(params);
+
     await inputSource.init();
 
-    return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, params);
+    return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, inferenceParams);
   }
 
   /**
@@ -183,9 +122,14 @@ export class Client {
    */
   async enqueueAndGetInference(
     inputSource: InputSource,
-    params: InferenceParameters
+    params: InferenceParameters| ConstructorParameters<typeof InferenceParameters>[0]
   ): Promise<InferenceResponse> {
-    const validatedAsyncParams = setAsyncParams(params.pollingOptions);
+    const inferenceParams = params instanceof InferenceParameters
+      ? params
+      : new InferenceParameters(params);
+
+    const pollingOptions = inferenceParams.getValidatedPollingOptions();
+
     const enqueueResponse: JobResponse = await this.enqueueInference(inputSource, params);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${enqueueResponse.getRawHttp()}`);
@@ -196,10 +140,14 @@ export class Client {
       `Successfully enqueued document with job id: ${queueId}.`
     );
 
-    await setTimeout(validatedAsyncParams.initialDelaySec * 1000, undefined, validatedAsyncParams.initialTimerOptions);
+    await setTimeout(
+      pollingOptions.initialDelaySec * 1000,
+      undefined,
+      pollingOptions.initialTimerOptions
+    );
     let retryCounter: number = 1;
     let pollResults: JobResponse = await this.getJob(queueId);
-    while (retryCounter < validatedAsyncParams.maxRetries) {
+    while (retryCounter < pollingOptions.maxRetries) {
       if (pollResults.job.status === "Failed") {
         break;
       }
@@ -208,10 +156,14 @@ export class Client {
       }
       logger.debug(
         `Polling server for parsing result with queueId: ${queueId}.
-Attempt no. ${retryCounter} of ${validatedAsyncParams.maxRetries}.
+Attempt no. ${retryCounter} of ${pollingOptions.maxRetries}.
 Job status: ${pollResults.job.status}.`
       );
-      await setTimeout(validatedAsyncParams.delaySec * 1000, undefined, validatedAsyncParams.recurringTimerOptions);
+      await setTimeout(
+        pollingOptions.delaySec * 1000,
+        undefined,
+        pollingOptions.recurringTimerOptions
+      );
       pollResults = await this.getJob(queueId);
       retryCounter++;
     }
@@ -221,7 +173,7 @@ Job status: ${pollResults.job.status}.`
     }
     throw Error(
       "Asynchronous parsing request timed out after " +
-      validatedAsyncParams.delaySec * retryCounter +
+      pollingOptions.delaySec * retryCounter +
       " seconds"
     );
   }
