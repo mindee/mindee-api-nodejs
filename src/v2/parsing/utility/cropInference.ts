@@ -1,0 +1,15 @@
+import { StringDict } from "@/parsing/index.js";
+import { BaseInference } from "@/v2/parsing/baseInference.js";
+import { CropResult } from "@/v2/parsing/utility/cropResult.js";
+
+export class CropInference extends BaseInference {
+  /**
+   * Result of a crop utility inference.
+   */
+  result: CropResult;
+
+  constructor(serverResponse: StringDict) {
+    super(serverResponse);
+    this.result = new CropResult(serverResponse["result"]);
+  }
+}

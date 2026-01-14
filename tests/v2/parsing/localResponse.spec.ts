@@ -45,4 +45,18 @@ describe("MindeeV2 - Load Local Response", () => {
 
     expect(JSON.stringify(response.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
   });
+
+  it("loading an inference works on catalog model", async () => {
+    const jsonPath = path.join(
+      V2_RESOURCE_PATH,
+      "products",
+      "financial_document",
+      "complete.json"
+    );
+    const localResponse = new LocalResponse(jsonPath);
+    const response: InferenceResponse = await localResponse.deserializeResponse(InferenceResponse);
+    expect(response.inference.model.id).to.equal(
+      "12345678-1234-1234-1234-123456789abc"
+    );
+  });
 });

@@ -1,10 +1,10 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
-import { InferenceParameters } from "@/v2/client/index.js";
+import { InferenceParameters, UtilityParameters } from "@/v2/client/index.js";
 import { ErrorResponse, InferenceResponse, JobResponse } from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
-import { MindeeConfigurationError, MindeeDeserializationError } from "@/errors/index.js";
+import { MindeeDeserializationError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
 
@@ -16,25 +16,42 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Sends a file to the inference queue.
+   * Sends a file to the extraction inference queue.
    * @param inputSource Local file loaded as an input.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    * @category V2
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostInferenceEnqueue(inputSource: InputSource, params: InferenceParameters): Promise<JobResponse> {
+  async reqPostInferenceEnqueue(
+    inputSource: InputSource, params: InferenceParameters
+  ): Promise<JobResponse> {
     await inputSource.init();
-    if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
-      throw new MindeeConfigurationError("Model ID must be provided");
-    }
-    const result: BaseHttpResponse = await this.#documentEnqueuePost(inputSource, params);
+    const result: BaseHttpResponse = await this.#inferenceEnqueuePost(inputSource, params);
     if (result.data.error !== undefined) {
       throw new MindeeHttpErrorV2(result.data.error);
     }
     return this.#processResponse(result, JobResponse);
   }
 
+  /**
+   * Sends a file to the utility inference queue.
+   * @param inputSource Local file loaded as an input.
+   * @param params {UtilityParameters} parameters relating to the enqueueing options.
+   * @category V2
+   * @throws Error if the server's response contains one.
+   * @returns a `Promise` containing a job response.
+   */
+  async reqPostUtilityEnqueue(
+    inputSource: InputSource, params: UtilityParameters
+  ): Promise<JobResponse> {
+    await inputSource.init();
+    const result: BaseHttpResponse = await this.#inferenceEnqueuePost(inputSource, params);
+    if (result.data.error !== undefined) {
+      throw new MindeeHttpErrorV2(result.data.error);
+    }
+    return this.#processResponse(result, JobResponse);
+  }
 
   /**
    * Requests the job of a queued document from the API.
@@ -91,7 +108,7 @@ export class MindeeApiV2 {
    * @param inputSource Local or remote file as an input.
    * @param params {InferenceParameters} parameters relating to the enqueueing options.
    */
-  async #documentEnqueuePost(
+  async #inferenceEnqueuePost(
     inputSource: InputSource,
     params: InferenceParameters
   ): Promise<BaseHttpResponse> {

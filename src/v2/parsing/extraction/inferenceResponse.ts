@@ -1,4 +1,4 @@
-import { CommonResponse } from "./commonResponse.js";
+import { CommonResponse } from "../commonResponse.js";
 import { Inference } from "./inference.js";
 import { StringDict } from "@/parsing/stringDict.js";
 

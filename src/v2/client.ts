@@ -1,12 +1,13 @@
 import { setTimeout } from "node:timers/promises";
 import { Dispatcher } from "undici";
 import { InputSource } from "@/input/index.js";
+import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
 import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { InferenceParameters } from "./client/index.js";
+import { InferenceParameters, UtilityParameters } from "./client/index.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -71,15 +72,29 @@ export class Client {
     params: InferenceParameters| ConstructorParameters<typeof InferenceParameters>[0]
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
-      throw new Error("The 'enqueue' function requires an input document.");
+      throw new MindeeError("An input document is required.");
     }
-    const inferenceParams = params instanceof InferenceParameters
+    const paramsInstance = params instanceof InferenceParameters
       ? params
       : new InferenceParameters(params);
 
     await inputSource.init();
+    return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, paramsInstance);
+  }
 
-    return await this.mindeeApi.reqPostInferenceEnqueue(inputSource, inferenceParams);
+  async enqueueUtility(
+    inputSource: InputSource,
+    params: UtilityParameters | ConstructorParameters<typeof UtilityParameters>[0]
+  ): Promise<JobResponse> {
+    if (inputSource === undefined) {
+      throw new MindeeError("An input document is required.");
+    }
+    const paramsInstance = params instanceof UtilityParameters
+      ? params
+      : new UtilityParameters(params);
+
+    await inputSource.init();
+    return await this.mindeeApi.reqPostUtilityEnqueue(inputSource, paramsInstance);
   }
 
   /**
@@ -133,7 +148,7 @@ export class Client {
     const enqueueResponse: JobResponse = await this.enqueueInference(inputSource, params);
     if (enqueueResponse.job.id === undefined || enqueueResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${enqueueResponse.getRawHttp()}`);
-      throw Error("Enqueueing of the document failed.");
+      throw new MindeeError("Enqueueing of the document failed.");
     }
     const queueId: string = enqueueResponse.job.id;
     logger.debug(
@@ -171,7 +186,7 @@ Job status: ${pollResults.job.status}.`
     if (error) {
       throw new MindeeHttpErrorV2(error);
     }
-    throw Error(
+    throw new MindeeError(
       "Asynchronous parsing request timed out after " +
       pollingOptions.delaySec * retryCounter +
       " seconds"

@@ -1,5 +1,6 @@
 import { ValidatedPollingOptions } from "@/v2/client/pollingOptions.js";
 import { PollingOptions } from "@/v2/index.js";
+import { MindeeConfigurationError } from "@/errors/index.js";
 
 /**
  * Constructor parameters for BaseParameters and its subclasses.
@@ -56,6 +57,9 @@ export abstract class BaseParameters {
   closeFile?: boolean;
 
   protected constructor(params: BaseParametersConstructor) {
+    if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
+      throw new MindeeConfigurationError("Model ID must be provided");
+    }
     this.modelId = params.modelId;
     this.alias = params.alias;
     this.webhookIds = params.webhookIds;

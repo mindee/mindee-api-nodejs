@@ -1,0 +1,13 @@
+import { StringDict } from "@/parsing/stringDict.js";
+import { CropItem } from "@/v2/parsing/utility/cropItem.js";
+
+export class CropResult {
+  /**
+   * Fields contained in the inference.
+   */
+  public crop: CropItem[] = [];
+
+  constructor(serverResponse: StringDict) {
+    this.crop = serverResponse["crop"].map((cropItem: StringDict) => new CropItem(cropItem));
+  }
+}

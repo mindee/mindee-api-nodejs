@@ -1,4 +1,4 @@
-import { BaseParameters } from "@/v2/client/baseParameters.js";
+import { BaseParameters, BaseParametersConstructor } from "@/v2/client/baseParameters.js";
 
 /**
  * Parameters accepted by the asynchronous **inference** v2 endpoint.
@@ -17,4 +17,8 @@ import { BaseParameters } from "@/v2/client/baseParameters.js";
  *   }
  * };
  */
-export class UtilityParameters extends BaseParameters { }
+export class UtilityParameters extends BaseParameters {
+  constructor(params: BaseParametersConstructor & {}) {
+    super({ ...params });
+  }
+}
