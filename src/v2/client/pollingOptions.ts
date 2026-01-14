@@ -1,5 +1,5 @@
 /**
- * Parameters for the internal polling loop in {@link ClientV2.enqueueAndGetInference | enqueueAndGetInference()}.
+ * Parameters for the internal polling loop in {@link v2.Client.enqueueAndGetInference | enqueueAndGetInference()}.
  *
  * Default behavior:
  * - `initialDelaySec` = 2s
@@ -24,7 +24,6 @@
  *
  * const inference = await client.enqueueAndGetInference(inputDoc, params);
  */
-
 export interface PollingOptions {
   /** Number of seconds to wait *before the first poll*. */
   initialDelaySec?: number;
@@ -48,42 +47,4 @@ export interface ValidatedPollingOptions extends PollingOptions {
   initialDelaySec: number;
   delaySec: number;
   maxRetries: number;
-}
-
-/**
- * Checks the values for asynchronous parsing. Returns their corrected value if they are undefined.
- * @param asyncParams parameters related to asynchronous parsing
- * @returns A valid `AsyncOptions`.
- */
-export function setAsyncParams(asyncParams: PollingOptions | undefined = undefined): ValidatedPollingOptions {
-  const minDelaySec = 1;
-  const minInitialDelay = 1;
-  const minRetries = 2;
-  let newAsyncParams: PollingOptions;
-  if (asyncParams === undefined) {
-    newAsyncParams = {
-      delaySec: 1.5,
-      initialDelaySec: 2,
-      maxRetries: 80
-    };
-  } else {
-    newAsyncParams = { ...asyncParams };
-    if (
-      !newAsyncParams.delaySec ||
-      !newAsyncParams.initialDelaySec ||
-      !newAsyncParams.maxRetries
-    ) {
-      throw Error("Invalid polling options.");
-    }
-    if (newAsyncParams.delaySec < minDelaySec) {
-      throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} second(s).`);
-    }
-    if (newAsyncParams.initialDelaySec < minInitialDelay) {
-      throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} second(s).`);
-    }
-    if (newAsyncParams.maxRetries < minRetries) {
-      throw Error(`Cannot set retry to less than ${minRetries}.`);
-    }
-  }
-  return newAsyncParams as ValidatedPollingOptions;
 }
