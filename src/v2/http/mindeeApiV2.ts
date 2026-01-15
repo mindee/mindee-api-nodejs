@@ -1,7 +1,7 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
 import { InferenceParameters, UtilityParameters } from "@/v2/client/index.js";
-import { ErrorResponse, InferenceResponse, JobResponse } from "@/v2/parsing/index.js";
+import { BaseResponse, ErrorResponse, ResponseConstructor, JobResponse } from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
 import { MindeeDeserializationError } from "@/errors/index.js";
@@ -46,7 +46,7 @@ export class MindeeApiV2 {
     inputSource: InputSource, params: UtilityParameters
   ): Promise<JobResponse> {
     await inputSource.init();
-    const result: BaseHttpResponse = await this.#inferenceEnqueuePost(inputSource, params);
+    const result: BaseHttpResponse = await this.#utilityEnqueuePost(inputSource, "crop", params);
     if (result.data.error !== undefined) {
       throw new MindeeHttpErrorV2(result.data.error);
     }
@@ -60,9 +60,12 @@ export class MindeeApiV2 {
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async reqGetInference(inferenceId: string): Promise<InferenceResponse> {
+  async reqGetInference<T extends BaseResponse>(
+    responseType: ResponseConstructor<T>,
+    inferenceId: string,
+  ): Promise<T> {
     const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, "inferences");
-    return this.#processResponse(queueResponse, InferenceResponse);
+    return this.#processResponse(queueResponse, responseType);
   }
 
   /**
@@ -77,8 +80,10 @@ export class MindeeApiV2 {
     return this.#processResponse(queueResponse, JobResponse);
   }
 
-  #processResponse<T extends JobResponse | InferenceResponse>
-  (result: BaseHttpResponse, responseType: new (data: { [key: string]: any; }) => T): T {
+  #processResponse<T extends BaseResponse>(
+    result: BaseHttpResponse,
+    responseType: ResponseConstructor<T>,
+  ): T {
     if (result.messageObj?.statusCode && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)) {
       if (result.data?.status !== null) {
         throw new MindeeHttpErrorV2(new ErrorResponse(result.data));
@@ -101,6 +106,42 @@ export class MindeeApiV2 {
       throw new MindeeDeserializationError("Couldn't deserialize response object.");
     }
   }
+
+  /**
+   * Sends a document to the inference queue.
+   *
+   * @param inputSource Local or remote file as an input.
+   * @param slug Slug of the utility to enqueue.
+   * @param params {InferenceParameters} parameters relating to the enqueueing options.
+   */
+  async #utilityEnqueuePost(
+    inputSource: InputSource,
+    slug: string,
+    params: UtilityParameters
+  ): Promise<BaseHttpResponse> {
+    const form = new FormData();
+
+    form.set("model_id", params.modelId);
+    if (params.webhookIds && params.webhookIds.length > 0) {
+      form.set("webhook_ids", params.webhookIds.join(","));
+    }
+    if (inputSource instanceof LocalInputSource) {
+      form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
+    } else {
+      form.set("url", (inputSource as UrlInput).url);
+    }
+    const path = `/v2/utilities/${slug}/enqueue`;
+    const options = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: path,
+      body: form,
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
+  }
+
 
   /**
    * Sends a document to the inference queue.

@@ -3,7 +3,7 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { RawText } from "../rawText.js";
 import { RagMetadata } from "../ragMetadata.js";
 
-export class InferenceResult {
+export class ExtractionResult {
   /**
    * Fields contained in the inference.
    */

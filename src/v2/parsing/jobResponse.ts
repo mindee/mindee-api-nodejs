@@ -1,8 +1,8 @@
-import { CommonResponse } from "./commonResponse.js";
+import { BaseResponse } from "./baseResponse.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Job } from "./job.js";
 
-export class JobResponse extends CommonResponse {
+export class JobResponse extends BaseResponse {
   /**
    * Job for the polling.
    */

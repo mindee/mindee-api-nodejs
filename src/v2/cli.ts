@@ -2,7 +2,7 @@ import { Command, OptionValues } from "commander";
 import { Client } from "./client.js";
 import { PathInput } from "../input/index.js";
 import * as console from "console";
-import { Inference } from "@/v2/parsing/index.js";
+import { ExtractionInference } from "@/v2/parsing/index.js";
 
 const program = new Command();
 
@@ -39,7 +39,7 @@ async function callEnqueueAndGetInference(
 }
 
 function printResponse(
-  document: Inference,
+  document: ExtractionInference,
 ): void {
   if (document) {
     console.log(`\n${document}`);
@@ -55,19 +55,23 @@ function addMainOptions(prog: Command) {
     "-m, --model <model_id>",
     "Model ID (required)"
   );
-  prog.option("-k, --api-key <api_key>", "API key for document endpoint");
   prog.argument("<input_path>", "full path to the file");
 }
 
 export function cli() {
   program.name("mindee")
-    .description("Command line interface for Mindee products.")
-    .option("-d, --debug", "high verbosity mode");
+    .description("Command line interface for Mindee V2 products.")
+    .option("-d, --debug", "high verbosity mode")
+    .option("-k, --api-key <api_key>", "your Mindee API key");
 
-  const inferenceCmd: Command = program.command("parse")
-    .description("Send a file and retrieve the inference results.");
+  const inferenceCmd: Command = program.command("extract")
+    .description("Send a file and extract results.");
+
+  const cropCmd: Command = program.command("crop")
+    .description("Send a file and crop it.");
 
   addMainOptions(inferenceCmd);
+  addMainOptions(cropCmd);
 
   inferenceCmd.action(function (
     inputPath: string,

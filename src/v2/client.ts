@@ -4,10 +4,18 @@ import { InputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
-import { ErrorResponse, InferenceResponse, JobResponse } from "./parsing/index.js";
+import {
+  BaseResponse,
+  ErrorResponse,
+  ExtractionResponse,
+  JobResponse,
+  ResponseConstructor,
+} from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { InferenceParameters, UtilityParameters } from "./client/index.js";
+import { InferenceParameters, UtilityParameters, ValidatedPollingOptions } from "./client/index.js";
+import { CropResponse } from "@/v2/parsing/utility/cropResponse.js";
+import { BaseInferenceResponse } from "@/v2/parsing/baseInferenceResponse.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -106,8 +114,28 @@ export class Client {
    * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
    * parsing is complete.
    */
-  async getInference(inferenceId: string): Promise<InferenceResponse> {
-    return await this.mindeeApi.reqGetInference(inferenceId);
+  async getExtraction(inferenceId: string): Promise<ExtractionResponse> {
+    return await this.mindeeApi.reqGetInference(ExtractionResponse, inferenceId);
+  }
+
+  /**
+   * Retrieves an inference.
+   *
+   * @param inferenceId id of the queue to poll.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Asynchronous
+   * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
+   * parsing is complete.
+   */
+  async getUtility(inferenceId: string): Promise<CropResponse> {
+    return await this.mindeeApi.reqGetInference(CropResponse, inferenceId);
+  }
+
+  async getInference<T extends BaseInferenceResponse>(
+    responseType: ResponseConstructor<T>,
+    inferenceId: string
+  ): Promise<T> {
+    return await this.mindeeApi.reqGetInference(responseType, inferenceId);
   }
 
   /**
@@ -137,8 +165,8 @@ export class Client {
    */
   async enqueueAndGetInference(
     inputSource: InputSource,
-    params: InferenceParameters| ConstructorParameters<typeof InferenceParameters>[0]
-  ): Promise<InferenceResponse> {
+    params: InferenceParameters | ConstructorParameters<typeof InferenceParameters>[0]
+  ): Promise<ExtractionResponse> {
     const inferenceParams = params instanceof InferenceParameters
       ? params
       : new InferenceParameters(params);
@@ -154,7 +182,19 @@ export class Client {
     logger.debug(
       `Successfully enqueued document with job id: ${queueId}.`
     );
+    return await this.pollForInference(ExtractionResponse, pollingOptions, queueId);
+  }
 
+  /**
+   * Send a document to an endpoint and poll the server until the result is sent or
+   * until the maximum number of tries is reached.
+   * @protected
+   */
+  protected async pollForInference<T extends BaseInferenceResponse>(
+    responseType: ResponseConstructor<T>,
+    pollingOptions: ValidatedPollingOptions,
+    queueId: string,
+  ): Promise<T> {
     await setTimeout(
       pollingOptions.initialDelaySec * 1000,
       undefined,
@@ -167,7 +207,7 @@ export class Client {
         break;
       }
       if (pollResults.job.status === "Processed") {
-        return this.getInference(pollResults.job.id);
+        return this.getInference(responseType, pollResults.job.id);
       }
       logger.debug(
         `Polling server for parsing result with queueId: ${queueId}.

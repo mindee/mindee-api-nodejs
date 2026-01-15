@@ -62,7 +62,7 @@ export async function sendRequestAndReadResponse(
   }
   try {
     const parsedResponse = JSON.parse(responseBody);
-    logger.debug("JSON parsed successfully, returning object.");
+    logger.debug("JSON parsed successfully, returning plain object.");
     return {
       messageObj: response,
       data: parsedResponse,

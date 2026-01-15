@@ -12,6 +12,7 @@
     "clean": "rm -rf ./dist ./docs/_build",
     "test": "mocha \"tests/**/*.spec.ts\"",
     "test-integration": "mocha \"tests/**/*.integration.ts\"",
+    "test-v2": "mocha \"tests/v2/**/*.spec.ts\"",
     "lint": "tsc --noEmit && eslint './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
     "lint-fix": "eslint './src/**/*.ts' --fix",
     "docs": "typedoc --out docs/_build ./src/index.ts",

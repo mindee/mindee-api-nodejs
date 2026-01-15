@@ -1,8 +1,8 @@
 import { StringDict } from "@/parsing/stringDict.js";
-import { CommonResponse } from "@/v2/parsing/commonResponse.js";
 import { CropInference } from "./cropInference.js";
+import { BaseInferenceResponse } from "@/v2/parsing/baseInferenceResponse.js";
 
-export class CropResponse extends CommonResponse {
+export class CropResponse extends BaseInferenceResponse {
   /**
    * The inference result for a crop utility request.
    */

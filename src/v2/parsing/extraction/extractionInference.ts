@@ -1,22 +1,22 @@
 import { StringDict } from "@/parsing/stringDict.js";
-import { InferenceResult } from "./inferenceResult.js";
-import { InferenceActiveOptions } from "./inferenceActiveOptions.js";
+import { ExtractionResult } from "./extractionResult.js";
+import { ExtractionActiveOptions } from "./extractionActiveOptions.js";
 import { BaseInference } from "@/v2/parsing/baseInference.js";
 
-export class Inference extends BaseInference {
+export class ExtractionInference extends BaseInference {
   /**
    * Result of the inference.
    */
-  public result: InferenceResult;
+  public result: ExtractionResult;
   /**
    * Active options for the inference.
    */
-  public activeOptions: InferenceActiveOptions;
+  public activeOptions: ExtractionActiveOptions;
 
   constructor(serverResponse: StringDict) {
     super(serverResponse);
-    this.result = new InferenceResult(serverResponse["result"]);
-    this.activeOptions = new InferenceActiveOptions(serverResponse["active_options"]);
+    this.result = new ExtractionResult(serverResponse["result"]);
+    this.activeOptions = new ExtractionActiveOptions(serverResponse["active_options"]);
   }
 
   toString(): string {
