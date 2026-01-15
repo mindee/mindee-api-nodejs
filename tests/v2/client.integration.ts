@@ -80,7 +80,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       webhookIds: [],
       alias: "ts_integration_empty_multiple"
     };
-    const response = await client.enqueueAndGetInference(source, params);
+    const response = await client.enqueueAndGetExtraction(source, params);
 
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(Inference);
@@ -108,7 +108,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       alias: "ts_integration_binary_filled_single"
     };
 
-    const response = await client.enqueueAndGetInference(source, params);
+    const response = await client.enqueueAndGetExtraction(source, params);
 
     expect(response.inference).to.be.instanceOf(Inference);
     const inference: Inference = response.inference;
@@ -146,7 +146,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       alias: "ts_integration_base64_filled_single"
     });
 
-    const response = await client.enqueueAndGetInference(source, params);
+    const response = await client.enqueueAndGetExtraction(source, params);
 
     expect(response.inference).to.be.instanceOf(Inference);
     const inference: Inference = response.inference;
@@ -168,7 +168,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const badParams = { modelId: "00000000-0000-0000-0000-000000000000" };
 
     try {
-      await client.enqueueInference(source, badParams);
+      await client.enqueueExtraction(source, badParams);
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);
@@ -196,7 +196,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       webhookIds: [],
       alias: "ts_integration_url_source"
     });
-    const response: InferenceResponse = await client.enqueueAndGetInference(source, params);
+    const response: InferenceResponse = await client.enqueueAndGetExtraction(source, params);
 
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(Inference);
@@ -214,7 +214,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       dataSchema: dataSchemaReplace,
       alias: "ts_integration_data_schema_replace"
     });
-    const response = await client.enqueueAndGetInference(source, params);
+    const response = await client.enqueueAndGetExtraction(source, params);
 
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(Inference);

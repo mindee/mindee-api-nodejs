@@ -12,5 +12,10 @@ export { ExtractionResponse } from "./extraction/extractionResponse.js";
 export { ExtractionResult } from "./extraction/extractionResult.js";
 export { RawText } from "./rawText.js";
 export { RagMetadata } from "./ragMetadata.js";
+export { ClassifyResponse,
+  CropResponse,
+  OcrResponse,
+  SplitResponse,
+} from "./utility/index.js";
 export type { ResponseConstructor, BaseResponse } from "./baseResponse.js";
 export type { BaseInferenceResponse } from "./baseInferenceResponse.js";

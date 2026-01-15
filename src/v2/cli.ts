@@ -2,7 +2,7 @@ import { Command, OptionValues } from "commander";
 import { Client } from "./client.js";
 import { PathInput } from "../input/index.js";
 import * as console from "console";
-import { ExtractionInference } from "@/v2/parsing/index.js";
+import { BaseInference } from "@/v2/parsing/baseInference.js";
 
 const program = new Command();
 
@@ -18,13 +18,33 @@ function initClient(options: OptionValues): Client {
   });
 }
 
-async function callEnqueueAndGetInference(
+async function enqueueAndGetInference(
   inputPath: string,
-  options: any
+  options: OptionValues
 ): Promise<void> {
   const mindeeClient = initClient(options);
   const inputSource = new PathInput({ inputPath: inputPath });
-  const response = await mindeeClient.enqueueAndGetInference(inputSource, {
+  const response = await mindeeClient.enqueueAndGetExtraction(inputSource, {
+    modelId: options.model,
+    pollingOptions: {
+      initialDelaySec: 2,
+      delaySec: 1.5,
+      maxRetries: 80,
+    }
+  });
+  if (!response.inference) {
+    throw Error("Inference could not be retrieved");
+  }
+  printResponse(response.inference);
+}
+
+async function enqueueAndGetUtility(
+  inputPath: string,
+  options: OptionValues
+): Promise<void> {
+  const mindeeClient = initClient(options);
+  const inputSource = new PathInput({ inputPath: inputPath });
+  const response = await mindeeClient.enqueueAndGetUtility(inputSource, {
     modelId: options.model,
     pollingOptions: {
       initialDelaySec: 2,
@@ -39,7 +59,7 @@ async function callEnqueueAndGetInference(
 }
 
 function printResponse(
-  document: ExtractionInference,
+  document: BaseInference,
 ): void {
   if (document) {
     console.log(`\n${document}`);
@@ -66,18 +86,39 @@ export function cli() {
 
   const inferenceCmd: Command = program.command("extract")
     .description("Send a file and extract results.");
+  addMainOptions(inferenceCmd);
 
   const cropCmd: Command = program.command("crop")
     .description("Send a file and crop it.");
-
-  addMainOptions(inferenceCmd);
   addMainOptions(cropCmd);
+
+  const splitCmd: Command = program.command("split")
+    .description("Send a file and split it.");
+  addMainOptions(splitCmd);
+
+  const ocrCmd: Command = program.command("ocr")
+    .description("Send a file and read its text content.");
+  addMainOptions(ocrCmd);
+
+  const classifyCmd: Command = program.command("classify")
+    .description("Send a file and classify its content.");
+  addMainOptions(classifyCmd);
+
 
   inferenceCmd.action(function (
     inputPath: string,
     options: OptionValues,
   ) {
-    return callEnqueueAndGetInference(inputPath, options);
+    const allOptions = { ...program.opts(), ...options };
+    return enqueueAndGetInference(inputPath, allOptions);
+  });
+
+  cropCmd.action(function (
+    inputPath: string,
+    options: OptionValues,
+  ) {
+    const allOptions = { ...program.opts(), ...options };
+    return enqueueAndGetUtility(inputPath, allOptions);
   });
 
   program.parse(process.argv);

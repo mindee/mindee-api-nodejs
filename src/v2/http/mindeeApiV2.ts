@@ -1,7 +1,15 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
 import { InferenceParameters, UtilityParameters } from "@/v2/client/index.js";
-import { BaseResponse, ErrorResponse, ResponseConstructor, JobResponse } from "@/v2/parsing/index.js";
+import {
+  BaseResponse,
+  ErrorResponse,
+  ResponseConstructor,
+  JobResponse,
+  CropResponse,
+  OcrResponse,
+  SplitResponse, ExtractionResponse, BaseInferenceResponse,
+} from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
 import { MindeeDeserializationError } from "@/errors/index.js";
@@ -56,15 +64,35 @@ export class MindeeApiV2 {
   /**
    * Requests the job of a queued document from the API.
    * Throws an error if the server's response contains one.
+   * @param responseType
    * @param inferenceId The document's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async reqGetInference<T extends BaseResponse>(
+  async reqGetInference<T extends BaseInferenceResponse>(
     responseType: ResponseConstructor<T>,
     inferenceId: string,
   ): Promise<T> {
-    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, "inferences");
+    let slug: string;
+    // this is disgusting, look into a more elegant way of linking the response type to the slug
+    switch (responseType as any) {
+    case CropResponse:
+      slug = "utilities/crop";
+      break;
+    case OcrResponse:
+      slug = "utilities/ocr";
+      break;
+    case SplitResponse:
+      slug = "utilities/split";
+      break;
+    case ExtractionResponse:
+      slug = "inferences";
+      break;
+    default:
+      slug = "inferences";
+      break;
+    }
+    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, slug);
     return this.#processResponse(queueResponse, responseType);
   }
 

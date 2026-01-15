@@ -12,4 +12,14 @@ export class CropInference extends BaseInference {
     super(serverResponse);
     this.result = new CropResult(serverResponse["result"]);
   }
+
+  toString(): string {
+    return (
+      "Inference\n" +
+      "#########\n" +
+      this.model.toString() + "\n" +
+      this.file.toString() + "\n" +
+      this.result.toString() + "\n"
+    );
+  }
 }

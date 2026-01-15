@@ -26,7 +26,7 @@ export class ExtractionInference extends BaseInference {
       this.model.toString() + "\n" +
       this.file.toString() + "\n" +
       this.activeOptions.toString() + "\n" +
-      this.result + "\n"
+      this.result.toString() + "\n"
     );
   }
 }

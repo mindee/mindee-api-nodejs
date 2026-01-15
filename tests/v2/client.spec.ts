@@ -73,7 +73,7 @@ describe("MindeeV2 - ClientV2", () => {
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueueInference(inputDoc, { modelId: "dummy-model", textContext: "hello" }),
+        client.enqueueExtraction(inputDoc, { modelId: "dummy-model", textContext: "hello" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);
@@ -100,7 +100,7 @@ describe("MindeeV2 - ClientV2", () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
       await assert.rejects(
-        client.enqueueAndGetInference(
+        client.enqueueAndGetExtraction(
           inputDoc,
           { modelId: "dummy-model", rag: false }
         ),
@@ -122,7 +122,7 @@ describe("MindeeV2 - ClientV2", () => {
         ),
       });
       await assert.rejects(
-        client.enqueueInference(input, { modelId: "dummy-model" }),
+        client.enqueueExtraction(input, { modelId: "dummy-model" }),
         (error: any) => {
           expect(error).to.be.instanceOf(MindeeHttpErrorV2);
           expect(error.status).to.equal(400);

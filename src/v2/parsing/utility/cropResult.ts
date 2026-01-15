@@ -10,4 +10,8 @@ export class CropResult {
   constructor(serverResponse: StringDict) {
     this.crop = serverResponse["crop"].map((cropItem: StringDict) => new CropItem(cropItem));
   }
+
+  toString(): string {
+    return `Crop\n====\n${this.crop}`;
+  }
 }
