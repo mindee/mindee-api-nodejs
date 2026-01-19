@@ -32,10 +32,16 @@ export class StreamInput extends LocalInputSource {
 
   async stream2buffer(stream: Readable): Promise<Buffer> {
     return new Promise<Buffer>((resolve, reject) => {
-      const _buf = Array<any>();
+      if (stream.closed || stream.destroyed) {
+        return reject(new Error("Stream is already closed"));
+      }
+
+      const _buf: Buffer[] = [];
+      stream.pause();
       stream.on("data", (chunk) => _buf.push(chunk));
       stream.on("end", () => resolve(Buffer.concat(_buf)));
-      stream.on("error", (err) => reject(`Error converting stream - ${err}`));
+      stream.on("error", (err) => reject(new Error(`Error converting stream - ${err}`)));
+      stream.resume();
     });
   }
 }
