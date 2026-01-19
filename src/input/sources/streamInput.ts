@@ -2,6 +2,7 @@ import { Readable } from "stream";
 import { LocalInputSource } from "./localInputSource";
 import { INPUT_TYPE_STREAM } from "./inputSource";
 import { logger } from "../../logger";
+import { MindeeError } from "../../errors";
 
 interface StreamInputProps {
   inputStream: Readable;
@@ -33,7 +34,7 @@ export class StreamInput extends LocalInputSource {
   async stream2buffer(stream: Readable): Promise<Buffer> {
     return new Promise<Buffer>((resolve, reject) => {
       if (stream.closed || stream.destroyed) {
-        return reject(new Error("Stream is already closed"));
+        return reject(new MindeeError("Stream is already closed"));
       }
 
       const _buf: Buffer[] = [];

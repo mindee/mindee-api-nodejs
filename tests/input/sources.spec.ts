@@ -174,7 +174,7 @@ describe("Test different types of input", () => {
       await streamInput.init();
       expect.fail("Should have thrown an error");
     } catch (e: any) {
-      expect(e.toString()).to.equal("Error: Stream is already closed");
+      expect(e.toString()).to.equal("MindeeError: Stream is already closed");
     }
   });
 
