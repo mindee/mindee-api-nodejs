@@ -2,6 +2,7 @@ import { BytesInput, UrlInput } from "../../src";
 import { LocalInputSource } from "../../src/input";
 import { expect } from "chai";
 import nock from "nock";
+import { MindeeInputError } from "../../src/errors/mindeeError";
 
 describe("Test URL input source", () => {
   describe("initializing", () => {
@@ -62,7 +63,7 @@ describe("Test URL input source", () => {
 
         nock("https://example.com")
           .get("/original.pdf")
-          .reply(302, "", { location: redirectUrl }); // Not sure about that one.
+          .reply(302, "", { location: redirectUrl });
 
         nock("https://example.com")
           .get("/redirected.pdf")
@@ -127,6 +128,94 @@ describe("Test URL input source", () => {
           expect((error as Error).message).to.equal(
             "Invalid file type, must be one of .pdf, .heic, .jpg, .jpeg, .png, .tif, .tiff, .webp."
           );
+        }
+      });
+
+      it("should handle AbortSignal via constructor", async () => {
+        const url = "https://example.com/file.pdf";
+        const fileContent = Buffer.from("dummy PDF content");
+        const controller = new AbortController();
+
+        nock("https://example.com")
+          .get("/file.pdf")
+          .reply(200, fileContent);
+
+        const urlInput = new UrlInput({ url, signal: controller.signal });
+
+        controller.abort();
+
+        try {
+          await urlInput.asLocalInputSource();
+          expect.fail("Expected an error to be thrown");
+        } catch (error) {
+          expect(error).to.be.instanceOf(Error);
+          expect((error as Error).message).to.equal("Operation aborted");
+        }
+      });
+
+      it("should handle AbortSignal via asLocalInputSource options", async () => {
+        const url = "https://example.com/file.pdf";
+        const fileContent = Buffer.from("dummy PDF content");
+        const controller = new AbortController();
+
+        nock("https://example.com")
+          .get("/file.pdf")
+          .reply(200, fileContent);
+
+        const urlInput = new UrlInput({ url });
+
+        controller.abort();
+
+        try {
+          await urlInput.asLocalInputSource({ signal: controller.signal });
+          expect.fail("Expected an error to be thrown");
+        } catch (e: any) {
+          expect(e).to.be.instanceOf(MindeeInputError);
+          expect((e as Error).message).to.equal("Operation aborted");
+        }
+      });
+
+      it("should prefer asLocalInputSource signal over constructor signal", async () => {
+        const url = "https://example.com/file.pdf";
+        const fileContent = Buffer.from("dummy PDF content");
+        const constructorController = new AbortController();
+        const optionsController = new AbortController();
+
+        nock("https://example.com")
+          .get("/file.pdf")
+          .reply(200, fileContent);
+
+        const urlInput = new UrlInput({ url, signal: constructorController.signal });
+
+        optionsController.abort();
+
+        try {
+          await urlInput.asLocalInputSource({ signal: optionsController.signal });
+          expect.fail("Expected an error to be thrown");
+        } catch (e: any) {
+          expect(e).to.be.instanceOf(MindeeInputError);
+          expect((e as Error).message).to.equal("Operation aborted");
+        }
+      });
+
+      it("should handle AbortSignal during download (slow response)", async () => {
+        const url = "https://example.com/largefile.pdf";
+        const controller = new AbortController();
+        nock("https://example.com")
+          .get("/largefile.pdf")
+          .delayBody(100)
+          .reply(200, Buffer.alloc(1000000));
+
+        const urlInput = new UrlInput({ url, signal: controller.signal });
+
+        setTimeout(() => controller.abort(), 10);
+
+        try {
+          await urlInput.asLocalInputSource();
+          expect.fail("Expected an error to be thrown");
+        } catch (error) {
+          expect(error).to.be.instanceOf(Error);
+          expect((error as Error).message).to.equal("Operation aborted");
         }
       });
     });

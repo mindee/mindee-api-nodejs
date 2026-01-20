@@ -208,6 +208,27 @@ describe("Test different types of input", () => {
     }
   });
 
+  it("should handle AbortSignal on streams via init()", async () => {
+    const filePath = path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg");
+    const stream = fs.createReadStream(filePath);
+    const controller = new AbortController();
+
+    const streamInput = new StreamInput({
+      inputStream: stream,
+      filename: "aborted.jpg"
+    });
+
+    controller.abort();
+
+    try {
+      await streamInput.init(controller.signal);
+      expect.fail("Should have thrown an error");
+    } catch (e: any) {
+      expect(e).to.be.instanceOf(MindeeInputError);
+      expect(e.message).to.equal("Operation aborted");
+    }
+  });
+
   it("should accept raw bytes", async () => {
     const filePath = path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg");
     const inputBytes = await fs.promises.readFile(filePath);
