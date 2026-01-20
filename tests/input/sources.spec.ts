@@ -2,13 +2,13 @@ import {
   Base64Input,
   BufferInput,
   BytesInput,
-  PathInput,
-  StreamInput,
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BUFFER,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH,
   INPUT_TYPE_STREAM,
+  PathInput,
+  StreamInput,
 } from "../../src/input";
 import * as fs from "fs";
 import * as path from "path";
@@ -20,6 +20,7 @@ import { compressPdf } from "../../src/pdf";
 import { extractTextFromPdf } from "../../src/pdf/pdfUtils";
 import { logger } from "../../src/logger";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index";
+import { Readable } from "stream";
 
 describe("Test different types of input", () => {
   const outputPath = path.join(RESOURCE_PATH, "output");
@@ -134,6 +135,73 @@ describe("Test different types of input", () => {
     expect(await inputSource.getPageCount()).to.equals(1);
     const expectedResult = await fs.promises.readFile(filePath);
     expect(inputSource.fileObject.toString()).to.eqls(expectedResult.toString());
+  });
+
+  it("should handle aborted streams", async () => {
+    const brokenStream = new Readable({
+      read() {
+        process.nextTick(() => {
+          this.destroy(new Error("aborted"));
+        });
+      }
+    });
+
+    const streamInput = new StreamInput({
+      inputStream: brokenStream,
+      filename: "broken.jpg"
+    });
+
+    try {
+      await streamInput.init();
+      expect.fail("Should have thrown an error");
+    } catch (e: any) {
+      expect(e.toString()).to.eq("Error: Error converting stream - Error: aborted");
+    }
+  });
+
+  it("should handle already-closed streams", async () => {
+    const readable = fs.createReadStream(path.join(RESOURCE_PATH, "file_types/receipt.jpg"));
+
+    readable.destroy();
+    await new Promise(resolve => readable.on("close", resolve));
+
+    const streamInput = new StreamInput({
+      inputStream: readable,
+      filename: "closed.jpg"
+    });
+
+    try {
+      await streamInput.init();
+      expect.fail("Should have thrown an error");
+    } catch (e: any) {
+      expect(e.toString()).to.equal("MindeeError: Stream is already closed");
+    }
+  });
+
+  it("should handle streams that error during reading", async () => {
+    let pushed = false;
+    const unstableStream = new Readable({
+      read() {
+        if (!pushed) {
+          this.push("fake data");
+          pushed = true;
+          process.nextTick(() => {
+            this.destroy(new Error("aborted"));
+          });
+        }
+      }
+    });
+
+    const streamInput = new StreamInput({
+      inputStream: unstableStream,
+      filename: "unstable.jpg"
+    });
+
+    try {
+      await streamInput.init();
+    } catch (e: any) {
+      expect(e.toString()).to.eq("Error: Error converting stream - Error: aborted");
+    }
   });
 
   it("should accept raw bytes", async () => {
