@@ -2,7 +2,7 @@ import { Readable } from "stream";
 import { LocalInputSource } from "./localInputSource";
 import { INPUT_TYPE_STREAM } from "./inputSource";
 import { logger } from "../../logger";
-import { MindeeError } from "../../errors";
+import { MindeeInputError } from "../../errors/mindeeError";
 
 interface StreamInputProps {
   inputStream: Readable;
@@ -21,27 +21,50 @@ export class StreamInput extends LocalInputSource {
     this.inputStream = inputStream;
   }
 
-  async init() {
+  async init(signal? : AbortSignal) {
     if (this.initialized) {
       return;
     }
     logger.debug("Loading from stream");
-    this.fileObject = await this.stream2buffer(this.inputStream);
+    this.fileObject = await this.stream2buffer(this.inputStream, signal);
     this.mimeType = await this.checkMimetype();
     this.initialized = true;
   }
 
-  async stream2buffer(stream: Readable): Promise<Buffer> {
+  async stream2buffer(stream: Readable, signal?: AbortSignal): Promise<Buffer> {
     return new Promise<Buffer>((resolve, reject) => {
       if (stream.closed || stream.destroyed) {
-        return reject(new MindeeError("Stream is already closed"));
+        return reject(new MindeeInputError("Stream is already closed"));
       }
+      if (signal?.aborted) {
+        return reject(new MindeeInputError("Operation aborted"));
+      }
+
+      const onAbort = () => {
+        stream.destroy();
+        reject(new MindeeInputError("Operation aborted"));
+      };
+
+      if (signal) {
+        signal.addEventListener("abort", onAbort, { once: true });
+      }
+
+
+      const cleanup = () => {
+        signal?.removeEventListener("abort", onAbort);
+      };
 
       const _buf: Buffer[] = [];
       stream.pause();
       stream.on("data", (chunk) => _buf.push(chunk));
-      stream.on("end", () => resolve(Buffer.concat(_buf)));
-      stream.on("error", (err) => reject(new Error(`Error converting stream - ${err}`)));
+      stream.on("end", () => {
+        cleanup();
+        resolve(Buffer.concat(_buf));
+      });
+      stream.on("error", (err) => {
+        cleanup();
+        reject(new MindeeInputError(`Error converting stream - ${err}`));
+      });
       stream.resume();
     });
   }
