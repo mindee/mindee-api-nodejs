@@ -21,6 +21,7 @@ import { extractTextFromPdf } from "../../src/pdf/pdfUtils";
 import { logger } from "../../src/logger";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index";
 import { Readable } from "stream";
+import { MindeeInputError } from "../../src/errors/mindeeError";
 
 describe("Test different types of input", () => {
   const outputPath = path.join(RESOURCE_PATH, "output");
@@ -155,7 +156,8 @@ describe("Test different types of input", () => {
       await streamInput.init();
       expect.fail("Should have thrown an error");
     } catch (e: any) {
-      expect(e.toString()).to.eq("Error: Error converting stream - Error: aborted");
+      expect(e).to.be.instanceOf(MindeeInputError);
+      expect(e.message).to.equal("Error converting stream - Error: aborted");
     }
   });
 
@@ -174,7 +176,8 @@ describe("Test different types of input", () => {
       await streamInput.init();
       expect.fail("Should have thrown an error");
     } catch (e: any) {
-      expect(e.toString()).to.equal("MindeeError: Stream is already closed");
+      expect(e).to.be.instanceOf(MindeeInputError);
+      expect(e.message).to.equal("Stream is already closed");
     }
   });
 
@@ -200,7 +203,8 @@ describe("Test different types of input", () => {
     try {
       await streamInput.init();
     } catch (e: any) {
-      expect(e.toString()).to.eq("Error: Error converting stream - Error: aborted");
+      expect(e).to.be.instanceOf(MindeeInputError);
+      expect(e.message).to.equal("Error converting stream - Error: aborted");
     }
   });
 

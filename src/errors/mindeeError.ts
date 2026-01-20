@@ -11,6 +11,16 @@ export class MindeeError extends Error {
 }
 
 /**
+ * Custom Mindee error relating to improper inputs.
+ */
+export class MindeeInputError extends MindeeError {
+  constructor(message: string) {
+    super(message);
+    this.name = "MindeeInputError";
+  }
+}
+
+/**
  * Custom Mindee error relating to improper mimetypes in inputs.
  */
 export class MindeeMimeTypeError extends MindeeError {

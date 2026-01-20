@@ -14,6 +14,7 @@ import {
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH, INPUT_TYPE_BUFFER
 } from "./inputSource";
+import { MindeeInputError } from "../../errors/mindeeError";
 
 export const MIMETYPES = new Map<string, string>([
   [".pdf", "application/pdf"],
@@ -49,7 +50,7 @@ export abstract class LocalInputSource extends InputSource {
     if (!ALLOWED_INPUT_TYPES.includes(inputType)) {
       const allowed = Array.from(ALLOWED_INPUT_TYPES.keys()).join(", ");
       errorHandler.throw(
-        new Error(`Invalid input type, must be one of ${allowed}.`)
+        new MindeeInputError(`Invalid input type, must be one of ${allowed}.`)
       );
     }
     this.inputType = inputType;
@@ -58,7 +59,7 @@ export abstract class LocalInputSource extends InputSource {
 
   protected async checkMimetype(): Promise<string> {
     if (!(this.fileObject instanceof Buffer)) {
-      throw new Error(
+      throw new MindeeInputError(
         `MIME type cannot be verified on input source of type ${this.inputType}.`
       );
     }
@@ -76,7 +77,7 @@ export abstract class LocalInputSource extends InputSource {
     }
     if (!mimeType) {
       const allowed = Array.from(MIMETYPES.keys()).join(", ");
-      const err = new Error(`Invalid file type, must be one of ${allowed}.`);
+      const err = new MindeeInputError(`Invalid file type, must be one of ${allowed}.`);
       errorHandler.throw(err);
     }
     logger.debug(`File is of type: ${mimeType}`);
@@ -101,7 +102,7 @@ export abstract class LocalInputSource extends InputSource {
    */
   isPdf(): boolean {
     if (!this.initialized) {
-      throw new Error(
+      throw new MindeeInputError(
         "The `init()` method must be called before calling `isPdf()`."
       );
     }
