@@ -1,5 +1,10 @@
 # CHANGELOG
 
+## v4.36.3 - 2026-01-20
+### Fixes
+* :bug: fix streams not loading properly
+
+
 ## v4.36.2 - 2026-01-05
 ### Changes
 * :wastebasket: deprecate docFromXxx methods
