@@ -1,7 +1,8 @@
 import { StringDict } from "@/parsing/stringDict.js";
+import { logger } from "@/logger.js";
 
 
-export abstract class CommonResponse {
+export abstract class BaseResponse {
   /**
    * Raw text representation of the API's response.
    */
@@ -12,6 +13,7 @@ export abstract class CommonResponse {
    */
   protected constructor(serverResponse: StringDict) {
     this.rawHttp = serverResponse;
+    logger.debug("Constructing response instance from plain object.");
   }
 
   /**
@@ -22,3 +24,5 @@ export abstract class CommonResponse {
     return this.rawHttp;
   }
 }
+
+export type ResponseConstructor<T extends BaseResponse> = new (serverResponse: StringDict) => T;

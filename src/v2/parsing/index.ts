@@ -1,11 +1,15 @@
-export { ErrorResponse } from "./errorResponse.js";
-export type { ErrorDetails } from "./errorResponse.js";
-export { ErrorItem } from "./errorItem.js";
-export { Job } from "./job.js";
-export { JobResponse } from "./jobResponse.js";
-export { JobWebhook } from "./jobWebhook.js";
+export {
+  ErrorResponse,
+  ErrorItem,
+} from "./error/index.js";
+export type { ErrorDetails } from "./error/index.js";
+export {
+  Job,
+  JobResponse,
+  JobWebhook,
+} from "./job/index.js";
 export { InferenceFile } from "./inferenceFile.js";
-export { CommonResponse } from "./commonResponse.js";
+export { BaseResponse } from "./baseResponse.js";
 export { Inference } from "./inference.js";
 export { InferenceActiveOptions } from "./inferenceActiveOptions.js";
 export { InferenceModel } from "./inferenceModel.js";

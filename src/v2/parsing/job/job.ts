@@ -1,7 +1,6 @@
-import { StringDict } from "@/parsing/stringDict.js";
-import { ErrorResponse } from "./errorResponse.js";
+import { StringDict, parseDate } from "@/parsing/index.js";
+import { ErrorResponse } from "@/v2/index.js";
 import { JobWebhook } from "./jobWebhook.js";
-import { parseDate } from "@/v1/parsing/common/index.js";
 
 /**
  * Job information for a V2 polling attempt.
