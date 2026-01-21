@@ -29,8 +29,6 @@ import { CropResponse, BaseInferenceResponse } from "@/v2/parsing/inference/inde
 export interface ClientOptions {
   /** Your API key for all endpoints. */
   apiKey?: string;
-  /** Raise an `Error` on errors. */
-  throwOnError?: boolean;
   /** Log debug messages. */
   debug?: boolean;
   /** Custom Dispatcher instance for the HTTP requests. */
@@ -50,15 +48,14 @@ export class Client {
    * @param {ClientOptions} options options for the initialization of a client.
    */
   constructor(
-    { apiKey, throwOnError, debug, dispatcher }: ClientOptions = {
+    { apiKey, debug, dispatcher }: ClientOptions = {
       apiKey: undefined,
-      throwOnError: true,
       debug: false,
       dispatcher: undefined,
     }
   ) {
     this.mindeeApi = new MindeeApiV2(dispatcher, apiKey);
-    errorHandler.throwOnError = throwOnError ?? true;
+    errorHandler.throwOnError = true;
     logger.level =
       debug ?? process.env.MINDEE_DEBUG
         ? LOG_LEVELS["debug"]
@@ -121,6 +118,15 @@ export class Client {
     return jobResponse;
   }
 
+  /**
+   * Retrieves an inference.
+   *
+   * @param responseType class of the inference to retrieve.
+   * @param inferenceId id of the queue to poll.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @category Asynchronous
+   * @returns a `Promise` containing the inference.
+   */
   async getInference<T extends BaseInferenceResponse>(
     responseType: ResponseConstructor<T>,
     inferenceId: string
@@ -129,32 +135,6 @@ export class Client {
       `Attempting to get inference with ID: ${inferenceId} using response type: ${responseType.name}`
     );
     return await this.mindeeApi.reqGetInference(responseType, inferenceId);
-  }
-
-  /**
-   * Retrieves an inference.
-   *
-   * @param inferenceId id of the queue to poll.
-   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Asynchronous
-   * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
-   * parsing is complete.
-   */
-  async getExtraction(inferenceId: string): Promise<ExtractionResponse> {
-    return await this.getInference(ExtractionResponse, inferenceId);
-  }
-
-  /**
-   * Retrieves an inference.
-   *
-   * @param inferenceId id of the queue to poll.
-   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Asynchronous
-   * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
-   * parsing is complete.
-   */
-  async getUtility(inferenceId: string): Promise<CropResponse> {
-    return await this.getInference(CropResponse, inferenceId);
   }
 
   /**
