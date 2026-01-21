@@ -1,5 +1,5 @@
 import { PDFDocument, PDFImage, PDFPage, degrees } from "@cantoo/pdf-lib";
-import { MindeeError, MindeeMimeTypeError } from "@/errors/index.js";
+import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
 import { Polygon } from "@/geometry/index.js";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage.js";
@@ -31,7 +31,7 @@ async function extractReceiptsFromPage(
 async function loadPdfDoc(inputFile: LocalInputSource) {
   let pdfDoc: PDFDocument;
   if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputFile.mimeType)) {
-    throw new MindeeMimeTypeError(
+    throw new MindeeInputSourceError(
       'Unsupported file type "' +
       inputFile.mimeType +
       '" Currently supported types are .png, .jpg and .pdf'

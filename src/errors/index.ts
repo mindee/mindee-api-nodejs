@@ -1,8 +1,8 @@
 export {
   MindeeError,
-  MindeeMimeTypeError,
   MindeeImageError,
   MindeePdfError,
   MindeeDeserializationError,
   MindeeConfigurationError,
+  MindeeInputSourceError,
 } from "./mindeeError.js";

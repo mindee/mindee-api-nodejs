@@ -8,16 +8,6 @@ export class MindeeError extends Error {
   }
 }
 
-/**
- * Custom Mindee error relating to improper mimetypes in inputs.
- */
-export class MindeeMimeTypeError extends MindeeError {
-  constructor(message: string) {
-    super(message);
-    this.name = "MindeeMimeTypeError";
-  }
-}
-
 export class MindeeImageError extends MindeeError {
   constructor(message: string) {
     super(message);
@@ -43,5 +33,12 @@ export class MindeePdfError extends MindeeError {
   constructor(message: string) {
     super(message);
     this.name = "MindeePdfError";
+  }
+}
+
+export class MindeeInputSourceError extends MindeeError {
+  constructor(message: string) {
+    super(message);
+    this.name = "MindeeInputSourceError";
   }
 }

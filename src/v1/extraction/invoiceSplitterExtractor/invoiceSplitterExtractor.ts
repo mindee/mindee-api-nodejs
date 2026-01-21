@@ -1,5 +1,5 @@
 import { PDFDocument } from "@cantoo/pdf-lib";
-import { MindeeError, MindeeMimeTypeError } from "@/errors/index.js";
+import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage.js";
@@ -32,7 +32,9 @@ async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Pro
 async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
   await inputFile.init();
   if (!inputFile.isPdf()) {
-    throw new MindeeMimeTypeError("Invoice Splitter is only compatible with pdf documents.");
+    throw new MindeeInputSourceError(
+      "Invoice Splitter is only compatible with PDF documents."
+    );
   }
 
   const pdfDoc = await PDFDocument.load(inputFile.fileObject, {
@@ -40,7 +42,9 @@ async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
     password: ""
   });
   if (pdfDoc.getPageCount() < 2) {
-    throw new MindeeError("Invoice Splitter is only compatible with multi-page-pdf documents.");
+    throw new MindeeInputSourceError(
+      "Invoice Splitter is only compatible with multi-page PDF documents."
+    );
   }
   return pdfDoc;
 }

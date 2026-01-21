@@ -1,8 +1,9 @@
+import path from "path";
+import { MindeeInputSourceError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { logger } from "@/logger.js";
 import { compressImage } from "@/image/index.js";
 import { compressPdf, countPages, extractPages, hasSourceText } from "@/pdf/index.js";
-import path from "path";
 import { fileTypeFromBuffer } from "file-type";
 import { PageOptions } from "../input/pageOptions.js";
 import {
@@ -49,7 +50,7 @@ export abstract class LocalInputSource extends InputSource {
     if (!ALLOWED_INPUT_TYPES.includes(inputType)) {
       const allowed = Array.from(ALLOWED_INPUT_TYPES.keys()).join(", ");
       errorHandler.throw(
-        new Error(`Invalid input type, must be one of ${allowed}.`)
+        new MindeeInputSourceError(`Invalid input type, must be one of ${allowed}.`)
       );
     }
     this.inputType = inputType;
@@ -58,7 +59,7 @@ export abstract class LocalInputSource extends InputSource {
 
   protected async checkMimetype(): Promise<string> {
     if (!(this.fileObject instanceof Buffer)) {
-      throw new Error(
+      throw new MindeeInputSourceError(
         `MIME type cannot be verified on input source of type ${this.inputType}.`
       );
     }
@@ -76,7 +77,9 @@ export abstract class LocalInputSource extends InputSource {
     }
     if (!mimeType) {
       const allowed = Array.from(MIMETYPES.keys()).join(", ");
-      const err = new Error(`Invalid file type, must be one of ${allowed}.`);
+      const err = new MindeeInputSourceError(
+        `Invalid file type, must be one of ${allowed}.`
+      );
       errorHandler.throw(err);
     }
     logger.debug(`File is of type: ${mimeType}`);
@@ -101,7 +104,7 @@ export abstract class LocalInputSource extends InputSource {
    */
   isPdf(): boolean {
     if (!this.initialized) {
-      throw new Error(
+      throw new MindeeInputSourceError(
         "The `init()` method must be called before calling `isPdf()`."
       );
     }
@@ -117,15 +120,6 @@ export abstract class LocalInputSource extends InputSource {
     const buffer = this.getBuffer();
     const processedPdf = await extractPages(buffer, pageOptions);
     this.fileObject = processedPdf.file;
-  }
-
-  /**
-   * Cut PDF pages.
-   * @param pageOptions
-   * @deprecated Deprecated in favor of {@link LocalInputSource.applyPageOptions}.
-   */
-  async cutPdf(pageOptions: PageOptions) {
-    return this.applyPageOptions(pageOptions);
   }
 
   /**
