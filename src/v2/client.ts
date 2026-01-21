@@ -13,7 +13,7 @@ import {
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
 import { ExtractionParameters, UtilityParameters, ValidatedPollingOptions } from "./client/index.js";
-import { CropResponse, BaseInferenceResponse } from "@/v2/parsing/inference/index.js";
+import { BaseInferenceResponse } from "@/v2/parsing/inference/index.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -95,7 +95,8 @@ export class Client {
     return jobResponse;
   }
 
-  async enqueueUtility(
+  async enqueueInference<T extends BaseInferenceResponse>(
+    responseType: ResponseConstructor<T>,
     inputSource: InputSource,
     params: UtilityParameters | ConstructorParameters<typeof UtilityParameters>[0]
   ): Promise<JobResponse> {
@@ -108,7 +109,7 @@ export class Client {
 
     await inputSource.init();
     const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
-      CropResponse, inputSource, paramsInstance
+      responseType, inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${jobResponse.getRawHttp()}`);
@@ -180,19 +181,22 @@ export class Client {
     );
   }
 
-  async enqueueAndGetUtility(
+  async enqueueAndGetInference<T extends BaseInferenceResponse>(
+    responseType: ResponseConstructor<T>,
     inputSource: InputSource,
     params: UtilityParameters | ConstructorParameters<typeof UtilityParameters>[0]
-  ): Promise<CropResponse> {
+  ): Promise<T> {
     const paramsInstance = params instanceof UtilityParameters
       ? params
       : new UtilityParameters(params);
 
     const pollingOptions = paramsInstance.getValidatedPollingOptions();
 
-    const jobResponse: JobResponse = await this.enqueueUtility(inputSource, params);
+    const jobResponse: JobResponse = await this.enqueueInference(
+      responseType, inputSource, paramsInstance
+    );
     return await this.pollForInference(
-      CropResponse, pollingOptions, jobResponse.job.id
+      responseType, pollingOptions, jobResponse.job.id
     );
   }
 

@@ -6,6 +6,7 @@ import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
 import fs from "node:fs/promises";
+import { CropResponse } from "@/v2/parsing/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
@@ -87,7 +88,7 @@ describe("MindeeV2 - ClientV2", () => {
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueueUtility(inputDoc, { modelId: "dummy-model" }),
+        client.enqueueInference(CropResponse, inputDoc, { modelId: "dummy-model" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);

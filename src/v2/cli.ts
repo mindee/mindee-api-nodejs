@@ -2,7 +2,15 @@ import { Command, OptionValues } from "commander";
 import { Client } from "./client.js";
 import { PathInput } from "../input/index.js";
 import * as console from "console";
-import { BaseInference } from "@/v2/parsing/inference/index.js";
+import {
+  BaseInference, ClassifyResponse, OcrResponse, SplitResponse,
+} from "@/v2/parsing/inference/index.js";
+import {
+  BaseInferenceResponse,
+  CropResponse,
+  ExtractionResponse,
+  ResponseConstructor,
+} from "@/v2/parsing/index.js";
 
 const program = new Command();
 
@@ -19,39 +27,24 @@ function initClient(options: OptionValues): Client {
 }
 
 async function enqueueAndGetInference(
+  responseType: ResponseConstructor<BaseInferenceResponse>,
   inputPath: string,
   options: OptionValues
 ): Promise<void> {
   const mindeeClient = initClient(options);
   const inputSource = new PathInput({ inputPath: inputPath });
-  const response = await mindeeClient.enqueueAndGetExtraction(inputSource, {
-    modelId: options.model,
-    pollingOptions: {
-      initialDelaySec: 2,
-      delaySec: 1.5,
-      maxRetries: 80,
+  const response = await mindeeClient.enqueueAndGetInference(
+    responseType,
+    inputSource,
+    {
+      modelId: options.model,
+      pollingOptions: {
+        initialDelaySec: 2,
+        delaySec: 1.5,
+        maxRetries: 80,
+      }
     }
-  });
-  if (!response.inference) {
-    throw Error("Inference could not be retrieved");
-  }
-  printResponse(response.inference);
-}
-
-async function enqueueAndGetUtility(
-  inputPath: string,
-  options: OptionValues
-): Promise<void> {
-  const mindeeClient = initClient(options);
-  const inputSource = new PathInput({ inputPath: inputPath });
-  const response = await mindeeClient.enqueueAndGetUtility(inputSource, {
-    modelId: options.model,
-    pollingOptions: {
-      initialDelaySec: 2,
-      delaySec: 1.5,
-      maxRetries: 80,
-    }
-  });
+  );
   if (!response.inference) {
     throw Error("Inference could not be retrieved");
   }
@@ -84,42 +77,28 @@ export function cli() {
     .option("-d, --debug", "high verbosity mode")
     .option("-k, --api-key <api_key>", "your Mindee API key");
 
-  const inferenceCmd: Command = program.command("extract")
-    .description("Send a file and extract results.");
-  addMainOptions(inferenceCmd);
+  const inferenceTypes = [
+    { name: "extract", description: "Extract data from a document.", responseType: ExtractionResponse },
+    { name: "crop", description: "Crop a document.", responseType: CropResponse },
+    { name: "split", description: "Split a document into pages.", responseType: SplitResponse },
+    { name: "ocr", description: "Read text from a document.", responseType: OcrResponse },
+    { name: "classify", description: "Classify a document.", responseType: ClassifyResponse },
+  ];
 
-  const cropCmd: Command = program.command("crop")
-    .description("Send a file and crop it.");
-  addMainOptions(cropCmd);
+  for (const inference of inferenceTypes) {
+    const inferenceCmd: Command = program.command(inference.name)
+      .description(inference.description);
 
-  const splitCmd: Command = program.command("split")
-    .description("Send a file and split it.");
-  addMainOptions(splitCmd);
+    addMainOptions(inferenceCmd);
 
-  const ocrCmd: Command = program.command("ocr")
-    .description("Send a file and read its text content.");
-  addMainOptions(ocrCmd);
-
-  const classifyCmd: Command = program.command("classify")
-    .description("Send a file and classify its content.");
-  addMainOptions(classifyCmd);
-
-
-  inferenceCmd.action(function (
-    inputPath: string,
-    options: OptionValues,
-  ) {
-    const allOptions = { ...program.opts(), ...options };
-    return enqueueAndGetInference(inputPath, allOptions);
-  });
-
-  cropCmd.action(function (
-    inputPath: string,
-    options: OptionValues,
-  ) {
-    const allOptions = { ...program.opts(), ...options };
-    return enqueueAndGetUtility(inputPath, allOptions);
-  });
+    inferenceCmd.action(function (
+      inputPath: string,
+      options: OptionValues,
+    ) {
+      const allOptions = { ...program.opts(), ...options };
+      return enqueueAndGetInference(inference.responseType, inputPath, allOptions);
+    });
+  }
 
   program.parse(process.argv);
 }

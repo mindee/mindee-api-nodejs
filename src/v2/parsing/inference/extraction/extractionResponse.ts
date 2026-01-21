@@ -4,7 +4,7 @@ import { BaseInferenceResponse } from "@/v2/parsing/inference/baseInferenceRespo
 
 export class ExtractionResponse extends BaseInferenceResponse {
   /**
-   * Inference result.
+   * The inference result for an extraction request.
    */
   public inference: ExtractionInference;
 

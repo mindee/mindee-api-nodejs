@@ -4,7 +4,7 @@ import { BaseInferenceResponse } from "@/v2/parsing/inference/baseInferenceRespo
 
 export class CropResponse extends BaseInferenceResponse {
   /**
-   * The inference result for a crop utility request.
+   * The inference result for a crop request.
    */
   public inference: CropInference;
 
