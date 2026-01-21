@@ -6,14 +6,15 @@ import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
 import {
   ErrorResponse,
-  ExtractionResponse,
+  ExtractionInference,
   JobResponse,
-  ResponseConstructor,
+  InferenceResponseConstructor,
+  BaseInference,
+  BaseInferenceResponse,
 } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
 import { ExtractionParameters, UtilityParameters, ValidatedPollingOptions } from "./client/index.js";
-import { BaseInferenceResponse } from "@/v2/parsing/inference/index.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -83,7 +84,7 @@ export class Client {
 
     await inputSource.init();
     const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
-      ExtractionResponse, inputSource, paramsInstance
+      ExtractionInference, inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${jobResponse.getRawHttp()}`);
@@ -95,8 +96,8 @@ export class Client {
     return jobResponse;
   }
 
-  async enqueueInference<T extends BaseInferenceResponse>(
-    responseType: ResponseConstructor<T>,
+  async enqueueInference<T extends BaseInference>(
+    responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
     params: UtilityParameters | ConstructorParameters<typeof UtilityParameters>[0]
   ): Promise<JobResponse> {
@@ -130,10 +131,10 @@ export class Client {
    * @category Asynchronous
    * @returns a `Promise` containing the inference.
    */
-  async getInference<T extends BaseInferenceResponse>(
-    responseType: ResponseConstructor<T>,
+  async getInference<T extends BaseInference>(
+    responseType: InferenceResponseConstructor<T>,
     inferenceId: string
-  ): Promise<T> {
+  ): Promise<BaseInferenceResponse<T>> {
     logger.debug(
       `Attempting to get inference with ID: ${inferenceId} using response type: ${responseType.name}`
     );
@@ -158,6 +159,7 @@ export class Client {
    * Send a document to an endpoint and poll the server until the result is sent or
    * until the maximum number of tries is reached.
    *
+   * @param responseType class of the inference to retrieve.
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
    *
@@ -165,27 +167,11 @@ export class Client {
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
-  async enqueueAndGetExtraction(
-    inputSource: InputSource,
-    params: ExtractionParameters | ConstructorParameters<typeof ExtractionParameters>[0]
-  ): Promise<ExtractionResponse> {
-    const paramsInstance = params instanceof ExtractionParameters
-      ? params
-      : new ExtractionParameters(params);
-
-    const pollingOptions = paramsInstance.getValidatedPollingOptions();
-
-    const jobResponse: JobResponse = await this.enqueueExtraction(inputSource, params);
-    return await this.pollForInference(
-      ExtractionResponse, pollingOptions, jobResponse.job.id
-    );
-  }
-
-  async enqueueAndGetInference<T extends BaseInferenceResponse>(
-    responseType: ResponseConstructor<T>,
+  async enqueueAndGetInference<T extends BaseInference>(
+    responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
     params: UtilityParameters | ConstructorParameters<typeof UtilityParameters>[0]
-  ): Promise<T> {
+  ): Promise<BaseInferenceResponse<T>> {
     const paramsInstance = params instanceof UtilityParameters
       ? params
       : new UtilityParameters(params);
@@ -205,11 +191,11 @@ export class Client {
    * until the maximum number of tries is reached.
    * @protected
    */
-  protected async pollForInference<T extends BaseInferenceResponse>(
-    responseType: ResponseConstructor<T>,
+  protected async pollForInference<T extends BaseInference>(
+    responseType: InferenceResponseConstructor<T>,
     pollingOptions: ValidatedPollingOptions,
     queueId: string,
-  ): Promise<T> {
+  ): Promise<BaseInferenceResponse<T>> {
     logger.debug(
       `Waiting ${pollingOptions.initialDelaySec} seconds before polling.`
     );

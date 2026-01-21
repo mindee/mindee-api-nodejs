@@ -32,7 +32,8 @@ const inferenceParams = {
 const inputSource = new mindee.PathInput({ inputPath: filePath });
 
 // Send for processing
-const response = mindeeClient.enqueueAndGetExtraction(
+const response = mindeeClient.enqueueAndGetInference(
+  mindee.v2.ExtractionInference,
   inputSource,
   inferenceParams
 );

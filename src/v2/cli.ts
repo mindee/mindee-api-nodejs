@@ -3,14 +3,14 @@ import { Client } from "./client.js";
 import { PathInput } from "../input/index.js";
 import * as console from "console";
 import {
-  BaseInference, ClassifyResponse, OcrResponse, SplitResponse,
+  BaseInference,
+  ClassificationInference,
+  CropInference,
+  ExtractionInference,
+  OcrInference,
+  SplitInference,
+  InferenceResponseConstructor,
 } from "@/v2/parsing/inference/index.js";
-import {
-  BaseInferenceResponse,
-  CropResponse,
-  ExtractionResponse,
-  ResponseConstructor,
-} from "@/v2/parsing/index.js";
 
 const program = new Command();
 
@@ -27,7 +27,7 @@ function initClient(options: OptionValues): Client {
 }
 
 async function enqueueAndGetInference(
-  responseType: ResponseConstructor<BaseInferenceResponse>,
+  responseType: InferenceResponseConstructor<any>,
   inputPath: string,
   options: OptionValues
 ): Promise<void> {
@@ -78,11 +78,11 @@ export function cli() {
     .option("-k, --api-key <api_key>", "your Mindee API key");
 
   const inferenceTypes = [
-    { name: "extract", description: "Extract data from a document.", responseType: ExtractionResponse },
-    { name: "crop", description: "Crop a document.", responseType: CropResponse },
-    { name: "split", description: "Split a document into pages.", responseType: SplitResponse },
-    { name: "ocr", description: "Read text from a document.", responseType: OcrResponse },
-    { name: "classify", description: "Classify a document.", responseType: ClassifyResponse },
+    { name: "extract", description: "Extract data from a document.", responseType: ExtractionInference },
+    { name: "crop", description: "Crop a document.", responseType: CropInference },
+    { name: "split", description: "Split a document into pages.", responseType: SplitInference },
+    { name: "ocr", description: "Read text from a document.", responseType: OcrInference },
+    { name: "classify", description: "Classify a document.", responseType: ClassificationInference },
   ];
 
   for (const inference of inferenceTypes) {

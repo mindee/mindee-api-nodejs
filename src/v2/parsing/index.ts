@@ -9,17 +9,24 @@ export {
   JobWebhook
 } from "./job/index.js";
 export {
+  BaseInference,
+  BaseInferenceResponse,
   InferenceFile,
   InferenceModel,
   ExtractionInference,
   ExtractionActiveOptions,
   ExtractionResponse,
   ExtractionResult,
-  ClassifyResponse,
+  ClassificationResponse,
+  ClassificationInference,
   CropResponse,
+  CropInference,
   OcrResponse,
+  OcrInference,
   SplitResponse,
+  SplitInference,
 } from "./inference/index.js";
+export { LocalResponse } from "./localResponse.js";
 export { RawText, RagMetadata } from "./inference/field/index.js";
 export type { ResponseConstructor, BaseResponse } from "./baseResponse.js";
-export type { BaseInferenceResponse } from "./inference/index.js";
+export type { InferenceResponseConstructor } from "./inference/index.js";

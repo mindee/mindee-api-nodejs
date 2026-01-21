@@ -5,16 +5,26 @@ import {
   BaseResponse,
   ErrorResponse,
   ResponseConstructor,
+  InferenceResponseConstructor,
   JobResponse,
   CropResponse,
   OcrResponse,
-  SplitResponse, ExtractionResponse, BaseInferenceResponse,
+  SplitResponse,
+  ExtractionResponse,
+  BaseInference, ExtractionInference,
 } from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
 import { MindeeDeserializationError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
+import {
+  BaseInferenceResponse,
+  CropInference,
+  OcrInference,
+  SplitInference
+} from "@/v2/parsing/inference/index.js";
+
 
 export class MindeeApiV2 {
   settings: ApiSettingsV2;
@@ -23,20 +33,37 @@ export class MindeeApiV2 {
     this.settings = new ApiSettingsV2({ dispatcher: dispatcher, apiKey: apiKey });
   }
 
-  #getSlugFromResponse<T extends BaseResponse>(
-    responseClass: ResponseConstructor<T>
+  #getSlugFromInference<T extends BaseInference>(
+    responseClass: InferenceResponseConstructor<T>
   ): string {
     switch (responseClass as any) {
-    case CropResponse:
+    case CropInference:
       return "utilities/crop";
-    case OcrResponse:
+    case OcrInference:
       return "utilities/ocr";
-    case SplitResponse:
+    case SplitInference:
       return "utilities/split";
-    case ExtractionResponse:
+    case ExtractionInference:
       return "inferences";
     default:
       throw new Error("Unsupported response class.");
+    }
+  }
+
+  #getResponseClassFromInference<T extends BaseInference>(
+    inferenceClass: InferenceResponseConstructor<T>
+  ): ResponseConstructor<BaseInferenceResponse<T>> {
+    switch (inferenceClass as any) {
+    case CropInference:
+      return CropResponse as any;
+    case OcrInference:
+      return OcrResponse as any;
+    case SplitInference:
+      return SplitResponse as any;
+    case ExtractionInference:
+      return ExtractionResponse as any;
+    default:
+      throw new Error("Unsupported inference class.");
     }
   }
 
@@ -49,13 +76,13 @@ export class MindeeApiV2 {
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostInferenceEnqueue<T extends BaseInferenceResponse>(
-    responseClass: ResponseConstructor<T>,
+  async reqPostInferenceEnqueue<T extends BaseInference>(
+    responseClass: InferenceResponseConstructor<T>,
     inputSource: InputSource,
     params: ExtractionParameters | UtilityParameters
   ): Promise<JobResponse> {
     await inputSource.init();
-    const slug = this.#getSlugFromResponse(responseClass);
+    const slug = this.#getSlugFromInference(responseClass);
     const result: BaseHttpResponse = await this.#inferenceEnqueuePost(
       inputSource, slug, params
     );
@@ -73,13 +100,14 @@ export class MindeeApiV2 {
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async reqGetInference<T extends BaseInferenceResponse>(
-    responseClass: ResponseConstructor<T>,
+  async reqGetInference<T extends BaseInference>(
+    responseClass: InferenceResponseConstructor<T>,
     inferenceId: string,
-  ): Promise<T> {
-    const slug = this.#getSlugFromResponse(responseClass);
+  ): Promise<BaseInferenceResponse<T>> {
+    const slug = this.#getSlugFromInference(responseClass);
     const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, slug);
-    return this.#processResponse(queueResponse, responseClass);
+    const actualResponseClass = this.#getResponseClassFromInference(responseClass);
+    return this.#processResponse(queueResponse, actualResponseClass) as BaseInferenceResponse<T>;
   }
 
   /**
