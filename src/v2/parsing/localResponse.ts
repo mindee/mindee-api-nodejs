@@ -1,6 +1,6 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { MindeeError } from "@/errors/index.js";
-import { CommonResponse } from "@/v2/parsing/index.js";
+import { BaseResponse } from "./baseResponse.js";
 import { LocalResponseBase } from "@/parsing/localResponseBase.js";
 
 /**
@@ -19,7 +19,7 @@ export class LocalResponse extends LocalResponseBase {
    * @returns An instance of `responseClass` populated with the file content.
    * @throws MindeeError If the provided class cannot be instantiated.
    */
-  public async deserializeResponse<ResponseT extends CommonResponse>(
+  public async deserializeResponse<ResponseT extends BaseResponse>(
     responseClass: new (serverResponse: StringDict) => ResponseT
   ): Promise<ResponseT> {
     try {
