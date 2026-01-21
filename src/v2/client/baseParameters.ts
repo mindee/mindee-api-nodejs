@@ -103,4 +103,22 @@ export abstract class BaseParameters {
     }
     return newAsyncParams as ValidatedPollingOptions;
   }
+
+  /**
+   * Returns the form data to send to the API.
+   * @returns A `FormData` object.
+   */
+  getFormData(): FormData {
+    const form = new FormData();
+
+    form.set("model_id", this.modelId);
+
+    if (this.alias !== undefined && this.alias !== null) {
+      form.set("alias", this.alias);
+    }
+    if (this.webhookIds && this.webhookIds.length > 0) {
+      form.set("webhook_ids", this.webhookIds.join(","));
+    }
+    return form;
+  }
 }

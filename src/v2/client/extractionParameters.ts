@@ -20,7 +20,7 @@ import { BaseParameters, BaseParametersConstructor } from "@/v2/client/baseParam
  *   }
  * };
  */
-export class InferenceParameters extends BaseParameters {
+export class ExtractionParameters extends BaseParameters {
   /**
    * Use Retrieval-Augmented Generation during inference.
    */
@@ -71,5 +71,34 @@ export class InferenceParameters extends BaseParameters {
         this.dataSchema = params.dataSchema;
       }
     }
+  }
+
+  getFormData(): FormData {
+    const form = new FormData();
+
+    form.set("model_id", this.modelId);
+
+    if (this.rag !== undefined && this.rag !== null) {
+      form.set("rag", this.rag.toString());
+    }
+    if (this.polygon !== undefined && this.polygon !== null) {
+      form.set("polygon", this.polygon.toString().toLowerCase());
+    }
+    if (this.confidence !== undefined && this.confidence !== null) {
+      form.set("confidence", this.confidence.toString().toLowerCase());
+    }
+    if (this.rawText !== undefined && this.rawText !== null) {
+      form.set("raw_text", this.rawText.toString().toLowerCase());
+    }
+    if (this.textContext !== undefined && this.textContext !== null) {
+      form.set("text_context", this.textContext);
+    }
+    if (this.dataSchema !== undefined && this.dataSchema !== null) {
+      form.set("data_schema", this.dataSchema.toString());
+    }
+    if (this.webhookIds && this.webhookIds.length > 0) {
+      form.set("webhook_ids", this.webhookIds.join(","));
+    }
+    return form;
   }
 }

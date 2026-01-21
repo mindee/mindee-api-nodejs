@@ -12,7 +12,7 @@ import {
 } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { InferenceParameters, UtilityParameters, ValidatedPollingOptions } from "./client/index.js";
+import { ExtractionParameters, UtilityParameters, ValidatedPollingOptions } from "./client/index.js";
 import { CropResponse, BaseInferenceResponse } from "@/v2/parsing/inference/index.js";
 
 /**
@@ -72,18 +72,18 @@ export class Client {
    */
   async enqueueExtraction(
     inputSource: InputSource,
-    params: InferenceParameters| ConstructorParameters<typeof InferenceParameters>[0]
+    params: ExtractionParameters| ConstructorParameters<typeof ExtractionParameters>[0]
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
     }
-    const paramsInstance = params instanceof InferenceParameters
+    const paramsInstance = params instanceof ExtractionParameters
       ? params
-      : new InferenceParameters(params);
+      : new ExtractionParameters(params);
 
     await inputSource.init();
     const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
-      inputSource, paramsInstance
+      ExtractionResponse, inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${jobResponse.getRawHttp()}`);
@@ -107,7 +107,9 @@ export class Client {
       : new UtilityParameters(params);
 
     await inputSource.init();
-    const jobResponse = await this.mindeeApi.reqPostUtilityEnqueue(inputSource, paramsInstance);
+    const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
+      CropResponse, inputSource, paramsInstance
+    );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${jobResponse.getRawHttp()}`);
       throw new MindeeError("Enqueueing of the document failed.");
@@ -164,11 +166,11 @@ export class Client {
    */
   async enqueueAndGetExtraction(
     inputSource: InputSource,
-    params: InferenceParameters | ConstructorParameters<typeof InferenceParameters>[0]
+    params: ExtractionParameters | ConstructorParameters<typeof ExtractionParameters>[0]
   ): Promise<ExtractionResponse> {
-    const paramsInstance = params instanceof InferenceParameters
+    const paramsInstance = params instanceof ExtractionParameters
       ? params
-      : new InferenceParameters(params);
+      : new ExtractionParameters(params);
 
     const pollingOptions = paramsInstance.getValidatedPollingOptions();
 

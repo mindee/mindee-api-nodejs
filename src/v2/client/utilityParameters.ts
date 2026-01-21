@@ -18,6 +18,7 @@ import { BaseParameters, BaseParametersConstructor } from "@/v2/client/baseParam
  * };
  */
 export class UtilityParameters extends BaseParameters {
+
   constructor(params: BaseParametersConstructor & {}) {
     super({ ...params });
   }

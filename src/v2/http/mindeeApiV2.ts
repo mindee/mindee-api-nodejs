@@ -1,6 +1,6 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
-import { InferenceParameters, UtilityParameters } from "@/v2/client/index.js";
+import { ExtractionParameters, UtilityParameters } from "@/v2/client/index.js";
 import {
   BaseResponse,
   ErrorResponse,
@@ -23,38 +23,42 @@ export class MindeeApiV2 {
     this.settings = new ApiSettingsV2({ dispatcher: dispatcher, apiKey: apiKey });
   }
 
-  /**
-   * Sends a file to the extraction inference queue.
-   * @param inputSource Local file loaded as an input.
-   * @param params {InferenceParameters} parameters relating to the enqueueing options.
-   * @category V2
-   * @throws Error if the server's response contains one.
-   * @returns a `Promise` containing a job response.
-   */
-  async reqPostInferenceEnqueue(
-    inputSource: InputSource, params: InferenceParameters
-  ): Promise<JobResponse> {
-    await inputSource.init();
-    const result: BaseHttpResponse = await this.#inferenceEnqueuePost(inputSource, params);
-    if (result.data.error !== undefined) {
-      throw new MindeeHttpErrorV2(result.data.error);
+  #getSlugFromResponse<T extends BaseResponse>(
+    responseClass: ResponseConstructor<T>
+  ): string {
+    switch (responseClass as any) {
+    case CropResponse:
+      return "utilities/crop";
+    case OcrResponse:
+      return "utilities/ocr";
+    case SplitResponse:
+      return "utilities/split";
+    case ExtractionResponse:
+      return "inferences";
+    default:
+      throw new Error("Unsupported response class.");
     }
-    return this.#processResponse(result, JobResponse);
   }
 
   /**
-   * Sends a file to the utility inference queue.
+   * Sends a file to the extraction inference queue.
+   * @param responseClass Class of the inference to enqueue.
    * @param inputSource Local file loaded as an input.
-   * @param params {UtilityParameters} parameters relating to the enqueueing options.
+   * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    * @category V2
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostUtilityEnqueue(
-    inputSource: InputSource, params: UtilityParameters
+  async reqPostInferenceEnqueue<T extends BaseInferenceResponse>(
+    responseClass: ResponseConstructor<T>,
+    inputSource: InputSource,
+    params: ExtractionParameters | UtilityParameters
   ): Promise<JobResponse> {
     await inputSource.init();
-    const result: BaseHttpResponse = await this.#utilityEnqueuePost(inputSource, "crop", params);
+    const slug = this.#getSlugFromResponse(responseClass);
+    const result: BaseHttpResponse = await this.#inferenceEnqueuePost(
+      inputSource, slug, params
+    );
     if (result.data.error !== undefined) {
       throw new MindeeHttpErrorV2(result.data.error);
     }
@@ -64,36 +68,18 @@ export class MindeeApiV2 {
   /**
    * Requests the job of a queued document from the API.
    * Throws an error if the server's response contains one.
-   * @param responseType
+   * @param responseClass
    * @param inferenceId The document's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
   async reqGetInference<T extends BaseInferenceResponse>(
-    responseType: ResponseConstructor<T>,
+    responseClass: ResponseConstructor<T>,
     inferenceId: string,
   ): Promise<T> {
-    let slug: string;
-    // this is disgusting, look into a more elegant way of linking the response type to the slug
-    switch (responseType as any) {
-    case CropResponse:
-      slug = "utilities/crop";
-      break;
-    case OcrResponse:
-      slug = "utilities/ocr";
-      break;
-    case SplitResponse:
-      slug = "utilities/split";
-      break;
-    case ExtractionResponse:
-      slug = "inferences";
-      break;
-    default:
-      slug = "inferences";
-      break;
-    }
+    const slug = this.#getSlugFromResponse(responseClass);
     const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, slug);
-    return this.#processResponse(queueResponse, responseType);
+    return this.#processResponse(queueResponse, responseClass);
   }
 
   /**
@@ -110,7 +96,7 @@ export class MindeeApiV2 {
 
   #processResponse<T extends BaseResponse>(
     result: BaseHttpResponse,
-    responseType: ResponseConstructor<T>,
+    responseClass: ResponseConstructor<T>,
   ): T {
     if (result.messageObj?.statusCode && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)) {
       if (result.data?.status !== null) {
@@ -128,7 +114,7 @@ export class MindeeApiV2 {
       );
     }
     try {
-      return new responseType(result.data);
+      return new responseClass(result.data);
     } catch (e) {
       logger.error(`Raised '${e}' Couldn't deserialize response object:\n${JSON.stringify(result.data)}`);
       throw new MindeeDeserializationError("Couldn't deserialize response object.");
@@ -139,78 +125,21 @@ export class MindeeApiV2 {
    * Sends a document to the inference queue.
    *
    * @param inputSource Local or remote file as an input.
-   * @param slug Slug of the utility to enqueue.
-   * @param params {InferenceParameters} parameters relating to the enqueueing options.
-   */
-  async #utilityEnqueuePost(
-    inputSource: InputSource,
-    slug: string,
-    params: UtilityParameters
-  ): Promise<BaseHttpResponse> {
-    const form = new FormData();
-
-    form.set("model_id", params.modelId);
-    if (params.webhookIds && params.webhookIds.length > 0) {
-      form.set("webhook_ids", params.webhookIds.join(","));
-    }
-    if (inputSource instanceof LocalInputSource) {
-      form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
-    } else {
-      form.set("url", (inputSource as UrlInput).url);
-    }
-    const path = `/v2/utilities/${slug}/enqueue`;
-    const options = {
-      method: "POST",
-      headers: this.settings.baseHeaders,
-      hostname: this.settings.hostname,
-      path: path,
-      body: form,
-      timeout: this.settings.timeout,
-    };
-    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
-  }
-
-
-  /**
-   * Sends a document to the inference queue.
-   *
-   * @param inputSource Local or remote file as an input.
-   * @param params {InferenceParameters} parameters relating to the enqueueing options.
+   * @param slug Slug of the inference to enqueue.
+   * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    */
   async #inferenceEnqueuePost(
     inputSource: InputSource,
-    params: InferenceParameters
+    slug: string,
+    params: ExtractionParameters | UtilityParameters
   ): Promise<BaseHttpResponse> {
-    const form = new FormData();
-
-    form.set("model_id", params.modelId);
-    if (params.rag !== undefined && params.rag !== null) {
-      form.set("rag", params.rag.toString());
-    }
-    if (params.polygon !== undefined && params.polygon !== null) {
-      form.set("polygon", params.polygon.toString().toLowerCase());
-    }
-    if (params.confidence !== undefined && params.confidence !== null) {
-      form.set("confidence", params.confidence.toString().toLowerCase());
-    }
-    if (params.rawText !== undefined && params.rawText !== null) {
-      form.set("raw_text", params.rawText.toString().toLowerCase());
-    }
-    if (params.textContext !== undefined && params.textContext !== null) {
-      form.set("text_context", params.textContext);
-    }
-    if (params.dataSchema !== undefined && params.dataSchema !== null) {
-      form.set("data_schema", params.dataSchema.toString());
-    }
-    if (params.webhookIds && params.webhookIds.length > 0) {
-      form.set("webhook_ids", params.webhookIds.join(","));
-    }
+    const form = params.getFormData();
     if (inputSource instanceof LocalInputSource) {
       form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
     } else {
       form.set("url", (inputSource as UrlInput).url);
     }
-    const path = "/v2/inferences/enqueue";
+    const path = `/v2/${slug}/enqueue`;
     const options = {
       method: "POST",
       headers: this.settings.baseHeaders,

@@ -3,7 +3,7 @@ import path from "node:path";
 
 import {
   Client,
-  InferenceParameters,
+  ExtractionParameters,
   PathInput,
   UrlInput,
   Base64Input,
@@ -136,7 +136,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("Filled, single-page image – Base64Input - enqueueAndGetInference must succeed", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
     const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
-    const params = new InferenceParameters({
+    const params = new ExtractionParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -190,7 +190,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("HTTPS URL – enqueue & get inference must succeed", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
     const source = new UrlInput({ url });
-    const params = new InferenceParameters({
+    const params = new ExtractionParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -207,7 +207,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
   it("Data Schema Override - Overrides the data schema successfully", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const params = new InferenceParameters({
+    const params = new ExtractionParameters({
       modelId,
       rag: false,
       rawText: false,

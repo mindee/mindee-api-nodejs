@@ -1,7 +1,7 @@
 import { StringDict } from "@/parsing/index.js";
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
-import { InferenceParameters } from "@/index.js";
+import { ExtractionParameters } from "@/index.js";
 import { expect } from "chai";
 import { DataSchema } from "@/index.js";
 import { promises as fs } from "fs";
@@ -16,7 +16,7 @@ describe("MindeeV2 - Inference Parameter", () => {
   describe("Polling Options", () => {
     it("should provide sensible defaults", () => {
 
-      const paramsInstance = new InferenceParameters({
+      const paramsInstance = new ExtractionParameters({
         modelId: modelIdValue,
       });
       expect(paramsInstance.modelId).to.equal(modelIdValue);
@@ -37,22 +37,22 @@ describe("MindeeV2 - Inference Parameter", () => {
     });
 
     it("shouldn't replace when unset", () => {
-      const params = new InferenceParameters({
+      const params = new ExtractionParameters({
         modelId: modelIdValue,
       });
       expect(params.dataSchema).to.be.undefined;
     });
 
     it("should equate no matter the type", () => {
-      const paramsDict = new InferenceParameters({
+      const paramsDict = new ExtractionParameters({
         modelId: modelIdValue,
         dataSchema: expectedDataSchemaDict,
       });
-      const paramsString = new InferenceParameters({
+      const paramsString = new ExtractionParameters({
         modelId: modelIdValue,
         dataSchema: expectedDataSchemaString,
       });
-      const paramsObject = new InferenceParameters({
+      const paramsObject = new ExtractionParameters({
         modelId: modelIdValue,
         dataSchema: expectedDataSchemaObject,
       });

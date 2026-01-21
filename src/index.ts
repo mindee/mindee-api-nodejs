@@ -23,7 +23,7 @@ export {
   JobResponse,
   RawText,
   RagMetadata,
-  InferenceParameters,
+  ExtractionParameters,
   DataSchema,
 } from "./v2/index.js";
 export type { PollingOptions } from "./v2/index.js";
