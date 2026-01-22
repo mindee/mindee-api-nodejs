@@ -10,6 +10,10 @@ import {
   InferenceResponseConstructor,
   BaseInference,
   BaseInferenceResponse,
+  CropInference,
+  OcrInference,
+  SplitInference,
+  ExtractionInference,
 } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
@@ -34,6 +38,12 @@ export interface ClientOptions {
   /** Custom Dispatcher instance for the HTTP requests. */
   dispatcher?: Dispatcher;
 }
+
+type InferenceParameters =
+  | UtilityParameters
+  | ExtractionParameters
+  | ConstructorParameters<typeof UtilityParameters>[0]
+  | ConstructorParameters<typeof ExtractionParameters>[0];
 
 /**
  * Mindee Client V2 class that centralizes most basic operations.
@@ -63,23 +73,38 @@ export class Client {
     logger.debug("Client V2 Initialized");
   }
 
+  #getParametersClassFromInference<T extends BaseInference>(
+    inferenceClass: InferenceResponseConstructor<T>,
+    params: any,
+  ): ExtractionParameters | UtilityParameters {
+    if (params instanceof ExtractionParameters || params instanceof UtilityParameters) {
+      return params;
+    }
+    switch (inferenceClass as any) {
+    case CropInference:
+      return new UtilityParameters(params);
+    case OcrInference:
+      return new UtilityParameters(params);
+    case SplitInference:
+      return new UtilityParameters(params);
+    case ExtractionInference:
+      return new ExtractionParameters(params);
+    default:
+      throw new Error("Unsupported inference class.");
+    }
+  }
+
   async enqueueInference<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
-    params:
-      UtilityParameters
-      | ExtractionParameters
-      | ConstructorParameters<typeof UtilityParameters>[0]
-      | ConstructorParameters<typeof ExtractionParameters>[0]
-    ,
+    params: InferenceParameters,
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
     }
-    const paramsInstance = params instanceof UtilityParameters
-      ? params
-      : new UtilityParameters(params);
-
+    const paramsInstance = this.#getParametersClassFromInference(
+      responseType, params
+    );
     await inputSource.init();
     const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
       responseType, inputSource, paramsInstance
@@ -142,11 +167,11 @@ export class Client {
   async enqueueAndGetInference<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
-    params: UtilityParameters | ConstructorParameters<typeof UtilityParameters>[0]
+    params: InferenceParameters
   ): Promise<BaseInferenceResponse<T>> {
-    const paramsInstance = params instanceof UtilityParameters
-      ? params
-      : new UtilityParameters(params);
+    const paramsInstance = this.#getParametersClassFromInference(
+      responseType, params
+    );
 
     const pollingOptions = paramsInstance.getValidatedPollingOptions();
 
