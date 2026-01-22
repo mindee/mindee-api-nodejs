@@ -171,7 +171,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const badParams = { modelId: "00000000-0000-0000-0000-000000000000" };
 
     try {
-      await client.enqueueExtraction(source, badParams);
+      await client.enqueueInference(ExtractionInference, source, badParams);
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);

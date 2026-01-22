@@ -74,7 +74,7 @@ describe("MindeeV2 - ClientV2", () => {
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueueExtraction(inputDoc, { modelId: "dummy-model", textContext: "hello" }),
+        client.enqueueInference(ExtractionInference, inputDoc, { modelId: "dummy-model", textContext: "hello" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);
@@ -124,7 +124,7 @@ describe("MindeeV2 - ClientV2", () => {
         ),
       });
       await assert.rejects(
-        client.enqueueExtraction(input, { modelId: "dummy-model" }),
+        client.enqueueInference(ExtractionInference, input, { modelId: "dummy-model" }),
         (error: any) => {
           expect(error).to.be.instanceOf(MindeeHttpErrorV2);
           expect(error.status).to.equal(400);

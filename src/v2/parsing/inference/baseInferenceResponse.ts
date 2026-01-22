@@ -11,7 +11,7 @@ export abstract class BaseInferenceResponse<T extends BaseInference> extends Bas
   /**
    * @param serverResponse JSON response from the server.
    */
-  protected constructor(serverResponse: StringDict) {
+  constructor(serverResponse: StringDict) {
     super(serverResponse);
     this.inference = this.setInferenceType(serverResponse["inference"]);
   }

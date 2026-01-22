@@ -6,7 +6,6 @@ import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
 import {
   ErrorResponse,
-  ExtractionInference,
   JobResponse,
   InferenceResponseConstructor,
   BaseInference,
@@ -64,42 +63,15 @@ export class Client {
     logger.debug("Client V2 Initialized");
   }
 
-  /**
-   * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param inputSource file or URL to parse.
-   * @param params parameters relating to prediction options.
-   * @category Asynchronous
-   * @returns a `Promise` containing the job (queue) corresponding to a document.
-   */
-  async enqueueExtraction(
-    inputSource: InputSource,
-    params: ExtractionParameters| ConstructorParameters<typeof ExtractionParameters>[0]
-  ): Promise<JobResponse> {
-    if (inputSource === undefined) {
-      throw new MindeeError("An input document is required.");
-    }
-    const paramsInstance = params instanceof ExtractionParameters
-      ? params
-      : new ExtractionParameters(params);
-
-    await inputSource.init();
-    const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
-      ExtractionInference, inputSource, paramsInstance
-    );
-    if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
-      logger.error(`Failed enqueueing:\n${jobResponse.getRawHttp()}`);
-      throw new MindeeError("Enqueueing of the document failed.");
-    }
-    logger.debug(
-      `Successfully enqueued document with job ID: ${jobResponse.job.id}.`
-    );
-    return jobResponse;
-  }
-
   async enqueueInference<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
-    params: UtilityParameters | ConstructorParameters<typeof UtilityParameters>[0]
+    params:
+      UtilityParameters
+      | ExtractionParameters
+      | ConstructorParameters<typeof UtilityParameters>[0]
+      | ConstructorParameters<typeof ExtractionParameters>[0]
+    ,
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
