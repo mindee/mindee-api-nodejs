@@ -1,4 +1,8 @@
-import { JobResponse, LocalResponse, ErrorResponse } from "@/v2/index.js";
+import {
+  JobResponse,
+  LocalResponse,
+  ErrorResponse,
+} from "@/v2/index.js";
 import path from "node:path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { expect } from "chai";

@@ -3,14 +3,14 @@ import path from "node:path";
 
 import {
   Client,
-  InferenceParameters,
+  ExtractionParameters,
   PathInput,
   UrlInput,
   Base64Input,
-  InferenceResponse,
+  ExtractionResponse,
 } from "@/index.js";
-import { Inference } from "@/v2/parsing/index.js";
-import { SimpleField } from "@/v2/parsing/field/index.js";
+import { ExtractionInference } from "@/v2/parsing/index.js";
+import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import * as fs from "node:fs";
 import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index.js";
@@ -25,7 +25,7 @@ function check422(err: unknown) {
   expect(errObj.errors).to.be.instanceOf(Array);
 }
 
-function checkEmptyActiveOptions(inference: Inference) {
+function checkEmptyActiveOptions(inference: ExtractionInference) {
   expect(inference.activeOptions).to.not.be.null;
   expect(inference.activeOptions?.rag).to.be.false;
   expect(inference.activeOptions?.rawText).to.be.false;
@@ -80,11 +80,12 @@ describe("MindeeV2 – Client Integration Tests", () => {
       webhookIds: [],
       alias: "ts_integration_empty_multiple"
     };
-    const response = await client.enqueueAndGetInference(source, params);
-
+    const response = await client.enqueueAndGetInference(
+      ExtractionInference, source, params
+    );
     expect(response).to.exist;
-    expect(response.inference).to.be.instanceOf(Inference);
-    const inference: Inference = response.inference;
+    expect(response.inference).to.be.instanceOf(ExtractionInference);
+    const inference: ExtractionInference = response.inference;
 
     expect(inference.file?.name).to.equal("multipage_cut-2.pdf");
     expect(inference.file.pageCount).to.equal(2);
@@ -108,10 +109,11 @@ describe("MindeeV2 – Client Integration Tests", () => {
       alias: "ts_integration_binary_filled_single"
     };
 
-    const response = await client.enqueueAndGetInference(source, params);
-
-    expect(response.inference).to.be.instanceOf(Inference);
-    const inference: Inference = response.inference;
+    const response = await client.enqueueAndGetInference(
+      ExtractionInference, source, params
+    );
+    expect(response.inference).to.be.instanceOf(ExtractionInference);
+    const inference: ExtractionInference = response.inference;
     expect(inference.file?.name).to.equal("default_sample.jpg");
     expect(inference.model?.id).to.equal(modelId);
 
@@ -136,7 +138,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("Filled, single-page image – Base64Input - enqueueAndGetInference must succeed", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
     const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
-    const params = new InferenceParameters({
+    const params = new ExtractionParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -146,10 +148,11 @@ describe("MindeeV2 – Client Integration Tests", () => {
       alias: "ts_integration_base64_filled_single"
     });
 
-    const response = await client.enqueueAndGetInference(source, params);
-
-    expect(response.inference).to.be.instanceOf(Inference);
-    const inference: Inference = response.inference;
+    const response = await client.enqueueAndGetInference(
+      ExtractionInference, source, params
+    );
+    expect(response.inference).to.be.instanceOf(ExtractionInference);
+    const inference: ExtractionInference = response.inference;
     expect(inference.file?.name).to.equal("receipt.jpg");
     expect(inference.model?.id).to.equal(modelId);
 
@@ -168,7 +171,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const badParams = { modelId: "00000000-0000-0000-0000-000000000000" };
 
     try {
-      await client.enqueueInference(source, badParams);
+      await client.enqueueInference(ExtractionInference, source, badParams);
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);
@@ -177,7 +180,10 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
   it("Invalid job ID – getInference must raise 422", async () => {
     try {
-      await client.getInference("00000000-0000-0000-0000-000000000000");
+      await client.getInference(
+        ExtractionInference,
+        "00000000-0000-0000-0000-000000000000"
+      );
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);
@@ -187,7 +193,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("HTTPS URL – enqueue & get inference must succeed", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
     const source = new UrlInput({ url });
-    const params = new InferenceParameters({
+    const params = new ExtractionParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -196,15 +202,16 @@ describe("MindeeV2 – Client Integration Tests", () => {
       webhookIds: [],
       alias: "ts_integration_url_source"
     });
-    const response: InferenceResponse = await client.enqueueAndGetInference(source, params);
-
+    const response: ExtractionResponse = await client.enqueueAndGetInference(
+      ExtractionInference, source, params
+    );
     expect(response).to.exist;
-    expect(response.inference).to.be.instanceOf(Inference);
+    expect(response.inference).to.be.instanceOf(ExtractionInference);
   }).timeout(60000);
 
   it("Data Schema Override - Overrides the data schema successfully", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
-    const params = new InferenceParameters({
+    const params = new ExtractionParameters({
       modelId,
       rag: false,
       rawText: false,
@@ -214,10 +221,11 @@ describe("MindeeV2 – Client Integration Tests", () => {
       dataSchema: dataSchemaReplace,
       alias: "ts_integration_data_schema_replace"
     });
-    const response = await client.enqueueAndGetInference(source, params);
-
+    const response = await client.enqueueAndGetInference(
+      ExtractionInference, source, params
+    );
     expect(response).to.exist;
-    expect(response.inference).to.be.instanceOf(Inference);
+    expect(response.inference).to.be.instanceOf(ExtractionInference);
     expect(response.inference.result.fields.get("test_replace")).to.exist;
     expect((response.inference.result.fields.get("test_replace") as SimpleField).value).to.be.equals("a test value");
 
