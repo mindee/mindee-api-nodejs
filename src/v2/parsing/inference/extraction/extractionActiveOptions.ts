@@ -1,7 +1,7 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { DataSchemaActiveOption } from "./dataSchemaActiveOption.js";
 
-export class InferenceActiveOptions {
+export class ExtractionActiveOptions {
   /**
    * Whether the RAG feature was activated.
    */

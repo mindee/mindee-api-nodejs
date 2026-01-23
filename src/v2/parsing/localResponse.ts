@@ -1,7 +1,7 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { MindeeError } from "@/errors/index.js";
-import { BaseResponse } from "./baseResponse.js";
 import { LocalResponseBase } from "@/parsing/localResponseBase.js";
+import { BaseResponse } from "./baseResponse.js";
 
 /**
  * Local response loaded from a file.

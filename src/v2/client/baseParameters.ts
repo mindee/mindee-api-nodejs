@@ -1,6 +1,17 @@
-import { StringDict } from "@/parsing/stringDict.js";
-import { PollingOptions, ValidatedPollingOptions } from "./pollingOptions.js";
-import { DataSchema } from "./dataSchema.js";
+import { ValidatedPollingOptions } from "@/v2/client/pollingOptions.js";
+import { PollingOptions } from "@/v2/index.js";
+import { MindeeConfigurationError } from "@/errors/index.js";
+
+/**
+ * Constructor parameters for BaseParameters and its subclasses.
+ */
+export interface BaseParametersConstructor {
+  modelId: string;
+  alias?: string;
+  webhookIds?: string[];
+  pollingOptions?: PollingOptions;
+  closeFile?: boolean;
+}
 
 /**
  * Parameters accepted by the asynchronous **inference** v2 endpoint.
@@ -20,38 +31,16 @@ import { DataSchema } from "./dataSchema.js";
  *   }
  * };
  */
-export class InferenceParameters {
+export abstract class BaseParameters {
   /**
    * Model ID to use for the inference. **Required.**
    */
   modelId: string;
   /**
-   * Use Retrieval-Augmented Generation during inference.
-   */
-  rag?: boolean;
-  /**
-   * Extract the entire text from the document as strings, and fill the `rawText` attribute.
-   */
-  rawText?: boolean;
-  /**
-   * Calculate bounding box polygons for values, and fill the `locations` attribute of fields.
-   */
-  polygon?: boolean;
-  /**
-   * Calculate confidence scores for values, and fill the `confidence` attribute of fields.
-   * Useful for automation.
-   */
-  confidence?: boolean;
-  /**
    * Use an alias to link the file to your own DB.
    * If empty, no alias will be used.
    */
   alias?: string;
-  /**
-   * Additional text context used by the model during inference.
-   * *Not recommended*, for specific use only.
-   */
-  textContext?: string;
   /**
    * Webhook IDs to call after all processing is finished.
    * If empty, no webhooks will be used.
@@ -66,43 +55,16 @@ export class InferenceParameters {
    * Set to `false` to keep it open.
    */
   closeFile?: boolean;
-  /**
-   * Dynamic changes to the data schema of the model for this inference.
-   * Not recommended, for specific use only.
-   */
-  dataSchema?: DataSchema | StringDict | string;
 
-  constructor(params: {
-    modelId: string;
-    rag?: boolean;
-    rawText?: boolean;
-    polygon?: boolean;
-    confidence?: boolean;
-    alias?: string;
-    textContext?: string;
-    webhookIds?: string[];
-    pollingOptions?: PollingOptions;
-    closeFile?: boolean;
-    dataSchema?: DataSchema | StringDict | string;
-  }) {
+  protected constructor(params: BaseParametersConstructor) {
+    if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
+      throw new MindeeConfigurationError("Model ID must be provided");
+    }
     this.modelId = params.modelId;
-    this.rag = params.rag;
-    this.rawText = params.rawText;
-    this.polygon = params.polygon;
-    this.confidence = params.confidence;
     this.alias = params.alias;
-    this.textContext = params.textContext;
     this.webhookIds = params.webhookIds;
     this.closeFile = params.closeFile;
     this.pollingOptions = params.pollingOptions;
-
-    if (params.dataSchema !== undefined && params.dataSchema !== null) {
-      if (!(params.dataSchema instanceof DataSchema)){
-        this.dataSchema = new DataSchema(params.dataSchema);
-      } else {
-        this.dataSchema = params.dataSchema;
-      }
-    }
   }
 
   /**
@@ -140,5 +102,23 @@ export class InferenceParameters {
       }
     }
     return newAsyncParams as ValidatedPollingOptions;
+  }
+
+  /**
+   * Returns the form data to send to the API.
+   * @returns A `FormData` object.
+   */
+  getFormData(): FormData {
+    const form = new FormData();
+
+    form.set("model_id", this.modelId);
+
+    if (this.alias !== undefined && this.alias !== null) {
+      form.set("alias", this.alias);
+    }
+    if (this.webhookIds && this.webhookIds.length > 0) {
+      form.set("webhook_ids", this.webhookIds.join(","));
+    }
+    return form;
   }
 }

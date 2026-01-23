@@ -1,6 +1,6 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { InferenceResponse, LocalResponse } from "@/v2/index.js";
+import { ExtractionResponse, LocalResponse } from "@/v2/index.js";
 
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
@@ -16,8 +16,8 @@ async function assertLocalResponse(localResponse: LocalResponse) {
   expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
   expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
   expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
-  const inferenceResponse = await localResponse.deserializeResponse(InferenceResponse);
-  expect(inferenceResponse).to.be.an.instanceof(InferenceResponse);
+  const inferenceResponse = await localResponse.deserializeResponse(ExtractionResponse);
+  expect(inferenceResponse).to.be.an.instanceof(ExtractionResponse);
   expect(inferenceResponse.inference).to.not.be.null;
 }
 
@@ -40,9 +40,23 @@ describe("MindeeV2 - Load Local Response", () => {
   it("should deserialize a prediction.", async () => {
     const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
-    const response = await localResponse.deserializeResponse(InferenceResponse);
-    expect(response).to.be.an.instanceof(InferenceResponse);
+    const response = await localResponse.deserializeResponse(ExtractionResponse);
+    expect(response).to.be.an.instanceof(ExtractionResponse);
 
     expect(JSON.stringify(response.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
+  });
+
+  it("loading an inference works on catalog model", async () => {
+    const jsonPath = path.join(
+      V2_RESOURCE_PATH,
+      "products",
+      "financial_document",
+      "complete.json"
+    );
+    const localResponse = new LocalResponse(jsonPath);
+    const response: ExtractionResponse = await localResponse.deserializeResponse(ExtractionResponse);
+    expect(response.inference.model.id).to.equal(
+      "12345678-1234-1234-1234-123456789abc"
+    );
   });
 });

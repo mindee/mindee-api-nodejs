@@ -1,11 +1,12 @@
 import { expect } from "chai";
 import { MockAgent, setGlobalDispatcher } from "undici";
 import path from "node:path";
-import { Client, PathInput, InferenceResponse } from "@/index.js";
+import { Client, PathInput } from "@/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
-import { LocalResponse } from "@/v2/index.js";
+import fs from "node:fs/promises";
+import { CropInference, ExtractionInference } from "@/v2/parsing/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
@@ -20,36 +21,29 @@ function dummyEnvvars(): void {
   process.env.MINDEE_V2_API_HOST = "v2-client-host";
 }
 
-function setNockInterceptors(): void {
+async function setInterceptor(statusCode: number, filePath: string): Promise<void> {
+  const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
+  mockPool
+    .intercept({ path: /.*/, method: "GET" })
+    .reply(statusCode, fileObj);
+}
+
+async function setAllInterceptors(): Promise<void> {
   mockPool
     .intercept({ path: /.*/, method: "POST" })
     .reply(
       400,
       { status: 400, detail: "forced failure from test", title: "Bad Request", code: "400-001" }
     );
-
-  mockPool
-    .intercept({ path: /.*/, method: "GET" })
-    .reply(200, {
-      job: {
-        id: "12345678-1234-1234-1234-123456789ABC",
-        model_id: "87654321-4321-4321-4321-CBA987654321",
-        filename: "default_sample.jpg",
-        alias: "dummy-alias.jpg",
-        created_at: "2025-07-03T14:27:58.974451",
-        status: "Processing",
-        polling_url:
-          "https://api-v2.mindee.net/v2/jobs/12345678-1234-1234-1234-123456789ABC",
-        result_url: null,
-        webhooks: [],
-        error: null,
-      },
-    });
+  await setInterceptor(
+    200,
+    path.join(V2_RESOURCE_PATH, "job/ok_processing.json")
+  );
 }
 
-const fileTypesDir = path.join(RESOURCE_PATH, "file_types");
-
 describe("MindeeV2 - ClientV2", () => {
+  const fileTypesDir = path.join(RESOURCE_PATH, "file_types");
+
   before(() => {
     dummyEnvvars();
   });
@@ -62,8 +56,8 @@ describe("MindeeV2 - ClientV2", () => {
   describe("Client configured via environment variables", () => {
     let client: Client;
 
-    beforeEach(() => {
-      setNockInterceptors();
+    beforeEach(async () => {
+      await setAllInterceptors();
       client = new Client({ apiKey: "dummy", debug: true, dispatcher: mockAgent });
     });
 
@@ -75,12 +69,12 @@ describe("MindeeV2 - ClientV2", () => {
       expect(api.settings.baseHeaders["User-Agent"]).to.match(/mindee/i);
     });
 
-    it("enqueue(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueueInference(path) rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueueInference(inputDoc, { modelId: "dummy-model", textContext: "hello" }),
+        client.enqueueInference(ExtractionInference, inputDoc, { modelId: "dummy-model", textContext: "hello" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);
@@ -89,11 +83,26 @@ describe("MindeeV2 - ClientV2", () => {
       );
     });
 
-    it("enqueueAndParse(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueueUtility(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+      const filePath = path.join(fileTypesDir, "receipt.jpg");
+      const inputDoc = new PathInput({ inputPath: filePath });
+
+      await assert.rejects(
+        client.enqueueInference(CropInference, inputDoc, { modelId: "dummy-model" }),
+        (error: any) => {
+          assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
+          assert.strictEqual(error.status, 400);
+          return true;
+        }
+      );
+    });
+
+    it("enqueueAndGetInference(path) rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
       await assert.rejects(
         client.enqueueAndGetInference(
+          ExtractionInference,
           inputDoc,
           { modelId: "dummy-model", rag: false }
         ),
@@ -102,22 +111,6 @@ describe("MindeeV2 - ClientV2", () => {
           assert.strictEqual(error.status, 400);
           return true;
         }
-      );
-    });
-
-    it("loading an inference works on stored JSON fixtures", async () => {
-      const jsonPath = path.join(
-        V2_RESOURCE_PATH,
-        "products",
-        "financial_document",
-        "complete.json"
-      );
-
-      const localResponse = new LocalResponse(jsonPath);
-      const response: InferenceResponse = await localResponse.deserializeResponse(InferenceResponse);
-
-      expect(response.inference.model.id).to.equal(
-        "12345678-1234-1234-1234-123456789abc"
       );
     });
 
@@ -131,7 +124,7 @@ describe("MindeeV2 - ClientV2", () => {
         ),
       });
       await assert.rejects(
-        client.enqueueInference(input, { modelId: "dummy-model" }),
+        client.enqueueInference(ExtractionInference, input, { modelId: "dummy-model" }),
         (error: any) => {
           expect(error).to.be.instanceOf(MindeeHttpErrorV2);
           expect(error.status).to.equal(400);
@@ -141,7 +134,7 @@ describe("MindeeV2 - ClientV2", () => {
       );
     });
 
-    it("parseQueued(jobId) returns a fully-formed JobResponse", async () => {
+    it("getJob(jobId) returns a fully-formed JobResponse", async () => {
       const resp = await client.getJob(
         "12345678-1234-1234-1234-123456789ABC"
       );

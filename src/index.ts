@@ -18,12 +18,21 @@ export * as v1 from "./v1/index.js";
 export * as v2 from "./v2/index.js";
 export {
   Client,
-  InferenceFile,
-  InferenceResponse,
-  JobResponse,
-  RawText,
-  RagMetadata,
-  InferenceParameters,
+  ExtractionParameters,
   DataSchema,
+  InferenceFile,
+  InferenceModel,
+  ClassificationInference,
+  ClassificationResponse,
+  CropInference,
+  CropResponse,
+  ExtractionInference,
+  ExtractionResponse,
+  OcrInference,
+  OcrResponse,
+  SplitInference,
+  SplitResponse,
+  JobResponse,
+  ErrorResponse,
 } from "./v2/index.js";
 export type { PollingOptions } from "./v2/index.js";
