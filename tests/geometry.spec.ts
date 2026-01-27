@@ -1,4 +1,4 @@
-import * as geometry from "../src/geometry";
+import * as geometry from "@/geometry/index.js";
 import { expect } from "chai";
 
 describe("Geometry functions", () => {

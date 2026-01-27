@@ -1,10 +1,20 @@
-import { expect } from "chai";
 import path from "node:path";
-import { LocalResponse, InferenceResponse, RawText, RagMetadata } from "../../../src";
-import { FieldConfidence, ListField, ObjectField, SimpleField } from "../../../src/parsing/v2/field";
 import { promises as fs } from "node:fs";
-import { Polygon } from "../../../src/geometry";
-import { V2_RESOURCE_PATH } from "../../index";
+import { expect } from "chai";
+import { Polygon } from "@/geometry/index.js";
+import {
+  FieldConfidence,
+  ListField,
+  ObjectField,
+  SimpleField,
+} from "@/v2/parsing/inference/field/index.js";
+import {
+  LocalResponse,
+  ExtractionResponse,
+  RagMetadata,
+  RawText,
+} from "@/v2/parsing/index.js";
+import { V2_RESOURCE_PATH } from "../../index.js";
 
 const findocPath = path.join(V2_RESOURCE_PATH, "products", "financial_document");
 const inferencePath = path.join(V2_RESOURCE_PATH, "inference");
@@ -13,10 +23,10 @@ const standardFieldPath = path.join(inferencePath, "standard_field_types.json");
 const standardFieldRstPath = path.join(inferencePath, "standard_field_types.rst");
 const locationFieldPath = path.join(findocPath, "complete_with_coordinates.json");
 
-async function loadV2Inference(resourcePath: string): Promise<InferenceResponse> {
+async function loadV2Inference(resourcePath: string): Promise<ExtractionResponse> {
   const localResponse = new LocalResponse(resourcePath);
   await localResponse.init();
-  return localResponse.deserializeResponse(InferenceResponse);
+  return localResponse.deserializeResponse(ExtractionResponse);
 }
 
 describe("MindeeV2 - Inference Response", async () => {

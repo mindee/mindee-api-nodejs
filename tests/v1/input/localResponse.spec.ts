@@ -1,9 +1,9 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { Client, PredictResponse, AsyncPredictResponse, LocalResponse } from "../../../src";
-import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "../../../src/product";
 import path from "path";
-import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index";
+import { AsyncPredictResponse, LocalResponse, PredictResponse } from "@/v1/index.js";
+import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
+import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index.js";
 
 const signature: string = "5ed1673e34421217a5dbfcad905ee62261a3dd66c442f3edd19302072bbf70d0";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
@@ -50,8 +50,7 @@ describe("MindeeV1 - Load Local Response", () => {
   it("should load into a sync prediction.", async () => {
     const fileObj = await fs.readFile(multiReceiptsDetectorPath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
-    const dummyClient = new Client({ apiKey: "dummy-key" });
-    const prediction = await dummyClient.loadPrediction(MultiReceiptsDetectorV1, localResponse);
+    const prediction = await localResponse.loadPrediction(MultiReceiptsDetectorV1);
     expect(prediction).to.be.an.instanceof(PredictResponse);
 
     expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
@@ -60,8 +59,7 @@ describe("MindeeV1 - Load Local Response", () => {
   it("should load a failed prediction.", async () => {
     const fileObj = await fs.readFile(failedPath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
-    const dummyClient = new Client({ apiKey: "dummy-key" });
-    const prediction = await dummyClient.loadPrediction(InvoiceV4, localResponse);
+    const prediction = await localResponse.loadPrediction(InvoiceV4);
     expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
     expect((prediction as AsyncPredictResponse<InvoiceV4>).job.status).to.be.eq("failed");
   });
@@ -69,8 +67,7 @@ describe("MindeeV1 - Load Local Response", () => {
   it("should load into an async prediction.", async () => {
     const fileObj = await fs.readFile(internationalIdPath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
-    const dummyClient = new Client({ apiKey: "dummy-key" });
-    const prediction = await dummyClient.loadPrediction(InternationalIdV2, localResponse);
+    const prediction = await localResponse.loadPrediction(InternationalIdV2);
     expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
 
     expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));

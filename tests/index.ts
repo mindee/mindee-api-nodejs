@@ -1,6 +1,9 @@
-import path from "node:path";
+import { fileURLToPath } from "url";
+import { dirname } from "path";
+import path from "path";
 
-export const RESOURCE_PATH = path.join(__dirname, "data");
+const currentDirName = dirname(fileURLToPath(import.meta.url));
+export const RESOURCE_PATH = path.join(currentDirName, "data");
 
 export const V1_RESOURCE_PATH = path.join(RESOURCE_PATH, "v1");
 export const V1_PRODUCT_PATH = path.join(V1_RESOURCE_PATH, "products");

@@ -1,0 +1,118 @@
+import { URLSearchParams } from "url";
+import { InputSource, LocalInputSource } from "@/input/index.js";
+import { ExecutionPriority } from "@/v1/parsing/common/index.js";
+import { cutDocPages, sendRequestAndReadResponse, BaseHttpResponse } from "../../http/apiCore.js";
+import { ApiSettingsV1 } from "./apiSettingsV1.js";
+import { handleError } from "./errors.js";
+import { WorkflowParams } from "./httpParams.js";
+import { isValidSyncResponse } from "./responseValidation.js";
+
+/**
+ * Endpoint for a workflow.
+ */
+export class WorkflowEndpoint {
+  /** Settings relating to the API. */
+  settings: ApiSettingsV1;
+  /** Root of the URL for API calls. */
+  urlRoot: string;
+
+  constructor(
+    settings: ApiSettingsV1,
+    workflowId: string
+  ) {
+    this.settings = settings;
+    this.urlRoot = `/v1/workflows/${workflowId}/executions`;
+  }
+
+  /**
+   * Sends a document to a workflow execution.
+   * Throws an error if the server's response contains one.
+   * @param {WorkflowParams} params parameters relating to prediction options.
+   * @category Synchronous
+   * @returns a `Promise` containing parsing results.
+   */
+  async executeWorkflow(params: WorkflowParams): Promise<BaseHttpResponse> {
+    await params.inputDoc.init();
+    if (params.pageOptions !== undefined) {
+      await cutDocPages(params.inputDoc, params.pageOptions);
+    }
+    const response = await this.#workflowReqPost(params);
+    if (!isValidSyncResponse(response)) {
+      handleError(this.urlRoot, response, response.messageObj?.statusMessage);
+    }
+    return response;
+  }
+
+  /**
+   * Make a request to POST a document for workflow.
+   *
+   * @param {WorkflowParams} params parameters relating to prediction options.
+   */
+  #workflowReqPost(params: WorkflowParams): Promise<BaseHttpResponse> {
+    return this.sendFileForPrediction(
+      params.inputDoc,
+      params.alias,
+      params.priority,
+      params.fullText,
+      params.publicUrl,
+      params.rag
+    );
+  }
+
+  /**
+   * Send a file to a prediction API.
+   * @param input
+   * @param alias
+   * @param priority
+   * @param fullText
+   * @param publicUrl
+   * @param rag
+   */
+  protected async sendFileForPrediction(
+    input: InputSource,
+    alias: string | null = null,
+    priority: ExecutionPriority | null = null,
+    fullText: boolean = false,
+    publicUrl: string | null = null,
+    rag: boolean | null = null,
+  ): Promise<BaseHttpResponse> {
+    const searchParams = new URLSearchParams();
+    if (fullText) {
+      searchParams.set("full_text_ocr", "true");
+    }
+    if (rag) {
+      searchParams.set("rag", "true");
+    }
+
+    const form = new FormData();
+    if (input instanceof LocalInputSource && input.fileObject instanceof Buffer) {
+      form.set("document", new Blob([input.fileObject]), input.filename);
+    } else {
+      form.set("document", input.fileObject);
+    }
+    if (alias) {
+      form.set("alias", alias);
+    }
+    if (publicUrl) {
+      form.set("public_url", publicUrl);
+    }
+    if (priority) {
+      form.set("priority", priority.toString());
+    }
+
+    let path = this.urlRoot;
+    if (searchParams.toString().length > 0) {
+      path += `?${searchParams}`;
+    }
+
+    const options = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: path,
+      timeout: this.settings.timeout,
+      body: form,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
+  }
+}

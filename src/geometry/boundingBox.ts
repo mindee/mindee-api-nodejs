@@ -1,5 +1,5 @@
-import { Point } from "./point";
-import { Polygon } from "./polygon";
+import { Point } from "./point.js";
+import { Polygon } from "./polygon.js";
 
 /** A simple bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */
 export class BBox {

@@ -1,9 +1,9 @@
 import { promises as fs } from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { PredictResponse } from "../../../src";
-import { CustomV1, InvoiceV4, ReceiptV5 } from "../../../src/product";
-import { V1_PRODUCT_PATH } from "../../index";
+import { PredictResponse } from "@/v1/index.js";
+import { InvoiceV4, ReceiptV5 } from "@/v1/product/index.js";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
 const dataPath = {
   receiptV5: path.join(V1_PRODUCT_PATH, "expense_receipts/response_v5/complete.json"),
@@ -38,16 +38,4 @@ describe("MindeeV1 - Synchronous API predict response", () => {
     });
   });
 
-  it("should build a Custom Doc response", async () => {
-    const jsonData = await fs.readFile(path.resolve(dataPath.customV1));
-    const httpResponse = JSON.parse(jsonData.toString());
-    const response = new PredictResponse(CustomV1, httpResponse);
-    expect(response.document.inference.prediction).to.not.be.undefined;
-    expect(response.document.inference.pages.length).to.be.equals(2);
-    expect(response.document.nPages).to.be.equals(2);
-    response.document.inference.pages.forEach((page, idx) => {
-      expect(page.id).to.be.equals(idx);
-      expect(page.toString()).to.not.be.undefined;
-    });
-  });
 });

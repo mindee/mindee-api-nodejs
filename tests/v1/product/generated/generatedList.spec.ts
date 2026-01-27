@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import { GeneratedListField } from "../../../../src/parsing/generated";
+import { GeneratedListField } from "@/v1/parsing/generated/index.js";
 
 describe("Generated List Field Objects", async () => {
   it("should properly format floats.", async () => {

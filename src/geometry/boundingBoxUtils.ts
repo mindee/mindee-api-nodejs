@@ -1,5 +1,5 @@
-import { BoundingBox, BBox } from "./boundingBox";
-import { Polygon } from "./polygon";
+import { BoundingBox, BBox } from "./boundingBox.js";
+import { Polygon } from "./polygon.js";
 
 /**
  * Given a Polygon, calculate a polygon that encompasses all points.

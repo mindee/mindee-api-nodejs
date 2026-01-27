@@ -3,7 +3,9 @@ const mindee = require("mindee");
 // import * as mindee from "mindee";
 
 // Init a new client
-const mindeeClient = new mindee.Client({ apiKey: "my-api-key" });
+const mindeeClient = new mindee.v1.Client(
+  { apiKey: "my-api-key" }
+);
 
 // Load a file from disk
 const inputSource = new mindee.PathInput(
@@ -19,7 +21,7 @@ const customEndpoint = mindeeClient.createEndpoint(
 
 // Parse the file asynchronously.
 const asyncApiResponse = mindeeClient.enqueueAndParse(
-  mindee.product.GeneratedV1,
+  mindee.v1.product.GeneratedV1,
   inputSource,
   { endpoint: customEndpoint }
 );
