@@ -4,7 +4,7 @@ import { BaseInference } from "./baseInference.js";
 
 export abstract class BaseInferenceResponse<T extends BaseInference> extends BaseResponse {
   /**
-   * The inference result for a crop utility request.
+   * The inference result of the request.
    */
   public inference: T;
 
