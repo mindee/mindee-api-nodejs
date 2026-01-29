@@ -6,7 +6,7 @@ import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { Buffer } from "node:buffer";
 
-const signature: string = "1df388c992d87897fe61dfc56c444c58fc3c7369c31e2b5fd20d867695e93e85";
+const signature: string = "f390d9f7f57ac04f47b6309d8a40236b0182610804fc20e91b1f6028aaca07a7";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
 const filePath: string = path.join(V2_RESOURCE_PATH, "inference/standard_field_types.json");
 

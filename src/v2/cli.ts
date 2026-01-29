@@ -33,7 +33,7 @@ async function enqueueAndGetInference(
 ): Promise<void> {
   const mindeeClient = initClient(options);
   const inputSource = new PathInput({ inputPath: inputPath });
-  const response = await mindeeClient.enqueueAndGetInference(
+  const response = await mindeeClient.enqueueAndGetResult(
     responseType,
     inputSource,
     {

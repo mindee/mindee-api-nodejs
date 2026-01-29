@@ -94,7 +94,7 @@ export class Client {
     }
   }
 
-  async enqueueInference<T extends BaseInference>(
+  async enqueue<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
     params: InferenceParameters,
@@ -120,7 +120,7 @@ export class Client {
   }
 
   /**
-   * Retrieves an inference.
+   * Retrieves the result of a previously enqueued request.
    *
    * @param responseType class of the inference to retrieve.
    * @param inferenceId id of the queue to poll.
@@ -128,7 +128,7 @@ export class Client {
    * @category Asynchronous
    * @returns a `Promise` containing the inference.
    */
-  async getInference<T extends BaseInference>(
+  async getResult<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inferenceId: string
   ): Promise<BaseInferenceResponse<T>> {
@@ -139,7 +139,7 @@ export class Client {
   }
 
   /**
-   * Get the status of an inference that was previously enqueued.
+   * Get the processing status of a previously enqueued request.
    * Can be used for polling.
    *
    * @param jobId id of the queue to poll.
@@ -153,7 +153,7 @@ export class Client {
   }
 
   /**
-   * Send a document to an endpoint and poll the server until the result is sent or
+   * Enqueue a request and poll the server until the result is sent or
    * until the maximum number of tries is reached.
    *
    * @param responseType class of the inference to retrieve.
@@ -164,7 +164,7 @@ export class Client {
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
-  async enqueueAndGetInference<T extends BaseInference>(
+  async enqueueAndGetResult<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
     params: InferenceParameters
@@ -175,10 +175,10 @@ export class Client {
 
     const pollingOptions = paramsInstance.getValidatedPollingOptions();
 
-    const jobResponse: JobResponse = await this.enqueueInference(
+    const jobResponse: JobResponse = await this.enqueue(
       responseType, inputSource, paramsInstance
     );
-    return await this.pollForInference(
+    return await this.pollForResult(
       responseType, pollingOptions, jobResponse.job.id
     );
   }
@@ -188,7 +188,7 @@ export class Client {
    * until the maximum number of tries is reached.
    * @protected
    */
-  protected async pollForInference<T extends BaseInference>(
+  protected async pollForResult<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     pollingOptions: ValidatedPollingOptions,
     queueId: string,
@@ -220,7 +220,7 @@ export class Client {
         break;
       }
       if (pollResults.job.status === "Processed") {
-        return this.getInference(responseType, pollResults.job.id);
+        return this.getResult(responseType, pollResults.job.id);
       }
       await setTimeout(
         pollingOptions.delaySec * 1000,

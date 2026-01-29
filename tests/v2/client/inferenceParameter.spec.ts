@@ -30,7 +30,9 @@ describe("MindeeV2 - Inference Parameter", () => {
 
   describe("Data Schema", () => {
     before(async () => {
-      const fileContents = await fs.readFile(path.join(V2_RESOURCE_PATH, "inference/data_schema_replace_param.json"));
+      const fileContents = await fs.readFile(
+        path.join(V2_RESOURCE_PATH, "inference/data_schema_replace_param.json")
+      );
       expectedDataSchemaDict = JSON.parse(fileContents.toString());
       expectedDataSchemaString = JSON.stringify(expectedDataSchemaDict);
       expectedDataSchemaObject = new DataSchema(expectedDataSchemaDict);
