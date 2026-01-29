@@ -1,6 +1,7 @@
 import { ValidatedPollingOptions } from "@/v2/client/pollingOptions.js";
 import { PollingOptions } from "@/v2/index.js";
 import { MindeeConfigurationError } from "@/errors/index.js";
+import { logger } from "@/logger.js";
 
 /**
  * Constructor parameters for BaseParameters and its subclasses.

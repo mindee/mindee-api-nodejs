@@ -1,4 +1,4 @@
-import { FieldLocation } from "@/v2/parsing/inference/field/index.js";
+import { FieldLocation } from "@/v2/parsing/result/field/index.js";
 import { StringDict } from "@/parsing/index.js";
 
 export class CropItem {
@@ -11,6 +11,6 @@ export class CropItem {
   }
 
   toString(): string {
-    return `${this.objectType} :: ${this.location}`;
+    return `${this.objectType}: ${this.location}`;
   }
 }

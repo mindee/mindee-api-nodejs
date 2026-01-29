@@ -1,6 +1,6 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
-import { ExtractionParameters, UtilityParameters } from "@/v2/client/index.js";
+import { ExtractionParameters, SplitParameters } from "@/v2/client/index.js";
 import {
   BaseResponse,
   ErrorResponse,
@@ -23,7 +23,7 @@ import {
   CropInference,
   OcrInference,
   SplitInference
-} from "@/v2/parsing/inference/index.js";
+} from "@/v2/parsing/result/index.js";
 
 
 export class MindeeApiV2 {
@@ -79,7 +79,7 @@ export class MindeeApiV2 {
   async reqPostInferenceEnqueue<T extends BaseInference>(
     responseClass: InferenceResponseConstructor<T>,
     inputSource: InputSource,
-    params: ExtractionParameters | UtilityParameters
+    params: ExtractionParameters | SplitParameters
   ): Promise<JobResponse> {
     await inputSource.init();
     const slug = this.#getSlugFromInference(responseClass);
@@ -159,7 +159,7 @@ export class MindeeApiV2 {
   async #inferenceEnqueuePost(
     inputSource: InputSource,
     slug: string,
-    params: ExtractionParameters | UtilityParameters
+    params: ExtractionParameters | SplitParameters
   ): Promise<BaseHttpResponse> {
     const form = params.getFormData();
     if (inputSource instanceof LocalInputSource) {

@@ -1,9 +1,9 @@
 import { StringDict } from "@/parsing/index.js";
-import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
+import { BaseInference } from "@/v2/parsing/result/baseInference.js";
 
-export class ClassificationInference extends BaseInference {
+export class OcrInference extends BaseInference {
   /**
-   * Result of a classification inference.
+   * Result of an OCR inference.
    */
   result: any;
 

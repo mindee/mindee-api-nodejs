@@ -1,5 +1,5 @@
 import { StringDict } from "@/parsing/stringDict.js";
-import { BaseInferenceResponse } from "@/v2/parsing/inference/baseInferenceResponse.js";
+import { BaseInferenceResponse } from "@/v2/parsing/result/baseInferenceResponse.js";
 import { SplitInference } from "./splitInference.js";
 
 export class SplitResponse extends BaseInferenceResponse<SplitInference> {

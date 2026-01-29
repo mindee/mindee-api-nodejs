@@ -1,16 +1,15 @@
 import { StringDict } from "@/parsing/index.js";
-import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
-import { CropResult } from "@/v2/parsing/inference/crop/cropResult.js";
+import { BaseInference } from "@/v2/parsing/result/baseInference.js";
 
-export class CropInference extends BaseInference {
+export class SplitInference extends BaseInference {
   /**
-   * Result of a crop utility inference.
+   * Result of a split inference.
    */
-  result: CropResult;
+  result: any;
 
   constructor(serverResponse: StringDict) {
     super(serverResponse);
-    this.result = new CropResult(serverResponse["result"]);
+    this.result = serverResponse["result"];
   }
 
   toString(): string {

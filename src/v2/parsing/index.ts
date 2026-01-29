@@ -25,8 +25,8 @@ export {
   OcrInference,
   SplitResponse,
   SplitInference,
-} from "./inference/index.js";
+} from "./result/index.js";
 export { LocalResponse } from "./localResponse.js";
-export { RawText, RagMetadata } from "./inference/field/index.js";
+export { RawText, RagMetadata } from "./result/field/index.js";
 export type { ResponseConstructor, BaseResponse } from "./baseResponse.js";
-export type { InferenceResponseConstructor } from "./inference/index.js";
+export type { InferenceResponseConstructor } from "./result/index.js";

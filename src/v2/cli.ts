@@ -10,7 +10,7 @@ import {
   OcrInference,
   SplitInference,
   InferenceResponseConstructor,
-} from "@/v2/parsing/inference/index.js";
+} from "@/v2/parsing/result/index.js";
 
 const program = new Command();
 

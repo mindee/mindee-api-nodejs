@@ -10,7 +10,7 @@ import {
   ExtractionResponse,
 } from "@/index.js";
 import { ExtractionInference } from "@/v2/parsing/index.js";
-import { SimpleField } from "@/v2/parsing/inference/field/index.js";
+import { SimpleField } from "@/v2/parsing/result/field/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import * as fs from "node:fs";
 import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index.js";

@@ -7,7 +7,7 @@ import {
   ListField,
   ObjectField,
   SimpleField,
-} from "@/v2/parsing/inference/field/index.js";
+} from "@/v2/parsing/result/field/index.js";
 import {
   LocalResponse,
   ExtractionResponse,

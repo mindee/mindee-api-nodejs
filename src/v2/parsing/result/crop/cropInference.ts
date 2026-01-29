@@ -1,15 +1,16 @@
 import { StringDict } from "@/parsing/index.js";
-import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
+import { BaseInference } from "@/v2/parsing/result/baseInference.js";
+import { CropResult } from "@/v2/parsing/result/crop/cropResult.js";
 
-export class OcrInference extends BaseInference {
+export class CropInference extends BaseInference {
   /**
-   * Result of an OCR inference.
+   * Result of a crop utility inference.
    */
-  result: any;
+  result: CropResult;
 
   constructor(serverResponse: StringDict) {
     super(serverResponse);
-    this.result = serverResponse["result"];
+    this.result = new CropResult(serverResponse["result"]);
   }
 
   toString(): string {

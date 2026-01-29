@@ -17,7 +17,14 @@ import {
 } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { ExtractionParameters, UtilityParameters, ValidatedPollingOptions } from "./client/index.js";
+import {
+  BaseParameters,
+  ExtractionParameters,
+  CropParameters,
+  OcrParameters,
+  SplitParameters,
+  ValidatedPollingOptions
+} from "./client/index.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -39,10 +46,14 @@ export interface ClientOptions {
   dispatcher?: Dispatcher;
 }
 
-type InferenceParameters =
-  | UtilityParameters
+type EnqueueParameters =
+  | CropParameters
+  | ConstructorParameters<typeof CropParameters>[0]
+  | OcrParameters
+  | ConstructorParameters<typeof OcrParameters>[0]
+  | SplitParameters
+  | ConstructorParameters<typeof SplitParameters>[0]
   | ExtractionParameters
-  | ConstructorParameters<typeof UtilityParameters>[0]
   | ConstructorParameters<typeof ExtractionParameters>[0];
 
 /**
@@ -75,18 +86,18 @@ export class Client {
 
   #getParametersClassFromInference<T extends BaseInference>(
     inferenceClass: InferenceResponseConstructor<T>,
-    params: any,
-  ): ExtractionParameters | UtilityParameters {
-    if (params instanceof ExtractionParameters || params instanceof UtilityParameters) {
+    params: EnqueueParameters,
+  ): BaseParameters {
+    if (params instanceof BaseParameters) {
       return params;
     }
     switch (inferenceClass as any) {
     case CropInference:
-      return new UtilityParameters(params);
+      return new CropParameters(params);
     case OcrInference:
-      return new UtilityParameters(params);
+      return new OcrParameters(params);
     case SplitInference:
-      return new UtilityParameters(params);
+      return new SplitParameters(params);
     case ExtractionInference:
       return new ExtractionParameters(params);
     default:
@@ -97,7 +108,7 @@ export class Client {
   async enqueue<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
-    params: InferenceParameters,
+    params: EnqueueParameters,
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
@@ -167,7 +178,7 @@ export class Client {
   async enqueueAndGetResult<T extends BaseInference>(
     responseType: InferenceResponseConstructor<T>,
     inputSource: InputSource,
-    params: InferenceParameters
+    params: EnqueueParameters
   ): Promise<BaseInferenceResponse<T>> {
     const paramsInstance = this.#getParametersClassFromInference(
       responseType, params

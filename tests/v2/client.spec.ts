@@ -69,7 +69,7 @@ describe("MindeeV2 - ClientV2", () => {
       expect(api.settings.baseHeaders["User-Agent"]).to.match(/mindee/i);
     });
 
-    it("enqueueInference(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueue(path) on extraction rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
 
@@ -83,7 +83,7 @@ describe("MindeeV2 - ClientV2", () => {
       );
     });
 
-    it("enqueueUtility(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueue(path) on crop rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
 
@@ -97,7 +97,7 @@ describe("MindeeV2 - ClientV2", () => {
       );
     });
 
-    it("enqueueAndGetInference(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueueAndGetResult(path) on extraction rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
       await assert.rejects(

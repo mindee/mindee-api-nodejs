@@ -1,7 +1,7 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { ExtractionResult } from "./extractionResult.js";
 import { ExtractionActiveOptions } from "./extractionActiveOptions.js";
-import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
+import { BaseInference } from "@/v2/parsing/result/baseInference.js";
 
 export class ExtractionInference extends BaseInference {
   /**

@@ -1,5 +1,5 @@
 import { StringDict } from "@/parsing/stringDict.js";
-import { CropItem } from "@/v2/parsing/inference/crop/cropItem.js";
+import { CropItem } from "@/v2/parsing/result/crop/cropItem.js";
 
 export class CropResult {
   /**
@@ -12,6 +12,7 @@ export class CropResult {
   }
 
   toString(): string {
-    return `Crop\n====\n${this.crop}`;
+    const crop = this.crop.map(item => item.toString()).join("\n * ");
+    return `Crop\n====\n * ${crop}`;
   }
 }
