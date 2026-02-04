@@ -5,14 +5,14 @@ export class CropResult {
   /**
    * Fields contained in the inference.
    */
-  public crop: CropItem[] = [];
+  public crops: CropItem[] = [];
 
   constructor(serverResponse: StringDict) {
-    this.crop = serverResponse["crop"].map((cropItem: StringDict) => new CropItem(cropItem));
+    this.crops = serverResponse["crops"].map((cropItem: StringDict) => new CropItem(cropItem));
   }
 
   toString(): string {
-    const crop = this.crop.map(item => item.toString()).join("\n * ");
-    return `Crop\n====\n * ${crop}`;
+    const crops = this.crops.map(item => item.toString()).join("\n * ");
+    return `Crop\n====\n * ${crops}`;
   }
 }

@@ -22,6 +22,8 @@ import { logger } from "@/logger.js";
  * };
  */
 export class ExtractionParameters extends BaseParameters {
+  slug = "inferences";
+
   /**
    * Use Retrieval-Augmented Generation during inference.
    */

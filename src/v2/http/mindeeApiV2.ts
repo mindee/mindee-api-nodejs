@@ -82,9 +82,8 @@ export class MindeeApiV2 {
     params: ExtractionParameters | SplitParameters
   ): Promise<JobResponse> {
     await inputSource.init();
-    const slug = this.#getSlugFromInference(responseClass);
     const result: BaseHttpResponse = await this.#inferenceEnqueuePost(
-      inputSource, slug, params
+      inputSource, params
     );
     if (result.data.error !== undefined) {
       throw new MindeeHttpErrorV2(result.data.error);
@@ -153,12 +152,10 @@ export class MindeeApiV2 {
    * Sends a document to the inference queue.
    *
    * @param inputSource Local or remote file as an input.
-   * @param slug Slug of the inference to enqueue.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    */
   async #inferenceEnqueuePost(
     inputSource: InputSource,
-    slug: string,
     params: ExtractionParameters | SplitParameters
   ): Promise<BaseHttpResponse> {
     const form = params.getFormData();
@@ -167,7 +164,7 @@ export class MindeeApiV2 {
     } else {
       form.set("url", (inputSource as UrlInput).url);
     }
-    const path = `/v2/${slug}/enqueue`;
+    const path = `/v2/${params.slug}/enqueue`;
     const options = {
       method: "POST",
       headers: this.settings.baseHeaders,

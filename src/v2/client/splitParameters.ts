@@ -19,6 +19,7 @@ import { logger } from "@/logger.js";
  * };
  */
 export class SplitParameters extends BaseParameters {
+  slug = "utilities/split";
 
   constructor(params: BaseParametersConstructor & {}) {
     super({ ...params });

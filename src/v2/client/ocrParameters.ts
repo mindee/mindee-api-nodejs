@@ -19,6 +19,7 @@ import { logger } from "@/logger.js";
  * };
  */
 export class OcrParameters extends BaseParameters {
+  slug = "utilities/ocr";
 
   constructor(params: BaseParametersConstructor & {}) {
     super({ ...params });

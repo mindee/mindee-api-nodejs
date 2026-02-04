@@ -19,6 +19,7 @@ import { logger } from "@/logger.js";
  * };
  */
 export class CropParameters extends BaseParameters {
+  slug = "utilities/crop";
 
   constructor(params: BaseParametersConstructor & {}) {
     super({ ...params });

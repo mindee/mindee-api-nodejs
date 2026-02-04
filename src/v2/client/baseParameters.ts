@@ -1,7 +1,6 @@
 import { ValidatedPollingOptions } from "@/v2/client/pollingOptions.js";
 import { PollingOptions } from "@/v2/index.js";
 import { MindeeConfigurationError } from "@/errors/index.js";
-import { logger } from "@/logger.js";
 
 /**
  * Constructor parameters for BaseParameters and its subclasses.
@@ -56,6 +55,8 @@ export abstract class BaseParameters {
    * Set to `false` to keep it open.
    */
   closeFile?: boolean;
+
+  abstract readonly slug: string;
 
   protected constructor(params: BaseParametersConstructor) {
     if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
