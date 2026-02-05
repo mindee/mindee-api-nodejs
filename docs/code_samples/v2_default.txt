@@ -12,7 +12,7 @@ const mindeeClient = new mindee.Client(
 );
 
 // Set inference parameters
-const inferenceParams = {
+const extractionParams = {
   modelId: modelId,
 
   // Options: set to `true` or `false` to override defaults
@@ -32,10 +32,9 @@ const inferenceParams = {
 const inputSource = new mindee.PathInput({ inputPath: filePath });
 
 // Send for processing
-const response = mindeeClient.enqueueAndGetInference(
-  mindee.v2.ExtractionInference,
+const response = mindeeClient.enqueueAndGetResult<mindee.v2.product.Extraction>(
   inputSource,
-  inferenceParams
+  extractionParams
 );
 
 // Handle the response Promise

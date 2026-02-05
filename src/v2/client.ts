@@ -118,7 +118,7 @@ export class Client {
     );
     await inputSource.init();
     const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
-      responseType, inputSource, paramsInstance
+      inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${jobResponse.getRawHttp()}`);

@@ -1,6 +1,6 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
-import { ExtractionParameters, SplitParameters } from "@/v2/client/index.js";
+import { BaseParameters } from "@/v2/client/index.js";
 import {
   BaseResponse,
   ErrorResponse,
@@ -69,17 +69,15 @@ export class MindeeApiV2 {
 
   /**
    * Sends a file to the extraction inference queue.
-   * @param responseClass Class of the inference to enqueue.
    * @param inputSource Local file loaded as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    * @category V2
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostInferenceEnqueue<T extends BaseInference>(
-    responseClass: InferenceResponseConstructor<T>,
+  async reqPostInferenceEnqueue(
     inputSource: InputSource,
-    params: ExtractionParameters | SplitParameters
+    params: BaseParameters
   ): Promise<JobResponse> {
     await inputSource.init();
     const result: BaseHttpResponse = await this.#inferenceEnqueuePost(
@@ -156,7 +154,7 @@ export class MindeeApiV2 {
    */
   async #inferenceEnqueuePost(
     inputSource: InputSource,
-    params: ExtractionParameters | SplitParameters
+    params: BaseParameters
   ): Promise<BaseHttpResponse> {
     const form = params.getFormData();
     if (inputSource instanceof LocalInputSource) {
