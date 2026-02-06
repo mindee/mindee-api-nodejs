@@ -6,7 +6,7 @@ import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
 import fs from "node:fs/promises";
-import { CropInference, ExtractionInference } from "@/v2/parsing/index.js";
+import { Crop, Extraction } from "@/v2/product/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
@@ -74,7 +74,7 @@ describe("MindeeV2 - ClientV2", () => {
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueue(ExtractionInference, inputDoc, { modelId: "dummy-model", textContext: "hello" }),
+        client.enqueue(Extraction, inputDoc, { modelId: "dummy-model", textContext: "hello" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);
@@ -88,7 +88,7 @@ describe("MindeeV2 - ClientV2", () => {
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueue(CropInference, inputDoc, { modelId: "dummy-model" }),
+        client.enqueue(Crop, inputDoc, { modelId: "dummy-model" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);
@@ -102,7 +102,7 @@ describe("MindeeV2 - ClientV2", () => {
       const inputDoc = new PathInput({ inputPath: filePath });
       await assert.rejects(
         client.enqueueAndGetResult(
-          ExtractionInference,
+          Extraction,
           inputDoc,
           { modelId: "dummy-model", rag: false }
         ),
@@ -124,7 +124,7 @@ describe("MindeeV2 - ClientV2", () => {
         ),
       });
       await assert.rejects(
-        client.enqueue(ExtractionInference, input, { modelId: "dummy-model" }),
+        client.enqueue(Extraction, input, { modelId: "dummy-model" }),
         (error: any) => {
           expect(error).to.be.instanceOf(MindeeHttpErrorV2);
           expect(error.status).to.equal(400);

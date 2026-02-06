@@ -14,6 +14,7 @@ import { SimpleField } from "@/v2/parsing/result/field/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import * as fs from "node:fs";
 import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index.js";
+import { Extraction } from "@/v2/product/index.js";
 
 function check422(err: unknown) {
   expect(err).to.be.instanceOf(MindeeHttpErrorV2);
@@ -81,7 +82,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       alias: "ts_integration_empty_multiple"
     };
     const response = await client.enqueueAndGetResult(
-      ExtractionInference, source, params
+      Extraction, source, params
     );
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(ExtractionInference);
@@ -110,7 +111,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     };
 
     const response = await client.enqueueAndGetResult(
-      ExtractionInference, source, params
+      Extraction, source, params
     );
     expect(response.inference).to.be.instanceOf(ExtractionInference);
     const inference: ExtractionInference = response.inference;
@@ -138,7 +139,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("Filled, single-page image – Base64Input - enqueueAndGetInference must succeed", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
     const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
-    const params = new ExtractionParameters({
+    const params = {
       modelId,
       rag: false,
       rawText: false,
@@ -146,10 +147,10 @@ describe("MindeeV2 – Client Integration Tests", () => {
       confidence: false,
       webhookIds: [],
       alias: "ts_integration_base64_filled_single"
-    });
+    };
 
     const response = await client.enqueueAndGetResult(
-      ExtractionInference, source, params
+      Extraction, source, params
     );
     expect(response.inference).to.be.instanceOf(ExtractionInference);
     const inference: ExtractionInference = response.inference;
@@ -171,7 +172,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const badParams = { modelId: "00000000-0000-0000-0000-000000000000" };
 
     try {
-      await client.enqueue(ExtractionInference, source, badParams);
+      await client.enqueue(Extraction, source, badParams);
       expect.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);
@@ -181,7 +182,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   it("Invalid job ID – getInference must raise 422", async () => {
     try {
       await client.getResult(
-        ExtractionInference,
+        Extraction,
         "00000000-0000-0000-0000-000000000000"
       );
       expect.fail("Expected the call to throw, but it succeeded.");
@@ -203,7 +204,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       alias: "ts_integration_url_source"
     });
     const response: ExtractionResponse = await client.enqueueAndGetResult(
-      ExtractionInference, source, params
+      Extraction, source, params
     );
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(ExtractionInference);
@@ -222,7 +223,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
       alias: "ts_integration_data_schema_replace"
     });
     const response = await client.enqueueAndGetResult(
-      ExtractionInference, source, params
+      Extraction, source, params
     );
     expect(response).to.exist;
     expect(response.inference).to.be.instanceOf(ExtractionInference);
