@@ -6,16 +6,12 @@ import {
   ErrorResponse,
   ResponseConstructor,
   JobResponse,
-  BaseInference,
 } from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
 import { MindeeDeserializationError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
-import {
-  BaseInferenceResponse,
-} from "@/v2/parsing/result/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 
@@ -28,6 +24,7 @@ export class MindeeApiV2 {
 
   /**
    * Sends a file to the extraction inference queue.
+   * @param product product to enqueue.
    * @param inputSource Local file loaded as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    * @category V2
@@ -57,14 +54,14 @@ export class MindeeApiV2 {
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async reqGetResult<T extends BaseInference>(
-    product: typeof BaseProduct,
+  async reqGetResult<P extends typeof BaseProduct>(
+    product: P,
     inferenceId: string,
-  ): Promise<BaseInferenceResponse<T>> {
+  ): Promise<InstanceType<P["response"]>> {
     const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(
       inferenceId, product.getResultSlug
     );
-    return this.#processResponse(queueResponse, product.response) as BaseInferenceResponse<T>;
+    return this.#processResponse(queueResponse, product.response) as InstanceType<P["response"]>;
   }
 
   /**
@@ -109,6 +106,7 @@ export class MindeeApiV2 {
   /**
    * Sends a document to the inference queue.
    *
+   * @param product Product to enqueue.
    * @param inputSource Local or remote file as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    */

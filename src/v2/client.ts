@@ -7,8 +7,6 @@ import { LOG_LEVELS, logger } from "@/logger.js";
 import {
   ErrorResponse,
   JobResponse,
-  BaseInference,
-  BaseInferenceResponse,
 } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
@@ -113,10 +111,10 @@ export class Client {
    * @category Asynchronous
    * @returns a `Promise` containing the inference.
    */
-  async getResult<T extends BaseInference>(
-    product: typeof BaseProduct,
+  async getResult<P extends typeof BaseProduct>(
+    product: P,
     inferenceId: string
-  ): Promise<BaseInferenceResponse<T>> {
+  ): Promise<InstanceType<P["response"]>> {
     logger.debug(
       `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
     );
@@ -149,11 +147,11 @@ export class Client {
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
-  async enqueueAndGetResult<T extends BaseInference>(
-    product: typeof BaseProduct,
+  async enqueueAndGetResult<P extends typeof BaseProduct>(
+    product: P,
     inputSource: InputSource,
     params: EnqueueParameters
-  ): Promise<BaseInferenceResponse<T>> {
+  ): Promise<InstanceType<P["response"]>> {
     const paramsInstance = new product.parameters(params);
 
     const pollingOptions = paramsInstance.getValidatedPollingOptions();
@@ -171,11 +169,11 @@ export class Client {
    * until the maximum number of tries is reached.
    * @protected
    */
-  protected async pollForResult<T extends BaseInference>(
+  protected async pollForResult<P extends typeof BaseProduct>(
     product: typeof BaseProduct,
     pollingOptions: ValidatedPollingOptions,
     queueId: string,
-  ): Promise<BaseInferenceResponse<T>> {
+  ): Promise<InstanceType<P["response"]>> {
     logger.debug(
       `Waiting ${pollingOptions.initialDelaySec} seconds before polling.`
     );
