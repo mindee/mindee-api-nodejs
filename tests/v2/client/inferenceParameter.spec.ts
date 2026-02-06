@@ -1,10 +1,9 @@
 import { StringDict } from "@/parsing/index.js";
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
-import { ExtractionParameters } from "@/index.js";
 import { expect } from "chai";
-import { DataSchema } from "@/index.js";
 import { promises as fs } from "fs";
+import { ExtractionParameters, DataSchema } from "@/v2/product/extraction/index.js";
 
 let expectedDataSchemaDict: StringDict;
 let expectedDataSchemaString: string;

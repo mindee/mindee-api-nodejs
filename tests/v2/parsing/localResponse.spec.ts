@@ -1,10 +1,11 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { ExtractionResponse, LocalResponse } from "@/v2/index.js";
+import { LocalResponse } from "@/v2/index.js";
 
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { Buffer } from "node:buffer";
+import { ExtractionResponse } from "@/v2/product/index.js";
 
 const signature: string = "f390d9f7f57ac04f47b6309d8a40236b0182610804fc20e91b1f6028aaca07a7";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";

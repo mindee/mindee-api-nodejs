@@ -4,19 +4,10 @@ import { InputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
-import {
-  ErrorResponse,
-  JobResponse,
-} from "./parsing/index.js";
+import { ErrorResponse, JobResponse } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import {
-  ExtractionParameters,
-  CropParameters,
-  OcrParameters,
-  SplitParameters,
-  ValidatedPollingOptions
-} from "./client/index.js";
+import { ValidatedPollingOptions } from "./client/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 /**
@@ -38,16 +29,6 @@ export interface ClientOptions {
   /** Custom Dispatcher instance for the HTTP requests. */
   dispatcher?: Dispatcher;
 }
-
-type EnqueueParameters =
-  | CropParameters
-  | ConstructorParameters<typeof CropParameters>[0]
-  | OcrParameters
-  | ConstructorParameters<typeof OcrParameters>[0]
-  | SplitParameters
-  | ConstructorParameters<typeof SplitParameters>[0]
-  | ExtractionParameters
-  | ConstructorParameters<typeof ExtractionParameters>[0];
 
 /**
  * Mindee Client V2 class that centralizes most basic operations.
@@ -77,10 +58,10 @@ export class Client {
     logger.debug("Client V2 Initialized");
   }
 
-  async enqueue(
-    product: typeof BaseProduct,
+  async enqueue<P extends typeof BaseProduct>(
+    product: P,
     inputSource: InputSource,
-    params: EnqueueParameters,
+    params: InstanceType<P["parameters"]> | ConstructorParameters<P["parameters"]>[0],
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
@@ -150,7 +131,7 @@ export class Client {
   async enqueueAndGetResult<P extends typeof BaseProduct>(
     product: P,
     inputSource: InputSource,
-    params: EnqueueParameters
+    params: InstanceType<P["parameters"]> | ConstructorParameters<P["parameters"]>[0],
   ): Promise<InstanceType<P["response"]>> {
     const paramsInstance = new product.parameters(params);
 

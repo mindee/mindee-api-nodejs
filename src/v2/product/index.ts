@@ -1,5 +1,5 @@
-export { Classification } from "./classification.js";
-export { Crop } from "./crop.js";
-export { Extraction } from "./extraction.js";
-export { Ocr } from "./ocr.js";
-export { Split } from "./split.js";
+export { Classification } from "./classification/index.js";
+export { Crop } from "./crop/index.js";
+export { Extraction, ExtractionResponse } from "./extraction/index.js";
+export { Ocr } from "./ocr/index.js";
+export { Split } from "./split/index.js";

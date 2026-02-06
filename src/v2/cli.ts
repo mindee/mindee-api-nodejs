@@ -2,7 +2,7 @@ import { Command, OptionValues } from "commander";
 import { Client } from "./client.js";
 import { PathInput } from "../input/index.js";
 import * as console from "console";
-import { BaseInference } from "@/v2/parsing/result/index.js";
+import { BaseInference } from "@/v2/parsing/inference/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 import {
   Classification,

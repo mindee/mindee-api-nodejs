@@ -56,8 +56,6 @@ export abstract class BaseParameters {
    */
   closeFile?: boolean;
 
-  abstract readonly slug: string;
-
   protected constructor(params: BaseParametersConstructor) {
     if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
       throw new MindeeConfigurationError("Model ID must be provided");
