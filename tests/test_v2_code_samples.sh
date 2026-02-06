@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-OUTPUT_FILE='../test_code_samples/_test_v2.js'
+OUTPUT_FILE='../test_code_samples/_test_v2.mjs'
 API_KEY_V2=${MINDEE_V2_API_KEY}
 
 rm -fr ../test_code_samples
@@ -30,22 +30,22 @@ do
 
   if echo "${f}" | grep -q "v2_classification.txt"
   then
-    sed -i "s/MY_CLASSIFICATION_MODEL_ID/$CLASSIFICATION_MODEL_ID/" $OUTPUT_FILE
+    sed -i "s/MY_CLASSIFICATION_MODEL_ID/${MINDEE_V2_SE_TESTS_CLASSIFICATION_MODEL_ID}/" $OUTPUT_FILE
   fi
 
   if echo "${f}" | grep -q "v2_crop.txt"
   then
-    sed -i "s/MY_CROP_MODEL_ID/$CROP_MODEL_ID/" $OUTPUT_FILE
+    sed -i "s/MY_CROP_MODEL_ID/${MINDEE_V2_SE_TESTS_CROP_MODEL_ID}/" $OUTPUT_FILE
   fi
 
   if echo "${f}" | grep -q "v2_split.txt"
   then
-    sed -i "s/MY_SPLIT_MODEL_ID/$SPLIT_MODEL_ID/" $OUTPUT_FILE
+    sed -i "s/MY_SPLIT_MODEL_ID/${MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID}/" $OUTPUT_FILE
   fi
 
   if echo "${f}" | grep -q "v2_ocr.txt"
   then
-    sed -i "s/MY_OCR_MODEL_ID/$OCR_MODEL_ID/" $OUTPUT_FILE
+    sed -i "s/MY_OCR_MODEL_ID/${MINDEE_V2_SE_TESTS_OCR_MODEL_ID}/" $OUTPUT_FILE
   fi
 
   sleep 0.5  # avoid too many request errors
