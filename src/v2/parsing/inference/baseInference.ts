@@ -1,4 +1,4 @@
-import { InferenceModel } from "@/v2/parsing/inference/inferenceModel.js";
+import { InferenceModel } from "./inferenceModel.js";
 import { InferenceFile } from "@/v2/index.js";
 import { StringDict } from "@/parsing/index.js";
 

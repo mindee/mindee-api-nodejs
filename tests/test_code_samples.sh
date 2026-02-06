@@ -33,7 +33,7 @@ do
   sed "s/my-api-key/$API_KEY/" "${f}" > $OUTPUT_FILE
   sed -i "s/\/path\/to\/the\/file.ext/..\/mindee-api-nodejs\/tests\/data\/file_types\/pdf\/blank_1.pdf/" $OUTPUT_FILE
 
-  if echo "${f}" | grep -q "default_v2.txt"
+  if echo "${f}" | grep -q "v2_default.txt"
   then
     sed -i "s/MY_API_KEY/$API_KEY_V2/" $OUTPUT_FILE
     sed -i "s/MY_MODEL_ID/$MODEL_ID/" $OUTPUT_FILE

@@ -11,6 +11,6 @@ export class CropItem {
   }
 
   toString(): string {
-    return `${this.objectType} :: ${this.location}`;
+    return `${this.objectType}: ${this.location}`;
   }
 }

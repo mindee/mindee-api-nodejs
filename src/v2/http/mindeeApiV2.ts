@@ -1,29 +1,18 @@
 import { ApiSettingsV2 } from "./apiSettingsV2.js";
 import { Dispatcher } from "undici";
-import { ExtractionParameters, UtilityParameters } from "@/v2/client/index.js";
+import { BaseParameters } from "@/v2/client/index.js";
 import {
   BaseResponse,
   ErrorResponse,
   ResponseConstructor,
-  InferenceResponseConstructor,
   JobResponse,
-  CropResponse,
-  OcrResponse,
-  SplitResponse,
-  ExtractionResponse,
-  BaseInference, ExtractionInference,
 } from "@/v2/parsing/index.js";
 import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
 import { MindeeDeserializationError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
-import {
-  BaseInferenceResponse,
-  CropInference,
-  OcrInference,
-  SplitInference
-} from "@/v2/parsing/inference/index.js";
+import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 
 export class MindeeApiV2 {
@@ -33,58 +22,23 @@ export class MindeeApiV2 {
     this.settings = new ApiSettingsV2({ dispatcher: dispatcher, apiKey: apiKey });
   }
 
-  #getSlugFromInference<T extends BaseInference>(
-    responseClass: InferenceResponseConstructor<T>
-  ): string {
-    switch (responseClass as any) {
-    case CropInference:
-      return "utilities/crop";
-    case OcrInference:
-      return "utilities/ocr";
-    case SplitInference:
-      return "utilities/split";
-    case ExtractionInference:
-      return "inferences";
-    default:
-      throw new Error("Unsupported response class.");
-    }
-  }
-
-  #getResponseClassFromInference<T extends BaseInference>(
-    inferenceClass: InferenceResponseConstructor<T>
-  ): ResponseConstructor<BaseInferenceResponse<T>> {
-    switch (inferenceClass as any) {
-    case CropInference:
-      return CropResponse as any;
-    case OcrInference:
-      return OcrResponse as any;
-    case SplitInference:
-      return SplitResponse as any;
-    case ExtractionInference:
-      return ExtractionResponse as any;
-    default:
-      throw new Error("Unsupported inference class.");
-    }
-  }
-
   /**
    * Sends a file to the extraction inference queue.
-   * @param responseClass Class of the inference to enqueue.
+   * @param product product to enqueue.
    * @param inputSource Local file loaded as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    * @category V2
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostInferenceEnqueue<T extends BaseInference>(
-    responseClass: InferenceResponseConstructor<T>,
+  async reqPostProductEnqueue(
+    product: typeof BaseProduct,
     inputSource: InputSource,
-    params: ExtractionParameters | UtilityParameters
+    params: BaseParameters
   ): Promise<JobResponse> {
     await inputSource.init();
-    const slug = this.#getSlugFromInference(responseClass);
-    const result: BaseHttpResponse = await this.#inferenceEnqueuePost(
-      inputSource, slug, params
+    const result: BaseHttpResponse = await this.#productEnqueuePost(
+      product, inputSource, params
     );
     if (result.data.error !== undefined) {
       throw new MindeeHttpErrorV2(result.data.error);
@@ -95,19 +49,19 @@ export class MindeeApiV2 {
   /**
    * Requests the job of a queued document from the API.
    * Throws an error if the server's response contains one.
-   * @param responseClass
+   * @param product
    * @param inferenceId The document's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async reqGetInference<T extends BaseInference>(
-    responseClass: InferenceResponseConstructor<T>,
+  async reqGetResult<P extends typeof BaseProduct>(
+    product: P,
     inferenceId: string,
-  ): Promise<BaseInferenceResponse<T>> {
-    const slug = this.#getSlugFromInference(responseClass);
-    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(inferenceId, slug);
-    const actualResponseClass = this.#getResponseClassFromInference(responseClass);
-    return this.#processResponse(queueResponse, actualResponseClass) as BaseInferenceResponse<T>;
+  ): Promise<InstanceType<P["response"]>> {
+    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(
+      inferenceId, product.getResultSlug
+    );
+    return this.#processResponse(queueResponse, product.response) as InstanceType<P["response"]>;
   }
 
   /**
@@ -152,14 +106,14 @@ export class MindeeApiV2 {
   /**
    * Sends a document to the inference queue.
    *
+   * @param product Product to enqueue.
    * @param inputSource Local or remote file as an input.
-   * @param slug Slug of the inference to enqueue.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    */
-  async #inferenceEnqueuePost(
+  async #productEnqueuePost(
+    product: typeof BaseProduct,
     inputSource: InputSource,
-    slug: string,
-    params: ExtractionParameters | UtilityParameters
+    params: BaseParameters
   ): Promise<BaseHttpResponse> {
     const form = params.getFormData();
     if (inputSource instanceof LocalInputSource) {
@@ -167,7 +121,7 @@ export class MindeeApiV2 {
     } else {
       form.set("url", (inputSource as UrlInput).url);
     }
-    const path = `/v2/${slug}/enqueue`;
+    const path = `/v2/${product.enqueueSlug}/enqueue`;
     const options = {
       method: "POST",
       headers: this.settings.baseHeaders,

@@ -1,12 +1,13 @@
 import * as fs from "node:fs/promises";
 import { expect } from "chai";
-import { ExtractionResponse, LocalResponse } from "@/v2/index.js";
+import { LocalResponse } from "@/v2/index.js";
 
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { Buffer } from "node:buffer";
+import { ExtractionResponse } from "@/v2/product/index.js";
 
-const signature: string = "1df388c992d87897fe61dfc56c444c58fc3c7369c31e2b5fd20d867695e93e85";
+const signature: string = "e51bdf80f1a08ed44ee161100fc30a25cb35b4ede671b0a575dc9064a3f5dbf1";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
 const filePath: string = path.join(V2_RESOURCE_PATH, "inference/standard_field_types.json");
 

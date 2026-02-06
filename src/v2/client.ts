@@ -4,20 +4,11 @@ import { InputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
-import {
-  ErrorResponse,
-  JobResponse,
-  InferenceResponseConstructor,
-  BaseInference,
-  BaseInferenceResponse,
-  CropInference,
-  OcrInference,
-  SplitInference,
-  ExtractionInference,
-} from "./parsing/index.js";
+import { ErrorResponse, JobResponse } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { ExtractionParameters, UtilityParameters, ValidatedPollingOptions } from "./client/index.js";
+import { ValidatedPollingOptions } from "./client/index.js";
+import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -38,12 +29,6 @@ export interface ClientOptions {
   /** Custom Dispatcher instance for the HTTP requests. */
   dispatcher?: Dispatcher;
 }
-
-type InferenceParameters =
-  | UtilityParameters
-  | ExtractionParameters
-  | ConstructorParameters<typeof UtilityParameters>[0]
-  | ConstructorParameters<typeof ExtractionParameters>[0];
 
 /**
  * Mindee Client V2 class that centralizes most basic operations.
@@ -73,41 +58,20 @@ export class Client {
     logger.debug("Client V2 Initialized");
   }
 
-  #getParametersClassFromInference<T extends BaseInference>(
-    inferenceClass: InferenceResponseConstructor<T>,
-    params: any,
-  ): ExtractionParameters | UtilityParameters {
-    if (params instanceof ExtractionParameters || params instanceof UtilityParameters) {
-      return params;
-    }
-    switch (inferenceClass as any) {
-    case CropInference:
-      return new UtilityParameters(params);
-    case OcrInference:
-      return new UtilityParameters(params);
-    case SplitInference:
-      return new UtilityParameters(params);
-    case ExtractionInference:
-      return new ExtractionParameters(params);
-    default:
-      throw new Error("Unsupported inference class.");
-    }
-  }
-
-  async enqueueInference<T extends BaseInference>(
-    responseType: InferenceResponseConstructor<T>,
+  async enqueue<P extends typeof BaseProduct>(
+    product: P,
     inputSource: InputSource,
-    params: InferenceParameters,
+    params: InstanceType<P["parameters"]> | ConstructorParameters<P["parameters"]>[0],
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
     }
-    const paramsInstance = this.#getParametersClassFromInference(
-      responseType, params
-    );
+    const paramsInstance = params instanceof product.parameters
+      ? params
+      : new product.parameters(params);
     await inputSource.init();
-    const jobResponse = await this.mindeeApi.reqPostInferenceEnqueue(
-      responseType, inputSource, paramsInstance
+    const jobResponse = await this.mindeeApi.reqPostProductEnqueue(
+      product, inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
       logger.error(`Failed enqueueing:\n${jobResponse.getRawHttp()}`);
@@ -120,26 +84,26 @@ export class Client {
   }
 
   /**
-   * Retrieves an inference.
+   * Retrieves the result of a previously enqueued request.
    *
-   * @param responseType class of the inference to retrieve.
+   * @param product the product to retrieve.
    * @param inferenceId id of the queue to poll.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Asynchronous
    * @returns a `Promise` containing the inference.
    */
-  async getInference<T extends BaseInference>(
-    responseType: InferenceResponseConstructor<T>,
+  async getResult<P extends typeof BaseProduct>(
+    product: P,
     inferenceId: string
-  ): Promise<BaseInferenceResponse<T>> {
+  ): Promise<InstanceType<P["response"]>> {
     logger.debug(
-      `Attempting to get inference with ID: ${inferenceId} using response type: ${responseType.name}`
+      `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
     );
-    return await this.mindeeApi.reqGetInference(responseType, inferenceId);
+    return await this.mindeeApi.reqGetResult(product, inferenceId);
   }
 
   /**
-   * Get the status of an inference that was previously enqueued.
+   * Get the processing status of a previously enqueued request.
    * Can be used for polling.
    *
    * @param jobId id of the queue to poll.
@@ -153,10 +117,10 @@ export class Client {
   }
 
   /**
-   * Send a document to an endpoint and poll the server until the result is sent or
+   * Enqueue a request and poll the server until the result is sent or
    * until the maximum number of tries is reached.
    *
-   * @param responseType class of the inference to retrieve.
+   * @param product the product to retrieve.
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
    *
@@ -164,22 +128,20 @@ export class Client {
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
-  async enqueueAndGetInference<T extends BaseInference>(
-    responseType: InferenceResponseConstructor<T>,
+  async enqueueAndGetResult<P extends typeof BaseProduct>(
+    product: P,
     inputSource: InputSource,
-    params: InferenceParameters
-  ): Promise<BaseInferenceResponse<T>> {
-    const paramsInstance = this.#getParametersClassFromInference(
-      responseType, params
-    );
+    params: InstanceType<P["parameters"]> | ConstructorParameters<P["parameters"]>[0],
+  ): Promise<InstanceType<P["response"]>> {
+    const paramsInstance = new product.parameters(params);
 
     const pollingOptions = paramsInstance.getValidatedPollingOptions();
 
-    const jobResponse: JobResponse = await this.enqueueInference(
-      responseType, inputSource, paramsInstance
+    const jobResponse: JobResponse = await this.enqueue(
+      product, inputSource, paramsInstance
     );
-    return await this.pollForInference(
-      responseType, pollingOptions, jobResponse.job.id
+    return await this.pollForResult(
+      product, pollingOptions, jobResponse.job.id
     );
   }
 
@@ -188,11 +150,11 @@ export class Client {
    * until the maximum number of tries is reached.
    * @protected
    */
-  protected async pollForInference<T extends BaseInference>(
-    responseType: InferenceResponseConstructor<T>,
+  protected async pollForResult<P extends typeof BaseProduct>(
+    product: typeof BaseProduct,
     pollingOptions: ValidatedPollingOptions,
     queueId: string,
-  ): Promise<BaseInferenceResponse<T>> {
+  ): Promise<InstanceType<P["response"]>> {
     logger.debug(
       `Waiting ${pollingOptions.initialDelaySec} seconds before polling.`
     );
@@ -220,7 +182,7 @@ export class Client {
         break;
       }
       if (pollResults.job.status === "Processed") {
-        return this.getInference(responseType, pollResults.job.id);
+        return this.getResult(product, pollResults.job.id);
       }
       await setTimeout(
         pollingOptions.delaySec * 1000,

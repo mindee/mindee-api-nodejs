@@ -15,6 +15,7 @@ export class UrlInput extends InputSource {
     super();
     this.url = url;
     this.dispatcher = dispatcher ?? getGlobalDispatcher();
+    logger.debug("Initialized URL input source.");
   }
 
   async init() {

@@ -1,7 +1,6 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { logger } from "@/logger.js";
 
-
 export abstract class BaseResponse {
   /**
    * Raw text representation of the API's response.

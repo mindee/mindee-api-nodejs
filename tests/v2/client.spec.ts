@@ -6,7 +6,7 @@ import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../index.js";
 import fs from "node:fs/promises";
-import { CropInference, ExtractionInference } from "@/v2/parsing/index.js";
+import { Crop, Extraction } from "@/v2/product/index.js";
 
 const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
@@ -69,12 +69,12 @@ describe("MindeeV2 - ClientV2", () => {
       expect(api.settings.baseHeaders["User-Agent"]).to.match(/mindee/i);
     });
 
-    it("enqueueInference(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueue(path) on extraction rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueueInference(ExtractionInference, inputDoc, { modelId: "dummy-model", textContext: "hello" }),
+        client.enqueue(Extraction, inputDoc, { modelId: "dummy-model", textContext: "hello" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);
@@ -83,12 +83,12 @@ describe("MindeeV2 - ClientV2", () => {
       );
     });
 
-    it("enqueueUtility(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueue(path) on crop rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
-        client.enqueueInference(CropInference, inputDoc, { modelId: "dummy-model" }),
+        client.enqueue(Crop, inputDoc, { modelId: "dummy-model" }),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
           assert.strictEqual(error.status, 400);
@@ -97,12 +97,12 @@ describe("MindeeV2 - ClientV2", () => {
       );
     });
 
-    it("enqueueAndGetInference(path) rejects with MindeeHttpErrorV2 on 400", async () => {
+    it("enqueueAndGetResult(path) on extraction rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
       const inputDoc = new PathInput({ inputPath: filePath });
       await assert.rejects(
-        client.enqueueAndGetInference(
-          ExtractionInference,
+        client.enqueueAndGetResult(
+          Extraction,
           inputDoc,
           { modelId: "dummy-model", rag: false }
         ),
@@ -124,7 +124,7 @@ describe("MindeeV2 - ClientV2", () => {
         ),
       });
       await assert.rejects(
-        client.enqueueInference(ExtractionInference, input, { modelId: "dummy-model" }),
+        client.enqueue(Extraction, input, { modelId: "dummy-model" }),
         (error: any) => {
           expect(error).to.be.instanceOf(MindeeHttpErrorV2);
           expect(error.status).to.equal(400);
