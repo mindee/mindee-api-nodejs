@@ -22,6 +22,7 @@ export class ExtractionInference extends BaseInference {
   toString(): string {
     return (
       super.toString() +
+      this.activeOptions.toString() + "\n" +
       this.result.toString() + "\n"
     );
   }
