@@ -1,7 +1,7 @@
 import { InferenceFields } from "@/v2/parsing/inference/field/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
-import { RawText } from "../field/rawText.js";
-import { RagMetadata } from "../field/ragMetadata.js";
+import { RawText } from "@/v2/parsing/inference/field/rawText.js";
+import { RagMetadata } from "@/v2/parsing/inference/field/ragMetadata.js";
 
 export class ExtractionResult {
   /**

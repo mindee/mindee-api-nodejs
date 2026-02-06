@@ -10,11 +10,11 @@ import {
 } from "@/v2/parsing/inference/field/index.js";
 import {
   LocalResponse,
-  ExtractionResponse,
   RagMetadata,
   RawText,
 } from "@/v2/parsing/index.js";
 import { V2_RESOURCE_PATH } from "../../index.js";
+import { ExtractionResponse } from "@/v2/product/index.js";
 
 const findocPath = path.join(V2_RESOURCE_PATH, "products", "financial_document");
 const inferencePath = path.join(V2_RESOURCE_PATH, "inference");

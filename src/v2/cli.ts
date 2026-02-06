@@ -2,15 +2,15 @@ import { Command, OptionValues } from "commander";
 import { Client } from "./client.js";
 import { PathInput } from "../input/index.js";
 import * as console from "console";
+import { BaseInference } from "@/v2/parsing/inference/index.js";
+import { BaseProduct } from "@/v2/product/baseProduct.js";
 import {
-  BaseInference,
-  ClassificationInference,
-  CropInference,
-  ExtractionInference,
-  OcrInference,
-  SplitInference,
-  InferenceResponseConstructor,
-} from "@/v2/parsing/inference/index.js";
+  Classification,
+  Crop,
+  Extraction,
+  Ocr,
+  Split,
+} from "@/v2/product/index.js";
 
 const program = new Command();
 
@@ -27,14 +27,14 @@ function initClient(options: OptionValues): Client {
 }
 
 async function enqueueAndGetInference(
-  responseType: InferenceResponseConstructor<any>,
+  product: typeof BaseProduct,
   inputPath: string,
   options: OptionValues
 ): Promise<void> {
   const mindeeClient = initClient(options);
   const inputSource = new PathInput({ inputPath: inputPath });
-  const response = await mindeeClient.enqueueAndGetInference(
-    responseType,
+  const response = await mindeeClient.enqueueAndGetResult(
+    product,
     inputSource,
     {
       modelId: options.model,
@@ -78,11 +78,11 @@ export function cli() {
     .option("-k, --api-key <api_key>", "your Mindee API key");
 
   const inferenceTypes = [
-    { name: "extract", description: "Extract data from a document.", responseType: ExtractionInference },
-    { name: "crop", description: "Crop a document.", responseType: CropInference },
-    { name: "split", description: "Split a document into pages.", responseType: SplitInference },
-    { name: "ocr", description: "Read text from a document.", responseType: OcrInference },
-    { name: "classify", description: "Classify a document.", responseType: ClassificationInference },
+    { name: "extract", description: "Extract data from a document.", product: Extraction },
+    { name: "crop", description: "Crop a document.", product: Crop },
+    { name: "split", description: "Split a document into pages.", product: Split },
+    { name: "ocr", description: "Read text from a document.", product: Ocr },
+    { name: "classify", description: "Classify a document.", product: Classification },
   ];
 
   for (const inference of inferenceTypes) {
@@ -96,7 +96,7 @@ export function cli() {
       options: OptionValues,
     ) {
       const allOptions = { ...program.opts(), ...options };
-      return enqueueAndGetInference(inference.responseType, inputPath, allOptions);
+      return enqueueAndGetInference(inference.product, inputPath, allOptions);
     });
   }
 

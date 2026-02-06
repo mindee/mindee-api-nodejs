@@ -1,4 +1,5 @@
 import { BaseParameters, BaseParametersConstructor } from "@/v2/client/baseParameters.js";
+import { logger } from "@/logger.js";
 
 /**
  * Parameters accepted by the asynchronous **inference** v2 endpoint.
@@ -17,9 +18,9 @@ import { BaseParameters, BaseParametersConstructor } from "@/v2/client/baseParam
  *   }
  * };
  */
-export class UtilityParameters extends BaseParameters {
-
+export class ClassificationParameters extends BaseParameters {
   constructor(params: BaseParametersConstructor & {}) {
     super({ ...params });
+    logger.debug("Classification parameters initialized.");
   }
 }

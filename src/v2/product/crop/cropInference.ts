@@ -1,6 +1,6 @@
 import { StringDict } from "@/parsing/index.js";
 import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
-import { CropResult } from "@/v2/parsing/inference/crop/cropResult.js";
+import { CropResult } from "@/v2/product/crop/cropResult.js";
 
 export class CropInference extends BaseInference {
   /**

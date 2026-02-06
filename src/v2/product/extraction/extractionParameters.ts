@@ -1,6 +1,7 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { DataSchema } from "./dataSchema.js";
 import { BaseParameters, BaseParametersConstructor } from "@/v2/client/baseParameters.js";
+import { logger } from "@/logger.js";
 
 /**
  * Parameters accepted by the asynchronous **inference** v2 endpoint.
@@ -71,6 +72,7 @@ export class ExtractionParameters extends BaseParameters {
         this.dataSchema = params.dataSchema;
       }
     }
+    logger.debug("Extraction parameters initialized.");
   }
 
   getFormData(): FormData {
