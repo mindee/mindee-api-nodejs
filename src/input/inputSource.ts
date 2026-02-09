@@ -1,3 +1,5 @@
+import { MindeeInputSourceError } from "@/errors/index.js";
+
 /**
  * @param {string} inputType - the type of input used in file ("base64", "path", "dummy").
  *                             NB: dummy is only used for tests purposes
@@ -17,7 +19,7 @@ export abstract class InputSource {
   protected initialized: boolean = false;
 
   async init() {
-    throw new Error("not Implemented");
+    throw new MindeeInputSourceError("not Implemented");
   }
 
   public isInitialized() {

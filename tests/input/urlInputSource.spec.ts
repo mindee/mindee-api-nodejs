@@ -7,7 +7,7 @@ const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
 const mockPool = mockAgent.get("https://dummy-host");
 
-describe("Test URL input source", () => {
+describe("Input Sources - URL input source", () => {
   describe("initializing", () => {
     it("should accept a URL", async () => {
       const input = new UrlInput({

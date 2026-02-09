@@ -2,7 +2,7 @@ import { Readable } from "stream";
 import { LocalInputSource } from "./localInputSource.js";
 import { INPUT_TYPE_STREAM } from "./inputSource.js";
 import { logger } from "@/logger.js";
-import { MindeeError } from "@/errors/index.js";
+import { MindeeInputSourceError } from "@/errors/index.js";
 
 interface StreamInputProps {
   inputStream: Readable;
@@ -31,17 +31,37 @@ export class StreamInput extends LocalInputSource {
     this.initialized = true;
   }
 
-  async stream2buffer(stream: Readable): Promise<Buffer> {
+  async stream2buffer(stream: Readable, signal?: AbortSignal): Promise<Buffer> {
     return new Promise<Buffer>((resolve, reject) => {
       if (stream.closed || stream.destroyed) {
-        return reject(new MindeeError("Stream is already closed"));
+        return reject(new MindeeInputSourceError("Stream is already closed"));
       }
+
+      if (signal?.aborted) {
+        return reject(new MindeeInputSourceError("Operation aborted"));
+      }
+      const onAbort = () => {
+        stream.destroy();
+        reject(new MindeeInputSourceError("Operation aborted"));
+      };
+      if (signal) {
+        signal.addEventListener("abort", onAbort, { once: true });
+      }
+      const cleanup = () => {
+        signal?.removeEventListener("abort", onAbort);
+      };
 
       const _buf: Buffer[] = [];
       stream.pause();
       stream.on("data", (chunk) => _buf.push(chunk));
-      stream.on("end", () => resolve(Buffer.concat(_buf)));
-      stream.on("error", (err) => reject(new Error(`Error converting stream - ${err}`)));
+      stream.on("end", () => {
+        cleanup();
+        resolve(Buffer.concat(_buf));
+      });
+      stream.on("error", (err) => {
+        cleanup();
+        reject(new MindeeInputSourceError(`Error converting stream - ${err}`));
+      });
       stream.resume();
     });
   }
