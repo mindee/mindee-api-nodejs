@@ -12,7 +12,7 @@ export class FieldLocation {
   readonly page: number | undefined;
 
   constructor(serverResponse: StringDict) {
-    this.polygon = serverResponse["polygon"] as Polygon;
+    this.polygon = "polygon" in serverResponse ? new Polygon(...serverResponse["polygon"]) : null;
     this.page = "page" in serverResponse ? serverResponse["page"] : undefined;
   }
 

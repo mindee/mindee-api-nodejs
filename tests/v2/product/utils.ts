@@ -6,6 +6,5 @@ export async function loadV2Response<R extends BaseResponse>(
   resourcePath: string
 ): Promise<R> {
   const localResponse = new LocalResponse(resourcePath);
-  await localResponse.init();
   return localResponse.deserializeResponse(responseClass);
 }
