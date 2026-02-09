@@ -1,14 +1,15 @@
 import { expect } from "chai";
 import path from "node:path";
-import { V2_PRODUCT_PATH } from "../../index.js";
-import { CropResponse, CropItem } from "@/v2/product/index.js";
-import { loadV2Response } from "./utils.js";
 import { Polygon } from "@/geometry/index.js";
+import { crop } from "@/v2/product/index.js";
+
+import { V2_PRODUCT_PATH } from "../../index.js";
+import { loadV2Response } from "./utils.js";
 
 describe("MindeeV2 - Crop Response", async () => {
   it("should load a single result", async () => {
     const response = await loadV2Response(
-      CropResponse,
+      crop.CropResponse,
       path.join(V2_PRODUCT_PATH, "crop", "crop_single.json")
     );
     // Validate inference metadata
@@ -21,14 +22,14 @@ describe("MindeeV2 - Crop Response", async () => {
     expect(response.inference.file.mimeType).to.equal("image/jpeg");
 
     // Validate crops
-    const crops = response.inference.result.crops;
+    const crops: crop.CropItem[] = response.inference.result.crops;
     expect(crops).to.be.an("array").that.has.lengthOf(1);
 
-    const crop: CropItem = crops[0];
-    expect(crop.objectType).to.equal("invoice");
-    expect(crop.location.page).to.equal(0);
+    const firstCrop = crops[0];
+    expect(firstCrop.objectType).to.equal("invoice");
+    expect(firstCrop.location.page).to.equal(0);
 
-    const polygon: Polygon = crop.location.polygon!;
+    const polygon: Polygon = firstCrop.location.polygon!;
     expect(polygon.length).to.equal(4);
     expect(polygon.length).to.equal(4);
     expect(polygon[0][0]).to.equal(0.15);
@@ -43,7 +44,7 @@ describe("MindeeV2 - Crop Response", async () => {
 
   it("should load multiple results", async () => {
     const response = await loadV2Response(
-      CropResponse,
+      crop.CropResponse,
       path.join(V2_PRODUCT_PATH, "crop", "crop_multiple.json")
     );
     // Validate inference metadata
@@ -55,11 +56,11 @@ describe("MindeeV2 - Crop Response", async () => {
     expect(response.inference.file.pageCount).to.equal(1);
     expect(response.inference.file.mimeType).to.equal("image/jpeg");
 
-    const crops: CropItem[] = response.inference.result.crops;
+    const crops: crop.CropItem[] = response.inference.result.crops;
     expect(crops).to.be.an("array").that.has.lengthOf(2);
 
     // Validate first crop item
-    const firstCrop: CropItem = crops[0];
+    const firstCrop: crop.CropItem = crops[0];
     expect(firstCrop.objectType).to.equal("invoice");
     expect(firstCrop.location.page).to.equal(0);
     const firstPolygon: Polygon = firstCrop.location.polygon!;
@@ -74,7 +75,7 @@ describe("MindeeV2 - Crop Response", async () => {
     expect(firstPolygon[3][1]).to.equal(0.979);
 
     // Validate second crop item
-    const secondCrop: CropItem = crops[1];
+    const secondCrop: crop.CropItem = crops[1];
     expect(secondCrop.objectType).to.equal("invoice");
     expect(secondCrop.location.page).to.equal(0);
     const secondPolygon: Polygon = secondCrop.location.polygon!;

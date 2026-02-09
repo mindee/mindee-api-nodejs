@@ -1,7 +1,8 @@
 import { expect } from "chai";
 import path from "node:path";
-import { V2_PRODUCT_PATH } from "../../index.js";
 import { ClassificationResponse } from "@/v2/product/index.js";
+
+import { V2_PRODUCT_PATH } from "../../index.js";
 import { loadV2Response } from "./utils.js";
 
 
