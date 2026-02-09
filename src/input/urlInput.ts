@@ -4,14 +4,17 @@ import { basename, extname } from "path";
 import { randomBytes } from "crypto";
 import { writeFile } from "fs/promises";
 import {  request, Dispatcher, getGlobalDispatcher } from "undici";
-import { BytesInput } from "./bytesInput.js";
 import { logger } from "@/logger.js";
+import { MindeeInputSourceError } from "@/errors/index.js";
+import { BytesInput } from "./bytesInput.js";
 
 export class UrlInput extends InputSource {
   public readonly url: string;
   public readonly dispatcher;
 
-  constructor({ url, dispatcher }: { url: string, dispatcher?: Dispatcher }) {
+  constructor(
+    { url, dispatcher }: { url: string, dispatcher?: Dispatcher }
+  ) {
     super();
     this.url = url;
     this.dispatcher = dispatcher ?? getGlobalDispatcher();
@@ -24,7 +27,7 @@ export class UrlInput extends InputSource {
     }
     logger.debug(`source URL: ${this.url}`);
     if (!this.url.toLowerCase().startsWith("https")) {
-      throw new Error("URL must be HTTPS");
+      throw new MindeeInputSourceError("URL must be HTTPS");
     }
     this.fileObject = this.url;
     this.initialized = true;
@@ -129,7 +132,7 @@ export class UrlInput extends InputSource {
     if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400) {
       logger.debug(`Redirecting to: ${response.headers.location}`);
       if (redirects === maxRedirects) {
-        throw new Error(
+        throw new MindeeInputSourceError(
           `Can't reach URL after ${redirects} out of ${maxRedirects} redirects, aborting operation.`
         );
       }
@@ -138,7 +141,7 @@ export class UrlInput extends InputSource {
           response.headers.location.toString(), auth, headers, redirects + 1, maxRedirects
         );
       }
-      throw new Error("Redirect location not found");
+      throw new MindeeInputSourceError("Redirect location not found");
     }
 
     if (!response.statusCode || response.statusCode >= 400 || response.statusCode < 200) {

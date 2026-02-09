@@ -8,7 +8,7 @@ import * as path from "path";
 import { expect } from "chai";
 import { RESOURCE_PATH } from "../index.js";
 
-describe("High level multi-page operations", () => {
+describe("Input Sources - high level multi-page operations", () => {
   it("should cut a PDF", async () => {
     const input = new PathInput({
       inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),
