@@ -24,8 +24,9 @@ export class LocalResponse extends LocalResponseBase {
   ): Promise<ResponseT> {
     try {
       return new responseClass(await this.asDict());
-    } catch {
-      throw new MindeeError("Invalid response provided.");
+    } catch (error) {
+      console.error(error);
+      throw new MindeeError(`Invalid response provided: ${error}`);
     }
   }
 }
