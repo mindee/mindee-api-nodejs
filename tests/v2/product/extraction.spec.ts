@@ -8,13 +8,10 @@ import {
   ObjectField,
   SimpleField,
 } from "@/v2/parsing/inference/field/index.js";
-import {
-  LocalResponse,
-  RagMetadata,
-  RawText,
-} from "@/v2/parsing/index.js";
+import { field } from "@/v2/parsing/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { ExtractionResponse } from "@/v2/product/index.js";
+import { loadV2Response } from "../product/utils.js";
 
 const findocPath = path.join(V2_PRODUCT_PATH, "extraction", "financial_document");
 const extractionPath = path.join(V2_PRODUCT_PATH, "extraction");
@@ -23,16 +20,11 @@ const standardFieldPath = path.join(extractionPath, "standard_field_types.json")
 const standardFieldRstPath = path.join(extractionPath, "standard_field_types.rst");
 const locationFieldPath = path.join(findocPath, "complete_with_coordinates.json");
 
-async function loadV2Extraction(resourcePath: string): Promise<ExtractionResponse> {
-  const localResponse = new LocalResponse(resourcePath);
-  await localResponse.init();
-  return localResponse.deserializeResponse(ExtractionResponse);
-}
-
 describe("MindeeV2 - Extraction Response", async () => {
   describe("Financial Document", async () => {
     it("should load a blank inference with valid properties", async () => {
-      const response = await loadV2Extraction(
+      const response = await loadV2Response(
+        ExtractionResponse,
         path.join(findocPath, "blank.json")
       );
       const fields = response.inference.result.fields;
@@ -64,7 +56,8 @@ describe("MindeeV2 - Extraction Response", async () => {
     });
 
     it("should load a complete inference with valid properties", async () => {
-      const response = await loadV2Extraction(
+      const response = await loadV2Response(
+        ExtractionResponse,
         path.join(findocPath, "complete.json")
       );
       const inference = response.inference;
@@ -129,7 +122,9 @@ describe("MindeeV2 - Extraction Response", async () => {
 
   describe("Deeply Nested", async () => {
     it("should load a deep nested object", async () => {
-      const response = await loadV2Extraction(deepNestedFieldPath);
+      const response = await loadV2Response(
+        ExtractionResponse, deepNestedFieldPath
+      );
       const fields = response.inference.result.fields;
       expect(fields.get("field_simple")).to.be.an.instanceof(SimpleField);
       expect(fields.get("field_object")).to.be.an.instanceof(ObjectField);
@@ -165,7 +160,9 @@ describe("MindeeV2 - Extraction Response", async () => {
 
   describe("Standard Field Types", async () => {
     it("should recognize simple fields", async () => {
-      const response = await loadV2Extraction(standardFieldPath);
+      const response = await loadV2Response(
+        ExtractionResponse, standardFieldPath
+      );
       const fields = response.inference.result.fields;
 
       expect(fields.get("field_simple_string")).to.be.instanceOf(SimpleField);
@@ -211,7 +208,9 @@ describe("MindeeV2 - Extraction Response", async () => {
     });
 
     it("should recognize simple list fields", async () => {
-      const response = await loadV2Extraction(standardFieldPath);
+      const response = await loadV2Response(
+        ExtractionResponse, standardFieldPath
+      );
       const fields = response.inference.result.fields;
 
       expect(fields.get("field_simple_list")).to.be.instanceOf(ListField);
@@ -226,7 +225,9 @@ describe("MindeeV2 - Extraction Response", async () => {
     });
 
     it("should recognize object fields", async () => {
-      const response = await loadV2Extraction(standardFieldPath);
+      const response = await loadV2Response(
+        ExtractionResponse, standardFieldPath
+      );
       const fields = response.inference.result.fields;
 
       expect(fields.get("field_object")).to.be.instanceOf(ObjectField);
@@ -246,7 +247,9 @@ describe("MindeeV2 - Extraction Response", async () => {
     });
 
     it("should recognize object list fields", async () => {
-      const response = await loadV2Extraction(standardFieldPath);
+      const response = await loadV2Response(
+        ExtractionResponse, standardFieldPath
+      );
       const fields = response.inference.result.fields;
 
       expect(fields.get("field_object_list")).to.be.instanceOf(ListField);
@@ -272,13 +275,13 @@ describe("MindeeV2 - Extraction Response", async () => {
 
   describe("Raw Text", async () => {
     it("raw text should be exposed", async () => {
-      const response = await loadV2Extraction(
-        path.join(extractionPath, "raw_texts.json")
+      const response = await loadV2Response(
+        ExtractionResponse, path.join(extractionPath, "raw_texts.json")
       );
       expect(response.inference.result.rag).to.be.undefined;
 
       const rawText = response.inference.result.rawText;
-      expect(rawText).to.be.instanceOf(RawText);
+      expect(rawText).to.be.instanceOf(field.RawText);
 
       const pages = rawText?.pages;
       if (pages === undefined) throw new Error("pages is undefined");
@@ -291,27 +294,29 @@ describe("MindeeV2 - Extraction Response", async () => {
 
   describe("RAG Metadata", async () => {
     it("RAG metadata when matched", async () => {
-      const response = await loadV2Extraction(
-        path.join(extractionPath, "rag_matched.json")
+      const response = await loadV2Response(
+        ExtractionResponse, path.join(extractionPath, "rag_matched.json")
       );
       const rag = response.inference.result.rag;
-      expect(rag).to.be.instanceOf(RagMetadata);
+      expect(rag).to.be.instanceOf(field.RagMetadata);
       expect(rag?.retrievedDocumentId).to.eq("12345abc-1234-1234-1234-123456789abc");
     });
 
     it("RAG metadata when not matched", async () => {
-      const response = await loadV2Extraction(
-        path.join(extractionPath, "rag_not_matched.json")
+      const response = await loadV2Response(
+        ExtractionResponse, path.join(extractionPath, "rag_not_matched.json")
       );
       const rag = response.inference.result.rag;
-      expect(rag).to.be.instanceOf(RagMetadata);
+      expect(rag).to.be.instanceOf(field.RagMetadata);
       expect(rag?.retrievedDocumentId).to.be.undefined;
     });
   });
 
   describe("RST Display", async () => {
     it("to be properly exposed", async () => {
-      const response = await loadV2Extraction(standardFieldPath);
+      const response = await loadV2Response(
+        ExtractionResponse, standardFieldPath
+      );
       const rstString = await fs.readFile(standardFieldRstPath, "utf8");
 
       expect(response.inference).to.not.be.null;
@@ -321,8 +326,9 @@ describe("MindeeV2 - Extraction Response", async () => {
 
   describe("Field Locations and Confidence", async () => {
     it("to be properly exposed", async () => {
-      const response = await loadV2Extraction(locationFieldPath);
-
+      const response = await loadV2Response(
+        ExtractionResponse, locationFieldPath
+      );
       expect(response.inference).to.not.be.null;
 
       const dateField = response.inference.result.fields.get("date") as SimpleField;
