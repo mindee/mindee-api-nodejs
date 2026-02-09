@@ -21,4 +21,13 @@ export abstract class BaseInference {
     this.model = new InferenceModel(serverResponse["model"]);
     this.file = new InferenceFile(serverResponse["file"]);
   }
+
+  toString(): string {
+    return (
+      "Inference\n" +
+      "#########\n" +
+      this.model.toString() + "\n" +
+      this.file.toString() + "\n"
+    );
+  }
 }

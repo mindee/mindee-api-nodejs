@@ -1,23 +1,21 @@
 import { StringDict } from "@/parsing/index.js";
 import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
+import { ClassificationResult } from "./classificationResult.js";
 
 export class ClassificationInference extends BaseInference {
   /**
    * Result of a classification inference.
    */
-  result: any;
+  result: ClassificationResult;
 
   constructor(serverResponse: StringDict) {
     super(serverResponse);
-    this.result = serverResponse["result"];
+    this.result = new ClassificationResult(serverResponse["result"]);
   }
 
   toString(): string {
     return (
-      "Inference\n" +
-      "#########\n" +
-      this.model.toString() + "\n" +
-      this.file.toString() + "\n" +
+      super.toString() +
       this.result.toString() + "\n"
     );
   }

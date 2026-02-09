@@ -1,6 +1,6 @@
-const mindee = require("mindee");
-// for TS or modules:
-// import * as mindee from "mindee";
+import * as mindee from "mindee";
+// If you're on CommonJS:
+// const mindee = require("mindee");
 
 const apiKey = "MY_API_KEY";
 const filePath = "/path/to/the/file.ext";
@@ -11,8 +11,8 @@ const mindeeClient = new mindee.Client(
   { apiKey: apiKey }
 );
 
-// Set inference parameters
-const extractionParams = {
+// Set product parameters
+const params = {
   modelId: modelId,
 
   // Options: set to `true` or `false` to override defaults
@@ -32,14 +32,14 @@ const extractionParams = {
 const inputSource = new mindee.PathInput({ inputPath: filePath });
 
 // Send for processing
-const response = mindeeClient.enqueueAndGetResult(
+const response = await mindeeClient.enqueueAndGetResult(
   mindee.v2.product.Extraction,
   inputSource,
-  extractionParams
+  params,
 );
 
-// Handle the response Promise
-response.then((resp) => {
-  // print a string summary
-  console.log(resp.inference.toString());
-});
+// print a string summary
+console.log(response.inference.toString());
+
+// Access the result fields
+const fields = response.inference.result.fields;

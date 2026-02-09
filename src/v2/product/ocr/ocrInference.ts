@@ -1,15 +1,16 @@
 import { StringDict } from "@/parsing/index.js";
 import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
+import { OcrResult } from "@/v2/product/ocr/ocrResult.js";
 
 export class OcrInference extends BaseInference {
   /**
    * Result of an OCR inference.
    */
-  result: any;
+  result: OcrResult;
 
   constructor(serverResponse: StringDict) {
     super(serverResponse);
-    this.result = serverResponse["result"];
+    this.result = new OcrResult(serverResponse["result"]);
   }
 
   toString(): string {

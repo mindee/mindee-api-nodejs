@@ -3,7 +3,6 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { BaseResponse } from "@/v2/parsing/index.js";
 
 export class ExtractionResponse extends BaseResponse {
-
   /**
    * The inference result for an extraction request.
    */

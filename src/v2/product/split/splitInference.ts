@@ -1,23 +1,21 @@
 import { StringDict } from "@/parsing/index.js";
 import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
+import { SplitResult } from "./splitResult.js";
 
 export class SplitInference extends BaseInference {
   /**
    * Result of a split inference.
    */
-  result: any;
+  result: SplitResult;
 
   constructor(serverResponse: StringDict) {
     super(serverResponse);
-    this.result = serverResponse["result"];
+    this.result = new SplitResult(serverResponse["result"]);
   }
 
   toString(): string {
     return (
-      "Inference\n" +
-      "#########\n" +
-      this.model.toString() + "\n" +
-      this.file.toString() + "\n" +
+      super.toString() +
       this.result.toString() + "\n"
     );
   }
