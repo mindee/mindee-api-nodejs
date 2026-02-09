@@ -119,6 +119,7 @@ describe("MindeeV2 - ClientV2", () => {
         inputPath: path.join(
           V2_RESOURCE_PATH,
           "products",
+          "extraction",
           "financial_document",
           "default_sample.jpg"
         ),
