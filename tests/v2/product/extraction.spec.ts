@@ -11,7 +11,7 @@ import {
 import { field } from "@/v2/parsing/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { ExtractionResponse } from "@/v2/product/index.js";
-import { loadV2Response } from "../product/utils.js";
+import { loadV2Response } from "./utils.js";
 
 const findocPath = path.join(V2_PRODUCT_PATH, "extraction", "financial_document");
 const extractionPath = path.join(V2_PRODUCT_PATH, "extraction");
