@@ -64,7 +64,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
   beforeEach(async () => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
-    modelId = process.env["MINDEE_V2_FINDOC_MODEL_ID"] ?? "";
+    modelId = process.env["MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID"] ?? "";
 
     client = new Client({ apiKey: apiKey, debug: true });
   });
