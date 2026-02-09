@@ -21,6 +21,6 @@ import { logger } from "@/logger.js";
 export class OcrParameters extends BaseParameters {
   constructor(params: BaseParametersConstructor & {}) {
     super({ ...params });
-    logger.debug("Ocr parameters initialized.");
+    logger.debug("OCR parameters initialized.");
   }
 }

@@ -6,7 +6,7 @@ export class CropItem {
   location: FieldLocation;
 
   constructor(serverResponse: StringDict) {
-    this.objectType = serverResponse["objectType"];
+    this.objectType = serverResponse["object_type"];
     this.location = new FieldLocation(serverResponse["location"]);
   }
 

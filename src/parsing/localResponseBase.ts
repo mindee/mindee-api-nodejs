@@ -25,6 +25,9 @@ export abstract class LocalResponseBase {
     /**
      * @param inputFile - The input file, which can be a Buffer, string, or PathLike.
      */
+    if (this.initialized) {
+      return;
+    }
     if (Buffer.isBuffer(this.inputHandle)) {
       this.file = this.inputHandle;
     } else if (typeof this.inputHandle === "string") {

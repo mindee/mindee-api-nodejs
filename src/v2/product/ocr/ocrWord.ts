@@ -14,7 +14,7 @@ export class OcrWord {
 
   constructor(serverResponse: StringDict) {
     this.content = serverResponse["content"];
-    this.polygon = new Polygon(serverResponse["polygon"]);
+    this.polygon = new Polygon(...serverResponse["polygon"]);
   }
 
   toString(): string {

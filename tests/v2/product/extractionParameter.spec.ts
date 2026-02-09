@@ -3,19 +3,19 @@ import path from "path";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { expect } from "chai";
 import { promises as fs } from "fs";
-import { ExtractionParameters, DataSchema } from "@/v2/product/extraction/index.js";
+import { extraction } from "@/v2/product/index.js";
 
 let expectedDataSchemaDict: StringDict;
 let expectedDataSchemaString: string;
-let expectedDataSchemaObject: DataSchema;
+let expectedDataSchemaObject: extraction.DataSchema;
 
-describe("MindeeV2 - Inference Parameter", () => {
+describe("MindeeV2 - Extraction Parameter", () => {
   const modelIdValue = "test-model-id";
 
   describe("Polling Options", () => {
     it("should provide sensible defaults", () => {
 
-      const paramsInstance = new ExtractionParameters({
+      const paramsInstance = new extraction.ExtractionParameters({
         modelId: modelIdValue,
       });
       expect(paramsInstance.modelId).to.equal(modelIdValue);
@@ -34,26 +34,26 @@ describe("MindeeV2 - Inference Parameter", () => {
       );
       expectedDataSchemaDict = JSON.parse(fileContents.toString());
       expectedDataSchemaString = JSON.stringify(expectedDataSchemaDict);
-      expectedDataSchemaObject = new DataSchema(expectedDataSchemaDict);
+      expectedDataSchemaObject = new extraction.DataSchema(expectedDataSchemaDict);
     });
 
     it("shouldn't replace when unset", () => {
-      const params = new ExtractionParameters({
+      const params = new extraction.ExtractionParameters({
         modelId: modelIdValue,
       });
       expect(params.dataSchema).to.be.undefined;
     });
 
     it("should equate no matter the type", () => {
-      const paramsDict = new ExtractionParameters({
+      const paramsDict = new extraction.ExtractionParameters({
         modelId: modelIdValue,
         dataSchema: expectedDataSchemaDict,
       });
-      const paramsString = new ExtractionParameters({
+      const paramsString = new extraction.ExtractionParameters({
         modelId: modelIdValue,
         dataSchema: expectedDataSchemaString,
       });
-      const paramsObject = new ExtractionParameters({
+      const paramsObject = new extraction.ExtractionParameters({
         modelId: modelIdValue,
         dataSchema: expectedDataSchemaObject,
       });
