@@ -15,7 +15,7 @@ import {
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import * as fs from "node:fs";
-import { RESOURCE_PATH, V2_PRODUCT_PATH, V2_RESOURCE_PATH } from "../index.js";
+import { RESOURCE_PATH, V2_PRODUCT_PATH } from "../index.js";
 import { Extraction } from "@/v2/product/index.js";
 
 function check422(err: unknown) {
@@ -49,6 +49,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
   );
   const sampleImagePath = path.join(
     V2_PRODUCT_PATH,
+    "extraction",
     "financial_document",
     "default_sample.jpg",
   );
@@ -58,7 +59,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     "receipt.txt",
   );
   const dataSchemaReplacePath = path.join(
-    V2_RESOURCE_PATH, "inference/data_schema_replace_param.json"
+    V2_PRODUCT_PATH, "extraction/data_schema_replace_param.json"
   );
   let dataSchemaReplace: string;
 
@@ -72,7 +73,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     dataSchemaReplace = fs.readFileSync(dataSchemaReplacePath).toString();
   });
 
-  it("Empty, multi-page PDF – PathInput - enqueueAndGetInference must succeed", async () => {
+  it("Empty, multi-page PDF – PathInput - enqueueAndGetResult must succeed", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
     const params = {
       modelId,
@@ -99,7 +100,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     checkEmptyActiveOptions(inference);
   }).timeout(60000);
 
-  it("Filled, single-page image – PathInput - enqueueAndGetInference must succeed", async () => {
+  it("Filled, single-page image – PathInput - enqueueAndGetResult must succeed", async () => {
     const source = new PathInput({ inputPath: sampleImagePath });
     const params = {
       modelId,
@@ -138,7 +139,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     expect(inference.result.rawText?.pages).to.have.lengthOf(1);
   }).timeout(120000);
 
-  it("Filled, single-page image – Base64Input - enqueueAndGetInference must succeed", async () => {
+  it("Filled, single-page image – Base64Input - enqueueAndGetResult must succeed", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
     const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
     const params = {
@@ -193,7 +194,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     }
   }).timeout(60000);
 
-  it("HTTPS URL – enqueue & get inference must succeed", async () => {
+  it("HTTPS URL – enqueueAndGetResult must succeed", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
     const source = new UrlInput({ url });
     const params = new ExtractionParameters({

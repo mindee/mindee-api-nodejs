@@ -1,6 +1,6 @@
 import { StringDict } from "@/parsing/index.js";
 import path from "path";
-import { V2_RESOURCE_PATH } from "../../index.js";
+import { V2_PRODUCT_PATH } from "../../index.js";
 import { expect } from "chai";
 import { promises as fs } from "fs";
 import { ExtractionParameters, DataSchema } from "@/v2/product/extraction/index.js";
@@ -30,7 +30,7 @@ describe("MindeeV2 - Inference Parameter", () => {
   describe("Data Schema", () => {
     before(async () => {
       const fileContents = await fs.readFile(
-        path.join(V2_RESOURCE_PATH, "inference/data_schema_replace_param.json")
+        path.join(V2_PRODUCT_PATH, "extraction/data_schema_replace_param.json")
       );
       expectedDataSchemaDict = JSON.parse(fileContents.toString());
       expectedDataSchemaString = JSON.stringify(expectedDataSchemaDict);

@@ -3,13 +3,13 @@ import { expect } from "chai";
 import { LocalResponse } from "@/v2/index.js";
 
 import path from "path";
-import { V2_RESOURCE_PATH } from "../../index.js";
+import { V2_PRODUCT_PATH } from "../../index.js";
 import { Buffer } from "node:buffer";
 import { ExtractionResponse } from "@/v2/product/index.js";
 
 const signature: string = "e51bdf80f1a08ed44ee161100fc30a25cb35b4ede671b0a575dc9064a3f5dbf1";
 const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
-const filePath: string = path.join(V2_RESOURCE_PATH, "inference/standard_field_types.json");
+const filePath: string = path.join(V2_PRODUCT_PATH, "extraction/standard_field_types.json");
 
 async function assertLocalResponse(localResponse: LocalResponse) {
   await localResponse.init();
@@ -49,8 +49,8 @@ describe("MindeeV2 - Load Local Response", () => {
 
   it("loading an inference works on catalog model", async () => {
     const jsonPath = path.join(
-      V2_RESOURCE_PATH,
-      "products",
+      V2_PRODUCT_PATH,
+      "extraction",
       "financial_document",
       "complete.json"
     );
