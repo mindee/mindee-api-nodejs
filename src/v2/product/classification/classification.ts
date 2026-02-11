@@ -3,16 +3,13 @@ import { ClassificationParameters } from "./classificationParameters.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Classification extends BaseProduct {
-  static get parameters() {
+  static get parametersClass() {
     return ClassificationParameters;
   }
-  static get response() {
+  static get responseClass() {
     return ClassificationResponse;
   }
-  static get enqueueSlug() {
-    return "utilities/classification";
-  }
-  static get getResultSlug() {
-    return "utilities/classification";
+  static get slug() {
+    return "classification";
   }
 }

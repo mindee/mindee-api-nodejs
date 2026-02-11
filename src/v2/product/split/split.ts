@@ -3,16 +3,13 @@ import { SplitParameters } from "./splitParameters.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Split extends BaseProduct {
-  static get parameters() {
+  static get parametersClass() {
     return SplitParameters;
   }
-  static get response() {
+  static get responseClass() {
     return SplitResponse;
   }
-  static get enqueueSlug() {
-    return "utilities/split";
-  }
-  static get getResultSlug() {
-    return "utilities/split";
+  static get slug() {
+    return "split";
   }
 }

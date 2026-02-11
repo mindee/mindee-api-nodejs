@@ -61,16 +61,16 @@ export class Client {
   async enqueue<P extends typeof BaseProduct>(
     product: P,
     inputSource: InputSource,
-    params: InstanceType<P["parameters"]> | ConstructorParameters<P["parameters"]>[0],
+    params: InstanceType<P["parametersClass"]> | ConstructorParameters<P["parametersClass"]>[0],
   ): Promise<JobResponse> {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
     }
-    const paramsInstance = params instanceof product.parameters
+    const paramsInstance = params instanceof product.parametersClass
       ? params
-      : new product.parameters(params);
+      : new product.parametersClass(params);
     await inputSource.init();
-    const jobResponse = await this.mindeeApi.reqPostProductEnqueue(
+    const jobResponse = await this.mindeeApi.enqueueProduct(
       product, inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
@@ -95,11 +95,11 @@ export class Client {
   async getResult<P extends typeof BaseProduct>(
     product: P,
     inferenceId: string
-  ): Promise<InstanceType<P["response"]>> {
+  ): Promise<InstanceType<P["responseClass"]>> {
     logger.debug(
       `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
     );
-    return await this.mindeeApi.reqGetResult(product, inferenceId);
+    return await this.mindeeApi.getProductResult(product, inferenceId);
   }
 
   /**
@@ -113,7 +113,7 @@ export class Client {
    * parsing is complete.
    */
   async getJob(jobId: string): Promise<JobResponse> {
-    return await this.mindeeApi.reqGetJob(jobId);
+    return await this.mindeeApi.getJob(jobId);
   }
 
   /**
@@ -131,9 +131,9 @@ export class Client {
   async enqueueAndGetResult<P extends typeof BaseProduct>(
     product: P,
     inputSource: InputSource,
-    params: InstanceType<P["parameters"]> | ConstructorParameters<P["parameters"]>[0],
-  ): Promise<InstanceType<P["response"]>> {
-    const paramsInstance = new product.parameters(params);
+    params: InstanceType<P["parametersClass"]> | ConstructorParameters<P["parametersClass"]>[0],
+  ): Promise<InstanceType<P["responseClass"]>> {
+    const paramsInstance = new product.parametersClass(params);
 
     const pollingOptions = paramsInstance.getValidatedPollingOptions();
 
@@ -154,7 +154,7 @@ export class Client {
     product: typeof BaseProduct,
     pollingOptions: ValidatedPollingOptions,
     queueId: string,
-  ): Promise<InstanceType<P["response"]>> {
+  ): Promise<InstanceType<P["responseClass"]>> {
     logger.debug(
       `Waiting ${pollingOptions.initialDelaySec} seconds before polling.`
     );

@@ -3,16 +3,13 @@ import { ExtractionParameters } from "./extractionParameters.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Extraction extends BaseProduct {
-  static get parameters() {
+  static get parametersClass() {
     return ExtractionParameters;
   }
-  static get response() {
+  static get responseClass() {
     return ExtractionResponse;
   }
-  static get enqueueSlug() {
-    return "inferences";
-  }
-  static get getResultSlug() {
-    return "inferences";
+  static get slug() {
+    return "extraction";
   }
 }

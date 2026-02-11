@@ -1,6 +1,3 @@
-#
-# Run unit tests.
-#
 name: Test
 
 on:

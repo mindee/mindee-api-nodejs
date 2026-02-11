@@ -3,16 +3,13 @@ import { CropParameters } from "./cropParameters.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Crop extends BaseProduct {
-  static get parameters() {
+  static get parametersClass() {
     return CropParameters;
   }
-  static get response() {
+  static get responseClass() {
     return CropResponse;
   }
-  static get enqueueSlug() {
-    return "utilities/crop";
-  }
-  static get getResultSlug() {
-    return "utilities/crop";
+  static get slug() {
+    return "crop";
   }
 }
