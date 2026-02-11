@@ -62,7 +62,6 @@
     "@cantoo/pdf-lib": "^2.3.2",
     "commander": "~9.4.1",
     "file-type": "^19.6.0",
-    "form-data": "^3.0.4",
     "node-poppler": "^7.2.4",
     "pdf.js-extract": "^0.2.1",
     "sharp": "~0.34.5",
