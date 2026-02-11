@@ -31,19 +31,31 @@ export class MindeeApiV2 {
    * @throws Error if the server's response contains one.
    * @returns a `Promise` containing a job response.
    */
-  async reqPostProductEnqueue(
+  async enqueueProduct(
     product: typeof BaseProduct,
     inputSource: InputSource,
     params: BaseParameters
   ): Promise<JobResponse> {
     await inputSource.init();
-    const result: BaseHttpResponse = await this.#productEnqueuePost(
+    const result: BaseHttpResponse = await this.#reqPostProductEnqueue(
       product, inputSource, params
     );
     if (result.data.error !== undefined) {
       throw new MindeeHttpErrorV2(result.data.error);
     }
     return this.#processResponse(result, JobResponse);
+  }
+
+  /**
+   * Requests the results of a queued document from the API.
+   * Throws an error if the server's response contains one.
+   * @param jobId The document's ID in the queue.
+   * @category Asynchronous
+   * @returns a `Promise` containing information on the queue.
+   */
+  async getJob(jobId: string): Promise<JobResponse> {
+    const response = await this.#reqGetJob(jobId);
+    return this.#processResponse(response, JobResponse);
   }
 
   /**
@@ -54,26 +66,14 @@ export class MindeeApiV2 {
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async reqGetResult<P extends typeof BaseProduct>(
+  async getProductResult<P extends typeof BaseProduct>(
     product: P,
     inferenceId: string,
-  ): Promise<InstanceType<P["response"]>> {
-    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(
-      inferenceId, product.getResultSlug
+  ): Promise<InstanceType<P["responseClass"]>> {
+    const queueResponse: BaseHttpResponse = await this.#reqGetProductResult(
+      inferenceId, product.slug
     );
-    return this.#processResponse(queueResponse, product.response) as InstanceType<P["response"]>;
-  }
-
-  /**
-   * Requests the results of a queued document from the API.
-   * Throws an error if the server's response contains one.
-   * @param jobId The document's ID in the queue.
-   * @category Asynchronous
-   * @returns a `Promise` containing information on the queue.
-   */
-  async reqGetJob(jobId: string): Promise<JobResponse> {
-    const queueResponse: BaseHttpResponse = await this.#inferenceResultReqGet(jobId, "jobs");
-    return this.#processResponse(queueResponse, JobResponse);
+    return this.#processResponse(queueResponse, product.responseClass) as InstanceType<P["responseClass"]>;
   }
 
   #processResponse<T extends BaseResponse>(
@@ -110,7 +110,7 @@ export class MindeeApiV2 {
    * @param inputSource Local or remote file as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    */
-  async #productEnqueuePost(
+  async #reqPostProductEnqueue(
     product: typeof BaseProduct,
     inputSource: InputSource,
     params: BaseParameters
@@ -121,7 +121,7 @@ export class MindeeApiV2 {
     } else {
       form.set("url", (inputSource as UrlInput).url);
     }
-    const path = `/v2/${product.enqueueSlug}/enqueue`;
+    const path = `/v2/products/${product.slug}/enqueue`;
     const options = {
       method: "POST",
       headers: this.settings.baseHeaders,
@@ -133,19 +133,30 @@ export class MindeeApiV2 {
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
 
-  /**
-   * Make a request to GET the status of a document in the queue.
-   * @param queueId ID of either the job or the inference.
-   * @param slug "jobs" or "inferences"...
-   * @category Asynchronous
-   * @returns a `Promise` containing either the parsed result, or information on the queue.
-   */
-  async #inferenceResultReqGet(queueId: string, slug: string): Promise<BaseHttpResponse> {
+  async #reqGetJob(jobId: string): Promise<BaseHttpResponse> {
     const options = {
       method: "GET",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
-      path: `/v2/${slug}/${queueId}`,
+      path: `/v2/jobs/${jobId}`,
+      timeout: this.settings.timeout,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
+  }
+
+  /**
+   * Make a request to GET the status of a document in the queue.
+   * @param inferenceId ID of the inference.
+   * @param slug "jobs" or "inferences"...
+   * @category Asynchronous
+   * @returns a `Promise` containing either the parsed result, or information on the queue.
+   */
+  async #reqGetProductResult(inferenceId: string, slug: string): Promise<BaseHttpResponse> {
+    const options = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/products/${slug}/results/${inferenceId}`,
       timeout: this.settings.timeout,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
