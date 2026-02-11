@@ -1,6 +1,3 @@
-#
-# Run integration tests.
-#
 name: Integration Test
 
 on:

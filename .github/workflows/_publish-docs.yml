@@ -1,6 +1,3 @@
-#
-# Publish Documentation to GitHub pages.
-#
 name: Publish Documentation
 
 on:

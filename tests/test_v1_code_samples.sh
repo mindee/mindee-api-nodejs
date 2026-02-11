@@ -4,7 +4,6 @@ set -e
 OUTPUT_FILE='../test_code_samples/_test_v1.js'
 ACCOUNT=$1
 ENDPOINT=$2
-API_KEY=${MINDEE_API_KEY}
 
 rm -fr ../test_code_samples
 mkdir ../test_code_samples
@@ -13,14 +12,16 @@ cd ../test_code_samples
 npm install ../mindee-api-nodejs/dist --ignore-scripts --no-bin-links
 cd -
 
-for f in $(find docs/code_samples -maxdepth 1 -name "*.txt" -not -name "workflow_*.txt" -not -name "v2_*.txt" | sort -h)
+for f in $(
+  find docs/code_samples -maxdepth 1 -name "*.txt" -not -name "workflow_*.txt" -not -name "v2_*.txt" | sort -h
+)
 do
   echo "###############################################"
   echo "${f}"
   echo "###############################################"
   echo
 
-  sed "s/my-api-key/$API_KEY/" "${f}" > $OUTPUT_FILE
+  sed "s/my-api-key/${MINDEE_API_KEY}/" "${f}" > $OUTPUT_FILE
   sed -i "s/\/path\/to\/the\/file.ext/..\/mindee-api-nodejs\/tests\/data\/file_types\/pdf\/blank_1.pdf/" $OUTPUT_FILE
 
   if echo "$f" | grep -q "custom_v1.txt"
