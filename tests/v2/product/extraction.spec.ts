@@ -131,6 +131,12 @@ describe("MindeeV2 - Extraction Response", async () => {
       expect(fields.get("field_object")).to.be.an.instanceof(ObjectField);
 
       const fieldObject = fields.getObjectField("field_object");
+      expect(fieldObject.getSimpleField("sub_object_simple")).to.be.an.instanceof(SimpleField);
+      expect(fieldObject.getListField("sub_object_list")).to.be.an.instanceof(ListField);
+      expect(fieldObject.getObjectField("sub_object_object")).to.be.an.instanceof(ObjectField);
+      expect(fieldObject.simpleFields.size).to.eq(1);
+      expect(fieldObject.listFields.size).to.eq(1);
+      expect(fieldObject.objectFields.size).to.eq(1);
       const lvl1 = fieldObject.fields;
 
       expect(lvl1.get("sub_object_list")).to.be.an.instanceof(ListField);
