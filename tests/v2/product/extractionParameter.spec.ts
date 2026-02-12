@@ -7,7 +7,7 @@ import { extraction } from "@/v2/product/index.js";
 
 let expectedDataSchemaDict: StringDict;
 let expectedDataSchemaString: string;
-let expectedDataSchemaObject: extraction.DataSchema;
+let expectedDataSchemaObject: extraction.params.DataSchema;
 
 describe("MindeeV2 - Extraction Parameter", () => {
   const modelIdValue = "test-model-id";
@@ -34,7 +34,7 @@ describe("MindeeV2 - Extraction Parameter", () => {
       );
       expectedDataSchemaDict = JSON.parse(fileContents.toString());
       expectedDataSchemaString = JSON.stringify(expectedDataSchemaDict);
-      expectedDataSchemaObject = new extraction.DataSchema(expectedDataSchemaDict);
+      expectedDataSchemaObject = new extraction.params.DataSchema(expectedDataSchemaDict);
     });
 
     it("shouldn't replace when unset", () => {
