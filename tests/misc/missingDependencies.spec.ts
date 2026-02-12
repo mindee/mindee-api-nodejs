@@ -1,6 +1,6 @@
 import { expect } from "chai";
 
-describe("Light Environment Sanity Check #lightDeps", function () {
+describe("Light Environment Sanity Check #omitOptionalDeps", function () {
 
   it("should NOT have sharp installed", async function () {
     try {

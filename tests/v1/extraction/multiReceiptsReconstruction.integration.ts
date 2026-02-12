@@ -10,7 +10,7 @@ import { setTimeout } from "node:timers/promises";
 const apiKey = process.env.MINDEE_API_KEY;
 let client: Client;
 let sourceDoc: LocalInputSource;
-describe("MindeeV1 - #extraDeps", () => {
+describe("MindeeV1 - #includeOptionalDeps", () => {
   describe("MindeeV1 - A Multi-Receipt Image", () => {
     before(async () => {
       sourceDoc = new PathInput({

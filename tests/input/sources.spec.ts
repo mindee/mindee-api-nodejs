@@ -234,7 +234,7 @@ describe("Input Sources: - load different types of input", () => {
     expect(inputSource.inputType).to.equals(INPUT_TYPE_BUFFER);
     expect(inputSource.filename).to.equals(filename);
     expect(inputSource.isPdf()).to.be.true;
-    it("#extraDeps", async () => {
+    it("#includeOptionalDeps", async () => {
       expect(await inputSource.getPageCount()).to.equals(10);
     });
     expect(inputSource.fileObject).to.be.instanceOf(Buffer);

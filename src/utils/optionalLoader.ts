@@ -15,7 +15,7 @@ export async function loadOptionalDependency<T>(packageName: string, featureName
     ) {
       throw new Error(
         `The feature '${featureName}' requires the optional dependency '${packageName}'. ` +
-        `Please install it by running: npm install ${packageName}`
+        "Please install optional dependencies: `npm install --include=optional`"
       );
     }
     throw error;

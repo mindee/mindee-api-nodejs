@@ -4,7 +4,7 @@ import { expect } from "chai";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../index.js";
 
-describe("Light Environment Sanity Check #lightDeps", function () {
+describe("Light Environment Sanity Check #omitOptionalDeps", function () {
   let client: mindee.v1.Client;
 
   beforeEach(() => {

@@ -15,7 +15,7 @@ const rotations = [
 ];
 
 rotations.forEach(({ angle, suffix }) => {
-  describe(`Multi-Receipt Document - ${angle}° rotation #extraDeps`, () => {
+  describe(`Multi-Receipt Document - ${angle}° rotation #includeOptionalDeps`, () => {
     let extractedReceipts: any[];
     let sourceDoc: PathInput;
 

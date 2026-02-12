@@ -5,7 +5,7 @@ import { PageOptions } from "@/input/index.js";
 import { PageOptionsOperation, PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";
 
-describe("Test pdf lib #extraDeps", () => {
+describe("Test pdf lib #includeOptionalDeps", () => {
 
   it("should open a simple XFA form PDF.", async () => {
     const inputDoc = new PathInput(
