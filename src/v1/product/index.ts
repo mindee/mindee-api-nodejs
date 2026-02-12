@@ -1,5 +1,4 @@
 export * as fr from "./fr/index.js";
-export * as ind from "./ind/index.js";
 export * as us from "./us/index.js";
 export { BarcodeReaderV1 } from "./barcodeReader/index.js";
 export { CropperV1 } from "./cropper/index.js";

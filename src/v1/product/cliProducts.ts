@@ -79,26 +79,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "fr-energy-bill",
-    {
-      displayName: "FR Energy Bill",
-      docClass: product.fr.EnergyBillV1,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
-  [
-    "fr-health-card",
-    {
-      displayName: "FR Health Card",
-      docClass: product.fr.HealthCardV1,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
-  [
     "fr-carte-nationale-d-identite",
     {
       displayName: "FR Carte Nationale d'Identité",
@@ -106,26 +86,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       allWords: false,
       async: false,
       sync: true,
-    },
-  ],
-  [
-    "fr-payslip",
-    {
-      displayName: "FR Payslip",
-      docClass: product.fr.PayslipV3,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
-  [
-    "ind-passport-india",
-    {
-      displayName: "IND Passport - India",
-      docClass: product.ind.IndianPassportV1,
-      allWords: false,
-      async: true,
-      sync: false,
     },
   ],
   [
@@ -206,16 +166,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       allWords: false,
       async: false,
       sync: true,
-    },
-  ],
-  [
-    "us-us-mail",
-    {
-      displayName: "US US Mail",
-      docClass: product.us.UsMailV3,
-      allWords: false,
-      async: true,
-      sync: false,
     },
   ],
 ]);
