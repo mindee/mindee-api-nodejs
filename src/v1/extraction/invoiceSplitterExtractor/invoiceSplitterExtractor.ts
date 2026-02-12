@@ -5,7 +5,7 @@ import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { ExtractedInvoiceSplitterImage } from "@/v1/extraction/index.js";
-import { loadOptionalDependency } from "@/utils/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 

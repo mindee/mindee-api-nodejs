@@ -2,7 +2,7 @@
 // @ts-ignore
 import type * as pdfJsExtractTypes from "pdf.js-extract";
 import { MindeePdfError } from "@/errors/index.js";
-import { loadOptionalDependency } from "@/utils/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
 
 export interface PageTextInfo {

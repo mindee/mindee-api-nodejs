@@ -8,7 +8,7 @@ import { ExtractedMultiReceiptImage } from "@/v1/extraction/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { extractFromPage } from "@/image/index.js";
 import { PositionField } from "@/v1/parsing/standard/index.js";
-import { loadOptionalDependency } from "@/utils/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 

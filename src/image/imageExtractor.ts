@@ -3,7 +3,7 @@
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "@/geometry/index.js";
 import { adjustForRotation } from "@/geometry/polygonUtils.js";
-import { loadOptionalDependency } from "@/utils/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 

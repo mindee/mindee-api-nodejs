@@ -6,7 +6,7 @@ import { logger } from "@/logger.js";
 import { BufferInput, MIMETYPES } from "@/input/index.js";
 import type * as popplerTypes from "node-poppler";
 import { writeFile } from "fs/promises";
-import { loadOptionalDependency } from "@/utils/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
 /**
  * Generic class for image extraction

@@ -5,7 +5,7 @@ import { errorHandler } from "@/errors/handler.js";
 import { PageOptions, PageOptionsOperation } from "@/input/pageOptions.js";
 import { MindeeError } from "@/errors/index.js";
 import { logger } from "@/logger.js";
-import { loadOptionalDependency } from "@/utils/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
