@@ -3,13 +3,13 @@ import {
   Base64Input,
   BufferInput,
   BytesInput,
-  PathInput,
-  StreamInput,
   INPUT_TYPE_BASE64,
   INPUT_TYPE_BUFFER,
   INPUT_TYPE_BYTES,
   INPUT_TYPE_PATH,
   INPUT_TYPE_STREAM,
+  PathInput,
+  StreamInput,
 } from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
@@ -234,7 +234,9 @@ describe("Input Sources: - load different types of input", () => {
     expect(inputSource.inputType).to.equals(INPUT_TYPE_BUFFER);
     expect(inputSource.filename).to.equals(filename);
     expect(inputSource.isPdf()).to.be.true;
-    expect(await inputSource.getPageCount()).to.equals(10);
+    it("#includeOptionalDeps", async () => {
+      expect(await inputSource.getPageCount()).to.equals(10);
+    });
     expect(inputSource.fileObject).to.be.instanceOf(Buffer);
   });
 

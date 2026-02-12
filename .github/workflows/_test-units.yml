@@ -4,8 +4,8 @@ on:
   workflow_call:
 
 jobs:
-  run-tests:
-    name: Run Tests
+  run-tests-with-optional-dependencies:
+    name: Run Tests With Optional Dependencies
     strategy:
       matrix:
         os:
@@ -42,3 +42,36 @@ jobs:
 
       - name: Test code
         run: npm run test
+  run-tests-without-optional-dependencies:
+    name: Run Tests Without Optional Dependencies
+    strategy:
+      matrix:
+        os:
+          - "ubuntu-latest"
+        node-version:
+          - "18"
+          - "20"
+          - "22"
+          - "24"
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install Node.js dependencies
+        run: npm ci --omit=optional
+
+      - name: Compilation
+        run: npm run build
+
+      - name: Test code
+        run: npm run test-light

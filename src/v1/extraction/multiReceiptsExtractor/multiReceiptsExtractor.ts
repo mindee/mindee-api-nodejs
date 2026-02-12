@@ -1,11 +1,24 @@
-import { PDFDocument, PDFImage, PDFPage, degrees } from "@cantoo/pdf-lib";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
 import { Polygon } from "@/geometry/index.js";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
-import { ExtractedMultiReceiptImage } from "./extractedMultiReceiptImage.js";
+import { ExtractedMultiReceiptImage } from "@/v1/extraction/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { extractFromPage } from "@/image/index.js";
 import { PositionField } from "@/v1/parsing/standard/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
+
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib(): Promise<typeof pdfLibTypes> {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib!;
+}
 
 /**
  * Given a page and a set of coordinates, extracts & assigns individual receipts to an ExtractedMultiReceiptImage
@@ -17,7 +30,7 @@ import { PositionField } from "@/v1/parsing/standard/index.js";
  * pages.
  */
 async function extractReceiptsFromPage(
-  pdfPage: PDFPage,
+  pdfPage: pdfLibTypes.PDFPage,
   boundingBoxes: Polygon[],
   pageId: number) {
   const extractedReceiptsRaw = await extractFromPage(pdfPage, boundingBoxes);
@@ -29,7 +42,8 @@ async function extractReceiptsFromPage(
 }
 
 async function loadPdfDoc(inputFile: LocalInputSource) {
-  let pdfDoc: PDFDocument;
+  const pdfLib = await getPdfLib();
+  let pdfDoc: pdfLibTypes.PDFDocument;
   if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputFile.mimeType)) {
     throw new MindeeInputSourceError(
       'Unsupported file type "' +
@@ -37,13 +51,13 @@ async function loadPdfDoc(inputFile: LocalInputSource) {
       '" Currently supported types are .png, .jpg and .pdf'
     );
   } else if (inputFile.isPdf()) {
-    pdfDoc = await PDFDocument.load(inputFile.fileObject, {
+    pdfDoc = await pdfLib.PDFDocument.load(inputFile.fileObject, {
       ignoreEncryption: true,
       password: ""
     });
   } else {
-    pdfDoc = await PDFDocument.create();
-    let image: PDFImage;
+    pdfDoc = await pdfLib.PDFDocument.create();
+    let image: pdfLibTypes.PDFImage;
     if (inputFile.mimeType === "image/png") {
       image = await pdfDoc.embedPng(inputFile.fileObject);
     } else {
@@ -67,6 +81,7 @@ export async function extractReceipts(
   inputFile: LocalInputSource,
   inference: MultiReceiptsDetectorV1
 ): Promise<ExtractedMultiReceiptImage[]> {
+  const pdfLib = await getPdfLib();
   const images: ExtractedMultiReceiptImage[] = [];
   if (!inference.prediction.receipts) {
     throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");
@@ -74,7 +89,7 @@ export async function extractReceipts(
   const pdfDoc = await loadPdfDoc(inputFile);
   for (let pageId = 0; pageId < pdfDoc.getPageCount(); pageId++) {
     const [page] = await pdfDoc.copyPages(pdfDoc, [pageId]);
-    page.setRotation(degrees(inference.pages[pageId].orientation?.value ?? 0));
+    page.setRotation(pdfLib.degrees(inference.pages[pageId].orientation?.value ?? 0));
     const receiptPositions = inference.pages[pageId].prediction.receipts.map(
       (receipt: PositionField) => receipt.boundingBox
     );

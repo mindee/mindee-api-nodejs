@@ -16,8 +16,8 @@ env:
   MINDEE_V2_SE_TESTS_OCR_MODEL_ID: ${{ secrets.MINDEE_V2_SE_TESTS_OCR_MODEL_ID }}
 
 jobs:
-  run-tests:
-    name: Run Integration Tests
+  run-tests-with-optional-dependencies:
+    name: Run Integration Tests With Optional Dependencies
     timeout-minutes: 30
     strategy:
       matrix:
@@ -65,3 +65,39 @@ jobs:
 
       - name: Test code
         run: npm run test-integration
+
+
+  run-tests-without-optional-dependencies:
+    name: Run Integration Tests Without Optional Dependencies
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        os:
+          - "ubuntu-latest"
+          - "windows-latest"
+          - "macos-latest"
+        node-version:
+          - "18"
+          - "24"
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Check out Git repository
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: "npm"
+
+      - name: Install Node.js dependencies
+        run: npm ci --omit=optional
+
+      - name: Compilation
+        run: npm run build
+
+      - name: Test code
+        run: npm run test-integration-light

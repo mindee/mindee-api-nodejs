@@ -1,5 +1,5 @@
 /**
- * Parameters for the internal polling loop in {@link v2.Client.enqueueAndGetInference | enqueueAndGetInference()}.
+ * Parameters for the internal polling loop in `enqueueAndGetInference()`.
  *
  * Default behavior:
  * - `initialDelaySec` = 2s

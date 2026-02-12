@@ -1,22 +1,38 @@
-import { PDFDocument } from "@cantoo/pdf-lib";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { LocalInputSource } from "@/input/index.js";
-import { ExtractedInvoiceSplitterImage } from "./extractedInvoiceSplitterImage.js";
+import { ExtractedInvoiceSplitterImage } from "@/v1/extraction/index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
-async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib(): Promise<typeof pdfLibTypes> {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib!;
+}
+
+async function splitPdf(
+  pdfDoc: pdfLibTypes.PDFDocument,
+  invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
+  const pdfLib = await getPdfLib();
   if (invoicePageGroups.length === 0) {
     return [];
   }
   const generatedPdfs: ExtractedInvoiceSplitterImage[] = [];
   for (let i = 0; i < invoicePageGroups.length; i++) {
-    const subdocument = await PDFDocument.create();
+    const subdocument = await pdfLib.PDFDocument.create();
     const fullIndexes = [];
     for (let j = invoicePageGroups[i][0]; j <= invoicePageGroups[i][invoicePageGroups[i].length - 1]; j++) {
       fullIndexes.push(j);
     }
     const copiedPages = await subdocument.copyPages(pdfDoc, fullIndexes);
-    copiedPages.map((page) => {
+    copiedPages.map((page: pdfLibTypes.PDFPage) => {
       subdocument.addPage(page);
     });
     const subdocumentBytes = await subdocument.save();
@@ -29,7 +45,8 @@ async function splitPdf(pdfDoc: PDFDocument, invoicePageGroups: number[][]): Pro
   return generatedPdfs;
 }
 
-async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
+async function getPdfDoc(inputFile: LocalInputSource): Promise<pdfLibTypes.PDFDocument> {
+  const pdfLib = await getPdfLib();
   await inputFile.init();
   if (!inputFile.isPdf()) {
     throw new MindeeInputSourceError(
@@ -37,7 +54,7 @@ async function getPdfDoc(inputFile: LocalInputSource): Promise<PDFDocument> {
     );
   }
 
-  const pdfDoc = await PDFDocument.load(inputFile.fileObject, {
+  const pdfDoc = await pdfLib.PDFDocument.load(inputFile.fileObject, {
     ignoreEncryption: true,
     password: ""
   });

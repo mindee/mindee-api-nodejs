@@ -4,14 +4,13 @@ import {
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import sharp from "sharp";
 import { compressImage } from "@/image/index.js";
 import { compressPdf } from "@/pdf/index.js";
 import { extractTextFromPdf } from "@/pdf/pdfUtils.js";
 import { logger } from "@/logger.js";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
 
-describe("Input Sources - compression and resize", () => {
+describe("Input Sources - compression and resize #includeOptionalDeps", () => {
   const outputPath = path.join(RESOURCE_PATH, "output");
 
   before(async () => {
@@ -66,7 +65,8 @@ describe("Input Sources - compression and resize", () => {
     const initialFileStats = await fs.promises.stat(path.join(RESOURCE_PATH, "file_types/receipt.jpg"));
     const renderedFileStats = await fs.promises.stat(path.join(outputPath, "resize_indirect.jpg"));
     expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
-    const metadata = await sharp(imageResizeInput.fileObject).metadata();
+    const sharp = await import("sharp");
+    const metadata = await sharp.default(imageResizeInput.fileObject).metadata();
     expect(metadata.width).to.equal(250);
     expect(metadata.height).to.equal(333);
   });

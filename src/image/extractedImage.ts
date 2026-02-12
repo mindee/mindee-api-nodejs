@@ -4,8 +4,9 @@ import { writeFileSync } from "node:fs";
 import path from "node:path";
 import { logger } from "@/logger.js";
 import { BufferInput, MIMETYPES } from "@/input/index.js";
-import { Poppler } from "node-poppler";
+import type * as popplerTypes from "node-poppler";
 import { writeFile } from "fs/promises";
+import { loadOptionalDependency } from "@/dependency/index.js";
 
 /**
  * Generic class for image extraction
@@ -33,7 +34,9 @@ export class ExtractedImage {
     try {
       let outputBuffer: Buffer = this.buffer;
       if (fileExt !== ".pdf") {
-        const poppler = new Poppler();
+        const popplerImport = await loadOptionalDependency<typeof popplerTypes>("node-poppler", "Image Processing");
+        const poppler = (popplerImport as any).default || popplerImport;
+        const popplerInstance = new poppler.Poppler();
         const options: Record<string, unknown> = {
           firstPageToConvert: 1,
           lastPageToConvert: 1,
@@ -48,7 +51,7 @@ export class ExtractedImage {
           options.tiffFile = true;
         }
 
-        const result = await poppler.pdfToCairo(this.buffer, undefined, options);
+        const result = await popplerInstance.pdfToCairo(this.buffer, undefined, options);
         outputBuffer = Buffer.from(result, "latin1");
       }
 

@@ -11,7 +11,7 @@ const dataPath = {
   fileSample: path.join(V1_PRODUCT_PATH, "invoice_splitter/invoice_5p.pdf"),
 };
 
-describe("A multi-page invoice document", () => {
+describe("A multi-page invoice document #includeOptionalDeps", () => {
   it("should be split properly.", async () => {
     const jsonDataNA = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonDataNA.toString());
