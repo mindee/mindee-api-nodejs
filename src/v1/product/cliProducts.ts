@@ -119,16 +119,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "ind-passport-india",
-    {
-      displayName: "IND Passport - India",
-      docClass: product.ind.IndianPassportV1,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
-  [
     "international-id",
     {
       displayName: "International ID",
