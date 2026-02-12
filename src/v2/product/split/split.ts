@@ -1,5 +1,5 @@
 import { SplitResponse } from "./splitResponse.js";
-import { SplitParameters } from "./splitParameters.js";
+import { SplitParameters } from "./params/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Split extends BaseProduct {

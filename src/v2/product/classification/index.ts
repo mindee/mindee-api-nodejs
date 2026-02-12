@@ -1,5 +1,5 @@
 export { Classification } from "./classification.js";
-export { ClassificationParameters } from "./classificationParameters.js";
+export { ClassificationParameters } from "./params/index.js";
 export { ClassificationResponse } from "./classificationResponse.js";
 export { ClassificationInference } from "./classificationInference.js";
 export { ClassificationResult } from "./classificationResult.js";
