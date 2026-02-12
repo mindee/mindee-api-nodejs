@@ -1,9 +1,19 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "@/geometry/index.js";
 import { adjustForRotation } from "@/geometry/polygonUtils.js";
 import { loadOptionalDependency } from "@/utils/index.js";
-const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
-const pdfLib = (pdfLibImport as any).default || pdfLibImport;
+
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib() {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib;
+}
 
 /**
  * Extracts elements from a page based off of a list of bounding boxes.
@@ -14,6 +24,7 @@ const pdfLib = (pdfLibImport as any).default || pdfLibImport;
 export async function extractFromPage(
   pdfPage: pdfLibTypes.PDFPage,
   polygons: Polygon[]) {
+  const pdfLib = await getPdfLib();
   const { width, height } = pdfPage.getSize();
   const extractedElements :Uint8Array[] = [];
   // Manual upscale.

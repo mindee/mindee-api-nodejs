@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
 import { Polygon } from "@/geometry/index.js";
@@ -7,8 +9,16 @@ import { LocalInputSource } from "@/input/index.js";
 import { extractFromPage } from "@/image/index.js";
 import { PositionField } from "@/v1/parsing/standard/index.js";
 import { loadOptionalDependency } from "@/utils/index.js";
-const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
-const pdfLib = (pdfLibImport as any).default || pdfLibImport;
+
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib() {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib;
+}
 
 /**
  * Given a page and a set of coordinates, extracts & assigns individual receipts to an ExtractedMultiReceiptImage
@@ -32,6 +42,7 @@ async function extractReceiptsFromPage(
 }
 
 async function loadPdfDoc(inputFile: LocalInputSource) {
+  const pdfLib = await getPdfLib();
   let pdfDoc: pdfLibTypes.PDFDocument;
   if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputFile.mimeType)) {
     throw new MindeeInputSourceError(
@@ -70,6 +81,7 @@ export async function extractReceipts(
   inputFile: LocalInputSource,
   inference: MultiReceiptsDetectorV1
 ): Promise<ExtractedMultiReceiptImage[]> {
+  const pdfLib = await getPdfLib();
   const images: ExtractedMultiReceiptImage[] = [];
   if (!inference.prediction.receipts) {
     throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");

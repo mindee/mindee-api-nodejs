@@ -3,11 +3,21 @@ import tmp from "tmp";
 import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils.js";
 import * as fs from "node:fs";
 import type * as popplerTypes from "node-poppler";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { compressImage } from "@/image/index.js";
 import { loadOptionalDependency } from "@/utils/index.js";
-const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
-const pdfLib = (pdfLibImport as any).default || pdfLibImport;
+
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib() {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib;
+}
 
 /**
  * Compresses each page of a provided PDF buffer.
@@ -131,6 +141,7 @@ async function compressPagesWithQuality(
   disableSourceText: boolean,
   extractedText: ExtractedPdfInfo | null
 ): Promise<Buffer[]> {
+  const pdfLib = await getPdfLib();
   const pdfDoc = await pdfLib.PDFDocument.load(pdfData, {
     ignoreEncryption: true,
     password: ""
@@ -183,6 +194,7 @@ function isCompressionSuccessful(totalCompressedSize: number, originalSize: numb
  * @returns A Promise resolving to the new PDF as a Buffer.
  */
 async function createNewPdfFromCompressedPages(compressedPages: Buffer[]): Promise<Buffer> {
+  const pdfLib = await getPdfLib();
   const newPdfDoc = await pdfLib.PDFDocument.create();
 
   for (const compressedPage of compressedPages) {
@@ -207,6 +219,7 @@ async function addTextToPdfPage(
   if (textInfo === null) {
     return;
   }
+  const pdfLib = await getPdfLib();
   for (const textPages of textInfo.pages) {
     for (const textPage of textPages.content) {
       page.drawText(textPage.str, {
@@ -221,6 +234,7 @@ async function addTextToPdfPage(
 }
 
 async function getFontFromName(fontName: string): Promise<pdfLibTypes.PDFFont> {
+  const pdfLib = await getPdfLib();
   const pdfDoc = await pdfLib.PDFDocument.create();
   let font: pdfLibTypes.PDFFont;
   const standardFontValues = Object.values(pdfLib.StandardFonts) as string[];

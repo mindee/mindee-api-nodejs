@@ -1,15 +1,26 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { ExtractedInvoiceSplitterImage } from "@/v1/extraction/index.js";
 import { loadOptionalDependency } from "@/utils/index.js";
-const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
-const pdfLib = (pdfLibImport as any).default || pdfLibImport;
+
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib() {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib;
+}
 
 async function splitPdf(
   pdfDoc: pdfLibTypes.PDFDocument,
   invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
+  const pdfLib = await getPdfLib();
   if (invoicePageGroups.length === 0) {
     return [];
   }
@@ -35,6 +46,7 @@ async function splitPdf(
 }
 
 async function getPdfDoc(inputFile: LocalInputSource): Promise<pdfLibTypes.PDFDocument> {
+  const pdfLib = await getPdfLib();
   await inputFile.init();
   if (!inputFile.isPdf()) {
     throw new MindeeInputSourceError(

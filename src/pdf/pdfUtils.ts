@@ -1,3 +1,5 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import type * as pdfJsExtractTypes from "pdf.js-extract";
 import { MindeePdfError } from "@/errors/index.js";
 import { loadOptionalDependency } from "@/utils/index.js";
@@ -54,9 +56,9 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<ExtractedPd
       });
   });
 
-  const pages = pdf.pages.map((page, index) => ({
+  const pages = pdf.pages.map((page: pdfJsExtractTypes.PDFExtractPage, index: number) => ({
     pageNumber: index + 1,
-    content: page.content.map(item => ({
+    content: page.content.map((item: pdfJsExtractTypes.PDFExtractText) => ({
       str: item.str,
       x: item.x,
       y: item.y,

@@ -1,11 +1,21 @@
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-expect-error
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { errorHandler } from "@/errors/handler.js";
 import { PageOptions, PageOptionsOperation } from "@/input/pageOptions.js";
 import { MindeeError } from "@/errors/index.js";
 import { logger } from "@/logger.js";
 import { loadOptionalDependency } from "@/utils/index.js";
-const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
-const pdfLib = (pdfLibImport as any).default || pdfLibImport;
+
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib() {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib;
+}
 
 export interface SplitPdf {
   file: Buffer;
@@ -22,6 +32,7 @@ export async function extractPages(
   file: Buffer,
   pageOptions: PageOptions
 ): Promise<SplitPdf> {
+  const pdfLib = await getPdfLib();
   const currentPdf = await pdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
@@ -93,6 +104,7 @@ export async function extractPages(
  * @returns the number of pages in the file.
  */
 export async function countPages(file: Buffer): Promise<number> {
+  const pdfLib = await getPdfLib();
   const currentPdf = await pdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
