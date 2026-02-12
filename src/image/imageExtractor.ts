@@ -1,6 +1,9 @@
-import { PDFDocument, PDFPage, degrees } from "@cantoo/pdf-lib";
+import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { getMinMaxX, getMinMaxY, Polygon } from "@/geometry/index.js";
 import { adjustForRotation } from "@/geometry/polygonUtils.js";
+import { loadOptionalDependency } from "@/utils/index.js";
+const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+const pdfLib = (pdfLibImport as any).default || pdfLibImport;
 
 /**
  * Extracts elements from a page based off of a list of bounding boxes.
@@ -9,7 +12,7 @@ import { adjustForRotation } from "@/geometry/polygonUtils.js";
  * @param polygons List of coordinates to pull the elements from.
  */
 export async function extractFromPage(
-  pdfPage: PDFPage,
+  pdfPage: pdfLibTypes.PDFPage,
   polygons: Polygon[]) {
   const { width, height } = pdfPage.getSize();
   const extractedElements :Uint8Array[] = [];
@@ -21,7 +24,7 @@ export async function extractFromPage(
   for (const origPolygon of polygons) {
     const polygon = adjustForRotation(origPolygon, orientation);
 
-    const tempPdf = await PDFDocument.create();
+    const tempPdf = await pdfLib.PDFDocument.create();
 
     const newWidth = width * (getMinMaxX(polygon).max - getMinMaxX(polygon).min);
     const newHeight = height * (getMinMaxY(polygon).max - getMinMaxY(polygon).min);
@@ -65,7 +68,7 @@ export async function extractFromPage(
         y: finalHeight,
         width: newWidth * qualityScale,
         height: newHeight * qualityScale,
-        rotate: degrees(270),
+        rotate: pdfLib.degrees(270),
       });
     } else if (orientation === 180) {
       samplePage.drawPage(cropped, {
@@ -73,7 +76,7 @@ export async function extractFromPage(
         y: finalHeight,
         width: newWidth * qualityScale,
         height: newHeight * qualityScale,
-        rotate: degrees(180),
+        rotate: pdfLib.degrees(180),
       });
     } else if (orientation === 270) {
       samplePage.drawPage(cropped, {
@@ -81,7 +84,7 @@ export async function extractFromPage(
         y: 0,
         width: newWidth * qualityScale,
         height: newHeight * qualityScale,
-        rotate: degrees(90),
+        rotate: pdfLib.degrees(90),
       });
     }
 

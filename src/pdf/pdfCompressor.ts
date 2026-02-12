@@ -2,9 +2,12 @@ import { logger } from "@/logger.js";
 import tmp from "tmp";
 import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils.js";
 import * as fs from "node:fs";
-import { Poppler } from "node-poppler";
-import { PDFDocument, PDFFont, PDFPage, rgb, StandardFonts } from "@cantoo/pdf-lib";
+import type * as popplerTypes from "node-poppler";
+import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { compressImage } from "@/image/index.js";
+import { loadOptionalDependency } from "@/utils/index.js";
+const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+const pdfLib = (pdfLibImport as any).default || pdfLibImport;
 
 /**
  * Compresses each page of a provided PDF buffer.
@@ -128,7 +131,7 @@ async function compressPagesWithQuality(
   disableSourceText: boolean,
   extractedText: ExtractedPdfInfo | null
 ): Promise<Buffer[]> {
-  const pdfDoc = await PDFDocument.load(pdfData, {
+  const pdfDoc = await pdfLib.PDFDocument.load(pdfData, {
     ignoreEncryption: true,
     password: ""
   });
@@ -180,7 +183,7 @@ function isCompressionSuccessful(totalCompressedSize: number, originalSize: numb
  * @returns A Promise resolving to the new PDF as a Buffer.
  */
 async function createNewPdfFromCompressedPages(compressedPages: Buffer[]): Promise<Buffer> {
-  const newPdfDoc = await PDFDocument.create();
+  const newPdfDoc = await pdfLib.PDFDocument.create();
 
   for (const compressedPage of compressedPages) {
     const image = await newPdfDoc.embedJpg(compressedPage);
@@ -198,7 +201,7 @@ async function createNewPdfFromCompressedPages(compressedPages: Buffer[]): Promi
 }
 
 async function addTextToPdfPage(
-  page: PDFPage,
+  page: pdfLibTypes.PDFPage,
   textInfo: ExtractedPdfInfo | null
 ): Promise<void> {
   if (textInfo === null) {
@@ -210,20 +213,22 @@ async function addTextToPdfPage(
         x: textPage.x,
         y: textPage.y,
         size: textPage.height,
-        color: rgb(0, 0, 0),
+        color: pdfLib.rgb(0, 0, 0),
         font: await getFontFromName(textPage.fontName)
       });
     }
   }
 }
 
-async function getFontFromName(fontName: string): Promise<PDFFont> {
-  const pdfDoc = await PDFDocument.create();
-  let font: PDFFont;
-  if (Object.values(StandardFonts).map(value => value.toString()).includes(fontName)) {
+async function getFontFromName(fontName: string): Promise<pdfLibTypes.PDFFont> {
+  const pdfDoc = await pdfLib.PDFDocument.create();
+  let font: pdfLibTypes.PDFFont;
+  const standardFontValues = Object.values(pdfLib.StandardFonts) as string[];
+
+  if (standardFontValues.includes(fontName)) {
     font = await pdfDoc.embedFont(fontName);
   } else {
-    font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    font = await pdfDoc.embedFont(pdfLib.StandardFonts.Helvetica);
   }
 
   return font;
@@ -237,7 +242,10 @@ async function getFontFromName(fontName: string): Promise<PDFFont> {
  * @param quality Quality to apply during rasterization.
  */
 async function rasterizePage(pdfData: Buffer, index: number, quality = 85): Promise<string> {
-  const poppler = new Poppler();
+
+  const popplerImport = await loadOptionalDependency<typeof popplerTypes>("node-poppler", "Image Processing");
+  const poppler = (popplerImport as any).default || popplerImport;
+  const popplerInstance = new poppler.Poppler();
   const tmpPdf = tmp.fileSync();
   const tempPdfPath = tmpPdf.name;
   const antialiasOption: "fast" | "best" | "default" | "good" | "gray" | "none" | "subpixel" = "best";
@@ -252,7 +260,7 @@ async function rasterizePage(pdfData: Buffer, index: number, quality = 85): Prom
       singleFile: true
     };
 
-    const jpegBuffer = await poppler.pdfToCairo(tempPdfPath, undefined, options);
+    const jpegBuffer = await popplerInstance.pdfToCairo(tempPdfPath, undefined, options);
 
     await fs.promises.unlink(tempPdfPath);
 

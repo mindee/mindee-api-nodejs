@@ -1,5 +1,6 @@
-import { PDFExtract, PDFExtractOptions, PDFExtractResult } from "pdf.js-extract";
+import type * as pdfJsExtractTypes from "pdf.js-extract";
 import { MindeePdfError } from "@/errors/index.js";
+import { loadOptionalDependency } from "@/utils/index.js";
 
 
 export interface PageTextInfo {
@@ -34,16 +35,23 @@ function getConcatenatedText(pages: PageTextInfo[]): string {
  * @param pdfBuffer PDF handle, as a buffer.
  */
 export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<ExtractedPdfInfo> {
-  const pdfExtract = new PDFExtract();
-  const options: PDFExtractOptions = {};
+  const pdfJsExtract = await loadOptionalDependency<typeof pdfJsExtractTypes>(
+    "pdf.js-extract", "PDF text extraction"
+  );
+  const pdfJs = (pdfJsExtract as any).pdfjs || pdfJsExtract;
+  const pdfExtract: pdfJsExtractTypes.PDFExtract = new pdfJs.PDFExtract();
+  const options: pdfJsExtractTypes.PDFExtractOptions = {};
 
-  const pdf = await new Promise<PDFExtractResult>((resolve, reject) => {
-    pdfExtract.extractBuffer(pdfBuffer, options, (err, result) => {
-      if (err) reject(err);
-      if (result === undefined)
-        reject(new MindeePdfError("Couldn't process result."));
-      else resolve(result);
-    });
+  const pdf = await new Promise<pdfJsExtractTypes.PDFExtractResult>((resolve, reject) => {
+    pdfExtract.extractBuffer(
+      pdfBuffer, options, (
+        err: Error | null, result: pdfJsExtractTypes.PDFExtractResult | undefined
+      ) => {
+        if (err) reject(err);
+        if (result === undefined)
+          reject(new MindeePdfError("Couldn't process result."));
+        else resolve(result);
+      });
   });
 
   const pages = pdf.pages.map((page, index) => ({

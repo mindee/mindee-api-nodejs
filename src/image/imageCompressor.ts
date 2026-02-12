@@ -1,6 +1,8 @@
-import sharp from "sharp";
-import { Sharp, Metadata } from "sharp";
+import { loadOptionalDependency } from "@/utils/index.js";
+import type * as SharpTypes from "sharp";
+
 import { MindeeImageError } from "@/errors/index.js";
+
 
 /**
  * Compresses an image with the given parameters.
@@ -16,9 +18,11 @@ export async function compressImage(
   maxWidth:number|null = null,
   maxHeight:number|null = null,
 ) {
-  let sharpImage: Sharp = sharp(imageBuffer);
+  const sharpLoaded = await loadOptionalDependency<typeof SharpTypes>("sharp", "Image compression");
+  const sharp = (sharpLoaded as any).default || sharpLoaded;
+  let sharpImage: SharpTypes.Sharp = sharp(imageBuffer);
 
-  const metadata: Metadata = await sharpImage.metadata();
+  const metadata: SharpTypes.Metadata = await sharpImage.metadata();
   if (metadata.width === undefined || metadata.height === undefined){
     throw new MindeeImageError("Source image has invalid dimensions.");
   }

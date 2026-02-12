@@ -1,8 +1,11 @@
+import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { errorHandler } from "@/errors/handler.js";
-import { PDFDocument } from "@cantoo/pdf-lib";
 import { PageOptions, PageOptionsOperation } from "@/input/pageOptions.js";
 import { MindeeError } from "@/errors/index.js";
 import { logger } from "@/logger.js";
+import { loadOptionalDependency } from "@/utils/index.js";
+const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+const pdfLib = (pdfLibImport as any).default || pdfLibImport;
 
 export interface SplitPdf {
   file: Buffer;
@@ -19,12 +22,12 @@ export async function extractPages(
   file: Buffer,
   pageOptions: PageOptions
 ): Promise<SplitPdf> {
-  const currentPdf = await PDFDocument.load(file, {
+  const currentPdf = await pdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
   });
 
-  const newPdf = await PDFDocument.create();
+  const newPdf = await pdfLib.PDFDocument.create();
 
   const pageCount = currentPdf.getPageCount();
 
@@ -65,15 +68,15 @@ export async function extractPages(
 
   if (pageOptions.operation === PageOptionsOperation.KeepOnly) {
     const keptPages = await newPdf.copyPages(currentPdf, pageIndexes);
-    keptPages.forEach((keptPage) => {
+    keptPages.forEach((keptPage: pdfLibTypes.PDFPage) => {
       newPdf.addPage(keptPage);
     });
   } else if (pageOptions.operation === PageOptionsOperation.Remove) {
     const pagesToKeep = currentPdf
       .getPageIndices()
-      .filter((v) => !pageIndexes.includes(v));
+      .filter((v:number) => !pageIndexes.includes(v));
     const keptPages = await newPdf.copyPages(currentPdf, pagesToKeep);
-    keptPages.forEach((keptPage) => {
+    keptPages.forEach((keptPage: pdfLibTypes.PDFPage) => {
       newPdf.addPage(keptPage);
     });
   } else {
@@ -90,7 +93,7 @@ export async function extractPages(
  * @returns the number of pages in the file.
  */
 export async function countPages(file: Buffer): Promise<number> {
-  const currentPdf = await PDFDocument.load(file, {
+  const currentPdf = await pdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
   });
