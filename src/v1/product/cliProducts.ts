@@ -198,14 +198,4 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       sync: true,
     },
   ],
-  [
-    "us-us-mail",
-    {
-      displayName: "US US Mail",
-      docClass: product.us.UsMailV3,
-      allWords: false,
-      async: true,
-      sync: false,
-    },
-  ],
 ]);
