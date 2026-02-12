@@ -1,5 +1,4 @@
-import { StringDict } from "@/parsing/stringDict.js";
-import { MindeeError } from "@/errors/index.js";
+import { StringDict } from "@/parsing/index.js";
 
 export class DataSchemaField {
   /**
@@ -73,61 +72,6 @@ export class DataSchemaField {
     return out;
   }
 
-  toString() {
-    return JSON.stringify(this.toJSON());
-  }
-}
-
-/**
- * The structure to completely replace the data schema of the model.
- */
-export class DataSchemaReplace {
-  /**
-   * List of fields in the Data Schema.
-   */
-  fields: Array<DataSchemaField>;
-
-  constructor(dataSchemaReplace: StringDict) {
-    if (!dataSchemaReplace || !dataSchemaReplace.fields ) {
-      throw new MindeeError("Invalid Data Schema provided.");
-    }
-    if (dataSchemaReplace["fields"].length === 0) {
-      throw new TypeError("Data Schema replacement fields cannot be empty.");
-    }
-    this.fields = dataSchemaReplace["fields"].map((field: StringDict) => (new DataSchemaField(field)));
-  }
-
-  toJSON() {
-    return { fields: this.fields.map(e => e.toJSON()) };
-  }
-
-  toString() {
-    return JSON.stringify(this.toJSON());
-  }
-}
-
-/**
- * Modify the Data Schema.
- */
-export class DataSchema {
-  /**
-   * If set, completely replaces the data schema of the model.
-   */
-  replace?: DataSchemaReplace;
-
-  constructor(dataSchema: StringDict | string) {
-    if (typeof dataSchema === "string") {
-      this.replace = new DataSchemaReplace(JSON.parse(dataSchema)["replace"]);
-    } else if (dataSchema instanceof DataSchema) {
-      this.replace = dataSchema.replace;
-    } else {
-      this.replace = new DataSchemaReplace(dataSchema["replace"] as StringDict);
-    }
-  }
-
-  toJSON() {
-    return { replace: this.replace?.toJSON() };
-  }
   toString() {
     return JSON.stringify(this.toJSON());
   }

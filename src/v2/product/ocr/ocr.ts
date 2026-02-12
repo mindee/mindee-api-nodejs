@@ -1,5 +1,5 @@
 import { OcrResponse } from "./ocrResponse.js";
-import { OcrParameters } from "./ocrParameters.js";
+import { OcrParameters } from "./params/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Ocr extends BaseProduct {

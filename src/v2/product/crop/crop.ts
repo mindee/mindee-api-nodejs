@@ -1,5 +1,5 @@
 import { CropResponse } from "./cropResponse.js";
-import { CropParameters } from "./cropParameters.js";
+import { CropParameters } from "./params/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Crop extends BaseProduct {

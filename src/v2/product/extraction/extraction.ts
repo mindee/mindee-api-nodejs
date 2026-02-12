@@ -1,5 +1,5 @@
 import { ExtractionResponse } from "./extractionResponse.js";
-import { ExtractionParameters } from "./extractionParameters.js";
+import { ExtractionParameters } from "./params/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 export class Extraction extends BaseProduct {
