@@ -77,11 +77,11 @@ export function cli() {
     .option("-k, --api-key <api_key>", "your Mindee API key");
 
   const inferenceTypes = [
-    { name: "extract", description: "Extract data from a document.", product: Extraction },
+    { name: "extraction", description: "Extract data from a document.", product: Extraction },
     { name: "crop", description: "Crop a document.", product: Crop },
     { name: "split", description: "Split a document into pages.", product: Split },
     { name: "ocr", description: "Read text from a document.", product: Ocr },
-    { name: "classify", description: "Classify a document.", product: Classification },
+    { name: "classification", description: "Classify a document.", product: Classification },
   ];
 
   for (const inference of inferenceTypes) {
