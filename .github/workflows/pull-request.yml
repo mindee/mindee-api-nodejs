@@ -14,11 +14,11 @@ jobs:
     uses: ./.github/workflows/_test-units.yml
     needs: static_analysis
     secrets: inherit
+  test_smoke:
+    uses: ./.github/workflows/_test-smoke.yml
+    needs: static_analysis
+    secrets: inherit
   test_integrations:
     uses: ./.github/workflows/_test-integrations.yml
-    needs: test_units
-    secrets: inherit
-  test_code_samples:
-    uses: ./.github/workflows/_test-code-samples.yml
     needs: test_units
     secrets: inherit

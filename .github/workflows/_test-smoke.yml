@@ -1,4 +1,4 @@
-name: Test Code Samples
+name: Smoke Test
 
 on:
   workflow_call:
@@ -45,6 +45,10 @@ jobs:
       - name: Tests v2 sample code
         run: |
           ./tests/test_v2_code_samples.sh
+
+      - name: Tests v2 CLI commands
+        run: |
+          ./tests/test_v2_cli.sh
 
       - name: Tests v1 sample code
         run: |
