@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-ignore
 import type * as pdfJsExtractTypes from "pdf.js-extract";
 import { MindeePdfError } from "@/errors/index.js";
 import { loadOptionalDependency } from "@/utils/index.js";

@@ -19,41 +19,6 @@ describe("MindeeV1 - #extraDeps", () => {
       await sourceDoc.init();
       client = new Client({ apiKey });
     });
-
-    // NOTE: rotation causes flakiness in receipt order, causing the test to fail.
-    // it("should send to the server and cut properly", async () => {
-    //   const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
-    //   expect(multiReceiptResult.document?.inference.prediction.receipts.length).to.be.equals(6);
-    //   expect(multiReceiptResult.document?.inference.pages[0].orientation?.value).to.be.equals(90);
-    //   const receipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
-    //   expect(receipts.length).to.be.equals(6);
-    //   const extractedReceipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
-    //   expect(extractedReceipts.length).to.be.equals(6);
-    //   const receiptsResults = [];
-    //   for (const extractedReceipt of extractedReceipts) {
-    //     const localInput = extractedReceipt.asSource();
-    //     receiptsResults.push(await client.parse(ReceiptV5, localInput));
-    //     await setTimeout(1000);
-    //   }
-    //
-    //   expect(receiptsResults[0].document.inference.prediction.lineItems.length).to.be.equals(0);
-    //
-    //   expect(receiptsResults[1].document.inference.prediction.lineItems.length).to.be.equals(1);
-    //   expect(receiptsResults[1].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(21.5);
-    //
-    //   expect(receiptsResults[2].document.inference.prediction.lineItems.length).to.be.equals(2);
-    //   expect(receiptsResults[2].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(11.5);
-    //   expect(receiptsResults[2].document.inference.prediction.lineItems[1].totalAmount).to.be.equals(2);
-    //
-    //   expect(receiptsResults[3].document.inference.prediction.lineItems.length).to.be.equals(1);
-    //   expect(receiptsResults[3].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(16.5);
-    //
-    //   expect(receiptsResults[4].document.inference.prediction.lineItems.length).to.be.equals(2);
-    //   expect(receiptsResults[4].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(10.5);
-    //   expect(receiptsResults[4].document.inference.prediction.lineItems[1].totalAmount).to.be.equals(4);
-    //
-    //   expect(receiptsResults[5].document.inference.prediction.lineItems.length).to.be.equals(0);
-    // }).timeout(60000);
   });
 
 

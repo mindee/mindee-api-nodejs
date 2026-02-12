@@ -4,9 +4,8 @@ describe("Light Environment Sanity Check #lightDeps", function () {
 
   it("should NOT have sharp installed", async function () {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      await import("sharp");
+      const moduleName = "sharp";
+      await import(moduleName);
       expect.fail("sharp should not be installed in this environment, but it was found!");
     } catch (error: any) {
       const isModuleNotFound = error.code === "ERR_MODULE_NOT_FOUND";
@@ -20,9 +19,8 @@ describe("Light Environment Sanity Check #lightDeps", function () {
 
   it("should NOT have pdf.js-extract installed", async function () {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      await import("pdf.js-extract");
+      const moduleName = "pdf.js-extract";
+      await import(moduleName);
       expect.fail("pdf.js-extract should not be installed, but it was found!");
     } catch (error: any) {
       expect(error.code).to.equal("ERR_MODULE_NOT_FOUND");
@@ -31,9 +29,8 @@ describe("Light Environment Sanity Check #lightDeps", function () {
 
   it("should NOT have @cantoo/pdf-lib installed", async function () {
     try {
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-expect-error
-      await import("@cantoo/pdf-lib");
+      const moduleName = "@cantoo/pdf-lib";
+      await import(moduleName);
       expect.fail("@cantoo/pdf-lib should not be installed, but it was found!");
     } catch (error: any) {
       expect(error.code).to.equal("ERR_MODULE_NOT_FOUND");

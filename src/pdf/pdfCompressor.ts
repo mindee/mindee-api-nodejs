@@ -4,19 +4,19 @@ import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils.
 import * as fs from "node:fs";
 import type * as popplerTypes from "node-poppler";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { compressImage } from "@/image/index.js";
 import { loadOptionalDependency } from "@/utils/index.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
-async function getPdfLib() {
+async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
     pdfLib = (pdfLibImport as any).default || pdfLibImport;
   }
-  return pdfLib;
+  return pdfLib!;
 }
 
 /**

@@ -1,6 +1,6 @@
 import { loadOptionalDependency } from "@/utils/index.js";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
+// @ts-ignore
 import type * as SharpTypes from "sharp";
 
 import { MindeeImageError } from "@/errors/index.js";
