@@ -1,13 +1,3 @@
-export { PayslipV2 } from "./payslipV2.js";
-export { PayslipV2BankAccountDetail } from "./payslipV2BankAccountDetail.js";
-export { PayslipV2Document } from "./payslipV2Document.js";
-export { PayslipV2Employee } from "./payslipV2Employee.js";
-export { PayslipV2Employer } from "./payslipV2Employer.js";
-export { PayslipV2Employment } from "./payslipV2Employment.js";
-export { PayslipV2PayDetail } from "./payslipV2PayDetail.js";
-export { PayslipV2PayPeriod } from "./payslipV2PayPeriod.js";
-export { PayslipV2Pto } from "./payslipV2Pto.js";
-export { PayslipV2SalaryDetail } from "./payslipV2SalaryDetail.js";
 export { PayslipV3 } from "./payslipV3.js";
 export { PayslipV3BankAccountDetail } from "./payslipV3BankAccountDetail.js";
 export { PayslipV3Document } from "./payslipV3Document.js";
