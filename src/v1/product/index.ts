@@ -1,0 +1,28 @@
+export * as fr from "./fr/index.js";
+export * as us from "./us/index.js";
+export { BarcodeReaderV1 } from "./barcodeReader/index.js";
+export { CropperV1 } from "./cropper/index.js";
+export { DriverLicenseV1 } from "./driverLicense/index.js";
+export { FinancialDocumentV1 } from "./financialDocument/index.js";
+export { GeneratedV1 } from "./generated/index.js";
+export { InternationalIdV2 } from "./internationalId/index.js";
+export { InvoiceSplitterV1 } from "./invoiceSplitter/index.js";
+export { InvoiceV4 } from "./invoice/index.js";
+export { MultiReceiptsDetectorV1 } from "./multiReceiptsDetector/index.js";
+export { PassportV1 } from "./passport/index.js";
+export { ReceiptV5 } from "./receipt/index.js";
+export { ResumeV1 } from "./resume/index.js";
+
+// not sure if we want to export these -- advanced users can import them directly
+export * as barcodeReader from "./barcodeReader/index.js";
+export * as cropper from "./cropper/index.js";
+export * as driverLicense from "./driverLicense/index.js";
+export * as financialDocument from "./financialDocument/index.js";
+export * as generated from "./generated/index.js";
+export * as internationalId from "./internationalId/index.js";
+export * as invoice from "./invoice/index.js";
+export * as invoiceSplitter from "./invoiceSplitter/index.js";
+export * as multiReceiptsDetector from "./multiReceiptsDetector/index.js";
+export * as passport from "./passport/index.js";
+export * as receipt from "./receipt/index.js";
+export * as resume from "./resume/index.js";

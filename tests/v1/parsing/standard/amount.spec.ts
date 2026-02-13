@@ -1,4 +1,4 @@
-import { AmountField } from "../../../../src/parsing/standard";
+import { AmountField } from "@/v1/parsing/standard/index.js";
 import { expect } from "chai";
 
 describe("Test AmountField field", () => {

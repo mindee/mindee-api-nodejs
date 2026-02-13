@@ -1,21 +1,26 @@
-import { BytesInput, UrlInput } from "../../src";
-import { LocalInputSource } from "../../src/input";
+import { BytesInput, UrlInput } from "@/index.js";
+import { LocalInputSource } from "@/input/index.js";
 import { expect } from "chai";
-import nock from "nock";
+import { MockAgent, setGlobalDispatcher } from "undici";
 
-describe("Test URL input source", () => {
+const mockAgent = new MockAgent();
+setGlobalDispatcher(mockAgent);
+const mockPool = mockAgent.get("https://dummy-host");
+
+describe("Input Sources - URL input source", () => {
   describe("initializing", () => {
     it("should accept a URL", async () => {
       const input = new UrlInput({
         url: "https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/ReceiptSwiss.jpg/576px-ReceiptSwiss.jpg",
+        dispatcher: mockAgent,
       });
       await input.init();
       expect(input.fileObject).to.be.a("string");
     });
 
     it("should throw an error for non-HTTPS URL", async () => {
-      const url = "http://example.com/file.pdf";
-      const urlSource = new UrlInput({ url });
+      const url = "http://dummy-host/file.pdf";
+      const urlSource = new UrlInput({ url, dispatcher: mockAgent });
 
       try {
         await urlSource.init();
@@ -28,24 +33,16 @@ describe("Test URL input source", () => {
 
 
     describe("asLocalInputSource", () => {
-      beforeEach(() => {
-        nock.disableNetConnect();
-      });
-
-      afterEach(() => {
-        nock.cleanAll();
-        nock.enableNetConnect();
-      });
 
       it("should download file and return LocalInputSource", async () => {
-        const url = "https://example.com/file.pdf";
+        const url = "https://dummy-host/file.pdf";
         const fileContent = Buffer.from("dummy PDF content");
 
-        nock("https://example.com")
-          .get("/file.pdf")
+        mockPool
+          .intercept({ path: "/file.pdf", method: "GET" })
           .reply(200, fileContent);
 
-        const urlInput = new UrlInput({ url });
+        const urlInput = new UrlInput({ url, dispatcher: mockAgent });
         await urlInput.init();
         const localInput = await urlInput.asLocalInputSource();
         await localInput.init();
@@ -56,19 +53,25 @@ describe("Test URL input source", () => {
       });
 
       it("should handle redirects", async () => {
-        const originalUrl = "https://example.com/original.pdf";
-        const redirectUrl = "https://example.com/redirected.pdf";
+        const originalUrl = "https://dummy-host/original.pdf";
+        const redirectUrl = "https://dummy-host/redirected.pdf";
         const fileContent = Buffer.from("redirected PDF content");
 
-        nock("https://example.com")
-          .get("/original.pdf")
-          .reply(302, "", { location: redirectUrl }); // Not sure about that one.
+        mockPool
+          .intercept({ path: "/original.pdf", method: "GET" })
+          .reply(
+            302,
+            "",
+            {
+              headers: { location: redirectUrl }
+            }
+          );
 
-        nock("https://example.com")
-          .get("/redirected.pdf")
+        mockPool
+          .intercept({ path: "/redirected.pdf", method: "GET" })
           .reply(200, fileContent);
 
-        const urlInput = new UrlInput({ url: originalUrl });
+        const urlInput = new UrlInput({ url: originalUrl, dispatcher: mockAgent });
         const localInput = await urlInput.asLocalInputSource();
         await localInput.init();
 
@@ -78,13 +81,13 @@ describe("Test URL input source", () => {
       });
 
       it("should throw an error for HTTP error responses", async () => {
-        const url = "https://example.com/not-found.pdf";
+        const url = "https://dummy-host/not-found.pdf";
 
-        nock("https://example.com")
-          .get("/not-found.pdf")
-          .reply(404);
+        mockPool
+          .intercept({ path: "/not-found.pdf", method: "GET" })
+          .reply(404, "");
 
-        const urlInput = new UrlInput({ url });
+        const urlInput = new UrlInput({ url, dispatcher: mockAgent });
 
         try {
           await urlInput.asLocalInputSource();
@@ -96,14 +99,14 @@ describe("Test URL input source", () => {
       });
 
       it("should use provided filename", async () => {
-        const url = "https://example.com/file.pdf";
+        const url = "https://dummy-host/file.pdf";
         const fileContent = Buffer.from("dummy PDF content");
 
-        nock("https://example.com")
-          .get("/file.pdf")
+        mockPool
+          .intercept({ path: "/file.pdf", method: "GET" })
           .reply(200, fileContent);
 
-        const urlInput = new UrlInput({ url });
+        const urlInput = new UrlInput({ url, dispatcher: mockAgent });
         const localInput = await urlInput.asLocalInputSource({ filename: "custom.pdf" });
         await localInput.init();
 
@@ -111,12 +114,12 @@ describe("Test URL input source", () => {
       });
 
       it("should throw an error for invalid filename", async () => {
-        nock("https://example.com")
-          .get("/file")
+        mockPool
+          .intercept({ path: "/file.pdf", method: "GET" })
           .reply(200, "toto");
 
-        const url = "https://example.com/file";
-        const urlInput = new UrlInput({ url });
+        const url = "https://dummy-host/file.pdf";
+        const urlInput = new UrlInput({ url, dispatcher: mockAgent });
 
         try {
           const localInput = await urlInput.asLocalInputSource({ filename: "invalid" });

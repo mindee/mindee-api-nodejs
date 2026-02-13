@@ -2,13 +2,13 @@ import {
   PathInput,
   PageOptionsOperation,
   INPUT_TYPE_PATH,
-} from "../../src/input";
+} from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
 import { expect } from "chai";
-import { RESOURCE_PATH } from "../index";
+import { RESOURCE_PATH } from "../index.js";
 
-describe("High level multi-page operations", () => {
+describe("Input Sources - high level multi-page operations #includeOptionalDeps", () => {
   it("should cut a PDF", async () => {
     const input = new PathInput({
       inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),

@@ -1,4 +1,4 @@
-import { StringField } from "../../../../src/parsing/standard";
+import { StringField } from "@/v1/parsing/standard/index.js";
 import { expect } from "chai";
 
 describe("Test String field", () => {

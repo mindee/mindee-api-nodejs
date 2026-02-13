@@ -1,18 +1,18 @@
-import * as mindee from "../../../src";
-import { InvoiceV4 } from "../../../src/product";
+import * as mindee from "@/index.js";
+import { InvoiceV4 } from "@/v1/product/index.js";
 import { expect } from "chai";
 import { promises as fs } from "fs";
 import { createReadStream } from "node:fs";
 import path from "path";
-import { V1_PRODUCT_PATH } from "../../index";
-import { PathInput, Base64Input, BufferInput, BytesInput, UrlInput } from "../../../src";
+import { V1_PRODUCT_PATH } from "../../index.js";
+import { PathInput, Base64Input, BufferInput, BytesInput, UrlInput } from "@/index.js";
 
 describe("MindeeV1 - File Input Integration Tests", async () => {
-  let client: mindee.Client;
+  let client: mindee.v1.Client;
   let filePath: string;
 
   beforeEach(() => {
-    client = new mindee.Client();
+    client = new mindee.v1.Client();
     filePath = path.join(V1_PRODUCT_PATH, "invoices/default_sample.jpg");
   });
 

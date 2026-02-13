@@ -1,8 +1,21 @@
-import { errorHandler } from "../errors/handler";
-import { PDFDocument } from "@cantoo/pdf-lib";
-import { PageOptions, PageOptionsOperation } from "../input";
-import { MindeeError } from "../errors";
-import { logger } from "../logger";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type * as pdfLibTypes from "@cantoo/pdf-lib";
+import { errorHandler } from "@/errors/handler.js";
+import { PageOptions, PageOptionsOperation } from "@/input/pageOptions.js";
+import { MindeeError } from "@/errors/index.js";
+import { logger } from "@/logger.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
+
+let pdfLib: typeof pdfLibTypes | null = null;
+
+async function getPdfLib(): Promise<typeof pdfLibTypes> {
+  if (!pdfLib) {
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    pdfLib = (pdfLibImport as any).default || pdfLibImport;
+  }
+  return pdfLib!;
+}
 
 export interface SplitPdf {
   file: Buffer;
@@ -10,21 +23,22 @@ export interface SplitPdf {
 }
 
 /**
- * Cut pages from a pdf file. If pages index are out of bound, it will throw an error.
+ * Cut pages from a PDF file. If pages indexes are out of bounds, it will throw an error.
  * @param file
  * @param pageOptions
- * @returns the new cut pdf file.
+ * @returns the new cut PDF file.
  */
 export async function extractPages(
   file: Buffer,
   pageOptions: PageOptions
 ): Promise<SplitPdf> {
-  const currentPdf = await PDFDocument.load(file, {
+  const pdfLib = await getPdfLib();
+  const currentPdf = await pdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
   });
 
-  const newPdf = await PDFDocument.create();
+  const newPdf = await pdfLib.PDFDocument.create();
 
   const pageCount = currentPdf.getPageCount();
 
@@ -65,15 +79,15 @@ export async function extractPages(
 
   if (pageOptions.operation === PageOptionsOperation.KeepOnly) {
     const keptPages = await newPdf.copyPages(currentPdf, pageIndexes);
-    keptPages.forEach((keptPage) => {
+    keptPages.forEach((keptPage: pdfLibTypes.PDFPage) => {
       newPdf.addPage(keptPage);
     });
   } else if (pageOptions.operation === PageOptionsOperation.Remove) {
     const pagesToKeep = currentPdf
       .getPageIndices()
-      .filter((v) => !pageIndexes.includes(v));
+      .filter((v:number) => !pageIndexes.includes(v));
     const keptPages = await newPdf.copyPages(currentPdf, pagesToKeep);
-    keptPages.forEach((keptPage) => {
+    keptPages.forEach((keptPage: pdfLibTypes.PDFPage) => {
       newPdf.addPage(keptPage);
     });
   } else {
@@ -85,12 +99,13 @@ export async function extractPages(
 }
 
 /**
- * Count the number of pages in a pdf file.
+ * Count the number of pages in a PDF file.
  * @param file
  * @returns the number of pages in the file.
  */
 export async function countPages(file: Buffer): Promise<number> {
-  const currentPdf = await PDFDocument.load(file, {
+  const pdfLib = await getPdfLib();
+  const currentPdf = await pdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
   });

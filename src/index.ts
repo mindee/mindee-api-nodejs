@@ -1,21 +1,3 @@
-export * as product from "./product";
-export { Client, PredictOptions, WorkflowOptions } from "./client";
-export { ClientV2, InferenceParameters, PollingOptions } from "./clientV2";
-export {
-  AsyncPredictResponse,
-  PredictResponse,
-  Inference,
-  Prediction,
-  Document,
-  Page,
-} from "./parsing/common";
-export {
-  InferenceFile,
-  InferenceResponse,
-  JobResponse,
-  RawText,
-  RagMetadata,
-} from "./parsing/v2";
 export {
   InputSource,
   Base64Input,
@@ -24,9 +6,21 @@ export {
   PathInput,
   StreamInput,
   UrlInput,
-  PageOptions,
   PageOptionsOperation,
-  LocalResponse
-} from "./input";
-export * as internal from "./internal";
-export * as imageOperations from "./imageOperations";
+} from "./input/index.js";
+export type { PageOptions } from "./input/index.js";
+export * as image from "./image/index.js";
+
+// V1
+export * as v1 from "./v1/index.js";
+
+// V2
+export * as v2 from "./v2/index.js";
+export {
+  Client,
+  InferenceFile,
+  InferenceModel,
+  JobResponse,
+  ErrorResponse,
+} from "./v2/index.js";
+export type { PollingOptions } from "./v2/index.js";

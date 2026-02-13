@@ -1,8 +1,11 @@
-import { JobResponse, LocalResponse } from "../../../src";
+import {
+  JobResponse,
+  LocalResponse,
+  ErrorResponse,
+} from "@/v2/index.js";
 import path from "node:path";
-import { V2_RESOURCE_PATH } from "../../index";
+import { V2_RESOURCE_PATH } from "../../index.js";
 import { expect } from "chai";
-import { ErrorResponse } from "../../../src/parsing/v2";
 
 const jobPath = path.join(V2_RESOURCE_PATH, "job");
 

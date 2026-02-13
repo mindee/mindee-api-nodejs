@@ -1,17 +1,12 @@
-import * as mindee from "../../src";
 import path from "path";
 import { expect } from "chai";
-import * as pdf from "../../src/pdf";
-import { PageOptions } from "../../src/input";
-import {PageOptionsOperation, PathInput} from "../../src";
-import * as fs from "node:fs";
-import { RESOURCE_PATH } from "../index";
+import * as pdf from "@/pdf/index.js";
+import { PageOptions } from "@/input/index.js";
+import { PageOptionsOperation, PathInput } from "@/index.js";
+import { RESOURCE_PATH } from "../index.js";
 
-describe("Test pdf lib", () => {
-  let client: mindee.Client;
-  beforeEach(async () => {
-    client = new mindee.Client();
-  });
+describe("Test pdf lib #includeOptionalDeps", () => {
+
   it("should open a simple XFA form PDF.", async () => {
     const inputDoc = new PathInput(
       { inputPath: path.join(RESOURCE_PATH, "file_types/pdf/XfaForm.pdf") }

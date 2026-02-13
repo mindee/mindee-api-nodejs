@@ -1,6 +1,3 @@
-#
-# Publish releases to NPM
-#
 name: Publish Code
 
 on:
