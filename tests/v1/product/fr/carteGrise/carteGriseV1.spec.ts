@@ -1,9 +1,9 @@
-import { promises as fs } from "fs";
 import path from "path";
-import { V1_PRODUCT_PATH } from "../../../../index.js";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { promises as fs } from "fs";
 import * as mindee from "@/index.js";
-
+import { V1_PRODUCT_PATH } from "../../../../index.js";
 
 const dataPath = {
   complete: path.join(V1_PRODUCT_PATH, "carte_grise/response_v1/complete.json"),

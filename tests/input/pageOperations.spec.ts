@@ -5,6 +5,7 @@ import {
 } from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
+import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH } from "../index.js";
 

@@ -1,13 +1,14 @@
 import assert from "node:assert/strict";
-import { promises as fs } from "fs";
-import * as path from "path";
+import { describe, it } from "node:test";
+import path from "path";
+import * as fs from "node:fs/promises";
 import { Document } from "@/v1/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { extractInvoices } from "@/v1/extraction/index.js";
 import { PathInput } from "@/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
-describe("MindeeV1 - A Multipage Invoice Document #includeOptionalDeps", () => {
+describe("MindeeV1 - Invoice Splitter Extraction", () => {
   it("should be split into the proper invoices", async () => {
     const jsonData = await fs.readFile(
       path.join(V1_PRODUCT_PATH, "invoice_splitter/response_v1/complete.json")

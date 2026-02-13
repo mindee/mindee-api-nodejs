@@ -1,3 +1,8 @@
+import * as fs from "fs";
+import * as path from "path";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+import { Buffer } from "node:buffer";
 import { Readable } from "stream";
 import {
   Base64Input,
@@ -11,14 +16,10 @@ import {
   PathInput,
   StreamInput,
 } from "@/input/index.js";
-import * as fs from "fs";
-import * as path from "path";
-import assert from "node:assert/strict";
-import { Buffer } from "node:buffer";
 import { MindeeInputSourceError } from "@/errors/index.js";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
 
-describe("Input Sources: - load different types of input", () => {
+describe("Input Sources - load different types of input", () => {
 
   it("should accept base64 inputs", async () => {
     const b64Input = await fs.promises.readFile(

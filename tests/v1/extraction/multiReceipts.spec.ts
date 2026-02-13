@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { promises as fs } from "fs";
+import { describe, it } from "node:test";
 import path from "path";
+import * as fs from "node:fs/promises";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { extractReceipts } from "@/v1/extraction/index.js";
 import { PathInput } from "@/index.js";
@@ -12,7 +13,7 @@ const dataPath = {
   completeMultiPage: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/multipage_sample.json"),
   multiPageSample: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
 };
-describe("Multi-Receipt #includeOptionalDeps", () => {
+describe("MindeeV1 - Multi-Receipt Extraction", () => {
   describe("A single-page multi-receipts document", () => {
     it("should be split properly.", async () => {
       const jsonDataNA = await fs.readFile(path.resolve(dataPath.complete));

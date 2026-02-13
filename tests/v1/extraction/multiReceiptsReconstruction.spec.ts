@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
-import { promises as fs } from "fs";
-import * as path from "path";
+import { after, before, describe, it } from "node:test";
+import path from "path";
+import * as fs from "node:fs/promises";
 import { PathInput } from "@/index.js";
 import { Document } from "@/v1/index.js";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
@@ -68,7 +69,7 @@ rotations.forEach(({ angle, suffix }) => {
         assert.ok(pngStat.size > 290000);
         i++;
       }
-    }).timeout(20000);
+    });
 
     after(async () => {
       for (let i = 0; i < extractedReceipts.length; i++) {
