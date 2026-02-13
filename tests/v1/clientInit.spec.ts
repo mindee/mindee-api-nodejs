@@ -1,12 +1,16 @@
-import { Client } from "@/v1/index.js";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { Client } from "@/v1/index.js";
+import { MindeeError } from "@/errors/index.js";
 
 describe("Test client initialization", () => {
-  it("should not create an empty client", () => {
+  it("should not create a client without an API key", () => {
+    delete process.env.MINDEE_API_KEY;
     assert.throws(
       () => {
         new Client({});
-      }
+      },
+      MindeeError
     );
   });
 
