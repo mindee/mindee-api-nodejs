@@ -1,9 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
-
 
 const dataPath = {
   complete: path.join(V1_PRODUCT_PATH, "cropper/response_v1/complete.json"),
@@ -18,7 +17,7 @@ describe("MindeeV1 - CropperV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.CropperV1, response.document);
     const pagePrediction = doc.inference.pages[0].prediction;
-    expect(pagePrediction.cropping.length).to.be.equals(0);
+    assert.strictEqual(pagePrediction.cropping.length, 0);
   });
 
   it("should load a complete document prediction", async () => {
@@ -26,14 +25,15 @@ describe("MindeeV1 - CropperV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.CropperV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
+
   it("should load a complete page 0 prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.CropperV1, response.document);
     const page0 = doc.inference.pages[0];
     const docString = await fs.readFile(path.join(dataPath.page0String));
-    expect(page0.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(page0.toString(), docString.toString());
   });
 });

@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 
 
@@ -18,12 +18,12 @@ describe("MindeeV1 - BankCheckV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.us.BankCheckV1, response.document);
     const docPrediction = doc.inference.prediction;
-    expect(docPrediction.date.value).to.be.undefined;
-    expect(docPrediction.amount.value).to.be.undefined;
-    expect(docPrediction.payees.length).to.be.equals(0);
-    expect(docPrediction.routingNumber.value).to.be.undefined;
-    expect(docPrediction.accountNumber.value).to.be.undefined;
-    expect(docPrediction.checkNumber.value).to.be.undefined;
+    assert.strictEqual(docPrediction.date.value, undefined);
+    assert.strictEqual(docPrediction.amount.value, undefined);
+    assert.strictEqual(docPrediction.payees.length, 0);
+    assert.strictEqual(docPrediction.routingNumber.value, undefined);
+    assert.strictEqual(docPrediction.accountNumber.value, undefined);
+    assert.strictEqual(docPrediction.checkNumber.value, undefined);
   });
 
   it("should load a complete document prediction", async () => {
@@ -31,7 +31,7 @@ describe("MindeeV1 - BankCheckV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.us.BankCheckV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
   it("should load a complete page 0 prediction", async () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.complete));
@@ -39,6 +39,6 @@ describe("MindeeV1 - BankCheckV1 Object initialization", async () => {
     const doc = new mindee.v1.Document(mindee.v1.product.us.BankCheckV1, response.document);
     const page0 = doc.inference.pages[0];
     const docString = await fs.readFile(path.join(dataPath.page0String));
-    expect(page0.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(page0.toString(), docString.toString());
   });
 });

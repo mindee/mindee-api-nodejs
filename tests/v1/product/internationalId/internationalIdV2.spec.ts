@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 
 
@@ -18,22 +18,22 @@ describe("MindeeV1 - InternationalIdV2 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.InternationalIdV2, response.document);
     const docPrediction = doc.inference.prediction;
-    expect(docPrediction.documentNumber.value).to.be.undefined;
-    expect(docPrediction.surnames.length).to.be.equals(0);
-    expect(docPrediction.givenNames.length).to.be.equals(0);
-    expect(docPrediction.sex.value).to.be.undefined;
-    expect(docPrediction.birthDate.value).to.be.undefined;
-    expect(docPrediction.birthPlace.value).to.be.undefined;
-    expect(docPrediction.nationality.value).to.be.undefined;
-    expect(docPrediction.personalNumber.value).to.be.undefined;
-    expect(docPrediction.countryOfIssue.value).to.be.undefined;
-    expect(docPrediction.stateOfIssue.value).to.be.undefined;
-    expect(docPrediction.issueDate.value).to.be.undefined;
-    expect(docPrediction.expiryDate.value).to.be.undefined;
-    expect(docPrediction.address.value).to.be.undefined;
-    expect(docPrediction.mrzLine1.value).to.be.undefined;
-    expect(docPrediction.mrzLine2.value).to.be.undefined;
-    expect(docPrediction.mrzLine3.value).to.be.undefined;
+    assert.strictEqual(docPrediction.documentNumber.value, undefined);
+    assert.strictEqual(docPrediction.surnames.length, 0);
+    assert.strictEqual(docPrediction.givenNames.length, 0);
+    assert.strictEqual(docPrediction.sex.value, undefined);
+    assert.strictEqual(docPrediction.birthDate.value, undefined);
+    assert.strictEqual(docPrediction.birthPlace.value, undefined);
+    assert.strictEqual(docPrediction.nationality.value, undefined);
+    assert.strictEqual(docPrediction.personalNumber.value, undefined);
+    assert.strictEqual(docPrediction.countryOfIssue.value, undefined);
+    assert.strictEqual(docPrediction.stateOfIssue.value, undefined);
+    assert.strictEqual(docPrediction.issueDate.value, undefined);
+    assert.strictEqual(docPrediction.expiryDate.value, undefined);
+    assert.strictEqual(docPrediction.address.value, undefined);
+    assert.strictEqual(docPrediction.mrzLine1.value, undefined);
+    assert.strictEqual(docPrediction.mrzLine2.value, undefined);
+    assert.strictEqual(docPrediction.mrzLine3.value, undefined);
   });
 
   it("should load a complete document prediction", async () => {
@@ -41,6 +41,6 @@ describe("MindeeV1 - InternationalIdV2 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.InternationalIdV2, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
 });

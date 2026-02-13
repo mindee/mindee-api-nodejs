@@ -1,9 +1,8 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
-
 
 const dataPath = {
   complete: path.join(V1_PRODUCT_PATH, "driver_license/response_v1/complete.json"),
@@ -18,19 +17,19 @@ describe("MindeeV1 - DriverLicenseV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.DriverLicenseV1, response.document);
     const docPrediction = doc.inference.prediction;
-    expect(docPrediction.countryCode.value).to.be.undefined;
-    expect(docPrediction.state.value).to.be.undefined;
-    expect(docPrediction.id.value).to.be.undefined;
-    expect(docPrediction.category.value).to.be.undefined;
-    expect(docPrediction.lastName.value).to.be.undefined;
-    expect(docPrediction.firstName.value).to.be.undefined;
-    expect(docPrediction.dateOfBirth.value).to.be.undefined;
-    expect(docPrediction.placeOfBirth.value).to.be.undefined;
-    expect(docPrediction.expiryDate.value).to.be.undefined;
-    expect(docPrediction.issuedDate.value).to.be.undefined;
-    expect(docPrediction.issuingAuthority.value).to.be.undefined;
-    expect(docPrediction.mrz.value).to.be.undefined;
-    expect(docPrediction.ddNumber.value).to.be.undefined;
+    assert.strictEqual(docPrediction.countryCode.value, undefined);
+    assert.strictEqual(docPrediction.state.value, undefined);
+    assert.strictEqual(docPrediction.id.value, undefined);
+    assert.strictEqual(docPrediction.category.value, undefined);
+    assert.strictEqual(docPrediction.lastName.value, undefined);
+    assert.strictEqual(docPrediction.firstName.value, undefined);
+    assert.strictEqual(docPrediction.dateOfBirth.value, undefined);
+    assert.strictEqual(docPrediction.placeOfBirth.value, undefined);
+    assert.strictEqual(docPrediction.expiryDate.value, undefined);
+    assert.strictEqual(docPrediction.issuedDate.value, undefined);
+    assert.strictEqual(docPrediction.issuingAuthority.value, undefined);
+    assert.strictEqual(docPrediction.mrz.value, undefined);
+    assert.strictEqual(docPrediction.ddNumber.value, undefined);
   });
 
   it("should load a complete document prediction", async () => {
@@ -38,6 +37,6 @@ describe("MindeeV1 - DriverLicenseV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.DriverLicenseV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
 });
