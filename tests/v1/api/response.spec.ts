@@ -1,6 +1,7 @@
-import { promises as fs } from "fs";
-import * as path from "path";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import path from "path";
+import * as fs from "node:fs/promises";
 import { PredictResponse } from "@/v1/index.js";
 import { InvoiceV4, ReceiptV5 } from "@/v1/product/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";

@@ -1,7 +1,8 @@
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import path from "path";
+import * as fs from "node:fs/promises";
 import { AsyncPredictResponse } from "@/v1/index.js";
-import { promises as fs } from "fs";
-import * as path from "path";
 import { StringDict } from "@/v1/parsing/common/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { cleanRequestData, isValidAsyncResponse } from "@/http/index.js";
