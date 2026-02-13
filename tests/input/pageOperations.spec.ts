@@ -9,7 +9,7 @@ import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { RESOURCE_PATH } from "../index.js";
 
-describe("Input Sources - high level multi-page operations #includeOptionalDeps", () => {
+describe("Input Sources - high level multi-page operations #OptionalDepsRequired", () => {
   it("should cut a PDF", async () => {
     const input = new PathInput({
       inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),

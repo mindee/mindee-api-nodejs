@@ -9,7 +9,7 @@ import { extractTextFromPdf } from "@/pdf/pdfUtils.js";
 import { logger } from "@/logger.js";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
 
-describe("Input Sources - compression and resize #includeOptionalDeps", () => {
+describe("Input Sources - compression and resize #OptionalDepsRequired", () => {
   const outputPath = path.join(RESOURCE_PATH, "output");
 
   before(async () => {

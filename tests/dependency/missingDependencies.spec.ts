@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
-describe("MindeeV1 - Optional Dependencies #omitOptionalDeps", function () {
+describe("MindeeV1 - Optional Dependencies #OptionalDepsRemoved", function () {
 
   it("should NOT have sharp installed", async function () {
     try {

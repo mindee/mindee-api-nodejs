@@ -241,10 +241,9 @@ describe("Input Sources - load different types of input", () => {
     assert.strictEqual(inputSource.inputType, INPUT_TYPE_BUFFER);
     assert.strictEqual(inputSource.filename, filename);
     assert.ok(inputSource.isPdf());
-    it("#includeOptionalDeps", async () => {
+    assert.ok(inputSource.fileObject instanceof Buffer);
+    await it("getPageCount #OptionalDepsRequired", async () => {
       assert.strictEqual(await inputSource.getPageCount(), 10);
     });
-    assert.ok(inputSource.fileObject instanceof Buffer);
   });
-
 });

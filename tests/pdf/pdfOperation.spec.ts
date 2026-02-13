@@ -7,7 +7,7 @@ import { PageOptions, PageOptionsOperation } from "@/index.js";
 import { PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";
 
-describe("Test PDF operation #includeOptionalDeps", () => {
+describe("Test PDF operation #OptionalDepsRequired", () => {
   it("should cut a PDF to get 2 pages", async () => {
     const inputSource = new PathInput({
       inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),
