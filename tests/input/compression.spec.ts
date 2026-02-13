@@ -3,7 +3,7 @@ import {
 } from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { compressImage } from "@/image/index.js";
 import { compressPdf } from "@/pdf/index.js";
 import { extractTextFromPdf } from "@/pdf/pdfUtils.js";
@@ -24,7 +24,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
 
     const initialFileStats = await fs.promises.stat(path.join(RESOURCE_PATH, "file_types/receipt.jpg"));
     const renderedFileStats = await fs.promises.stat(path.join(outputPath, "compress_indirect.jpg"));
-    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+    assert.ok(renderedFileStats.size < initialFileStats.size);
   });
 
   it("Image Quality Compresses From Compressor", async () => {
@@ -48,11 +48,11 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
       fileNames.map(fileName => fs.promises.stat(path.join(outputPath, fileName)))
     );
 
-    expect(initialFileStats.size).to.be.lessThan(renderedFileStats[0].size);
-    expect(initialFileStats.size).to.be.lessThan(renderedFileStats[1].size);
-    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
-    expect(renderedFileStats[2].size).to.be.greaterThan(renderedFileStats[3].size);
-    expect(renderedFileStats[3].size).to.be.greaterThan(renderedFileStats[4].size);
+    assert.ok(initialFileStats.size < renderedFileStats[0].size);
+    assert.ok(initialFileStats.size < renderedFileStats[1].size);
+    assert.ok(renderedFileStats[1].size > renderedFileStats[2].size);
+    assert.ok(renderedFileStats[2].size > renderedFileStats[3].size);
+    assert.ok(renderedFileStats[3].size > renderedFileStats[4].size);
   });
 
   it("Image Resize From InputSource", async () => {
@@ -64,11 +64,11 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
 
     const initialFileStats = await fs.promises.stat(path.join(RESOURCE_PATH, "file_types/receipt.jpg"));
     const renderedFileStats = await fs.promises.stat(path.join(outputPath, "resize_indirect.jpg"));
-    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+    assert.ok(renderedFileStats.size < initialFileStats.size);
     const sharp = await import("sharp");
     const metadata = await sharp.default(imageResizeInput.fileObject).metadata();
-    expect(metadata.width).to.equal(250);
-    expect(metadata.height).to.equal(333);
+    assert.strictEqual(metadata.width, 250);
+    assert.strictEqual(metadata.height, 333);
   });
 
   it("Image Resize From Compressor", async () => {
@@ -92,10 +92,10 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
       fileNames.map(fileName => fs.promises.stat(path.join(outputPath, fileName)))
     );
 
-    expect(initialFileStats.size).to.be.greaterThan(renderedFileStats[0].size);
-    expect(renderedFileStats[0].size).to.be.greaterThan(renderedFileStats[1].size);
-    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
-    expect(renderedFileStats[2].size).to.be.equals(renderedFileStats[3].size);
+    assert.ok(initialFileStats.size > renderedFileStats[0].size);
+    assert.ok(renderedFileStats[0].size > renderedFileStats[1].size);
+    assert.ok(renderedFileStats[1].size > renderedFileStats[2].size);
+    assert.strictEqual(renderedFileStats[2].size, renderedFileStats[3].size);
   });
 
 
@@ -108,9 +108,9 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
     const hasNoSourceTextInput = new PathInput({ inputPath: hasNoSourceTextPath });
     const hasNoSourceTextSinceItsImageInput = new PathInput({ inputPath: hasNoSourceTextSinceItsImagePath });
 
-    expect(await hasSourceTextInput.hasSourceText()).to.be.true;
-    expect(await hasNoSourceTextInput.hasSourceText()).to.be.false;
-    expect(await hasNoSourceTextSinceItsImageInput.hasSourceText()).to.be.false;
+    assert.ok(await hasSourceTextInput.hasSourceText());
+    assert.ok(!(await hasNoSourceTextInput.hasSourceText()));
+    assert.ok(!(await hasNoSourceTextSinceItsImageInput.hasSourceText()));
   });
 
   it("PDF Compress From InputSource", async () => {
@@ -130,7 +130,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
     const renderedFileStats = await fs.promises.stat(
       path.join(outputPath, "resize_indirect.pdf")
     );
-    expect(renderedFileStats.size).to.be.lessThan(initialFileStats.size);
+    assert.ok(renderedFileStats.size < initialFileStats.size);
   }).timeout(10000);
 
   it("PDF Compress From Compressor", async () => {
@@ -158,10 +158,10 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
       fileNames.map(fileName => fs.promises.stat(path.join(outputPath, fileName)))
     );
 
-    expect(initialFileStats.size).to.be.greaterThan(renderedFileStats[0].size);
-    expect(renderedFileStats[0].size).to.be.greaterThan(renderedFileStats[1].size);
-    expect(renderedFileStats[1].size).to.be.greaterThan(renderedFileStats[2].size);
-    expect(renderedFileStats[2].size).to.be.greaterThan(renderedFileStats[3].size);
+    assert.ok(initialFileStats.size > renderedFileStats[0].size);
+    assert.ok(renderedFileStats[0].size > renderedFileStats[1].size);
+    assert.ok(renderedFileStats[1].size > renderedFileStats[2].size);
+    assert.ok(renderedFileStats[2].size > renderedFileStats[3].size);
   }).timeout(20000);
 
   it("PDF Compress With Text Keeps Text", async () => {
@@ -176,7 +176,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
     const originalText = (await extractTextFromPdf(initialWithText.fileObject)).getConcatenatedText();
     const compressedText = (await extractTextFromPdf(compressedWithText)).getConcatenatedText();
 
-    expect(compressedText).to.equal(originalText);
+    assert.strictEqual(compressedText, originalText);
   }).timeout(60000);
 
   it("PDF Compress With Text Does Not Compress", async () => {
@@ -187,7 +187,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
 
     const compressedWithText = await compressPdf(initialWithText.fileObject, 50);
 
-    expect(compressedWithText).to.deep.equal(initialWithText.fileObject);
+    assert.deepStrictEqual(compressedWithText, initialWithText.fileObject);
   }).timeout(10000);
 
   after(async function () {
