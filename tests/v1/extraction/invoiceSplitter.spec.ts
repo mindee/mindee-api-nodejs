@@ -8,7 +8,7 @@ import { extractInvoices } from "@/v1/extraction/index.js";
 import { PathInput } from "@/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
-describe("MindeeV1 - Invoice Splitter Extraction", () => {
+describe("MindeeV1 - Invoice Splitter Extraction #includeOptionalDeps", () => {
   it("should be split into the proper invoices", async () => {
     const jsonData = await fs.readFile(
       path.join(V1_PRODUCT_PATH, "invoice_splitter/response_v1/complete.json")

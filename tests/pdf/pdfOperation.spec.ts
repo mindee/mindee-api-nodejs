@@ -2,6 +2,7 @@ import * as pdf from "@/pdf/index.js";
 import * as path from "path";
 import * as fs from "fs";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { PageOptions, PageOptionsOperation } from "@/index.js";
 import { PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";

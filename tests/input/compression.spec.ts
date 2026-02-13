@@ -1,4 +1,4 @@
-import { before, describe, it } from "node:test";
+import { after, before, describe, it } from "node:test";
 import * as fs from "fs";
 import * as path from "path";
 import assert from "node:assert/strict";

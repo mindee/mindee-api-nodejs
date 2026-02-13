@@ -7,7 +7,7 @@ import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 import { PathInput, Base64Input, BufferInput, BytesInput, UrlInput } from "@/index.js";
 
-describe("MindeeV1 - File Input Integration Tests", async () => {
+describe("MindeeV1 - Integration - File Input", async () => {
   let client: mindee.v1.Client;
   let filePath: string;
 

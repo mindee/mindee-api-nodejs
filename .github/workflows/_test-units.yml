@@ -5,7 +5,7 @@ on:
 
 jobs:
   run-tests-with-optional-dependencies:
-    name: Run Tests With Optional Dependencies
+    name: Tests With Optional Dependencies
     strategy:
       matrix:
         os:
@@ -44,7 +44,7 @@ jobs:
         run: npm run test
 
   run-tests-without-optional-dependencies:
-    name: Run Tests Without Optional Dependencies
+    name: Tests Without Optional Dependencies
     strategy:
       matrix:
         os:

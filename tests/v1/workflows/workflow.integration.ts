@@ -8,7 +8,7 @@ import { RAGExtra } from "@/v1/parsing/common/extras/ragExtra.js";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
-describe("MindeeV1 - Workflow calls", () => {
+describe("MindeeV1 - Integration - Workflow calls", () => {
   let client: mindee.v1.Client;
   let sample: LocalInputSource;
   let workflowId: string;

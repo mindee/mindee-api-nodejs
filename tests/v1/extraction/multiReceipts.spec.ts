@@ -13,7 +13,8 @@ const dataPath = {
   completeMultiPage: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/multipage_sample.json"),
   multiPageSample: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
 };
-describe("MindeeV1 - Multi-Receipt Extraction", () => {
+describe("MindeeV1 - Multi-Receipt Extraction #includeOptionalDeps", () => {
+
   describe("A single-page multi-receipts document", () => {
     it("should be split properly.", async () => {
       const jsonDataNA = await fs.readFile(path.resolve(dataPath.complete));
@@ -30,6 +31,7 @@ describe("MindeeV1 - Multi-Receipt Extraction", () => {
       }
     });
   });
+
   describe("A multi-page multi-receipts document", () => {
     it("should be split properly.", async () => {
       const jsonDataNA = await fs.readFile(path.resolve(dataPath.completeMultiPage));

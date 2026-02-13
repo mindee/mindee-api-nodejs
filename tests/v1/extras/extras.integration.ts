@@ -4,7 +4,7 @@ import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
 
-describe("MindeeV1 - Extras Integration Tests", async () => {
+describe("MindeeV1 - Integration - Extras", async () => {
   let client: mindee.v1.Client;
 
   beforeEach(() => {

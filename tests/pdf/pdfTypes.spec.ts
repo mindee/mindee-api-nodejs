@@ -1,5 +1,6 @@
 import path from "path";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import * as pdf from "@/pdf/index.js";
 import { PageOptions } from "@/input/index.js";
 import { PageOptionsOperation, PathInput } from "@/index.js";
@@ -22,7 +23,6 @@ describe("Test pdf lib #includeOptionalDeps", () => {
     await inputDoc.init();
     assert.strictEqual(await pdf.countPages(inputDoc.fileObject), 15);
   });
-
 
   it("should be able to perform page operations on an encrypted XFA form PDF.", async () => {
     const inputDoc = new PathInput(
