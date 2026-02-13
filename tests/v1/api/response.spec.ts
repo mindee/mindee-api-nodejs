@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { PredictResponse } from "@/v1/index.js";
 import { InvoiceV4, ReceiptV5 } from "@/v1/product/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
@@ -16,12 +16,12 @@ describe("MindeeV1 - Synchronous API predict response", () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.receiptV5));
     const httpResponse = JSON.parse(jsonData.toString());
     const response = new PredictResponse(ReceiptV5, httpResponse);
-    expect(response.document.inference.prediction).to.not.be.undefined;
-    expect(response.document.inference.pages.length).to.be.equals(1);
-    expect(response.document.nPages).to.be.equals(1);
+    assert.ok(response.document.inference.prediction);
+    assert.strictEqual(response.document.inference.pages.length, 1);
+    assert.strictEqual(response.document.nPages, 1);
     response.document.inference.pages.forEach((page, idx) => {
-      expect(page.id).to.be.equals(idx);
-      expect(page.toString()).to.not.be.undefined;
+      assert.strictEqual(page.id, idx);
+      assert.ok(page.toString());
     });
   });
 
@@ -29,12 +29,12 @@ describe("MindeeV1 - Synchronous API predict response", () => {
     const jsonData = await fs.readFile(path.resolve(dataPath.invoiceV4));
     const httpResponse =  JSON.parse(jsonData.toString());
     const response = new PredictResponse(InvoiceV4, httpResponse);
-    expect(response.document.inference.prediction).to.not.be.undefined;
-    expect(response.document.inference.pages.length).to.be.equals(1);
-    expect(response.document.nPages).to.be.equals(1);
+    assert.ok(response.document.inference.prediction);
+    assert.strictEqual(response.document.inference.pages.length, 1);
+    assert.strictEqual(response.document.nPages, 1);
     response.document.inference.pages.forEach((page, idx) => {
-      expect(page.id).to.be.equals(idx);
-      expect(page.toString()).to.not.be.undefined;
+      assert.strictEqual(page.id, idx);
+      assert.ok(page.toString());
     });
   });
 
