@@ -1,5 +1,6 @@
-import { PositionField } from "@/v1/parsing/standard/index.js";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { PositionField } from "@/v1/parsing/standard/index.js";
 
 describe("Test Position field", () => {
   it("Should create a Position field", () => {

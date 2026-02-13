@@ -1,7 +1,8 @@
-import assert from "node:assert";
-import { MockAgent, setGlobalDispatcher } from "undici";
-import { promises as fs } from "fs";
 import path from "path";
+import assert from "node:assert/strict";
+import { afterEach, beforeEach, describe, it } from "node:test";
+import { promises as fs } from "fs";
+import { MockAgent, setGlobalDispatcher } from "undici";
 import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import { Client } from "@/v1/index.js";
 import { PathInput } from "@/index.js";

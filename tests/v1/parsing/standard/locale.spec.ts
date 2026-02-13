@@ -1,5 +1,6 @@
-import { LocaleField } from "@/v1/parsing/standard/index.js";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { LocaleField } from "@/v1/parsing/standard/index.js";
 
 describe("Test LocaleField field", () => {
   it("Should create a LocaleField", () => {

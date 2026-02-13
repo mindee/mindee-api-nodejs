@@ -1,5 +1,5 @@
 import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { afterEach, beforeEach, describe, it } from "node:test";
 import path from "path";
 import * as fs from "node:fs";
 import { MockAgent, setGlobalDispatcher } from "undici";

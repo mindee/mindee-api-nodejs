@@ -1,5 +1,6 @@
-import { OrientationField } from "@/v1/parsing/common/index.js";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { OrientationField } from "@/v1/parsing/common/index.js";
 
 describe("Test Orientation field", () => {
   it("should create an Orientation field", () => {
