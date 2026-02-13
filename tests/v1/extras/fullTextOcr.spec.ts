@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { AsyncPredictResponse } from "@/v1/index.js";
 import { InternationalIdV2 } from "@/v1/product/index.js";
 import { RESOURCE_PATH } from "../../index.js";
@@ -16,8 +16,9 @@ async function loadDocument() {
 
 describe("MindeeV1 - Full Text Ocr", async () => {
   it("should load a Full Text OCR prediction at document level", async () => {
-    const expectedText = (await fs.readFile(path.join(fullTextOcrDir, "full_text_ocr.txt"))).toString();
+    const expectedText = (await fs.readFile(path.join(fullTextOcrDir, "full_text_ocr.txt")))
+      .toString();
     const fullTextOcr = await loadDocument();
-    expect(fullTextOcr).to.be.equals(expectedText.trim());
+    assert.strictEqual(fullTextOcr, expectedText.trim());
   });
 });

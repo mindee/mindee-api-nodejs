@@ -1,6 +1,6 @@
 import * as mindee from "@/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { levenshteinRatio } from "../../../testingUtilities.js";
 import { promises as fs } from "fs";
 import path from "path";
@@ -22,14 +22,14 @@ describe("MindeeV1 - InvoiceSplitterV1 Integration Tests #includeOptionalDeps", 
       mindee.v1.product.InvoiceSplitterV1, sample
     );
     const invoiceSplitterInference = response.document?.inference;
-    expect(invoiceSplitterInference).to.be.an.instanceof(InvoiceSplitterV1);
+    assert.ok(invoiceSplitterInference instanceof InvoiceSplitterV1);
     const invoices = await mindee.v1.extraction.extractInvoices(
       sample,
       invoiceSplitterInference as InvoiceSplitterV1
     );
-    expect(invoices.length).to.be.eq(2);
-    expect(invoices[0].asSource().filename).to.eq("invoice_p_0-0.pdf");
-    expect(invoices[1].asSource().filename).to.eq("invoice_p_1-1.pdf");
+    assert.strictEqual(invoices.length, 2);
+    assert.strictEqual(invoices[0].asSource().filename, "invoice_p_0-0.pdf");
+    assert.strictEqual(invoices[1].asSource().filename, "invoice_p_1-1.pdf");
 
     const invoiceResult = await client.parse(
       mindee.v1.product.InvoiceV4, invoices[0].asSource()
@@ -38,11 +38,11 @@ describe("MindeeV1 - InvoiceSplitterV1 Integration Tests #includeOptionalDeps", 
       path.join(V1_PRODUCT_PATH, "invoices/response_v4/summary_full_invoice_p1.rst")
     );
 
-    expect(
+    assert.ok(
       levenshteinRatio(
         invoiceResult.document.toString(),
         testStringRstInvoice.toString()
-      )
-    ).to.be.greaterThanOrEqual(0.90);
+      ) >= 0.90
+    );
   }).timeout(60000);
 });

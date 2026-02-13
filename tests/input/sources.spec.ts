@@ -13,7 +13,7 @@ import {
 } from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { Buffer } from "node:buffer";
 import { MindeeInputSourceError } from "@/errors/index.js";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
@@ -33,17 +33,17 @@ describe("Input Sources: - load different types of input", () => {
       filename: filename,
     });
     await inputSource.init();
-    expect(inputSource.inputType).to.equals(INPUT_TYPE_BASE64);
-    expect(inputSource.filename).to.equals(filename);
-    expect(inputSource.mimeType).to.equals("image/jpeg");
-    expect(inputSource.isPdf()).to.false;
-    expect(await inputSource.getPageCount()).to.equals(1);
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_BASE64);
+    assert.strictEqual(inputSource.filename, filename);
+    assert.strictEqual(inputSource.mimeType, "image/jpeg");
+    assert.ok(!inputSource.isPdf());
+    assert.strictEqual(await inputSource.getPageCount(), 1);
     // we need to insert a newline very 76 chars to match the format
     // of the input file.
     const expectedString = inputSource.fileObject
       .toString("base64")
       .replace(/(.{76})/gm, "$1\n");
-    expect(expectedString).to.eqls(b64String);
+    assert.deepStrictEqual(expectedString, b64String);
   });
 
   it("should accept JPEG files from a path", async () => {
@@ -55,12 +55,12 @@ describe("Input Sources: - load different types of input", () => {
     const expectedResult = await fs.promises.readFile(
       path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg")
     );
-    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(inputSource.filename).to.equals("default_sample.jpg");
-    expect(inputSource.mimeType).to.equals("image/jpeg");
-    expect(inputSource.isPdf()).to.false;
-    expect(await inputSource.getPageCount()).to.equals(1);
-    expect(inputSource.fileObject).to.eqls(expectedResult);
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_PATH);
+    assert.strictEqual(inputSource.filename, "default_sample.jpg");
+    assert.strictEqual(inputSource.mimeType, "image/jpeg");
+    assert.ok(!inputSource.isPdf());
+    assert.strictEqual(await inputSource.getPageCount(), 1);
+    assert.deepStrictEqual(inputSource.fileObject, expectedResult);
   });
 
   it("should accept TIFF from a path", async () => {
@@ -71,12 +71,12 @@ describe("Input Sources: - load different types of input", () => {
     const expectedResult = await fs.promises.readFile(
       path.join(RESOURCE_PATH, "file_types/receipt.tif")
     );
-    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(inputSource.filename).to.equals("receipt.tif");
-    expect(inputSource.mimeType).to.equals("image/tiff");
-    expect(inputSource.isPdf()).to.false;
-    expect(await inputSource.getPageCount()).to.equals(1);
-    expect(inputSource.fileObject).to.eqls(expectedResult);
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_PATH);
+    assert.strictEqual(inputSource.filename, "receipt.tif");
+    assert.strictEqual(inputSource.mimeType, "image/tiff");
+    assert.ok(!inputSource.isPdf());
+    assert.strictEqual(await inputSource.getPageCount(), 1);
+    assert.deepStrictEqual(inputSource.fileObject, expectedResult);
   });
 
   it("should accept HEIC from a path", async () => {
@@ -87,12 +87,12 @@ describe("Input Sources: - load different types of input", () => {
     const expectedResult = await fs.promises.readFile(
       path.join(RESOURCE_PATH, "file_types/receipt.heic")
     );
-    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(inputSource.filename).to.equals("receipt.heic");
-    expect(inputSource.mimeType).to.equals("image/heic");
-    expect(inputSource.isPdf()).to.false;
-    expect(await inputSource.getPageCount()).to.equals(1);
-    expect(inputSource.fileObject).to.eqls(expectedResult);
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_PATH);
+    assert.strictEqual(inputSource.filename, "receipt.heic");
+    assert.strictEqual(inputSource.mimeType, "image/heic");
+    assert.ok(!inputSource.isPdf());
+    assert.strictEqual(await inputSource.getPageCount(), 1);
+    assert.deepStrictEqual(inputSource.fileObject, expectedResult);
   });
 
   it("should accept WEBP from a path", async () => {
@@ -103,12 +103,12 @@ describe("Input Sources: - load different types of input", () => {
     const expectedResult = await fs.promises.readFile(
       path.join(RESOURCE_PATH, "file_types/receipt.webp")
     );
-    expect(inputSource.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(inputSource.filename).to.equals("receipt.webp");
-    expect(inputSource.mimeType).to.equals("image/webp");
-    expect(inputSource.isPdf()).to.false;
-    expect(await inputSource.getPageCount()).to.equals(1);
-    expect(inputSource.fileObject).to.eqls(expectedResult);
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_PATH);
+    assert.strictEqual(inputSource.filename, "receipt.webp");
+    assert.strictEqual(inputSource.mimeType, "image/webp");
+    assert.ok(!inputSource.isPdf());
+    assert.strictEqual(await inputSource.getPageCount(), 1);
+    assert.deepStrictEqual(inputSource.fileObject, expectedResult);
   });
 
   it("should accept read streams", async () => {
@@ -120,13 +120,13 @@ describe("Input Sources: - load different types of input", () => {
       filename: filename,
     });
     await inputSource.init();
-    expect(inputSource.inputType).to.equals(INPUT_TYPE_STREAM);
-    expect(inputSource.filename).to.equals(filename);
-    expect(inputSource.mimeType).to.equals("image/jpeg");
-    expect(inputSource.isPdf()).to.false;
-    expect(await inputSource.getPageCount()).to.equals(1);
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_STREAM);
+    assert.strictEqual(inputSource.filename, filename);
+    assert.strictEqual(inputSource.mimeType, "image/jpeg");
+    assert.ok(!inputSource.isPdf());
+    assert.strictEqual(await inputSource.getPageCount(), 1);
     const expectedResult = await fs.promises.readFile(filePath);
-    expect(inputSource.fileObject.toString()).to.eqls(expectedResult.toString());
+    assert.deepStrictEqual(inputSource.fileObject.toString(), expectedResult.toString());
   });
 
   it("should handle aborted streams", async () => {
@@ -145,10 +145,13 @@ describe("Input Sources: - load different types of input", () => {
 
     try {
       await streamInput.init();
-      expect.fail("Should have thrown an error");
+      assert.fail("Should have thrown an error");
     } catch (e: any) {
-      expect(e).to.be.instanceOf(MindeeInputSourceError);
-      expect(e.toString()).to.eq("MindeeInputSourceError: Error converting stream - Error: aborted");
+      assert.ok(e instanceof MindeeInputSourceError);
+      assert.strictEqual(
+        e.toString(),
+        "MindeeInputSourceError: Error converting stream - Error: aborted"
+      );
     }
   });
 
@@ -165,10 +168,10 @@ describe("Input Sources: - load different types of input", () => {
 
     try {
       await streamInput.init();
-      expect.fail("Should have thrown an error");
+      assert.fail("Should have thrown an error");
     } catch (e: any) {
-      expect(e).to.be.instanceOf(MindeeInputSourceError);
-      expect(e.toString()).to.equal("MindeeInputSourceError: Stream is already closed");
+      assert.ok(e instanceof MindeeInputSourceError);
+      assert.strictEqual(e.toString(), "MindeeInputSourceError: Stream is already closed");
     }
   });
 
@@ -194,8 +197,11 @@ describe("Input Sources: - load different types of input", () => {
     try {
       await streamInput.init();
     } catch (e: any) {
-      expect(e).to.be.instanceOf(MindeeInputSourceError);
-      expect(e.toString()).to.eq("MindeeInputSourceError: Error converting stream - Error: aborted");
+      assert.ok(e instanceof MindeeInputSourceError);
+      assert.strictEqual(
+        e.toString(),
+        "MindeeInputSourceError: Error converting stream - Error: aborted"
+      );
     }
   });
 
@@ -210,13 +216,13 @@ describe("Input Sources: - load different types of input", () => {
       filename: filename,
     });
     await inputSource.init();
-    expect(inputSource.inputType).to.equal(INPUT_TYPE_BYTES);
-    expect(inputSource.filename).to.equal(filename);
-    expect(inputSource.mimeType).to.equal("image/jpeg");
-    expect(inputSource.isPdf()).to.false;
-    expect(await inputSource.getPageCount()).to.equals(1);
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_BYTES);
+    assert.strictEqual(inputSource.filename, filename);
+    assert.strictEqual(inputSource.mimeType, "image/jpeg");
+    assert.ok(!inputSource.isPdf());
+    assert.strictEqual(await inputSource.getPageCount(), 1);
     const expectedResult = await fs.promises.readFile(filePath);
-    expect(Buffer.compare(inputSource.fileObject, expectedResult)).to.equal(0);
+    assert.strictEqual(Buffer.compare(inputSource.fileObject, expectedResult), 0);
   });
 
   it("should accept a Buffer", async () => {
@@ -231,13 +237,13 @@ describe("Input Sources: - load different types of input", () => {
       filename: filename,
     });
     await inputSource.init();
-    expect(inputSource.inputType).to.equals(INPUT_TYPE_BUFFER);
-    expect(inputSource.filename).to.equals(filename);
-    expect(inputSource.isPdf()).to.be.true;
+    assert.strictEqual(inputSource.inputType, INPUT_TYPE_BUFFER);
+    assert.strictEqual(inputSource.filename, filename);
+    assert.ok(inputSource.isPdf());
     it("#includeOptionalDeps", async () => {
-      expect(await inputSource.getPageCount()).to.equals(10);
+      assert.strictEqual(await inputSource.getPageCount(), 10);
     });
-    expect(inputSource.fileObject).to.be.instanceOf(Buffer);
+    assert.ok(inputSource.fileObject instanceof Buffer);
   });
 
 });

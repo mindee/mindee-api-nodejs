@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import path from "node:path";
 
 import {
@@ -19,22 +19,22 @@ import { RESOURCE_PATH, V2_PRODUCT_PATH } from "../index.js";
 import { Extraction } from "@/v2/product/index.js";
 
 function check422(err: unknown) {
-  expect(err).to.be.instanceOf(MindeeHttpErrorV2);
+  assert.ok(err instanceof MindeeHttpErrorV2);
   const errObj = err as MindeeHttpErrorV2;
-  expect(errObj.status).to.equal(422);
-  expect(errObj.code.startsWith("422-")).to.be.true;
-  expect(errObj.title).to.be.a("string");
-  expect(errObj.detail).to.be.a("string");
-  expect(errObj.errors).to.be.instanceOf(Array);
+  assert.equal(errObj.status, 422);
+  assert.ok(errObj.code.startsWith("422-"));
+  assert.equal(typeof errObj.title, "string");
+  assert.equal(typeof errObj.detail, "string");
+  assert.ok(Array.isArray(errObj.errors));
 }
 
 function checkEmptyActiveOptions(inference: ExtractionInference) {
-  expect(inference.activeOptions).to.not.be.null;
-  expect(inference.activeOptions?.rag).to.be.false;
-  expect(inference.activeOptions?.rawText).to.be.false;
-  expect(inference.activeOptions?.polygon).to.be.false;
-  expect(inference.activeOptions?.confidence).to.be.false;
-  expect(inference.activeOptions?.textContext).to.be.false;
+  assert.notStrictEqual(inference.activeOptions, null);
+  assert.equal(inference.activeOptions?.rag, false);
+  assert.equal(inference.activeOptions?.rawText, false);
+  assert.equal(inference.activeOptions?.polygon, false);
+  assert.equal(inference.activeOptions?.confidence, false);
+  assert.equal(inference.activeOptions?.textContext, false);
 }
 
 describe("MindeeV2 – Client Integration Tests", () => {
@@ -87,16 +87,16 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const response = await client.enqueueAndGetResult(
       Extraction, source, params
     );
-    expect(response).to.exist;
-    expect(response.inference).to.be.instanceOf(ExtractionInference);
+    assert.ok(response);
+    assert.ok(response.inference instanceof ExtractionInference);
     const inference: ExtractionInference = response.inference;
 
-    expect(inference.file?.name).to.equal("multipage_cut-2.pdf");
-    expect(inference.file.pageCount).to.equal(2);
-    expect(inference.model?.id).to.equal(modelId);
+    assert.equal(inference.file?.name, "multipage_cut-2.pdf");
+    assert.equal(inference.file.pageCount, 2);
+    assert.equal(inference.model?.id, modelId);
 
-    expect(inference.result).to.exist;
-    expect(inference.result.rawText).to.be.undefined;
+    assert.ok(inference.result);
+    assert.equal(inference.result.rawText, undefined);
     checkEmptyActiveOptions(inference);
   }).timeout(60000);
 
@@ -116,27 +116,27 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const response = await client.enqueueAndGetResult(
       Extraction, source, params
     );
-    expect(response.inference).to.be.instanceOf(ExtractionInference);
+    assert.ok(response.inference instanceof ExtractionInference);
     const inference: ExtractionInference = response.inference;
-    expect(inference.file?.name).to.equal("default_sample.jpg");
-    expect(inference.model?.id).to.equal(modelId);
+    assert.equal(inference.file?.name, "default_sample.jpg");
+    assert.equal(inference.model?.id, modelId);
 
-    expect(inference.result).to.exist;
-    expect(inference.result.rawText).to.exist;
+    assert.ok(inference.result);
+    assert.ok(inference.result.rawText);
 
     const supplierField = inference.result.fields.get("supplier_name") as SimpleField;
-    expect(supplierField).to.be.instanceOf(SimpleField);
-    expect(supplierField.value).to.equal("John Smith");
+    assert.ok(supplierField instanceof SimpleField);
+    assert.equal(supplierField.value, "John Smith");
 
-    expect(inference.result.rawText).to.exist;
-    expect(inference.activeOptions).to.not.be.null;
-    expect(inference.activeOptions?.rag).to.be.false;
-    expect(inference.activeOptions?.rawText).to.be.true;
-    expect(inference.activeOptions?.polygon).to.be.true;
-    expect(inference.activeOptions?.confidence).to.be.false;
-    expect(inference.activeOptions?.textContext).to.be.true;
+    assert.ok(inference.result.rawText);
+    assert.notStrictEqual(inference.activeOptions, null);
+    assert.equal(inference.activeOptions?.rag, false);
+    assert.equal(inference.activeOptions?.rawText, true);
+    assert.equal(inference.activeOptions?.polygon, true);
+    assert.equal(inference.activeOptions?.confidence, false);
+    assert.equal(inference.activeOptions?.textContext, true);
 
-    expect(inference.result.rawText?.pages).to.have.lengthOf(1);
+    assert.equal(inference.result.rawText?.pages.length, 1);
   }).timeout(120000);
 
   it("Filled, single-page image – Base64Input - enqueueAndGetResult must succeed", async () => {
@@ -155,17 +155,17 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const response = await client.enqueueAndGetResult(
       Extraction, source, params
     );
-    expect(response.inference).to.be.instanceOf(ExtractionInference);
+    assert.ok(response.inference instanceof ExtractionInference);
     const inference: ExtractionInference = response.inference;
-    expect(inference.file?.name).to.equal("receipt.jpg");
-    expect(inference.model?.id).to.equal(modelId);
+    assert.equal(inference.file?.name, "receipt.jpg");
+    assert.equal(inference.model?.id, modelId);
 
-    expect(inference.result).to.exist;
-    expect(inference.result.rawText).to.be.undefined;
+    assert.ok(inference.result);
+    assert.equal(inference.result.rawText, undefined);
 
     const supplierField = inference.result.fields.get("supplier_name") as SimpleField;
-    expect(supplierField).to.be.instanceOf(SimpleField);
-    expect(supplierField.value).to.equal("Clachan");
+    assert.ok(supplierField instanceof SimpleField);
+    assert.equal(supplierField.value, "Clachan");
 
     checkEmptyActiveOptions(inference);
   }).timeout(120000);
@@ -176,7 +176,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
 
     try {
       await client.enqueue(Extraction, source, badParams);
-      expect.fail("Expected the call to throw, but it succeeded.");
+      assert.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);
     }
@@ -188,7 +188,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
         Extraction,
         "00000000-0000-0000-0000-000000000000"
       );
-      expect.fail("Expected the call to throw, but it succeeded.");
+      assert.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);
     }
@@ -209,8 +209,8 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const response: ExtractionResponse = await client.enqueueAndGetResult(
       Extraction, source, params
     );
-    expect(response).to.exist;
-    expect(response.inference).to.be.instanceOf(ExtractionInference);
+    assert.ok(response);
+    assert.ok(response.inference instanceof ExtractionInference);
   }).timeout(60000);
 
   it("Data Schema Override - Overrides the data schema successfully", async () => {
@@ -228,10 +228,10 @@ describe("MindeeV2 – Client Integration Tests", () => {
     const response = await client.enqueueAndGetResult(
       Extraction, source, params
     );
-    expect(response).to.exist;
-    expect(response.inference).to.be.instanceOf(ExtractionInference);
-    expect(response.inference.result.fields.get("test_replace")).to.exist;
-    expect((response.inference.result.fields.get("test_replace") as SimpleField).value).to.be.equals("a test value");
+    assert.ok(response);
+    assert.ok(response.inference instanceof ExtractionInference);
+    assert.ok(response.inference.result.fields.get("test_replace"));
+    assert.equal((response.inference.result.fields.get("test_replace") as SimpleField).value, "a test value");
 
   }).timeout(60000);
 

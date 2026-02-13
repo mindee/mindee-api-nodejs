@@ -18,8 +18,8 @@
     "test-v1-light": "mocha --grep \"#includeOptionalDeps\" --invert \"tests/v1/**/*.spec.ts\"",
     "test-v2": "mocha --grep \"#omitOptionalDeps\" --invert \"tests/v2/**/*.spec.ts\"",
     "test-v2-light": "mocha --grep \"#includeOptionalDeps\" --invert \"tests/v2/**/*.spec.ts\"",
-    "lint": "tsc --noEmit && eslint './src/**/*.ts' --report-unused-disable-directives && echo 'Your .ts files look good.'",
-    "lint-fix": "eslint './src/**/*.ts' --fix",
+    "lint": "tsc --noEmit && eslint --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
+    "lint-fix": "eslint --fix --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/"
   },
@@ -47,28 +47,26 @@
   },
   "homepage": "https://mindee.com/",
   "devDependencies": {
-    "@types/chai": "^5.2.3",
     "@types/mocha": "^10.0.10",
     "@types/node": "^18.19.130",
     "@types/tmp": "^0.2.6",
-    "@typescript-eslint/eslint-plugin": "^8.52.0",
-    "@typescript-eslint/parser": "^8.52.0",
-    "chai": "^6.2.2",
+    "@typescript-eslint/eslint-plugin": "^8.55.0",
+    "@typescript-eslint/parser": "^8.55.0",
     "eslint": "^9.39.2",
-    "eslint-plugin-jsdoc": "^50.6.17",
+    "eslint-plugin-jsdoc": "^52.0.4",
     "mocha": "^11.7.5",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
-    "typedoc": "~0.28.15",
+    "typedoc": "~0.28.16",
     "typescript": "^5.9.3"
   },
   "dependencies": {
     "commander": "~9.4.1",
     "file-type": "^19.6.0",
-    "node-poppler": "^7.2.4",
     "tmp": "^0.2.3",
     "tslib": "^2.8.1",
-    "undici": "^6.23.0"
+    "undici": "^6.23.0",
+    "node-poppler": "^7.2.4"
   },
   "optionalDependencies": {
     "sharp": "~0.34.5",

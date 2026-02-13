@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import path from "node:path";
 import { split } from "@/v2/product/index.js";
 
@@ -13,14 +13,16 @@ describe("MindeeV2 - Split Response", async () => {
       path.join(V2_PRODUCT_PATH, "split", "split_single.json")
     );
     const splits: split.SplitRange[] = response.inference.result.splits;
-    expect(splits).to.be.an("array").that.has.lengthOf(1);
+    assert.ok(Array.isArray(splits));
+    assert.strictEqual(splits.length, 1);
 
     const firstSplit: split.SplitRange = splits[0];
-    expect(firstSplit.documentType).to.equal("receipt");
+    assert.strictEqual(firstSplit.documentType, "receipt");
 
-    expect(firstSplit.pageRange).to.be.an("array").that.has.lengthOf(2);
-    expect(firstSplit.pageRange[0]).to.equal(0);
-    expect(firstSplit.pageRange[1]).to.equal(0);
+    assert.ok(Array.isArray(firstSplit.pageRange));
+    assert.strictEqual(firstSplit.pageRange.length, 2);
+    assert.strictEqual(firstSplit.pageRange[0], 0);
+    assert.strictEqual(firstSplit.pageRange[1], 0);
   });
 
   it("should load multiple results", async () => {
@@ -29,18 +31,21 @@ describe("MindeeV2 - Split Response", async () => {
       path.join(V2_PRODUCT_PATH, "split", "split_multiple.json")
     );
     const splits: split.SplitRange[] = response.inference.result.splits;
-    expect(splits).to.be.an("array").that.has.lengthOf(3);
+    assert.ok(Array.isArray(splits));
+    assert.strictEqual(splits.length, 3);
 
     const firstSplit: split.SplitRange = splits[0];
-    expect(firstSplit.documentType).to.equal("invoice");
-    expect(firstSplit.pageRange).to.be.an("array").that.has.lengthOf(2);
-    expect(firstSplit.pageRange[0]).to.equal(0);
-    expect(firstSplit.pageRange[1]).to.equal(0);
+    assert.strictEqual(firstSplit.documentType, "invoice");
+    assert.ok(Array.isArray(firstSplit.pageRange));
+    assert.strictEqual(firstSplit.pageRange.length, 2);
+    assert.strictEqual(firstSplit.pageRange[0], 0);
+    assert.strictEqual(firstSplit.pageRange[1], 0);
 
     const secondSplit: split.SplitRange = splits[1];
-    expect(secondSplit.documentType).to.equal("invoice");
-    expect(secondSplit.pageRange).to.be.an("array").that.has.lengthOf(2);
-    expect(secondSplit.pageRange[0]).to.equal(1);
-    expect(secondSplit.pageRange[1]).to.equal(3);
+    assert.strictEqual(secondSplit.documentType, "invoice");
+    assert.ok(Array.isArray(secondSplit.pageRange));
+    assert.strictEqual(secondSplit.pageRange.length, 2);
+    assert.strictEqual(secondSplit.pageRange[0], 1);
+    assert.strictEqual(secondSplit.pageRange[1], 3);
   });
 });

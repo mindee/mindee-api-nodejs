@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 import { V1_PRODUCT_PATH } from "../../../index.js";
 
@@ -34,34 +34,34 @@ describe("Financial Document V1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.FinancialDocumentV1, response.document);
     const docPrediction = doc.inference.prediction;
-    expect(docPrediction.locale.value).to.be.undefined;
-    expect(docPrediction.totalAmount.value).to.be.undefined;
-    expect(docPrediction.totalNet.value).to.be.undefined;
-    expect(docPrediction.totalTax.value).to.be.undefined;
-    expect(docPrediction.date.value).to.be.undefined;
-    expect(docPrediction.invoiceNumber.value).to.be.undefined;
-    expect(docPrediction.billingAddress.value).to.be.undefined;
-    expect(docPrediction.dueDate.value).to.be.undefined;
-    expect(docPrediction.documentNumber.value).to.be.undefined;
-    expect(docPrediction.documentType.value).to.be.eq("EXPENSE RECEIPT");
-    expect(docPrediction.documentTypeExtended.value).to.be.eq("EXPENSE RECEIPT");
-    expect(docPrediction.supplierName.value).to.be.undefined;
-    expect(docPrediction.supplierAddress.value).to.be.undefined;
-    expect(docPrediction.customerId.value).to.be.undefined;
-    expect(docPrediction.customerName.value).to.be.undefined;
-    expect(docPrediction.customerAddress.value).to.be.undefined;
-    expect(docPrediction.customerCompanyRegistrations.length).to.be.eq(0);
-    expect(docPrediction.taxes.length).to.be.equal(0);
-    expect(docPrediction.supplierPaymentDetails.length).to.be.equal(0);
-    expect(docPrediction.supplierCompanyRegistrations.length).to.be.equal(0);
-    expect(docPrediction.tip.value).to.be.undefined;
-    expect(docPrediction.totalAmount.value).to.be.undefined;
-    expect(docPrediction.totalNet.value).to.be.undefined;
-    expect(docPrediction.totalTax.value).to.be.undefined;
-    expect(docPrediction.taxes.length).to.be.equal(0);
-    expect(docPrediction.date.value).to.be.undefined;
-    expect(docPrediction.time.value).to.be.undefined;
-    expect(docPrediction.supplierName.value).to.be.undefined;
+    assert.strictEqual(docPrediction.locale.value, undefined);
+    assert.strictEqual(docPrediction.totalAmount.value, undefined);
+    assert.strictEqual(docPrediction.totalNet.value, undefined);
+    assert.strictEqual(docPrediction.totalTax.value, undefined);
+    assert.strictEqual(docPrediction.date.value, undefined);
+    assert.strictEqual(docPrediction.invoiceNumber.value, undefined);
+    assert.strictEqual(docPrediction.billingAddress.value, undefined);
+    assert.strictEqual(docPrediction.dueDate.value, undefined);
+    assert.strictEqual(docPrediction.documentNumber.value, undefined);
+    assert.strictEqual(docPrediction.documentType.value, "EXPENSE RECEIPT");
+    assert.strictEqual(docPrediction.documentTypeExtended.value, "EXPENSE RECEIPT");
+    assert.strictEqual(docPrediction.supplierName.value, undefined);
+    assert.strictEqual(docPrediction.supplierAddress.value, undefined);
+    assert.strictEqual(docPrediction.customerId.value, undefined);
+    assert.strictEqual(docPrediction.customerName.value, undefined);
+    assert.strictEqual(docPrediction.customerAddress.value, undefined);
+    assert.strictEqual(docPrediction.customerCompanyRegistrations.length, 0);
+    assert.strictEqual(docPrediction.taxes.length, 0);
+    assert.strictEqual(docPrediction.supplierPaymentDetails.length, 0);
+    assert.strictEqual(docPrediction.supplierCompanyRegistrations.length, 0);
+    assert.strictEqual(docPrediction.tip.value, undefined);
+    assert.strictEqual(docPrediction.totalAmount.value, undefined);
+    assert.strictEqual(docPrediction.totalNet.value, undefined);
+    assert.strictEqual(docPrediction.totalTax.value, undefined);
+    assert.strictEqual(docPrediction.taxes.length, 0);
+    assert.strictEqual(docPrediction.date.value, undefined);
+    assert.strictEqual(docPrediction.time.value, undefined);
+    assert.strictEqual(docPrediction.supplierName.value, undefined);
   });
 
   it("should initialize from an invoice object", async () => {
@@ -69,7 +69,7 @@ describe("Financial Document V1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.FinancialDocumentV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.invoiceDocString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
 
   it("should initialize from a receipt object", async () => {
@@ -77,7 +77,7 @@ describe("Financial Document V1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.FinancialDocumentV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.receiptDocString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
 
   it("should load a complete page 0 invoice prediction", async () => {
@@ -86,8 +86,8 @@ describe("Financial Document V1 Object initialization", async () => {
     const doc = new mindee.v1.Document(mindee.v1.product.FinancialDocumentV1, response.document);
     const page0 = doc.inference.pages[0];
     const docString = await fs.readFile(path.join(dataPath.page0InvoiceString));
-    expect(page0.orientation?.value).to.be.equals(0);
-    expect(page0.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(page0.orientation?.value, 0);
+    assert.strictEqual(page0.toString(), docString.toString());
   });
 
   it("should load a complete page 0 receipt prediction", async () => {
@@ -96,7 +96,7 @@ describe("Financial Document V1 Object initialization", async () => {
     const doc = new mindee.v1.Document(mindee.v1.product.FinancialDocumentV1, response.document);
     const page0 = doc.inference.pages[0];
     const docString = await fs.readFile(path.join(dataPath.page0ReceiptString));
-    expect(page0.orientation?.value).to.be.equals(0);
-    expect(page0.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(page0.orientation?.value, 0);
+    assert.strictEqual(page0.toString(), docString.toString());
   });
 });

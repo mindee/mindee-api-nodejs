@@ -1,7 +1,7 @@
 import { StringDict } from "@/parsing/index.js";
 import path from "path";
 import { V2_PRODUCT_PATH } from "../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { promises as fs } from "fs";
 import { extraction } from "@/v2/product/index.js";
 
@@ -18,8 +18,8 @@ describe("MindeeV2 - Extraction Parameter", () => {
       const paramsInstance = new extraction.ExtractionParameters({
         modelId: modelIdValue,
       });
-      expect(paramsInstance.modelId).to.equal(modelIdValue);
-      expect(paramsInstance.getValidatedPollingOptions()).to.deep.equal({
+      assert.strictEqual(paramsInstance.modelId, modelIdValue);
+      assert.deepStrictEqual(paramsInstance.getValidatedPollingOptions(), {
         delaySec: 1.5,
         initialDelaySec: 2,
         maxRetries: 80
@@ -41,7 +41,7 @@ describe("MindeeV2 - Extraction Parameter", () => {
       const params = new extraction.ExtractionParameters({
         modelId: modelIdValue,
       });
-      expect(params.dataSchema).to.be.undefined;
+      assert.strictEqual(params.dataSchema, undefined);
     });
 
     it("should equate no matter the type", () => {
@@ -58,9 +58,9 @@ describe("MindeeV2 - Extraction Parameter", () => {
         dataSchema: expectedDataSchemaObject,
       });
 
-      expect(JSON.stringify(paramsDict.dataSchema)).to.eq(expectedDataSchemaString);
-      expect(paramsObject.dataSchema?.toString()).to.eq(expectedDataSchemaString);
-      expect(paramsString.dataSchema?.toString()).to.eq(expectedDataSchemaString);
+      assert.strictEqual(JSON.stringify(paramsDict.dataSchema), expectedDataSchemaString);
+      assert.strictEqual(paramsObject.dataSchema?.toString(), expectedDataSchemaString);
+      assert.strictEqual(paramsString.dataSchema?.toString(), expectedDataSchemaString);
     });
   });
 });

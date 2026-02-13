@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
@@ -19,7 +19,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     const response = await client.parse(
       mindee.v1.product.InvoiceV4, sample, { cropper: true }
     );
-    expect(response.document.inference.pages[0]?.extras?.cropper).to.exist;
+    assert.ok(response.document.inference.pages[0]?.extras?.cropper);
   }).timeout(70000);
 
   it("should send full text OCR extra", async () => {
@@ -30,7 +30,7 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     const response = await client.enqueueAndParse(
       mindee.v1.product.InternationalIdV2, sample, { fullText: true }
     );
-    expect(response.document?.extras?.fullTextOcr).to.exist;
+    assert.ok(response.document?.extras?.fullTextOcr);
 
   }).timeout(70000);
 
@@ -42,8 +42,8 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     const response = await client.parse(
       mindee.v1.product.FinancialDocumentV1, sample, { allWords: true }
     );
-    expect(response.document?.ocr).to.exist;
-    expect(response.document?.ocr?.toString()).to.not.be.empty;
+    assert.ok(response.document?.ocr);
+    assert.ok(response.document?.ocr?.toString());
 
   }).timeout(70000);
 
@@ -55,8 +55,8 @@ describe("MindeeV1 - Extras Integration Tests", async () => {
     const response = await client.enqueueAndParse(
       mindee.v1.product.FinancialDocumentV1, sample, { allWords: true }
     );
-    expect(response.document?.ocr).to.exist;
-    expect(response.document?.ocr?.toString()).to.not.be.empty;
+    assert.ok(response.document?.ocr);
+    assert.ok(response.document?.ocr?.toString());
 
   }).timeout(70000);
 });

@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { promises as fs } from "fs";
 import path from "path";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
@@ -21,11 +21,11 @@ describe("Multi-Receipt #includeOptionalDeps", () => {
       const inputSample = new PathInput({ inputPath: dataPath.fileSample });
       await inputSample.init();
       const extractedReceipts = await extractReceipts(inputSample, doc);
-      expect(extractedReceipts.length).to.be.equals(6);
+      assert.strictEqual(extractedReceipts.length, 6);
       for (let i = 0; i < extractedReceipts.length; i++) {
-        expect(extractedReceipts[i].buffer).to.be.not.null;
-        expect(extractedReceipts[i].pageId).to.be.equals(0);
-        expect(extractedReceipts[i].receiptId).to.be.equals(i);
+        assert.ok(extractedReceipts[i].buffer);
+        assert.strictEqual(extractedReceipts[i].pageId, 0);
+        assert.strictEqual(extractedReceipts[i].receiptId, i);
       }
     });
   });
@@ -37,27 +37,27 @@ describe("Multi-Receipt #includeOptionalDeps", () => {
       const inputSample = new PathInput({ inputPath: dataPath.multiPageSample });
       await inputSample.init();
       const extractedReceipts = await extractReceipts(inputSample, doc);
-      expect(extractedReceipts.length).to.be.equals(5);
+      assert.strictEqual(extractedReceipts.length, 5);
 
-      expect(extractedReceipts[0].buffer).to.be.not.null;
-      expect(extractedReceipts[0].pageId).to.be.equals(0);
-      expect(extractedReceipts[0].receiptId).to.be.equals(0);
+      assert.ok(extractedReceipts[0].buffer);
+      assert.strictEqual(extractedReceipts[0].pageId, 0);
+      assert.strictEqual(extractedReceipts[0].receiptId, 0);
 
-      expect(extractedReceipts[1].buffer).to.be.not.null;
-      expect(extractedReceipts[1].pageId).to.be.equals(0);
-      expect(extractedReceipts[1].receiptId).to.be.equals(1);
+      assert.ok(extractedReceipts[1].buffer);
+      assert.strictEqual(extractedReceipts[1].pageId, 0);
+      assert.strictEqual(extractedReceipts[1].receiptId, 1);
 
-      expect(extractedReceipts[2].buffer).to.be.not.null;
-      expect(extractedReceipts[2].pageId).to.be.equals(0);
-      expect(extractedReceipts[2].receiptId).to.be.equals(2);
+      assert.ok(extractedReceipts[2].buffer);
+      assert.strictEqual(extractedReceipts[2].pageId, 0);
+      assert.strictEqual(extractedReceipts[2].receiptId, 2);
 
-      expect(extractedReceipts[3].buffer).to.be.not.null;
-      expect(extractedReceipts[3].pageId).to.be.equals(1);
-      expect(extractedReceipts[3].receiptId).to.be.equals(0);
+      assert.ok(extractedReceipts[3].buffer);
+      assert.strictEqual(extractedReceipts[3].pageId, 1);
+      assert.strictEqual(extractedReceipts[3].receiptId, 0);
 
-      expect(extractedReceipts[4].buffer).to.be.not.null;
-      expect(extractedReceipts[4].pageId).to.be.equals(1);
-      expect(extractedReceipts[4].receiptId).to.be.equals(1);
+      assert.ok(extractedReceipts[4].buffer);
+      assert.strictEqual(extractedReceipts[4].pageId, 1);
+      assert.strictEqual(extractedReceipts[4].receiptId, 1);
     });
   });
 });

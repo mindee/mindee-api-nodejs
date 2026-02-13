@@ -1,6 +1,6 @@
 import * as mindee from "@/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../index.js";
 
@@ -21,7 +21,7 @@ describe("Light Environment Sanity Check #omitOptionalDeps", function () {
         mindee.v1.product.InvoiceSplitterV1, sample
       );
       const invoiceSplitterInference = response.document?.inference;
-      expect(invoiceSplitterInference).to.be.an.instanceof(InvoiceSplitterV1);
+      assert.ok(invoiceSplitterInference instanceof InvoiceSplitterV1);
       await mindee.v1.extraction.extractInvoices(
         sample,
         invoiceSplitterInference as InvoiceSplitterV1

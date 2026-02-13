@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { Field } from "@/v1/parsing/standard/index.js";
 
 describe("Test different inits of Field", () => {
@@ -14,10 +14,9 @@ describe("Test different inits of Field", () => {
       ],
     };
     const field = new Field({ prediction });
-    // const field = new Field({ prediction });
-    expect(field.value).to.equals("test");
-    expect(field.confidence).to.equals(0.1);
-    expect(field.boundingBox.length).to.satisfy((length: number) => length > 0);
+    assert.strictEqual(field.value, "test");
+    assert.strictEqual(field.confidence, 0.1);
+    assert.ok(field.boundingBox.length > 0);
   });
 
   it("should not fail if no polygon given", () => {
@@ -26,7 +25,7 @@ describe("Test different inits of Field", () => {
       confidence: 0.1,
     };
     const field = new Field({ prediction });
-    expect(field.polygon.length).to.equals(0);
+    assert.strictEqual(field.polygon.length, 0);
   });
 
   it("should be equal to itself only", () => {
@@ -40,8 +39,8 @@ describe("Test different inits of Field", () => {
     };
     const field1 = new Field({ prediction: prediction1 });
     const field2 = new Field({ prediction: prediction2 });
-    expect(field1.compare(field1)).to.be.true;
-    expect(field1.compare(field2)).to.not.be.true;
+    assert.ok(field1.compare(field1));
+    assert.ok(!field1.compare(field2));
   });
 
   it("should create with an N/A value", () => {
@@ -49,8 +48,8 @@ describe("Test different inits of Field", () => {
       value: null,
     };
     const field = new Field({ prediction });
-    expect(field.value).to.be.undefined;
-    expect(field.confidence).to.be.equals(0.0);
+    assert.strictEqual(field.value, undefined);
+    assert.strictEqual(field.confidence, 0.0);
   });
 
   it("should manipulate multiple fields", () => {
@@ -58,13 +57,13 @@ describe("Test different inits of Field", () => {
       new Field({ prediction: { value: 1, confidence: 0.1 } }),
       new Field({ prediction: { value: 2, confidence: 0.8 } }),
     ];
-    expect(Field.arrayConfidence(fields)).to.be.equals(0.8 * 0.1);
-    expect(Field.arraySum(fields)).to.be.equals(3);
+    assert.strictEqual(Field.arrayConfidence(fields), 0.8 * 0.1);
+    assert.strictEqual(Field.arraySum(fields), 3);
     const fields2 = [
       new Field({ prediction: { value: undefined, confidence: undefined } }),
       new Field({ prediction: { value: 4, confidence: 0.8 } }),
     ];
-    expect(Field.arrayConfidence(fields2)).to.be.equals(0.0);
-    expect(Field.arraySum(fields2)).to.be.equals(0.0);
+    assert.strictEqual(Field.arrayConfidence(fields2), 0.0);
+    assert.strictEqual(Field.arraySum(fields2), 0.0);
   });
 });

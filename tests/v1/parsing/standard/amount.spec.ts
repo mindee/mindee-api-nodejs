@@ -1,5 +1,5 @@
 import { AmountField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 
 describe("Test AmountField field", () => {
   it("Should create an AmountField field", () => {
@@ -14,9 +14,9 @@ describe("Test AmountField field", () => {
       ],
     };
     const amount = new AmountField({ prediction });
-    expect(amount.value).to.be.equal(2);
-    expect(amount.confidence).to.be.equal(0.1);
-    expect(amount.toString()).to.be.equal("2.00");
+    assert.strictEqual(amount.value, 2);
+    assert.strictEqual(amount.confidence, 0.1);
+    assert.strictEqual(amount.toString(), "2.00");
   });
 
   it("Should create an AmountField field with a N/A value as input", () => {
@@ -25,8 +25,8 @@ describe("Test AmountField field", () => {
       confidence: 0.1,
     };
     const amount = new AmountField({ prediction });
-    expect(amount.value).to.be.equal(undefined);
-    expect(amount.confidence).to.be.equal(0.0);
-    expect(amount.toString()).to.be.equal("");
+    assert.strictEqual(amount.value, undefined);
+    assert.strictEqual(amount.confidence, 0.0);
+    assert.strictEqual(amount.toString(), "");
   });
 });

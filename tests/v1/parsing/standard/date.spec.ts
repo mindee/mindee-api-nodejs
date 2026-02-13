@@ -1,5 +1,6 @@
 import { DateField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
+import { BoundingBox } from "@/geometry/index.js";
 
 describe("Test Date field", () => {
   it("Should create a Date field", () => {
@@ -12,13 +13,17 @@ describe("Test Date field", () => {
         [0.414, 0.831],
         [0.016, 0.831],
       ],
+      // eslint-disable-next-line @typescript-eslint/naming-convention,camelcase
       is_computed: true
     };
     const field = new DateField({ prediction });
-    expect(field.value).to.be.equal(prediction.value);
-    expect(field.dateObject).to.be.deep.equal(new Date(prediction.value));
-    expect(field.boundingBox).to.have.deep.members(prediction["polygon"]);
-    expect(field.isComputed).to.be.true;
+    assert.strictEqual(field.value, prediction.value);
+    assert.deepStrictEqual(field.dateObject, new Date(prediction.value));
+    assert.deepStrictEqual(
+      // @ts-expect-error: prediction polygon is not typed
+      field.boundingBox, new BoundingBox(...prediction["polygon"])
+    );
+    assert.ok(field.isComputed);
   });
   it("Should create a Date field with N/A value as input", () => {
     const prediction = {
@@ -26,8 +31,8 @@ describe("Test Date field", () => {
       confidence: 0.1,
     };
     const field = new DateField({ prediction });
-    expect(field.value).to.be.equal(undefined);
-    expect(field.dateObject).to.be.equal(undefined);
-    expect(field.polygon).to.be.empty;
+    assert.strictEqual(field.value, undefined);
+    assert.strictEqual(field.dateObject, undefined);
+    assert.strictEqual(field.polygon.length, 0);
   });
 });

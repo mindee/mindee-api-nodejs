@@ -1,5 +1,5 @@
 import path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { promises as fs } from "fs";
 import { FeedbackResponse } from "@/v1/parsing/common/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
@@ -10,7 +10,7 @@ describe("MindeeV1 - Feedback response", () => {
       path.join(V1_PRODUCT_PATH, "invoices/feedback_response/empty.json")
     );
     const feedbackResponse: FeedbackResponse = new FeedbackResponse(JSON.parse(jsonData.toString()));
-    expect(feedbackResponse.feedback).to.not.be.undefined;
-    expect(feedbackResponse.feedback.customer_address).to.be.null;
+    assert.ok(feedbackResponse.feedback);
+    assert.strictEqual(feedbackResponse.feedback.customer_address, null);
   });
 });

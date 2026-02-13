@@ -1,7 +1,7 @@
 import * as pdf from "@/pdf/index.js";
 import * as path from "path";
 import * as fs from "fs";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { PageOptions, PageOptionsOperation } from "@/index.js";
 import { PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";
@@ -19,8 +19,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
       onMinPages: 1,
     };
     const splitPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved).to.eq(10);
-    expect(await pdf.countPages(splitPdf.file)).to.eq(2);
+    assert.strictEqual(splitPdf.totalPagesRemoved, 10);
+    assert.strictEqual(await pdf.countPages(splitPdf.file), 2);
   });
 
   it("should cut a PDF to get only the first page", async () => {
@@ -35,8 +35,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
       onMinPages: 1,
     };
     const splitPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved).to.eq(11);
-    expect(await pdf.countPages(splitPdf.file)).to.eq(1);
+    assert.strictEqual(splitPdf.totalPagesRemoved, 11);
+    assert.strictEqual(await pdf.countPages(splitPdf.file), 1);
   });
 
   it("should not cut a PDF but throw exception because index page out of range", async () => {
@@ -53,8 +53,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
     try {
       await pdf.extractPages(inputSource.fileObject, pageOptions);
     } catch (error: any) {
-      expect(error).to.be.an("error");
-      expect(error.name).to.be.eq("MindeeError");
+      assert.ok(error instanceof Error);
+      assert.strictEqual(error.name, "MindeeError");
     }
   });
 
@@ -73,8 +73,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
     try {
       await pdf.extractPages(inputSource.fileObject, pageOptions);
     } catch (error: any) {
-      expect(error).to.be.an("error");
-      expect(error.name).to.be.eq("MindeeError");
+      assert.ok(error instanceof Error);
+      assert.strictEqual(error.name, "MindeeError");
     }
   });
 
@@ -92,8 +92,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
 
     const splitPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
 
-    expect(splitPdf.totalPagesRemoved).to.eq(3);
-    expect(await pdf.countPages(splitPdf.file)).to.eq(9);
+    assert.strictEqual(splitPdf.totalPagesRemoved, 3);
+    assert.strictEqual(await pdf.countPages(splitPdf.file), 9);
   });
 
   it("should not remove pages from a PDF because min pages are not met", async () => {
@@ -108,8 +108,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
       onMinPages: 5,
     };
     const splitPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved).to.eq(0);
-    expect(await pdf.countPages(splitPdf.file)).to.eq(2);
+    assert.strictEqual(splitPdf.totalPagesRemoved, 0);
+    assert.strictEqual(await pdf.countPages(splitPdf.file), 2);
   });
 
   it("should not cut pages from a PDF because min pages are not met", async () => {
@@ -124,8 +124,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
       onMinPages: 12,
     };
     const splitPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved).to.eq(0);
-    expect(await pdf.countPages(splitPdf.file)).to.eq(2);
+    assert.strictEqual(splitPdf.totalPagesRemoved, 0);
+    assert.strictEqual(await pdf.countPages(splitPdf.file), 2);
   });
 
   it("should cut the first and the 2 last pages from a PDF", async () => {
@@ -140,8 +140,8 @@ describe("Test pdf operation #includeOptionalDeps", () => {
       onMinPages: 0,
     };
     const newPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
-    expect(newPdf.totalPagesRemoved).to.eq(9);
-    expect(await pdf.countPages(newPdf.file)).to.eq(3);
+    assert.strictEqual(newPdf.totalPagesRemoved, 9);
+    assert.strictEqual(await pdf.countPages(newPdf.file), 3);
 
     // This is how the length of the word is set in the
     // raw PDF file.
@@ -156,6 +156,6 @@ describe("Test pdf operation #includeOptionalDeps", () => {
     const expectedLengths = expectedResult.match(lengthRE);
     const inputDocLengths =
       inputSource.fileObject.toString("utf-8").match(lengthRE) || [];
-    expect(expectedLengths).to.have.ordered.members(inputDocLengths);
+    assert.deepStrictEqual(inputDocLengths, expectedLengths);
   });
 });

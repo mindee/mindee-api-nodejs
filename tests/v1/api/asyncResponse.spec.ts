@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { AsyncPredictResponse } from "@/v1/index.js";
 import { promises as fs } from "fs";
 import * as path from "path";
@@ -16,12 +16,12 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
       data: JSON.parse(jsonData.toString()),
     };
     const response = new AsyncPredictResponse(InvoiceSplitterV1, httpResponse.data);
-    expect(response.job).to.not.be.undefined;
-    expect(response.job.issuedAt.toISOString()).to.be.equals(
+    assert.ok(response.job);
+    assert.strictEqual(response.job.issuedAt.toISOString(),
       "2023-02-16T12:33:49.602Z"
     );
-    expect(response.job.availableAt?.toISOString()).to.be.undefined;
-    expect(response.apiRequest.error).to.deep.equal({});
+    assert.strictEqual(response.job.availableAt?.toISOString(), undefined);
+    assert.deepStrictEqual(response.apiRequest.error, {});
   });
 
   it("should parse a failed enqueue", async () => {
@@ -31,7 +31,9 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    expect(isValidAsyncResponse(cleanRequestData(httpResponse.data))).to.be.false;
+    assert.strictEqual(
+      isValidAsyncResponse(cleanRequestData(httpResponse.data)), false
+    );
   });
 
   it("should parse a failed job", async () => {
@@ -41,7 +43,9 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
     const httpResponse: StringDict = {
       data: JSON.parse(jsonData.toString()),
     };
-    expect(isValidAsyncResponse(cleanRequestData(httpResponse.data))).to.be.false;
+    assert.strictEqual(
+      isValidAsyncResponse(cleanRequestData(httpResponse.data)), false
+    );
   });
 
   it("should parse a job in progress", async () => {
@@ -52,12 +56,12 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
       data: JSON.parse(jsonData.toString()),
     };
     const response = new AsyncPredictResponse(InvoiceSplitterV1, httpResponse.data);
-    expect(response.job).to.not.be.undefined;
-    expect(response.job.issuedAt.toISOString()).to.be.equals(
+    assert.ok(response.job);
+    assert.strictEqual(response.job.issuedAt.toISOString(),
       "2023-03-16T12:33:49.602Z"
     );
-    expect(response.job.availableAt?.toISOString()).to.be.undefined;
-    expect(response.apiRequest.error).to.deep.equal({});
+    assert.strictEqual(response.job.availableAt?.toISOString(), undefined);
+    assert.deepStrictEqual(response.apiRequest.error, {});
   });
 
   it("should parse a completed job", async () => {
@@ -68,14 +72,14 @@ describe("MindeeV1 - Asynchronous API predict response", () => {
       data: JSON.parse(jsonData.toString()),
     };
     const response = new AsyncPredictResponse(InvoiceSplitterV1, httpResponse.data);
-    expect(response.job).to.not.be.undefined;
-    expect(response.job.issuedAt.toISOString()).to.be.equals(
+    assert.ok(response.job);
+    assert.strictEqual(response.job.issuedAt.toISOString(),
       "2023-03-21T13:52:56.326Z"
     );
-    expect(response.job.availableAt?.toISOString()).to.be.equals(
+    assert.strictEqual(response.job.availableAt?.toISOString(),
       "2023-03-21T13:53:00.990Z"
     );
-    expect(response.job.milliSecsTaken)?.to.equals(4664);
-    expect(response.apiRequest.error).to.deep.equal({});
+    assert.strictEqual(response.job.milliSecsTaken, 4664);
+    assert.deepStrictEqual(response.apiRequest.error, {});
   });
 });

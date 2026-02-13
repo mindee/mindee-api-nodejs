@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import path from "node:path";
 import { ClassificationResponse } from "@/v2/product/index.js";
 
@@ -13,6 +13,6 @@ describe("MindeeV2 - Classification Response", async () => {
       path.join(V2_PRODUCT_PATH, "classification", "classification_single.json")
     );
     const classification = response.inference.result.classification;
-    expect(classification.documentType).to.equal("invoice");
+    assert.strictEqual(classification.documentType, "invoice");
   });
 });

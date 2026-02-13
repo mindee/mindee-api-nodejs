@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 
 
@@ -18,20 +18,20 @@ describe("MindeeV1 - ReceiptV5 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.ReceiptV5, response.document);
     const docPrediction = doc.inference.prediction;
-    expect(docPrediction.locale.value).to.be.undefined;
-    expect(docPrediction.date.value).to.be.undefined;
-    expect(docPrediction.time.value).to.be.undefined;
-    expect(docPrediction.totalAmount.value).to.be.undefined;
-    expect(docPrediction.totalNet.value).to.be.undefined;
-    expect(docPrediction.totalTax.value).to.be.undefined;
-    expect(docPrediction.tip.value).to.be.undefined;
-    expect(docPrediction.taxes.length).to.be.equals(0);
-    expect(docPrediction.supplierName.value).to.be.undefined;
-    expect(docPrediction.supplierCompanyRegistrations.length).to.be.equals(0);
-    expect(docPrediction.supplierAddress.value).to.be.undefined;
-    expect(docPrediction.supplierPhoneNumber.value).to.be.undefined;
-    expect(docPrediction.receiptNumber.value).to.be.undefined;
-    expect(docPrediction.lineItems.length).to.be.equals(0);
+    assert.strictEqual(docPrediction.locale.value, undefined);
+    assert.strictEqual(docPrediction.date.value, undefined);
+    assert.strictEqual(docPrediction.time.value, undefined);
+    assert.strictEqual(docPrediction.totalAmount.value, undefined);
+    assert.strictEqual(docPrediction.totalNet.value, undefined);
+    assert.strictEqual(docPrediction.totalTax.value, undefined);
+    assert.strictEqual(docPrediction.tip.value, undefined);
+    assert.strictEqual(docPrediction.taxes.length, 0);
+    assert.strictEqual(docPrediction.supplierName.value, undefined);
+    assert.strictEqual(docPrediction.supplierCompanyRegistrations.length, 0);
+    assert.strictEqual(docPrediction.supplierAddress.value, undefined);
+    assert.strictEqual(docPrediction.supplierPhoneNumber.value, undefined);
+    assert.strictEqual(docPrediction.receiptNumber.value, undefined);
+    assert.strictEqual(docPrediction.lineItems.length, 0);
   });
 
   it("should load a complete document prediction", async () => {
@@ -39,6 +39,6 @@ describe("MindeeV1 - ReceiptV5 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.ReceiptV5, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
 });

@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as path from "path";
 import { Client } from "@/v1/index.js";
 import { MultiReceiptsDetectorV1, ReceiptV5 } from "@/v1/product/index.js";
@@ -33,43 +33,47 @@ describe("MindeeV1 - #includeOptionalDeps", () => {
 
     it("should send to the server and cut properly", async () => {
       const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
-      expect(multiReceiptResult.document?.inference.prediction.receipts.length).to.be.equals(5);
+      assert.strictEqual(multiReceiptResult.document?.inference.prediction.receipts.length, 5);
       const extractedReceipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
-      expect(extractedReceipts.length).to.be.equals(5);
-      expect(multiReceiptResult.document?.inference.pages[0].orientation?.value).to.be.equals(0);
-      expect(multiReceiptResult.document?.inference.pages[1].orientation?.value).to.be.equals(0);
+      assert.strictEqual(extractedReceipts.length, 5);
+      assert.strictEqual(multiReceiptResult.document?.inference.pages[0].orientation?.value, 0);
+      assert.strictEqual(multiReceiptResult.document?.inference.pages[1].orientation?.value, 0);
       const receiptsResults = [];
       for (const extractedReceipt of extractedReceipts) {
         const localInput = extractedReceipt.asSource();
         receiptsResults.push(await client.parse(ReceiptV5, localInput));
         await setTimeout(1000);
       }
-      expect(receiptsResults[0].document.inference.prediction.lineItems.length).to.be.equals(5);
-      expect(receiptsResults[0].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(70);
-      expect(receiptsResults[0].document.inference.prediction.lineItems[1].totalAmount).to.be.equals(12);
-      expect(receiptsResults[0].document.inference.prediction.lineItems[2].totalAmount).to.be.equals(14);
-      expect(receiptsResults[0].document.inference.prediction.lineItems[3].totalAmount).to.be.equals(11);
-      expect(receiptsResults[0].document.inference.prediction.lineItems[4].totalAmount).to.be.equals(5.6);
+      const firstPrediction = receiptsResults[0].document.inference.prediction;
+      assert.strictEqual(firstPrediction.lineItems.length, 5);
+      assert.strictEqual(firstPrediction.lineItems[0].totalAmount, 70);
+      assert.strictEqual(firstPrediction.lineItems[1].totalAmount, 12);
+      assert.strictEqual(firstPrediction.lineItems[2].totalAmount, 14);
+      assert.strictEqual(firstPrediction.lineItems[3].totalAmount, 11);
+      assert.strictEqual(firstPrediction.lineItems[4].totalAmount, 5.6);
 
-      expect(receiptsResults[1].document.inference.prediction.lineItems.length).to.be.equals(7);
-      expect(receiptsResults[1].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(6);
-      expect(receiptsResults[1].document.inference.prediction.lineItems[1].totalAmount).to.be.equals(11);
-      expect(receiptsResults[1].document.inference.prediction.lineItems[2].totalAmount).to.be.equals(67.2);
-      expect(receiptsResults[1].document.inference.prediction.lineItems[3].totalAmount).to.be.equals(19.2);
-      expect(receiptsResults[1].document.inference.prediction.lineItems[4].totalAmount).to.be.equals(7);
-      expect(receiptsResults[1].document.inference.prediction.lineItems[5].totalAmount).to.be.equals(5.5);
-      expect(receiptsResults[1].document.inference.prediction.lineItems[6].totalAmount).to.be.equals(36);
+      const secondPrediction = receiptsResults[1].document.inference.prediction;
+      assert.strictEqual(secondPrediction.lineItems.length, 7);
+      assert.strictEqual(secondPrediction.lineItems[0].totalAmount, 6);
+      assert.strictEqual(secondPrediction.lineItems[1].totalAmount, 11);
+      assert.strictEqual(secondPrediction.lineItems[2].totalAmount, 67.2);
+      assert.strictEqual(secondPrediction.lineItems[3].totalAmount, 19.2);
+      assert.strictEqual(secondPrediction.lineItems[4].totalAmount, 7);
+      assert.strictEqual(secondPrediction.lineItems[5].totalAmount, 5.5);
+      assert.strictEqual(secondPrediction.lineItems[6].totalAmount, 36);
 
-      expect(receiptsResults[2].document.inference.prediction.lineItems.length).to.be.equals(1);
-      expect(receiptsResults[2].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(275);
+      const thirdPrediction = receiptsResults[2].document.inference.prediction;
+      assert.strictEqual(thirdPrediction.lineItems.length, 1);
+      assert.strictEqual(thirdPrediction.lineItems[0].totalAmount, 275);
 
-      expect(receiptsResults[3].document.inference.prediction.lineItems.length).to.be.equals(2);
-      expect(receiptsResults[3].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(11.5);
-      expect(receiptsResults[3].document.inference.prediction.lineItems[1].totalAmount).to.be.equals(2);
+      const fourthPrediction = receiptsResults[3].document.inference.prediction;
+      assert.strictEqual(fourthPrediction.lineItems.length, 2);
+      assert.strictEqual(fourthPrediction.lineItems[0].totalAmount, 11.5);
+      assert.strictEqual(fourthPrediction.lineItems[1].totalAmount, 2);
 
-      expect(receiptsResults[4].document.inference.prediction.lineItems.length).to.be.equals(1);
-      expect(receiptsResults[4].document.inference.prediction.lineItems[0].totalAmount).to.be.equals(16.5);
-
+      const fifthPrediction = receiptsResults[4].document.inference.prediction;
+      assert.strictEqual(fifthPrediction.lineItems.length, 1);
+      assert.strictEqual(fifthPrediction.lineItems[0].totalAmount, 16.5);
 
     }).timeout(60000);
   });
@@ -86,14 +90,14 @@ describe("MindeeV1 - #includeOptionalDeps", () => {
 
     it("should send to the server and cut properly", async () => {
       const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
-      expect(multiReceiptResult.document?.inference.prediction.receipts.length).to.be.equals(1);
+      assert.strictEqual(multiReceiptResult.document?.inference.prediction.receipts.length, 1);
       const receipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
-      expect(receipts.length).to.be.equals(1);
+      assert.strictEqual(receipts.length, 1);
       const receiptResult = await client.parse(ReceiptV5, receipts[0].asSource());
-      expect(receiptResult.document.inference.prediction.lineItems.length).to.be.equals(1);
-      expect(receiptResult.document.inference.prediction.lineItems[0].totalAmount).to.be.equals(10.2);
-      expect(receiptResult.document.inference.prediction.taxes.length).to.be.equals(1);
-      expect(receiptResult.document.inference.prediction.taxes[0].value).to.be.equals(1.7);
+      assert.strictEqual(receiptResult.document.inference.prediction.lineItems.length, 1);
+      assert.strictEqual(receiptResult.document.inference.prediction.lineItems[0].totalAmount, 10.2);
+      assert.strictEqual(receiptResult.document.inference.prediction.taxes.length, 1);
+      assert.strictEqual(receiptResult.document.inference.prediction.taxes[0].value, 1.7);
     }).timeout(60000);
   });
 });

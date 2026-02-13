@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { split } from "@/v2/product/index.js";
 
 describe("MindeeV2 - Split Parameter", () => {
@@ -10,8 +10,8 @@ describe("MindeeV2 - Split Parameter", () => {
       const paramsInstance = new split.SplitParameters({
         modelId: modelIdValue,
       });
-      expect(paramsInstance.modelId).to.equal(modelIdValue);
-      expect(paramsInstance.getValidatedPollingOptions()).to.deep.equal({
+      assert.strictEqual(paramsInstance.modelId, modelIdValue);
+      assert.deepStrictEqual(paramsInstance.getValidatedPollingOptions(), {
         delaySec: 1.5,
         initialDelaySec: 2,
         maxRetries: 80
@@ -27,9 +27,9 @@ describe("MindeeV2 - Split Parameter", () => {
         // @ts-expect-error - rag is not a valid option
         rag: true,
       });
-      expect(paramsInstance.modelId).to.equal(modelIdValue);
+      assert.strictEqual(paramsInstance.modelId, modelIdValue);
       // @ts-expect-error - rag is not a valid option
-      expect(paramsInstance.rag).to.be.undefined;
+      assert.strictEqual(paramsInstance.rag, undefined);
     });
   });
 

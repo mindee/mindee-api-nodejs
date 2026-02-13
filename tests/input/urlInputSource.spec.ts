@@ -1,6 +1,6 @@
 import { BytesInput, UrlInput } from "@/index.js";
 import { LocalInputSource } from "@/input/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { MockAgent, setGlobalDispatcher } from "undici";
 
 const mockAgent = new MockAgent();
@@ -15,7 +15,7 @@ describe("Input Sources - URL input source", () => {
         dispatcher: mockAgent,
       });
       await input.init();
-      expect(input.fileObject).to.be.a("string");
+      assert.strictEqual(typeof input.fileObject, "string");
     });
 
     it("should throw an error for non-HTTPS URL", async () => {
@@ -24,10 +24,10 @@ describe("Input Sources - URL input source", () => {
 
       try {
         await urlSource.init();
-        expect.fail("Expected an error to be thrown");
+        assert.fail("Expected an error to be thrown");
       } catch (error) {
-        expect(error).to.be.instanceOf(Error);
-        expect((error as Error).message).to.equal("URL must be HTTPS");
+        assert.ok(error instanceof Error);
+        assert.strictEqual((error as Error).message, "URL must be HTTPS");
       }
     });
 
@@ -47,9 +47,9 @@ describe("Input Sources - URL input source", () => {
         const localInput = await urlInput.asLocalInputSource();
         await localInput.init();
 
-        expect(localInput).to.be.instanceOf(BytesInput);
-        expect(localInput.filename).to.equal("file.pdf");
-        expect(localInput.fileObject.toString()).to.eq(fileContent.toString());
+        assert.ok(localInput instanceof BytesInput);
+        assert.strictEqual(localInput.filename, "file.pdf");
+        assert.strictEqual(localInput.fileObject.toString(), fileContent.toString());
       });
 
       it("should handle redirects", async () => {
@@ -75,9 +75,9 @@ describe("Input Sources - URL input source", () => {
         const localInput = await urlInput.asLocalInputSource();
         await localInput.init();
 
-        expect(localInput).to.be.instanceOf(LocalInputSource);
-        expect(localInput.filename).to.equal("redirected.pdf");
-        expect(localInput.fileObject).to.deep.equal(fileContent);
+        assert.ok(localInput instanceof LocalInputSource);
+        assert.strictEqual(localInput.filename, "redirected.pdf");
+        assert.deepStrictEqual(localInput.fileObject, fileContent);
       });
 
       it("should throw an error for HTTP error responses", async () => {
@@ -91,10 +91,13 @@ describe("Input Sources - URL input source", () => {
 
         try {
           await urlInput.asLocalInputSource();
-          expect.fail("Expected an error to be thrown");
+          assert.fail("Expected an error to be thrown");
         } catch (error) {
-          expect(error).to.be.instanceOf(Error);
-          expect((error as Error).message).to.equal("Couldn't retrieve file from server, error code 404.");
+          assert.ok(error instanceof Error);
+          assert.strictEqual(
+            (error as Error).message,
+            "Couldn't retrieve file from server, error code 404."
+          );
         }
       });
 
@@ -110,7 +113,7 @@ describe("Input Sources - URL input source", () => {
         const localInput = await urlInput.asLocalInputSource({ filename: "custom.pdf" });
         await localInput.init();
 
-        expect(localInput.filename).to.equal("custom.pdf");
+        assert.strictEqual(localInput.filename, "custom.pdf");
       });
 
       it("should throw an error for invalid filename", async () => {
@@ -124,10 +127,11 @@ describe("Input Sources - URL input source", () => {
         try {
           const localInput = await urlInput.asLocalInputSource({ filename: "invalid" });
           await localInput.init();
-          expect.fail("Expected an error to be thrown");
+          assert.fail("Expected an error to be thrown");
         } catch (error) {
-          expect(error).to.be.instanceOf(Error);
-          expect((error as Error).message).to.equal(
+          assert.ok(error instanceof Error);
+          assert.strictEqual(
+            (error as Error).message,
             "Invalid file type, must be one of .pdf, .heic, .jpg, .jpeg, .png, .tif, .tiff, .webp."
           );
         }

@@ -1,13 +1,13 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { GeneratedObjectField } from "@/v1/parsing/generated/index.js";
 
 describe("Generated Object Field", async () => {
   it("should properly format booleans.", async () => {
     const dummyValue = { value: false, toto: true, hello: "false", other: "true" };
     const genObjectField = new GeneratedObjectField({ prediction: dummyValue });
-    expect(genObjectField.toto).to.be.true;
-    expect(genObjectField.hello).to.be.equals("false");
-    expect(genObjectField.other).to.be.equals("true");
-    expect(genObjectField.value).to.be.false;
+    assert.ok(genObjectField.toto);
+    assert.strictEqual(genObjectField.hello, "false");
+    assert.strictEqual(genObjectField.other, "true");
+    assert.strictEqual(genObjectField.value, false);
   });
 });

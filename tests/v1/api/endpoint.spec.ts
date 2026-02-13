@@ -1,6 +1,5 @@
 import * as fs from "node:fs";
 import * as path from "path";
-import { expect } from "chai";
 import { MockAgent, setGlobalDispatcher } from "undici";
 import { PathInput } from "@/index.js";
 import { Client, product } from "@/v1/index.js";
@@ -47,10 +46,10 @@ describe("MindeeV1 - HTTP calls", () => {
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
-        expect(error).to.be.instanceOf(MindeeHttp400Error);
-        expect(error.code).to.be.equals(400);
-        expect(error.message).to.be.undefined;
-        expect(error.details).to.deep.equal({ document: ["error message"] });
+        assert.ok(error instanceof MindeeHttp400Error);
+        assert.strictEqual(error.code, 400);
+        assert.strictEqual(error.message, undefined);
+        assert.deepStrictEqual(error.details, { document: ["error message"] });
         return true;
       });
   });
@@ -61,10 +60,10 @@ describe("MindeeV1 - HTTP calls", () => {
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
-        expect(error).to.be.instanceOf(MindeeHttp401Error);
-        expect(error.code).to.be.equals(401);
-        expect(error.message).to.be.equals("Authorization required");
-        expect(error.details).to.be.equals("No token provided");
+        assert.ok(error instanceof MindeeHttp401Error);
+        assert.strictEqual(error.code, 401);
+        assert.strictEqual(error.message, "Authorization required");
+        assert.strictEqual(error.details, "No token provided");
         return true;
       });
   });
@@ -75,10 +74,10 @@ describe("MindeeV1 - HTTP calls", () => {
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
-        expect(error).to.be.instanceOf(MindeeHttp429Error);
-        expect(error.code).to.be.equals(429);
-        expect(error.message).to.be.equals("Too many requests");
-        expect(error.details).to.be.equals("Too Many Requests.");
+        assert.ok(error instanceof MindeeHttp429Error);
+        assert.strictEqual(error.code, 429);
+        assert.strictEqual(error.message, "Too many requests");
+        assert.strictEqual(error.details, "Too Many Requests.");
         return true;
       });
   });
@@ -89,10 +88,10 @@ describe("MindeeV1 - HTTP calls", () => {
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
-        expect(error).to.be.instanceOf(MindeeHttp500Error);
-        expect(error.code).to.be.equals(500);
-        expect(error.message).to.be.equals("Inference failed");
-        expect(error.details).to.be.equals("Can not run prediction: ");
+        assert.ok(error instanceof MindeeHttp500Error);
+        assert.strictEqual(error.code, 500);
+        assert.strictEqual(error.message, "Inference failed");
+        assert.strictEqual(error.details, "Can not run prediction: ");
         return true;
       });
   });
@@ -103,8 +102,8 @@ describe("MindeeV1 - HTTP calls", () => {
     await assert.rejects(
       client.parse(product.InvoiceV4, doc),
       (error: any) => {
-        expect(error).to.be.instanceOf(MindeeHttp500Error);
-        expect(error.code).to.be.equals(500);
+        assert.ok(error instanceof MindeeHttp500Error);
+        assert.strictEqual(error.code, 500);
         return true;
       });
   });
@@ -117,10 +116,10 @@ describe ("Endpoint parameters" , () => {
       "dummy-endpoint",
       "dummy-account"
     );
-    expect(customEndpoint.version).to.equal("1");
-    expect(customEndpoint.settings.timeout).to.equal(120);
-    expect(customEndpoint.settings.hostname).to.equal("api.mindee.net");
-    expect(customEndpoint.settings.apiKey).to.equal("dummy-api-key");
+    assert.strictEqual(customEndpoint.version, "1");
+    assert.strictEqual(customEndpoint.settings.timeout, 120);
+    assert.strictEqual(customEndpoint.settings.hostname, "api.mindee.net");
+    assert.strictEqual(customEndpoint.settings.apiKey, "dummy-api-key");
   });
 
   it ("should initialize environment parameters properly", async () => {
@@ -133,10 +132,10 @@ describe ("Endpoint parameters" , () => {
       "dummy-endpoint",
       "dummy-account"
     );
-    expect(customEndpoint.version).to.equal("1");
-    expect(customEndpoint.settings.timeout).to.equal(30);
-    expect(customEndpoint.settings.hostname).to.equal("v1-endpoint-host");
-    expect(customEndpoint.settings.apiKey).to.equal("dummy-key");
+    assert.strictEqual(customEndpoint.version, "1");
+    assert.strictEqual(customEndpoint.settings.timeout, 30);
+    assert.strictEqual(customEndpoint.settings.hostname, "v1-endpoint-host");
+    assert.strictEqual(customEndpoint.settings.apiKey, "dummy-key");
 
     delete process.env.MINDEE_API_HOST;
     delete process.env.MINDEE_API_KEY;

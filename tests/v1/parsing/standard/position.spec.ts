@@ -1,9 +1,10 @@
 import { PositionField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 
 describe("Test Position field", () => {
   it("Should create a Position field", () => {
     const prediction = {
+      /* eslint-disable-next-line @typescript-eslint/naming-convention,camelcase */
       bounding_box: [
         [0, 0],
         [1, 0],
@@ -50,8 +51,8 @@ describe("Test Position field", () => {
       ],
     };
     const field = new PositionField({ prediction, pageId: 0 });
-    expect(field.boundingBox.length).to.be.equal(4);
-    expect(field.polygon.length).to.be.equal(24);
-    expect(field.toString()).to.be.equal("Polygon with 24 points.");
+    assert.strictEqual(field.boundingBox.length, 4);
+    assert.strictEqual(field.polygon.length, 24);
+    assert.strictEqual(field.toString(), "Polygon with 24 points.");
   });
 });

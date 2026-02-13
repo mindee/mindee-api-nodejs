@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 
 
@@ -18,17 +18,17 @@ describe("MindeeV1 - PassportV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.PassportV1, response.document);
     const docPrediction = doc.inference.prediction;
-    expect(docPrediction.country.value).to.be.undefined;
-    expect(docPrediction.idNumber.value).to.be.undefined;
-    expect(docPrediction.givenNames.length).to.be.equals(0);
-    expect(docPrediction.surname.value).to.be.undefined;
-    expect(docPrediction.birthDate.value).to.be.undefined;
-    expect(docPrediction.birthPlace.value).to.be.undefined;
-    expect(docPrediction.gender.value).to.be.undefined;
-    expect(docPrediction.issuanceDate.value).to.be.undefined;
-    expect(docPrediction.expiryDate.value).to.be.undefined;
-    expect(docPrediction.mrz1.value).to.be.undefined;
-    expect(docPrediction.mrz2.value).to.be.undefined;
+    assert.strictEqual(docPrediction.country.value, undefined);
+    assert.strictEqual(docPrediction.idNumber.value, undefined);
+    assert.strictEqual(docPrediction.givenNames.length, 0);
+    assert.strictEqual(docPrediction.surname.value, undefined);
+    assert.strictEqual(docPrediction.birthDate.value, undefined);
+    assert.strictEqual(docPrediction.birthPlace.value, undefined);
+    assert.strictEqual(docPrediction.gender.value, undefined);
+    assert.strictEqual(docPrediction.issuanceDate.value, undefined);
+    assert.strictEqual(docPrediction.expiryDate.value, undefined);
+    assert.strictEqual(docPrediction.mrz1.value, undefined);
+    assert.strictEqual(docPrediction.mrz2.value, undefined);
   });
 
   it("should load a complete document prediction", async () => {
@@ -36,6 +36,6 @@ describe("MindeeV1 - PassportV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.PassportV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
 });

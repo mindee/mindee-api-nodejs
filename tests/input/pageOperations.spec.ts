@@ -5,7 +5,7 @@ import {
 } from "@/input/index.js";
 import * as fs from "fs";
 import * as path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { RESOURCE_PATH } from "../index.js";
 
 describe("Input Sources - high level multi-page operations #includeOptionalDeps", () => {
@@ -18,9 +18,9 @@ describe("Input Sources - high level multi-page operations #includeOptionalDeps"
       pageIndexes: [0, -2, -1],
       onMinPages: 5,
     });
-    expect(input.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(input.filename).to.equals("multipage.pdf");
-    expect(input.mimeType).to.equals("application/pdf");
+    assert.strictEqual(input.inputType, INPUT_TYPE_PATH);
+    assert.strictEqual(input.filename, "multipage.pdf");
+    assert.strictEqual(input.mimeType, "application/pdf");
 
     // This is how the length of the word is set in the
     // raw PDF file.
@@ -34,7 +34,7 @@ describe("Input Sources - high level multi-page operations #includeOptionalDeps"
     const expectedLengths = expectedResult.match(lengthRE);
     const inputDocLengths =
       input.fileObject.toString("utf-8").match(lengthRE) || [];
-    expect(expectedLengths).to.have.ordered.members(inputDocLengths);
+    assert.deepStrictEqual(inputDocLengths, expectedLengths);
   });
 
   it("should not cut the PDF", async () => {
@@ -44,9 +44,9 @@ describe("Input Sources - high level multi-page operations #includeOptionalDeps"
     });
     await input.init();
     const expectedResult = await fs.promises.readFile(filePath);
-    expect(input.inputType).to.equals(INPUT_TYPE_PATH);
-    expect(input.filename).to.equals("multipage.pdf");
-    expect(input.mimeType).to.equals("application/pdf");
-    expect(input.fileObject).to.eql(expectedResult);
+    assert.strictEqual(input.inputType, INPUT_TYPE_PATH);
+    assert.strictEqual(input.filename, "multipage.pdf");
+    assert.strictEqual(input.mimeType, "application/pdf");
+    assert.deepStrictEqual(input.fileObject, expectedResult);
   });
 });

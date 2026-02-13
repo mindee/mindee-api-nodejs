@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import path from "node:path";
 import { ocr } from "@/v2/product/index.js";
 import { Polygon } from "@/geometry/index.js";
@@ -14,33 +14,34 @@ describe("MindeeV2 - OCR Response", async () => {
       path.join(V2_PRODUCT_PATH, "ocr", "ocr_single.json")
     );
     // Validate inference metadata
-    expect(response.inference.id).to.equal("12345678-1234-1234-1234-123456789abc");
-    expect(response.inference.model.id).to.equal("test-model-id");
+    assert.strictEqual(response.inference.id, "12345678-1234-1234-1234-123456789abc");
+    assert.strictEqual(response.inference.model.id, "test-model-id");
 
     // Validate file metadata
-    expect(response.inference.file.name).to.equal("default_sample.jpg");
-    expect(response.inference.file.pageCount).to.equal(1);
-    expect(response.inference.file.mimeType).to.equal("image/jpeg");
+    assert.strictEqual(response.inference.file.name, "default_sample.jpg");
+    assert.strictEqual(response.inference.file.pageCount, 1);
+    assert.strictEqual(response.inference.file.mimeType, "image/jpeg");
 
     // Validate pages
     const pages: ocr.OcrPage[] = response.inference.result.pages;
-    expect(pages).to.be.an("array").that.has.lengthOf(1);
+    assert.ok(Array.isArray(pages));
+    assert.strictEqual(pages.length, 1);
 
     // Validate first page
     const firstPage: ocr.OcrPage = pages[0];
-    expect(firstPage.words).to.be.an("array");
+    assert.ok(Array.isArray(firstPage.words));
 
     // Check first word
     const firstWord: ocr.OcrWord = firstPage.words[0];
-    expect(firstWord.content).to.equal("Shipper:");
+    assert.strictEqual(firstWord.content, "Shipper:");
     const firstPolygon: Polygon = firstWord.polygon;
-    expect(firstPolygon.length).to.equal(4);
+    assert.strictEqual(firstPolygon.length, 4);
 
     // Check another word (5th word: "INC.")
     const fifthWord: ocr.OcrWord = firstPage.words[4];
-    expect(fifthWord.content).to.equal("INC.");
+    assert.strictEqual(fifthWord.content, "INC.");
     const fifthPolygon: Polygon = fifthWord.polygon;
-    expect(fifthPolygon.length).to.equal(4);
+    assert.strictEqual(fifthPolygon.length, 4);
   });
 
   it("should load multiple results", async () => {
@@ -49,12 +50,13 @@ describe("MindeeV2 - OCR Response", async () => {
       path.join(V2_PRODUCT_PATH, "ocr", "ocr_multiple.json")
     );
     const pages: ocr.OcrPage[] = response.inference.result.pages;
-    expect(pages).to.be.an("array").that.has.lengthOf(3);
+    assert.ok(Array.isArray(pages));
+    assert.strictEqual(pages.length, 3);
 
     // Validate that each page has words and content
     pages.forEach((page: ocr.OcrPage): void => {
-      expect(page.words).to.be.an("array");
-      expect(page.content).to.be.a("string");
+      assert.ok(Array.isArray(page.words));
+      assert.strictEqual(typeof page.content, "string");
     });
   });
 });

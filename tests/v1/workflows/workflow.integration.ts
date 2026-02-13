@@ -1,6 +1,6 @@
 import * as mindee from "@/index.js";
 import { ExecutionPriority } from "@/v1/parsing/common/index.js";
-import { expect } from "chai";
+import assert from "node:assert";
 import { LocalInputSource } from "@/input/index.js";
 import { OptionalAsyncOptions } from "@/v1/index.js";
 import { FinancialDocumentV1 } from "@/v1/product/index.js";
@@ -23,13 +23,16 @@ describe("MindeeV1 - Workflow calls", () => {
   });
 
   it("should retrieve a correct response from the API.", async () => {
-    const currentDateTime = new Date().toISOString().replace(/T/, "-").replace(/\..+/, "");
+    const currentDateTime = new Date()
+      .toISOString()
+      .replace(/T/, "-")
+      .replace(/\..+/, "");
     const response = await client.executeWorkflow(
       sample,
       workflowId,
       { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low, rag: true });
-    expect(response.execution.priority).to.equal(ExecutionPriority.low);
-    expect(response.execution.file.alias).to.equal(`node-${currentDateTime}`);
+    assert.strictEqual(response.execution.priority, ExecutionPriority.low);
+    assert.strictEqual(response.execution.file.alias, `node-${currentDateTime}`);
   }).timeout(60000);
 
   it("should poll with RAG disabled", async () => {
@@ -41,8 +44,8 @@ describe("MindeeV1 - Workflow calls", () => {
       sample,
       asyncParams
     );
-    expect(response.document?.toString()).to.not.be.empty;
-    expect(response.document?.inference.extras?.rag).to.be.undefined;
+    assert.ok(response.document?.toString());
+    assert.strictEqual(response.document?.inference.extras?.rag, undefined);
   }).timeout(60000);
 
   it("should poll with RAG disabled and OCR words", async () => {
@@ -55,10 +58,10 @@ describe("MindeeV1 - Workflow calls", () => {
       sample,
       asyncParams
     );
-    expect(response.document?.toString()).to.not.be.empty;
-    expect(response.document?.inference.extras?.rag).to.be.undefined;
-    expect(response.document?.ocr).to.exist;
-    expect(response.document?.ocr?.toString()).to.not.be.empty;
+    assert.ok(response.document?.toString());
+    assert.strictEqual(response.document?.inference.extras?.rag, undefined);
+    assert.ok(response.document?.ocr);
+    assert.ok(response.document?.ocr?.toString());
   }).timeout(60000);
 
   it("should poll with RAG enabled", async () => {
@@ -72,8 +75,8 @@ describe("MindeeV1 - Workflow calls", () => {
       asyncParams
     );
 
-    expect(response.document?.toString()).to.not.be.empty;
-    expect(((response.document?.inference.extras?.rag) as RAGExtra).matchingDocumentId).to.not.be.empty;
+    assert.ok(response.document?.toString());
+    assert.ok(((response.document?.inference.extras?.rag) as RAGExtra).matchingDocumentId);
   }).timeout(60000);
 
   it("should poll with RAG enabled and OCR words", async () => {
@@ -87,9 +90,9 @@ describe("MindeeV1 - Workflow calls", () => {
       sample,
       asyncParams
     );
-    expect(response.document?.toString()).to.not.be.empty;
-    expect(((response.document?.inference.extras?.rag) as RAGExtra).matchingDocumentId).to.not.be.empty;
-    expect(response.document?.ocr).to.exist;
-    expect(response.document?.ocr?.toString()).to.not.be.empty;
+    assert.ok(response.document?.toString());
+    assert.ok(((response.document?.inference.extras?.rag) as RAGExtra).matchingDocumentId);
+    assert.ok(response.document?.ocr);
+    assert.ok(response.document?.ocr?.toString());
   }).timeout(60000);
 });

@@ -1,7 +1,7 @@
 import { promises as fs } from "fs";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../../../index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 
 const dataPath = {
@@ -17,9 +17,9 @@ describe("MindeeV1 - BankAccountDetailsV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.fr.BankAccountDetailsV1, response.document);
     const docPrediction = doc.inference.prediction;
-    expect(docPrediction.iban.value).to.be.undefined;
-    expect(docPrediction.accountHolderName.value).to.be.undefined;
-    expect(docPrediction.swift.value).to.be.undefined;
+    assert.strictEqual(docPrediction.iban.value, undefined);
+    assert.strictEqual(docPrediction.accountHolderName.value, undefined);
+    assert.strictEqual(docPrediction.swift.value, undefined);
   });
 
   it("should load a complete document prediction", async () => {
@@ -27,6 +27,6 @@ describe("MindeeV1 - BankAccountDetailsV1 Object initialization", async () => {
     const response = JSON.parse(jsonData.toString());
     const doc = new mindee.v1.Document(mindee.v1.product.fr.BankAccountDetailsV1, response.document);
     const docString = await fs.readFile(path.join(dataPath.docString));
-    expect(doc.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.toString(), docString.toString());
   });
 });

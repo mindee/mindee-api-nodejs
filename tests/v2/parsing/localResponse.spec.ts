@@ -1,5 +1,5 @@
 import * as fs from "node:fs/promises";
-import { expect } from "chai";
+import assert from "node:assert";
 import { LocalResponse } from "@/v2/index.js";
 
 import path from "path";
@@ -13,13 +13,13 @@ const filePath: string = path.join(V2_PRODUCT_PATH, "extraction/standard_field_t
 
 async function assertLocalResponse(localResponse: LocalResponse) {
   await localResponse.init();
-  expect(localResponse.asDict()).to.not.be.null;
-  expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
-  expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
-  expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+  assert.notStrictEqual(localResponse.asDict(), null);
+  assert.strictEqual(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature"), false);
+  assert.strictEqual(localResponse.getHmacSignature(dummySecretKey), signature);
+  assert.ok(localResponse.isValidHmacSignature(dummySecretKey, signature));
   const inferenceResponse = await localResponse.deserializeResponse(ExtractionResponse);
-  expect(inferenceResponse).to.be.an.instanceof(ExtractionResponse);
-  expect(inferenceResponse.inference).to.not.be.null;
+  assert.ok(inferenceResponse instanceof ExtractionResponse);
+  assert.notStrictEqual(inferenceResponse.inference, null);
 }
 
 describe("MindeeV2 - Load Local Response", () => {
@@ -42,9 +42,9 @@ describe("MindeeV2 - Load Local Response", () => {
     const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
     const response = await localResponse.deserializeResponse(ExtractionResponse);
-    expect(response).to.be.an.instanceof(ExtractionResponse);
+    assert.ok(response instanceof ExtractionResponse);
 
-    expect(JSON.stringify(response.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
+    assert.strictEqual(JSON.stringify(response.getRawHttp()), JSON.stringify(JSON.parse(fileObj)));
   });
 
   it("loading an inference works on catalog model", async () => {
@@ -56,8 +56,6 @@ describe("MindeeV2 - Load Local Response", () => {
     );
     const localResponse = new LocalResponse(jsonPath);
     const response: ExtractionResponse = await localResponse.deserializeResponse(ExtractionResponse);
-    expect(response.inference.model.id).to.equal(
-      "12345678-1234-1234-1234-123456789abc"
-    );
+    assert.strictEqual(response.inference.model.id, "12345678-1234-1234-1234-123456789abc");
   });
 });

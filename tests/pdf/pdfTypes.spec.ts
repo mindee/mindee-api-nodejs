@@ -1,5 +1,5 @@
 import path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import * as pdf from "@/pdf/index.js";
 import { PageOptions } from "@/input/index.js";
 import { PageOptionsOperation, PathInput } from "@/index.js";
@@ -12,7 +12,7 @@ describe("Test pdf lib #includeOptionalDeps", () => {
       { inputPath: path.join(RESOURCE_PATH, "file_types/pdf/XfaForm.pdf") }
     );
     await inputDoc.init();
-    expect(await pdf.countPages(inputDoc.fileObject)).to.eq(1);
+    assert.strictEqual(await pdf.countPages(inputDoc.fileObject), 1);
   });
 
   it("should open an encrypted XFA form PDF.", async () => {
@@ -20,7 +20,7 @@ describe("Test pdf lib #includeOptionalDeps", () => {
       { inputPath: path.join(RESOURCE_PATH, "file_types/pdf/XfaForm_15p_encrypted.pdf") }
     );
     await inputDoc.init();
-    expect(await pdf.countPages(inputDoc.fileObject)).to.eq(15);
+    assert.strictEqual(await pdf.countPages(inputDoc.fileObject), 15);
   });
 
 
@@ -36,7 +36,7 @@ describe("Test pdf lib #includeOptionalDeps", () => {
       onMinPages: 1,
     };
     const splitPdf = await pdf.extractPages(inputDoc.fileObject, pageOptions);
-    expect(splitPdf.totalPagesRemoved).to.eq(13);
-    expect(await pdf.countPages(splitPdf.file)).to.eq(2);
+    assert.strictEqual(splitPdf.totalPagesRemoved, 13);
+    assert.strictEqual(await pdf.countPages(splitPdf.file), 2);
   });
 });
