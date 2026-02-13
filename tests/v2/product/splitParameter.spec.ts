@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { split } from "@/v2/product/index.js";
 
 describe("MindeeV2 - Split Parameter", () => {

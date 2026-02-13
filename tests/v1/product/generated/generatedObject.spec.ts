@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { GeneratedObjectField } from "@/v1/parsing/generated/index.js";
 
 describe("Generated Object Field", async () => {

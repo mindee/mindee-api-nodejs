@@ -1,5 +1,6 @@
+import path from "path";
 import assert from "node:assert/strict";
-import path from "node:path";
+import { describe, it } from "node:test";
 import { split } from "@/v2/product/index.js";
 
 import { V2_PRODUCT_PATH } from "../../index.js";

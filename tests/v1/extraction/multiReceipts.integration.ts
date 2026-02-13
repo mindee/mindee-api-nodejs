@@ -10,8 +10,8 @@ import { setTimeout } from "node:timers/promises";
 const apiKey = process.env.MINDEE_API_KEY;
 let client: Client;
 let sourceDoc: LocalInputSource;
-describe("MindeeV1 - #includeOptionalDeps", () => {
-  describe("MindeeV1 - A Multi-Receipt Image", () => {
+describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired", () => {
+  describe("A Multi-Receipt Image", () => {
     before(async () => {
       sourceDoc = new PathInput({
         inputPath: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/default_sample.jpg"),
@@ -21,8 +21,7 @@ describe("MindeeV1 - #includeOptionalDeps", () => {
     });
   });
 
-
-  describe("MindeeV1 - A Multi-Receipt Document", () => {
+  describe("A Multi-Receipt PDF", () => {
     before(async () => {
       sourceDoc = new PathInput({
         inputPath: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
@@ -79,7 +78,7 @@ describe("MindeeV1 - #includeOptionalDeps", () => {
   });
 
 
-  describe("MindeeV1 - A Single-Receipt Image", () => {
+  describe("A Single-Receipt Image", () => {
     before(async () => {
       sourceDoc = new PathInput({
         inputPath: path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg"),

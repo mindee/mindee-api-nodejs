@@ -1,5 +1,6 @@
+import path from "path";
 import assert from "node:assert/strict";
-import path from "node:path";
+import { describe, it } from "node:test";
 import { Polygon } from "@/geometry/index.js";
 import { crop } from "@/v2/product/index.js";
 

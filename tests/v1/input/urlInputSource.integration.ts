@@ -3,7 +3,7 @@ import { UrlInput } from "@/index.js";
 import { Client } from "@/v1/index.js";
 import { InvoiceV4 } from "@/v1/product/index.js";
 
-describe("MindeeV1 - URL Input Integration Test", async () => {
+describe("MindeeV1 - Integration - URL Input", async () => {
   it("should retrieve and parse a remote file with redirection", async () => {
     const apiKey = process.env.MINDEE_API_KEY;
     if (!apiKey) {

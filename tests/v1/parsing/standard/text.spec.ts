@@ -1,6 +1,7 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { StringField } from "@/v1/parsing/standard/index.js";
 import { BoundingBox } from "@/geometry/index.js";
-import assert from "node:assert/strict";
 
 describe("Test String field", () => {
   it("Should create a String field", () => {

@@ -1,16 +1,15 @@
-import {
-  PathInput,
-} from "@/input/index.js";
+import { after, before, describe, it } from "node:test";
 import * as fs from "fs";
 import * as path from "path";
 import assert from "node:assert/strict";
+import { PathInput } from "@/input/index.js";
 import { compressImage } from "@/image/index.js";
 import { compressPdf } from "@/pdf/index.js";
 import { extractTextFromPdf } from "@/pdf/pdfUtils.js";
 import { logger } from "@/logger.js";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
 
-describe("Input Sources - compression and resize #includeOptionalDeps", () => {
+describe("Input Sources - compression and resize #OptionalDepsRequired", () => {
   const outputPath = path.join(RESOURCE_PATH, "output");
 
   before(async () => {
@@ -131,7 +130,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
       path.join(outputPath, "resize_indirect.pdf")
     );
     assert.ok(renderedFileStats.size < initialFileStats.size);
-  }).timeout(10000);
+  });
 
   it("PDF Compress From Compressor", async () => {
     const pdfResizeInput = new PathInput(
@@ -162,7 +161,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
     assert.ok(renderedFileStats[0].size > renderedFileStats[1].size);
     assert.ok(renderedFileStats[1].size > renderedFileStats[2].size);
     assert.ok(renderedFileStats[2].size > renderedFileStats[3].size);
-  }).timeout(20000);
+  });
 
   it("PDF Compress With Text Keeps Text", async () => {
     const initialWithText = new PathInput(
@@ -177,7 +176,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
     const compressedText = (await extractTextFromPdf(compressedWithText)).getConcatenatedText();
 
     assert.strictEqual(compressedText, originalText);
-  }).timeout(60000);
+  });
 
   it("PDF Compress With Text Does Not Compress", async () => {
     const initialWithText = new PathInput(
@@ -188,7 +187,7 @@ describe("Input Sources - compression and resize #includeOptionalDeps", () => {
     const compressedWithText = await compressPdf(initialWithText.fileObject, 50);
 
     assert.deepStrictEqual(compressedWithText, initialWithText.fileObject);
-  }).timeout(10000);
+  });
 
   after(async function () {
     const createdFiles: string[] = [

@@ -1,6 +1,7 @@
-import path from "node:path";
+import path from "path";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { promises as fs } from "node:fs";
-import assert from "node:assert";
 import { Polygon } from "@/geometry/index.js";
 import {
   FieldConfidence,
@@ -326,7 +327,7 @@ describe("MindeeV2 - Extraction Response", async () => {
 
       assert.notStrictEqual(response.inference, null);
       assert.strictEqual(response.inference.toString(), rstString);
-    }).timeout(10000);
+    });
   });
 
   describe("Field Locations and Confidence", async () => {
@@ -370,6 +371,6 @@ describe("MindeeV2 - Extraction Response", async () => {
       assert.ok(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Certain));
       assert.ok(FieldConfidence.lessThan(dateField.confidence, FieldConfidence.Certain));
 
-    }).timeout(10000);
+    });
   });
 });

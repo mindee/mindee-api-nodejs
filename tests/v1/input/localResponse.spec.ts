@@ -1,5 +1,6 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import * as fs from "node:fs/promises";
-import assert from "node:assert";
 import path from "path";
 import { AsyncPredictResponse, LocalResponse, PredictResponse } from "@/v1/index.js";
 import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/v1/product/index.js";

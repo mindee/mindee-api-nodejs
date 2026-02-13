@@ -1,5 +1,6 @@
-import { TaxField } from "@/v1/parsing/standard/index.js";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { TaxField } from "@/v1/parsing/standard/index.js";
 
 describe("Test Tax field", () => {
   it("should create a Tax field", () => {

@@ -1,6 +1,7 @@
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
 import { BytesInput, UrlInput } from "@/index.js";
 import { LocalInputSource } from "@/input/index.js";
-import assert from "node:assert/strict";
 import { MockAgent, setGlobalDispatcher } from "undici";
 
 const mockAgent = new MockAgent();

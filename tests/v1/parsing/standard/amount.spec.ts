@@ -1,5 +1,6 @@
-import { AmountField } from "@/v1/parsing/standard/index.js";
 import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import { AmountField } from "@/v1/parsing/standard/index.js";
 
 describe("Test AmountField field", () => {
   it("Should create an AmountField field", () => {

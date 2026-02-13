@@ -4,7 +4,7 @@ import assert from "node:assert/strict";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../index.js";
 
-describe("Light Environment Sanity Check #omitOptionalDeps", function () {
+describe("MindeeV1 - Integration - Optional Dependencies #OptionalDepsRemoved", function () {
   let client: mindee.v1.Client;
 
   beforeEach(() => {

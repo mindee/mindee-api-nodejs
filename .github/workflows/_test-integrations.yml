@@ -17,7 +17,7 @@ env:
 
 jobs:
   run-tests-with-optional-dependencies:
-    name: Run Integration Tests With Optional Dependencies
+    name: Integration Tests With Optional Dependencies
     timeout-minutes: 30
     strategy:
       matrix:
@@ -68,7 +68,7 @@ jobs:
 
 
   run-tests-without-optional-dependencies:
-    name: Run Integration Tests Without Optional Dependencies
+    name: Integration Tests Without Optional Dependencies
     timeout-minutes: 30
     strategy:
       matrix:
