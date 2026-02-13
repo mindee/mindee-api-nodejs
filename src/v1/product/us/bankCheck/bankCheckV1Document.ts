@@ -43,7 +43,7 @@ export class BankCheckV1Document implements Prediction {
       prediction: rawPrediction["date"],
       pageId: pageId,
     });
-    rawPrediction["payees"] &&
+    if (rawPrediction["payees"]) {
       rawPrediction["payees"].map(
         (itemPrediction: StringDict) =>
           this.payees.push(
@@ -53,6 +53,7 @@ export class BankCheckV1Document implements Prediction {
             })
           )
       );
+    }
     this.routingNumber = new StringField({
       prediction: rawPrediction["routing_number"],
       pageId: pageId,

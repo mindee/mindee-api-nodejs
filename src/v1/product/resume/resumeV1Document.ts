@@ -54,7 +54,7 @@ export class ResumeV1Document implements Prediction {
       prediction: rawPrediction["address"],
       pageId: pageId,
     });
-    rawPrediction["certificates"] &&
+    if (rawPrediction["certificates"]) {
       rawPrediction["certificates"].map(
         (itemPrediction: StringDict) =>
           this.certificates.push(
@@ -64,6 +64,7 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
+    }
     this.documentLanguage = new StringField({
       prediction: rawPrediction["document_language"],
       pageId: pageId,
@@ -71,7 +72,7 @@ export class ResumeV1Document implements Prediction {
     this.documentType = new ClassificationField({
       prediction: rawPrediction["document_type"],
     });
-    rawPrediction["education"] &&
+    if (rawPrediction["education"]) {
       rawPrediction["education"].map(
         (itemPrediction: StringDict) =>
           this.education.push(
@@ -81,11 +82,12 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
+    }
     this.emailAddress = new StringField({
       prediction: rawPrediction["email_address"],
       pageId: pageId,
     });
-    rawPrediction["given_names"] &&
+    if (rawPrediction["given_names"]) {
       rawPrediction["given_names"].map(
         (itemPrediction: StringDict) =>
           this.givenNames.push(
@@ -95,7 +97,8 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
-    rawPrediction["hard_skills"] &&
+    }
+    if (rawPrediction["hard_skills"]) {
       rawPrediction["hard_skills"].map(
         (itemPrediction: StringDict) =>
           this.hardSkills.push(
@@ -105,11 +108,12 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
+    }
     this.jobApplied = new StringField({
       prediction: rawPrediction["job_applied"],
       pageId: pageId,
     });
-    rawPrediction["languages"] &&
+    if (rawPrediction["languages"]) {
       rawPrediction["languages"].map(
         (itemPrediction: StringDict) =>
           this.languages.push(
@@ -119,6 +123,7 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
+    }
     this.nationality = new StringField({
       prediction: rawPrediction["nationality"],
       pageId: pageId,
@@ -131,7 +136,7 @@ export class ResumeV1Document implements Prediction {
       prediction: rawPrediction["profession"],
       pageId: pageId,
     });
-    rawPrediction["professional_experiences"] &&
+    if (rawPrediction["professional_experiences"]) {
       rawPrediction["professional_experiences"].map(
         (itemPrediction: StringDict) =>
           this.professionalExperiences.push(
@@ -141,7 +146,8 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
-    rawPrediction["social_networks_urls"] &&
+    }
+    if (rawPrediction["social_networks_urls"]) {
       rawPrediction["social_networks_urls"].map(
         (itemPrediction: StringDict) =>
           this.socialNetworksUrls.push(
@@ -151,7 +157,8 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
-    rawPrediction["soft_skills"] &&
+    }
+    if (rawPrediction["soft_skills"]) {
       rawPrediction["soft_skills"].map(
         (itemPrediction: StringDict) =>
           this.softSkills.push(
@@ -161,7 +168,8 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
-    rawPrediction["surnames"] &&
+    }
+    if (rawPrediction["surnames"]) {
       rawPrediction["surnames"].map(
         (itemPrediction: StringDict) =>
           this.surnames.push(
@@ -171,6 +179,7 @@ export class ResumeV1Document implements Prediction {
             })
           )
       );
+    }
   }
 
   /**

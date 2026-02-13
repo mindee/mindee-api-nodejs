@@ -76,7 +76,7 @@ export class InternationalIdV2Document implements Prediction {
       prediction: rawPrediction["expiry_date"],
       pageId: pageId,
     });
-    rawPrediction["given_names"] &&
+    if (rawPrediction["given_names"]) {
       rawPrediction["given_names"].map(
         (itemPrediction: StringDict) =>
           this.givenNames.push(
@@ -86,6 +86,7 @@ export class InternationalIdV2Document implements Prediction {
             })
           )
       );
+    }
     this.issueDate = new DateField({
       prediction: rawPrediction["issue_date"],
       pageId: pageId,
@@ -118,7 +119,7 @@ export class InternationalIdV2Document implements Prediction {
       prediction: rawPrediction["state_of_issue"],
       pageId: pageId,
     });
-    rawPrediction["surnames"] &&
+    if (rawPrediction["surnames"]) {
       rawPrediction["surnames"].map(
         (itemPrediction: StringDict) =>
           this.surnames.push(
@@ -128,6 +129,7 @@ export class InternationalIdV2Document implements Prediction {
             })
           )
       );
+    }
   }
 
   /**

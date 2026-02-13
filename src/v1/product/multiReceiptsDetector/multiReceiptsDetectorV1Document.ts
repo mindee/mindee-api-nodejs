@@ -13,7 +13,7 @@ export class MultiReceiptsDetectorV1Document implements Prediction {
   receipts: PositionField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    rawPrediction["receipts"] &&
+    if (rawPrediction["receipts"]) {
       rawPrediction["receipts"].map(
         (itemPrediction: StringDict) =>
           this.receipts.push(
@@ -23,6 +23,7 @@ export class MultiReceiptsDetectorV1Document implements Prediction {
             })
           )
       );
+    }
   }
 
   /**

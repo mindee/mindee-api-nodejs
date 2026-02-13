@@ -15,10 +15,11 @@ export class OcrPage {
 
   constructor(rawPrediction: StringDict) {
     const allWords: Word[] = [];
-    rawPrediction["all_words"] &&
+    if (rawPrediction["all_words"]) {
       rawPrediction["all_words"].forEach((word: Word) => {
         allWords.push(word);
       });
+    }
     this.allWords = allWords.sort((word1, word2) =>
       compareOnY(word1.polygon, word2.polygon)
     );

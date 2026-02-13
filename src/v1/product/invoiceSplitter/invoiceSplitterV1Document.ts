@@ -14,7 +14,7 @@ export class InvoiceSplitterV1Document implements Prediction {
   invoicePageGroups: InvoiceSplitterV1InvoicePageGroup[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    rawPrediction["invoice_page_groups"] &&
+    if (rawPrediction["invoice_page_groups"]) {
       rawPrediction["invoice_page_groups"].map(
         (itemPrediction: StringDict) =>
           this.invoicePageGroups.push(
@@ -24,6 +24,7 @@ export class InvoiceSplitterV1Document implements Prediction {
             })
           )
       );
+    }
   }
 
   /**

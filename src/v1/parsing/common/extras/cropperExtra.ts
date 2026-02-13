@@ -7,7 +7,7 @@ export class CropperExtra extends ExtraField {
   cropping: PositionField[] = [];
   constructor(rawPrediction: StringDict, pageId?: number) {
     super();
-    rawPrediction["cropping"] !== undefined &&
+    if (rawPrediction["cropping"] !== undefined) {
       rawPrediction["cropping"].forEach((crop: any) => {
         this.cropping.push(
           new PositionField({
@@ -16,6 +16,7 @@ export class CropperExtra extends ExtraField {
           })
         );
       });
+    }
   }
 
   /**

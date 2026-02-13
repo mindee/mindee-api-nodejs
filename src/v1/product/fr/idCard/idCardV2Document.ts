@@ -73,7 +73,7 @@ export class IdCardV2Document implements Prediction {
       prediction: rawPrediction["gender"],
       pageId: pageId,
     });
-    rawPrediction["given_names"] &&
+    if (rawPrediction["given_names"]) {
       rawPrediction["given_names"].map(
         (itemPrediction: StringDict) =>
           this.givenNames.push(
@@ -83,6 +83,7 @@ export class IdCardV2Document implements Prediction {
             })
           )
       );
+    }
     this.issueDate = new DateField({
       prediction: rawPrediction["issue_date"],
       pageId: pageId,

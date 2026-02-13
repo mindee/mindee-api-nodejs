@@ -64,7 +64,7 @@ export class ReceiptV5Document implements Prediction {
     this.documentType = new ClassificationField({
       prediction: rawPrediction["document_type"],
     });
-    rawPrediction["line_items"] &&
+    if (rawPrediction["line_items"]) {
       rawPrediction["line_items"].map(
         (itemPrediction: StringDict) =>
           this.lineItems.push(
@@ -74,6 +74,7 @@ export class ReceiptV5Document implements Prediction {
             })
           )
       );
+    }
     this.locale = new LocaleField({
       prediction: rawPrediction["locale"],
     });
@@ -88,7 +89,7 @@ export class ReceiptV5Document implements Prediction {
       prediction: rawPrediction["supplier_address"],
       pageId: pageId,
     });
-    rawPrediction["supplier_company_registrations"] &&
+    if (rawPrediction["supplier_company_registrations"]) {
       rawPrediction["supplier_company_registrations"].map(
         (itemPrediction: StringDict) =>
           this.supplierCompanyRegistrations.push(
@@ -98,6 +99,7 @@ export class ReceiptV5Document implements Prediction {
             })
           )
       );
+    }
     this.supplierName = new StringField({
       prediction: rawPrediction["supplier_name"],
       pageId: pageId,

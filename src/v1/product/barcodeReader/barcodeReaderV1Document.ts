@@ -15,7 +15,7 @@ export class BarcodeReaderV1Document implements Prediction {
   codes2D: StringField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
-    rawPrediction["codes_1d"] &&
+    if (rawPrediction["codes_1d"]) {
       rawPrediction["codes_1d"].map(
         (itemPrediction: StringDict) =>
           this.codes1D.push(
@@ -25,7 +25,8 @@ export class BarcodeReaderV1Document implements Prediction {
             })
           )
       );
-    rawPrediction["codes_2d"] &&
+    }
+    if (rawPrediction["codes_2d"]) {
       rawPrediction["codes_2d"].map(
         (itemPrediction: StringDict) =>
           this.codes2D.push(
@@ -35,6 +36,7 @@ export class BarcodeReaderV1Document implements Prediction {
             })
           )
       );
+    }
   }
 
   /**

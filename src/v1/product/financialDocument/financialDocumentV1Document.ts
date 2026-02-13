@@ -102,7 +102,7 @@ export class FinancialDocumentV1Document implements Prediction {
       prediction: rawPrediction["customer_address"],
       pageId: pageId,
     });
-    rawPrediction["customer_company_registrations"] &&
+    if (rawPrediction["customer_company_registrations"]) {
       rawPrediction["customer_company_registrations"].map(
         (itemPrediction: StringDict) =>
           this.customerCompanyRegistrations.push(
@@ -112,6 +112,7 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    }
     this.customerId = new StringField({
       prediction: rawPrediction["customer_id"],
       pageId: pageId,
@@ -142,7 +143,7 @@ export class FinancialDocumentV1Document implements Prediction {
       prediction: rawPrediction["invoice_number"],
       pageId: pageId,
     });
-    rawPrediction["line_items"] &&
+    if (rawPrediction["line_items"]) {
       rawPrediction["line_items"].map(
         (itemPrediction: StringDict) =>
           this.lineItems.push(
@@ -152,6 +153,7 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    }
     this.locale = new LocaleField({
       prediction: rawPrediction["locale"],
     });
@@ -167,7 +169,7 @@ export class FinancialDocumentV1Document implements Prediction {
       prediction: rawPrediction["receipt_number"],
       pageId: pageId,
     });
-    rawPrediction["reference_numbers"] &&
+    if (rawPrediction["reference_numbers"]) {
       rawPrediction["reference_numbers"].map(
         (itemPrediction: StringDict) =>
           this.referenceNumbers.push(
@@ -177,6 +179,7 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    }
     this.shippingAddress = new AddressField({
       prediction: rawPrediction["shipping_address"],
       pageId: pageId,
@@ -188,7 +191,7 @@ export class FinancialDocumentV1Document implements Prediction {
       prediction: rawPrediction["supplier_address"],
       pageId: pageId,
     });
-    rawPrediction["supplier_company_registrations"] &&
+    if (rawPrediction["supplier_company_registrations"]) {
       rawPrediction["supplier_company_registrations"].map(
         (itemPrediction: StringDict) =>
           this.supplierCompanyRegistrations.push(
@@ -198,6 +201,7 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    }
     this.supplierEmail = new StringField({
       prediction: rawPrediction["supplier_email"],
       pageId: pageId,
@@ -206,7 +210,7 @@ export class FinancialDocumentV1Document implements Prediction {
       prediction: rawPrediction["supplier_name"],
       pageId: pageId,
     });
-    rawPrediction["supplier_payment_details"] &&
+    if (rawPrediction["supplier_payment_details"]) {
       rawPrediction["supplier_payment_details"].map(
         (itemPrediction: StringDict) =>
           this.supplierPaymentDetails.push(
@@ -216,6 +220,7 @@ export class FinancialDocumentV1Document implements Prediction {
             })
           )
       );
+    }
     this.supplierPhoneNumber = new StringField({
       prediction: rawPrediction["supplier_phone_number"],
       pageId: pageId,

@@ -53,7 +53,7 @@ export class PassportV1Document implements Prediction {
       prediction: rawPrediction["gender"],
       pageId: pageId,
     });
-    rawPrediction["given_names"] &&
+    if (rawPrediction["given_names"]) {
       rawPrediction["given_names"].map(
         (itemPrediction: StringDict) =>
           this.givenNames.push(
@@ -63,6 +63,7 @@ export class PassportV1Document implements Prediction {
             })
           )
       );
+    }
     this.idNumber = new StringField({
       prediction: rawPrediction["id_number"],
       pageId: pageId,

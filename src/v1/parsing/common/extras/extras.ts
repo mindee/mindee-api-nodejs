@@ -10,10 +10,11 @@ implements ExtraDict<ExtraT> {
   [key: string]: ExtraT | (() => string);
 
   constructor(fields: Record<string, ExtraT>) {
-    Object.keys(fields).length > 0 &&
-    Object.keys(fields).forEach(
-      (name: string) => (this[name] = fields[name])
-    );
+    if (Object.keys(fields).length > 0) {
+      Object.keys(fields).forEach(
+        (name: string) => (this[name] = fields[name])
+      );
+    }
   }
 
   /**
