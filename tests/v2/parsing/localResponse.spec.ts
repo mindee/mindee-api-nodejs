@@ -1,8 +1,9 @@
-import * as fs from "node:fs/promises";
-import assert from "node:assert";
-import { LocalResponse } from "@/v2/index.js";
-
 import path from "path";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import * as fs from "node:fs/promises";
+
+import { LocalResponse } from "@/v2/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { Buffer } from "node:buffer";
 import { ExtractionResponse } from "@/v2/product/index.js";

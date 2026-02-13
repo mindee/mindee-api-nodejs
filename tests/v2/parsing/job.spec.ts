@@ -1,5 +1,7 @@
+import path from "path";
 import assert from "node:assert/strict";
-import path from "node:path";
+import { describe, it } from "node:test";
+
 import {
   JobResponse,
   LocalResponse,

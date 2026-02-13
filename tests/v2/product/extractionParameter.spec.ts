@@ -1,8 +1,9 @@
-import { StringDict } from "@/parsing/index.js";
 import path from "path";
-import { V2_PRODUCT_PATH } from "../../index.js";
 import assert from "node:assert/strict";
+import { before, describe, it } from "node:test";
 import { promises as fs } from "fs";
+import { StringDict } from "@/parsing/index.js";
+import { V2_PRODUCT_PATH } from "../../index.js";
 import { extraction } from "@/v2/product/index.js";
 
 let expectedDataSchemaDict: StringDict;
