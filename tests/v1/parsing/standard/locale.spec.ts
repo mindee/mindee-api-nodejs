@@ -1,5 +1,5 @@
 import { LocaleField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 
 describe("Test LocaleField field", () => {
   it("Should create a LocaleField", () => {
@@ -11,11 +11,11 @@ describe("Test LocaleField field", () => {
       confidence: 0.1,
     };
     const field = new LocaleField({ prediction });
-    expect(field.value).to.be.equal("en-EN");
-    expect(field.language).to.be.equal("en");
-    expect(field.country).to.be.equal("uk");
-    expect(field.currency).to.be.equal("GBP");
-    expect(field.confidence).to.be.equal(0.1);
+    assert.strictEqual(field.value, "en-EN");
+    assert.strictEqual(field.language, "en");
+    assert.strictEqual(field.country, "uk");
+    assert.strictEqual(field.currency, "GBP");
+    assert.strictEqual(field.confidence, 0.1);
   });
 
   it("Should create a LocaleField without the value property", () => {
@@ -26,11 +26,11 @@ describe("Test LocaleField field", () => {
       confidence: 0.15,
     };
     const field = new LocaleField({ prediction });
-    expect(field.value).to.be.be.equal("fr");
-    expect(field.language).to.be.equal("fr");
-    expect(field.country).to.be.equal("fr");
-    expect(field.currency).to.be.equal("EUR");
-    expect(field.confidence).to.be.equal(0.15);
+    assert.strictEqual(field.value, "fr");
+    assert.strictEqual(field.language, "fr");
+    assert.strictEqual(field.country, "fr");
+    assert.strictEqual(field.currency, "EUR");
+    assert.strictEqual(field.confidence, 0.15);
   });
 
   it("Should create a LocaleField with mainly empty fields", () => {
@@ -39,8 +39,8 @@ describe("Test LocaleField field", () => {
       confidence: 0.1,
     };
     const field = new LocaleField({ prediction });
-    expect(field.language).to.be.undefined;
-    expect(field.country).to.be.undefined;
-    expect(field.currency).to.be.undefined;
+    assert.strictEqual(field.language, undefined);
+    assert.strictEqual(field.country, undefined);
+    assert.strictEqual(field.currency, undefined);
   });
 });

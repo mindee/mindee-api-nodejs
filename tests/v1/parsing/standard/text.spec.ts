@@ -1,5 +1,5 @@
 import { StringField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 
 describe("Test String field", () => {
   it("Should create a String field", () => {
@@ -14,9 +14,9 @@ describe("Test String field", () => {
       ],
     };
     const field = new StringField({ prediction });
-    expect(field.value).to.be.equal(prediction.value);
-    expect(field.rawValue).to.be.undefined;
-    expect(field.boundingBox).to.have.deep.members(prediction["polygon"]);
+    assert.strictEqual(field.value, prediction.value);
+    assert.strictEqual(field.rawValue, undefined);
+    assert.deepStrictEqual(field.boundingBox, prediction["polygon"]);
   });
 
   it("Should create a String field with a Raw Value", () => {
@@ -32,8 +32,8 @@ describe("Test String field", () => {
       ],
     };
     const field = new StringField({ prediction });
-    expect(field.value).to.be.equal(prediction.value);
-    expect(field.rawValue).to.be.equal(prediction.raw_value);
-    expect(field.boundingBox).to.have.deep.members(prediction["polygon"]);
+    assert.strictEqual(field.value, prediction.value);
+    assert.strictEqual(field.rawValue, prediction.raw_value);
+    assert.deepStrictEqual(field.boundingBox, prediction["polygon"]);
   });
 });

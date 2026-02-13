@@ -1,5 +1,5 @@
 import { PaymentDetailsField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 
 describe("Test PaymentDetailsField field", () => {
   it("should create a PaymentDetailsField field", () => {
@@ -17,13 +17,11 @@ describe("Test PaymentDetailsField field", () => {
       ],
     };
     const paymentDetail = new PaymentDetailsField({ prediction });
-    expect(paymentDetail.accountNumber).to.be.equal(prediction.account_number);
-    expect(paymentDetail.iban).to.be.equal(prediction.iban);
-    expect(paymentDetail.routingNumber).to.be.equal(prediction.routing_number);
-    expect(paymentDetail.swift).to.be.equal(prediction.swift);
-    expect(paymentDetail.toString()).to.be.equal(
-      "account_number; iban; routing_number; swift; "
-    );
+    assert.strictEqual(paymentDetail.accountNumber, prediction.account_number);
+    assert.strictEqual(paymentDetail.iban, prediction.iban);
+    assert.strictEqual(paymentDetail.routingNumber, prediction.routing_number);
+    assert.strictEqual(paymentDetail.swift, prediction.swift);
+    assert.strictEqual(paymentDetail.toString(), "account_number; iban; routing_number; swift; ");
   });
 
   it("should create a PaymentDetailsField field with N/A inputs", () => {
@@ -41,11 +39,11 @@ describe("Test PaymentDetailsField field", () => {
       ],
     };
     const paymentDetail = new PaymentDetailsField({ prediction });
-    expect(paymentDetail.accountNumber).to.be.undefined;
-    expect(paymentDetail.iban).to.be.undefined;
-    expect(paymentDetail.routingNumber).to.be.undefined;
-    expect(paymentDetail.swift).to.be.undefined;
-    expect(paymentDetail.toString()).to.be.equal("");
+    assert.strictEqual(paymentDetail.accountNumber, undefined);
+    assert.strictEqual(paymentDetail.iban, undefined);
+    assert.strictEqual(paymentDetail.routingNumber, undefined);
+    assert.strictEqual(paymentDetail.swift, undefined);
+    assert.strictEqual(paymentDetail.toString(), "");
   });
 
   it("should create a PaymentDetailsField field with empty inputs", () => {
@@ -63,10 +61,10 @@ describe("Test PaymentDetailsField field", () => {
       ],
     };
     const paymentDetail = new PaymentDetailsField({ prediction });
-    expect(paymentDetail.accountNumber).to.be.undefined;
-    expect(paymentDetail.iban).to.be.undefined;
-    expect(paymentDetail.routingNumber).to.be.undefined;
-    expect(paymentDetail.swift).to.be.undefined;
-    expect(paymentDetail.toString()).to.be.equal("");
+    assert.strictEqual(paymentDetail.accountNumber, undefined);
+    assert.strictEqual(paymentDetail.iban, undefined);
+    assert.strictEqual(paymentDetail.routingNumber, undefined);
+    assert.strictEqual(paymentDetail.swift, undefined);
+    assert.strictEqual(paymentDetail.toString(), "");
   });
 });

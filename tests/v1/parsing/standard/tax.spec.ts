@@ -1,5 +1,5 @@
 import { TaxField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 
 describe("Test Tax field", () => {
   it("should create a Tax field", () => {
@@ -17,11 +17,11 @@ describe("Test Tax field", () => {
       ],
     };
     const tax = new TaxField({ prediction, valueKey: "value" });
-    expect(tax.value).to.be.equal(2);
-    expect(tax.confidence).to.be.equal(0.1);
-    expect(tax.rate).to.be.equal(0.2);
-    expect(tax.boundingBox.length).to.be.equal(4);
-    expect(tax.toString()).to.be.equal("Base: 5.00, Code: QST, Rate (%): 0.20, Amount: 2.00");
+    assert.strictEqual(tax.value, 2);
+    assert.strictEqual(tax.confidence, 0.1);
+    assert.strictEqual(tax.rate, 0.2);
+    assert.strictEqual(tax.boundingBox.length, 4);
+    assert.strictEqual(tax.toString(), "Base: 5.00, Code: QST, Rate (%): 0.20, Amount: 2.00");
   });
 
   it("should create a Tax with rate not valid", () => {
@@ -31,9 +31,9 @@ describe("Test Tax field", () => {
       confidence: 0.1,
     };
     const tax = new TaxField({ prediction });
-    expect(tax.rate).to.be.undefined;
-    expect(tax.polygon.length).to.be.equal(0);
-    expect(tax.toString()).to.be.equal("Base: , Code: , Rate (%): , Amount: 2.00");
+    assert.strictEqual(tax.rate, undefined);
+    assert.strictEqual(tax.polygon.length, 0);
+    assert.strictEqual(tax.toString(), "Base: , Code: , Rate (%): , Amount: 2.00");
   });
 
   it("should create a Tax with amount not valid", () => {
@@ -44,7 +44,7 @@ describe("Test Tax field", () => {
       confidence: 0.1,
     };
     const tax = new TaxField({ prediction });
-    expect(tax.value).to.be.undefined;
-    expect(tax.toString()).to.be.equal("Base: , Code: , Rate (%): , Amount:");
+    assert.strictEqual(tax.value, undefined);
+    assert.strictEqual(tax.toString(), "Base: , Code: , Rate (%): , Amount:");
   });
 });

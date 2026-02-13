@@ -1,5 +1,5 @@
 import { ClassificationField } from "@/v1/parsing/standard/index.js";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 
 describe("Test Classification field", () => {
   it("Should create a Classification field", () => {
@@ -8,7 +8,7 @@ describe("Test Classification field", () => {
       confidence: 0.1,
     };
     const field = new ClassificationField({ prediction });
-    expect(field.value).to.be.equal(prediction.value);
+    assert.strictEqual(field.value, prediction.value);
   });
 
   it("Should create a Classification field with no confidence", () => {
@@ -16,6 +16,6 @@ describe("Test Classification field", () => {
       value: "N/A",
     };
     const field = new ClassificationField({ prediction });
-    expect(field.confidence).to.be.equals(0);
+    assert.strictEqual(field.confidence, 0);
   });
 });
