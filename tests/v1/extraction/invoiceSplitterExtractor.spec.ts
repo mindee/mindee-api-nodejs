@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { promises as fs } from "fs";
 import path from "path";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
@@ -20,14 +20,14 @@ describe("A multi-page invoice document #includeOptionalDeps", () => {
     await inputSample.init();
 
     const extractedInvoices = await extractInvoices(inputSample, doc);
-    expect(extractedInvoices.length).to.be.equals(3);
-    expect(extractedInvoices[0].buffer).to.be.not.null;
-    expect(extractedInvoices[1].buffer).to.be.not.null;
-    expect(extractedInvoices[0].pageIdMin).to.be.equals(0);
-    expect(extractedInvoices[0].pageIdMax).to.be.equals(0);
-    expect(extractedInvoices[1].pageIdMin).to.be.equals(1);
-    expect(extractedInvoices[1].pageIdMax).to.be.equals(3);
-    expect(extractedInvoices[2].pageIdMax).to.be.equals(4);
-    expect(extractedInvoices[2].pageIdMax).to.be.equals(4);
+    assert.strictEqual(extractedInvoices.length, 3);
+    assert.ok(extractedInvoices[0].buffer);
+    assert.ok(extractedInvoices[1].buffer);
+    assert.strictEqual(extractedInvoices[0].pageIdMin, 0);
+    assert.strictEqual(extractedInvoices[0].pageIdMax, 0);
+    assert.strictEqual(extractedInvoices[1].pageIdMin, 1);
+    assert.strictEqual(extractedInvoices[1].pageIdMax, 3);
+    assert.strictEqual(extractedInvoices[2].pageIdMax, 4);
+    assert.strictEqual(extractedInvoices[2].pageIdMax, 4);
   });
 });

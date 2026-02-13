@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { promises as fs } from "fs";
 import * as path from "path";
 import { PathInput } from "@/index.js";
@@ -38,13 +38,13 @@ rotations.forEach(({ angle, suffix }) => {
     });
 
     it("should be split into the proper receipts", async () => {
-      expect(extractedReceipts.length).to.be.equals(6);
+      assert.strictEqual(extractedReceipts.length, 6);
       let i = 0;
       for (const extractedReceipt of extractedReceipts) {
-        expect(extractedReceipt.pageId).to.be.equal(0);
-        expect(extractedReceipt.receiptId).to.be.equal(i);
-        expect(Buffer.byteLength(extractedReceipt.asSource().fileObject)).to.be.lessThan(10485760);
-        expect(Buffer.byteLength(extractedReceipt.asSource().fileObject)).to.be.greaterThan(100000);
+        assert.strictEqual(extractedReceipt.pageId, 0);
+        assert.strictEqual(extractedReceipt.receiptId, i);
+        assert.ok(Buffer.byteLength(extractedReceipt.asSource().fileObject) < 10485760);
+        assert.ok(Buffer.byteLength(extractedReceipt.asSource().fileObject) > 100000);
         i++;
       }
     });
@@ -59,13 +59,13 @@ rotations.forEach(({ angle, suffix }) => {
 
         const pdfStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.pdf`));
         // Arbitrary to assert noticeable discrepancies between OSes
-        expect(pdfStat.size).to.be.greaterThan(500000);
+        assert.ok(pdfStat.size > 500000);
 
         const jpgStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.jpg`));
-        expect(jpgStat.size).to.be.greaterThan(40000);
+        assert.ok(jpgStat.size > 40000);
 
         const pngStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.png`));
-        expect(pngStat.size).to.be.greaterThan(290000);
+        assert.ok(pngStat.size > 290000);
         i++;
       }
     }).timeout(20000);
