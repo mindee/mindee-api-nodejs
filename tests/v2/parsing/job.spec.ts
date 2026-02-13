@@ -1,11 +1,11 @@
+import assert from "node:assert/strict";
+import path from "node:path";
 import {
   JobResponse,
   LocalResponse,
   ErrorResponse,
 } from "@/v2/index.js";
-import path from "node:path";
 import { V2_RESOURCE_PATH } from "../../index.js";
-import { expect } from "chai";
 
 const jobPath = path.join(V2_RESOURCE_PATH, "job");
 
@@ -21,8 +21,8 @@ describe("MindeeV2 - Job Response", async () => {
       const response = await loadV2Job(
         path.join(jobPath, "ok_processing.json")
       );
-      expect(response.job).to.be.not.empty;
-      expect(response.job.error).to.be.undefined;
+      assert.ok(response.job);
+      assert.strictEqual(response.job.error, undefined);
     });
   });
   describe("Fail", async () => {
@@ -30,11 +30,11 @@ describe("MindeeV2 - Job Response", async () => {
       const response = await loadV2Job(
         path.join(jobPath, "fail_422.json")
       );
-      expect(response.job).to.be.not.empty;
-      expect(response.job.error).to.be.instanceOf(ErrorResponse);
-      expect(response.job.error?.status).to.eq(422);
-      expect(response.job.error?.code.startsWith("422-")).to.be.true;
-      expect(response.job.error?.errors).to.be.instanceOf(Array);
+      assert.ok(response.job);
+      assert.ok(response.job.error instanceof ErrorResponse);
+      assert.strictEqual(response.job.error?.status, 422);
+      assert.ok(response.job.error?.code.startsWith("422-"));
+      assert.ok(Array.isArray(response.job.error?.errors));
     });
   });
 });

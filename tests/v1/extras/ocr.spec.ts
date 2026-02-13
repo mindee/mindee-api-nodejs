@@ -1,6 +1,6 @@
 import { promises as fs } from "fs";
 import * as path from "path";
-import { expect } from "chai";
+import assert from "node:assert/strict";
 import { ReceiptV5 } from "@/v1/product/index.js";
 import { Document } from "@/v1/index.js";
 import { RESOURCE_PATH } from "../../index.js";
@@ -21,7 +21,7 @@ describe("MindeeV1 - When getting all lines in an OCR", () => {
     const allWordsStart = doc.ocr.mVisionV1.pages[0].allWords;
     // Trigger a potential change in list order
     const allWordsEnd = doc.ocr.mVisionV1.pages[0].allWords;
-    expect(allWordsStart).to.be.equals(allWordsEnd);
+    assert.strictEqual(allWordsStart, allWordsEnd);
   });
 
   it("should match expected string exactly", async () => {
@@ -32,6 +32,6 @@ describe("MindeeV1 - When getting all lines in an OCR", () => {
     if (!doc.ocr) {
       throw new Error("No ocr.");
     }
-    expect(doc.ocr.toString()).to.be.equals(docString.toString());
+    assert.strictEqual(doc.ocr.toString(), docString.toString());
   });
 });

@@ -42,6 +42,7 @@ jobs:
 
       - name: Test code
         run: npm run test
+
   run-tests-without-optional-dependencies:
     name: Run Tests Without Optional Dependencies
     strategy:

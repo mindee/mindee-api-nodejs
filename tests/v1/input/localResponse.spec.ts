@@ -1,5 +1,5 @@
 import * as fs from "node:fs/promises";
-import { expect } from "chai";
+import assert from "node:assert";
 import path from "path";
 import { AsyncPredictResponse, LocalResponse, PredictResponse } from "@/v1/index.js";
 import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
@@ -21,55 +21,65 @@ describe("MindeeV1 - Load Local Response", () => {
     const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
     await localResponse.init();
-    expect(localResponse.asDict()).to.not.be.null;
-    expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
-    expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
-    expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+    assert.ok(localResponse.asDict());
+    assert.strictEqual(
+      localResponse.isValidHmacSignature(dummySecretKey, "invalid signature"), false
+    );
+    assert.strictEqual(localResponse.getHmacSignature(dummySecretKey), signature);
+    assert.ok(localResponse.isValidHmacSignature(dummySecretKey, signature));
   });
 
   it("should load a file properly.", async () => {
     const localResponse = new LocalResponse(filePath);
     await localResponse.init();
-    expect(localResponse.asDict()).to.not.be.null;
-    expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
-    expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
-    expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+    assert.ok(localResponse.asDict());
+    assert.strictEqual(
+      localResponse.isValidHmacSignature(dummySecretKey, "invalid signature"), false
+    );
+    assert.strictEqual(localResponse.getHmacSignature(dummySecretKey), signature);
+    assert.ok(localResponse.isValidHmacSignature(dummySecretKey, signature));
   });
 
   it("should load a buffer properly.", async () => {
-    const fileStr = (await fs.readFile(filePath, { encoding: "utf-8" })).replace(/\r/g, "").replace(/\n/g, "");
+    const fileStr = (await fs.readFile(filePath, { encoding: "utf-8" }))
+      .replace(/\r/g, "")
+      .replace(/\n/g, "");
     const fileBuffer = Buffer.from(fileStr, "utf-8");
     const localResponse = new LocalResponse(fileBuffer);
     await localResponse.init();
-    expect(localResponse.asDict()).to.not.be.null;
-    expect(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature")).to.be.false;
-    expect(localResponse.getHmacSignature(dummySecretKey)).to.eq(signature);
-    expect(localResponse.isValidHmacSignature(dummySecretKey, signature)).to.be.true;
+    assert.ok(localResponse.asDict());
+    assert.strictEqual(
+      localResponse.isValidHmacSignature(dummySecretKey, "invalid signature"), false
+    );
+    assert.strictEqual(localResponse.getHmacSignature(dummySecretKey), signature);
+    assert.ok(localResponse.isValidHmacSignature(dummySecretKey, signature));
   });
 
   it("should load into a sync prediction.", async () => {
     const fileObj = await fs.readFile(multiReceiptsDetectorPath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
     const prediction = await localResponse.loadPrediction(MultiReceiptsDetectorV1);
-    expect(prediction).to.be.an.instanceof(PredictResponse);
-
-    expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
+    assert.ok(prediction instanceof PredictResponse);
+    assert.strictEqual(
+      JSON.stringify(prediction.getRawHttp()), JSON.stringify(JSON.parse(fileObj))
+    );
   });
 
   it("should load a failed prediction.", async () => {
     const fileObj = await fs.readFile(failedPath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
     const prediction = await localResponse.loadPrediction(InvoiceV4);
-    expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
-    expect((prediction as AsyncPredictResponse<InvoiceV4>).job.status).to.be.eq("failed");
+    assert.ok(prediction instanceof AsyncPredictResponse);
+    assert.strictEqual((prediction as AsyncPredictResponse<InvoiceV4>).job.status, "failed");
   });
 
   it("should load into an async prediction.", async () => {
     const fileObj = await fs.readFile(internationalIdPath, { encoding: "utf-8" });
     const localResponse = new LocalResponse(fileObj);
     const prediction = await localResponse.loadPrediction(InternationalIdV2);
-    expect(prediction).to.be.an.instanceof(AsyncPredictResponse);
-
-    expect(JSON.stringify(prediction.getRawHttp())).to.eq(JSON.stringify(JSON.parse(fileObj)));
+    assert.ok(prediction instanceof AsyncPredictResponse);
+    assert.strictEqual(
+      JSON.stringify(prediction.getRawHttp()), JSON.stringify(JSON.parse(fileObj))
+    );
   });
 });

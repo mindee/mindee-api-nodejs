@@ -1,6 +1,6 @@
 import path from "node:path";
 import { promises as fs } from "node:fs";
-import { expect } from "chai";
+import assert from "node:assert";
 import { Polygon } from "@/geometry/index.js";
 import {
   FieldConfidence,
@@ -30,27 +30,27 @@ describe("MindeeV2 - Extraction Response", async () => {
       );
       const fields = response.inference.result.fields;
 
-      expect(fields).to.be.not.empty;
-      expect(fields.size).to.be.eq(21);
-      expect(fields.has("taxes")).to.be.true;
-      expect(fields.get("taxes")).to.not.be.null;
-      expect(fields.get("taxes")).to.be.an.instanceof(ListField);
+      assert.ok(fields);
+      assert.strictEqual(fields.size, 21);
+      assert.ok(fields.has("taxes"));
+      assert.notStrictEqual(fields.get("taxes"), null);
+      assert.ok(fields.get("taxes") instanceof ListField);
 
-      expect(fields.get("supplier_address")).to.not.be.null;
-      expect(fields.get("supplier_address")).to.be.an.instanceof(ObjectField);
+      assert.notStrictEqual(fields.get("supplier_address"), null);
+      assert.ok(fields.get("supplier_address") instanceof ObjectField);
       for (const entry of fields.values()) {
         if (entry instanceof SimpleField && entry.value === null) {
           continue;
         }
         switch (entry.constructor.name) {
         case "SimpleField":
-          expect((entry as SimpleField).value).to.not.be.null;
+          assert.notStrictEqual((entry as SimpleField).value, null);
           break;
         case "ObjectField":
-          expect((entry as ObjectField).fields).to.not.be.null;
+          assert.notStrictEqual((entry as ObjectField).fields, null);
           break;
         case "ListField":
-          expect((entry as ListField).items).to.not.be.null;
+          assert.notStrictEqual((entry as ListField).items, null);
           break;
         }
       }
@@ -63,61 +63,61 @@ describe("MindeeV2 - Extraction Response", async () => {
       );
       const inference = response.inference;
 
-      expect(inference).to.not.be.undefined;
-      expect(inference.model.id).to.eq("12345678-1234-1234-1234-123456789abc");
+      assert.notStrictEqual(inference, undefined);
+      assert.strictEqual(inference.model.id, "12345678-1234-1234-1234-123456789abc");
 
       const model = inference.model;
-      expect(model).to.not.be.undefined;
-      expect(model.id).to.eq("12345678-1234-1234-1234-123456789abc");
+      assert.notStrictEqual(model, undefined);
+      assert.strictEqual(model.id, "12345678-1234-1234-1234-123456789abc");
 
       const file = inference.file;
-      expect(file).to.not.be.undefined;
-      expect(file.name).to.eq("complete.jpg");
-      expect(file.alias ?? null).to.be.null;
-      expect(file.pageCount).to.eq(1);
-      expect(file.mimeType).to.eq("image/jpeg");
+      assert.notStrictEqual(file, undefined);
+      assert.strictEqual(file.name, "complete.jpg");
+      assert.strictEqual(file.alias ?? null, null);
+      assert.strictEqual(file.pageCount, 1);
+      assert.strictEqual(file.mimeType, "image/jpeg");
 
       const fields = inference.result.fields;
-      expect(fields).to.be.not.empty;
-      expect(fields.size).to.be.eq(21);
+      assert.ok(fields);
+      assert.strictEqual(fields.size, 21);
 
       const dateField = fields.getSimpleField("date");
-      expect(dateField).to.not.be.undefined;
-      expect(dateField.value).to.eq("2019-11-02");
+      assert.notStrictEqual(dateField, undefined);
+      assert.strictEqual(dateField.value, "2019-11-02");
 
-      expect(fields.has("taxes")).to.be.true;
+      assert.ok(fields.has("taxes"));
       const taxes = fields.get("taxes");
-      expect(taxes).to.be.instanceOf(ListField);
+      assert.ok(taxes instanceof ListField);
 
       const taxesList = fields.getListField("taxes");
-      expect(taxesList.items).to.have.lengthOf(1);
-      expect(taxesList.objectItems).to.have.lengthOf(1);
-      expect(taxes?.toString()).to.be.a("string").and.not.be.empty;
+      assert.strictEqual(taxesList.items.length, 1);
+      assert.strictEqual(taxesList.objectItems.length, 1);
+      assert.ok(typeof taxes?.toString() === "string" && taxes.toString().length > 0);
 
       const firstTaxItem = taxesList.items[0];
-      expect(firstTaxItem).to.be.instanceOf(ObjectField);
+      assert.ok(firstTaxItem instanceof ObjectField);
 
       const taxItemObj = firstTaxItem as ObjectField;
-      expect(taxItemObj.fields.size).to.eq(3);
+      assert.strictEqual(taxItemObj.fields.size, 3);
 
       const baseField = taxItemObj.fields.getSimpleField("base");
-      expect(baseField.value).to.eq(31.5);
+      assert.strictEqual(baseField.value, 31.5);
 
-      expect(fields.has("supplier_address")).to.be.true;
+      assert.ok(fields.has("supplier_address"));
       const supplierAddress = fields.get("supplier_address");
-      expect(supplierAddress).to.be.instanceOf(ObjectField);
+      assert.ok(supplierAddress instanceof ObjectField);
 
       const supplierObj = fields.getObjectField("supplier_address");
       const countryField = supplierObj.fields.getSimpleField("country");
-      expect(countryField.value).to.eq("USA");
-      expect(countryField.toString()).to.eq("USA");
-      expect(supplierAddress?.toString()).to.be.a("string").and.not.be.empty;
+      assert.strictEqual(countryField.value, "USA");
+      assert.strictEqual(countryField.toString(), "USA");
+      assert.ok(typeof supplierAddress?.toString() === "string" && supplierAddress.toString().length > 0);
 
       const customerAddr = fields.getObjectField("customer_address");
       const cityField = customerAddr.fields.getSimpleField("city");
-      expect(cityField.value).to.eq("New York");
+      assert.strictEqual(cityField.value, "New York");
 
-      expect(inference.result.rawText).to.be.undefined;
+      assert.strictEqual(inference.result.rawText, undefined);
     });
   });
 
@@ -127,41 +127,39 @@ describe("MindeeV2 - Extraction Response", async () => {
         ExtractionResponse, deepNestedFieldPath
       );
       const fields = response.inference.result.fields;
-      expect(fields.get("field_simple")).to.be.an.instanceof(SimpleField);
-      expect(fields.get("field_object")).to.be.an.instanceof(ObjectField);
+      assert.ok(fields.get("field_simple") instanceof SimpleField);
+      assert.ok(fields.get("field_object") instanceof ObjectField);
 
       const fieldObject = fields.getObjectField("field_object");
-      expect(fieldObject.getSimpleField("sub_object_simple")).to.be.an.instanceof(SimpleField);
-      expect(fieldObject.getListField("sub_object_list")).to.be.an.instanceof(ListField);
-      expect(fieldObject.getObjectField("sub_object_object")).to.be.an.instanceof(ObjectField);
-      expect(fieldObject.simpleFields.size).to.eq(1);
-      expect(fieldObject.listFields.size).to.eq(1);
-      expect(fieldObject.objectFields.size).to.eq(1);
+      assert.ok(fieldObject.getSimpleField("sub_object_simple") instanceof SimpleField);
+      assert.ok(fieldObject.getListField("sub_object_list") instanceof ListField);
+      assert.ok(fieldObject.getObjectField("sub_object_object") instanceof ObjectField);
+      assert.strictEqual(fieldObject.simpleFields.size, 1);
+      assert.strictEqual(fieldObject.listFields.size, 1);
+      assert.strictEqual(fieldObject.objectFields.size, 1);
       const lvl1 = fieldObject.fields;
 
-      expect(lvl1.get("sub_object_list")).to.be.an.instanceof(ListField);
-      expect(lvl1.get("sub_object_object")).to.be.an.instanceof(ObjectField);
+      assert.ok(lvl1.get("sub_object_list") instanceof ListField);
+      assert.ok(lvl1.get("sub_object_object") instanceof ObjectField);
 
       const subObjectObject = lvl1.getObjectField("sub_object_object");
       const lvl2 = subObjectObject.fields;
 
-      expect(
-        lvl2.get("sub_object_object_sub_object_list")
-      ).to.be.an.instanceof(ListField);
+      assert.ok(lvl2.get("sub_object_object_sub_object_list") instanceof ListField);
 
       const nestedList = lvl2.getListField(
         "sub_object_object_sub_object_list"
       );
-      expect(nestedList.items).to.not.be.empty;
-      expect(nestedList.items[0]).to.be.an.instanceof(ObjectField);
+      assert.ok(nestedList.items.length > 0);
+      assert.ok(nestedList.items[0] instanceof ObjectField);
 
       const firstItemObj = nestedList.items[0] as ObjectField;
       const deepSimple = firstItemObj.fields.get(
         "sub_object_object_sub_object_list_simple"
       ) as SimpleField;
 
-      expect(deepSimple).to.not.be.undefined;
-      expect(deepSimple.value).to.eq("value_9");
+      assert.notStrictEqual(deepSimple, undefined);
+      assert.strictEqual(deepSimple.value, "value_9");
     });
   });
 
@@ -172,46 +170,46 @@ describe("MindeeV2 - Extraction Response", async () => {
       );
       const fields = response.inference.result.fields;
 
-      expect(fields.get("field_simple_string")).to.be.instanceOf(SimpleField);
+      assert.ok(fields.get("field_simple_string") instanceof SimpleField);
       const simpleFieldStr = fields.getSimpleField("field_simple_string");
-      expect(simpleFieldStr.value).to.be.eq("field_simple_string-value");
-      expect(simpleFieldStr.stringValue).to.be.eq("field_simple_string-value");
-      expect(simpleFieldStr.confidence).to.be.eq(FieldConfidence.Certain);
-      expect(() => simpleFieldStr.numberValue).to.throw("Value is not a number");
-      expect(() => simpleFieldStr.booleanValue).to.throw("Value is not a boolean");
+      assert.strictEqual(simpleFieldStr.value, "field_simple_string-value");
+      assert.strictEqual(simpleFieldStr.stringValue, "field_simple_string-value");
+      assert.strictEqual(simpleFieldStr.confidence, FieldConfidence.Certain);
+      assert.throws(() => simpleFieldStr.numberValue, /Value is not a number/);
+      assert.throws(() => simpleFieldStr.booleanValue, /Value is not a boolean/);
 
-      expect(fields.get("field_simple_float")).to.be.instanceOf(SimpleField);
+      assert.ok(fields.get("field_simple_float") instanceof SimpleField);
       const simpleFieldFloat = fields.getSimpleField("field_simple_float");
-      expect(simpleFieldFloat.value).to.be.eq(1.1);
-      expect(simpleFieldFloat.numberValue).to.be.eq(1.1);
-      expect(simpleFieldFloat.confidence).to.be.eq(FieldConfidence.High);
-      expect(() => simpleFieldFloat.stringValue).to.throw("Value is not a string");
-      expect(() => simpleFieldFloat.booleanValue).to.throw("Value is not a boolean");
+      assert.strictEqual(simpleFieldFloat.value, 1.1);
+      assert.strictEqual(simpleFieldFloat.numberValue, 1.1);
+      assert.strictEqual(simpleFieldFloat.confidence, FieldConfidence.High);
+      assert.throws(() => simpleFieldFloat.stringValue, /Value is not a string/);
+      assert.throws(() => simpleFieldFloat.booleanValue, /Value is not a boolean/);
 
-      expect(fields.get("field_simple_int")).to.be.instanceOf(SimpleField);
+      assert.ok(fields.get("field_simple_int") instanceof SimpleField);
       const simpleFieldInt = fields.getSimpleField("field_simple_int");
-      expect(simpleFieldInt.confidence).to.be.eq(FieldConfidence.Medium);
-      expect(simpleFieldInt.value).to.be.eq(12.0);
+      assert.strictEqual(simpleFieldInt.confidence, FieldConfidence.Medium);
+      assert.strictEqual(simpleFieldInt.value, 12.0);
 
-      expect(fields.get("field_simple_zero")).to.be.instanceOf(SimpleField);
+      assert.ok(fields.get("field_simple_zero") instanceof SimpleField);
       const simpleFieldZero = fields.getSimpleField("field_simple_zero");
-      expect(simpleFieldZero.confidence).to.be.eq(FieldConfidence.Low);
-      expect(simpleFieldZero.value).to.be.eq(0);
-      expect(simpleFieldZero.numberValue).to.be.eq(0);
+      assert.strictEqual(simpleFieldZero.confidence, FieldConfidence.Low);
+      assert.strictEqual(simpleFieldZero.value, 0);
+      assert.strictEqual(simpleFieldZero.numberValue, 0);
 
-      expect(fields.get("field_simple_bool")).to.be.instanceOf(SimpleField);
+      assert.ok(fields.get("field_simple_bool") instanceof SimpleField);
       const simpleFieldBool = fields.getSimpleField("field_simple_bool");
-      expect(simpleFieldBool.value).to.be.eq(true);
-      expect(simpleFieldBool.booleanValue).to.be.eq(true);
-      expect(() => simpleFieldBool.stringValue).to.throw("Value is not a string");
-      expect(() => simpleFieldBool.numberValue).to.throw("Value is not a number");
+      assert.strictEqual(simpleFieldBool.value, true);
+      assert.strictEqual(simpleFieldBool.booleanValue, true);
+      assert.throws(() => simpleFieldBool.stringValue, /Value is not a string/);
+      assert.throws(() => simpleFieldBool.numberValue, /Value is not a number/);
 
-      expect(fields.get("field_simple_null")).to.be.instanceOf(SimpleField);
+      assert.ok(fields.get("field_simple_null") instanceof SimpleField);
       const simpleFieldNull = fields.getSimpleField("field_simple_null");
-      expect(simpleFieldNull.value).to.be.eq(null);
-      expect(simpleFieldNull.stringValue).to.be.eq(null);
-      expect(simpleFieldNull.numberValue).to.be.eq(null);
-      expect(simpleFieldNull.booleanValue).to.be.eq(null);
+      assert.strictEqual(simpleFieldNull.value, null);
+      assert.strictEqual(simpleFieldNull.stringValue, null);
+      assert.strictEqual(simpleFieldNull.numberValue, null);
+      assert.strictEqual(simpleFieldNull.booleanValue, null);
     });
 
     it("should recognize simple list fields", async () => {
@@ -220,14 +218,14 @@ describe("MindeeV2 - Extraction Response", async () => {
       );
       const fields = response.inference.result.fields;
 
-      expect(fields.get("field_simple_list")).to.be.instanceOf(ListField);
+      assert.ok(fields.get("field_simple_list") instanceof ListField);
       const fieldSimpleList = fields.getListField("field_simple_list");
-      expect(fieldSimpleList.items.length).to.be.eq(2);
+      assert.strictEqual(fieldSimpleList.items.length, 2);
       const subFields = fieldSimpleList.simpleItems;
-      expect(subFields.length).to.be.eq(2);
+      assert.strictEqual(subFields.length, 2);
 
       for (const subField of subFields) {
-        expect(subField.value).to.be.not.null;
+        assert.notStrictEqual(subField.value, null);
       }
     });
 
@@ -237,19 +235,19 @@ describe("MindeeV2 - Extraction Response", async () => {
       );
       const fields = response.inference.result.fields;
 
-      expect(fields.get("field_object")).to.be.instanceOf(ObjectField);
+      assert.ok(fields.get("field_object") instanceof ObjectField);
       const objectField = fields.getObjectField("field_object");
-      expect(objectField.fields.size).to.be.eq(2);
+      assert.strictEqual(objectField.fields.size, 2);
       const subFields = objectField.simpleFields;
-      expect(subFields.size).to.be.eq(2);
+      assert.strictEqual(subFields.size, 2);
 
       const subField1 = subFields.get("subfield_1");
-      expect(subField1?.value).to.be.not.null;
-      expect(subField1?.confidence).to.be.eq(FieldConfidence.High);
+      assert.notStrictEqual(subField1?.value, null);
+      assert.strictEqual(subField1?.confidence, FieldConfidence.High);
 
       subFields.forEach((subField, fieldName) => {
-        expect(fieldName.startsWith("subfield_")).to.be.true;
-        expect(subField.value).to.be.not.null;
+        assert.ok(fieldName.startsWith("subfield_"));
+        assert.notStrictEqual(subField.value, null);
       });
     });
 
@@ -259,22 +257,22 @@ describe("MindeeV2 - Extraction Response", async () => {
       );
       const fields = response.inference.result.fields;
 
-      expect(fields.get("field_object_list")).to.be.instanceOf(ListField);
+      assert.ok(fields.get("field_object_list") instanceof ListField);
       const fieldObjectList = fields.getListField("field_object_list");
-      expect(fieldObjectList.items.length).to.be.eq(2);
+      assert.strictEqual(fieldObjectList.items.length, 2);
       const objectItems = fieldObjectList.objectItems;
-      expect(objectItems.length).to.be.eq(2);
+      assert.strictEqual(objectItems.length, 2);
 
       for (const itemField of objectItems) {
         const subFields = itemField.simpleFields;
-        expect(subFields).to.be.not.null;
+        assert.notStrictEqual(subFields, null);
 
         const subField1 = subFields.get("subfield_1");
-        expect(subField1?.value).to.be.not.null;
+        assert.notStrictEqual(subField1?.value, null);
 
         subFields.forEach((subField, fieldName) => {
-          expect(fieldName.startsWith("subfield_")).to.be.true;
-          expect(subField.value).to.be.not.null;
+          assert.ok(fieldName.startsWith("subfield_"));
+          assert.notStrictEqual(subField.value, null);
         });
       }
     });
@@ -285,17 +283,17 @@ describe("MindeeV2 - Extraction Response", async () => {
       const response = await loadV2Response(
         ExtractionResponse, path.join(extractionPath, "raw_texts.json")
       );
-      expect(response.inference.result.rag).to.be.undefined;
+      assert.strictEqual(response.inference.result.rag, undefined);
 
       const rawText = response.inference.result.rawText;
-      expect(rawText).to.be.instanceOf(field.RawText);
+      assert.ok(rawText instanceof field.RawText);
 
       const pages = rawText?.pages;
       if (pages === undefined) throw new Error("pages is undefined");
 
-      expect(pages).to.be.an("array").and.have.lengthOf(2);
+      assert.ok(Array.isArray(pages) && pages.length === 2);
       const first = pages[0];
-      expect(first.content).to.eq("This is the raw text of the first page...");
+      assert.strictEqual(first.content, "This is the raw text of the first page...");
     });
   });
 
@@ -305,8 +303,8 @@ describe("MindeeV2 - Extraction Response", async () => {
         ExtractionResponse, path.join(extractionPath, "rag_matched.json")
       );
       const rag = response.inference.result.rag;
-      expect(rag).to.be.instanceOf(field.RagMetadata);
-      expect(rag?.retrievedDocumentId).to.eq("12345abc-1234-1234-1234-123456789abc");
+      assert.ok(rag instanceof field.RagMetadata);
+      assert.strictEqual(rag?.retrievedDocumentId, "12345abc-1234-1234-1234-123456789abc");
     });
 
     it("RAG metadata when not matched", async () => {
@@ -314,8 +312,8 @@ describe("MindeeV2 - Extraction Response", async () => {
         ExtractionResponse, path.join(extractionPath, "rag_not_matched.json")
       );
       const rag = response.inference.result.rag;
-      expect(rag).to.be.instanceOf(field.RagMetadata);
-      expect(rag?.retrievedDocumentId).to.be.undefined;
+      assert.ok(rag instanceof field.RagMetadata);
+      assert.strictEqual(rag?.retrievedDocumentId, undefined);
     });
   });
 
@@ -326,8 +324,8 @@ describe("MindeeV2 - Extraction Response", async () => {
       );
       const rstString = await fs.readFile(standardFieldRstPath, "utf8");
 
-      expect(response.inference).to.not.be.null;
-      expect(response.inference.toString()).to.be.eq(rstString);
+      assert.notStrictEqual(response.inference, null);
+      assert.strictEqual(response.inference.toString(), rstString);
     }).timeout(10000);
   });
 
@@ -336,41 +334,41 @@ describe("MindeeV2 - Extraction Response", async () => {
       const response = await loadV2Response(
         ExtractionResponse, locationFieldPath
       );
-      expect(response.inference).to.not.be.null;
+      assert.notStrictEqual(response.inference, null);
 
       const dateField = response.inference.result.fields.get("date") as SimpleField;
-      expect(dateField.locations).to.exist;
-      expect(dateField.locations![0]).to.exist;
-      expect(dateField.locations![0].page).to.equal(0);
+      assert.ok(dateField.locations);
+      assert.ok(dateField.locations![0]);
+      assert.strictEqual(dateField.locations![0].page, 0);
 
       const polygon: Polygon = dateField.locations![0].polygon!;
 
-      expect(polygon[0].length).to.equal(2);
+      assert.strictEqual(polygon[0].length, 2);
 
-      expect(polygon[0][0]).to.equal(0.948979073166918);
-      expect(polygon[0][1]).to.equal(0.23097924535067715);
+      assert.strictEqual(polygon[0][0], 0.948979073166918);
+      assert.strictEqual(polygon[0][1], 0.23097924535067715);
 
-      expect(polygon[1][0]).to.equal(0.85422);
-      expect(polygon[1][1]).to.equal(0.230072);
+      assert.strictEqual(polygon[1][0], 0.85422);
+      assert.strictEqual(polygon[1][1], 0.230072);
 
-      expect(polygon[2][0]).to.equal(0.8540899268330819);
-      expect(polygon[2][1]).to.equal(0.24365775464932288);
+      assert.strictEqual(polygon[2][0], 0.8540899268330819);
+      assert.strictEqual(polygon[2][1], 0.24365775464932288);
 
-      expect(polygon[3][0]).to.equal(0.948849);
-      expect(polygon[3][1]).to.equal(0.244565);
+      assert.strictEqual(polygon[3][0], 0.948849);
+      assert.strictEqual(polygon[3][1], 0.244565);
 
       const eqConfidenceEnum = dateField.confidence === FieldConfidence.Medium;
-      expect(eqConfidenceEnum).to.be.true;
+      assert.ok(eqConfidenceEnum);
 
-      expect(dateField.confidence === "Medium").to.be.true;
-      expect(FieldConfidence.toInt(dateField.confidence) === 2).to.be.true;
+      assert.ok(dateField.confidence === "Medium");
+      assert.ok(FieldConfidence.toInt(dateField.confidence) === 2);
 
-      expect(FieldConfidence.greaterThan(dateField.confidence, FieldConfidence.Low)).to.be.true;
-      expect(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Low)).to.be.true;
-      expect(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Medium)).to.be.true;
-      expect(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Medium)).to.be.true;
-      expect(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Certain)).to.be.true;
-      expect(FieldConfidence.lessThan(dateField.confidence, FieldConfidence.Certain)).to.be.true;
+      assert.ok(FieldConfidence.greaterThan(dateField.confidence, FieldConfidence.Low));
+      assert.ok(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Low));
+      assert.ok(FieldConfidence.greaterThanOrEqual(dateField.confidence, FieldConfidence.Medium));
+      assert.ok(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Medium));
+      assert.ok(FieldConfidence.lessThanOrEqual(dateField.confidence, FieldConfidence.Certain));
+      assert.ok(FieldConfidence.lessThan(dateField.confidence, FieldConfidence.Certain));
 
     }).timeout(10000);
   });

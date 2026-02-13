@@ -1,4 +1,3 @@
-import { expect } from "chai";
 import { MockAgent, setGlobalDispatcher } from "undici";
 import path from "node:path";
 import { Client, PathInput } from "@/index.js";
@@ -63,10 +62,10 @@ describe("MindeeV2 - ClientV2", () => {
 
     it("inherits base URL, token & headers from the env / options", () => {
       const api = (client as any).mindeeApi;
-      expect(api.settings.apiKey).to.equal("dummy");
-      expect(api.settings.hostname).to.equal("v2-client-host");
-      expect(api.settings.baseHeaders.Authorization).to.equal("dummy");
-      expect(api.settings.baseHeaders["User-Agent"]).to.match(/mindee/i);
+      assert.strictEqual(api.settings.apiKey, "dummy");
+      assert.strictEqual(api.settings.hostname, "v2-client-host");
+      assert.strictEqual(api.settings.baseHeaders.Authorization, "dummy");
+      assert.match(api.settings.baseHeaders["User-Agent"], /mindee/i);
     });
 
     it("enqueue(path) on extraction rejects with MindeeHttpErrorV2 on 400", async () => {
@@ -127,9 +126,9 @@ describe("MindeeV2 - ClientV2", () => {
       await assert.rejects(
         client.enqueue(Extraction, input, { modelId: "dummy-model" }),
         (error: any) => {
-          expect(error).to.be.instanceOf(MindeeHttpErrorV2);
-          expect(error.status).to.equal(400);
-          expect(error.detail).to.equal("forced failure from test");
+          assert.ok(error instanceof MindeeHttpErrorV2);
+          assert.strictEqual(error.status, 400);
+          assert.strictEqual(error.detail, "forced failure from test");
           return true;
         }
       );
@@ -140,18 +139,18 @@ describe("MindeeV2 - ClientV2", () => {
         "12345678-1234-1234-1234-123456789ABC"
       );
       const job = resp.job;
-      expect(job.id).to.equal("12345678-1234-1234-1234-123456789ABC");
-      expect(job.modelId).to.equal("87654321-4321-4321-4321-CBA987654321");
-      expect(job.filename).to.equal("default_sample.jpg");
-      expect(job.alias).to.equal("dummy-alias.jpg");
-      expect(job.createdAt?.toISOString()).to.equal("2025-07-03T14:27:58.974Z");
-      expect(job.status).to.equal("Processing");
-      expect(job.pollingUrl).to.equal(
+      assert.strictEqual(job.id, "12345678-1234-1234-1234-123456789ABC");
+      assert.strictEqual(job.modelId, "87654321-4321-4321-4321-CBA987654321");
+      assert.strictEqual(job.filename, "default_sample.jpg");
+      assert.strictEqual(job.alias, "dummy-alias.jpg");
+      assert.strictEqual(job.createdAt?.toISOString(), "2025-07-03T14:27:58.974Z");
+      assert.strictEqual(job.status, "Processing");
+      assert.strictEqual(job.pollingUrl,
         "https://api-v2.mindee.net/v2/jobs/12345678-1234-1234-1234-123456789ABC"
       );
-      expect(job.resultUrl).to.be.null;
-      expect(job.webhooks).to.have.length(0);
-      expect(job.error).to.be.undefined;
+      assert.strictEqual(job.resultUrl, null);
+      assert.strictEqual(job.webhooks.length, 0);
+      assert.strictEqual(job.error, undefined);
     });
   });
 });

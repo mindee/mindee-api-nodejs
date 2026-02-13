@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import assert from "node:assert";
 import { UrlInput } from "@/index.js";
 import { Client } from "@/v1/index.js";
 import { InvoiceV4 } from "@/v1/product/index.js";
@@ -17,8 +17,8 @@ describe("MindeeV1 - URL Input Integration Test", async () => {
     await remoteInput.init();
     const localInput = await remoteInput.asLocalInputSource();
 
-    expect(localInput.filename).to.equal("invoice_5p.pdf");
+    assert.strictEqual(localInput.filename, "invoice_5p.pdf");
     const result = await client.parse(InvoiceV4, localInput);
-    expect(result.document.nPages).to.equal(5);
+    assert.strictEqual(result.document.nPages, 5);
   }).timeout(60000);
 });
