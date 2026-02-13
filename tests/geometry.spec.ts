@@ -47,24 +47,33 @@ describe("Geometry functions", () => {
   });
 
   it("should get a polygon's bounding box", () => {
-    assert.deepStrictEqual(geometry.getBoundingBox(polygonA), [
-      [0.123, 0.53],
-      [0.175, 0.53],
-      [0.175, 0.546],
-      [0.123, 0.546],
-    ]);
-    assert.deepStrictEqual(geometry.getBoundingBox(polygonB), [
-      [0.124, 0.535],
-      [0.19, 0.535],
-      [0.19, 0.546],
-      [0.124, 0.546],
-    ]);
-    assert.deepStrictEqual(geometry.getBoundingBox(polygonC), [
-      [0.205, 0.407],
-      [0.381, 0.407],
-      [0.381, 0.43],
-      [0.205, 0.43],
-    ]);
+    assert.deepStrictEqual(
+      geometry.getBoundingBox(polygonA),
+      new geometry.BoundingBox(
+        [0.123, 0.53],
+        [0.175, 0.53],
+        [0.175, 0.546],
+        [0.123, 0.546],
+      )
+    );
+    assert.deepStrictEqual(
+      geometry.getBoundingBox(polygonB),
+      new geometry.BoundingBox(
+        [0.124, 0.535],
+        [0.19, 0.535],
+        [0.19, 0.546],
+        [0.124, 0.546],
+      )
+    );
+    assert.deepStrictEqual(
+      geometry.getBoundingBox(polygonC),
+      new geometry.BoundingBox(
+        [0.205, 0.407],
+        [0.381, 0.407],
+        [0.381, 0.43],
+        [0.205, 0.43],
+      )
+    );
   });
 
   it("should calculate a polygon's centroid", () => {

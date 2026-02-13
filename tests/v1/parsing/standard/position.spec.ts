@@ -4,6 +4,7 @@ import assert from "node:assert/strict";
 describe("Test Position field", () => {
   it("Should create a Position field", () => {
     const prediction = {
+      /* eslint-disable-next-line @typescript-eslint/naming-convention,camelcase */
       bounding_box: [
         [0, 0],
         [1, 0],

@@ -3,6 +3,7 @@ import assert from "node:assert/strict";
 
 describe("Test PaymentDetailsField field", () => {
   it("should create a PaymentDetailsField field", () => {
+    /* eslint-disable @typescript-eslint/naming-convention,camelcase */
     const prediction = {
       account_number: "account_number",
       iban: "iban",
@@ -16,6 +17,7 @@ describe("Test PaymentDetailsField field", () => {
         [0.016, 0.831],
       ],
     };
+    /* eslint-enable @typescript-eslint/naming-convention,camelcase */
     const paymentDetail = new PaymentDetailsField({ prediction });
     assert.strictEqual(paymentDetail.accountNumber, prediction.account_number);
     assert.strictEqual(paymentDetail.iban, prediction.iban);
@@ -25,6 +27,7 @@ describe("Test PaymentDetailsField field", () => {
   });
 
   it("should create a PaymentDetailsField field with N/A inputs", () => {
+    /* eslint-disable @typescript-eslint/naming-convention,camelcase */
     const prediction = {
       account_number: "N/A",
       iban: "N/A",
@@ -38,6 +41,7 @@ describe("Test PaymentDetailsField field", () => {
         [0.016, 0.831],
       ],
     };
+    /* eslint-enable @typescript-eslint/naming-convention,camelcase */
     const paymentDetail = new PaymentDetailsField({ prediction });
     assert.strictEqual(paymentDetail.accountNumber, undefined);
     assert.strictEqual(paymentDetail.iban, undefined);
@@ -47,6 +51,7 @@ describe("Test PaymentDetailsField field", () => {
   });
 
   it("should create a PaymentDetailsField field with empty inputs", () => {
+    /* eslint-disable @typescript-eslint/naming-convention,camelcase */
     const prediction = {
       account_number: {},
       iban: {},
@@ -60,6 +65,7 @@ describe("Test PaymentDetailsField field", () => {
         [0.016, 0.831],
       ],
     };
+    /* eslint-enable @typescript-eslint/naming-convention,camelcase */
     const paymentDetail = new PaymentDetailsField({ prediction });
     assert.strictEqual(paymentDetail.accountNumber, undefined);
     assert.strictEqual(paymentDetail.iban, undefined);
