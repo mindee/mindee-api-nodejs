@@ -1,5 +1,5 @@
 import { InferenceModel } from "./inferenceModel.js";
-import { InferenceFile } from "@/v2/index.js";
+import { InferenceFile } from "./inferenceFile.js";
 import { StringDict } from "@/parsing/index.js";
 
 export abstract class BaseInference {
