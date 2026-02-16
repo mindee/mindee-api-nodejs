@@ -33,7 +33,7 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 
 // Send for processing
 const response = await mindeeClient.enqueueAndGetResult(
-  mindee.v2.product.Extraction,
+  mindee.product.Extraction,
   inputSource,
   params,
 );
