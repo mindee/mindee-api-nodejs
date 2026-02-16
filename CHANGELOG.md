@@ -1,5 +1,43 @@
 # CHANGELOG
 
+## 5.0.0-alpha2 - 2026-01-16
+### Changes
+* :recycle: use node test methods
+* :recycle: v1 ocr word should be a class
+* :recycle: make v2 products top level
+* :bug: fix for optional node-poppler
+
+
+## 5.0.0-alpha1 - 2026-01-13
+### :boom: :recycle: base for v5
+* :arrow_up: update file-type
+* :recycle: migrate to ES modules (node18)
+* :coffin: remove support for obsolete/unused products:
+  * API builder (no longer maintained, use v2)
+* :coffin: remove support for unused products available in v2:
+  * nutrition facts
+  * business card
+  * US healthcare cards
+  * bill of lading
+* :coffin: remove support for unused products:
+  * delivery note
+  * payslip_fra_v2_async
+  * idcard_fr_v1
+  * ind_passport_v1_async
+  * us_mail_v3_async
+  * energy_bill_fra_v1_async
+  * french_healthcard_v1_async
+  * payslip_fra_v3_async
+* :recycle: use undici for HTTP requests and mocking
+* :sparkles: add ability for a user to specify their own undici `Dispatcher` instance
+* :sparkles: add basic V2 CLI
+* :recycle: :boom: rework of directory structure
+* :recycle: :boom: rework input source errors
+* :sparkles: handle abort signal stream inputs
+* :sparkles: add support for all utility products
+* :boom: :sparkles:  move PDF and image libraries to optional dependencies
+
+
 ## v4.36.3 - 2026-01-20
 ### Fixes
 * :bug: fix streams not loading properly
