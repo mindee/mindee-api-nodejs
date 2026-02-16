@@ -10,7 +10,8 @@ export {
   getMinMaxX,
   getMinMaxY,
 } from "./polygonUtils.js";
-export { BoundingBox, BBox } from "./boundingBox.js";
+export { BoundingBox } from "./boundingBox.js";
+export { BBox } from "./bbox.js";
 export {
   getBbox,
   getBBoxForPolygons,

@@ -1,4 +1,5 @@
-import { BoundingBox, BBox } from "./boundingBox.js";
+import { BoundingBox } from "./boundingBox.js";
+import { BBox } from "./bbox.js";
 import { Polygon } from "./polygon.js";
 
 /**
