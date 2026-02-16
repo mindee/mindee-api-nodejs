@@ -62,13 +62,13 @@
     "file-type": "^19.6.0",
     "tmp": "^0.2.3",
     "tslib": "^2.8.1",
-    "undici": "^6.23.0",
-    "node-poppler": "^7.2.4"
+    "undici": "^6.23.0"
   },
   "optionalDependencies": {
     "sharp": "~0.34.5",
     "@cantoo/pdf-lib": "^2.3.2",
-    "pdf.js-extract": "^0.2.1"
+    "pdf.js-extract": "^0.2.1",
+    "node-poppler": "^7.2.4"
   },
   "keywords": [
     "typescript",
