@@ -1,11 +1,13 @@
 import { Buffer } from "node:buffer";
 import { MindeeError } from "@/errors/index.js";
 import { writeFileSync } from "node:fs";
-import path from "node:path";
-import { logger } from "@/logger.js";
-import { BufferInput, MIMETYPES } from "@/input/index.js";
-import type * as popplerTypes from "node-poppler";
 import { writeFile } from "fs/promises";
+import path from "node:path";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type * as popplerTypes from "node-poppler";
+import { BufferInput, MIMETYPES } from "@/input/index.js";
+import { logger } from "@/logger.js";
 import { loadOptionalDependency } from "@/dependency/index.js";
 
 /**
@@ -34,7 +36,9 @@ export class ExtractedImage {
     try {
       let outputBuffer: Buffer = this.buffer;
       if (fileExt !== ".pdf") {
-        const popplerImport = await loadOptionalDependency<typeof popplerTypes>("node-poppler", "Image Processing");
+        const popplerImport = await loadOptionalDependency<typeof popplerTypes>(
+          "node-poppler", "Image Processing"
+        );
         const poppler = (popplerImport as any).default || popplerImport;
         const popplerInstance = new poppler.Poppler();
         const options: Record<string, unknown> = {

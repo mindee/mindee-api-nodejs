@@ -1,19 +1,23 @@
 import { logger } from "@/logger.js";
 import tmp from "tmp";
-import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils.js";
 import * as fs from "node:fs";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import type * as popplerTypes from "node-poppler";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { compressImage } from "@/image/index.js";
 import { loadOptionalDependency } from "@/dependency/index.js";
+import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
-    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>(
+      "@cantoo/pdf-lib", "Text Embedding"
+    );
     pdfLib = (pdfLibImport as any).default || pdfLibImport;
   }
   return pdfLib!;
@@ -43,8 +47,9 @@ export async function compressPdf(
           "is set to false. Resulting file will not contain any embedded text.");
       }
     } else {
-      logger.warn("Found text inside of the provided PDF file. Compression operation aborted since disableSourceText "
-        + "is set to 'true'."
+      logger.warn(
+        "Found text inside of the provided PDF file. " +
+        "Compression operation aborted since disableSourceText is set to 'true'."
       );
       return pdfData;
     }
@@ -74,7 +79,9 @@ export async function compressPdf(
  * @param forceSourceTextCompression If true, attempts to re-write detected text.
  * @param disableSourceText If true, doesn't re-apply source text to the output PDF.
  */
-function handleCompressionWarnings(forceSourceTextCompression: boolean, disableSourceText: boolean): void {
+function handleCompressionWarnings(
+  forceSourceTextCompression: boolean, disableSourceText: boolean
+): void {
   if (forceSourceTextCompression) {
     if (!disableSourceText) {
       logger.warn("Re-writing PDF source-text is an EXPERIMENTAL feature.");
@@ -170,7 +177,9 @@ async function compressPagesWithQuality(
  * @returns The total size of compressed pages.
  */
 function calculateTotalCompressedSize(compressedPages: Buffer[]): number {
-  return compressedPages.reduce((sum, page) => sum + page.length, 0);
+  return compressedPages.reduce(
+    (sum, page) => sum + page.length, 0
+  );
 }
 
 /**
