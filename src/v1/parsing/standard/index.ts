@@ -12,4 +12,4 @@ export { Taxes, TaxField } from "./tax.js";
 export { StringField } from "./text.js";
 export { PaymentDetailsField } from "./paymentDetails.js";
 export { PositionField } from "./position.js";
-export type { Word } from "./word.js";
+export { Word } from "./word.js";

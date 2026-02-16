@@ -1,7 +1,6 @@
 import {
   compareOnX,
   compareOnY,
-  getCentroid,
   isPointInPolygonY,
 } from "@/geometry/index.js";
 import { Word } from "@/v1/parsing/standard/index.js";
@@ -16,8 +15,8 @@ export class OcrPage {
   constructor(rawPrediction: StringDict) {
     const allWords: Word[] = [];
     if (rawPrediction["all_words"]) {
-      rawPrediction["all_words"].forEach((word: Word) => {
-        allWords.push(word);
+      rawPrediction["all_words"].forEach((word: StringDict) => {
+        allWords.push(new Word(word));
       });
     }
     this.allWords = allWords.sort((word1, word2) =>
@@ -27,11 +26,11 @@ export class OcrPage {
 
   #areWordsOnSameLine(currentWord: Word, nextWord: Word) {
     const currentInNext = isPointInPolygonY(
-      getCentroid(currentWord.polygon),
+      currentWord.polygon.getCentroid(),
       nextWord.polygon
     );
     const nextInCurrent = isPointInPolygonY(
-      getCentroid(nextWord.polygon),
+      nextWord.polygon.getCentroid(),
       currentWord.polygon
     );
     return nextInCurrent || currentInNext;
