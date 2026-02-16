@@ -21,7 +21,7 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 
 // Send for processing
 const response = await mindeeClient.enqueueAndGetResult(
-  mindee.v2.product.Crop,
+  mindee.product.Crop,
   inputSource,
   params,
 );

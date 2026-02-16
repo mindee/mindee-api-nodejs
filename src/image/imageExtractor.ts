@@ -9,7 +9,9 @@ let pdfLib: typeof pdfLibTypes | null = null;
 
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
-    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
+    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>(
+      "@cantoo/pdf-lib", "Text Embedding"
+    );
     pdfLib = (pdfLibImport as any).default || pdfLibImport;
   }
   return pdfLib!;
@@ -23,7 +25,8 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
  */
 export async function extractFromPage(
   pdfPage: pdfLibTypes.PDFPage,
-  polygons: Polygon[]) {
+  polygons: Polygon[]
+) {
   const pdfLib = await getPdfLib();
   const { width, height } = pdfPage.getSize();
   const extractedElements :Uint8Array[] = [];

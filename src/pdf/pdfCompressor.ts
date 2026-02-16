@@ -151,8 +151,9 @@ async function compressPagesWithQuality(
   for (let i = 0; i < extractedPdfInfo.pages.length; i++) {
     const page = pdfDoc.getPages()[i];
     const rasterizedPage = await rasterizePage(pdfData, i + 1, imageQuality);
-    const compressedImage = await compressImage(Buffer.from(rasterizedPage, "binary"), imageQuality);
-
+    const compressedImage = await compressImage(
+      Buffer.from(rasterizedPage, "binary"), imageQuality
+    );
     if (!disableSourceText) {
       await addTextToPdfPage(page, extractedText);
     }
@@ -183,7 +184,9 @@ function calculateTotalCompressedSize(compressedPages: Buffer[]): number {
  * @param imageQuality Compression quality.
  * @returns True if compression was successful, false otherwise.
  */
-function isCompressionSuccessful(totalCompressedSize: number, originalSize: number, imageQuality: number): boolean {
+function isCompressionSuccessful(
+  totalCompressedSize: number, originalSize: number, imageQuality: number
+): boolean {
   const overhead = lerp(0.54, 0.18, imageQuality / 100);
   return totalCompressedSize + totalCompressedSize * overhead < originalSize;
 }
@@ -255,9 +258,12 @@ async function getFontFromName(fontName: string): Promise<pdfLibTypes.PDFFont> {
  * @param index Index of the page to rasterize.
  * @param quality Quality to apply during rasterization.
  */
-async function rasterizePage(pdfData: Buffer, index: number, quality = 85): Promise<string> {
-
-  const popplerImport = await loadOptionalDependency<typeof popplerTypes>("node-poppler", "Image Processing");
+async function rasterizePage(
+  pdfData: Buffer, index: number, quality = 85
+): Promise<string> {
+  const popplerImport = await loadOptionalDependency<typeof popplerTypes>(
+    "node-poppler", "Image Processing"
+  );
   const poppler = (popplerImport as any).default || popplerImport;
   const popplerInstance = new poppler.Poppler();
   const tmpPdf = tmp.fileSync();
