@@ -28,7 +28,7 @@
     "CHANGELOG.md"
   ],
   "engines": {
-    "node": ">= 18.17"
+    "node": ">= 20.1"
   },
   "repository": {
     "type": "git",
