@@ -18,7 +18,7 @@ async function loadV2Job(resourcePath: string): Promise<JobResponse> {
 }
 
 describe("MindeeV2 - Job Response", async () => {
-  describe("OK", async () => {
+  describe("Success", async () => {
     it("should load when status is Processing", async () => {
       const response = await loadV2Job(
         path.join(jobPath, "ok_processing.json")
@@ -27,7 +27,7 @@ describe("MindeeV2 - Job Response", async () => {
       assert.strictEqual(response.job.error, undefined);
     });
   });
-  describe("Fail", async () => {
+  describe("Failure", async () => {
     it("should load with 422 error", async () => {
       const response = await loadV2Job(
         path.join(jobPath, "fail_422.json")

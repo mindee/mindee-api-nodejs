@@ -1,5 +1,3 @@
-import { ValidatedPollingOptions } from "@/v2/client/pollingOptions.js";
-import { PollingOptions } from "@/v2/index.js";
 import { MindeeConfigurationError } from "@/errors/index.js";
 
 /**
@@ -9,7 +7,6 @@ export interface BaseParametersConstructor {
   modelId: string;
   alias?: string;
   webhookIds?: string[];
-  pollingOptions?: PollingOptions;
   closeFile?: boolean;
 }
 
@@ -47,10 +44,6 @@ export abstract class BaseParameters {
    */
   webhookIds?: string[];
   /**
-   * Client-side polling configuration (see {@link PollingOptions}).
-   */
-  pollingOptions?: PollingOptions;
-  /**
    * By default, the file is closed once the upload is finished.
    * Set to `false` to keep it open.
    */
@@ -64,44 +57,6 @@ export abstract class BaseParameters {
     this.alias = params.alias;
     this.webhookIds = params.webhookIds;
     this.closeFile = params.closeFile;
-    this.pollingOptions = params.pollingOptions;
-  }
-
-  /**
-   * Checks the values for asynchronous parsing. Returns their corrected value if they are undefined.
-   * @returns A valid `AsyncOptions`.
-   */
-  getValidatedPollingOptions(): ValidatedPollingOptions {
-    const minDelaySec = 1;
-    const minInitialDelay = 1;
-    const minRetries = 2;
-    let newAsyncParams: PollingOptions;
-    if (this.pollingOptions === undefined) {
-      newAsyncParams = {
-        delaySec: 1.5,
-        initialDelaySec: 2,
-        maxRetries: 80
-      };
-    } else {
-      newAsyncParams = { ...this.pollingOptions };
-      if (
-        !newAsyncParams.delaySec ||
-        !newAsyncParams.initialDelaySec ||
-        !newAsyncParams.maxRetries
-      ) {
-        throw Error("Invalid polling options.");
-      }
-      if (newAsyncParams.delaySec < minDelaySec) {
-        throw Error(`Cannot set auto-parsing delay to less than ${minDelaySec} second(s).`);
-      }
-      if (newAsyncParams.initialDelaySec < minInitialDelay) {
-        throw Error(`Cannot set initial parsing delay to less than ${minInitialDelay} second(s).`);
-      }
-      if (newAsyncParams.maxRetries < minRetries) {
-        throw Error(`Cannot set retry to less than ${minRetries}.`);
-      }
-    }
-    return newAsyncParams as ValidatedPollingOptions;
   }
 
   /**
