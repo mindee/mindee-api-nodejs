@@ -12,7 +12,7 @@ const mindeeClient = new mindee.Client(
 );
 
 // Set product parameters
-const params = {
+const productParams = {
   modelId: modelId,
 };
 
@@ -23,7 +23,7 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 const response = await mindeeClient.enqueueAndGetResult(
   mindee.product.Ocr,
   inputSource,
-  params,
+  productParams,
 );
 
 // print a string summary

@@ -7,7 +7,7 @@ import { LOG_LEVELS, logger } from "@/logger.js";
 import { ErrorResponse, JobResponse } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { ValidatedPollingOptions } from "./client/index.js";
+import { PollingOptions, PollingOptionsConstructor } from "./client/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 /**
@@ -124,6 +124,7 @@ export class Client {
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
    *
+   * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
@@ -132,16 +133,17 @@ export class Client {
     product: P,
     inputSource: InputSource,
     params: InstanceType<P["parametersClass"]> | ConstructorParameters<P["parametersClass"]>[0],
+    pollingOptions?: PollingOptionsConstructor,
   ): Promise<InstanceType<P["responseClass"]>> {
     const paramsInstance = new product.parametersClass(params);
 
-    const pollingOptions = paramsInstance.getValidatedPollingOptions();
+    const pollingOptionsInstance = new PollingOptions(pollingOptions);
 
     const jobResponse: JobResponse = await this.enqueue(
       product, inputSource, paramsInstance
     );
     return await this.pollForResult(
-      product, pollingOptions, jobResponse.job.id
+      product, pollingOptionsInstance, jobResponse.job.id
     );
   }
 
@@ -152,7 +154,7 @@ export class Client {
    */
   protected async pollForResult<P extends typeof BaseProduct>(
     product: typeof BaseProduct,
-    pollingOptions: ValidatedPollingOptions,
+    pollingOptions: PollingOptions,
     queueId: string,
   ): Promise<InstanceType<P["responseClass"]>> {
     logger.debug(
@@ -193,9 +195,8 @@ export class Client {
     }
 
     throw new MindeeError(
-      "Asynchronous parsing request timed out after " +
-      pollingOptions.delaySec * retryCounter +
-      " seconds"
+      `Polling failed to retrieve a result after ${retryCounter} attempts. ` +
+      "You can increase poll attempts by passing the pollingOptions argument to enqueueAndGetResult()"
     );
   }
 }

@@ -48,7 +48,7 @@ describe("MindeeV2 - Load Local Response", () => {
     assert.strictEqual(JSON.stringify(response.getRawHttp()), JSON.stringify(JSON.parse(fileObj)));
   });
 
-  it("loading an inference works on catalog model", async () => {
+  it("should load an inference of a catalog model", async () => {
     const jsonPath = path.join(
       V2_PRODUCT_PATH,
       "extraction",

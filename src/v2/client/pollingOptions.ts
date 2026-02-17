@@ -1,3 +1,23 @@
+import { MindeeConfigurationError } from "@/errors/index.js";
+import { logger } from "@/logger.js";
+
+export interface TimerOptions {
+  ref?: boolean,
+  signal?: AbortSignal
+}
+
+export interface PollingOptionsConstructor {
+  initialDelaySec?: number;
+  delaySec?: number;
+  maxRetries?: number;
+  initialTimerOptions?: TimerOptions;
+  recurringTimerOptions?: TimerOptions;
+}
+
+const minInitialDelay = 1;
+const minDelaySec = 1;
+const minRetries = 2;
+
 /**
  * Parameters for the internal polling loop in `enqueueAndGetInference()`.
  *
@@ -24,13 +44,13 @@
  *
  * const inference = await client.enqueueAndGetInference(inputDoc, params);
  */
-export interface PollingOptions {
+export class PollingOptions {
   /** Number of seconds to wait *before the first poll*. */
-  initialDelaySec?: number;
+  initialDelaySec: number;
   /** Interval in seconds between two consecutive polls. */
-  delaySec?: number;
+  delaySec: number;
   /** Maximum number of polling attempts (including the first one). */
-  maxRetries?: number;
+  maxRetries: number;
   /** Options passed to the initial `setTimeout()`. */
   initialTimerOptions?: {
     ref?: boolean,
@@ -40,11 +60,56 @@ export interface PollingOptions {
   recurringTimerOptions?: {
     ref?: boolean,
     signal?: AbortSignal
-  }
-}
+  };
 
-export interface ValidatedPollingOptions extends PollingOptions {
-  initialDelaySec: number;
-  delaySec: number;
-  maxRetries: number;
+  constructor(params?: PollingOptionsConstructor) {
+    if (!params) {
+      params = {};
+    }
+    if (!params.initialDelaySec) {
+      this.initialDelaySec = 2;
+    } else {
+      this.initialDelaySec = params.initialDelaySec;
+    }
+    if (!params.delaySec) {
+      this.delaySec = 1.5;
+    } else {
+      this.delaySec = params.delaySec;
+    }
+    if (!params.maxRetries) {
+      this.maxRetries = 80;
+    } else {
+      this.maxRetries = params.maxRetries;
+    }
+    if (params.initialTimerOptions) {
+      this.initialTimerOptions = params.initialTimerOptions;
+    }
+    if (params.recurringTimerOptions) {
+      this.recurringTimerOptions = params.recurringTimerOptions;
+    }
+    this.validateOptions();
+    logger.debug(`Polling options initialized: ${this.toString()}`);
+  }
+
+  validateOptions() {
+    if (this.delaySec < minDelaySec) {
+      throw new MindeeConfigurationError(
+        `Cannot set auto-parsing delay to less than ${minDelaySec} second(s).`
+      );
+    }
+    if (this.initialDelaySec < minInitialDelay) {
+      throw new MindeeConfigurationError(
+        `Cannot set initial parsing delay to less than ${minInitialDelay} second(s).`
+      );
+    }
+    if (this.maxRetries < minRetries) {
+      throw new MindeeConfigurationError(
+        `Cannot set retry to less than ${minRetries}.`
+      );
+    }
+  }
+
+  toString(): string {
+    return `{ initialDelaySec: ${this.initialDelaySec}, delaySec: ${this.delaySec}, maxRetries: ${this.maxRetries} }`;
+  }
 }

@@ -15,7 +15,7 @@ import {
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import * as fs from "node:fs";
-import { RESOURCE_PATH, V2_PRODUCT_PATH } from "../index.js";
+import { RESOURCE_PATH, V2_PRODUCT_PATH } from "../../index.js";
 import { Extraction } from "@/v2/product/index.js";
 
 function check422(err: unknown) {
@@ -37,7 +37,7 @@ function checkEmptyActiveOptions(inference: ExtractionInference) {
   assert.equal(inference.activeOptions?.textContext, false);
 }
 
-describe("MindeeV2 – Client Integration Tests", () => {
+describe("MindeeV2 – Integration - Client", () => {
   let client: Client;
   let modelId: string;
 
@@ -73,7 +73,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     dataSchemaReplace = fs.readFileSync(dataSchemaReplacePath).toString();
   });
 
-  it("Empty, multi-page PDF – PathInput - enqueueAndGetResult must succeed", async () => {
+  it("enqueueAndGetResult must succeed: Empty, multi-page PDF – PathInput", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
     const params = {
       modelId,
@@ -100,7 +100,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     checkEmptyActiveOptions(inference);
   }).timeout(60000);
 
-  it("Filled, single-page image – PathInput - enqueueAndGetResult must succeed", async () => {
+  it("enqueueAndGetResult must succeed: Filled, single-page image – PathInput", async () => {
     const source = new PathInput({ inputPath: sampleImagePath });
     const params = {
       modelId,
@@ -139,7 +139,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     assert.equal(inference.result.rawText?.pages.length, 1);
   }).timeout(120000);
 
-  it("Filled, single-page image – Base64Input - enqueueAndGetResult must succeed", async () => {
+  it("enqueueAndGetResult must succeed: Filled, single-page image – Base64Input", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
     const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
     const params = {
@@ -170,7 +170,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     checkEmptyActiveOptions(inference);
   }).timeout(120000);
 
-  it("Invalid model ID – enqueue must raise 422", async () => {
+  it("enqueue must raise 422: Invalid model ID", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
     const badParams = { modelId: "00000000-0000-0000-0000-000000000000" };
 
@@ -182,7 +182,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     }
   }).timeout(60000);
 
-  it("Invalid job ID – getInference must raise 422", async () => {
+  it("getResult must raise 422: Invalid job ID", async () => {
     try {
       await client.getResult(
         Extraction,
@@ -194,7 +194,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     }
   }).timeout(60000);
 
-  it("HTTPS URL – enqueueAndGetResult must succeed", async () => {
+  it("enqueueAndGetResult must succeed: HTTPS URL", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
     const source = new UrlInput({ url });
     const params = new ExtractionParameters({
@@ -213,7 +213,7 @@ describe("MindeeV2 – Client Integration Tests", () => {
     assert.ok(response.inference instanceof ExtractionInference);
   }).timeout(60000);
 
-  it("Data Schema Override - Overrides the data schema successfully", async () => {
+  it("should override the data schema successfully", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
     const params = new ExtractionParameters({
       modelId,

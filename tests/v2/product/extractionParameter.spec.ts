@@ -20,11 +20,6 @@ describe("MindeeV2 - Extraction Parameter", () => {
         modelId: modelIdValue,
       });
       assert.strictEqual(paramsInstance.modelId, modelIdValue);
-      assert.deepStrictEqual(paramsInstance.getValidatedPollingOptions(), {
-        delaySec: 1.5,
-        initialDelaySec: 2,
-        maxRetries: 80
-      });
     });
   });
 
