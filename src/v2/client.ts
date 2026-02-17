@@ -124,7 +124,7 @@ export class Client {
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
    *
-   * @param pollingOptions
+   * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @category Synchronous
    * @returns a `Promise` containing parsing results.
@@ -195,9 +195,8 @@ export class Client {
     }
 
     throw new MindeeError(
-      "Asynchronous parsing request timed out after " +
-      pollingOptions.delaySec * retryCounter +
-      " seconds"
+      `Polling failed to retrieve a result after ${retryCounter} attempts. ` +
+      "You can increase poll attempts by passing the pollingOptions argument to enqueueAndGetResult()"
     );
   }
 }
