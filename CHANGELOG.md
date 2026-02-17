@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## 5.0.0-rc1 - 2026-01-17
+### Changes
+* :boom: drop support for node.js 18
+* :boom: :recycle: separate polling options
+
+
 ## 5.0.0-alpha2 - 2026-01-16
 ### Changes
 * :recycle: use node test methods
