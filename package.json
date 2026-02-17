@@ -2,13 +2,26 @@
   "name": "mindee",
   "version": "5.0.0-rc1",
   "description": "Mindee Client Library for Node.js",
+  "author": {
+    "name": "Mindee",
+    "email": "opensource@mindee.com",
+    "url": "https://mindee.com/"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mindee/mindee-api-nodejs.git"
+  },
+  "bugs": {
+    "url": "https://github.com/mindee/mindee-api-nodejs/issues"
+  },
+  "homepage": "https://mindee.com/",
+  "type": "module",
   "main": "src/index.js",
   "bin": {
     "mindeeV1": "bin/mindeeV1.js",
     "mindeeV2": "bin/mindeeV2.js"
   },
-  "license": "MIT",
-  "type": "module",
   "scripts": {
     "build": "tsc --build && tsc-alias",
     "build-for-dist": "tsc --build && tsc-alias && cp LICENSE README.md CHANGELOG.md ./dist",
@@ -33,19 +46,19 @@
   "engines": {
     "node": ">= 20.1"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/mindee/mindee-api-nodejs.git"
+  "dependencies": {
+    "commander": "~9.4.1",
+    "file-type": "^19.6.0",
+    "tmp": "^0.2.3",
+    "tslib": "^2.8.1",
+    "undici": "^6.23.0"
   },
-  "author": {
-    "name": "Mindee",
-    "email": "opensource@mindee.com",
-    "url": "https://mindee.com/"
+  "optionalDependencies": {
+    "@cantoo/pdf-lib": "^2.3.2",
+    "node-poppler": "^7.2.4",
+    "pdf.js-extract": "^0.2.1",
+    "sharp": "~0.34.5"
   },
-  "bugs": {
-    "url": "https://github.com/mindee/mindee-api-nodejs/issues"
-  },
-  "homepage": "https://mindee.com/",
   "devDependencies": {
     "@types/mocha": "^10.0.10",
     "@types/node": "^18.19.130",
@@ -59,19 +72,6 @@
     "tsx": "^4.21.0",
     "typedoc": "~0.28.16",
     "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "commander": "~9.4.1",
-    "file-type": "^19.6.0",
-    "tmp": "^0.2.3",
-    "tslib": "^2.8.1",
-    "undici": "^6.23.0"
-  },
-  "optionalDependencies": {
-    "@cantoo/pdf-lib": "^2.3.2",
-    "node-poppler": "^7.2.4",
-    "pdf.js-extract": "^0.2.1",
-    "sharp": "~0.34.5"
   },
   "keywords": [
     "typescript",
