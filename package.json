@@ -3,7 +3,10 @@
   "version": "5.0.0-rc1",
   "description": "Mindee Client Library for Node.js",
   "main": "src/index.js",
-  "bin": "bin/mindee.js",
+  "bin": {
+    "mindeeV1": "bin/mindeeV1.js",
+    "mindeeV2": "bin/mindeeV2.js"
+  },
   "license": "MIT",
   "type": "module",
   "scripts": {
@@ -65,10 +68,10 @@
     "undici": "^6.23.0"
   },
   "optionalDependencies": {
-    "sharp": "~0.34.5",
     "@cantoo/pdf-lib": "^2.3.2",
+    "node-poppler": "^7.2.4",
     "pdf.js-extract": "^0.2.1",
-    "node-poppler": "^7.2.4"
+    "sharp": "~0.34.5"
   },
   "keywords": [
     "typescript",
