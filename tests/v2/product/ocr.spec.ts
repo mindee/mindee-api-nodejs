@@ -14,17 +14,19 @@ describe("MindeeV2 - OCR Response", async () => {
       ocr.OcrResponse,
       path.join(V2_PRODUCT_PATH, "ocr", "ocr_single.json")
     );
+    const inference = response.inference;
+
     // Validate inference metadata
-    assert.strictEqual(response.inference.id, "12345678-1234-1234-1234-123456789abc");
-    assert.strictEqual(response.inference.model.id, "test-model-id");
+    assert.strictEqual(inference.id, "12345678-1234-1234-1234-123456789abc");
+    assert.strictEqual(inference.model.id, "test-model-id");
 
     // Validate file metadata
-    assert.strictEqual(response.inference.file.name, "default_sample.jpg");
-    assert.strictEqual(response.inference.file.pageCount, 1);
-    assert.strictEqual(response.inference.file.mimeType, "image/jpeg");
+    assert.strictEqual(inference.file.name, "default_sample.jpg");
+    assert.strictEqual(inference.file.pageCount, 1);
+    assert.strictEqual(inference.file.mimeType, "image/jpeg");
 
     // Validate pages
-    const pages: ocr.OcrPage[] = response.inference.result.pages;
+    const pages: ocr.OcrPage[] = inference.result.pages;
     assert.ok(Array.isArray(pages));
     assert.strictEqual(pages.length, 1);
 
@@ -50,7 +52,15 @@ describe("MindeeV2 - OCR Response", async () => {
       ocr.OcrResponse,
       path.join(V2_PRODUCT_PATH, "ocr", "ocr_multiple.json")
     );
-    const pages: ocr.OcrPage[] = response.inference.result.pages;
+    const inference = response.inference;
+
+    const job = inference.job;
+    assert.strictEqual(job.id, "12345678-1234-1234-1234-jobid1234567");
+
+    const model = inference.model;
+    assert.notStrictEqual(model, undefined);
+
+    const pages: ocr.OcrPage[] = inference.result.pages;
     assert.ok(Array.isArray(pages));
     assert.strictEqual(pages.length, 3);
 

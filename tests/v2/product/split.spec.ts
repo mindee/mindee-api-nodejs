@@ -13,7 +13,12 @@ describe("MindeeV2 - Split Response", async () => {
       split.SplitResponse,
       path.join(V2_PRODUCT_PATH, "split", "split_single.json")
     );
-    const splits: split.SplitRange[] = response.inference.result.splits;
+    const inference = response.inference;
+
+    const model = inference.model;
+    assert.notStrictEqual(model, undefined);
+
+    const splits: split.SplitRange[] = inference.result.splits;
     assert.ok(Array.isArray(splits));
     assert.strictEqual(splits.length, 1);
 
@@ -31,7 +36,12 @@ describe("MindeeV2 - Split Response", async () => {
       split.SplitResponse,
       path.join(V2_PRODUCT_PATH, "split", "split_multiple.json")
     );
-    const splits: split.SplitRange[] = response.inference.result.splits;
+    const inference = response.inference;
+
+    const model = inference.model;
+    assert.notStrictEqual(model, undefined);
+
+    const splits: split.SplitRange[] = inference.result.splits;
     assert.ok(Array.isArray(splits));
     assert.strictEqual(splits.length, 3);
 

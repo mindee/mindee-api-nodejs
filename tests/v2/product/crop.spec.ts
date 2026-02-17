@@ -13,17 +13,21 @@ describe("MindeeV2 - Crop Response", async () => {
       crop.CropResponse,
       path.join(V2_PRODUCT_PATH, "crop", "crop_single.json")
     );
+    const inference = response.inference;
+
     // Validate inference metadata
-    assert.strictEqual(response.inference.id, "12345678-1234-1234-1234-123456789abc");
-    assert.strictEqual(response.inference.model.id, "test-model-id");
+    assert.strictEqual(inference.id, "12345678-1234-1234-1234-123456789abc");
+    assert.strictEqual(inference.model.id, "test-model-id");
+
+    assert.strictEqual(inference.job.id, "12345678-1234-1234-1234-jobid1234567");
 
     // Validate file metadata
-    assert.strictEqual(response.inference.file.name, "sample.jpeg");
-    assert.strictEqual(response.inference.file.pageCount, 1);
-    assert.strictEqual(response.inference.file.mimeType, "image/jpeg");
+    assert.strictEqual(inference.file.name, "sample.jpeg");
+    assert.strictEqual(inference.file.pageCount, 1);
+    assert.strictEqual(inference.file.mimeType, "image/jpeg");
 
     // Validate crops
-    const crops: crop.CropItem[] = response.inference.result.crops;
+    const crops: crop.CropItem[] = inference.result.crops;
     assert.ok(Array.isArray(crops));
     assert.strictEqual(crops.length, 1);
 
@@ -49,16 +53,21 @@ describe("MindeeV2 - Crop Response", async () => {
       crop.CropResponse,
       path.join(V2_PRODUCT_PATH, "crop", "crop_multiple.json")
     );
+    const inference = response.inference;
+
+    const job = inference.job;
+    assert.strictEqual(job.id, "12345678-1234-1234-1234-jobid1234567");
+
     // Validate inference metadata
-    assert.strictEqual(response.inference.id, "12345678-1234-1234-1234-123456789abc");
-    assert.strictEqual(response.inference.model.id, "test-model-id");
+    assert.strictEqual(inference.id, "12345678-1234-1234-1234-123456789abc");
+    assert.strictEqual(inference.model.id, "test-model-id");
 
     // Validate file metadata
-    assert.strictEqual(response.inference.file.name, "default_sample.jpg");
-    assert.strictEqual(response.inference.file.pageCount, 1);
-    assert.strictEqual(response.inference.file.mimeType, "image/jpeg");
+    assert.strictEqual(inference.file.name, "default_sample.jpg");
+    assert.strictEqual(inference.file.pageCount, 1);
+    assert.strictEqual(inference.file.mimeType, "image/jpeg");
 
-    const crops: crop.CropItem[] = response.inference.result.crops;
+    const crops: crop.CropItem[] = inference.result.crops;
     assert.ok(Array.isArray(crops));
     assert.strictEqual(crops.length, 2);
 

@@ -1,12 +1,17 @@
+import { StringDict } from "@/parsing/index.js";
 import { InferenceModel } from "./inferenceModel.js";
 import { InferenceFile } from "./inferenceFile.js";
-import { StringDict } from "@/parsing/index.js";
+import { InferenceJob } from "./inferenceJob.js";
 
 export abstract class BaseInference {
   /**
    * Model info for the inference.
    */
   public model: InferenceModel;
+  /**
+   * Job the inference belongs to.
+   */
+  public job: InferenceJob;
   /**
    * File info for the inference.
    */
@@ -18,6 +23,7 @@ export abstract class BaseInference {
 
   protected constructor(serverResponse: StringDict) {
     this.id = serverResponse["id"];
+    this.job = new InferenceJob(serverResponse["job"]);
     this.model = new InferenceModel(serverResponse["model"]);
     this.file = new InferenceFile(serverResponse["file"]);
   }

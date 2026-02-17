@@ -13,7 +13,12 @@ describe("MindeeV2 - Classification Response", async () => {
       ClassificationResponse,
       path.join(V2_PRODUCT_PATH, "classification", "classification_single.json")
     );
-    const classification = response.inference.result.classification;
+    const inference = response.inference;
+
+    const model = inference.model;
+    assert.notStrictEqual(model, undefined);
+
+    const classification = inference.result.classification;
     assert.strictEqual(classification.documentType, "invoice");
   });
 });

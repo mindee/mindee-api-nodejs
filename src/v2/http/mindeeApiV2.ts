@@ -1,4 +1,4 @@
-import { ApiSettingsV2 } from "./apiSettingsV2.js";
+import { ApiSettings } from "./apiSettings.js";
 import { Dispatcher } from "undici";
 import { BaseParameters } from "@/v2/client/index.js";
 import {
@@ -16,10 +16,10 @@ import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 
 export class MindeeApiV2 {
-  settings: ApiSettingsV2;
+  settings: ApiSettings;
 
   constructor(dispatcher?: Dispatcher, apiKey?: string) {
-    this.settings = new ApiSettingsV2({ dispatcher: dispatcher, apiKey: apiKey });
+    this.settings = new ApiSettings({ dispatcher: dispatcher, apiKey: apiKey });
   }
 
   /**
@@ -80,7 +80,10 @@ export class MindeeApiV2 {
     result: BaseHttpResponse,
     responseClass: ResponseConstructor<T>,
   ): T {
-    if (result.messageObj?.statusCode && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)) {
+    if (
+      result.messageObj?.statusCode
+      && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)
+    ) {
       if (result.data?.status !== null) {
         throw new MindeeHttpErrorV2(new ErrorResponse(result.data));
       }
@@ -98,7 +101,9 @@ export class MindeeApiV2 {
     try {
       return new responseClass(result.data);
     } catch (e) {
-      logger.error(`Raised '${e}' Couldn't deserialize response object:\n${JSON.stringify(result.data)}`);
+      logger.error(
+        `Raised '${e}' Couldn't deserialize response object:\n${JSON.stringify(result.data)}`
+      );
       throw new MindeeDeserializationError("Couldn't deserialize response object.");
     }
   }
