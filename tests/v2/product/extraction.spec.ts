@@ -67,6 +67,9 @@ describe("MindeeV2 - Extraction Response", async () => {
       assert.notStrictEqual(inference, undefined);
       assert.strictEqual(inference.model.id, "12345678-1234-1234-1234-123456789abc");
 
+      const job = inference.job;
+      assert.strictEqual(job.id, "12345678-1234-1234-1234-jobid1234567");
+
       const model = inference.model;
       assert.notStrictEqual(model, undefined);
       assert.strictEqual(model.id, "12345678-1234-1234-1234-123456789abc");
@@ -169,6 +172,10 @@ describe("MindeeV2 - Extraction Response", async () => {
       const response = await loadV2Response(
         ExtractionResponse, standardFieldPath
       );
+
+      const job = response.inference.job;
+      assert.strictEqual(job.id, "12345678-1234-1234-1234-jobid1234567");
+
       const fields = response.inference.result.fields;
 
       assert.ok(fields.get("field_simple_string") instanceof SimpleField);

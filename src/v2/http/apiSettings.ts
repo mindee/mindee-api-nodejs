@@ -6,7 +6,7 @@ const API_V2_KEY_ENVVAR_NAME: string = "MINDEE_V2_API_KEY";
 const API_V2_HOST_ENVVAR_NAME: string = "MINDEE_V2_API_HOST";
 const DEFAULT_MINDEE_API_HOST: string = "api-v2.mindee.net";
 
-export class ApiSettingsV2 extends BaseSettings {
+export class ApiSettings extends BaseSettings {
   baseHeaders: Record<string, string>;
 
   constructor({
@@ -25,6 +25,7 @@ export class ApiSettingsV2 extends BaseSettings {
       "User-Agent": this.getUserAgent(),
       Authorization: `${this.apiKey}`,
     };
+    /* eslint-enable @typescript-eslint/naming-convention */
   }
 
   protected apiKeyFromEnv(): string {

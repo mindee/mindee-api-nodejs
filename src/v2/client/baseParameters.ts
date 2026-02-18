@@ -11,7 +11,7 @@ export interface BaseParametersConstructor {
 }
 
 /**
- * Parameters accepted by the asynchronous **inference** v2 endpoint.
+ * Parameters accepted by all v2 products.
  *
  * All fields are optional except `modelId`.
  *
@@ -22,10 +22,6 @@ export interface BaseParametersConstructor {
  *   rag: true,
  *   alias: "YOUR_ALIAS",
  *   webhookIds: ["YOUR_WEBHOOK_ID_1", "YOUR_WEBHOOK_ID_2"],
- *   pollingOptions: {
- *     initialDelaySec: 2,
- *     delaySec: 1.5,
- *   }
  * };
  */
 export abstract class BaseParameters {

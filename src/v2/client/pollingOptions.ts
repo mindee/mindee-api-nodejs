@@ -22,8 +22,8 @@ const minRetries = 2;
  * Parameters for the internal polling loop in `enqueueAndGetInference()`.
  *
  * Default behavior:
- * - `initialDelaySec` = 2s
- * - `delaySec` = 1.5s
+ * - `initialDelaySec` = 2
+ * - `delaySec` = 1.5
  * - `maxRetries` = 80
  *
  * Validation rules:
@@ -32,17 +32,21 @@ const minRetries = 2;
  * - `maxRetries` >= 2
  *
  * The `initialTimerOptions` and `recurringTimerOptions` objects let you pass an
- * `AbortSignal` or make the timer `unref`-ed to the `setTimeout()`.
+ * `AbortSignal` or make the timer `ref`-ed to the `setTimeout()`.
  *
  * @category ClientV2
  * @example
- * const params = {
+ * ```
+ * const pollingOptions = {
  *   initialDelaySec: 4,
  *   delaySec: 2,
  *   maxRetries: 50
  * };
  *
- * const inference = await client.enqueueAndGetInference(inputDoc, params);
+ * const inference = await client.enqueueAndGetInference(
+ *   inputDoc, params, pollingOptions
+ * );
+ * ```
  */
 export class PollingOptions {
   /** Number of seconds to wait *before the first poll*. */
@@ -52,15 +56,9 @@ export class PollingOptions {
   /** Maximum number of polling attempts (including the first one). */
   maxRetries: number;
   /** Options passed to the initial `setTimeout()`. */
-  initialTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  };
+  initialTimerOptions?: TimerOptions;
   /** Options passed to every recurring `setTimeout()`. */
-  recurringTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  };
+  recurringTimerOptions?: TimerOptions;
 
   constructor(params?: PollingOptionsConstructor) {
     if (!params) {
