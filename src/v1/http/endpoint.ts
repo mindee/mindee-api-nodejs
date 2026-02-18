@@ -1,7 +1,13 @@
 import { URLSearchParams } from "url";
+import { FormData } from "undici";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
-import { cutDocPages, sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
+import {
+  cutDocPages,
+  sendRequestAndReadResponse,
+  BaseHttpResponse,
+  RequestOptions,
+} from "@/http/apiCore.js";
 import { ApiSettingsV1 } from "./apiSettingsV1.js";
 import { handleError } from "./errors.js";
 import { PredictParams } from "./httpParams.js";
@@ -208,7 +214,7 @@ export class Endpoint {
       path += `?${searchParams}`;
     }
 
-    const options = {
+    const options: RequestOptions = {
       method: "POST",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
@@ -268,7 +274,7 @@ export class Endpoint {
    * @param queueId
    */
   async #documentQueueReqGet(queueId: string): Promise<BaseHttpResponse> {
-    const options = {
+    const options: RequestOptions = {
       method: "GET",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
@@ -283,7 +289,7 @@ export class Endpoint {
    * @param documentId
    */
   async #documentGetReq(documentId: string): Promise<BaseHttpResponse> {
-    const options = {
+    const options: RequestOptions = {
       method: "GET",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
@@ -299,7 +305,7 @@ export class Endpoint {
    * @param feedback
    */
   async #documentFeedbackPutReq(documentId: string, feedback: StringDict): Promise<BaseHttpResponse> {
-    const options = {
+    const options: RequestOptions = {
       method: "PUT",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,

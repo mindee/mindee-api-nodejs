@@ -1,7 +1,13 @@
 import { URLSearchParams } from "url";
+import { FormData } from "undici";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { ExecutionPriority } from "@/v1/parsing/common/index.js";
-import { cutDocPages, sendRequestAndReadResponse, BaseHttpResponse } from "../../http/apiCore.js";
+import {
+  cutDocPages,
+  sendRequestAndReadResponse,
+  BaseHttpResponse,
+  RequestOptions,
+} from "@/http/apiCore.js";
 import { ApiSettingsV1 } from "./apiSettingsV1.js";
 import { handleError } from "./errors.js";
 import { WorkflowParams } from "./httpParams.js";
@@ -105,7 +111,7 @@ export class WorkflowEndpoint {
       path += `?${searchParams}`;
     }
 
-    const options = {
+    const options: RequestOptions = {
       method: "POST",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,

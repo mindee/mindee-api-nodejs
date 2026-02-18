@@ -1,5 +1,5 @@
 import { logger } from "@/logger.js";
-import { request, Dispatcher } from "undici";
+import { request, Dispatcher, FormData } from "undici";
 import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 
 export const TIMEOUT_SECS_DEFAULT: number = 120;
@@ -10,7 +10,7 @@ export interface RequestOptions {
   method: any;
   timeoutSecs: number;
   headers: any;
-  body?: any;
+  body?: FormData | string;
 }
 
 export interface BaseHttpResponse {
@@ -40,8 +40,8 @@ export async function sendRequestAndReadResponse(
   options: RequestOptions,
 ): Promise<BaseHttpResponse> {
   const url: string = `https://${options.hostname}${options.path}`;
-  logger.debug(`${options.method}: ${url}`);
 
+  logger.debug(`${options.method}: ${url}`);
   const response = await request(
     url,
     {
@@ -49,8 +49,7 @@ export async function sendRequestAndReadResponse(
       headers: options.headers,
       headersTimeout: options.timeoutSecs * 1000,
       body: options.body,
-      throwOnError: false,
-      dispatcher: dispatcher
+      dispatcher: dispatcher,
     }
   );
   logger.debug("Parsing the response ...");
