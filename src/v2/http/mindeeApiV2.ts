@@ -133,7 +133,7 @@ export class MindeeApiV2 {
       hostname: this.settings.hostname,
       path: path,
       body: form,
-      timeout: this.settings.timeout,
+      timeoutSecs: this.settings.timeoutSecs,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
@@ -144,7 +144,7 @@ export class MindeeApiV2 {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `/v2/jobs/${jobId}`,
-      timeout: this.settings.timeout,
+      timeoutSecs: this.settings.timeoutSecs,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
@@ -162,7 +162,7 @@ export class MindeeApiV2 {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `/v2/products/${slug}/results/${inferenceId}`,
-      timeout: this.settings.timeout,
+      timeoutSecs: this.settings.timeoutSecs,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);
   }
