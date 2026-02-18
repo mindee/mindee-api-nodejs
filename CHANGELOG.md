@@ -1,5 +1,12 @@
 # CHANGELOG
 
+## 5.0.0-rc2 - 2026-01-18
+### Changes
+* :sparkles: add Job to inference responses
+### Fixes
+* :bug: fix for bin scripts
+
+
 ## 5.0.0-rc1 - 2026-01-17
 ### Changes
 * :boom: drop support for node.js 18
