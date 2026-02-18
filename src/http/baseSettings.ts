@@ -1,7 +1,7 @@
 import { Dispatcher, getGlobalDispatcher } from "undici";
 import packageJson from "../../package.json" with { type: "json" };
 import * as os from "os";
-import { TIMEOUT_DEFAULT } from "./apiCore.js";
+import { TIMEOUT_SECS_DEFAULT } from "./apiCore.js";
 
 export interface MindeeApiConstructorProps {
   apiKey?: string;
@@ -11,7 +11,7 @@ export interface MindeeApiConstructorProps {
 export abstract class BaseSettings {
   apiKey: string;
   hostname: string;
-  timeout: number;
+  timeoutSecs: number;
   dispatcher: Dispatcher;
 
   protected constructor(apiKey?: string, dispatcher?: Dispatcher) {
@@ -22,7 +22,9 @@ export abstract class BaseSettings {
     }
     this.dispatcher = dispatcher ?? getGlobalDispatcher();
     this.hostname = this.hostnameFromEnv();
-    this.timeout = process.env.MINDEE_REQUEST_TIMEOUT ? parseInt(process.env.MINDEE_REQUEST_TIMEOUT) : TIMEOUT_DEFAULT;
+    this.timeoutSecs = process.env.MINDEE_REQUEST_TIMEOUT
+      ? parseInt(process.env.MINDEE_REQUEST_TIMEOUT)
+      : TIMEOUT_SECS_DEFAULT;
   }
 
   protected getUserAgent(): string {

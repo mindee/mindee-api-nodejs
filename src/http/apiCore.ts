@@ -2,13 +2,13 @@ import { logger } from "@/logger.js";
 import { request, Dispatcher } from "undici";
 import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 
-export const TIMEOUT_DEFAULT: number = 120;
+export const TIMEOUT_SECS_DEFAULT: number = 120;
 
 export interface RequestOptions {
   hostname: string;
   path: string;
   method: any;
-  timeout: number;
+  timeoutSecs: number;
   headers: any;
   body?: any;
 }
@@ -47,7 +47,7 @@ export async function sendRequestAndReadResponse(
     {
       method: options.method,
       headers: options.headers,
-      bodyTimeout: options.timeout,
+      headersTimeout: options.timeoutSecs * 1000,
       body: options.body,
       throwOnError: false,
       dispatcher: dispatcher

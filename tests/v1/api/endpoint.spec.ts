@@ -118,7 +118,7 @@ describe ("Endpoint parameters" , () => {
       "dummy-account"
     );
     assert.strictEqual(customEndpoint.version, "1");
-    assert.strictEqual(customEndpoint.settings.timeout, 120);
+    assert.strictEqual(customEndpoint.settings.timeoutSecs, 120);
     assert.strictEqual(customEndpoint.settings.hostname, "api.mindee.net");
     assert.strictEqual(customEndpoint.settings.apiKey, "dummy-api-key");
   });
@@ -134,7 +134,7 @@ describe ("Endpoint parameters" , () => {
       "dummy-account"
     );
     assert.strictEqual(customEndpoint.version, "1");
-    assert.strictEqual(customEndpoint.settings.timeout, 30);
+    assert.strictEqual(customEndpoint.settings.timeoutSecs, 30);
     assert.strictEqual(customEndpoint.settings.hostname, "v1-endpoint-host");
     assert.strictEqual(customEndpoint.settings.apiKey, "dummy-key");
 
