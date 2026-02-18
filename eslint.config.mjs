@@ -7,6 +7,8 @@ import { fileURLToPath } from "node:url";
 import js from "@eslint/js";
 import { FlatCompat } from "@eslint/eslintrc";
 
+/* eslint-disable @typescript-eslint/naming-convention */
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const compat = new FlatCompat({
@@ -39,10 +41,10 @@ export default [{
     }],
 
     semi: ["error"],
-    "jsdoc/check-alignment": 1,
-    "jsdoc/check-param-names": 1,
-    "jsdoc/check-types": 1,
-    "jsdoc/no-undefined-types": 1,
+    "jsdoc/check-alignment": "error",
+    "jsdoc/check-param-names": "error",
+    "jsdoc/check-types": "error",
+    "jsdoc/no-undefined-types": "error",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-inferrable-types": "off",
