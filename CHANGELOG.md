@@ -1,19 +1,19 @@
 # CHANGELOG
 
-## 5.0.0-rc2 - 2026-01-18
+## v5.0.0-rc2 - 2026-01-18
 ### Changes
 * :sparkles: add Job to inference responses
 ### Fixes
 * :bug: fix for bin scripts
 
 
-## 5.0.0-rc1 - 2026-01-17
+## v5.0.0-rc1 - 2026-01-17
 ### Changes
 * :boom: drop support for node.js 18
 * :boom: :recycle: separate polling options
 
 
-## 5.0.0-alpha2 - 2026-01-16
+## v5.0.0-alpha2 - 2026-01-16
 ### Changes
 * :recycle: use node test methods
 * :recycle: v1 ocr word should be a class
@@ -21,7 +21,7 @@
 * :bug: fix for optional node-poppler
 
 
-## 5.0.0-alpha1 - 2026-01-13
+## v5.0.0-alpha1 - 2026-01-13
 ### :boom: :recycle: base for v5
 * :arrow_up: update file-type
 * :recycle: migrate to ES modules (node18)
