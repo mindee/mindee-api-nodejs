@@ -12,6 +12,12 @@ import {
   Split,
 } from "@/v2/product/index.js";
 
+interface CliProduct {
+  name: string;
+  description: string;
+  productClass: typeof BaseProduct;
+}
+
 const program = new Command();
 
 //
@@ -35,13 +41,11 @@ async function enqueueAndGetInference(
   const response = await mindeeClient.enqueueAndGetResult(
     product,
     inputSource,
+    { modelId: options.model },
     {
-      modelId: options.model,
-      pollingOptions: {
-        initialDelaySec: 2,
-        delaySec: 1.5,
-        maxRetries: 80,
-      }
+      initialDelaySec: 2,
+      delaySec: 1.5,
+      maxRetries: 80,
     }
   );
   if (!response.inference) {
@@ -76,12 +80,12 @@ export function cli() {
     .option("-d, --debug", "high verbosity mode")
     .option("-k, --api-key <api_key>", "your Mindee API key");
 
-  const inferenceTypes = [
-    { name: "extraction", description: "Extract data from a document.", product: Extraction },
-    { name: "crop", description: "Crop a document.", product: Crop },
-    { name: "split", description: "Split a document into pages.", product: Split },
-    { name: "ocr", description: "Read text from a document.", product: Ocr },
-    { name: "classification", description: "Classify a document.", product: Classification },
+  const inferenceTypes: CliProduct[] = [
+    { name: "extraction", description: "Extract data from a document.", productClass: Extraction },
+    { name: "crop", description: "Crop a document.", productClass: Crop },
+    { name: "split", description: "Split a document into pages.", productClass: Split },
+    { name: "ocr", description: "Read text from a document.", productClass: Ocr },
+    { name: "classification", description: "Classify a document.", productClass: Classification },
   ];
 
   for (const inference of inferenceTypes) {
@@ -95,7 +99,7 @@ export function cli() {
       options: OptionValues,
     ) {
       const allOptions = { ...program.opts(), ...options };
-      return enqueueAndGetInference(inference.product, inputPath, allOptions);
+      return enqueueAndGetInference(inference.productClass, inputPath, allOptions);
     });
   }
 
