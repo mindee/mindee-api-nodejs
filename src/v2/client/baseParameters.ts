@@ -1,3 +1,4 @@
+import { FormData } from "undici";
 import { MindeeConfigurationError } from "@/errors/index.js";
 
 /**

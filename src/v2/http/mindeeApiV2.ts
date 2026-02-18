@@ -7,7 +7,11 @@ import {
   ResponseConstructor,
   JobResponse,
 } from "@/v2/parsing/index.js";
-import { sendRequestAndReadResponse, BaseHttpResponse } from "@/http/apiCore.js";
+import {
+  sendRequestAndReadResponse,
+  BaseHttpResponse,
+  RequestOptions
+} from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
 import { MindeeDeserializationError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
@@ -127,7 +131,7 @@ export class MindeeApiV2 {
       form.set("url", (inputSource as UrlInput).url);
     }
     const path = `/v2/products/${product.slug}/enqueue`;
-    const options = {
+    const options: RequestOptions = {
       method: "POST",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
@@ -139,7 +143,7 @@ export class MindeeApiV2 {
   }
 
   async #reqGetJob(jobId: string): Promise<BaseHttpResponse> {
-    const options = {
+    const options: RequestOptions = {
       method: "GET",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
@@ -157,7 +161,7 @@ export class MindeeApiV2 {
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
   async #reqGetProductResult(inferenceId: string, slug: string): Promise<BaseHttpResponse> {
-    const options = {
+    const options: RequestOptions = {
       method: "GET",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
