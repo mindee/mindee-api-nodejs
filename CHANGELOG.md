@@ -1,5 +1,24 @@
 # CHANGELOG
 
+## v5.0.0 - 2026-01-19
+### ¡Breaking Changes!
+* :boom: :sparkles:  move PDF and image libraries to optional dependencies
+* :recycle: :boom: rework of directory structure
+* :boom: drop support for node.js 18
+* :boom: :recycle: separate polling options
+* :coffin: remove support for API builder (no longer maintained, use v2)
+* :coffin: remove support for v1 products available in v2
+* :coffin: remove support for unused products
+### Changes
+* :sparkles: add support for all utility products
+* :sparkles: add V2 CLI
+* :sparkles: add Job to inference responses
+* :sparkles: handle abort signal stream inputs
+* :recycle: use undici (compatible with v6 or v7) for HTTP requests and mocking
+* :sparkles: add ability for a user to specify their own undici `Dispatcher` instance
+* :recycle: migrate to ES modules
+
+
 ## v5.0.0-rc2 - 2026-01-18
 ### Changes
 * :sparkles: add Job to inference responses
