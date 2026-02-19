@@ -1,5 +1,6 @@
 import path from "path";
 import assert from "node:assert/strict";
+import { promises as fs } from "fs";
 import { describe, it } from "node:test";
 import { Polygon } from "@/geometry/index.js";
 import { crop } from "@/v2/product/index.js";
@@ -100,5 +101,19 @@ describe("MindeeV2 - Crop Response", async () => {
     assert.strictEqual(secondPolygon[2][1], 0.97);
     assert.strictEqual(secondPolygon[3][0], 0.547);
     assert.strictEqual(secondPolygon[3][1], 0.97);
+  });
+
+  describe("RST Display", async () => {
+    it("to be properly exposed", async () => {
+      const response = await loadV2Response(
+        crop.CropResponse,
+        path.join(V2_PRODUCT_PATH, "crop", "crop_single.json")
+      );
+      const rstString = await fs.readFile(
+        path.join(V2_PRODUCT_PATH, "crop", "crop_single.rst"), "utf8"
+      );
+      assert.notStrictEqual(response.inference, null);
+      assert.strictEqual(response.inference.toString(), rstString);
+    });
   });
 });

@@ -32,6 +32,7 @@ export abstract class BaseInference {
     return (
       "Inference\n" +
       "#########\n" +
+      this.job.toString() + "\n" +
       this.model.toString() + "\n" +
       this.file.toString() + "\n"
     );
