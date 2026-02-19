@@ -2,7 +2,7 @@
 
 ## v5.0.0 - 2026-02-19
 ### ¡Breaking Changes!
-* :boom: :sparkles: move PDF and image libraries to optional dependencies (resolves #288)
+* :boom: :sparkles: move PDF and image libraries to optional dependencies (resolves #388)
 * :recycle: :boom: rework of directory structure and exports (resolves #276)
 * :boom: drop support for node.js 18
 * :boom: :recycle: separate polling options
