@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## v5.0.0 - 2026-01-19
+## v5.0.0 - 2026-02-19
 ### ¡Breaking Changes!
 * :boom: :sparkles:  move PDF and image libraries to optional dependencies
 * :recycle: :boom: rework of directory structure
@@ -19,20 +19,20 @@
 * :recycle: migrate to ES modules
 
 
-## v5.0.0-rc2 - 2026-01-18
+## v5.0.0-rc2 - 2026-02-18
 ### Changes
 * :sparkles: add Job to inference responses
 ### Fixes
 * :bug: fix for bin scripts
 
 
-## v5.0.0-rc1 - 2026-01-17
+## v5.0.0-rc1 - 2026-02-17
 ### Changes
 * :boom: drop support for node.js 18
 * :boom: :recycle: separate polling options
 
 
-## v5.0.0-alpha2 - 2026-01-16
+## v5.0.0-alpha2 - 2026-02-16
 ### Changes
 * :recycle: use node test methods
 * :recycle: v1 ocr word should be a class
@@ -40,7 +40,7 @@
 * :bug: fix for optional node-poppler
 
 
-## v5.0.0-alpha1 - 2026-01-13
+## v5.0.0-alpha1 - 2026-02-13
 ### :boom: :recycle: base for v5
 * :arrow_up: update file-type
 * :recycle: migrate to ES modules (node18)
