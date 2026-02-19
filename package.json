@@ -1,6 +1,6 @@
 {
   "name": "mindee",
-  "version": "5.0.0-rc2",
+  "version": "5.0.0",
   "description": "Mindee Client Library for Node.js",
   "author": {
     "name": "Mindee",

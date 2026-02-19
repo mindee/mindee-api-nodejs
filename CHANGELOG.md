@@ -1,19 +1,38 @@
 # CHANGELOG
 
-## v5.0.0-rc2 - 2026-01-18
+## v5.0.0 - 2026-02-19
+### ¡Breaking Changes!
+* :boom: :sparkles: move PDF and image libraries to optional dependencies (resolves #288)
+* :recycle: :boom: rework of directory structure and exports (resolves #276)
+* :boom: drop support for node.js 18
+* :boom: :recycle: separate polling options
+* :coffin: remove support for API builder (no longer maintained, use v2)
+* :coffin: remove support for v1 products available in v2
+* :coffin: remove support for unused products
+### Changes
+* :sparkles: add support for all utility products
+* :sparkles: add V2 CLI
+* :sparkles: add Job to inference responses
+* :sparkles: handle abort signal stream inputs
+* :recycle: use undici (compatible with v6 or v7) for HTTP requests and mocking
+* :sparkles: add ability for a user to specify their own undici `Dispatcher` instance
+* :recycle: migrate to ES modules
+
+
+## v5.0.0-rc2 - 2026-02-18
 ### Changes
 * :sparkles: add Job to inference responses
 ### Fixes
 * :bug: fix for bin scripts
 
 
-## v5.0.0-rc1 - 2026-01-17
+## v5.0.0-rc1 - 2026-02-17
 ### Changes
 * :boom: drop support for node.js 18
 * :boom: :recycle: separate polling options
 
 
-## v5.0.0-alpha2 - 2026-01-16
+## v5.0.0-alpha2 - 2026-02-16
 ### Changes
 * :recycle: use node test methods
 * :recycle: v1 ocr word should be a class
@@ -21,7 +40,7 @@
 * :bug: fix for optional node-poppler
 
 
-## v5.0.0-alpha1 - 2026-01-13
+## v5.0.0-alpha1 - 2026-02-13
 ### :boom: :recycle: base for v5
 * :arrow_up: update file-type
 * :recycle: migrate to ES modules (node18)
