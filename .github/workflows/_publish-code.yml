@@ -40,7 +40,7 @@ jobs:
           # Normal versions are published to the 'latest' tag.
           #
           git_tag=$(git tag --sort=-v:refname | head -n 1)
-          tag=$(echo "${git_tag}" | pcregrep -e '-(alpha|beta|rc)[0-9]?$' -o1)
+          tag=$(echo "${git_tag}" | pcregrep -e '-(alpha|beta|rc)[0-9]?$' -o1 || true)
           if [ -n "${tag}" ]; then
             npm_tag="${tag}"
           else
