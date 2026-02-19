@@ -30,13 +30,16 @@ jobs:
 
       - name: Publish
         run: |
+          # sort pre-releases after main version
+          git config versionsort.suffix "-"
+
           cd ./dist
 
           #
           # Alpha, Beta, RC versions are published in their own tag.
           # Normal versions are published to the 'latest' tag.
           #
-          git_tag=$(git tag --sort=-v:refname | head -n 2 | tail -1)
+          git_tag=$(git tag --sort=-v:refname | head -n 1)
           tag=$(echo "${git_tag}" | pcregrep -e '-(alpha|beta|rc)[0-9]?$' -o1)
           if [ -n "${tag}" ]; then
             npm_tag="${tag}"
