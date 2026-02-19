@@ -45,4 +45,8 @@ export class Polygon extends Array<Point> {
     const yCoords = this.getMinMaxY();
     return isPointInY(point, yCoords.min, yCoords.max);
   }
+
+  toString(): string {
+    return this.map((point) => `(${point})`).join(", ");
+  }
 }
