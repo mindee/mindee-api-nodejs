@@ -32,7 +32,7 @@
     "test-integration-light": "mocha --grep '#OptionalDepsRequired' --invert 'tests/**/*.integration.ts'",
     "test-v2": "tsc --noEmit && node --import tsx --test 'tests/v2/**/*.spec.ts'",
     "lint": "tsc --noEmit && eslint --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
-    "lint-fix": "eslint --fix --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
+    "lint-fix": "tsc --noEmit && eslint --fix --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs-for-dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/"
   },
