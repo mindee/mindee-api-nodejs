@@ -1,5 +1,11 @@
 # CHANGELOG
 
+## v5.0.1 - 2026-02-24
+### Changes
+* :recycle: rename client options directory (internal)
+* :arrow_up: bump dev dependencies to fix vulnerabilities
+
+
 ## v5.0.0 - 2026-02-19
 ### ¡Breaking Changes!
 * :boom: :sparkles: move PDF and image libraries to optional dependencies (resolves #388)
@@ -15,7 +21,7 @@
 * :sparkles: add Job to inference responses
 * :sparkles: handle abort signal stream inputs
 * :recycle: use undici (compatible with v6 or v7) for HTTP requests and mocking
-* :sparkles: add ability for a user to specify their own undici `Dispatcher` instance
+* :sparkles: add the ability for a user to specify their own undici `Dispatcher` instance
 * :recycle: migrate to ES modules
 
 
