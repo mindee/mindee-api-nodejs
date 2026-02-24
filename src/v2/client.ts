@@ -7,7 +7,7 @@ import { LOG_LEVELS, logger } from "@/logger.js";
 import { ErrorResponse, JobResponse } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
-import { PollingOptions, PollingOptionsConstructor } from "./client/index.js";
+import { PollingOptions, PollingOptionsConstructor } from "./clientOptions/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 /**

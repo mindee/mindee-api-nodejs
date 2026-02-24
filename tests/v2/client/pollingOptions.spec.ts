@@ -1,6 +1,6 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import { PollingOptions } from "@/v2/client/index.js";
+import { PollingOptions } from "@/v2/index.js";
 import { MindeeConfigurationError } from "@/errors/index.js";
 
 describe("MindeeV2 - Polling Options", () => {

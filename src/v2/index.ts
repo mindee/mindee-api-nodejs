@@ -7,5 +7,5 @@ export {
   ErrorResponse,
   LocalResponse,
 } from "./parsing/index.js";
-export type { BaseParameters, TimerOptions } from "./client/index.js";
-export { PollingOptions } from "./client/index.js";
+export type { BaseParameters, TimerOptions } from "./clientOptions/index.js";
+export { PollingOptions } from "./clientOptions/index.js";

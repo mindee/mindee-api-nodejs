@@ -1,4 +1,4 @@
-import { BaseParameters, BaseParametersConstructor } from "@/v2/client/baseParameters.js";
+import { BaseParameters, BaseParametersConstructor } from "@/v2/clientOptions/baseParameters.js";
 import { logger } from "@/logger.js";
 
 /**

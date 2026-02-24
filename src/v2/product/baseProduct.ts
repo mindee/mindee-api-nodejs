@@ -1,4 +1,4 @@
-import { BaseParameters } from "@/v2/client/index.js";
+import { BaseParameters } from "@/v2/index.js";
 import { ResponseConstructor } from "@/v2/parsing/index.js";
 
 /**

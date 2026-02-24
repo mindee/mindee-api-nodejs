@@ -1,6 +1,6 @@
 import { ApiSettings } from "./apiSettings.js";
 import { Dispatcher } from "undici";
-import { BaseParameters } from "@/v2/client/index.js";
+import { BaseParameters } from "@/v2/index.js";
 import {
   BaseResponse,
   ErrorResponse,
