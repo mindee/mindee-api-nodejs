@@ -1,3 +1,4 @@
+import { before, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
 
@@ -37,7 +38,7 @@ function checkEmptyActiveOptions(inference: ExtractionInference) {
   assert.equal(inference.activeOptions?.textContext, false);
 }
 
-describe("MindeeV2 – Integration - Client", () => {
+describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
   let client: Client;
   let modelId: string;
 
@@ -98,7 +99,7 @@ describe("MindeeV2 – Integration - Client", () => {
     assert.ok(inference.result);
     assert.equal(inference.result.rawText, undefined);
     checkEmptyActiveOptions(inference);
-  }).timeout(60000);
+  });
 
   it("enqueueAndGetResult must succeed: Filled, single-page image – PathInput", async () => {
     const source = new PathInput({ inputPath: sampleImagePath });
@@ -137,7 +138,7 @@ describe("MindeeV2 – Integration - Client", () => {
     assert.equal(inference.activeOptions?.textContext, true);
 
     assert.equal(inference.result.rawText?.pages.length, 1);
-  }).timeout(120000);
+  });
 
   it("enqueueAndGetResult must succeed: Filled, single-page image – Base64Input", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
@@ -168,7 +169,7 @@ describe("MindeeV2 – Integration - Client", () => {
     assert.equal(supplierField.value, "Clachan");
 
     checkEmptyActiveOptions(inference);
-  }).timeout(120000);
+  });
 
   it("enqueue must raise 422: Invalid model ID", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
@@ -180,7 +181,7 @@ describe("MindeeV2 – Integration - Client", () => {
     } catch (err) {
       check422(err);
     }
-  }).timeout(60000);
+  });
 
   it("getResult must raise 422: Invalid job ID", async () => {
     try {
@@ -192,7 +193,35 @@ describe("MindeeV2 – Integration - Client", () => {
     } catch (err) {
       check422(err);
     }
-  }).timeout(60000);
+  });
+
+  it("enqueue, getJob, and getResult must succeed", async () => {
+    const source = new PathInput({ inputPath: emptyPdfPath });
+    const params = {
+      modelId,
+      rag: false,
+      rawText: false,
+      polygon: false,
+      confidence: false,
+      alias: "ts_integration_all_together"
+    };
+
+    const enqueueResponse = await client.enqueue(
+      Extraction, source, params
+    );
+    assert.ok(enqueueResponse.job.id);
+
+    setTimeout(async () => {
+      const jobResponse = await client.getJob(enqueueResponse.job.id);
+      assert.ok(jobResponse.job.resultUrl);
+
+      const resultId = jobResponse.job.resultUrl?.split("/").pop() || "";
+      const resultResponse = await client.getResult(
+        Extraction, resultId
+      );
+      assert.strictEqual(resultId, resultResponse.inference.id);
+    }, 6500);
+  });
 
   it("enqueueAndGetResult must succeed: HTTPS URL", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
@@ -211,7 +240,7 @@ describe("MindeeV2 – Integration - Client", () => {
     );
     assert.ok(response);
     assert.ok(response.inference instanceof ExtractionInference);
-  }).timeout(60000);
+  });
 
   it("should override the data schema successfully", async () => {
     const source = new PathInput({ inputPath: emptyPdfPath });
@@ -233,6 +262,6 @@ describe("MindeeV2 – Integration - Client", () => {
     assert.ok(response.inference.result.fields.get("test_replace"));
     assert.equal((response.inference.result.fields.get("test_replace") as SimpleField).value, "a test value");
 
-  }).timeout(60000);
+  });
 
 });

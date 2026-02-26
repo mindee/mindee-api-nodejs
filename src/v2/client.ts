@@ -12,8 +12,6 @@ import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 /**
  * Options for the V2 Mindee Client.
- *
- * @category ClientV2
  * @example
  * const client = new MindeeClientV2({
  *   apiKey: "YOUR_API_KEY",
@@ -32,8 +30,6 @@ export interface ClientOptions {
 
 /**
  * Mindee Client V2 class that centralizes most basic operations.
- *
- * @category ClientV2
  */
 export class Client {
   /** Mindee V2 API handler. */
@@ -89,7 +85,6 @@ export class Client {
    * @param product the product to retrieve.
    * @param inferenceId id of the queue to poll.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Asynchronous
    * @returns a `Promise` containing the inference.
    */
   async getResult<P extends typeof BaseProduct>(
@@ -99,7 +94,7 @@ export class Client {
     logger.debug(
       `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
     );
-    return await this.mindeeApi.getProductResult(product, inferenceId);
+    return await this.mindeeApi.getProductResultById(product, inferenceId);
   }
 
   /**
@@ -108,7 +103,6 @@ export class Client {
    *
    * @param jobId id of the queue to poll.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Asynchronous
    * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
    * parsing is complete.
    */
@@ -126,7 +120,6 @@ export class Client {
    *
    * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
   async enqueueAndGetResult<P extends typeof BaseProduct>(
@@ -155,7 +148,7 @@ export class Client {
   protected async pollForResult<P extends typeof BaseProduct>(
     product: typeof BaseProduct,
     pollingOptions: PollingOptions,
-    queueId: string,
+    jobId: string,
   ): Promise<InstanceType<P["responseClass"]>> {
     logger.debug(
       `Waiting ${pollingOptions.initialDelaySec} seconds before polling.`
@@ -166,7 +159,7 @@ export class Client {
       pollingOptions.initialTimerOptions
     );
     logger.debug(
-      `Start polling for inference using job ID: ${queueId}.`
+      `Start polling for inference using job ID: ${jobId}.`
     );
     let retryCounter: number = 1;
     let pollResults: JobResponse;
@@ -174,7 +167,7 @@ export class Client {
       logger.debug(
         `Attempt ${retryCounter} of ${pollingOptions.maxRetries}`
       );
-      pollResults = await this.getJob(queueId);
+      pollResults = await this.getJob(jobId);
       const error: ErrorResponse | undefined = pollResults.job.error;
       if (error) {
         throw new MindeeHttpErrorV2(error);
@@ -184,7 +177,12 @@ export class Client {
         break;
       }
       if (pollResults.job.status === "Processed") {
-        return this.getResult(product, pollResults.job.id);
+        if (!pollResults.job.resultUrl) {
+          throw new MindeeError(
+            "The result URL is undefined. This is a server error, try again later or contact support."
+          );
+        }
+        return this.mindeeApi.getProductResultByUrl(product, pollResults.job.resultUrl);
       }
       await setTimeout(
         pollingOptions.delaySec * 1000,

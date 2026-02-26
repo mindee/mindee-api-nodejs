@@ -5,8 +5,8 @@ import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 export const TIMEOUT_SECS_DEFAULT: number = 120;
 
 export interface RequestOptions {
-  hostname: string;
-  path: string;
+  hostname?: string;
+  path?: string;
   method: any;
   timeoutSecs: number;
   headers: any;
@@ -33,15 +33,15 @@ export async function cutDocPages(inputDoc: InputSource, pageOptions: PageOption
  * Reads a response from the API and processes it.
  * @param dispatcher custom dispatcher to use for the request.
  * @param options options related to the request itself.
+ * @param url override the URL of the request.
  * @returns the processed request.
  */
 export async function sendRequestAndReadResponse(
   dispatcher: Dispatcher,
   options: RequestOptions,
+  url?: string,
 ): Promise<BaseHttpResponse> {
-  const url: string = `https://${options.hostname}${options.path}`;
-
-  logger.debug(`${options.method}: ${url}`);
+  url ??= `https://${options.hostname}${options.path}`;
   const response = await request(
     url,
     {
