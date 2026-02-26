@@ -12,8 +12,6 @@ import { BaseProduct } from "@/v2/product/baseProduct.js";
 
 /**
  * Options for the V2 Mindee Client.
- *
- * @category ClientV2
  * @example
  * const client = new MindeeClientV2({
  *   apiKey: "YOUR_API_KEY",
@@ -32,8 +30,6 @@ export interface ClientOptions {
 
 /**
  * Mindee Client V2 class that centralizes most basic operations.
- *
- * @category ClientV2
  */
 export class Client {
   /** Mindee V2 API handler. */
@@ -89,7 +85,6 @@ export class Client {
    * @param product the product to retrieve.
    * @param inferenceId id of the queue to poll.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Asynchronous
    * @returns a `Promise` containing the inference.
    */
   async getResult<P extends typeof BaseProduct>(
@@ -108,7 +103,6 @@ export class Client {
    *
    * @param jobId id of the queue to poll.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Asynchronous
    * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
    * parsing is complete.
    */
@@ -126,7 +120,6 @@ export class Client {
    *
    * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @category Synchronous
    * @returns a `Promise` containing parsing results.
    */
   async enqueueAndGetResult<P extends typeof BaseProduct>(

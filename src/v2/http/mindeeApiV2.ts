@@ -18,7 +18,9 @@ import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 
-
+/**
+ * Mindee V2 API handler.
+ */
 export class MindeeApiV2 {
   settings: ApiSettings;
 
@@ -27,11 +29,10 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Sends a file to the extraction inference queue.
+   * Sends a file to the product inference queue.
    * @param product product to enqueue.
    * @param inputSource Local file loaded as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
-   * @category V2
    * @throws Error if the server's response contains an error.
    * @returns a `Promise` containing a job response.
    */
@@ -51,11 +52,10 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Requests the results of a queued document from the API.
+   * Get the specified Job.
    * Throws an error if the server's response contains an error.
-   * @param jobId The document's ID in the queue.
-   * @category Asynchronous
-   * @returns a `Promise` containing information on the queue.
+   * @param jobId The Job ID as returned by the enqueue request.
+   * @returns a `Promise` containing the job response.
    */
   async getJob(jobId: string): Promise<JobResponse> {
     const response = await this.#reqGetJob(jobId);
@@ -63,12 +63,11 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Requests the job of a queued document from the API.
+   * Get the result of a queued document from the API.
    * Throws an error if the server's response contains an error.
    * @param product
-   * @param inferenceId The result's ID in the queue.
-   * @category Asynchronous
-   * @returns a `Promise` containing either the parsed result, or information on the queue.
+   * @param inferenceId The inference ID for the result.
+   * @returns a `Promise` containing the parsed result.
    */
   async getProductResultById<P extends typeof BaseProduct>(
     product: P,
@@ -81,12 +80,11 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Requests the job of a queued document from the API.
+   * Get the result of a queued document from the API.
    * Throws an error if the server's response contains an error.
    * @param product
-   * @param url The document's ID in the queue.
-   * @category Asynchronous
-   * @returns a `Promise` containing either the parsed result, or information on the queue.
+   * @param url The URL as returned by a Job's resultUrl property.
+   * @returns a `Promise` containing the parsed result.
    */
   async getProductResultByUrl<P extends typeof BaseProduct>(
     product: P,
@@ -130,7 +128,6 @@ export class MindeeApiV2 {
 
   /**
    * Sends a document to the inference queue.
-   *
    * @param product Product to enqueue.
    * @param inputSource Local or remote file as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
@@ -172,7 +169,6 @@ export class MindeeApiV2 {
   /**
    * Make a request to GET the status of a document in the queue.
    * @param url URL path to the result.
-   * @category Asynchronous
    * @returns a `Promise` containing the parsed result.
    */
   async #reqGetProductResult(url: string): Promise<BaseHttpResponse> {
@@ -182,7 +178,7 @@ export class MindeeApiV2 {
       timeoutSecs: this.settings.timeoutSecs,
     };
     if (!url.startsWith("https://")) {
-      throw new MindeeError("URL must start with https://");
+      throw new MindeeError(`Invalid URL: ${url}`);
     }
     return await sendRequestAndReadResponse(this.settings.dispatcher, options, url);
   }
