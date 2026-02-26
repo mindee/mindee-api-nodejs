@@ -13,7 +13,7 @@ import {
   RequestOptions
 } from "@/http/apiCore.js";
 import { InputSource, LocalInputSource, UrlInput } from "@/input/index.js";
-import { MindeeDeserializationError } from "@/errors/index.js";
+import { MindeeDeserializationError, MindeeError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
@@ -32,7 +32,7 @@ export class MindeeApiV2 {
    * @param inputSource Local file loaded as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
    * @category V2
-   * @throws Error if the server's response contains one.
+   * @throws Error if the server's response contains an error.
    * @returns a `Promise` containing a job response.
    */
   async enqueueProduct(
@@ -52,7 +52,7 @@ export class MindeeApiV2 {
 
   /**
    * Requests the results of a queued document from the API.
-   * Throws an error if the server's response contains one.
+   * Throws an error if the server's response contains an error.
    * @param jobId The document's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing information on the queue.
@@ -64,19 +64,35 @@ export class MindeeApiV2 {
 
   /**
    * Requests the job of a queued document from the API.
-   * Throws an error if the server's response contains one.
+   * Throws an error if the server's response contains an error.
    * @param product
-   * @param inferenceId The document's ID in the queue.
+   * @param inferenceId The result's ID in the queue.
    * @category Asynchronous
    * @returns a `Promise` containing either the parsed result, or information on the queue.
    */
-  async getProductResult<P extends typeof BaseProduct>(
+  async getProductResultById<P extends typeof BaseProduct>(
     product: P,
     inferenceId: string,
   ): Promise<InstanceType<P["responseClass"]>> {
     const queueResponse: BaseHttpResponse = await this.#reqGetProductResult(
-      inferenceId, product.slug
+      `https://${this.settings.hostname}/v2/products/${product.slug}/results/${inferenceId}`
     );
+    return this.#processResponse(queueResponse, product.responseClass) as InstanceType<P["responseClass"]>;
+  }
+
+  /**
+   * Requests the job of a queued document from the API.
+   * Throws an error if the server's response contains an error.
+   * @param product
+   * @param url The document's ID in the queue.
+   * @category Asynchronous
+   * @returns a `Promise` containing either the parsed result, or information on the queue.
+   */
+  async getProductResultByUrl<P extends typeof BaseProduct>(
+    product: P,
+    url: string,
+  ): Promise<InstanceType<P["responseClass"]>> {
+    const queueResponse: BaseHttpResponse = await this.#reqGetProductResult(url);
     return this.#processResponse(queueResponse, product.responseClass) as InstanceType<P["responseClass"]>;
   }
 
@@ -155,19 +171,19 @@ export class MindeeApiV2 {
 
   /**
    * Make a request to GET the status of a document in the queue.
-   * @param inferenceId ID of the inference.
-   * @param slug "jobs" or "inferences"...
+   * @param url URL path to the result.
    * @category Asynchronous
-   * @returns a `Promise` containing either the parsed result, or information on the queue.
+   * @returns a `Promise` containing the parsed result.
    */
-  async #reqGetProductResult(inferenceId: string, slug: string): Promise<BaseHttpResponse> {
+  async #reqGetProductResult(url: string): Promise<BaseHttpResponse> {
     const options: RequestOptions = {
       method: "GET",
       headers: this.settings.baseHeaders,
-      hostname: this.settings.hostname,
-      path: `/v2/products/${slug}/results/${inferenceId}`,
       timeoutSecs: this.settings.timeoutSecs,
     };
-    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
+    if (!url.startsWith("https://")) {
+      throw new MindeeError("URL must start with https://");
+    }
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options, url);
   }
 }
