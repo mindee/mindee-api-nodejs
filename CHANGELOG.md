@@ -1,4 +1,10 @@
-# CHANGELOG
+# Mindee Node.js API Library Changelog
+
+
+## v5.0.2 - 2026-02-27
+### Changes
+* :bug: always use the provided result URL
+
 
 ## v5.0.1 - 2026-02-24
 ### Changes
