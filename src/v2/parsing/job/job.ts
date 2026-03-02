@@ -16,9 +16,13 @@ export class Job {
    */
   public error?: ErrorResponse;
   /**
-   * Timestamp of the job creation.
+   * Date and time of the Job creation.
    */
   public createdAt: Date | null;
+  /**
+   * Date and time of the Job completion. Filled once processing is finished.
+   */
+  public completedAt: Date | null | undefined;
   /**
    * ID of the model.
    */
@@ -53,19 +57,22 @@ export class Job {
     if (serverResponse["status"] !== undefined) {
       this.status = serverResponse["status"];
     }
-    if (
-      serverResponse["error"] !== undefined &&
-      serverResponse["error"] !== null &&
-      Object.keys(serverResponse["error"]).length > 0
-    ) {
+    if (serverResponse["error"]) {
       this.error = new ErrorResponse(serverResponse["error"]);
     }
     this.createdAt = parseDate(serverResponse["created_at"]);
+    if (!serverResponse["completed_at"]) {
+      this.completedAt = undefined;
+    } else {
+      this.completedAt = parseDate(serverResponse["completed_at"]);
+    }
     this.modelId = serverResponse["model_id"];
     this.pollingUrl = serverResponse["polling_url"];
     this.filename = serverResponse["filename"];
     this.resultUrl = serverResponse["result_url"];
     this.alias = serverResponse["alias"];
-    this.webhooks = serverResponse["webhooks"];
+    this.webhooks = (serverResponse["webhooks"] ?? []).map(
+      (webhook: StringDict) => new JobWebhook(webhook)
+    );
   }
 }

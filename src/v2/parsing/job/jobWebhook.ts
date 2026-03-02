@@ -26,7 +26,7 @@ export class JobWebhook {
     this.id = serverResponse["id"];
     this.createdAt = parseDate(serverResponse["created_at"]);
     this.status = serverResponse["status"];
-    if (serverResponse["error"] !== undefined) {
+    if (serverResponse["error"]) {
       this.error = new ErrorResponse(serverResponse["error"]);
     }
   }
