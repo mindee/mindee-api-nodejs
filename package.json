@@ -1,6 +1,6 @@
 {
   "name": "mindee",
-  "version": "5.0.2",
+  "version": "5.1.0",
   "description": "Mindee Client Library for Node.js",
   "author": {
     "name": "Mindee",
@@ -61,7 +61,7 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.19.33",
+    "@types/node": "^20.19.35",
     "@types/tmp": "^0.2.6",
     "@typescript-eslint/eslint-plugin": "^8.56.1",
     "@typescript-eslint/parser": "^8.56.1",

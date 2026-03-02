@@ -1,6 +1,14 @@
 # Mindee Node.js API Library Changelog
 
 
+## v5.1.0 - 2026-03-02
+### Changes
+* :sparkles: add to job information
+### Fixes
+* :bug: fix for printing crop results
+* :bug: proper init of webhook payload
+
+
 ## v5.0.2 - 2026-02-27
 ### Changes
 * :bug: always use the provided result URL
