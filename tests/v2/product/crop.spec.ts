@@ -47,6 +47,11 @@ describe("MindeeV2 - Crop Response", async () => {
     assert.strictEqual(polygon[2][1], 0.947);
     assert.strictEqual(polygon[3][0], 0.15);
     assert.strictEqual(polygon[3][1], 0.947);
+
+    const rstString = await fs.readFile(
+      path.join(V2_PRODUCT_PATH, "crop", "crop_single.rst"), "utf8"
+    );
+    assert.strictEqual(response.inference.toString(), rstString);
   });
 
   it("should load multiple results", async () => {
@@ -101,19 +106,10 @@ describe("MindeeV2 - Crop Response", async () => {
     assert.strictEqual(secondPolygon[2][1], 0.97);
     assert.strictEqual(secondPolygon[3][0], 0.547);
     assert.strictEqual(secondPolygon[3][1], 0.97);
-  });
 
-  describe("RST Display", async () => {
-    it("to be properly exposed", async () => {
-      const response = await loadV2Response(
-        crop.CropResponse,
-        path.join(V2_PRODUCT_PATH, "crop", "crop_single.json")
-      );
-      const rstString = await fs.readFile(
-        path.join(V2_PRODUCT_PATH, "crop", "crop_single.rst"), "utf8"
-      );
-      assert.notStrictEqual(response.inference, null);
-      assert.strictEqual(response.inference.toString(), rstString);
-    });
+    const rstString = await fs.readFile(
+      path.join(V2_PRODUCT_PATH, "crop", "crop_multiple.rst"), "utf8"
+    );
+    assert.strictEqual(response.inference.toString(), rstString);
   });
 });
