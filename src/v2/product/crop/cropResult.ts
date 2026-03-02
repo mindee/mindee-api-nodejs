@@ -12,7 +12,7 @@ export class CropResult {
   }
 
   toString(): string {
-    const crops = this.crops.map(item => item.toString()).join("\n * ");
-    return `Crop\n====\n * ${crops}`;
+    const crops = this.crops.map(item => item.toString()).join("\n");
+    return `Crops\n=====\n${crops}`;
   }
 }

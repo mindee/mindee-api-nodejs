@@ -47,6 +47,7 @@ export class Polygon extends Array<Point> {
   }
 
   toString(): string {
-    return this.map((point) => `(${point})`).join(", ");
+    const points = this.map((point) => `(${point})`).join(", ");
+    return `(${points})`;
   }
 }

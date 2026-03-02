@@ -2,21 +2,20 @@ import { Polygon } from "@/geometry/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 
 /**
- * Location of a field.
+ * A field's location on the document.
  */
 export class FieldLocation {
-  /** Free polygon made up of points (can be null when not provided). */
-  readonly polygon: Polygon | null;
-
-  /** Page ID. */
-  readonly page: number | undefined;
+  /** Position information as a list of points in clockwise order. */
+  readonly polygon: Polygon;
+  /** 0-based page index of where the polygon is located. */
+  readonly page;
 
   constructor(serverResponse: StringDict) {
-    this.polygon = "polygon" in serverResponse ? new Polygon(...serverResponse["polygon"]) : null;
-    this.page = "page" in serverResponse ? serverResponse["page"] : undefined;
+    this.polygon = new Polygon(...serverResponse["polygon"]);
+    this.page = serverResponse["page"];
   }
 
   toString(): string {
-    return this.polygon?.toString() ?? "";
+    return `${this.polygon} on page ${this.page}`;
   }
 }
