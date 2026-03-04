@@ -5,6 +5,9 @@ OUTPUT_FILE='../test_code_samples/_test_v1.js'
 ACCOUNT=$1
 ENDPOINT=$2
 
+if [ -z "${ACCOUNT}" ]; then echo "ACCOUNT is required"; exit 1; fi
+if [ -z "${ENDPOINT}" ]; then echo "ENDPOINT is required"; exit 1; fi
+
 rm -fr ../test_code_samples
 mkdir ../test_code_samples
 

@@ -1,7 +1,6 @@
 import { Command, OptionValues } from "commander";
-import { Client } from "./client.js";
-import { PathInput } from "../input/index.js";
 import * as console from "console";
+import { Client, InputSource, PathInput, UrlInput } from "@/index.js";
 import { BaseInference } from "@/v2/parsing/inference/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 import {
@@ -37,7 +36,12 @@ async function enqueueAndGetInference(
   options: OptionValues
 ): Promise<void> {
   const mindeeClient = initClient(options);
-  const inputSource = new PathInput({ inputPath: inputPath });
+  let inputSource: InputSource;
+  if (inputPath.startsWith("https://")) {
+    inputSource = new UrlInput({ url: inputPath });
+  } else {
+    inputSource = new PathInput({ inputPath: inputPath });
+  }
   const response = await mindeeClient.enqueueAndGetResult(
     product,
     inputSource,
@@ -71,7 +75,7 @@ function addMainOptions(prog: Command) {
     "-m, --model <model_id>",
     "Model ID (required)"
   );
-  prog.argument("<input_path>", "full path to the file");
+  prog.argument("<input_path>", "full path or URL to the file");
 }
 
 export function cli() {

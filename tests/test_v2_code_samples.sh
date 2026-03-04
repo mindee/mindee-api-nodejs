@@ -32,7 +32,7 @@ do
     sed -i "s/MY_MODEL_ID/${MINDEE_V2_SE_TESTS_CROP_MODEL_ID}/" $OUTPUT_FILE
   fi
 
-  if echo "${f}" | grep -q "v2_extraction.txt"
+  if echo "${f}" | grep -q "v2_extraction"
   then
     sed -i "s/MY_MODEL_ID/${MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID}/" $OUTPUT_FILE
   fi
