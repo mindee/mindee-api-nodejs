@@ -31,7 +31,6 @@ export default [{
       ...globals.mocha,
       Promise: true,
     },
-
     parser: tsParser,
   },
 
@@ -78,5 +77,6 @@ export default [{
     "no-unexpected-multiline": "error",
     indent: ["error", 2],
     "eol-last": "error",
+    "preserve-caught-error": "off",
   },
 }];
