@@ -48,9 +48,8 @@
   },
   "dependencies": {
     "commander": "^14.0.3",
-    "file-type": "^21.3.0",
-    "tmp": "^0.2.3",
-    "tslib": "^2.8.1",
+    "file-type": "^21.3.1",
+    "tmp": "^0.2.5",
     "undici": ">=6.23.0 <8.0.0"
   },
   "optionalDependencies": {
@@ -61,17 +60,18 @@
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^20.19.35",
+    "@types/node": "^20.19.37",
     "@types/tmp": "^0.2.6",
-    "@typescript-eslint/eslint-plugin": "^8.56.1",
-    "@typescript-eslint/parser": "^8.56.1",
-    "eslint": "^9.39.3",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "eslint": "^9.39.4",
     "eslint-plugin-jsdoc": "^62.7.1",
     "mocha": "^11.7.5",
     "tsc-alias": "^1.8.16",
     "tsx": "^4.21.0",
     "typedoc": "^0.28.17",
-    "typescript": "^5.9.3"
+    "typescript": "^5.9.3",
+    "tslib": "^2.8.1"
   },
   "keywords": [
     "typescript",

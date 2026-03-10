@@ -2,6 +2,7 @@
   "compilerOptions": {
     "baseUrl": "./",
     "declaration": true,
+    "importHelpers": false,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
