@@ -1,9 +1,10 @@
+import { describe, it } from "node:test";
 import assert from "node:assert";
 import { UrlInput } from "@/index.js";
 import { Client } from "@/v1/index.js";
 import { InvoiceV4 } from "@/v1/product/index.js";
 
-describe("MindeeV1 - Integration - URL Input", async () => {
+describe("MindeeV1 - Integration - URL Input", { timeout: 60000 }, () => {
   it("should retrieve and parse a remote file with redirection", async () => {
     const apiKey = process.env.MINDEE_API_KEY;
     if (!apiKey) {
@@ -20,5 +21,5 @@ describe("MindeeV1 - Integration - URL Input", async () => {
     assert.strictEqual(localInput.filename, "invoice_5p.pdf");
     const result = await client.parse(InvoiceV4, localInput);
     assert.strictEqual(result.document.nPages, 5);
-  }).timeout(60000);
+  });
 });

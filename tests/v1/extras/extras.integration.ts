@@ -1,10 +1,11 @@
+import { beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
 import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
 
-describe("MindeeV1 - Integration - Extras", async () => {
+describe("MindeeV1 - Integration - Extras", { timeout: 70000 }, () => {
   let client: mindee.v1.Client;
 
   beforeEach(() => {
@@ -20,7 +21,7 @@ describe("MindeeV1 - Integration - Extras", async () => {
       mindee.v1.product.InvoiceV4, sample, { cropper: true }
     );
     assert.ok(response.document.inference.pages[0]?.extras?.cropper);
-  }).timeout(70000);
+  });
 
   it("should send full text OCR extra", async () => {
     const sample = new mindee.PathInput({
@@ -31,8 +32,7 @@ describe("MindeeV1 - Integration - Extras", async () => {
       mindee.v1.product.InternationalIdV2, sample, { fullText: true }
     );
     assert.ok(response.document?.extras?.fullTextOcr);
-
-  }).timeout(70000);
+  });
 
   it("should send OCR words synchronously", async () => {
     const sample = new mindee.PathInput({
@@ -44,8 +44,7 @@ describe("MindeeV1 - Integration - Extras", async () => {
     );
     assert.ok(response.document?.ocr);
     assert.ok(response.document?.ocr?.toString());
-
-  }).timeout(70000);
+  });
 
   it("should send OCR words asynchronously", async () => {
     const sample = new mindee.PathInput({
@@ -57,6 +56,5 @@ describe("MindeeV1 - Integration - Extras", async () => {
     );
     assert.ok(response.document?.ocr);
     assert.ok(response.document?.ocr?.toString());
-
-  }).timeout(70000);
+  });
 });

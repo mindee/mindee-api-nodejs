@@ -1,14 +1,15 @@
+import { beforeEach, describe, it } from "node:test";
+import assert from "node:assert";
+import path from "path";
 import * as mindee from "@/index.js";
 import { ExecutionPriority } from "@/v1/parsing/common/index.js";
-import assert from "node:assert";
 import { LocalInputSource } from "@/input/index.js";
 import { OptionalAsyncOptions } from "@/v1/index.js";
 import { FinancialDocumentV1 } from "@/v1/product/index.js";
 import { RAGExtra } from "@/v1/parsing/common/extras/ragExtra.js";
-import path from "path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
-describe("MindeeV1 - Integration - Workflow calls", () => {
+describe("MindeeV1 - Integration - Workflow calls", { timeout: 60000 }, () => {
   let client: mindee.v1.Client;
   let sample: LocalInputSource;
   let workflowId: string;
@@ -33,7 +34,7 @@ describe("MindeeV1 - Integration - Workflow calls", () => {
       { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low, rag: true });
     assert.strictEqual(response.execution.priority, ExecutionPriority.low);
     assert.strictEqual(response.execution.file.alias, `node-${currentDateTime}`);
-  }).timeout(60000);
+  });
 
   it("should poll with RAG disabled", async () => {
     const asyncParams: OptionalAsyncOptions = {
@@ -46,7 +47,7 @@ describe("MindeeV1 - Integration - Workflow calls", () => {
     );
     assert.ok(response.document?.toString());
     assert.strictEqual(response.document?.inference.extras?.rag, undefined);
-  }).timeout(60000);
+  });
 
   it("should poll with RAG disabled and OCR words", async () => {
     const asyncParams: OptionalAsyncOptions = {
@@ -62,7 +63,7 @@ describe("MindeeV1 - Integration - Workflow calls", () => {
     assert.strictEqual(response.document?.inference.extras?.rag, undefined);
     assert.ok(response.document?.ocr);
     assert.ok(response.document?.ocr?.toString());
-  }).timeout(60000);
+  });
 
   it("should poll with RAG enabled", async () => {
     const asyncParams: OptionalAsyncOptions = {
@@ -74,10 +75,9 @@ describe("MindeeV1 - Integration - Workflow calls", () => {
       sample,
       asyncParams
     );
-
     assert.ok(response.document?.toString());
     assert.ok(((response.document?.inference.extras?.rag) as RAGExtra).matchingDocumentId);
-  }).timeout(60000);
+  });
 
   it("should poll with RAG enabled and OCR words", async () => {
     const asyncParams: OptionalAsyncOptions = {
@@ -94,5 +94,5 @@ describe("MindeeV1 - Integration - Workflow calls", () => {
     assert.ok(((response.document?.inference.extras?.rag) as RAGExtra).matchingDocumentId);
     assert.ok(response.document?.ocr);
     assert.ok(response.document?.ocr?.toString());
-  }).timeout(60000);
+  });
 });

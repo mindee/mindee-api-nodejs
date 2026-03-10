@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { beforeEach, describe, it } from "node:test";
 import { promises as fs } from "fs";
 import path from "path";
 import * as mindee from "@/index.js";
@@ -6,7 +7,7 @@ import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { levenshteinRatio } from "../../testingUtilities.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
-describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRequired", async () => {
+describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRequired", { timeout: 60000 }, () => {
   let client: mindee.v1.Client;
 
   beforeEach(() => {
@@ -44,7 +45,7 @@ describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRequired", asy
         testStringRstInvoice.toString()
       ) >= 0.90
     );
-  }).timeout(60000);
+  });
 });
 
 describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRemoved", function () {
@@ -79,5 +80,5 @@ describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRemoved", func
         throw error;
       }
     }
-  }).timeout(60000);
+  });
 });
