@@ -1,3 +1,4 @@
+import { before, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import * as path from "path";
 import { Client } from "@/v1/index.js";
@@ -10,17 +11,8 @@ import { setTimeout } from "node:timers/promises";
 const apiKey = process.env.MINDEE_API_KEY;
 let client: Client;
 let sourceDoc: LocalInputSource;
-describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired", () => {
-  describe("A Multi-Receipt Image", () => {
-    before(async () => {
-      sourceDoc = new PathInput({
-        inputPath: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/default_sample.jpg"),
-      });
-      await sourceDoc.init();
-      client = new Client({ apiKey });
-    });
-  });
-
+describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired", { timeout: 60000 }, () =>
+{
   describe("A Multi-Receipt PDF", () => {
     before(async () => {
       sourceDoc = new PathInput({
@@ -74,9 +66,8 @@ describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequire
       assert.strictEqual(fifthPrediction.lineItems.length, 1);
       assert.strictEqual(fifthPrediction.lineItems[0].totalAmount, 16.5);
 
-    }).timeout(60000);
+    });
   });
-
 
   describe("A Single-Receipt Image", () => {
     before(async () => {
@@ -97,6 +88,6 @@ describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequire
       assert.strictEqual(receiptResult.document.inference.prediction.lineItems[0].totalAmount, 10.2);
       assert.strictEqual(receiptResult.document.inference.prediction.taxes.length, 1);
       assert.strictEqual(receiptResult.document.inference.prediction.taxes[0].value, 1.7);
-    }).timeout(60000);
+    });
   });
 });
