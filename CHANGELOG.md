@@ -1,5 +1,9 @@
 # Mindee Node.js API Library Changelog
 
+## v5.1.1 - 2026-03-11
+### Changes
+* :heavy_minus_sign: tslib is never imported, remove from dependencies
+
 
 ## v5.1.0 - 2026-03-02
 ### Changes
