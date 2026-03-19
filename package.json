@@ -48,9 +48,9 @@
   },
   "dependencies": {
     "commander": "^14.0.3",
-    "file-type": "^21.3.1",
+    "file-type": "^21.3.3",
     "tmp": "^0.2.5",
-    "undici": ">=6.23.0 <8.0.0"
+    "undici": ">=6.24.0 <7.0.0 || >=7.24.0 <8.0.0"
   },
   "optionalDependencies": {
     "@cantoo/pdf-lib": "^2.5.3",
