@@ -94,7 +94,7 @@ describe("MindeeV2 - Crop Response", async () => {
 
     // Validate second crop item
     const secondCrop: crop.CropItem = crops[1];
-    assert.strictEqual(secondCrop.objectType, "invoice");
+    assert.strictEqual(secondCrop.objectType, "receipt");
     assert.strictEqual(secondCrop.location.page, 0);
     const secondPolygon: Polygon = secondCrop.location.polygon!;
     assert.strictEqual(secondPolygon.length, 4);

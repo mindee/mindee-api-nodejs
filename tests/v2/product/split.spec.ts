@@ -45,7 +45,7 @@ describe("MindeeV2 - Split Response", async () => {
     assert.strictEqual(splits.length, 3);
 
     const firstSplit: split.SplitRange = splits[0];
-    assert.strictEqual(firstSplit.documentType, "invoice");
+    assert.strictEqual(firstSplit.documentType, "passport");
     assert.ok(Array.isArray(firstSplit.pageRange));
     assert.strictEqual(firstSplit.pageRange.length, 2);
     assert.strictEqual(firstSplit.pageRange[0], 0);
