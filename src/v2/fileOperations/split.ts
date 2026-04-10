@@ -1,0 +1,45 @@
+import { LocalInputSource } from "@/input/index.js";
+import { MindeeError } from "@/errors/index.js";
+import { PdfExtractor } from "@/pdf/pdfExtractor.js";
+import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
+import { logger } from "@/logger.js";
+
+/**
+ * Extracts a single specified split from a
+ * @param inputSource
+ * @param split
+ */
+export async function extractSingleSplit(inputSource: LocalInputSource, split: number[]) {
+  return await extractSplits(inputSource, [split]);
+}
+
+/**
+ * Extracts splits as complete PDFs from the document.
+ * @param inputSource Local input source.
+ * @param splits List of sub-lists of pages to keep.
+ * @return a list of extracted files.
+ * @throws MindeeError if no indexes are provided.
+ */
+export async function extractSplits(inputSource: LocalInputSource, splits: number[][]) {
+  const pageGroups = splits.filter(e => e.length > 0);
+  if (pageGroups.length === 0) {
+    throw new MindeeError("No valid split indexes provided.");
+  }
+  logger.debug("Extracting splits: " + splits.join(", "));
+  const pdfExtractor = new PdfExtractor(inputSource);
+  await pdfExtractor.init();
+
+  const subDocuments = await pdfExtractor.extractSubDocuments(pageGroups);
+  return new SplitFiles(...subDocuments);
+}
+
+/**
+ * Expands a range of pages into a list of page indexes.
+ * @param range start and end of the page range
+ */
+export function expandRange(range: [number, number]): number[] {
+  if (range[0] > range[1]) {
+    throw new MindeeError("Invalid page range provided.");
+  }
+  return Array.from({ length: range[1] - range[0] + 1 }, (_, i) => range[0] + i);
+}

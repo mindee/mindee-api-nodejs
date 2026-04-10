@@ -1,8 +1,14 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfJsExtractTypes from "pdf.js-extract";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
+import type * as popplerTypes from "node-poppler";
+import tmp from "tmp";
+import * as fs from "node:fs";
 import { MindeePdfError } from "@/errors/index.js";
 import { loadOptionalDependency } from "@/dependency/index.js";
+import { logger } from "@/logger.js";
 
 
 export interface PageTextInfo {
@@ -84,4 +90,47 @@ export async function extractTextFromPdf(pdfBuffer: Buffer): Promise<ExtractedPd
 export async function hasSourceText(pdfData: Buffer): Promise<boolean> {
   const text = await extractTextFromPdf(pdfData);
   return text.getConcatenatedText().trim().length > 0;
+}
+
+/**
+ * Rasterizes a PDF page.
+ *
+ * @param pdfData Buffer representation of the entire PDF file.
+ * @param index Index of the page to rasterize.
+ * @param quality Quality to apply during rasterization.
+ * @return Buffer containing the rasterized image data.
+ */
+export async function rasterizePage(
+  pdfData: Buffer, index: number, quality = 85
+): Promise<Buffer> {
+  const popplerImport = await loadOptionalDependency<typeof popplerTypes>(
+    "node-poppler", "Image Processing"
+  );
+  const poppler = (popplerImport as any).default || popplerImport;
+  const popplerInstance = new poppler.Poppler();
+  const tmpPdf = tmp.fileSync();
+  const tempPdfPath = tmpPdf.name;
+  const antialiasOption: "fast" | "best" | "default" | "good" | "gray" | "none" | "subpixel" = "best";
+  try {
+    await fs.promises.writeFile(tempPdfPath, pdfData);
+    const options = {
+      antialias: antialiasOption,
+      firstPageToConvert: index,
+      lastPageToConvert: index,
+      jpegFile: true,
+      jpegOptions: `quality=${quality}`,
+      singleFile: true
+    };
+
+    const jpegBuffer = await popplerInstance.pdfToCairo(tempPdfPath, undefined, options);
+
+    await fs.promises.unlink(tempPdfPath);
+
+    return Buffer.from(jpegBuffer, "binary");
+  } catch (error) {
+    logger.error("Error rasterizing PDF:", error);
+    throw error;
+  } finally {
+    tmpPdf.removeCallback();
+  }
 }

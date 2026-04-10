@@ -15,7 +15,6 @@ const dataPath = {
   multiPageSample: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
 };
 describe("MindeeV1 - Multi-Receipt Extraction #OptionalDepsRequired", () => {
-
   describe("A single-page multi-receipts document", () => {
     it("should be split properly.", async () => {
       const jsonDataNA = await fs.readFile(path.resolve(dataPath.complete));
