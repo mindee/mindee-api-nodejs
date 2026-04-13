@@ -1,4 +1,4 @@
-import { after, before, beforeEach, describe, it } from "node:test";
+import { after, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
 import * as fs from "node:fs";
@@ -39,7 +39,7 @@ function checkFindocReturn(findocResponse: ExtractionResponse) {
   assert.ok((totalAmount.value as number) > 0);
 }
 
-describe("MindeeV2 - Integration - Product - Split", { timeout: 120000 }, () => {
+describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired", { timeout: 120000 }, () => {
   let client: Client;
   let splitModelId: string;
   let findocModelId: string;
@@ -49,12 +49,6 @@ describe("MindeeV2 - Integration - Product - Split", { timeout: 120000 }, () => 
     "split",
     "default_sample.pdf"
   );
-
-  before(() => {
-    if (!fs.existsSync(OUTPUT_DIR)) {
-      fs.mkdirSync(OUTPUT_DIR, { recursive: true });
-    }
-  });
 
   beforeEach(() => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";

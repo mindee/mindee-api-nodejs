@@ -1,4 +1,4 @@
-import { after, before, beforeEach, describe, it } from "node:test";
+import { after, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
 import * as fs from "node:fs";
@@ -28,12 +28,6 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", 
     "crop",
     "default_sample.jpg"
   );
-
-  before(() => {
-    if (!fs.existsSync(OUTPUT_PATH)) {
-      fs.mkdirSync(OUTPUT_PATH, { recursive: true });
-    }
-  });
 
   beforeEach(() => {
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
