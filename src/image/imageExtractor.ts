@@ -1,5 +1,3 @@
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
 import { loadOptionalDependency } from "@/dependency/index.js";
 import { MindeeImageError } from "@/errors/index.js";
 import { getMinMaxX, getMinMaxY, Polygon } from "@/geometry/index.js";
@@ -9,6 +7,8 @@ import { LocalInputSource } from "@/input/index.js";
 import { logger } from "@/logger.js";
 import { createPdfFromInputSource } from "@/pdf/pdfOperation.js";
 import { rasterizePage } from "@/pdf/pdfUtils.js";
+// eslint-disable-next-line @typescript-eslint/ban-ts-comment
+// @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 
 let pdfLib: typeof pdfLibTypes | null = null;
