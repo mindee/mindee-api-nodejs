@@ -1,21 +1,22 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
-import type * as pdfLibTypes from "@cantoo/pdf-lib";
+import { loadOptionalDependency } from "@/dependency/index.js";
+import { MindeeImageError } from "@/errors/index.js";
 import { getMinMaxX, getMinMaxY, Polygon } from "@/geometry/index.js";
 import { adjustForRotation } from "@/geometry/polygonUtils.js";
-import { loadOptionalDependency } from "@/dependency/index.js";
-import { LocalInputSource } from "@/input/index.js";
 import { ExtractedImage } from "@/image/extractedImage.js";
-import { createPdfFromInputSource } from "@/pdf/pdfOperation.js";
+import { LocalInputSource } from "@/input/index.js";
 import { logger } from "@/logger.js";
+import { createPdfFromInputSource } from "@/pdf/pdfOperation.js";
 import { rasterizePage } from "@/pdf/pdfUtils.js";
+import type * as pdfLibTypes from "@cantoo/pdf-lib";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>(
-      "@cantoo/pdf-lib", "Text Embedding"
+      "@cantoo/pdf-lib", "Image Extraction"
     );
     pdfLib = (pdfLibImport as any).default || pdfLibImport;
   }
@@ -27,12 +28,12 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
  * Extracts elements from a PDF document based on a list of bounding boxes.
  * @param inputSource The input source to extract from.
  * @param polygonsPerPage List of polygons to extract from per page.
- * @param upscale Whether to upscale the image.
+ * @param quality JPEG quality of extracted images.
  */
 export async function extractImagesFromPolygon(
   inputSource: LocalInputSource,
   polygonsPerPage: Map<number, Polygon[]>,
-  upscale: boolean = false
+  quality?: number
 ) {
   const allExtractedImages: ExtractedImage[] = [];
   const pdfDoc = await createPdfFromInputSource(inputSource);
@@ -40,7 +41,7 @@ export async function extractImagesFromPolygon(
   for (const [pageId, polygons] of polygonsPerPage) {
     logger.debug(`Extracting images from page ${pageId}`);
     const pdfPage = pdfDoc.getPage(pageId);
-    const extractions = (await extractFromPage(pdfPage, polygons, true, upscale));
+    const extractions = (await extractFromPage(pdfPage, polygons, true, quality));
     const extractedImages = extractions.map(
       (v, i) => new ExtractedImage(v, inputSource.filename + `_page${pageId}-${i}.jpg`, pageId, i)
     );
@@ -55,19 +56,25 @@ export async function extractImagesFromPolygon(
  * @param pdfPage PDF Page to extract from.
  * @param polygons List of coordinates to pull the elements from.
  * @param asImage Whether to return the extracted elements as images.
- * @param upscale Whether to upscale the image.
+ * @param quality JPEG quality of extracted images, given as number between 0 and 1.
  */
 export async function extractFromPage(
   pdfPage: pdfLibTypes.PDFPage,
   polygons: Polygon[],
   asImage: boolean = false,
-  upscale: boolean = true
+  quality?: number,
 ) {
   const pdfLib = await getPdfLib();
   const { width, height } = pdfPage.getSize();
   const extractedElements: Uint8Array[] = [];
-
-  const qualityScale = upscale ? 300 / 72 : 1;
+  if (quality && (quality < 0)) {
+    throw new MindeeImageError("Quality must be a number between 0 and 1");
+  }
+  if (quality && quality > 1) {
+    logger.warn("Quality is greater than 1, this operation will apply a manual upscale on the output." +
+      " Use only if you know what you are doing.");
+  }
+  const qualityScale = quality ?? 1;
   const orientation = pdfPage.getRotation().angle;
 
   const sourceDoc = pdfPage.doc;

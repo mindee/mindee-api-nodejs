@@ -1,6 +1,6 @@
 import { StringDict } from "@/parsing/index.js";
 import { LocalInputSource } from "@/input/index.js";
-import { extractSplits } from "@/v2/fileOperations/split.js";
+import { expandRange, extractSplits } from "@/v2/fileOperations/split.js";
 
 /**
  * Split inference result.
@@ -32,6 +32,7 @@ export class SplitRange {
    * @param inputSource The input file to extract from.
    */
   async extractFromFile(inputSource: LocalInputSource) {
-    return (await extractSplits(inputSource, [this.pageRange]))[0];
+    const pageRange = [expandRange(this.pageRange as [number, number])];
+    return (await extractSplits(inputSource, pageRange))[0];
   }
 }

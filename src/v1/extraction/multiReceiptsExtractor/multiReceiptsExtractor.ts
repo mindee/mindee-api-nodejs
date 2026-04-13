@@ -34,7 +34,8 @@ async function extractReceiptsFromPage(
   pdfPage: pdfLibTypes.PDFPage,
   boundingBoxes: Polygon[],
   pageId: number) {
-  const extractedReceiptsRaw = await extractFromPage(pdfPage, boundingBoxes);
+  const manualUpscaleFactor = 300/72;
+  const extractedReceiptsRaw = await extractFromPage(pdfPage, boundingBoxes, false, manualUpscaleFactor);
   const extractedReceipts = [];
   for (let i = 0; i < extractedReceiptsRaw.length; i++) {
     extractedReceipts.push(new ExtractedMultiReceiptImage(extractedReceiptsRaw[i], pageId, i));

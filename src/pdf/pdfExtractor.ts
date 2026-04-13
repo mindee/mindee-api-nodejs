@@ -133,7 +133,7 @@ export class PdfExtractor {
       const startPage = String(pageRange[0] + 1).padStart(3, "0");
       const endPage = String(pageRange[pageRange.length - 1] + 1).padStart(3, "0");
 
-      const fieldFilename = `${splitName}_page${startPage}-${endPage}.pdf`;
+      const fieldFilename = `${splitName}_page_${startPage}-${endPage}.pdf`;
       const page = await extractPages(this.sourcePdf!, pageOptions);
       this.extractedPdfs.push(new ExtractedPdf(page.file, fieldFilename, pageRange.length));
     }

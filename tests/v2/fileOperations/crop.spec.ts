@@ -1,15 +1,16 @@
-import path from "path";
-import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { loadOptionalDependency } from "@/dependency/index.js";
+import { ExtractedImage } from "@/image/index.js";
+import { PathInput } from "@/index.js";
+import { extractCrops } from "@/v2/fileOperations/crop.js";
 
 import { LocalResponse } from "@/v2/parsing/index.js";
 import { CropResponse } from "@/v2/product/crop/cropResponse.js";
-import { PathInput } from "@/index.js";
-import { extractCrops } from "@/v2/fileOperations/crop.js";
-import { V2_PRODUCT_PATH } from "../../index";
-import { loadOptionalDependency } from "../../../src/dependency";
-import type * as SharpTypes from "sharp";
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import path from "path";
+import type * as SharpTypes from "sharp";
+import { V2_PRODUCT_PATH } from "../../index.js";
 
 const cropPath = path.join(V2_PRODUCT_PATH, "crop");
 let pdfLib: typeof pdfLibTypes | null = null;
@@ -48,7 +49,7 @@ async function getFileDimensions(buffer: Buffer, sharpInstance: any) {
 describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
   const sharpLoaded = await loadOptionalDependency<typeof SharpTypes>("sharp", "Image compression");
   const sharp = (sharpLoaded as any).default || sharpLoaded;
-  await it("should process single page crop split correctly", async () => {
+  await it("should process single page crop correctly", async () => {
     const inputSample = new PathInput({
       inputPath:
           path.join(cropPath, "default_sample.jpg")
@@ -58,10 +59,7 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
       path.join(cropPath, "crop_single.json")
     );
 
-    const extractedCrops = await extractCrops(
-      inputSample,
-      response.inference.result.crops
-    );
+    const extractedCrops = await response.extractFromFile(inputSample);
 
     assert.strictEqual(extractedCrops.length, 1);
 
@@ -69,9 +67,33 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
     const dimensions = await getFileDimensions(extractedCrops[0].buffer, sharp);
     assert.strictEqual(Math.round(dimensions.width), 5880);
     assert.strictEqual(Math.round(dimensions.height), 3275);
+    const localExtract: ExtractedImage = await response.inference.result.crops[0].extractFromFile(inputSample);
+    assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
   });
 
-  await it("should process multi page receipt split correctly", async () => {
+  await it("should extract and still work with lower quality", async () => {
+    const inputSample = new PathInput({
+      inputPath:
+        path.join(cropPath, "default_sample.jpg")
+    });
+    await inputSample.init();
+    const response = await loadV2Crop(
+      path.join(cropPath, "crop_single.json")
+    );
+
+    const extractedCrops = await response.extractFromFile(inputSample, 0.4);
+
+    assert.strictEqual(extractedCrops.length, 1);
+
+    assert.strictEqual(extractedCrops[0].pageId, 0);
+    const dimensions = await getFileDimensions(extractedCrops[0].buffer, sharp);
+    assert.strictEqual(Math.round(dimensions.width), 5880 * 0.4);
+    assert.strictEqual(Math.round(dimensions.height), 3275 * 0.4);
+    const localExtract: ExtractedImage = await response.inference.result.crops[0].extractFromFile(inputSample, 0.4);
+    assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
+  });
+
+  await it("should process multi page receipt crops correctly", async () => {
     const inputSample = new PathInput({
       inputPath:
         path.join(cropPath, "multipage_sample.pdf")

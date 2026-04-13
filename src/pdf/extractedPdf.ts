@@ -11,7 +11,7 @@ export class ExtractedPdf {
   private readonly filename: string;
   public readonly pageCount: number;
 
-  constructor(pdfData: Buffer, filename: string, pageCount: number) {
+  constructor(pdfData: Buffer<ArrayBufferLike>, filename: string, pageCount: number) {
     this.buffer = pdfData;
     this.filename = filename;
     this.pageCount = pageCount;

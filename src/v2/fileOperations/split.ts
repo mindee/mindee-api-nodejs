@@ -3,6 +3,7 @@ import { MindeeError } from "@/errors/index.js";
 import { PdfExtractor } from "@/pdf/pdfExtractor.js";
 import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
 import { logger } from "@/logger.js";
+import { ExtractedPdf } from "@/pdf/extractedPdf.js";
 
 /**
  * Extracts a single specified split from a
@@ -20,7 +21,7 @@ export async function extractSingleSplit(inputSource: LocalInputSource, split: n
  * @return a list of extracted files.
  * @throws MindeeError if no indexes are provided.
  */
-export async function extractSplits(inputSource: LocalInputSource, splits: number[][]) {
+export async function extractSplits(inputSource: LocalInputSource, splits: number[][]): Promise<SplitFiles> {
   const pageGroups = splits.filter(e => e.length > 0);
   if (pageGroups.length === 0) {
     throw new MindeeError("No valid split indexes provided.");
@@ -29,6 +30,13 @@ export async function extractSplits(inputSource: LocalInputSource, splits: numbe
   const pdfExtractor = new PdfExtractor(inputSource);
   await pdfExtractor.init();
 
+  if (splits.length === 0) {
+    return new SplitFiles();
+  }
+  const pageCount = await pdfExtractor.getPageCount();
+  if (splits.length === 1 && splits[0].at(-1) === pageCount-1) {
+    return new SplitFiles(new ExtractedPdf(inputSource.fileObject as Buffer, inputSource.filename, pageCount));
+  }
   const subDocuments = await pdfExtractor.extractSubDocuments(pageGroups);
   return new SplitFiles(...subDocuments);
 }

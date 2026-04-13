@@ -22,13 +22,13 @@ export async function extractSingleCrop(inputSource: LocalInputSource, crop: Cro
  * Extracts a list of crops from a document.
  * @param inputSource Local input source.
  * @param crops List of crops to extract.
- * @param upscale Whether to upscale the extracted images.
+ * @param quality JPEG quality of extracted images.
  * @return a list of extracted files, as a CropFiles object.
  */
 export async function extractCrops(
   inputSource: LocalInputSource,
   crops: CropItem[],
-  upscale: boolean = false
+  quality?: number ,
 ): Promise<CropFiles> {
   if (crops.length === 0) {
     throw new MindeeError("No crop indexes provided.");
@@ -42,6 +42,6 @@ export async function extractCrops(
     }
     polygonsByPage.get(pageId)!.push(crop.location.polygon);
   }
-  const extractedCrops = await extractImagesFromPolygon(inputSource, polygonsByPage, upscale);
+  const extractedCrops = await extractImagesFromPolygon(inputSource, polygonsByPage, quality);
   return new CropFiles(...extractedCrops);
 }

@@ -5,9 +5,12 @@ import { describe, it } from "node:test";
 import { LocalResponse } from "@/v2/parsing/index.js";
 import { SplitResponse } from "@/v2/product/split/splitResponse.js";
 import { PathInput } from "@/index.js";
-import { V2_PRODUCT_PATH } from "../../index";
-import { loadOptionalDependency } from "../../../src/dependency";
+import { V2_PRODUCT_PATH } from "../../index.js";
+import { loadOptionalDependency } from "@/dependency/index.js";
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
+import { extractSplits } from "@/v2/fileOperations/split.js";
+import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
+import { ExtractedPdf } from "@/pdf/extractedPdf.js";
 
 const splitPath = path.join(V2_PRODUCT_PATH, "split");
 const financialDocumentPath = path.join(V2_PRODUCT_PATH, "extraction", "financial_document");
@@ -88,5 +91,18 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     assert.strictEqual(extractedSplits[2].pageCount, 1);
     const count2 = await getPageCount(extractedSplits[2].buffer);
     assert.strictEqual(count2, 1);
+    const localExtract: ExtractedPdf = await response.inference.result.splits[0].extractFromFile(inputSample);
+    assert.ok(extractedSplits[0].buffer.equals(localExtract.buffer));
+  });
+
+  await it("extracts a file as itself if the split count is its own length", async () => {
+    const inputSample = new PathInput({
+      inputPath: path.join(splitPath, "invoice_5p.pdf")
+    });
+    await inputSample.init();
+    const splitFiles: SplitFiles = await extractSplits(inputSample, [[0, 1, 2, 3, 4]]);
+    assert(splitFiles.length === 1);
+    assert(splitFiles[0].pageCount === 5);
+    assert(splitFiles[0].buffer === inputSample.fileObject);
   });
 });
