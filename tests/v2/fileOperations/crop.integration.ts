@@ -18,7 +18,7 @@ function checkFindocReturn(findocResponse: ExtractionResponse) {
   assert.ok((totalAmount.value as number) > 0);
 }
 
-describe("MindeeV2 - Integration - FileOperation - Crop", { timeout: 120000 }, () => {
+describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", { timeout: 120000 }, () => {
   let client: Client;
   let cropModelId: string;
   let findocModelId: string;
