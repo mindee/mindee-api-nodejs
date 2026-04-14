@@ -8,7 +8,7 @@ import { writeFileSync } from "node:fs";
 
 export class ExtractedPdf {
   public readonly buffer: Buffer;
-  private readonly filename: string;
+  public readonly filename: string;
   public readonly pageCount: number;
 
   constructor(pdfData: Buffer<ArrayBufferLike>, filename: string, pageCount: number) {

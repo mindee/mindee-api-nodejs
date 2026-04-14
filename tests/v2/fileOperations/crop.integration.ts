@@ -46,7 +46,6 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", 
 
   it("extracts crops from image correctly", async () => {
     const cropInput = new PathInput({ inputPath: cropSample });
-    await cropInput.init();
 
     const cropParams = { modelId: cropModelId };
 

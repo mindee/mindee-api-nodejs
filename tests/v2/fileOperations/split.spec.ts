@@ -27,7 +27,6 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
 
 async function loadV2Split(resourcePath: string): Promise<SplitResponse> {
   const localResponse = new LocalResponse(resourcePath);
-  await localResponse.init();
   return localResponse.deserializeResponse(SplitResponse);
 }
 
@@ -50,7 +49,6 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     const inputSample = new PathInput({
       inputPath: path.join(financialDocumentPath, "default_sample.jpg")
     });
-    await inputSample.init();
 
     const response = await loadV2Split(
       path.join(splitPath, "split_single.json")
@@ -70,7 +68,6 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     const inputSample = new PathInput({
       inputPath: path.join(splitPath, "invoice_5p.pdf")
     });
-    await inputSample.init();
 
     const response = await loadV2Split(
       path.join(splitPath, "split_multiple.json")
@@ -99,7 +96,6 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     const inputSample = new PathInput({
       inputPath: path.join(splitPath, "invoice_5p.pdf")
     });
-    await inputSample.init();
     const splitFiles: SplitFiles = await extractSplits(inputSample, [[0, 1, 2, 3, 4]]);
     assert(splitFiles.length === 1);
     assert(splitFiles[0].pageCount === 5);

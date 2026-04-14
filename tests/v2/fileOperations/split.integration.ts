@@ -3,9 +3,10 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import * as fs from "node:fs";
 
-import { Client, PathInput, BufferInput } from "@/index.js";
+import { Client, PathInput } from "@/index.js";
 import { Split } from "@/v2/product/split/index.js";
 import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
+import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 import { loadOptionalDependency } from "@/dependency/index.js";
@@ -67,7 +68,6 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired", { tim
 
   it("extracts splits from pdf correctly", async () => {
     const splitInput = new PathInput({ inputPath: splitSample });
-    await splitInput.init();
 
     const splitParams = { modelId: splitModelId };
 
@@ -77,16 +77,13 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired", { tim
 
     assert.equal(response.inference.file.pageCount, 2);
 
-    const extractedPdfs = await response.extractFromFile(splitInput);
+    const extractedPdfs: SplitFiles = await response.extractFromFile(splitInput);
 
     assert.equal(extractedPdfs.length, 2);
     assert.equal(extractedPdfs[0].filename, "default_sample_page_001-001.pdf");
     assert.equal(extractedPdfs[1].filename, "default_sample_page_002-002.pdf");
 
-    const extractionInput = new BufferInput({
-      buffer: extractedPdfs[0].buffer,
-      filename: extractedPdfs[0].filename
-    });
+    const extractionInput = extractedPdfs[0].asSource();
 
     const findocParams = { modelId: findocModelId };
 

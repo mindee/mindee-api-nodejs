@@ -25,7 +25,6 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
 
 async function loadV2Crop(resourcePath: string): Promise<CropResponse> {
   const localResponse = new LocalResponse(resourcePath);
-  await localResponse.init();
   return localResponse.deserializeResponse(CropResponse);
 }
 /**
@@ -54,7 +53,6 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
       inputPath:
           path.join(cropPath, "default_sample.jpg")
     });
-    await inputSample.init();
     const response = await loadV2Crop(
       path.join(cropPath, "crop_single.json")
     );
@@ -76,7 +74,6 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
       inputPath:
         path.join(cropPath, "default_sample.jpg")
     });
-    await inputSample.init();
     const response = await loadV2Crop(
       path.join(cropPath, "crop_single.json")
     );
@@ -98,7 +95,6 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
       inputPath:
         path.join(cropPath, "multipage_sample.pdf")
     });
-    await inputSample.init();
     const response = await loadV2Crop(
       path.join(cropPath, "crop_multiple.json")
     );
