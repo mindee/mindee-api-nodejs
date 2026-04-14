@@ -4,6 +4,7 @@ import path from "path";
 
 const currentDirName = dirname(fileURLToPath(import.meta.url));
 export const RESOURCE_PATH = path.join(currentDirName, "data");
+export const OUTPUT_PATH = path.join(RESOURCE_PATH, "output");
 
 export const V1_RESOURCE_PATH = path.join(RESOURCE_PATH, "v1");
 export const V1_PRODUCT_PATH = path.join(V1_RESOURCE_PATH, "products");

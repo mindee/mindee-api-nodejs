@@ -15,11 +15,15 @@ import { loadOptionalDependency } from "@/dependency/index.js";
  */
 export class ExtractedImage {
   public buffer: Buffer;
-  protected internalFileName: string;
+  public filename: string;
+  public pageId?: number;
+  public elementId?: number;
 
-  protected constructor(buffer: Uint8Array, fileName: string) {
+  constructor(buffer: Uint8Array, fileName: string, pageId?: number, elementId?: number) {
     this.buffer = Buffer.from(buffer);
-    this.internalFileName = fileName;
+    this.filename = fileName;
+    this.pageId = pageId;
+    this.elementId = elementId;
   }
 
   /**
@@ -104,7 +108,7 @@ export class ExtractedImage {
   asSource(): BufferInput {
     return new BufferInput({
       buffer: this.buffer,
-      filename: this.internalFileName,
+      filename: this.filename,
     });
   }
 }

@@ -1,15 +1,10 @@
 import { logger } from "@/logger.js";
-import tmp from "tmp";
-import * as fs from "node:fs";
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-ignore
-import type * as popplerTypes from "node-poppler";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import { compressImage } from "@/image/index.js";
 import { loadOptionalDependency } from "@/dependency/index.js";
-import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText } from "./pdfUtils.js";
+import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText, rasterizePage } from "./pdfUtils.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
@@ -159,7 +154,7 @@ async function compressPagesWithQuality(
     const page = pdfDoc.getPages()[i];
     const rasterizedPage = await rasterizePage(pdfData, i + 1, imageQuality);
     const compressedImage = await compressImage(
-      Buffer.from(rasterizedPage, "binary"), imageQuality
+      rasterizedPage, imageQuality
     );
     if (!disableSourceText) {
       await addTextToPdfPage(page, extractedText);
@@ -258,48 +253,6 @@ async function getFontFromName(fontName: string): Promise<pdfLibTypes.PDFFont> {
   }
 
   return font;
-}
-
-/**
- * Rasterizes a PDF page.
- *
- * @param pdfData Buffer representation of the entire PDF file.
- * @param index Index of the page to rasterize.
- * @param quality Quality to apply during rasterization.
- */
-async function rasterizePage(
-  pdfData: Buffer, index: number, quality = 85
-): Promise<string> {
-  const popplerImport = await loadOptionalDependency<typeof popplerTypes>(
-    "node-poppler", "Image Processing"
-  );
-  const poppler = (popplerImport as any).default || popplerImport;
-  const popplerInstance = new poppler.Poppler();
-  const tmpPdf = tmp.fileSync();
-  const tempPdfPath = tmpPdf.name;
-  const antialiasOption: "fast" | "best" | "default" | "good" | "gray" | "none" | "subpixel" = "best";
-  try {
-    await fs.promises.writeFile(tempPdfPath, pdfData);
-    const options = {
-      antialias: antialiasOption,
-      firstPageToConvert: index,
-      lastPageToConvert: index,
-      jpegFile: true,
-      jpegOptions: `quality=${quality}`,
-      singleFile: true
-    };
-
-    const jpegBuffer = await popplerInstance.pdfToCairo(tempPdfPath, undefined, options);
-
-    await fs.promises.unlink(tempPdfPath);
-
-    return jpegBuffer;
-  } catch (error) {
-    logger.error("Error rasterizing PDF:", error);
-    throw error;
-  } finally {
-    tmpPdf.removeCallback();
-  }
 }
 
 /**

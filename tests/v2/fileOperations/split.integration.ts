@@ -1,0 +1,89 @@
+import { after, beforeEach, describe, it } from "node:test";
+import assert from "node:assert/strict";
+import path from "node:path";
+import * as fs from "node:fs";
+
+import { Client, PathInput } from "@/index.js";
+import { Split } from "@/v2/product/split/index.js";
+import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
+import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
+import { V2_PRODUCT_PATH } from "../../index.js";
+import { SimpleField } from "@/v2/parsing/inference/field/index.js";
+const OUTPUT_DIR = path.join(__dirname, "output");
+
+function checkFindocReturn(findocResponse: ExtractionResponse) {
+  assert.ok(findocResponse.inference.model.id.length > 0);
+  const totalAmount = findocResponse.inference.result.fields.get("total_amount") as SimpleField;
+  assert.ok(totalAmount !== undefined);
+  assert.ok((totalAmount.value as number) > 0);
+}
+
+describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired", { timeout: 120000 }, () => {
+  let client: Client;
+  let splitModelId: string;
+  let findocModelId: string;
+
+  const splitSample = path.join(
+    V2_PRODUCT_PATH,
+    "split",
+    "default_sample.pdf"
+  );
+
+  beforeEach(() => {
+    const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
+    splitModelId = process.env["MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID"] ?? "";
+    findocModelId = process.env["MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID"] ?? "";
+
+    client = new Client({ apiKey: apiKey, debug: true });
+  });
+
+  after(() => {
+    const file1 = path.join(OUTPUT_DIR, "split_001.pdf");
+    const file2 = path.join(OUTPUT_DIR, "split_002.pdf");
+    if (fs.existsSync(file1)) fs.rmSync(file1);
+    if (fs.existsSync(file2)) fs.rmSync(file2);
+  });
+
+  it("extracts splits from pdf correctly", async () => {
+    const splitInput = new PathInput({ inputPath: splitSample });
+
+    const splitParams = { modelId: splitModelId };
+
+    const response: any = await client.enqueueAndGetResult(
+      Split, splitInput, splitParams
+    );
+
+    assert.equal(response.inference.file.pageCount, 2);
+
+    const extractedPdfs: SplitFiles = await response.extractFromFile(splitInput);
+
+    assert.equal(extractedPdfs.length, 2);
+    assert.equal(extractedPdfs[0].filename, "default_sample_page_001-001.pdf");
+    assert.equal(extractedPdfs[1].filename, "default_sample_page_002-002.pdf");
+
+    const extractionInput = extractedPdfs[0].asSource();
+
+    const findocParams = { modelId: findocModelId };
+
+    const invoice0 = await client.enqueueAndGetResult(
+      Extraction, extractionInput, findocParams
+    );
+
+    checkFindocReturn(invoice0 as ExtractionResponse);
+
+    const file1Path = path.join(OUTPUT_DIR, "split_001.pdf");
+    const file2Path = path.join(OUTPUT_DIR, "split_002.pdf");
+
+    await extractedPdfs[0].saveToFileAsync(file1Path);
+    await extractedPdfs[1].saveToFileAsync(file2Path);
+
+
+    const inputSource1 = new PathInput({ inputPath: file1Path });
+    const pageCount1 = await inputSource1.getPageCount();
+    assert.equal(pageCount1, extractedPdfs[0].pageCount);
+
+    const inputSource2 = new PathInput({ inputPath: file1Path });
+    const pageCount2 = await inputSource2.getPageCount();
+    assert.equal(pageCount2, extractedPdfs[1].pageCount);
+  });
+});

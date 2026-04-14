@@ -1,7 +1,8 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
-import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";
+import { MindeeError } from "@/errors/index.js";
+import { createPdfFromInputSource } from "@/pdf/pdfOperation.js";
 import { Polygon } from "@/geometry/index.js";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { ExtractedMultiReceiptImage } from "@/v1/extraction/index.js";
@@ -33,41 +34,13 @@ async function extractReceiptsFromPage(
   pdfPage: pdfLibTypes.PDFPage,
   boundingBoxes: Polygon[],
   pageId: number) {
-  const extractedReceiptsRaw = await extractFromPage(pdfPage, boundingBoxes);
+  const manualUpscaleFactor = 300/72;
+  const extractedReceiptsRaw = await extractFromPage(pdfPage, boundingBoxes, false, manualUpscaleFactor);
   const extractedReceipts = [];
   for (let i = 0; i < extractedReceiptsRaw.length; i++) {
     extractedReceipts.push(new ExtractedMultiReceiptImage(extractedReceiptsRaw[i], pageId, i));
   }
   return extractedReceipts;
-}
-
-async function loadPdfDoc(inputFile: LocalInputSource) {
-  const pdfLib = await getPdfLib();
-  let pdfDoc: pdfLibTypes.PDFDocument;
-  if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputFile.mimeType)) {
-    throw new MindeeInputSourceError(
-      'Unsupported file type "' +
-      inputFile.mimeType +
-      '" Currently supported types are .png, .jpg and .pdf'
-    );
-  } else if (inputFile.isPdf()) {
-    pdfDoc = await pdfLib.PDFDocument.load(inputFile.fileObject, {
-      ignoreEncryption: true,
-      password: ""
-    });
-  } else {
-    pdfDoc = await pdfLib.PDFDocument.create();
-    let image: pdfLibTypes.PDFImage;
-    if (inputFile.mimeType === "image/png") {
-      image = await pdfDoc.embedPng(inputFile.fileObject);
-    } else {
-      image = await pdfDoc.embedJpg(inputFile.fileObject);
-    }
-    const imageDims = image.scale(1);
-    const pageImage = pdfDoc.addPage([imageDims.width, imageDims.height]);
-    pageImage.drawImage(image);
-  }
-  return pdfDoc;
 }
 
 /**
@@ -86,9 +59,9 @@ export async function extractReceipts(
   if (!inference.prediction.receipts) {
     throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");
   }
-  const pdfDoc = await loadPdfDoc(inputFile);
+  const pdfDoc = await createPdfFromInputSource(inputFile);
   for (let pageId = 0; pageId < pdfDoc.getPageCount(); pageId++) {
-    const [page] = await pdfDoc.copyPages(pdfDoc, [pageId]);
+    const page = pdfDoc.getPage(pageId);
     page.setRotation(pdfLib.degrees(inference.pages[pageId].orientation?.value ?? 0));
     const receiptPositions = inference.pages[pageId].prediction.receipts.map(
       (receipt: PositionField) => receipt.boundingBox
