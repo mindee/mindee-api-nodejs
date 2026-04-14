@@ -1,5 +1,16 @@
 # Mindee Node.js API Library Changelog
 
+## v5.2.0 - 2026-04-14
+### Changes
+* :sparkles: add support for crop operation for V2
+* :sparkles: add support for split operation for V2
+* :arrow_up: bump dependencies
+### Fixes
+* :bug: fix quality defaulting to 4.17 (300/72) instead of 1 when extracting cropped zones
+* :bug: fix split extraction not allowing for image files
+* :bug: fix naming in extracted PDFs
+
+
 ## v5.1.1 - 2026-03-11
 ### Changes
 * :heavy_minus_sign: tslib is never imported, remove from dependencies
