@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 import * as fs from "node:fs";
 
-import { Client, PathInput, BufferInput } from "@/index.js";
+import { Client, PathInput } from "@/index.js";
 import { Crop } from "@/v2/product/crop/index.js";
 import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
 import { extractCrops } from "@/v2/fileOperations/crop.js";
@@ -61,10 +61,7 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", 
     assert.equal(extractedImages[0].filename, "default_sample.jpg_page0-0.jpg");
     assert.equal(extractedImages[1].filename, "default_sample.jpg_page0-1.jpg");
 
-    const extractionInput = new BufferInput({
-      buffer: extractedImages[0].buffer,
-      filename: extractedImages[0].filename
-    });
+    const extractionInput = extractedImages[0].asSource();
     const findocParams = { modelId: findocModelId };
 
     const invoice0 = await client.enqueueAndGetResult(

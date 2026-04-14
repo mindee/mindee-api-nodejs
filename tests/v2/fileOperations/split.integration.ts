@@ -7,7 +7,7 @@ import { Client, PathInput } from "@/index.js";
 import { Split } from "@/v2/product/split/index.js";
 import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
 import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
-import { BufferInput } from "../../../src/index.js";
+import { BufferInput } from "@/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 const OUTPUT_DIR = path.join(__dirname, "output");
