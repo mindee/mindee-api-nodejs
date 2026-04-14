@@ -7,7 +7,6 @@ import { Client, PathInput } from "@/index.js";
 import { Split } from "@/v2/product/split/index.js";
 import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
 import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
-import { BufferInput } from "@/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 const OUTPUT_DIR = path.join(__dirname, "output");
@@ -78,13 +77,12 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired", { tim
     await extractedPdfs[0].saveToFileAsync(file1Path);
     await extractedPdfs[1].saveToFileAsync(file2Path);
 
-    const localBuffer1 = fs.readFileSync(file1Path);
-    const inputSource1 = new BufferInput({ buffer: localBuffer1, filename: "tmp.pdf" });
+
+    const inputSource1 = new PathInput({ inputPath: file1Path });
     const pageCount1 = await inputSource1.getPageCount();
     assert.equal(pageCount1, extractedPdfs[0].pageCount);
 
-    const localBuffer2 = fs.readFileSync(file1Path);
-    const inputSource2 = new BufferInput({ buffer: localBuffer2, filename: "tmp.pdf" });
+    const inputSource2 = new PathInput({ inputPath: file1Path });
     const pageCount2 = await inputSource2.getPageCount();
     assert.equal(pageCount2, extractedPdfs[1].pageCount);
   });

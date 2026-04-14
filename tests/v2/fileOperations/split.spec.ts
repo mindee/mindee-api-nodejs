@@ -8,7 +8,6 @@ import { SplitResponse } from "@/v2/product/split/splitResponse.js";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import path from "path";
-import { BufferInput } from "../../../src/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 
 const splitPath = path.join(V2_PRODUCT_PATH, "split");
@@ -36,7 +35,7 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
 
     assert.strictEqual(extractedSplits[0].pageCount, 1);
 
-    const inputBuffer0 = new BufferInput({ buffer: extractedSplits[0].buffer, filename: "test.pdf" });
+    const inputBuffer0 = extractedSplits[0].asSource();
     const count0 = await inputBuffer0.getPageCount();
     assert.strictEqual(count0, 1);
   });
