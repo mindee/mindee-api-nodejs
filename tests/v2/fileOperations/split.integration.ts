@@ -7,31 +7,10 @@ import { Client, PathInput } from "@/index.js";
 import { Split } from "@/v2/product/split/index.js";
 import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
 import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
+import { BufferInput } from "../../../src/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
-import { loadOptionalDependency } from "@/dependency/index.js";
-import type * as pdfLibTypes from "@cantoo/pdf-lib";
-
 const OUTPUT_DIR = path.join(__dirname, "output");
-let pdfLib: typeof pdfLibTypes | null = null;
-
-async function getPdfLib(): Promise<typeof pdfLibTypes> {
-  if (!pdfLib) {
-    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "PDF Parsing");
-    pdfLib = (pdfLibImport as any).default || pdfLibImport;
-  }
-  return pdfLib!;
-}
-
-async function getPageCount(buffer: Buffer): Promise<number> {
-  const isPdf = buffer.subarray(0, 4).toString("ascii") === "%PDF";
-  if (isPdf) {
-    const lib = await getPdfLib();
-    const pdfDoc = await lib.PDFDocument.load(buffer);
-    return pdfDoc.getPageCount();
-  }
-  return 1;
-}
 
 function checkFindocReturn(findocResponse: ExtractionResponse) {
   assert.ok(findocResponse.inference.model.id.length > 0);
@@ -96,15 +75,17 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired", { tim
     const file1Path = path.join(OUTPUT_DIR, "split_001.pdf");
     const file2Path = path.join(OUTPUT_DIR, "split_002.pdf");
 
-    fs.writeFileSync(file1Path, extractedPdfs[0].buffer);
-    fs.writeFileSync(file2Path, extractedPdfs[1].buffer);
+    await extractedPdfs[0].saveToFileAsync(file1Path);
+    await extractedPdfs[1].saveToFileAsync(file2Path);
 
     const localBuffer1 = fs.readFileSync(file1Path);
-    const pageCount1 = await getPageCount(localBuffer1);
+    const inputSource1 = new BufferInput({ buffer: localBuffer1, filename: "tmp.pdf" });
+    const pageCount1 = await inputSource1.getPageCount();
     assert.equal(pageCount1, extractedPdfs[0].pageCount);
 
-    const localBuffer2 = fs.readFileSync(file2Path);
-    const pageCount2 = await getPageCount(localBuffer2);
+    const localBuffer2 = fs.readFileSync(file1Path);
+    const inputSource2 = new BufferInput({ buffer: localBuffer2, filename: "tmp.pdf" });
+    const pageCount2 = await inputSource2.getPageCount();
     assert.equal(pageCount2, extractedPdfs[1].pageCount);
   });
 });

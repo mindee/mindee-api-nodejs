@@ -1,46 +1,22 @@
-import path from "path";
-import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { PathInput } from "@/index.js";
+import { ExtractedPdf } from "@/pdf/extractedPdf.js";
+import { extractSplits } from "@/v2/fileOperations/split.js";
+import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
 
 import { LocalResponse } from "@/v2/parsing/index.js";
 import { SplitResponse } from "@/v2/product/split/splitResponse.js";
-import { PathInput } from "@/index.js";
+import assert from "node:assert/strict";
+import { describe, it } from "node:test";
+import path from "path";
+import { BufferInput } from "../../../src/index.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
-import { loadOptionalDependency } from "@/dependency/index.js";
-import type * as pdfLibTypes from "@cantoo/pdf-lib";
-import { extractSplits } from "@/v2/fileOperations/split.js";
-import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
-import { ExtractedPdf } from "@/pdf/extractedPdf.js";
 
 const splitPath = path.join(V2_PRODUCT_PATH, "split");
 const financialDocumentPath = path.join(V2_PRODUCT_PATH, "extraction", "financial_document");
 
-let pdfLib: typeof pdfLibTypes | null = null;
-
-async function getPdfLib(): Promise<typeof pdfLibTypes> {
-  if (!pdfLib) {
-    const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "PDF Parsing");
-    pdfLib = (pdfLibImport as any).default || pdfLibImport;
-  }
-  return pdfLib!;
-}
-
 async function loadV2Split(resourcePath: string): Promise<SplitResponse> {
   const localResponse = new LocalResponse(resourcePath);
   return localResponse.deserializeResponse(SplitResponse);
-}
-
-/**
- * Gets the page count of a buffer, routing to pdf-lib for PDFs.
- */
-async function getPageCount(buffer: Buffer): Promise<number> {
-  const isPdf = buffer.subarray(0, 4).toString("ascii") === "%PDF";
-  if (isPdf) {
-    const pdfLib = await getPdfLib();
-    const pdfDoc = await pdfLib.PDFDocument.load(buffer);
-    return pdfDoc.getPageCount();
-  }
-  return 1;
 }
 
 describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () => {
@@ -60,7 +36,8 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
 
     assert.strictEqual(extractedSplits[0].pageCount, 1);
 
-    const count0 = await getPageCount(extractedSplits[0].buffer);
+    const inputBuffer0 = new BufferInput({ buffer: extractedSplits[0].buffer, filename: "test.pdf" });
+    const count0 = await inputBuffer0.getPageCount();
     assert.strictEqual(count0, 1);
   });
 
@@ -78,15 +55,18 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     assert.strictEqual(extractedSplits.length, 3);
 
     assert.strictEqual(extractedSplits[0].pageCount, 1);
-    const count0 = await getPageCount(extractedSplits[0].buffer);
+    const bufferInput0 = extractedSplits[0].asSource();
+    const count0 = await bufferInput0.getPageCount();
     assert.strictEqual(count0, 1);
 
+    const bufferInput1 = extractedSplits[0].asSource();
+    const count1 = await bufferInput1.getPageCount();
     assert.strictEqual(extractedSplits[1].pageCount, 3);
-    const count1 = await getPageCount(extractedSplits[1].buffer);
     assert.strictEqual(count1, 3);
 
     assert.strictEqual(extractedSplits[2].pageCount, 1);
-    const count2 = await getPageCount(extractedSplits[2].buffer);
+    const bufferInput2 = extractedSplits[2].asSource();
+    const count2 = await bufferInput2.getPageCount();
     assert.strictEqual(count2, 1);
     const localExtract: ExtractedPdf = await response.inference.result.splits[0].extractFromFile(inputSample);
     assert.ok(extractedSplits[0].buffer.equals(localExtract.buffer));
