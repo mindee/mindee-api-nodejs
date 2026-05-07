@@ -1,5 +1,10 @@
 # Mindee Node.js API Library Changelog
 
+## v5.3.0 - 2026-05-07
+### Changes
+* :sparkles: Add support for extraction in crop, split, and classify products
+
+
 ## v5.2.0 - 2026-04-14
 ### Changes
 * :sparkles: add support for crop operation for V2
