@@ -15,7 +15,7 @@ This guide covers **API v2**, the current generation of the Mindee platform.
 Key capabilities exposed by the library:
 
 - **Extraction** – pull structured fields out of any document type using a
-  model you configure in the Mindee console.
+  model you configure in the Mindee platform.
 - **Classification** – route documents to the right workflow by categorizing
   them automatically.
 - **OCR** – retrieve the full plain-text content of a document.
@@ -219,7 +219,7 @@ The simplest way to get started is to use the built-in polling functionality of 
 ### Parameters
 
 Every request requires a `params` object. At minimum, `modelId` must be set.
-The `modelId` is the ID of the model you configured in the Mindee console:
+The `modelId` is the ID of the model you configured in the Mindee platform:
 
 ```typescript
 const params = {
@@ -227,7 +227,7 @@ const params = {
 };
 ```
 
-For `Extraction`, additional options are available:
+For `Extraction` only, additional options are available:
 
 ```typescript
 const params = {
@@ -245,6 +245,8 @@ const params = {
   confidence: undefined,
 };
 ```
+
+Other products only take `modelId`.
 
 ### All-in-One: `enqueueAndGetResult()`
 
@@ -271,7 +273,10 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 
 // Send for processing and wait for the result
 // Replace mindee.product.Extraction with any other product:
-// mindee.product.Classification, mindee.product.Ocr, mindee.product.Crop, mindee.product.Split
+// mindee.product.Classification
+// mindee.product.Ocr
+// mindee.product.Crop
+// mindee.product.Split
 const response = await mindeeClient.enqueueAndGetResult(
   mindee.product.Extraction,
   inputSource,
@@ -279,6 +284,37 @@ const response = await mindeeClient.enqueueAndGetResult(
 );
 
 // Print a string summary
+console.log(response.inference.toString());
+```
+
+### Configuring Polling Timings
+
+By default, `enqueueAndGetResult()` uses these polling settings:
+
+| Option             | Default | Description                                               |
+|--------------------|---------|-----------------------------------------------------------|
+| `initialDelaySec`  | `2`     | Seconds to wait before the **first** poll attempt.        |
+| `delaySec`         | `1.5`   | Seconds to wait between each **subsequent** poll attempt. |
+| `maxRetries`       | `80`    | Maximum number of polling attempts                        |
+
+If you are consistently having timeout issues, you may need to adjust these values.
+
+Pass a `PollingOptions` object as the optional fourth argument to override any of these values:
+
+```typescript
+const pollingOptions = {
+  initialDelaySec: 4,   // wait 4 s before the first poll (default: 2)
+  delaySec: 1,          // wait 1 s between subsequent polls (default: 1.5)
+  maxRetries: 100,      // give up after 100 attempts (default: 80)
+};
+
+const response = await mindeeClient.enqueueAndGetResult(
+  mindee.product.Extraction,
+  inputSource,
+  params,
+  pollingOptions,
+);
+
 console.log(response.inference.toString());
 ```
 
