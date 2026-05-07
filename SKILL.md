@@ -52,7 +52,7 @@ Optional dependencies are included by default. They enable additional features:
 | PDF text extraction              | `pdf.js-extract`                        |
 | Image compression                | `sharp`                                 |
 
-To skip them for a lighter install:
+If you never use these features, it's possible to skip them for a lighter installation:
 
 ```bash
 npm install mindee --omit=optional
@@ -100,7 +100,7 @@ const mindeeClient = new mindee.Client();
 ## Loading an Input Document
 
 Before sending a document to the API, wrap it in one of the input source classes exported from the `mindee` package.
-All input sources are then passed directly to various methods, mostly in the client.
+All input sources are then passed to various methods, mostly in the client.
 
 ### File Path
 
@@ -408,6 +408,88 @@ if (!localResponse.isValidHmacSignature(secretKey, hmacSignature)) {
   throw new Error("Bad HMAC signature! Is someone trying to do evil?");
 }
 ```
+
+## Product Specific Handling
+
+### Extraction
+
+#### Parameters
+
+There are additional parameters:
+
+```typescript
+const params = {
+  modelId: "MY_MODEL_ID",
+
+  // Options: set to `true` or `false` to override defaults
+
+  // Enhance extraction accuracy with Retrieval-Augmented Generation.
+  rag: undefined,
+  // Extract the full text content from the document as strings.
+  rawText: undefined,
+  // Calculate bounding box polygons for all fields.
+  polygon: undefined,
+  // Calculate confidence scores for all fields.
+  confidence: undefined,
+  // Additional text context used by the model during inference.
+  // Not recommended, for specific use only.
+  textContext: undefined,
+  // Dynamic changes to the data schema of the model for this inference.
+  // Not recommended, for specific use only.
+  dataSchema: undefined,
+};
+```
+
+#### Response
+
+### Split
+
+#### Parameters
+
+No additional parameters beyond the base ones.
+
+#### Response
+
+### Crop
+
+#### Parameters
+
+No additional parameters beyond the base ones.
+
+#### Response
+
+The `CropResponse` contains a `CropInference` object at `response.inference`.
+
+The `CropInference` exposes a `result` property of type `CropResult`, which contains an array of `CropItem` objects.
+
+##### Accessing Crop Items
+
+Each `CropItem` in `response.inference.result.crops` describes a detected region:
+
+| Property             | Type                  |
+|----------------------|-----------------------|
+| `objectType`         | `string`              |
+| `location`           | `FieldLocation`       |
+| `extractionResponse` | `ExtractionResponse`  |
+
+The `objectType` property is the classification of the detected object, as defined on the Mindee platform.
+
+The `location` property contains a `FieldLocation` instance:
+- `location.polygon` – a `Polygon` instance defining the crop boundary.
+- `location.page` – the 0-based page index where the crop was found.
+
+The `extractionResponse` property is an `ExtractionResponse` instance, which is identical to the response from Extraction product request.
+It will contain data extracted from the crop, if:
+* an extraction model was associated with a class on the Mindee platform
+* the class was detected on the crop
+
+### OCR
+
+#### Parameters
+
+No additional parameters beyond the base ones.
+
+#### Response
 
 ---
 
