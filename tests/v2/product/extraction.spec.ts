@@ -87,7 +87,7 @@ describe("MindeeV2 - Extraction Response", async () => {
 
       const dateField = fields.getSimpleField("date");
       assert.notStrictEqual(dateField, undefined);
-      assert.strictEqual(dateField.value, "2019-11-02");
+      assert.strictEqual(dateField.stringValue, "2019-11-02");
 
       assert.ok(fields.has("taxes"));
       const taxes = fields.get("taxes");
@@ -105,7 +105,7 @@ describe("MindeeV2 - Extraction Response", async () => {
       assert.strictEqual(taxItemObj.fields.size, 3);
 
       const baseField = taxItemObj.fields.getSimpleField("base");
-      assert.strictEqual(baseField.value, 31.5);
+      assert.strictEqual(baseField.numberValue, 31.5);
 
       assert.ok(fields.has("supplier_address"));
       const supplierAddress = fields.get("supplier_address");

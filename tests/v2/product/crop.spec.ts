@@ -4,6 +4,7 @@ import { promises as fs } from "fs";
 import { describe, it } from "node:test";
 import { Polygon } from "@/geometry/index.js";
 import { crop } from "@/v2/product/index.js";
+import { ExtractionResponse } from "@/v2/product/index.js";
 
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { loadV2Response } from "./utils.js";
@@ -111,5 +112,38 @@ describe("MindeeV2 - Crop Response", async () => {
       path.join(V2_PRODUCT_PATH, "crop", "crop_multiple.rst"), "utf8"
     );
     assert.strictEqual(response.inference.toString(), rstString);
+  });
+
+  it("extraction properties must be valid", async () => {
+    const response = await loadV2Response(
+      crop.CropResponse,
+      path.join(V2_PRODUCT_PATH, "crop", "default_sample_extraction.json")
+    );
+    assert.ok(response.inference);
+
+    const crops: crop.CropItem[] = response.inference.result.crops;
+    assert.strictEqual(crops.length, 2);
+
+    const crop0 = crops[0];
+    assert.strictEqual(crop0.objectType, "receipt");
+    assert.ok(crop0.location.polygon);
+    assert.strictEqual(crop0.location.page, 0);
+    const extractionResponse0: ExtractionResponse = crop0.extractionResponse!;
+    assert.ok(extractionResponse0);
+    assert.strictEqual(
+      extractionResponse0.inference.result.fields.getSimpleField("supplier_name").stringValue,
+      "CHEZ ALAIN MIAM MIAM"
+    );
+
+    const crop1 = crops[1];
+    assert.strictEqual(crop1.objectType, "receipt");
+    assert.ok(crop1.location.polygon);
+    assert.strictEqual(crop1.location.page, 0);
+    const extractionResponse1: ExtractionResponse = crop1.extractionResponse!;
+    assert.ok(extractionResponse1);
+    assert.strictEqual(
+      extractionResponse1.inference.result.fields.getSimpleField("supplier_name").stringValue,
+      "La cerise sur la pizza"
+    );
   });
 });
