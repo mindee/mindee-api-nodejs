@@ -48,23 +48,24 @@ async function getFileDimensions(buffer: Buffer, sharpInstance: any) {
 describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
   const sharpLoaded = await loadOptionalDependency<typeof SharpTypes>("sharp", "Image compression");
   const sharp = (sharpLoaded as any).default || sharpLoaded;
+
   await it("should process single page crop correctly", async () => {
     const inputSample = new PathInput({
       inputPath:
           path.join(cropPath, "default_sample.jpg")
     });
     const response = await loadV2Crop(
-      path.join(cropPath, "crop_single.json")
+      path.join(cropPath, "default_sample.json")
     );
 
     const extractedCrops = await response.extractFromFile(inputSample);
 
-    assert.strictEqual(extractedCrops.length, 1);
+    assert.strictEqual(extractedCrops.length, 2);
 
     assert.strictEqual(extractedCrops[0].pageId, 0);
     const dimensions = await getFileDimensions(extractedCrops[0].buffer, sharp);
-    assert.strictEqual(Math.round(dimensions.width), 5880);
-    assert.strictEqual(Math.round(dimensions.height), 3275);
+    assert.strictEqual(Math.round(dimensions.width), 2201);
+    assert.strictEqual(Math.round(dimensions.height), 4314);
     const localExtract: ExtractedImage = await response.inference.result.crops[0].extractFromFile(inputSample);
     assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
   });
@@ -75,18 +76,18 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
         path.join(cropPath, "default_sample.jpg")
     });
     const response = await loadV2Crop(
-      path.join(cropPath, "crop_single.json")
+      path.join(cropPath, "default_sample.json")
     );
 
-    const extractedCrops = await response.extractFromFile(inputSample, 0.4);
+    const extractedCrops = await response.extractFromFile(inputSample, 0.5);
 
-    assert.strictEqual(extractedCrops.length, 1);
+    assert.strictEqual(extractedCrops.length, 2);
 
     assert.strictEqual(extractedCrops[0].pageId, 0);
     const dimensions = await getFileDimensions(extractedCrops[0].buffer, sharp);
-    assert.strictEqual(Math.round(dimensions.width), 5880 * 0.4);
-    assert.strictEqual(Math.round(dimensions.height), 3275 * 0.4);
-    const localExtract: ExtractedImage = await response.inference.result.crops[0].extractFromFile(inputSample, 0.4);
+    assert.strictEqual(Math.round(dimensions.width), Math.round(2201 * 0.5));
+    assert.strictEqual(Math.round(dimensions.height), Math.round(4314 * 0.5));
+    const localExtract: ExtractedImage = await response.inference.result.crops[0].extractFromFile(inputSample, 0.5);
     assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
   });
 

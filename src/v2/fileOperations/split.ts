@@ -26,6 +26,7 @@ export async function extractSplits(inputSource: LocalInputSource, splits: numbe
   if (pageGroups.length === 0) {
     throw new MindeeError("No valid split indexes provided.");
   }
+  await inputSource.init();
   logger.debug("Extracting splits: " + splits.join(", "));
   const pdfExtractor = new PdfExtractor(inputSource);
   await pdfExtractor.init();

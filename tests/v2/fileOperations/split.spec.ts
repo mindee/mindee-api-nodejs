@@ -58,7 +58,7 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     const count0 = await bufferInput0.getPageCount();
     assert.strictEqual(count0, 1);
 
-    const bufferInput1 = extractedSplits[0].asSource();
+    const bufferInput1 = extractedSplits[1].asSource();
     const count1 = await bufferInput1.getPageCount();
     assert.strictEqual(extractedSplits[1].pageCount, 3);
     assert.strictEqual(count1, 3);

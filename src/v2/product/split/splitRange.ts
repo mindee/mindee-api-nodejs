@@ -1,6 +1,7 @@
 import { StringDict } from "@/parsing/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { expandRange, extractSplits } from "@/v2/fileOperations/split.js";
+import { ExtractionResponse } from "@/v2/product/index.js";
 
 /**
  * Split inference result.
@@ -11,15 +12,21 @@ export class SplitRange {
    * second integer indicates the end page.
    */
   pageRange: number[];
-
   /**
    * The document type, as identified on given classification values.
    */
   documentType: string;
+  /**
+   * The extraction response associated with the split.
+   */
+  extractionResponse?: ExtractionResponse;
 
   constructor(serverResponse: StringDict) {
     this.pageRange = serverResponse["page_range"];
     this.documentType = serverResponse["document_type"];
+    this.extractionResponse = serverResponse["extraction_response"]
+      ? new ExtractionResponse(serverResponse["extraction_response"])
+      : undefined;
   }
 
   toString(): string {

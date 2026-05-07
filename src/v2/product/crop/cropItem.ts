@@ -3,14 +3,28 @@ import { StringDict } from "@/parsing/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { extractCrops } from "@/v2/fileOperations/crop.js";
 import { ExtractedImage } from "@/image/index.js";
+import { ExtractionResponse } from "@/v2/product/index.js";
 
 export class CropItem {
+  /**
+   * Type or classification of the detected object.
+   */
   objectType: string;
+  /**
+   * Location that includes cropping coordinates for the detected object, within the source document.
+   */
   location: FieldLocation;
+  /**
+   * The extraction response associated with the crop.
+   */
+  extractionResponse?: ExtractionResponse;
 
   constructor(serverResponse: StringDict) {
     this.objectType = serverResponse["object_type"];
     this.location = new FieldLocation(serverResponse["location"]);
+    this.extractionResponse = serverResponse["extraction_response"]
+      ? new ExtractionResponse(serverResponse["extraction_response"])
+      : undefined;
   }
 
   toString(): string {

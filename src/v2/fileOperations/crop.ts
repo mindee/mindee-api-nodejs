@@ -33,6 +33,7 @@ export async function extractCrops(
   if (crops.length === 0) {
     throw new MindeeError("No crop indexes provided.");
   }
+  await inputSource.init();
   logger.debug("Extracting crops: " + crops.join(", "));
   const polygonsByPage = new Map<number, Polygon[]>();
   for (const crop of crops) {

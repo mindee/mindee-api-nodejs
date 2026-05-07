@@ -2,6 +2,14 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { BaseField } from "./baseField.js";
 
 export class SimpleField extends BaseField {
+  /**
+   * The untyped value of the field.
+   *
+   * This is usually not what you want, look at the typed accessors instead:
+   * - stringValue
+   * - numberValue
+   * - booleanValue
+   */
   readonly value: string | number | boolean | null;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {

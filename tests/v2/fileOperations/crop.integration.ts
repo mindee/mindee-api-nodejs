@@ -22,6 +22,7 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", 
   let client: Client;
   let cropModelId: string;
   let findocModelId: string;
+  let cropExtractionModelId: string;
 
   const cropSample = path.join(
     V2_PRODUCT_PATH,
@@ -33,6 +34,7 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", 
     const apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
     cropModelId = process.env["MINDEE_V2_SE_TESTS_CROP_MODEL_ID"] ?? "";
     findocModelId = process.env["MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID"] ?? "";
+    cropExtractionModelId = process.env["MINDEE_V2_SE_TESTS_CROP_EXTRACTION_MODEL_ID"] ?? "";
 
     client = new Client({ apiKey: apiKey, debug: true });
   });
@@ -81,5 +83,46 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", 
 
     const stat2 = fs.statSync(file2Path);
     assert.ok(stat2.size >= 3200000 && stat2.size <= 3300000);
+  });
+
+  it("filled image – crop and extraction must succeed", async () => {
+    const cropInput = new PathInput({ inputPath: cropSample });
+
+    const cropParams = {
+      modelId: cropExtractionModelId,
+      alias: "nodejs_integration-test_crop_multipage",
+    };
+
+    const response = await client.enqueueAndGetResult(
+      Crop, cropInput, cropParams
+    );
+    assert.ok(response);
+
+    const inference = response.inference;
+    assert.ok(inference);
+
+    const file = inference.file;
+    assert.ok(file);
+    assert.strictEqual(file.name, "default_sample.jpg");
+    assert.strictEqual(file.pageCount, 1);
+
+    assert.ok(inference.model);
+    assert.strictEqual(inference.model.id, cropExtractionModelId);
+
+    const result = inference.result;
+    assert.ok(result);
+    assert.strictEqual(result.crops.length, 2);
+
+    const crop0 = result.crops[0];
+    assert.strictEqual(crop0.objectType, "receipt");
+    assert.ok(crop0.location.polygon);
+    assert.strictEqual(crop0.location.page, 0);
+
+    const extractionResponse0 = crop0.extractionResponse!;
+    assert.ok(extractionResponse0);
+    assert.strictEqual(
+      extractionResponse0.inference.result.fields.getSimpleField("supplier_name").stringValue,
+      "CHEZ ALAIN MIAM MIAM"
+    );
   });
 });
