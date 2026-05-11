@@ -71,16 +71,6 @@ import * as mindee from "mindee";
 const mindeeClient = new mindee.Client({ apiKey: "MY_API_KEY" });
 ```
 
-### Client Options
-
-The constructor accepts an optional `ClientOptions` object:
-
-| Option       | Type         | Default     | Description                                      |
-|--------------|--------------|-------------|--------------------------------------------------|
-| `apiKey`     | `string`     | `undefined` | Your Mindee API key.                             |
-| `debug`      | `boolean`    | `false`     | Enable debug-level logging.                      |
-| `dispatcher` | `Dispatcher` | `undefined` | Custom `undici` dispatcher (e.g. for proxy use). |
-
 ### API Key via Environment Variable
 
 Instead of hardcoding the key, you can set the `MINDEE_V2_API_KEY` environment variable:
@@ -97,6 +87,10 @@ import * as mindee from "mindee";
 const mindeeClient = new mindee.Client();
 ```
 
+### Further Reading
+
+Check the [Configure the Client](https://docs.mindee.com/integrations/client-libraries-sdk/configure-the-client.md) section for more information on how to configure the client.
+
 ## Loading an Input Document
 
 Before sending a document to the API, wrap it in one of the input source classes exported from the `mindee` package.
@@ -111,66 +105,6 @@ const filePath = "/path/to/the/file.ext";
 const inputSource = new mindee.PathInput({ inputPath: filePath });
 ```
 
-### Buffer
-
-Use when you already have the file contents in memory as a Node.js `Buffer`.
-A filename (with extension) is required:
-
-```typescript
-const buffer = Buffer.from(
-  await fs.promises.readFile("/path/to/the/file.ext")
-);
-
-const inputSource = new mindee.BufferInput({
-  buffer: buffer,
-  filename: "file.ext",
-});
-```
-
-### Base64 String
-
-Use when the file is provided as a Base64-encoded string, e.g. from a web upload or an external API.
-A filename (with extension) is required:
-
-```typescript
-const b64String = "iVBORw0KGgoAAAANSUhEUgAAABgAAA ...";
-
-const inputSource = new mindee.Base64Input({
-  inputString: b64String,
-  filename: "base64_file.txt",
-});
-```
-
-### Bytes (Uint8Array)
-
-Use when the file content is available as raw bytes.
-A filename (with extension) is required:
-
-```typescript
-const inputBytes = new Uint8Array(
-  await fs.promises.readFile("/path/to/the/file.ext")
-);
-
-const inputSource = new mindee.BytesInput({
-  inputBytes: inputBytes,
-  filename: "file.ext",
-});
-```
-
-### Readable Stream
-
-Use when reading from a Node.js `Readable` stream.
-A filename (with extension) is required:
-
-```typescript
-const stream = fs.createReadStream("/path/to/the/file.ext");
-
-const inputSource = new mindee.StreamInput({
-  inputStream: stream,
-  filename: "file.ext",
-});
-```
-
 ### Remote URL
 
 Use to pass an HTTPS URL directly to the Mindee API without downloading the file locally first.
@@ -178,6 +112,16 @@ Only HTTPS URLs are accepted:
 ```typescript
 const inputSource = new mindee.UrlInput({ url: "https://example.com/file.ext" });
 ```
+
+### Further Reading
+
+Check the [Load and Adjust a File](https://docs.mindee.com/integrations/client-libraries-sdk/load-and-adjust-a-file.md) section for more information on input types.
+
+Specifically:
+* Loading other file types (Buffer, Base64 String, Bytes, Readable Stream)
+* Accessing file metadata
+* Compressing PDF and image files before sending
+* Manipulating PDF pages (remove pages before sending)
 
 ## Available Products
 
@@ -212,13 +156,6 @@ The optional `alias` field lets you attach your own identifier to a request as a
 For example, an internal document ID, reference number, or database key.
 
 It is echoed back unchanged in both the job and result responses, making it straightforward to correlate API results with your own records.
-
-Handling the return *is* specific to each product, this is detailed in the product-specific documentation.
-
-### Parameters
-
-Every request requires a `params` object. At minimum, `modelId` must be set.
-The `modelId` is the ID of the model you configured in the Mindee platform:
 
 ```typescript
 const params = {
@@ -432,32 +369,11 @@ if (!localResponse.isValidHmacSignature(secretKey, hmacSignature)) {
 
 #### Parameters
 
-There are additional parameters:
-
-```typescript
-const params = {
-  modelId: "MY_MODEL_ID",
-
-  // Options: set to `true` or `false` to override defaults
-
-  // Enhance extraction accuracy with Retrieval-Augmented Generation.
-  rag: undefined,
-  // Extract the full text content from the document as strings.
-  rawText: undefined,
-  // Calculate bounding box polygons for all fields.
-  polygon: undefined,
-  // Calculate confidence scores for all fields.
-  confidence: undefined,
-  // Additional text context used by the model during inference.
-  // Not recommended, for specific use only.
-  textContext: undefined,
-  // Dynamic changes to the data schema of the model for this inference.
-  // Not recommended, for specific use only.
-  dataSchema: undefined,
-};
-```
+https://docs.mindee.com/extraction-models/sdk-integration/extraction-configuration
 
 #### Response
+
+https://docs.mindee.com/extraction-models/sdk-integration/extraction-result
 
 ### Split
 

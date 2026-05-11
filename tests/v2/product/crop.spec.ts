@@ -114,7 +114,7 @@ describe("MindeeV2 - Crop Response", async () => {
     assert.strictEqual(response.inference.toString(), rstString);
   });
 
-  it("extraction properties must be valid", async () => {
+  it("should load extraction properties", async () => {
     const response = await loadV2Response(
       crop.CropResponse,
       path.join(V2_PRODUCT_PATH, "crop", "default_sample_extraction.json")

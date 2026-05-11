@@ -60,7 +60,7 @@ describe("MindeeV2 - Split Response", async () => {
     assert.strictEqual(split1.pageRange[1], 3);
   });
 
-  it("extraction properties must be valid", async () => {
+  it("should load extraction properties", async () => {
     const response = await loadV2Response(
       split.SplitResponse,
       path.join(V2_PRODUCT_PATH, "split", "default_sample_extraction.json")
