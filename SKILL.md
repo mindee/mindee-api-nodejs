@@ -206,11 +206,28 @@ Handling the return *is* specific to each product, this is detailed in the produ
 ### Parameters
 
 Every request requires a `params` object. At minimum, `modelId` must be set.
+The `modelId` is the ID of the model you configured in the Mindee platform.
+
+The optional `alias` field lets you attach your own identifier to a request as a free-form string.
+For example, an internal document ID, reference number, or database key.
+
+It is echoed back unchanged in both the job and result responses, making it straightforward to correlate API results with your own records.
+
+Handling the return *is* specific to each product, this is detailed in the product-specific documentation.
+
+### Parameters
+
+Every request requires a `params` object. At minimum, `modelId` must be set.
 The `modelId` is the ID of the model you configured in the Mindee platform:
 
 ```typescript
 const params = {
   modelId: "MY_MODEL_ID",
+
+  // Optional: a free-form string to tag the request with your own identifier.
+  // For example, an internal document ID or reference number.
+  // If set, it will be included in the job and result responses.
+  alias: "internal-doc-id-123",
 };
 ```
 
@@ -223,8 +240,8 @@ The library enqueues the document, polls until the result is ready, and returns 
 import * as mindee from "mindee";
 
 const apiKey = "MY_API_KEY";
-const filePath = "/path/to/the/file.ext";
 const modelId = "MY_MODEL_ID";
+const filePath = "/path/to/the/file.ext";
 
 // Init a new client
 const mindeeClient = new mindee.Client({ apiKey: apiKey });
@@ -322,16 +339,16 @@ Refer to the [Webhook Documentation](https://docs.mindee.com/integrations/webhoo
 
 ### Enqueuing the Document
 
-Every request requires a `params` object. At minimum, `modelId` must be set.
-Pass the webhook ID in the `params` object:
+In the normal `params` object, set your webhook(s) using the `webhookIds` key.
+The `webhookIds` value should always be a list, even if only passing one webhook:
 
 ```typescript
 import * as mindee from "mindee";
 
 const apiKey = "MY_API_KEY";
-const filePath = "/path/to/the/file.ext";
 const modelId = "MY_MODEL_ID";
 const webhookId = "MY_WEBHOOK_ID";
+const filePath = "/path/to/the/file.ext";
 
 // Init a new client
 const mindeeClient = new mindee.Client({ apiKey: apiKey });
