@@ -22,10 +22,9 @@ import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
 describe("Input Sources - load different types of input", () => {
 
   it("should accept base64 inputs", async () => {
-    const b64Input = await fs.promises.readFile(
-      path.join(RESOURCE_PATH, "file_types/receipt.txt")
+    const b64String = await fs.promises.readFile(
+      path.join(RESOURCE_PATH, "file_types/receipt.txt"), "ascii"
     );
-    const b64String = b64Input.toString();
     // don't provide an extension to see if we can detect MIME
     // type based on contents
     const filename = "receipt";
@@ -49,15 +48,15 @@ describe("Input Sources - load different types of input", () => {
 
   it("should accept JPEG files from a path", async () => {
     const inputSource = new PathInput({
-      inputPath: path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg"),
+      inputPath: path.join(RESOURCE_PATH, "file_types/receipt.jpg"),
     });
     await inputSource.init();
 
     const expectedResult = await fs.promises.readFile(
-      path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg")
+      path.join(RESOURCE_PATH, "file_types/receipt.jpg")
     );
     assert.strictEqual(inputSource.inputType, INPUT_TYPE_PATH);
-    assert.strictEqual(inputSource.filename, "default_sample.jpg");
+    assert.strictEqual(inputSource.filename, "receipt.jpg");
     assert.strictEqual(inputSource.mimeType, "image/jpeg");
     assert.ok(!inputSource.isPdf());
     assert.strictEqual(await inputSource.getPageCount(), 1);
@@ -113,9 +112,9 @@ describe("Input Sources - load different types of input", () => {
   });
 
   it("should accept read streams", async () => {
-    const filePath = path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg");
+    const filePath = path.join(RESOURCE_PATH, "file_types/receipt.jpg");
     const stream = fs.createReadStream(filePath);
-    const filename = "default_sample.jpg";
+    const filename = "receipt.jpg";
     const inputSource = new StreamInput({
       inputStream: stream,
       filename: filename,
@@ -207,8 +206,8 @@ describe("Input Sources - load different types of input", () => {
   });
 
   it("should accept raw bytes", async () => {
-    const filePath = path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg");
-    const inputBytes = await fs.promises.readFile(filePath);
+    const filePath = path.join(RESOURCE_PATH, "file_types/receipt.jpg");
+    const inputBytes = new Uint8Array(await fs.promises.readFile(filePath));
     // don't provide an extension to see if we can detect MIME
     // type based on contents
     const filename = "receipt";

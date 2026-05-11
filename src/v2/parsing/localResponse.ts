@@ -10,13 +10,25 @@ import { BaseResponse } from "./baseResponse.js";
 export class LocalResponse extends LocalResponseBase {
 
   /**
-   * Deserialize the loaded local response into the requested CommonResponse-derived class.
+   * Deserialize the loaded local response into a product response class.
    *
-   * Typically used when dealing with V2 webhook callbacks.
+   * Typically used when dealing with V2 webhook callbacks to parse the raw
+   * JSON payload pushed to your endpoint into a typed response object.
    *
-   * @typeParam ResponseT - A class that extends `CommonResponse`.
-   * @param responseClass - The constructor of the class into which the payload should be deserialized.
-   * @returns An instance of `responseClass` populated with the file content.
+   * Pass the response class that matches the product you used when enqueuing
+   * the document. All product response classes are exported from the `mindee`
+   * package and can be used here:
+   *
+   * - `mindee.product.ExtractionResponse`
+   * - `mindee.product.ClassificationResponse`
+   * - `mindee.product.OcrResponse`
+   * - `mindee.product.CropResponse`
+   * - `mindee.product.SplitResponse`
+   *
+   * @typeParam ResponseT - A class that extends `BaseResponse`.
+   * @param responseClass - The constructor of the product response class into
+   *   which the payload should be deserialized.
+   * @returns An instance of `responseClass` populated with the webhook payload.
    * @throws MindeeError If the provided class cannot be instantiated.
    */
   public async deserializeResponse<ResponseT extends BaseResponse>(

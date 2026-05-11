@@ -98,6 +98,25 @@ export class Client {
   }
 
   /**
+   * Retrieves the result of a previously enqueued request.
+   * This method is used when manually polling the server for the result URL.
+   *
+   * @param product the product to retrieve.
+   * @param url URL as given in the `getJob()` response.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @returns a `Promise` containing the inference.
+   */
+  async getResultByUrl<P extends typeof BaseProduct>(
+    product: P,
+    url: string
+  ): Promise<InstanceType<P["responseClass"]>> {
+    logger.debug(
+      `Attempting to get inference from: ${url} using response type: ${product.name}`
+    );
+    return await this.mindeeApi.getProductResultByUrl(product, url);
+  }
+
+  /**
    * Get the processing status of a previously enqueued request.
    * Can be used for polling.
    *
@@ -182,7 +201,7 @@ export class Client {
             "The result URL is undefined. This is a server error, try again later or contact support."
           );
         }
-        return this.mindeeApi.getProductResultByUrl(product, pollResults.job.resultUrl);
+        return this.getResultByUrl(product, pollResults.job.resultUrl);
       }
       await setTimeout(
         pollingOptions.delaySec * 1000,
