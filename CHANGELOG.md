@@ -1,5 +1,11 @@
 # Mindee Node.js API Library Changelog
 
+## v5.3.1 - 2026-06-11
+### Fixes
+* :arrow_up: bump 'tmp' and 'file-type'
+* :bug: :sparkles: get results by URL directly
+
+
 ## v5.3.0 - 2026-05-07
 ### Changes
 * :sparkles: Add support for extraction in crop, split, and classify products
