@@ -1,7 +1,6 @@
 import { loadOptionalDependency } from "@/dependency/index.js";
 import { ExtractedImage } from "@/image/index.js";
 import { PathInput } from "@/index.js";
-import { extractCrops } from "@/v2/fileOperations/crop.js";
 
 import { LocalResponse } from "@/v2/parsing/index.js";
 import { CropResponse } from "@/v2/product/crop/cropResponse.js";
@@ -58,7 +57,7 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
       path.join(cropPath, "default_sample.json")
     );
 
-    const extractedCrops = await response.extractFromFile(inputSample);
+    const extractedCrops = await response.inference.result.extractFromInputSource(inputSample);
 
     assert.strictEqual(extractedCrops.length, 2);
 
@@ -66,7 +65,8 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
     const dimensions = await getFileDimensions(extractedCrops[0].buffer, sharp);
     assert.strictEqual(Math.round(dimensions.width), 2201);
     assert.strictEqual(Math.round(dimensions.height), 4314);
-    const localExtract: ExtractedImage = await response.inference.result.crops[0].extractFromFile(inputSample);
+    const cropItem = response.inference.result.crops[0];
+    const localExtract: ExtractedImage = await cropItem.extractFromInputSource(inputSample);
     assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
   });
 
@@ -79,7 +79,7 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
       path.join(cropPath, "default_sample.json")
     );
 
-    const extractedCrops = await response.extractFromFile(inputSample, 0.5);
+    const extractedCrops = await response.inference.result.extractFromInputSource(inputSample, 0.5);
 
     assert.strictEqual(extractedCrops.length, 2);
 
@@ -87,7 +87,8 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
     const dimensions = await getFileDimensions(extractedCrops[0].buffer, sharp);
     assert.strictEqual(Math.round(dimensions.width), Math.round(2201 * 0.5));
     assert.strictEqual(Math.round(dimensions.height), Math.round(4314 * 0.5));
-    const localExtract: ExtractedImage = await response.inference.result.crops[0].extractFromFile(inputSample, 0.5);
+    const cropItem = response.inference.result.crops[0];
+    const localExtract: ExtractedImage = await cropItem.extractFromInputSource(inputSample, 0.5);
     assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
   });
 
@@ -100,10 +101,7 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
       path.join(cropPath, "crop_multiple.json")
     );
 
-    const extractedCrops = await extractCrops(
-      inputSample,
-      response.inference.result.crops
-    );
+    const extractedCrops = await response.inference.result.extractFromInputSource(inputSample);
 
     assert.strictEqual(extractedCrops.length, 2);
 

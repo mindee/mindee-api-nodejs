@@ -1,7 +1,8 @@
 import { StringDict } from "@/parsing/index.js";
 import { LocalInputSource } from "@/input/index.js";
-import { expandRange, extractSplits } from "@/v2/fileOperations/split.js";
+import { expandRange, extractMultipleSplits } from "@/v2/fileOperations/split.js";
 import { ExtractionResponse } from "@/v2/product/index.js";
+import { ExtractedPdf } from "@/pdf/index.js";
 
 /**
  * Split inference result.
@@ -38,8 +39,8 @@ export class SplitRange {
    * Extracts a single split from the input file.
    * @param inputSource The input file to extract from.
    */
-  async extractFromFile(inputSource: LocalInputSource) {
+  async extractFromFile(inputSource: LocalInputSource): Promise<ExtractedPdf> {
     const pageRange = [expandRange(this.pageRange as [number, number])];
-    return (await extractSplits(inputSource, pageRange))[0];
+    return (await extractMultipleSplits(inputSource, pageRange))[0];
   }
 }

@@ -1,8 +1,5 @@
 import { PathInput } from "@/index.js";
-import { ExtractedPdf } from "@/pdf/extractedPdf.js";
-import { extractSplits } from "@/v2/fileOperations/split.js";
-import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
-
+import { extractMultipleSplits } from "@/v2/fileOperations/split.js";
 import { LocalResponse } from "@/v2/parsing/index.js";
 import { SplitResponse } from "@/v2/product/split/splitResponse.js";
 import assert from "node:assert/strict";
@@ -29,7 +26,7 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
       path.join(splitPath, "split_single.json")
     );
 
-    const extractedSplits = await response.extractFromFile(inputSample);
+    const extractedSplits = await response.inference.result.extractFromInputSource(inputSample);
 
     assert.strictEqual(extractedSplits.length, 1);
 
@@ -49,7 +46,7 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
       path.join(splitPath, "split_multiple.json")
     );
 
-    const extractedSplits = await response.extractFromFile(inputSample);
+    const extractedSplits = await response.inference.result.extractFromInputSource(inputSample);
 
     assert.strictEqual(extractedSplits.length, 3);
 
@@ -67,7 +64,7 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     const bufferInput2 = extractedSplits[2].asSource();
     const count2 = await bufferInput2.getPageCount();
     assert.strictEqual(count2, 1);
-    const localExtract: ExtractedPdf = await response.inference.result.splits[0].extractFromFile(inputSample);
+    const localExtract = await response.inference.result.splits[0].extractFromFile(inputSample);
     assert.ok(extractedSplits[0].buffer.equals(localExtract.buffer));
   });
 
@@ -75,7 +72,7 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     const inputSample = new PathInput({
       inputPath: path.join(splitPath, "invoice_5p.pdf")
     });
-    const splitFiles: SplitFiles = await extractSplits(inputSample, [[0, 1, 2, 3, 4]]);
+    const splitFiles = await extractMultipleSplits(inputSample, [[0, 1, 2, 3, 4]]);
     assert(splitFiles.length === 1);
     assert(splitFiles[0].pageCount === 5);
     assert(splitFiles[0].buffer === inputSample.fileObject);

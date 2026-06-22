@@ -1,9 +1,9 @@
 import { LocalInputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { PdfExtractor } from "@/pdf/pdfExtractor.js";
-import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
 import { logger } from "@/logger.js";
 import { ExtractedPdf } from "@/pdf/extractedPdf.js";
+import { ExtractedPdfs } from "@/pdf/extractedPdfs.js";
 
 /**
  * Extracts a single specified split from a
@@ -11,7 +11,7 @@ import { ExtractedPdf } from "@/pdf/extractedPdf.js";
  * @param split
  */
 export async function extractSingleSplit(inputSource: LocalInputSource, split: number[]) {
-  return await extractSplits(inputSource, [split]);
+  return await extractMultipleSplits(inputSource, [split]);
 }
 
 /**
@@ -21,7 +21,7 @@ export async function extractSingleSplit(inputSource: LocalInputSource, split: n
  * @return a list of extracted files.
  * @throws MindeeError if no indexes are provided.
  */
-export async function extractSplits(inputSource: LocalInputSource, splits: number[][]): Promise<SplitFiles> {
+export async function extractMultipleSplits(inputSource: LocalInputSource, splits: number[][]): Promise<ExtractedPdfs> {
   const pageGroups = splits.filter(e => e.length > 0);
   if (pageGroups.length === 0) {
     throw new MindeeError("No valid split indexes provided.");
@@ -32,14 +32,14 @@ export async function extractSplits(inputSource: LocalInputSource, splits: numbe
   await pdfExtractor.init();
 
   if (splits.length === 0) {
-    return new SplitFiles();
+    return new ExtractedPdfs();
   }
   const pageCount = await pdfExtractor.getPageCount();
   if (splits.length === 1 && splits[0].at(-1) === pageCount-1) {
-    return new SplitFiles(new ExtractedPdf(inputSource.fileObject as Buffer, inputSource.filename, pageCount));
+    return new ExtractedPdfs(new ExtractedPdf(inputSource.fileObject as Buffer, inputSource.filename, pageCount));
   }
   const subDocuments = await pdfExtractor.extractSubDocuments(pageGroups);
-  return new SplitFiles(...subDocuments);
+  return new ExtractedPdfs(...subDocuments);
 }
 
 /**
