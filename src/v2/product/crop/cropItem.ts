@@ -1,7 +1,7 @@
 import { FieldLocation } from "@/v2/parsing/inference/field/index.js";
 import { StringDict } from "@/parsing/index.js";
 import { LocalInputSource } from "@/input/index.js";
-import { extractCrops } from "@/v2/fileOperations/crop.js";
+import { extractSingleCrop } from "@/v2/fileOperations/crop.js";
 import { ExtractedImage } from "@/image/index.js";
 import { ExtractionResponse } from "@/v2/product/index.js";
 
@@ -36,7 +36,7 @@ export class CropItem {
    * @param inputSource The input file to extract from.
    * @param quality Optional quality parameter for image extraction, default is undefined (full quality).
    */
-  async extractFromFile(inputSource: LocalInputSource, quality: number = 1): Promise<ExtractedImage>{
-    return (await extractCrops(inputSource, [this], quality))[0];
+  async extractFromInputSource(inputSource: LocalInputSource, quality: number = 1): Promise<ExtractedImage>{
+    return (await extractSingleCrop(inputSource, this, quality));
   }
 }
