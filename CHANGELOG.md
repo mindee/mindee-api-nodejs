@@ -1,5 +1,10 @@
 # Mindee Node.js API Library Changelog
 
+## v5.4.0 - 2026-06-22
+### Fixes
+* :bug: :boom: harmonize Crop and Split extraction (now ready for public use)
+
+
 ## v5.3.1 - 2026-06-11
 ### Fixes
 * :arrow_up: bump 'tmp' and 'file-type'
