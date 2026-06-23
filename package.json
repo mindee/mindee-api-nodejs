@@ -19,8 +19,7 @@
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "mindeeV1": "bin/mindeeV1.js",
-    "mindeeV2": "bin/mindeeV2.js"
+    "mindee": "bin/mindee.js"
   },
   "scripts": {
     "build": "tsc --build && tsc-alias",

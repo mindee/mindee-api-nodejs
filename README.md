@@ -39,3 +39,58 @@ Consult the
 Copyright © Mindee
 
 Available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Command Line Interface
+
+A `mindee` command line interface is shipped with the library:
+
+```bash
+npm install -g mindee
+mindee -h
+```
+
+Or, from a checkout:
+
+```bash
+node ./dist/bin/mindee.js -h
+```
+
+### Authentication
+
+Provide an API key via `--api-key`:
+
+- V2: `mindee --verbose <command> --api-key <V2_API_KEY> ...`
+- V1: `mindee v1 <product> --api-key <V1_API_KEY> ...`
+
+### V2 commands (top-level)
+
+```
+mindee <command> --api-key <V2_API_KEY> --model-id <MODEL_ID> [options] <path-or-url>
+```
+
+Available commands: `extraction`, `classification`, `crop`, `ocr`, `split`.
+
+Common options: `--output/-o {summary,full,raw}`, `--alias/-a`.
+Extraction-only options: `--rag/-g`, `--raw-text/-r`, `--confidence/-c`,
+`--polygon/-p`, `--text-context/-t`.
+
+### V1 commands (under `v1`)
+
+```
+mindee v1 <product> --api-key <V1_API_KEY> [options] <path>
+```
+
+Where `<product>` is one of `barcode-reader`, `cropper`, `driver-license`,
+`financial-document`, `fr-bank-account-details`, `fr-carte-grise`,
+`fr-carte-nationale-d-identite`, `generated`, `international-id`, `invoice`,
+`invoice-splitter`, `multi-receipts-detector`, `passport`, `receipt`,
+`resume`, `us-bank-check`.
+
+Common options: `--output/-o {summary,full,raw}`. Depending on the product:
+`--all-words/-w`, `--full-text/-f`, `--async`.
+
+### Output modes
+
+- `summary` (default): brief prediction summary.
+- `full`: detailed result including raw text / OCR sections when applicable.
+- `raw`: full JSON response.
