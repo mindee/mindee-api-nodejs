@@ -1,3 +1,4 @@
+import { buildV1Command } from "@/cli/v1/buildV1Command.js";
 import { Command } from "commander";
 import { ExtractionCommand } from "./v2/extractionCommand.js";
 import { ClassificationCommand } from "./v2/classificationCommand.js";
@@ -5,7 +6,6 @@ import { CropCommand } from "./v2/cropCommand.js";
 import { OcrCommand } from "./v2/ocrCommand.js";
 import { SplitCommand } from "./v2/splitCommand.js";
 import { SearchModelsCommand } from "./v2/searchModelsCommand.js";
-import { buildAllV1Commands } from "./v1/predictCommands.js";
 
 /**
  * Build the root `mindee` command line.
@@ -32,10 +32,7 @@ export function buildCli(): Command {
   program.addCommand(new SearchModelsCommand());
 
   // V1 commands grouped under `v1`
-  const v1 = new Command("v1").description("Mindee V1 product commands.");
-  for (const cmd of buildAllV1Commands()) {
-    v1.addCommand(cmd);
-  }
+  const v1 = buildV1Command();
   program.addCommand(v1);
 
   return program;
