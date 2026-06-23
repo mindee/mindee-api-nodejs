@@ -4,7 +4,7 @@ import { InputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
-import { ErrorResponse, JobResponse } from "./parsing/index.js";
+import { ErrorResponse, JobResponse, SearchResponse } from "./parsing/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
 import { PollingOptions, PollingOptionsConstructor } from "./clientOptions/index.js";
@@ -127,6 +127,18 @@ export class Client {
    */
   async getJob(jobId: string): Promise<JobResponse> {
     return await this.mindeeApi.getJob(jobId);
+  }
+
+  /**
+   * Search models available to the current API key.
+   *
+   * @param name optional model name partial match (case insensitive).
+   * @param modelType optional model type exact match (case sensitive).
+   *   One of `extraction`, `crop`, `classification`, `ocr`, `split`.
+   * @returns a `Promise` containing a `SearchResponse`.
+   */
+  async searchModels(name?: string, modelType?: string): Promise<SearchResponse> {
+    return await this.mindeeApi.searchModels(name, modelType);
   }
 
   /**

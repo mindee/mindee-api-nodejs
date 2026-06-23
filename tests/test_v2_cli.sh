@@ -37,5 +37,10 @@ do
     node ./dist/bin/mindee.js --verbose split -m "${MINDEE_V2_SE_TESTS_SPLIT_MODEL_ID}" "${TEST_FILE}"
   fi
 
+  if echo "${f}" | grep -q "v2_search_models.txt"
+  then
+    node ./dist/bin/mindee.js --verbose search-models
+  fi
+
   sleep 0.5  # avoid too many request errors
 done

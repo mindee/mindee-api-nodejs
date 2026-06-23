@@ -1,0 +1,28 @@
+import * as mindee from "mindee";
+// If you're on CommonJS:
+// const mindee = require("mindee");
+
+const apiKey = "MY_API_KEY";
+
+// Init a new client
+const mindeeClient = new mindee.Client(
+  { apiKey: apiKey }
+);
+
+// Search models, optionally filtered by name partial match
+// (case-insensitive) and / or by exact model type
+// ("extraction", "crop", "classification", "ocr", "split").
+const response = await mindeeClient.searchModels(
+  // name partial match (optional)
+  undefined,
+  // model type (optional)
+  undefined,
+);
+
+// print a string summary
+console.log(response.toString());
+
+// Access individual models
+for (const model of response.models) {
+  console.log(`${model.id} - ${model.name}`);
+}

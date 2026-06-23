@@ -1,5 +1,4 @@
 import { Command, Option, OptionValues } from "commander";
-import * as console from "console";
 import { Client as ClientV1, PredictOptions } from "@/v1/client.js";
 import { PathInput } from "@/input/index.js";
 import {

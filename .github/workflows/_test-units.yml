@@ -42,6 +42,9 @@ jobs:
       - name: Test code
         run: npm run test
 
+      - name: Test code v2 (incl. CLI)
+        run: npm run test-v2
+
   run-tests-without-optional-dependencies:
     name: Tests Without Optional Dependencies
     strategy:
@@ -74,3 +77,6 @@ jobs:
 
       - name: Test code
         run: npm run test-light
+
+      - name: Test code v2 (incl. CLI)
+        run: npm run test-v2

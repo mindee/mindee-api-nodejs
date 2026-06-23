@@ -6,6 +6,7 @@ import {
   ErrorResponse,
   ResponseConstructor,
   JobResponse,
+  SearchResponse,
 } from "@/v2/parsing/index.js";
 import {
   sendRequestAndReadResponse,
@@ -60,6 +61,18 @@ export class MindeeApiV2 {
   async getJob(jobId: string): Promise<JobResponse> {
     const response = await this.#reqGetJob(jobId);
     return this.#processResponse(response, JobResponse);
+  }
+
+  /**
+   * Search for models available to the current API key.
+   * Throws an error if the server's response contains an error.
+   * @param name Optional name partial-match filter (case insensitive).
+   * @param modelType Optional model-type exact-match filter (case sensitive).
+   * @returns a `Promise` containing the search response.
+   */
+  async searchModels(name?: string, modelType?: string): Promise<SearchResponse> {
+    const response = await this.#reqGetSearchModels(name, modelType);
+    return this.#processResponse(response, SearchResponse);
   }
 
   /**
@@ -161,6 +174,25 @@ export class MindeeApiV2 {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `/v2/jobs/${jobId}`,
+      timeoutSecs: this.settings.timeoutSecs,
+    };
+    return await sendRequestAndReadResponse(this.settings.dispatcher, options);
+  }
+
+  async #reqGetSearchModels(name?: string, modelType?: string): Promise<BaseHttpResponse> {
+    const query = new URLSearchParams();
+    if (name && name.length > 0) {
+      query.set("name", name);
+    }
+    if (modelType && modelType.length > 0) {
+      query.set("model_type", modelType);
+    }
+    const qs = query.toString();
+    const options: RequestOptions = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/search/models${qs.length > 0 ? `?${qs}` : ""}`,
       timeoutSecs: this.settings.timeoutSecs,
     };
     return await sendRequestAndReadResponse(this.settings.dispatcher, options);

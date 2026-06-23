@@ -1,5 +1,4 @@
 import { Command, Option, OptionValues } from "commander";
-import * as console from "console";
 import { Client as ClientV2 } from "@/v2/client.js";
 import { PathInput, UrlInput, InputSource } from "@/input/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";

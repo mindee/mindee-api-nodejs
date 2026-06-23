@@ -70,9 +70,20 @@ mindee <command> --api-key <V2_API_KEY> --model-id <MODEL_ID> [options] <path-or
 
 Available commands: `extraction`, `classification`, `crop`, `ocr`, `split`.
 
-Common options: `--output/-o {summary,full,raw}`, `--alias/-a`.
 Extraction-only options: `--rag/-g`, `--raw-text/-r`, `--confidence/-c`,
 `--polygon/-p`, `--text-context/-t`.
+Common options: `--output/-o {summary,full,raw}`, `--alias/-a`.
+
+### Search models
+
+List models available to the current API key:
+
+```
+mindee search-models --api-key <V2_API_KEY> [--name <partial>] [--model-type <type>] [--raw-json]
+```
+
+Filter by partial name match (case-insensitive) and / or by exact model
+type (one of `extraction`, `crop`, `classification`, `ocr`, `split`).
 
 ### V1 commands (under `v1`)
 

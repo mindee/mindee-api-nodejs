@@ -1,5 +1,4 @@
 import { OptionValues } from "commander";
-import * as console from "console";
 import { InferenceCommand } from "./inferenceCommand.js";
 import { Extraction } from "@/v2/product/extraction/extraction.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
