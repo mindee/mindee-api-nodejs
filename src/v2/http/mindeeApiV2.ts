@@ -63,21 +63,33 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Get the specified Job.
+   * Get the specified Job by its ID.
    * Throws an error if the server's response contains an error.
    * @param jobId The Job ID as returned by the enqueue request.
    * @returns a `Promise` containing the job response.
    */
-  async reqGetJob(jobId: string): Promise<JobResponse> {
+  async reqGetJobById(jobId: string): Promise<JobResponse> {
+    return this.reqGetJobByUrl(
+      `https://${this.settings.hostname}/v2/jobs/${jobId}`
+    );
+  }
+
+  /**
+   * Get the specified Job from a polling URL.
+   * Throws an error if the server's response contains an error.
+   * @param pollingUrl The polling URL as returned by a Job's pollingUrl property.
+   * @returns a `Promise` containing the job response.
+   */
+  async reqGetJobByUrl(pollingUrl: string): Promise<JobResponse> {
+    if (!pollingUrl.startsWith("https://")) {
+      throw new MindeeError(`Invalid URL: ${pollingUrl}`);
+    }
     const options: RequestOptions = {
       method: "GET",
       headers: this.settings.baseHeaders,
-      hostname: this.settings.hostname,
-      path: `/v2/jobs/${jobId}`,
       timeoutSecs: this.settings.timeoutSecs,
     };
-    const response: BaseHttpResponse =  await sendRequestAndReadResponse(this.settings.dispatcher, options);
-
+    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options, pollingUrl);
     return this.#processResponse(response, JobResponse);
   }
 
