@@ -31,8 +31,9 @@ export abstract class BaseParameters {
    */
   modelId: string;
   /**
-   * Use an alias to link the file to your own DB.
-   * If empty, no alias will be used.
+   * Optional: a free-form string to tag the request with your own identifier.
+   * For example, an internal document ID, reference number, or database key.
+   * If set, it will be included in the job and result responses.
    */
   alias?: string;
   /**
