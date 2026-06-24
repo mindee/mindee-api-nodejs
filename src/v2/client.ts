@@ -66,7 +66,7 @@ export class Client {
       ? params
       : new product.parametersClass(params);
     await inputSource.init();
-    const jobResponse = await this.mindeeApi.enqueueProduct(
+    const jobResponse = await this.mindeeApi.reqPostProductEnqueue(
       product, inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
@@ -94,7 +94,7 @@ export class Client {
     logger.debug(
       `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
     );
-    return await this.mindeeApi.getProductResultById(product, inferenceId);
+    return await this.mindeeApi.reqGetProductResultById(product, inferenceId);
   }
 
   /**
@@ -113,7 +113,7 @@ export class Client {
     logger.debug(
       `Attempting to get inference from: ${url} using response type: ${product.name}`
     );
-    return await this.mindeeApi.getProductResultByUrl(product, url);
+    return await this.mindeeApi.reqGetProductResultByUrl(product, url);
   }
 
   /**
@@ -126,7 +126,7 @@ export class Client {
    * parsing is complete.
    */
   async getJob(jobId: string): Promise<JobResponse> {
-    return await this.mindeeApi.getJob(jobId);
+    return await this.mindeeApi.reqGetJob(jobId);
   }
 
   /**
