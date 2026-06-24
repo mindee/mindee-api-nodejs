@@ -78,7 +78,7 @@
 
 
 ## v5.0.0-rc1 - 2026-02-17
-### Changes
+### ¡Breaking Changes!
 * :boom: drop support for node.js 18
 * :boom: :recycle: separate polling options
 
@@ -92,7 +92,8 @@
 
 
 ## v5.0.0-alpha1 - 2026-02-13
-### :boom: :recycle: base for v5
+### ¡Breaking Changes!
+* :boom: :recycle: base for v5
 * :arrow_up: update file-type
 * :recycle: migrate to ES modules (node18)
 * :coffin: remove support for obsolete/unused products:
