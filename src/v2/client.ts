@@ -5,6 +5,7 @@ import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
 import { ErrorResponse, JobResponse } from "./parsing/index.js";
+import { SearchResponse } from "./parsing/search/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
 import { PollingOptions, PollingOptionsConstructor } from "./clientOptions/index.js";
@@ -52,6 +53,16 @@ export class Client {
         ? LOG_LEVELS["debug"]
         : LOG_LEVELS["warn"];
     logger.debug("Client V2 Initialized");
+  }
+
+  /**
+   * Search for models available to the account.
+   * @param name Optional name filter.
+   * @param modelType Optional model type filter.
+   * @returns a `Promise` containing the search response.
+   */
+  async searchModels(name?: string, modelType?: string): Promise<SearchResponse> {
+    return await this.mindeeApi.reqGetSearchModel(name, modelType);
   }
 
   async enqueue<P extends typeof BaseProduct>(

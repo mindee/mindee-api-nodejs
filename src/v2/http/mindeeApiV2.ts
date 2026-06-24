@@ -17,6 +17,7 @@ import { MindeeDeserializationError, MindeeError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
+import { SearchResponse } from "@/v2/parsing/search/index.js";
 
 /**
  * Mindee V2 API handler.
@@ -26,6 +27,28 @@ export class MindeeApiV2 {
 
   constructor(dispatcher?: Dispatcher, apiKey?: string) {
     this.settings = new ApiSettings({ dispatcher: dispatcher, apiKey: apiKey });
+  }
+
+  /**
+   * Search for models available to the account.
+   * @param name Optional name filter.
+   * @param modelType Optional model type filter.
+   * @returns a `Promise` containing the search response.
+   */
+  async reqGetSearchModel(name?: string, modelType?: string): Promise<SearchResponse> {
+    const queryParams: Record<string, string> = {};
+    if (name) queryParams["name"] = name;
+    if (modelType) queryParams["model_type"] = modelType;
+    const options: RequestOptions = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: "/v2/search/models",
+      queryParams: queryParams,
+      timeoutSecs: this.settings.timeoutSecs,
+    };
+    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
+    return this.#processResponse(response, SearchResponse);
   }
 
   /**

@@ -11,6 +11,7 @@ export interface RequestOptions {
   timeoutSecs: number;
   headers: any;
   body?: FormData | string;
+  queryParams?: Record<string, string>;
 }
 
 export interface BaseHttpResponse {
@@ -41,9 +42,14 @@ export async function sendRequestAndReadResponse(
   options: RequestOptions,
   url?: string,
 ): Promise<BaseHttpResponse> {
-  url ??= `https://${options.hostname}${options.path}`;
+  const requestUrl = new URL(url ?? `https://${options.hostname}${options.path}`);
+  if (options.queryParams) {
+    for (const [key, value] of Object.entries(options.queryParams)) {
+      requestUrl.searchParams.set(key, value);
+    }
+  }
   const response = await request(
-    url,
+    requestUrl,
     {
       method: options.method,
       headers: options.headers,
