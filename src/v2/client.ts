@@ -5,6 +5,7 @@ import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
 import { ErrorResponse, JobResponse } from "./parsing/index.js";
+import { SearchResponse } from "./parsing/search/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
 import { PollingOptions, PollingOptionsConstructor } from "./clientOptions/index.js";
@@ -54,6 +55,16 @@ export class Client {
     logger.debug("Client V2 Initialized");
   }
 
+  /**
+   * Search for models available to the account.
+   * @param name Optional name filter.
+   * @param modelType Optional model type filter.
+   * @returns a `Promise` containing the search response.
+   */
+  async searchModels(name?: string, modelType?: string): Promise<SearchResponse> {
+    return await this.mindeeApi.reqGetSearchModel(name, modelType);
+  }
+
   async enqueue<P extends typeof BaseProduct>(
     product: P,
     inputSource: InputSource,
@@ -66,7 +77,7 @@ export class Client {
       ? params
       : new product.parametersClass(params);
     await inputSource.init();
-    const jobResponse = await this.mindeeApi.enqueueProduct(
+    const jobResponse = await this.mindeeApi.reqPostProductEnqueue(
       product, inputSource, paramsInstance
     );
     if (jobResponse.job.id === undefined || jobResponse.job.id.length === 0) {
@@ -94,7 +105,7 @@ export class Client {
     logger.debug(
       `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
     );
-    return await this.mindeeApi.getProductResultById(product, inferenceId);
+    return await this.mindeeApi.reqGetProductResultById(product, inferenceId);
   }
 
   /**
@@ -113,7 +124,7 @@ export class Client {
     logger.debug(
       `Attempting to get inference from: ${url} using response type: ${product.name}`
     );
-    return await this.mindeeApi.getProductResultByUrl(product, url);
+    return await this.mindeeApi.reqGetProductResultByUrl(product, url);
   }
 
   /**
@@ -126,7 +137,7 @@ export class Client {
    * parsing is complete.
    */
   async getJob(jobId: string): Promise<JobResponse> {
-    return await this.mindeeApi.getJob(jobId);
+    return await this.mindeeApi.reqGetJobById(jobId);
   }
 
   /**
@@ -155,7 +166,7 @@ export class Client {
       product, inputSource, paramsInstance
     );
     return await this.pollForResult(
-      product, pollingOptionsInstance, jobResponse.job.id
+      product, pollingOptionsInstance, jobResponse
     );
   }
 
@@ -167,7 +178,7 @@ export class Client {
   protected async pollForResult<P extends typeof BaseProduct>(
     product: typeof BaseProduct,
     pollingOptions: PollingOptions,
-    jobId: string,
+    jobResponse: JobResponse,
   ): Promise<InstanceType<P["responseClass"]>> {
     logger.debug(
       `Waiting ${pollingOptions.initialDelaySec} seconds before polling.`
@@ -178,7 +189,7 @@ export class Client {
       pollingOptions.initialTimerOptions
     );
     logger.debug(
-      `Start polling for inference using job ID: ${jobId}.`
+      `Start polling for inference using job ID: ${jobResponse.job.id}.`
     );
     let retryCounter: number = 1;
     let pollResults: JobResponse;
@@ -186,7 +197,7 @@ export class Client {
       logger.debug(
         `Attempt ${retryCounter} of ${pollingOptions.maxRetries}`
       );
-      pollResults = await this.getJob(jobId);
+      pollResults = await this.mindeeApi.reqGetJobByUrl(jobResponse.job.pollingUrl);
       const error: ErrorResponse | undefined = pollResults.job.error;
       if (error) {
         throw new MindeeHttpErrorV2(error);
