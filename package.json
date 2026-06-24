@@ -19,8 +19,7 @@
   "type": "module",
   "main": "src/index.js",
   "bin": {
-    "mindeeV1": "bin/mindeeV1.js",
-    "mindeeV2": "bin/mindeeV2.js"
+    "mindee": "bin/mindee.js"
   },
   "scripts": {
     "build": "tsc --build && tsc-alias",
@@ -30,7 +29,7 @@
     "test-light": "mocha --grep '#OptionalDepsRequired' --invert 'tests/**/*.spec.ts'",
     "test-integration": "mocha --grep '#OptionalDepsRemoved' --invert 'tests/**/*.integration.ts'",
     "test-integration-light": "mocha --grep '#OptionalDepsRequired' --invert 'tests/**/*.integration.ts'",
-    "test-v2": "tsc --noEmit && node --import tsx --test 'tests/v2/**/*.spec.ts'",
+    "test-v2": "tsc --noEmit && node --import tsx --test 'tests/v2/**/*.spec.ts' 'tests/cli/**/*.spec.ts'",
     "lint": "tsc --noEmit && eslint --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
     "lint-fix": "tsc --noEmit && eslint --fix --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
     "docs": "typedoc --out docs/_build ./src/index.ts",

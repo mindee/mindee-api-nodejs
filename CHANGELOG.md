@@ -1,5 +1,20 @@
 # Mindee Node.js API Library Changelog
 
+## Unreleased
+### Changes
+* :sparkles: :boom: unify CLI into a single `mindee` binary (replaces
+  `mindeeV1` / `mindeeV2`); V2 product commands are top-level
+  (`extraction`, `classification`, `crop`, `ocr`, `split`) and V1 product
+  commands live under the `v1` group, mirroring the canonical .NET CLI shape
+* :sparkles: add `--output {summary,full,raw}`, `--rag/-g`, `--raw-text/-r`,
+  `--confidence/-c`, `--polygon/-p`, `--text-context/-t`, `--alias/-a`
+  options to V2 extraction; add `--full-text/-f`, `--async`, `--output`
+  options to V1 commands
+* :sparkles: add `Client.searchModels()` to list models available to the
+  current API key, with optional `name` / `modelType` filters; add the
+  matching `search-models` CLI command
+
+
 ## v5.4.0 - 2026-06-22
 ### Fixes
 * :bug: :boom: harmonize Crop and Split extraction (now ready for public use)

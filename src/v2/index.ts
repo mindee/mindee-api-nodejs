@@ -6,6 +6,10 @@ export {
   JobResponse,
   ErrorResponse,
   LocalResponse,
+  SearchResponse,
+  SearchModel,
+  ModelWebhook,
+  PaginationMetadata,
 } from "./parsing/index.js";
 export type { BaseParameters, TimerOptions } from "./clientOptions/index.js";
 export { PollingOptions } from "./clientOptions/index.js";

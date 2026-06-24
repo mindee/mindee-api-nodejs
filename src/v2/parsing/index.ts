@@ -17,3 +17,10 @@ export { LocalResponse } from "./localResponse.js";
 export { BaseResponse } from "./baseResponse.js";
 export type { ResponseConstructor } from "./baseResponse.js";
 export * as field from "./inference/field/index.js";
+export * as search from "./search/index.js";
+export {
+  ModelWebhook,
+  SearchModel,
+  PaginationMetadata,
+  SearchResponse,
+} from "./search/index.js";

@@ -6,17 +6,15 @@ import {
 } from "@/v1/parsing/common/index.js";
 import {
   Client, PredictOptions,
-} from "./client.js";
+} from "@/v1/client.js";
 import {
   PageOptions, PageOptionsOperation, PathInput,
 } from "@/input/index.js";
 import * as console from "console";
 import {
   CLI_COMMAND_CONFIG, COMMAND_GENERATED, ProductConfig,
-} from "./product/cliProducts.js";
-import { Endpoint } from "./http/index.js";
-
-const program = new Command();
+} from "./cliProducts.js";
+import { Endpoint } from "@/v1/http/index.js";
 
 
 //
@@ -209,6 +207,7 @@ function addPredictAction(prog: Command) {
       command: Command
     ) {
       const allOptions = {
+        ...prog.parent?.parent?.parent?.opts(),
         ...prog.parent?.parent?.opts(),
         ...prog.parent?.opts(),
         ...prog.opts(),
@@ -233,13 +232,13 @@ function addPredictAction(prog: Command) {
   }
 }
 
-export function cli() {
-  program.name("mindee")
-    .description("Command line interface for Mindee products.")
+export function buildV1Command(): Command {
+  const v1Program = new Command("v1")
+    .description("Mindee V1 product commands.")
     .option("-d, --debug", "high verbosity mode");
 
   CLI_COMMAND_CONFIG.forEach((info, name) => {
-    const productCmd: Command = program.command(name)
+    const productCmd: Command = v1Program.command(name)
       .description(info.displayName);
 
     if (info.async) {
@@ -251,7 +250,7 @@ export function cli() {
           await callGetDocument(
             docClass,
             documentId,
-            { ...options, ...productCmd.opts(), ...program.opts() }
+            { ...options, ...productCmd.opts(), ...v1Program.opts() }
           );
         });
       addMainOptions(getDocProductCmd);
@@ -279,5 +278,5 @@ export function cli() {
     addPostOptions(predictProductCmd, info);
     addPredictAction(predictProductCmd);
   });
-  program.parse(process.argv);
+  return v1Program;
 }

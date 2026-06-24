@@ -1,5 +1,5 @@
 import { StringDict } from "@/parsing/index.js";
-import { ExtractionResponse } from "@/v2/product/index.js";
+import { ExtractionResponse } from "@/v2/product/extraction/index.js";
 
 /**
  * Document level classification.
