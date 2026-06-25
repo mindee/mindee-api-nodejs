@@ -85,11 +85,11 @@ export class PollingOptions {
     if (params.recurringTimerOptions) {
       this.recurringTimerOptions = params.recurringTimerOptions;
     }
-    this.validateOptions();
+    this.validateSettings();
     logger.debug(`Polling options initialized: ${this.toString()}`);
   }
 
-  validateOptions() {
+  validateSettings() {
     if (this.delaySec < minDelaySec) {
       throw new MindeeConfigurationError(
         `Cannot set auto-parsing delay to less than ${minDelaySec} second(s).`

@@ -128,8 +128,8 @@ Use:
 Use:
 - `inputSource.init()`
 - `inputSource.getPageCount()`
-- `inputSource.compress(...)`
-- `inputSource.applyPageOptions(...)`
+- `inputSource.compress(...)` — compress before upload
+- `inputSource.applyPageOptions(...)` — trim or remove pages
 
 ## Avoid
 
