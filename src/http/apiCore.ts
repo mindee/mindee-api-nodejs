@@ -48,16 +48,26 @@ export async function sendRequestAndReadResponse(
       requestUrl.searchParams.set(key, value);
     }
   }
-  const response = await request(
-    requestUrl,
-    {
-      method: options.method,
-      headers: options.headers,
-      headersTimeout: options.timeoutSecs * 1000,
-      body: options.body,
-      dispatcher: dispatcher,
-    }
-  );
+  const requestParams = {
+    method: options.method,
+    headers: options.headers,
+    headersTimeout: options.timeoutSecs * 1000,
+    body: options.body,
+    dispatcher: dispatcher,
+  };
+  let response: Dispatcher.ResponseData;
+  try {
+    response = await request(
+      requestUrl, requestParams
+    );
+  } catch (err: any) {
+    // shenanigans in networking or freezing/thawing of the process in serverless environments
+    if (err.code === "UND_ERR_SOCKET" || err.code === "UND_ERR_CONNECT_TIMEOUT" || err.code === "ECONNRESET") {
+      logger.warn(`Socket error (${err.code}), retrying with a fresh connection...`);
+      response = await request(requestUrl, requestParams);
+    } else throw err;
+  }
+
   logger.debug("Parsing the response ...");
 
   let responseBody: string = await response.body.text();
