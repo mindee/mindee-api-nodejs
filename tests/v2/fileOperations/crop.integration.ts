@@ -6,7 +6,6 @@ import * as fs from "node:fs";
 import { Client, PathInput } from "@/index.js";
 import { Crop } from "@/v2/product/crop/index.js";
 import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
-import { extractCrops } from "@/v2/fileOperations/crop.js";
 import { V2_PRODUCT_PATH, OUTPUT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 
@@ -57,13 +56,13 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired", 
 
     assert.equal(response.inference.result.crops.length, 2);
 
-    const extractedImages = await extractCrops(cropInput, response.inference.result.crops);
+    const extractedImages = await response.inference.result.extractFromInputSource(cropInput);
 
     assert.equal(extractedImages.length, 2);
     assert.equal(extractedImages[0].filename, "default_sample.jpg_page0-0.jpg");
     assert.equal(extractedImages[1].filename, "default_sample.jpg_page0-1.jpg");
 
-    const extractionInput = extractedImages[0].asSource();
+    const extractionInput = extractedImages[0].asInputSource();
     const findocParams = { modelId: findocModelId };
 
     const invoice0 = await client.enqueueAndGetResult(

@@ -26,8 +26,8 @@ describe("MindeeV1 - Invoice Splitter Extraction #OptionalDepsRequired", () => {
     assert.strictEqual(extractedInvoices[2].pageIdMin, 4);
     assert.strictEqual(extractedInvoices[2].pageIdMax, 4);
     for (const extractedInvoice of extractedInvoices) {
-      assert.ok(Buffer.byteLength(extractedInvoice.asSource().fileObject) < 10485760);
-      assert.ok(Buffer.byteLength(extractedInvoice.asSource().fileObject) > 100000);
+      assert.ok(Buffer.byteLength(extractedInvoice.asInputSource().fileObject) < 10485760);
+      assert.ok(Buffer.byteLength(extractedInvoice.asInputSource().fileObject) > 100000);
     }
   });
 

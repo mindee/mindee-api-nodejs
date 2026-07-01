@@ -45,6 +45,5 @@ export async function extractMultipleCrops(
     }
     polygonsByPage.get(pageId)!.push(crop.location.polygon);
   }
-  const extractedCrops = await extractImagesFromPolygon(inputSource, polygonsByPage, quality);
-  return new ExtractedImages(...extractedCrops);
+  return await extractImagesFromPolygon(inputSource, polygonsByPage, quality);
 }

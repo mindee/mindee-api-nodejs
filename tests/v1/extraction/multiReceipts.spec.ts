@@ -100,8 +100,8 @@ describe("MindeeV1 - Multi-Receipt Extraction #OptionalDepsRequired", () => {
         for (const extractedReceipt of extractedReceipts) {
           assert.strictEqual(extractedReceipt.pageId, 0);
           assert.strictEqual(extractedReceipt.receiptId, i);
-          assert.ok(Buffer.byteLength(extractedReceipt.asSource().fileObject) < 10485760);
-          assert.ok(Buffer.byteLength(extractedReceipt.asSource().fileObject) > 100000);
+          assert.ok(Buffer.byteLength(extractedReceipt.asInputSource().fileObject) < 10485760);
+          assert.ok(Buffer.byteLength(extractedReceipt.asInputSource().fileObject) > 100000);
           i++;
         }
       });

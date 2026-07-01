@@ -32,7 +32,7 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
 
     assert.strictEqual(extractedSplits[0].pageCount, 1);
 
-    const inputBuffer0 = extractedSplits[0].asSource();
+    const inputBuffer0 = extractedSplits[0].asInputSource();
     const count0 = await inputBuffer0.getPageCount();
     assert.strictEqual(count0, 1);
   });
@@ -51,17 +51,17 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     assert.strictEqual(extractedSplits.length, 3);
 
     assert.strictEqual(extractedSplits[0].pageCount, 1);
-    const bufferInput0 = extractedSplits[0].asSource();
+    const bufferInput0 = extractedSplits[0].asInputSource();
     const count0 = await bufferInput0.getPageCount();
     assert.strictEqual(count0, 1);
 
-    const bufferInput1 = extractedSplits[1].asSource();
+    const bufferInput1 = extractedSplits[1].asInputSource();
     const count1 = await bufferInput1.getPageCount();
     assert.strictEqual(extractedSplits[1].pageCount, 3);
     assert.strictEqual(count1, 3);
 
     assert.strictEqual(extractedSplits[2].pageCount, 1);
-    const bufferInput2 = extractedSplits[2].asSource();
+    const bufferInput2 = extractedSplits[2].asInputSource();
     const count2 = await bufferInput2.getPageCount();
     assert.strictEqual(count2, 1);
     const localExtract = await response.inference.result.splits[0].extractFromFile(inputSample);

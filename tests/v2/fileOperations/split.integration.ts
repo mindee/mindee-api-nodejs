@@ -61,7 +61,7 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired", { tim
     assert.equal(extractedPdfs[0].filename, "default_sample_page_001-001.pdf");
     assert.equal(extractedPdfs[1].filename, "default_sample_page_002-002.pdf");
 
-    const extractionInput = extractedPdfs[0].asSource();
+    const extractionInput = extractedPdfs[0].asInputSource();
 
     const findocParams = { modelId: findocModelId };
 

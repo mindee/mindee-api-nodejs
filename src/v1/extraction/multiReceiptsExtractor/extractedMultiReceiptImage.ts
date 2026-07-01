@@ -8,7 +8,7 @@ export class ExtractedMultiReceiptImage extends ExtractedImage {
   readonly pageId: number;
 
   constructor(buffer: Uint8Array, pageId: number, receiptId: number) {
-    super(buffer, `receipt_p${pageId}_${receiptId}.pdf`);
+    super(buffer, `receipt_p${pageId}_${receiptId}.pdf`, pageId, receiptId);
     this.pageId = pageId;
     this.receiptId = receiptId;
   }

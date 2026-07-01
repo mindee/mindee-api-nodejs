@@ -36,6 +36,9 @@ describe("MindeeV1 - Workflow executions", () => {
   });
 
   it("should deserialize response correctly when sending a document to an execution", async () => {
+    const statusCode = 202;
+    process.env.MINDEE_API_HOST = `v1-dummy-host-${statusCode}`;
+
     const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success.json");
     const mockAgent = await setInterceptor(202, jsonFilePath);
     const mockedExecution = await executeWorkflow(
@@ -60,6 +63,9 @@ describe("MindeeV1 - Workflow executions", () => {
 
   it("should deserialize response correctly when sending a document to an execution with priority and alias",
     async () => {
+      const statusCode = 202;
+      process.env.MINDEE_API_HOST = `v1-dummy-host-${statusCode}`;
+
       const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success_low_priority.json");
       const mockAgent = await setInterceptor(200, jsonFilePath);
       const mockedExecution = await executeWorkflow(

@@ -31,7 +31,7 @@ describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequire
       assert.strictEqual(multiReceiptResult.document?.inference.pages[1].orientation?.value, 0);
       const receiptsResults = [];
       for (const extractedReceipt of extractedReceipts) {
-        const localInput = extractedReceipt.asSource();
+        const localInput = extractedReceipt.asInputSource();
         receiptsResults.push(await client.parse(ReceiptV5, localInput));
         await setTimeout(1000);
       }
@@ -83,7 +83,7 @@ describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequire
       assert.strictEqual(multiReceiptResult.document?.inference.prediction.receipts.length, 1);
       const receipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
       assert.strictEqual(receipts.length, 1);
-      const receiptResult = await client.parse(ReceiptV5, receipts[0].asSource());
+      const receiptResult = await client.parse(ReceiptV5, receipts[0].asInputSource());
       assert.strictEqual(receiptResult.document.inference.prediction.lineItems.length, 1);
       assert.strictEqual(receiptResult.document.inference.prediction.lineItems[0].totalAmount, 10.2);
       assert.strictEqual(receiptResult.document.inference.prediction.taxes.length, 1);
