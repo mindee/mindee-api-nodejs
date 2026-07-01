@@ -1,16 +1,12 @@
 import path from "path";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
-import { MockAgent, setGlobalDispatcher } from "undici";
+import { MockAgent, Interceptable } from "undici";
 import fs from "node:fs/promises";
 
 import { Client, PathInput, product } from "@/index.js";
 import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import { RESOURCE_PATH, V2_RESOURCE_PATH } from "../../index.js";
-
-const mockAgent = new MockAgent();
-setGlobalDispatcher(mockAgent);
-const mockPool = mockAgent.get("https://v2-client-host");
 
 /**
  * Injects a minimal set of environment variables so that the SDK behaves
@@ -21,14 +17,16 @@ function dummyEnvvars(): void {
   process.env.MINDEE_V2_API_HOST = "v2-client-host";
 }
 
-async function setInterceptor(statusCode: number, filePath: string): Promise<void> {
+async function setInterceptor(mockPool: Interceptable, statusCode: number, filePath: string): Promise<void> {
   const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
   mockPool
     .intercept({ path: /.*/, method: "GET" })
     .reply(statusCode, fileObj);
 }
 
-async function setAllInterceptors(): Promise<void> {
+async function setAllInterceptors(): Promise<MockAgent> {
+  const mockAgent = new MockAgent();
+  const mockPool = mockAgent.get("https://v2-client-host");
   mockPool
     .intercept({ path: /.*/, method: "POST" })
     .reply(
@@ -36,9 +34,11 @@ async function setAllInterceptors(): Promise<void> {
       { status: 400, detail: "forced failure from test", title: "Bad Request", code: "400-001" }
     );
   await setInterceptor(
+    mockPool,
     200,
     path.join(V2_RESOURCE_PATH, "job/ok_processing.json")
   );
+  return mockAgent;
 }
 
 describe("MindeeV2 - Client", () => {
@@ -56,7 +56,7 @@ describe("MindeeV2 - Client", () => {
   });
 
   beforeEach(async () => {
-    await setAllInterceptors();
+    const mockAgent = await setAllInterceptors();
     client = new Client({ apiKey: "dummy", debug: true, dispatcher: mockAgent });
   });
 

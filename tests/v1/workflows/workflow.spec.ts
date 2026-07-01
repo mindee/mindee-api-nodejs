@@ -2,23 +2,22 @@ import path from "path";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
 import { promises as fs } from "fs";
-import { MockAgent, setGlobalDispatcher } from "undici";
+import { MockAgent } from "undici";
 import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import { Client } from "@/v1/index.js";
 import { PathInput } from "@/index.js";
 
-const mockAgent = new MockAgent();
-setGlobalDispatcher(mockAgent);
-const mockPool = mockAgent.get("https://v1-workflow-host");
-
-async function setInterceptor(httpCode: number, jsonFilePath: string) {
+async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<MockAgent> {
+  const mockAgent = new MockAgent();
+  const mockPool = mockAgent.get("https://v1-workflow-host");
   const mockResponse = JSON.parse(await fs.readFile(jsonFilePath, "utf-8"));
   mockPool
     .intercept({ path: /v1\/workflows\/.*/, method: "POST" })
     .reply(httpCode, mockResponse);
+  return mockAgent;
 }
 
-async function executeWorkflow(doc: PathInput, workflowId: string) {
+async function executeWorkflow(mockAgent: MockAgent, doc: PathInput, workflowId: string) {
   const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
   return await client.executeWorkflow(doc, workflowId);
 }
@@ -38,9 +37,9 @@ describe("MindeeV1 - Workflow executions", () => {
 
   it("should deserialize response correctly when sending a document to an execution", async () => {
     const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success.json");
-    await setInterceptor(202, jsonFilePath);
+    const mockAgent = await setInterceptor(202, jsonFilePath);
     const mockedExecution = await executeWorkflow(
-      doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
+      mockAgent, doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
     );
     assert.notStrictEqual(mockedExecution, null);
     assert.notStrictEqual(mockedExecution.apiRequest, null);
@@ -62,9 +61,9 @@ describe("MindeeV1 - Workflow executions", () => {
   it("should deserialize response correctly when sending a document to an execution with priority and alias",
     async () => {
       const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success_low_priority.json");
-      await setInterceptor(200, jsonFilePath);
+      const mockAgent = await setInterceptor(200, jsonFilePath);
       const mockedExecution = await executeWorkflow(
-        doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
+        mockAgent, doc, "07ebf237-ff27-4eee-b6a2-425df4a5cca6"
       );
       assert.notStrictEqual(mockedExecution, null);
       assert.notStrictEqual(mockedExecution.apiRequest, null);
