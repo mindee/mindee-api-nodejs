@@ -1,5 +1,12 @@
 # Mindee Node.js API Library Changelog
 
+## v5.5.0 - 2026-07-01
+### Fixes
+* :memo: minor tweak to SKILL file
+* :bug: retry once on connection error
+* :recycle: rework and fix extractors (:boom: some **undocumented** functions break)
+
+
 ## v5.4.0 - 2026-06-22
 ### Fixes
 * :bug: :boom: harmonize Crop and Split extraction (now ready for public use)
