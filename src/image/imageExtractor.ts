@@ -3,6 +3,7 @@ import { MindeeImageError } from "@/errors/index.js";
 import { getMinMaxX, getMinMaxY, Polygon } from "@/geometry/index.js";
 import { adjustForRotation } from "@/geometry/polygonUtils.js";
 import { ExtractedImage } from "@/image/extractedImage.js";
+import { ExtractedImages } from "@/image/extractedImages.js";
 import { LocalInputSource } from "@/input/index.js";
 import { logger } from "@/logger.js";
 import { createPdfFromInputSource } from "@/pdf/pdfOperation.js";
@@ -34,16 +35,17 @@ export async function extractImagesFromPolygon(
   inputSource: LocalInputSource,
   polygonsPerPage: Map<number, Polygon[]>,
   quality?: number
-) {
-  const allExtractedImages: ExtractedImage[] = [];
+): Promise<ExtractedImages> {
+  const allExtractedImages: ExtractedImages = new ExtractedImages();
   const pdfDoc = await createPdfFromInputSource(inputSource);
 
   for (const [pageId, polygons] of polygonsPerPage) {
     logger.debug(`Extracting images from page ${pageId}`);
     const pdfPage = pdfDoc.getPage(pageId);
-    const extractions = (await extractFromPage(pdfPage, polygons, true, quality));
+    const extractions = await extractFromPage(pdfPage, polygons, true, quality);
     const extractedImages = extractions.map(
-      (v, i) => new ExtractedImage(v, inputSource.filename + `_page${pageId}-${i}.jpg`, pageId, i)
+      (buffer, elementId) =>
+        new ExtractedImage(buffer, inputSource.filename + `_page-${pageId}-item-${elementId}.jpg`, pageId, elementId)
     );
     allExtractedImages.push(...extractedImages);
   }

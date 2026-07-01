@@ -11,15 +11,15 @@ import { logger } from "@/logger.js";
 import { loadOptionalDependency } from "@/dependency/index.js";
 
 /**
- * Generic class for image extraction
+ * Generic class for image extraction.
  */
 export class ExtractedImage {
   public buffer: Buffer;
   public filename: string;
-  public pageId?: number;
-  public elementId?: number;
+  public readonly pageId: number;
+  public readonly elementId: number;
 
-  constructor(buffer: Uint8Array, fileName: string, pageId?: number, elementId?: number) {
+  constructor(buffer: Uint8Array, fileName: string, pageId: number, elementId: number) {
     this.buffer = Buffer.from(buffer);
     this.filename = fileName;
     this.pageId = pageId;
@@ -105,7 +105,7 @@ export class ExtractedImage {
    *
    * @returns A BufferInput source.
    */
-  asSource(): BufferInput {
+  asInputSource(): BufferInput {
     return new BufferInput({
       buffer: this.buffer,
       filename: this.filename,

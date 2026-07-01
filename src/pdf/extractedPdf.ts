@@ -10,11 +10,13 @@ export class ExtractedPdf {
   public readonly buffer: Buffer;
   public readonly filename: string;
   public readonly pageCount: number;
+  public readonly pageIndexes: number[];
 
-  constructor(pdfData: Buffer<ArrayBufferLike>, filename: string, pageCount: number) {
+  constructor(pdfData: Buffer<ArrayBufferLike>, filename: string, pageIndexes: number[]) {
     this.buffer = pdfData;
     this.filename = filename;
-    this.pageCount = pageCount;
+    this.pageCount = pageIndexes.length;
+    this.pageIndexes = pageIndexes;
   }
 
   /**
@@ -62,7 +64,7 @@ export class ExtractedPdf {
    *
    * @returns A BufferInput source.
    */
-  asSource(): BufferInput {
+  asInputSource(): BufferInput {
     return new BufferInput({
       buffer: this.buffer,
       filename: this.filename,

@@ -36,7 +36,7 @@ export async function extractMultipleSplits(inputSource: LocalInputSource, split
   }
   const pageCount = await pdfExtractor.getPageCount();
   if (splits.length === 1 && splits[0].at(-1) === pageCount-1) {
-    return new ExtractedPdfs(new ExtractedPdf(inputSource.fileObject as Buffer, inputSource.filename, pageCount));
+    return new ExtractedPdfs(new ExtractedPdf(inputSource.fileObject as Buffer, inputSource.filename, splits[0]));
   }
   const subDocuments = await pdfExtractor.extractSubDocuments(pageGroups);
   return new ExtractedPdfs(...subDocuments);

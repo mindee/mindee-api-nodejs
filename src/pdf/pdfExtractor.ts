@@ -7,6 +7,7 @@ import path from "path";
 import { loadOptionalDependency } from "@/dependency/index.js";
 import { MindeeInputSourceError, MindeePdfError } from "@/errors/index.js";
 import { ExtractedPdf } from "@/pdf/extractedPdf.js";
+import { ExtractedPdfs } from "@/pdf/extractedPdfs.js";
 import { createPdfFromInputSource, extractPages } from "@/pdf/pdfOperation.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
@@ -110,7 +111,7 @@ export class PdfExtractor {
    * Extracts pages from the PDF.
    * @param pageIndexes
    */
-  async extractSubDocuments(pageIndexes: number[][]): Promise<ExtractedPdf[]> {
+  async extractSubDocuments(pageIndexes: number[][]): Promise<ExtractedPdfs> {
     if (this.extractedPdfs && this.extractedPdfs.length > 0) {
       return this.extractedPdfs;
     }
@@ -135,7 +136,7 @@ export class PdfExtractor {
 
       const fieldFilename = `${splitName}_page_${startPage}-${endPage}.pdf`;
       const page = await extractPages(this.sourcePdf!, pageOptions);
-      this.extractedPdfs.push(new ExtractedPdf(page.file, fieldFilename, pageRange.length));
+      this.extractedPdfs.push(new ExtractedPdf(page.file, fieldFilename, pageRange));
     }
     return this.extractedPdfs;
   }

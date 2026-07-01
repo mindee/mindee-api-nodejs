@@ -29,11 +29,11 @@ describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRequired", { t
       invoiceSplitterInference as InvoiceSplitterV1
     );
     assert.strictEqual(invoices.length, 2);
-    assert.strictEqual(invoices[0].asSource().filename, "invoice_p_0-0.pdf");
-    assert.strictEqual(invoices[1].asSource().filename, "invoice_p_1-1.pdf");
+    assert.strictEqual(invoices[0].asInputSource().filename, "invoice_p_0-0.pdf");
+    assert.strictEqual(invoices[1].asInputSource().filename, "invoice_p_1-1.pdf");
 
     const invoiceResult = await client.parse(
-      mindee.v1.product.InvoiceV4, invoices[0].asSource()
+      mindee.v1.product.InvoiceV4, invoices[0].asInputSource()
     );
     const testStringRstInvoice = await fs.readFile(
       path.join(V1_PRODUCT_PATH, "invoices/response_v4/summary_full_invoice_p1.rst")
