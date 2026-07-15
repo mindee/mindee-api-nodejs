@@ -4,7 +4,7 @@ import { InputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
-import { ErrorResponse, JobResponse } from "./parsing/index.js";
+import { ErrorResponse, JobResponse, JobStatus } from "./parsing/index.js";
 import { SearchResponse } from "./parsing/search/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
@@ -203,10 +203,10 @@ export class Client {
         throw new MindeeHttpErrorV2(error);
       }
       logger.debug(`Job status: ${pollResults.job.status}.`);
-      if (pollResults.job.status === "Failed") {
+      if (pollResults.job.status === JobStatus.Failed) {
         break;
       }
-      if (pollResults.job.status === "Processed") {
+      if (pollResults.job.status === JobStatus.Processed) {
         if (!pollResults.job.resultUrl) {
           throw new MindeeError(
             "The result URL is undefined. This is a server error, try again later or contact support."
