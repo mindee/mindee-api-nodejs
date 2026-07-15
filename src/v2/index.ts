@@ -4,7 +4,6 @@ export * as product from "./product/index.js";
 export { Client } from "./client.js";
 export {
   JobResponse,
-  JobStatus,
   ErrorResponse,
   LocalResponse,
 } from "./parsing/index.js";

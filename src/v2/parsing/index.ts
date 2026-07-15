@@ -7,7 +7,6 @@ export {
   Job,
   JobResponse,
   JobWebhook,
-  JobStatus,
 } from "./job/index.js";
 export {
   BaseInference,

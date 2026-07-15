@@ -26,11 +26,25 @@ export class UrlInput extends InputSource {
       return;
     }
     logger.debug(`source URL: ${UrlInput.maskCredentials(this.url)}`);
-    if (!this.url.toLowerCase().startsWith("https")) {
-      throw new MindeeInputSourceError("URL must be HTTPS");
-    }
+    UrlInput.validateUrl(this.url);
     this.fileObject = this.url;
     this.initialized = true;
+  }
+
+  /**
+   * Validates that a URL is safe to fetch: scheme must be https.
+   */
+  static validateUrl(url: string): void {
+    let parsed: URL;
+    try {
+      parsed = new URL(url);
+    } catch {
+      throw new MindeeInputSourceError("Invalid URL");
+    }
+
+    if (parsed.protocol !== "https:") {
+      throw new MindeeInputSourceError("URL must be HTTPS");
+    }
   }
 
   private async fetchFileContent(options: {
@@ -124,6 +138,12 @@ export class UrlInput extends InputSource {
     }
   }
 
+  private static isSameOrigin(a: string, b: string): boolean {
+    const urlA = new URL(a);
+    const urlB = new URL(b);
+    return urlA.origin === urlB.origin;
+  }
+
   private async makeRequest(
     url: string,
     headers: Record<string, string>,
@@ -150,8 +170,15 @@ export class UrlInput extends InputSource {
         );
       }
       if (response.headers.location) {
+        const redirectUrl = new URL(response.headers.location.toString(), url).toString();
+        UrlInput.validateUrl(redirectUrl);
+        const redirectHeaders = UrlInput.isSameOrigin(url, redirectUrl)
+          ? headers
+          : Object.fromEntries(
+            Object.entries(headers).filter(([k]) => k.toLowerCase() !== "authorization")
+          );
         return await this.makeRequest(
-          response.headers.location.toString(), headers, redirects + 1, maxRedirects
+          redirectUrl, redirectHeaders, redirects + 1, maxRedirects
         );
       }
       throw new MindeeInputSourceError("Redirect location not found");

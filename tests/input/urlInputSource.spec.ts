@@ -81,6 +81,74 @@ describe("Input Sources - URL input source", () => {
         assert.deepStrictEqual(localInput.fileObject, fileContent);
       });
 
+      it("should handle relative redirect URLs", async () => {
+        const originalUrl = "https://dummy-host/dir/original.pdf";
+        const fileContent = Buffer.from("relative redirect content");
+
+        mockPool
+          .intercept({ path: "/dir/original.pdf", method: "GET" })
+          .reply(302, "", { headers: { location: "/other/redirected.pdf" } });
+
+        mockPool
+          .intercept({ path: "/other/redirected.pdf", method: "GET" })
+          .reply(200, fileContent);
+
+        const urlInput = new UrlInput({ url: originalUrl, dispatcher: mockAgent });
+        const localInput = await urlInput.asLocalInputSource();
+        await localInput.init();
+
+        assert.ok(localInput instanceof BytesInput);
+        assert.strictEqual(localInput.filename, "redirected.pdf");
+        assert.deepStrictEqual(localInput.fileObject, fileContent);
+      });
+
+      it("should strip Authorization header on cross-origin redirect", async () => {
+        const originalUrl = "https://dummy-host/file.pdf";
+        const crossOriginUrl = "https://other-host/file.pdf";
+        const fileContent = Buffer.from("cross-origin content");
+        const otherPool = mockAgent.get("https://other-host");
+
+        mockPool
+          .intercept({ path: "/file.pdf", method: "GET" })
+          .reply(302, "", { headers: { location: crossOriginUrl } });
+
+        otherPool
+          .intercept({
+            path: "/file.pdf",
+            method: "GET",
+            headers: (h: Record<string, string>) => !("Authorization" in h),
+          })
+          .reply(200, fileContent);
+
+        const urlInput = new UrlInput({ url: originalUrl, dispatcher: mockAgent });
+        const localInput = await urlInput.asLocalInputSource({ token: "secret" });
+        await localInput.init();
+
+        assert.ok(localInput instanceof BytesInput);
+        assert.deepStrictEqual(localInput.fileObject, fileContent);
+      });
+
+      it("should block redirect to loopback address", async () => {
+        const originalUrl = "https://dummy-host/file.pdf";
+
+        mockPool
+          .intercept({ path: "/file.pdf", method: "GET" })
+          .reply(302, "", { headers: { location: "https://127.0.0.1/evil" } });
+
+        const urlInput = new UrlInput({ url: originalUrl, dispatcher: mockAgent });
+
+        try {
+          await urlInput.asLocalInputSource();
+          assert.fail("Expected an error to be thrown");
+        } catch (error) {
+          assert.ok(error instanceof Error);
+          assert.strictEqual(
+            (error as Error).message,
+            "URL host is a loopback or private address"
+          );
+        }
+      });
+
       it("should throw an error for HTTP error responses", async () => {
         const url = "https://dummy-host/not-found.pdf";
 
