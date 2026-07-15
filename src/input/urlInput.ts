@@ -25,7 +25,7 @@ export class UrlInput extends InputSource {
     if (this.initialized) {
       return;
     }
-    logger.debug(`source URL: ${this.url}`);
+    logger.debug(`source URL: ${UrlInput.maskCredentials(this.url)}`);
     if (!this.url.toLowerCase().startsWith("https")) {
       throw new MindeeInputSourceError("URL must be HTTPS");
     }
@@ -44,11 +44,12 @@ export class UrlInput extends InputSource {
 
     if (token) {
       headers["Authorization"] = `Bearer ${token}`;
+    } else if (username && password) {
+      const encoded = Buffer.from(`${username}:${password}`).toString("base64");
+      headers["Authorization"] = `Basic ${encoded}`;
     }
 
-    const auth = username && password ? `${username}:${password}` : undefined;
-
-    return await this.makeRequest(this.url, auth, headers, 0, maxRedirects);
+    return await this.makeRequest(this.url, headers, 0, maxRedirects);
   }
 
   async saveToFile(options: {
@@ -110,9 +111,21 @@ export class UrlInput extends InputSource {
     return filename;
   }
 
+  private static maskCredentials(url: string): string {
+    try {
+      const parsed = new URL(url);
+      if (parsed.username || parsed.password) {
+        parsed.username = "******";
+        parsed.password = "******";
+      }
+      return parsed.toString();
+    } catch {
+      return url;
+    }
+  }
+
   private async makeRequest(
     url: string,
-    auth: string | undefined,
     headers: Record<string, string>,
     redirects: number,
     maxRedirects: number
@@ -130,7 +143,7 @@ export class UrlInput extends InputSource {
     );
 
     if (response.statusCode && response.statusCode >= 300 && response.statusCode < 400) {
-      logger.debug(`Redirecting to: ${response.headers.location}`);
+      logger.debug(`Redirecting to: ${UrlInput.maskCredentials(response.headers.location?.toString() ?? "")}`);
       if (redirects === maxRedirects) {
         throw new MindeeInputSourceError(
           `Can't reach URL after ${redirects} out of ${maxRedirects} redirects, aborting operation.`
@@ -138,7 +151,7 @@ export class UrlInput extends InputSource {
       }
       if (response.headers.location) {
         return await this.makeRequest(
-          response.headers.location.toString(), auth, headers, redirects + 1, maxRedirects
+          response.headers.location.toString(), headers, redirects + 1, maxRedirects
         );
       }
       throw new MindeeInputSourceError("Redirect location not found");
