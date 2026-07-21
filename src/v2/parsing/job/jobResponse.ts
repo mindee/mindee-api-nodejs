@@ -2,6 +2,9 @@ import { BaseResponse } from "@/v2/parsing/baseResponse.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Job } from "./job.js";
 
+/**
+ * Job response class.
+ */
 export class JobResponse extends BaseResponse {
   /**
    * Job for the polling.
