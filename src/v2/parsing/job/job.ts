@@ -38,7 +38,7 @@ export class Job {
   /**
    * Status of the job.
    */
-  public status?: string;
+  public status: string;
   /**
    * URL to poll for the job status.
    */
@@ -54,9 +54,7 @@ export class Job {
 
   constructor(serverResponse: StringDict) {
     this.id = serverResponse["id"];
-    if (serverResponse["status"] !== undefined) {
-      this.status = serverResponse["status"];
-    }
+    this.status = serverResponse["status"];
     if (serverResponse["error"]) {
       this.error = new ErrorResponse(serverResponse["error"]);
     }

@@ -6,7 +6,7 @@ export type { ErrorDetails } from "./error/index.js";
 export {
   Job,
   JobResponse,
-  JobWebhook
+  JobWebhook,
 } from "./job/index.js";
 export {
   BaseInference,
