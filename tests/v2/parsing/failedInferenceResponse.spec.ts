@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import path from "path";
 import { ErrorResponse, LocalResponse } from "../../../src/v2/index.js";
-import { FailedInferenceResponse } from "../../../src/v2/parsing/failedInferenceResponse.js";
+import { FailedInferenceResponse } from "../../../src/v2/parsing/inference/failedInferenceResponse.js";
 import { V2_RESOURCE_PATH } from "../../index.js";
 
 describe("MindeeV2 - Failed Inference Response", async () => {
