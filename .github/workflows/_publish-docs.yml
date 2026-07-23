@@ -24,7 +24,7 @@ jobs:
 
       - name: Generate docs
         run: |
-          npm run docs-for-dist
+          npm run docs:dist
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3

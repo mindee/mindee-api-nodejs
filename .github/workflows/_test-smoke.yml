@@ -41,7 +41,7 @@ jobs:
         run: npm ci
 
       - name: Build
-        run: npm run build-for-dist
+        run: npm run build:dist
 
       - name: Tests v2 sample code
         run: |

@@ -65,7 +65,7 @@ jobs:
         run: npm run build
 
       - name: Test code
-        run: npm run test-integration
+        run: npm run test:integration
 
 
   run-tests-without-optional-dependencies:
@@ -101,4 +101,4 @@ jobs:
         run: npm run build
 
       - name: Test code
-        run: npm run test-integration-light
+        run: npm run test:integration:light
