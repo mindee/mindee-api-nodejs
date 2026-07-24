@@ -58,13 +58,13 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired",
 
       const splitParams = { modelId: splitModelId };
 
-      const response: any = await client.enqueueAndGetResult(
+      const response = await client.enqueueAndGetResult(
         Split, splitInput, splitParams
       );
 
       assert.equal(response.inference.file.pageCount, 2);
 
-      const extractedPdfs: SplitFiles = await response.extractFromFile(splitInput);
+      const extractedPdfs: SplitFiles = await response.inference.result.extractFromInputSource(splitInput);
 
       assert.equal(extractedPdfs.length, 2);
       assert.equal(extractedPdfs[0].filename, "default_sample_page_001-001.pdf");
