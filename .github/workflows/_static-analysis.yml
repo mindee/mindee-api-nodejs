@@ -27,6 +27,8 @@ jobs:
       - name: Test lint for dist
         run: npm run lint:package
 
+      - name: Check for secrets
+        run: npm run lint:secrets
+
       - name: Test licenses
         run: npm run license:check
-
