@@ -66,8 +66,8 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired",
       const extractedImages = await response.inference.result.extractFromInputSource(cropInput);
 
       assert.equal(extractedImages.length, 2);
-      assert.equal(extractedImages[0].filename, "default_sample.jpg_page-0-item-0.jpg");
-      assert.equal(extractedImages[1].filename, "default_sample.jpg_page-0-item-1.jpg");
+      assert.equal(extractedImages[0].filename, "default_sample.jpg_page0-0.jpg");
+      assert.equal(extractedImages[1].filename, "default_sample.jpg_page0-1.jpg");
 
       const extractionInput = extractedImages[0].asInputSource();
       const findocParams = { modelId: findocModelId };
@@ -85,10 +85,12 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired",
       fs.writeFileSync(file2Path, extractedImages[1].buffer);
 
       const stat1 = fs.statSync(file1Path);
-      assert.ok(stat1.size >= 3100000 && stat1.size <= 3200000);
+      assert.ok(stat1.size >= 3100000);
+      assert.ok(stat1.size <= 3200000);
 
       const stat2 = fs.statSync(file2Path);
-      assert.ok(stat2.size >= 3200000 && stat2.size <= 3300000);
+      assert.ok(stat2.size >= 3200000);
+      assert.ok(stat2.size <= 3300000);
     });
 
     it("filled image – crop and extraction must succeed", async () => {

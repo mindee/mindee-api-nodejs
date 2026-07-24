@@ -48,7 +48,7 @@ export async function extractImagesFromPolygon(
     const extractions = await extractFromPage(pdfPage, polygons, true, quality);
     const extractedImages = extractions.map(
       (buffer, elementId) =>
-        new ExtractedImage(buffer, inputSource.filename + `_page-${pageId}-item-${elementId}.jpg`, pageId, elementId)
+        new ExtractedImage(buffer, inputSource.filename + `_page${pageId}-${elementId}.jpg`, pageId, elementId)
     );
     allExtractedImages.push(...extractedImages);
   }
