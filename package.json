@@ -70,6 +70,7 @@
     "@typescript-eslint/parser": "^8.58.1",
     "eslint": "^10.6.0",
     "eslint-plugin-jsdoc": "^62.7.1",
+    "eslint-plugin-security": "^4.0.1",
     "eslint-plugin-sonarjs": "^4.2.0",
     "globals": "^17.4.0",
     "license-checker-rseidelsohn": "^4.4.2",

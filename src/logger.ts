@@ -23,7 +23,7 @@ class Logger implements LoggerInterface {
     if (!(levelToSet in LOG_LEVELS)) {
       this.level = LOG_LEVELS["debug"];
     }
-    this.level = LOG_LEVELS[levelToSet];
+    this.level = LOG_LEVELS[levelToSet.toString()];
   }
 
   debug(...args: any[]) {

@@ -1,5 +1,6 @@
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import jsdoc from "eslint-plugin-jsdoc";
+import security from "eslint-plugin-security";
 import sonarjs from "eslint-plugin-sonarjs";
 import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
@@ -20,10 +21,11 @@ const compat = new FlatCompat({
 
 export default [{
   ignores: [],
-}, ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"), sonarjs.configs.recommended, {
+}, ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"), sonarjs.configs.recommended, security.configs.recommended, {
   plugins: {
     "@typescript-eslint": typescriptEslint,
     jsdoc,
+    security,
   },
 
   languageOptions: {
@@ -79,5 +81,7 @@ export default [{
     indent: ["error", 2],
     "eol-last": "error",
     "preserve-caught-error": "off",
+    "security/detect-non-literal-fs-filename": "off",
+    "security/detect-object-injection": "off"
   },
 }];
