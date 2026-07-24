@@ -1,6 +1,12 @@
 import { StringDict } from "@/parsing/index.js";
-import { DataSchemaField } from "./dataSchemaField.js";
+import { DataSchemaField, DataSchemaFieldJson } from "./dataSchemaField.js";
 import { MindeeError } from "@/errors/index.js";
+
+/** JSON payload for replacement data schema options. */
+export interface DataSchemaReplaceJson {
+  /** Field definitions replacing the current schema. */
+  fields: Array<DataSchemaFieldJson>;
+}
 
 /**
  * The structure to completely replace the data schema of the model.
@@ -21,10 +27,12 @@ export class DataSchemaReplace {
     this.fields = dataSchemaReplace["fields"].map((field: StringDict) => (new DataSchemaField(field)));
   }
 
-  toJSON() {
+  /** Serializes the replacement schema to API format. */
+  toJSON(): DataSchemaReplaceJson {
     return { fields: this.fields.map(e => e.toJSON()) };
   }
 
+  /** Returns a JSON string representation of the replacement schema. */
   toString() {
     return JSON.stringify(this.toJSON());
   }

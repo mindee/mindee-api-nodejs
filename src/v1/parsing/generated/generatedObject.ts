@@ -102,10 +102,12 @@ export class GeneratedObjectField {
     return n.toString();
   }
 
+  /** Returns the default string representation. */
   toString() {
     return this.toStringLevel();
   }
 
+  /** Returns a field value by key from this generated object. */
   get(fieldName: string): string | number | boolean | object | undefined {
     return this[fieldName];
   }

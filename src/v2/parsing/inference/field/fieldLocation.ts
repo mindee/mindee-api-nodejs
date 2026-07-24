@@ -15,6 +15,7 @@ export class FieldLocation {
     this.page = serverResponse["page"];
   }
 
+  /** Returns a readable location string. */
   toString(): string {
     return `${this.polygon} on page ${this.page}`;
   }

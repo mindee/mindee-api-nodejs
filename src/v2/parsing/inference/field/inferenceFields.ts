@@ -5,7 +5,9 @@ import type { SimpleField } from "./simpleField.js";
 import { createField } from "./fieldFactory.js";
 
 
+/** Typed map of extraction fields returned by the API. */
 export class InferenceFields extends Map<string, SimpleField | ObjectField | ListField> {
+  /** Indentation level used when rendering text output. */
   protected _indentLevel: number;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {
@@ -15,6 +17,7 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     this._indentLevel = indentLevel;
   }
 
+  /** Returns a field as a `SimpleField`, or throws if the type mismatches. */
   getSimpleField(fieldName: string): SimpleField {
     const field = this.get(fieldName);
     if (field === undefined) {
@@ -26,6 +29,7 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     return field as SimpleField;
   }
 
+  /** Returns a field as an `ObjectField`, or throws if the type mismatches. */
   getObjectField(fieldName: string): ObjectField {
     const field = this.get(fieldName);
     if (field === undefined) {
@@ -37,6 +41,7 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     return field as ObjectField;
   }
 
+  /** Returns a field as a `ListField`, or throws if the type mismatches. */
   getListField(fieldName: string): ListField {
     const field = this.get(fieldName);
     if (field === undefined) {

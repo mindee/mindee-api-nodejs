@@ -7,8 +7,11 @@ import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { extractInvoices } from "@/v1/extraction/index.js";
 import { PathInput } from "@/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
+import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 
-describe("MindeeV1 - Invoice Splitter Extraction #OptionalDepsRequired", () => {
+const hasOptionals = hasAllOptionalDependencies();
+
+describe("MindeeV1 - Invoice Splitter Extraction #OptionalDepsRequired", { skip: !hasOptionals }, () => {
   it("should be split into the proper invoices", async () => {
     const jsonData = await fs.readFile(
       path.join(V1_PRODUCT_PATH, "invoice_splitter/response_v1/complete.json")

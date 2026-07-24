@@ -4,7 +4,9 @@ import { ExtractedPdf } from "@/pdf/index.js";
  * Wrapper class for extracted invoice pages.
  */
 export class ExtractedInvoiceSplitterImage extends ExtractedPdf {
+  /** Start page index of the extracted invoice segment. */
   readonly pageIdMin: number;
+  /** End page index of the extracted invoice segment. */
   readonly pageIdMax: number;
 
   constructor(bytes: Uint8Array, pageIndices: [number, number]) {

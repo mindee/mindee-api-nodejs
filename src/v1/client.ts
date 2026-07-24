@@ -85,35 +85,36 @@ export interface WorkflowOptions extends BaseOptions {
   publicUrl?: string;
 }
 
+/** Timer options forwarded to `setTimeout` in polling loops. */
+export interface TimerOptions {
+  /** Whether the timer should keep the event loop active. */
+  ref?: boolean,
+  /** Optional signal used to abort timer waits. */
+  signal?: AbortSignal
+}
+
 /**
  * Asynchronous polling parameters.
  */
 export interface OptionalAsyncOptions extends PredictOptions {
+  /** Delay in seconds before the first polling attempt. */
   initialDelaySec?: number;
+  /** Delay in seconds between polling attempts. */
   delaySec?: number;
+  /** Maximum number of polling attempts. */
   maxRetries?: number;
-  initialTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  };
-  recurringTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  }
+  /** Timer options used for the first delay. */
+  initialTimerOptions?: TimerOptions;
+  /** Timer options used for recurring polling delays. */
+  recurringTimerOptions?: TimerOptions;
 }
 
 export interface AsyncOptions extends PredictOptions {
   initialDelaySec: number;
   delaySec: number;
   maxRetries: number;
-  initialTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  };
-  recurringTimerOptions?: {
-    ref?: boolean,
-    signal?: AbortSignal
-  }
+  initialTimerOptions?: TimerOptions;
+  recurringTimerOptions?: TimerOptions;
 }
 
 export interface ClientOptions {

@@ -1,5 +1,6 @@
 import { ErrorItem } from "./errorItem.js";
 
+/** Structured error payload returned by v2 APIs. */
 export interface ErrorDetails {
   /**
    * The HTTP status code returned by the server.

@@ -6,10 +6,15 @@ import { StringDict } from "@/parsing/stringDict.js";
  * @property {boolean} reconstructed - Is the object reconstructed (not extracted by the API).
  * @property {number} pageId - Page ID for multi-page document.
  */
+/** Constructor payload shared by standard v1 fields. */
 export interface BaseFieldConstructor {
+  /** Raw field payload from API response. */
   prediction: StringDict;
+  /** Key to read from `prediction` as field value. */
   valueKey?: string;
+  /** Whether the field was reconstructed locally. */
   reconstructed?: boolean;
+  /** Optional page identifier for multi-page documents. */
   pageId?: number;
 }
 
@@ -45,6 +50,7 @@ export class BaseField {
     }
   }
 
+  /** Compares two field values for semantic equality. */
   compare(other: BaseField) {
     if (this.value === null && other.value === null) return true;
     if (this.value === null || other.value === null) return false;

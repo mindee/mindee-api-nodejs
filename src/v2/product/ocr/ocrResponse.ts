@@ -2,6 +2,7 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { OcrInference } from "./ocrInference.js";
 import { BaseResponse } from "@/v2/parsing/index.js";
 
+/** Response wrapper for OCR product calls. */
 export class OcrResponse extends BaseResponse {
   /**
    * Response for an OCR utility inference.

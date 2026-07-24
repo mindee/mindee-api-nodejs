@@ -2,6 +2,7 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { ClassificationInference } from "./classificationInference.js";
 import { BaseResponse } from "@/v2/parsing/index.js";
 
+/** Response wrapper for classification product calls. */
 export class ClassificationResponse extends BaseResponse {
   /**
    * The inference result for a classification utility request.

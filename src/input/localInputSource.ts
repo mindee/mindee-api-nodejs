@@ -35,10 +35,15 @@ const ALLOWED_INPUT_TYPES = [
 ];
 
 export abstract class LocalInputSource extends InputSource {
+  /** Type of local input source (path, stream, bytes, ...). */
   public inputType: string;
+  /** Original filename associated with the input. */
   public filename: string = "";
+  /** Original filepath when available. */
   public filepath?: string;
+  /** MIME type detected for the source content. */
   public mimeType: string = "";
+  /** Binary payload for local sources. */
   public fileObject!: Buffer | string;
 
   /**
@@ -57,6 +62,7 @@ export abstract class LocalInputSource extends InputSource {
     logger.debug(`Initialized local input source of type: ${inputType}`);
   }
 
+  /** Detects and validates the MIME type from the current file object. */
   protected async checkMimetype(): Promise<string> {
     if (!(this.fileObject instanceof Buffer)) {
       throw new MindeeInputSourceError(
