@@ -37,7 +37,7 @@
     "lint:package": "npm run build:dist && publint ./dist && attw --pack ./dist --profile esm-only",
     "lint:secrets": "secretlint '**/*'",
     "lint:full": "npm run lint:check && npm run lint:package && npm run lint:secrets",
-    "license:check": "license-checker-rseidelsohn --onlyAllow \"MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;LGPL-3.0-or-later;Python-2.0;BlueOak-1.0.0;CC-BY-3.0;CC0-1.0;0BSD;Unlicense\"",
+    "license:check": "license-checker-rseidelsohn --onlyAllow \"MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;LGPL-3.0-or-later;Python-2.0;BlueOak-1.0.0;CC-BY-3.0;CC0-1.0;0BSD;LGPL-3.0-only;WTFPL;Artistic-2.0;Unlicense\"",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs:dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/",
     "prepare": "husky"
