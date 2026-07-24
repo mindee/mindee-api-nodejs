@@ -2,6 +2,7 @@ import { after, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
 import * as fs from "node:fs";
+import { fileURLToPath } from "node:url";
 
 import { Client, PathInput } from "@/index.js";
 import { Split } from "@/v2/product/split/index.js";
@@ -10,7 +11,8 @@ import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
-const OUTPUT_DIR = path.join(__dirname, "output");
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+const OUTPUT_DIR = path.join(dirname, "output");
 const hasOptionals = hasAllOptionalDependencies();
 
 /**

@@ -163,7 +163,6 @@ export class UrlInput extends InputSource {
       {
         method: "GET",
         headers: headers,
-        throwOnError: false,
         dispatcher: this.dispatcher,
       }
     );

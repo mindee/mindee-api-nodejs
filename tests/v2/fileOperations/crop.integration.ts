@@ -66,8 +66,8 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired",
       const extractedImages = await response.inference.result.extractFromInputSource(cropInput);
 
       assert.equal(extractedImages.length, 2);
-      assert.equal(extractedImages[0].filename, "default_sample.jpg_page0-0.jpg");
-      assert.equal(extractedImages[1].filename, "default_sample.jpg_page0-1.jpg");
+      assert.equal(extractedImages[0].filename, "default_sample.jpg_page-0-item-0.jpg");
+      assert.equal(extractedImages[1].filename, "default_sample.jpg_page-0-item-1.jpg");
 
       const extractionInput = extractedImages[0].asInputSource();
       const findocParams = { modelId: findocModelId };
