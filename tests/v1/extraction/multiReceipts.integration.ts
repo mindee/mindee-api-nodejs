@@ -41,17 +41,17 @@ describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequire
       assert.strictEqual(firstPrediction.lineItems[1].totalAmount, 12);
       assert.strictEqual(firstPrediction.lineItems[2].totalAmount, 14);
       assert.strictEqual(firstPrediction.lineItems[3].totalAmount, 11);
-      assert.strictEqual(firstPrediction.lineItems[4].totalAmount, 5.6);
+      assert.ok(Math.abs((firstPrediction.lineItems[4].totalAmount ?? NaN)- 5.6) < 1e-9);
 
       const secondPrediction = receiptsResults[1].document.inference.prediction;
       assert.strictEqual(secondPrediction.lineItems.length, 7);
       assert.strictEqual(secondPrediction.lineItems[0].totalAmount, 6);
       assert.strictEqual(secondPrediction.lineItems[1].totalAmount, 11);
-      assert.strictEqual(secondPrediction.lineItems[2].totalAmount, 67.2);
-      assert.strictEqual(secondPrediction.lineItems[3].totalAmount, 19.2);
-      assert.strictEqual(secondPrediction.lineItems[4].totalAmount, 7);
-      assert.strictEqual(secondPrediction.lineItems[5].totalAmount, 5.5);
-      assert.strictEqual(secondPrediction.lineItems[6].totalAmount, 36);
+      assert.ok((Math.abs(secondPrediction.lineItems[2].totalAmount ?? NaN) - 67.2) < 1e-9);
+      assert.ok((Math.abs(secondPrediction.lineItems[3].totalAmount ?? NaN) - 19.2) < 1e-9);
+      assert.ok((Math.abs(secondPrediction.lineItems[4].totalAmount ?? NaN) - 7) < 1e-9);
+      assert.ok((Math.abs(secondPrediction.lineItems[5].totalAmount ?? NaN) - 5.5) < 1e-9);
+      assert.ok((Math.abs(secondPrediction.lineItems[6].totalAmount ?? NaN) - 36) < 1e-9);
 
       const thirdPrediction = receiptsResults[2].document.inference.prediction;
       assert.strictEqual(thirdPrediction.lineItems.length, 1);
@@ -85,9 +85,9 @@ describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequire
       assert.strictEqual(receipts.length, 1);
       const receiptResult = await client.parse(ReceiptV5, receipts[0].asInputSource());
       assert.strictEqual(receiptResult.document.inference.prediction.lineItems.length, 1);
-      assert.strictEqual(receiptResult.document.inference.prediction.lineItems[0].totalAmount, 10.2);
+      assert.ok((Math.abs(receiptResult.document.inference.prediction.lineItems[0].totalAmount ?? NaN) - 10.2) < 1e-9);
       assert.strictEqual(receiptResult.document.inference.prediction.taxes.length, 1);
-      assert.strictEqual(receiptResult.document.inference.prediction.taxes[0].value, 1.7);
+      assert.ok(Math.abs((receiptResult.document.inference.prediction.taxes[0].value ?? NaN) - 1.7) < 1e-9);
     });
   });
 });

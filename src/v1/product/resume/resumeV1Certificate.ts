@@ -1,4 +1,4 @@
-import { cleanSpecialChars } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -41,26 +41,10 @@ export class ResumeV1Certificate {
    */
   #printableValues() {
     return {
-      grade: this.grade ?
-        this.grade.length <= 10 ?
-          cleanSpecialChars(this.grade) :
-          cleanSpecialChars(this.grade).slice(0, 7) + "..." :
-        "",
-      name: this.name ?
-        this.name.length <= 30 ?
-          cleanSpecialChars(this.name) :
-          cleanSpecialChars(this.name).slice(0, 27) + "..." :
-        "",
-      provider: this.provider ?
-        this.provider.length <= 25 ?
-          cleanSpecialChars(this.provider) :
-          cleanSpecialChars(this.provider).slice(0, 22) + "..." :
-        "",
-      year: this.year ?
-        this.year.length <= 4 ?
-          cleanSpecialChars(this.year) :
-          cleanSpecialChars(this.year).slice(0, 1) + "..." :
-        "",
+      grade: cleanAndTruncate(this.grade, 10),
+      name: cleanAndTruncate(this.name, 30),
+      provider: cleanAndTruncate(this.provider, 25),
+      year: cleanAndTruncate(this.year, 4),
     };
   }
 

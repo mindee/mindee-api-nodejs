@@ -1,4 +1,4 @@
-import { cleanSpecialChars, floatToString } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate, floatToString } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -35,52 +35,12 @@ export class FinancialDocumentV1LineItem {
   constructor({ prediction = {} }: StringDict) {
     this.description = prediction["description"];
     this.productCode = prediction["product_code"];
-    if (
-      prediction["quantity"] !== undefined &&
-      prediction["quantity"] !== null &&
-      !isNaN(prediction["quantity"])
-    ) {
-      this.quantity = +parseFloat(prediction["quantity"]);
-    } else {
-      this.quantity = null;
-    }
-    if (
-      prediction["tax_amount"] !== undefined &&
-      prediction["tax_amount"] !== null &&
-      !isNaN(prediction["tax_amount"])
-    ) {
-      this.taxAmount = +parseFloat(prediction["tax_amount"]);
-    } else {
-      this.taxAmount = null;
-    }
-    if (
-      prediction["tax_rate"] !== undefined &&
-      prediction["tax_rate"] !== null &&
-      !isNaN(prediction["tax_rate"])
-    ) {
-      this.taxRate = +parseFloat(prediction["tax_rate"]);
-    } else {
-      this.taxRate = null;
-    }
-    if (
-      prediction["total_amount"] !== undefined &&
-      prediction["total_amount"] !== null &&
-      !isNaN(prediction["total_amount"])
-    ) {
-      this.totalAmount = +parseFloat(prediction["total_amount"]);
-    } else {
-      this.totalAmount = null;
-    }
+    this.quantity = FinancialDocumentV1LineItem.#parseNumber(prediction["quantity"]);
+    this.taxAmount = FinancialDocumentV1LineItem.#parseNumber(prediction["tax_amount"]);
+    this.taxRate = FinancialDocumentV1LineItem.#parseNumber(prediction["tax_rate"]);
+    this.totalAmount = FinancialDocumentV1LineItem.#parseNumber(prediction["total_amount"]);
     this.unitMeasure = prediction["unit_measure"];
-    if (
-      prediction["unit_price"] !== undefined &&
-      prediction["unit_price"] !== null &&
-      !isNaN(prediction["unit_price"])
-    ) {
-      this.unitPrice = +parseFloat(prediction["unit_price"]);
-    } else {
-      this.unitPrice = null;
-    }
+    this.unitPrice = FinancialDocumentV1LineItem.#parseNumber(prediction["unit_price"]);
     this.pageId = prediction["page_id"];
     this.confidence = prediction["confidence"] ? prediction.confidence : 0.0;
     if (prediction["polygon"]) {
@@ -88,31 +48,26 @@ export class FinancialDocumentV1LineItem {
     }
   }
 
+  static #parseNumber(value: unknown): number | null {
+    if (value === undefined || value === null || isNaN(value as number)) {
+      return null;
+    }
+    return +parseFloat(value as string);
+  }
+
   /**
    * Collection of fields as representable strings.
    */
   #printableValues() {
     return {
-      description: this.description ?
-        this.description.length <= 36 ?
-          cleanSpecialChars(this.description) :
-          cleanSpecialChars(this.description).slice(0, 33) + "..." :
-        "",
-      productCode: this.productCode ?
-        this.productCode.length <= 12 ?
-          cleanSpecialChars(this.productCode) :
-          cleanSpecialChars(this.productCode).slice(0, 9) + "..." :
-        "",
+      description: cleanAndTruncate(this.description, 36),
+      productCode: cleanAndTruncate(this.productCode, 12),
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       taxAmount: this.taxAmount !== undefined ? floatToString(this.taxAmount) : "",
       taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",
       totalAmount:
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",
-      unitMeasure: this.unitMeasure ?
-        this.unitMeasure.length <= 15 ?
-          cleanSpecialChars(this.unitMeasure) :
-          cleanSpecialChars(this.unitMeasure).slice(0, 12) + "..." :
-        "",
+      unitMeasure: cleanAndTruncate(this.unitMeasure, 15),
       unitPrice: this.unitPrice !== undefined ? floatToString(this.unitPrice) : "",
     };
   }

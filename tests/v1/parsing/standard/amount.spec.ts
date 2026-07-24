@@ -16,7 +16,7 @@ describe("Test AmountField field", () => {
     };
     const amount = new AmountField({ prediction });
     assert.strictEqual(amount.value, 2);
-    assert.strictEqual(amount.confidence, 0.1);
+    assert.ok(Math.abs(amount.confidence - 0.1) < 1e-9);
     assert.strictEqual(amount.toString(), "2.00");
   });
 
@@ -27,7 +27,7 @@ describe("Test AmountField field", () => {
     };
     const amount = new AmountField({ prediction });
     assert.strictEqual(amount.value, undefined);
-    assert.strictEqual(amount.confidence, 0.0);
+    assert.ok(Math.abs(amount.confidence - 0.0) < 1e-9);
     assert.strictEqual(amount.toString(), "");
   });
 });

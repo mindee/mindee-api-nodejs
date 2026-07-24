@@ -1,5 +1,5 @@
 
-import { cleanSpecialChars } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -57,51 +57,15 @@ export class ResumeV1ProfessionalExperience {
    */
   #printableValues() {
     return {
-      contractType: this.contractType ?
-        this.contractType.length <= 15 ?
-          cleanSpecialChars(this.contractType) :
-          cleanSpecialChars(this.contractType).slice(0, 12) + "..." :
-        "",
-      department: this.department ?
-        this.department.length <= 10 ?
-          cleanSpecialChars(this.department) :
-          cleanSpecialChars(this.department).slice(0, 7) + "..." :
-        "",
-      description: this.description ?
-        this.description.length <= 36 ?
-          cleanSpecialChars(this.description) :
-          cleanSpecialChars(this.description).slice(0, 33) + "..." :
-        "",
-      employer: this.employer ?
-        this.employer.length <= 25 ?
-          cleanSpecialChars(this.employer) :
-          cleanSpecialChars(this.employer).slice(0, 22) + "..." :
-        "",
-      endMonth: this.endMonth ?
-        this.endMonth.length <= 9 ?
-          cleanSpecialChars(this.endMonth) :
-          cleanSpecialChars(this.endMonth).slice(0, 6) + "..." :
-        "",
-      endYear: this.endYear ?
-        this.endYear.length <= 8 ?
-          cleanSpecialChars(this.endYear) :
-          cleanSpecialChars(this.endYear).slice(0, 5) + "..." :
-        "",
-      role: this.role ?
-        this.role.length <= 20 ?
-          cleanSpecialChars(this.role) :
-          cleanSpecialChars(this.role).slice(0, 17) + "..." :
-        "",
-      startMonth: this.startMonth ?
-        this.startMonth.length <= 11 ?
-          cleanSpecialChars(this.startMonth) :
-          cleanSpecialChars(this.startMonth).slice(0, 8) + "..." :
-        "",
-      startYear: this.startYear ?
-        this.startYear.length <= 10 ?
-          cleanSpecialChars(this.startYear) :
-          cleanSpecialChars(this.startYear).slice(0, 7) + "..." :
-        "",
+      contractType: cleanAndTruncate(this.contractType, 15),
+      department: cleanAndTruncate(this.department, 10),
+      description: cleanAndTruncate(this.description, 36),
+      employer: cleanAndTruncate(this.employer, 25),
+      endMonth: cleanAndTruncate(this.endMonth, 9),
+      endYear: cleanAndTruncate(this.endYear, 8),
+      role: cleanAndTruncate(this.role, 20),
+      startMonth: cleanAndTruncate(this.startMonth, 11),
+      startYear: cleanAndTruncate(this.startYear, 10),
     };
   }
 

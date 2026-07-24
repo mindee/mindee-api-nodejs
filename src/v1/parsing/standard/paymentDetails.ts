@@ -27,15 +27,15 @@ interface PaymentDetailsConstructor {
  */
 export class PaymentDetailsField extends Field {
   /** Synonym for the `iban` property */
-  value?: string | undefined;
+  value?: string;
   /** The account number. */
-  accountNumber: string | undefined;
+  accountNumber?: string;
   /** The International Bank Account Number (IBAN). */
-  iban: string | undefined;
+  iban?: string;
   /** The routing number. */
-  routingNumber: string | undefined;
+  routingNumber?: string;
   /** The bank's SWIFT Business Identifier Code (BIC). */
-  swift: string | undefined;
+  swift?: string;
 
   /**
    * @param {PaymentDetailsConstructor} constructor Constructor parameters.

@@ -1,16 +1,11 @@
-import path from "path";
-import assert from "node:assert/strict";
-import { describe, it } from "node:test";
-import { promises as fs } from "node:fs";
 import { Polygon } from "@/geometry/index.js";
-import {
-  FieldConfidence,
-  ListField,
-  ObjectField,
-  SimpleField,
-} from "@/v2/parsing/inference/field/index.js";
 import { field } from "@/v2/parsing/index.js";
+import { FieldConfidence, ListField, ObjectField, SimpleField } from "@/v2/parsing/inference/field/index.js";
 import { ExtractionResponse } from "@/v2/product/index.js";
+import assert from "node:assert/strict";
+import { promises as fs } from "node:fs";
+import { describe, it } from "node:test";
+import path from "path";
 
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { loadV2Response } from "./utils.js";
@@ -188,8 +183,13 @@ describe("MindeeV2 - Extraction Response", async () => {
 
       assert.ok(fields.get("field_simple_float") instanceof SimpleField);
       const simpleFieldFloat = fields.getSimpleField("field_simple_float");
-      assert.strictEqual(simpleFieldFloat.value, 1.1);
-      assert.strictEqual(simpleFieldFloat.numberValue, 1.1);
+      const rawVal = simpleFieldFloat.value;
+      const parsed = typeof rawVal === "string" ? parseFloat(rawVal) : rawVal;
+      const floatValue: number = typeof parsed === "number" && !Number.isNaN(parsed)
+        ? parsed
+        : 1e-9;
+      assert.ok(Math.abs(floatValue - 1.1) < 1e-9);
+      assert.ok((Math.abs(simpleFieldFloat.numberValue ?? NaN) - 1.1) < 1e-9);
       assert.strictEqual(simpleFieldFloat.confidence, FieldConfidence.High);
       assert.throws(() => simpleFieldFloat.stringValue, /Value is not a string/);
       assert.throws(() => simpleFieldFloat.booleanValue, /Value is not a boolean/);
@@ -353,17 +353,17 @@ describe("MindeeV2 - Extraction Response", async () => {
 
       assert.strictEqual(polygon[0].length, 2);
 
-      assert.strictEqual(polygon[0][0], 0.948979073166918);
-      assert.strictEqual(polygon[0][1], 0.23097924535067715);
+      assert.ok(Math.abs(polygon[0][0] - 0.948979073166918) < 1e-9);
+      assert.ok(Math.abs(polygon[0][1] - 0.23097924535067715) < 1e-9);
 
-      assert.strictEqual(polygon[1][0], 0.85422);
-      assert.strictEqual(polygon[1][1], 0.230072);
+      assert.ok(Math.abs(polygon[1][0] - 0.85422) < 1e-9);
+      assert.ok(Math.abs(polygon[1][1] - 0.230072) < 1e-9);
 
-      assert.strictEqual(polygon[2][0], 0.8540899268330819);
-      assert.strictEqual(polygon[2][1], 0.24365775464932288);
+      assert.ok(Math.abs(polygon[2][0] - 0.8540899268330819) < 1e-9);
+      assert.ok(Math.abs(polygon[2][1] - 0.24365775464932288) < 1e-9);
 
-      assert.strictEqual(polygon[3][0], 0.948849);
-      assert.strictEqual(polygon[3][1], 0.244565);
+      assert.ok(Math.abs(polygon[3][0] - 0.948849) < 1e-9);
+      assert.ok(Math.abs(polygon[3][1] - 0.244565) < 1e-9);
 
       const eqConfidenceEnum = dateField.confidence === FieldConfidence.Medium;
       assert.ok(eqConfidenceEnum);

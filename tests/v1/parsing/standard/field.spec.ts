@@ -16,7 +16,7 @@ describe("Test different inits of Field", () => {
     };
     const field = new Field({ prediction });
     assert.strictEqual(field.value, "test");
-    assert.strictEqual(field.confidence, 0.1);
+    assert.ok(Math.abs(field.confidence - 0.1) < 1e-9);
     assert.ok(field.boundingBox.length > 0);
   });
 
@@ -58,13 +58,13 @@ describe("Test different inits of Field", () => {
       new Field({ prediction: { value: 1, confidence: 0.1 } }),
       new Field({ prediction: { value: 2, confidence: 0.8 } }),
     ];
-    assert.strictEqual(Field.arrayConfidence(fields), 0.8 * 0.1);
+    assert.ok(Math.abs(Field.arrayConfidence(fields) - 0.8 * 0.1) < 1e-9);
     assert.strictEqual(Field.arraySum(fields), 3);
     const fields2 = [
       new Field({ prediction: { value: undefined, confidence: undefined } }),
       new Field({ prediction: { value: 4, confidence: 0.8 } }),
     ];
-    assert.strictEqual(Field.arrayConfidence(fields2), 0.0);
+    assert.ok(Math.abs(Field.arrayConfidence(fields2) - 0.0) < 1e-9);
     assert.strictEqual(Field.arraySum(fields2), 0.0);
   });
 });

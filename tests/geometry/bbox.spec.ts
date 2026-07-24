@@ -18,30 +18,30 @@ describe("Geometry functions - BBox", () => {
     );
     const mergedBbox = firsBBox.mergeBbox(secondBBox);
 
-    assert.strictEqual(mergedBbox.xMin, 0.081);
-    assert.strictEqual(mergedBbox.yMin, 0.442);
-    assert.strictEqual(mergedBbox.xMax, 0.26);
-    assert.strictEqual(mergedBbox.yMax, 0.451);
+    assert.ok(Math.abs(mergedBbox.xMin - 0.081) < 1e-9);
+    assert.ok(Math.abs(mergedBbox.yMin - 0.442) < 1e-9);
+    assert.ok(Math.abs(mergedBbox.xMax - 0.26) < 1e-9);
+    assert.ok(Math.abs(mergedBbox.yMax - 0.451) < 1e-9);
   });
 
   it("should get a polygon's bbox", () => {
     const bboxA = getBbox(polygonA);
-    assert.strictEqual(bboxA.xMin, 0.123);
-    assert.strictEqual(bboxA.yMin, 0.53);
-    assert.strictEqual(bboxA.xMax, 0.175);
-    assert.strictEqual(bboxA.yMax, 0.546);
+    assert.ok(Math.abs(bboxA.xMin - 0.123) < 1e-9);
+    assert.ok(Math.abs(bboxA.yMin - 0.53) < 1e-9);
+    assert.ok(Math.abs(bboxA.xMax - 0.175) < 1e-9);
+    assert.ok(Math.abs(bboxA.yMax - 0.546) < 1e-9);
 
     const bboxB = getBbox(polygonB);
-    assert.strictEqual(bboxB.xMin, 0.124);
-    assert.strictEqual(bboxB.yMin, 0.535);
-    assert.strictEqual(bboxB.xMax, 0.19);
-    assert.strictEqual(bboxB.yMax, 0.546);
+    assert.ok(Math.abs(bboxB.xMin - 0.124) < 1e-9);
+    assert.ok(Math.abs(bboxB.yMin - 0.535) < 1e-9);
+    assert.ok(Math.abs(bboxB.xMax - 0.19) < 1e-9);
+    assert.ok(Math.abs(bboxB.yMax - 0.546) < 1e-9);
 
     const bboxC = getBbox(polygonC);
-    assert.strictEqual(bboxC.xMin, 0.205);
-    assert.strictEqual(bboxC.yMin, 0.407);
-    assert.strictEqual(bboxC.xMax, 0.381);
-    assert.strictEqual(bboxC.yMax, 0.43);
+    assert.ok(Math.abs(bboxC.xMin - 0.205) < 1e-9);
+    assert.ok(Math.abs(bboxC.yMin - 0.407) < 1e-9);
+    assert.ok(Math.abs(bboxC.xMax - 0.381) < 1e-9);
+    assert.ok(Math.abs(bboxC.yMax - 0.43) < 1e-9);
   });
 
   it("should get a polygon's bounding box", () => {

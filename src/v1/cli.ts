@@ -1,20 +1,10 @@
-import {
-  Command, OptionValues, Option,
-} from "commander";
-import {
-  Document, Inference, StringDict,
-} from "@/v1/parsing/common/index.js";
-import {
-  Client, PredictOptions,
-} from "./client.js";
-import {
-  PageOptions, PageOptionsOperation, PathInput,
-} from "@/input/index.js";
+import { PageOptions, PageOptionsOperation, PathInput } from "@/input/index.js";
+import { Document, Inference, StringDict } from "@/v1/parsing/common/index.js";
+import { Command, Option, OptionValues } from "commander";
 import * as console from "console";
-import {
-  CLI_COMMAND_CONFIG, COMMAND_GENERATED, ProductConfig,
-} from "./product/cliProducts.js";
+import { Client, PredictOptions } from "./client.js";
 import { Endpoint } from "./http/index.js";
+import { CLI_COMMAND_CONFIG, COMMAND_GENERATED, ProductConfig } from "./product/cliProducts.js";
 
 const program = new Command();
 
@@ -202,35 +192,19 @@ function routeSwitchboard(
 }
 
 function addPredictAction(prog: Command) {
-  if (prog.name() === COMMAND_GENERATED) {
-    prog.action(function (
-      inputPath: string,
-      options: OptionValues,
-      command: Command
-    ) {
-      const allOptions = {
-        ...prog.parent?.parent?.opts(),
-        ...prog.parent?.opts(),
-        ...prog.opts(),
-        ...options,
-      };
-      return routeSwitchboard(command, inputPath, allOptions);
-    });
-  } else {
-    prog.action(function (
-      inputPath: string,
-      options: OptionValues,
-      command: Command
-    ) {
-      const allOptions = {
-        ...prog.parent?.parent?.opts(),
-        ...prog.parent?.opts(),
-        ...prog.opts(),
-        ...options,
-      };
-      return routeSwitchboard(command, inputPath, allOptions);
-    });
-  }
+  prog.action(function (
+    inputPath: string,
+    options: OptionValues,
+    command: Command
+  ) {
+    const allOptions = {
+      ...prog.parent?.parent?.opts(),
+      ...prog.parent?.opts(),
+      ...prog.opts(),
+      ...options,
+    };
+    return routeSwitchboard(command, inputPath, allOptions);
+  });
 }
 
 export function cli() {

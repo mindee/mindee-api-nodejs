@@ -4,7 +4,7 @@ import { Polygon } from "@/geometry/index.js";
 export interface PositionFieldConstructor {
   prediction: StringDict;
   valueKey?: string;
-  pageId?: number | undefined;
+  pageId?: number;
 }
 
 /**
@@ -20,7 +20,7 @@ export class PositionField {
   /** Rectangle that may be oriented (can go beyond the canvas). */
   rectangle: Polygon;
   /** The document page on which the information was found. */
-  pageId: number | undefined;
+  pageId?: number;
 
   constructor({ prediction = {}, pageId }: PositionFieldConstructor) {
     this.pageId = pageId;

@@ -13,7 +13,7 @@ export class GeneratedV1Prediction implements Prediction {
 
   toString(): string {
     let outStr = "";
-    const pattern = /^(\n*[  ]*)( {2}):/;
+    const pattern = /^(\n* *)( {2}):/;
 
     this.fields.forEach((fieldValue, fieldName) => {
       let strValue = "";

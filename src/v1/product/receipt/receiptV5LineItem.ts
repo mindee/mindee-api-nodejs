@@ -1,4 +1,4 @@
-import { cleanSpecialChars, floatToString } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate, floatToString } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -65,11 +65,7 @@ export class ReceiptV5LineItem {
    */
   #printableValues() {
     return {
-      description: this.description ?
-        this.description.length <= 36 ?
-          cleanSpecialChars(this.description) :
-          cleanSpecialChars(this.description).slice(0, 33) + "..." :
-        "",
+      description: cleanAndTruncate(this.description, 36),
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       totalAmount:
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",

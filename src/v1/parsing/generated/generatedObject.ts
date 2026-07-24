@@ -26,45 +26,53 @@ export class GeneratedObjectField {
     for (const [fieldName, fieldValue] of Object.entries(prediction)) {
       if (fieldName === "page_id") {
         itemPageId = fieldValue;
-      } else if (["polygon", "rectangle", "quadrangle", "bounding_box"].includes(fieldName)) {
-        Object.assign(
-          this,
-          {
-            [fieldName]: new PositionField({
-              prediction: { [fieldName]: fieldValue },
-              valueKey: fieldName,
-              pageId: pageId,
-            }),
-          });
-        this.printableValues.push(fieldName);
       } else if (fieldName === "confidence") {
         this.confidence = fieldValue;
       } else if (fieldName === "raw_value") {
         this.rawValue = fieldValue;
+      } else if (GeneratedObjectField.isPositionField(fieldName)) {
+        this.assignPositionField(fieldName, fieldValue, pageId);
       } else {
-        if (
-          fieldValue !== null &&
-          fieldValue !== undefined &&
-          typeof fieldValue === "number" &&
-          !isNaN(fieldValue) &&
-          fieldName !== "degrees"
-        ) {
-          Object.assign(this, { [fieldName]: this.toNumberString(fieldValue) });
-        } else if (typeof fieldValue === "boolean") {
-          Object.assign(this, { [fieldName]: fieldValue });
-        } else {
-          Object.assign(
-            this,
-            {
-              [fieldName]:
-                (fieldValue !== undefined && fieldValue !== null) ?
-                  String(fieldValue) : null,
-            });
-        }
-        this.printableValues.push(fieldName);
+        this.assignScalarField(fieldName, fieldValue);
       }
       this.pageId = pageId ?? itemPageId;
     }
+  }
+
+  private static readonly positionFieldNames: ReadonlySet<string> = new Set([
+    "polygon", "rectangle", "quadrangle", "bounding_box",
+  ]);
+
+  private static isPositionField(fieldName: string): boolean {
+    return GeneratedObjectField.positionFieldNames.has(fieldName);
+  }
+
+  private assignPositionField(fieldName: string, fieldValue: unknown, pageId?: number): void {
+    Object.assign(this, {
+      [fieldName]: new PositionField({
+        prediction: { [fieldName]: fieldValue },
+        valueKey: fieldName,
+        pageId: pageId,
+      }),
+    });
+    this.printableValues.push(fieldName);
+  }
+
+  private assignScalarField(fieldName: string, fieldValue: unknown): void {
+    if (
+      typeof fieldValue === "number" &&
+      !isNaN(fieldValue) &&
+      fieldName !== "degrees"
+    ) {
+      Object.assign(this, { [fieldName]: this.toNumberString(fieldValue) });
+    } else if (typeof fieldValue === "boolean") {
+      Object.assign(this, { [fieldName]: fieldValue });
+    } else {
+      Object.assign(this, {
+        [fieldName]: (fieldValue !== undefined && fieldValue !== null) ? String(fieldValue) : null,
+      });
+    }
+    this.printableValues.push(fieldName);
   }
 
   /**

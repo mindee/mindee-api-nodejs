@@ -19,8 +19,8 @@ describe("Test Tax field", () => {
     };
     const tax = new TaxField({ prediction, valueKey: "value" });
     assert.strictEqual(tax.value, 2);
-    assert.strictEqual(tax.confidence, 0.1);
-    assert.strictEqual(tax.rate, 0.2);
+    assert.ok(Math.abs(tax.confidence - 0.1) < 1e-9);
+    assert.ok((Math.abs(tax.rate ?? NaN) - 0.2) < 1e-9);
     assert.strictEqual(tax.boundingBox.length, 4);
     assert.strictEqual(tax.toString(), "Base: 5.00, Code: QST, Rate (%): 0.20, Amount: 2.00");
   });

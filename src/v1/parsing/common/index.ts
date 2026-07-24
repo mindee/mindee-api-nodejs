@@ -11,7 +11,7 @@ export { PredictResponse } from "./predictResponse.js";
 export { Prediction } from "./prediction.js";
 export { Page } from "./page.js";
 export {
-  cleanOutString, lineSeparator, floatToString, cleanSpecialChars
+  cleanOutString, lineSeparator, floatToString, cleanSpecialChars, cleanAndTruncate
 } from "./summaryHelper.js";
 export * as extras from "./extras/index.js";
 export { parseDate } from "../../../parsing/dateParser.js";

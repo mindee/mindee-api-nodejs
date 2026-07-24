@@ -30,6 +30,20 @@ export function cleanSpecialChars(outStr: string) {
 }
 
 /**
+ * Cleans a string with `cleanSpecialChars` and truncates it to `maxLength` characters,
+ * appending "..." when truncation occurs. Returns an empty string for null/undefined/empty input.
+ * @param value String to clean and truncate.
+ * @param maxLength Maximum length of the returned string (including the "..." suffix when truncated).
+ */
+export function cleanAndTruncate(value: string | null | undefined, maxLength: number): string {
+  if (!value) {
+    return "";
+  }
+  const cleaned = cleanSpecialChars(value);
+  return cleaned.length <= maxLength ? cleaned : cleaned.slice(0, maxLength - 3) + "...";
+}
+
+/**
  * Return a float as a string with at least 2 levels of precision.
  */
 export function floatToString(value: number|null) {

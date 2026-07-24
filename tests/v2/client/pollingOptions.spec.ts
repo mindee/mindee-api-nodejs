@@ -31,18 +31,21 @@ describe("MindeeV2 - Polling Options", () => {
   it("should disallow ridiculous values", () => {
     assert.throws(
       () => {
+        // eslint-disable-next-line sonarjs/constructor-for-side-effects
         new PollingOptions({ delaySec: 0.01 });
       },
       MindeeConfigurationError
     );
     assert.throws(
       () => {
+        // eslint-disable-next-line sonarjs/constructor-for-side-effects
         new PollingOptions({ initialDelaySec: 0.01 });
       },
       MindeeConfigurationError
     );
     assert.throws(
       () => {
+        // eslint-disable-next-line sonarjs/constructor-for-side-effects
         new PollingOptions({ maxRetries: 1 });
       },
       MindeeConfigurationError

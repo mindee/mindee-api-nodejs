@@ -43,7 +43,7 @@ export class Job {
 
 // Hideous thing to make sure dates sent back by the server are parsed correctly in UTC.
 export function datetimeWithTimezone(date: string): Date {
-  if (date.search(/\+[0-9]{2}:[0-9]{2}$/) === -1) {
+  if (date.search(/\+\d{2}:\d{2}$/) === -1) {
     date += "+00:00";
   }
   return new Date(date);

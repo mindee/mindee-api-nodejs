@@ -1,5 +1,6 @@
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import jsdoc from "eslint-plugin-jsdoc";
+import sonarjs from "eslint-plugin-sonarjs";
 import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 import path from "node:path";
@@ -19,7 +20,7 @@ const compat = new FlatCompat({
 
 export default [{
   ignores: [],
-}, ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"), {
+}, ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"), sonarjs.configs.recommended, {
   plugins: {
     "@typescript-eslint": typescriptEslint,
     jsdoc,
