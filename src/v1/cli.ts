@@ -13,6 +13,10 @@ const program = new Command();
 // EXECUTE THE COMMANDS
 //
 
+/**
+ * Load the client with the given options.
+ * @param options Command options.
+ */
 function initClient(options: OptionValues): Client {
   return new Client({
     apiKey: options.apiKey,
@@ -20,6 +24,10 @@ function initClient(options: OptionValues): Client {
   });
 }
 
+/**
+ * Load the product configuration for the given command.
+ * @param command Command name.
+ */
 function getConfig(command: string): ProductConfig {
   const conf = CLI_COMMAND_CONFIG.get(command);
   if (conf === undefined) {
@@ -28,6 +36,10 @@ function getConfig(command: string): ProductConfig {
   return conf;
 }
 
+/**
+ * Load the page options for the given command.
+ * @param options Command options.
+ */
 function getPageOptions(options: any) {
   let pageOptions: PageOptions | undefined = undefined;
   if (options.cutPages) {
@@ -40,6 +52,10 @@ function getPageOptions(options: any) {
   return pageOptions;
 }
 
+/**
+ * Load the prediction parameters for the given command.
+ * @param options Command options.
+ */
 function getPredictParams(options: any): PredictOptions {
   return {
     allWords: options.allWords,
@@ -47,6 +63,13 @@ function getPredictParams(options: any): PredictOptions {
   };
 }
 
+/**
+ * Call the parse endpoint for the given command.
+ * @param productClass Product class.
+ * @param command Command name.
+ * @param inputPath Input path.
+ * @param options Command options.
+ */
 async function callParse<T extends Inference>(
   productClass: new (httpResponse: StringDict) => T,
   command: string,
@@ -80,6 +103,13 @@ async function callParse<T extends Inference>(
   printResponse(response.document, options);
 }
 
+/**
+ * Call the enqueue and parse endpoint for the given command.
+ * @param productClass Product class.
+ * @param command Command name.
+ * @param inputPath Input path.
+ * @param options Command options.
+ */
 async function callEnqueueAndParse<T extends Inference>(
   productClass: new (httpResponse: StringDict) => T,
   command: string,
@@ -113,6 +143,12 @@ async function callEnqueueAndParse<T extends Inference>(
   printResponse(response.document, options);
 }
 
+/**
+ * Call the get document endpoint for the given command.
+ * @param productClass Product class.
+ * @param documentId Document ID.
+ * @param options Command options.
+ */
 async function callGetDocument<T extends Inference>(
   productClass: new (httpResponse: StringDict) => T,
   documentId: string, options: any
@@ -122,6 +158,11 @@ async function callGetDocument<T extends Inference>(
   printResponse(response.document, options);
 }
 
+/**
+ * Print the response for the given command.
+ * @param document Document.
+ * @param options Command options.
+ */
 function printResponse<T extends Inference>(
   document: Document<T>,
   options: any
@@ -145,10 +186,19 @@ function printResponse<T extends Inference>(
 // BUILD THE COMMANDS
 //
 
+/**
+ * Add the main options to the given command.
+ * @param prog Command.
+ */
 function addMainOptions(prog: Command) {
   prog.option("-k, --api-key <api_key>", "API key for document endpoint");
 }
 
+/**
+ * Add the post options to the given command.
+ * @param prog Command.
+ * @param info Product configuration.
+ */
 function addPostOptions(prog: Command, info: ProductConfig) {
   prog.option("-c, --cut-pages", "keep only the first 5 pages of the document");
   if (info.allWords) {
@@ -157,6 +207,10 @@ function addPostOptions(prog: Command, info: ProductConfig) {
   prog.argument("<input_path>", "full path to the file");
 }
 
+/**
+ * Add the custom post options to the given command.
+ * @param prog Command.
+ */
 function addCustomPostOptions(prog: Command) {
   prog.requiredOption(
     "-e, --endpoint <endpoint_name>",
@@ -172,10 +226,20 @@ function addCustomPostOptions(prog: Command) {
   );
 }
 
+/**
+ * Add the display options to the given command.
+ * @param prog Command.
+ */
 function addDisplayOptions(prog: Command) {
   prog.option("-p, --pages", "show content of individual pages");
 }
 
+/**
+ * Route the command to the appropriate action.
+ * @param command Command.
+ * @param inputPath Input path.
+ * @param allOptions All options.
+ */
 function routeSwitchboard(
   command: Command,
   inputPath: string,
@@ -191,6 +255,10 @@ function routeSwitchboard(
   return callParse(docClass, command.name(), inputPath, allOptions);
 }
 
+/**
+ * Add the predict action to the given command.
+ * @param prog Command.
+ */
 function addPredictAction(prog: Command) {
   prog.action(function (
     inputPath: string,
@@ -207,6 +275,9 @@ function addPredictAction(prog: Command) {
   });
 }
 
+/**
+ * Add the main CLI action.
+ */
 export function cli() {
   program.name("mindee")
     .description("Command line interface for Mindee products.")

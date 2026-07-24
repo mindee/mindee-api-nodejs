@@ -8,6 +8,9 @@ import { ExtractedPdfInfo, extractTextFromPdf, hasSourceText, rasterizePage } fr
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
+/**
+ * Load the PDF library if not already loaded.
+ */
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>(
@@ -219,6 +222,11 @@ async function createNewPdfFromCompressedPages(compressedPages: Buffer[]): Promi
   return Buffer.from(compressedPdfBytes);
 }
 
+/**
+ * Add text to a PDF page.
+ * @param page The PDF page to add text to.
+ * @param textInfo The extracted text information to add to the page.
+ */
 async function addTextToPdfPage(
   page: pdfLibTypes.PDFPage,
   textInfo: ExtractedPdfInfo | null
@@ -240,6 +248,10 @@ async function addTextToPdfPage(
   }
 }
 
+/**
+ * Get a font from a given font name.
+ * @param fontName The name of the font to get.
+ */
 async function getFontFromName(fontName: string): Promise<pdfLibTypes.PDFFont> {
   const pdfLib = await getPdfLib();
   const pdfDoc = await pdfLib.PDFDocument.create();

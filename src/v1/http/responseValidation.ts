@@ -1,4 +1,4 @@
-import { BaseHttpResponse } from "../../http/apiCore.js";
+import { BaseHttpResponse } from "@/http/apiCore.js";
 
 /**
  * Checks if the synchronous response is valid. Returns True if the response is valid.

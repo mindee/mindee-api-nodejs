@@ -15,6 +15,10 @@ const BASE_OPTIONS: RequestOptions = {
   timeoutSecs: 10,
 };
 
+/**
+ * Create an error that looks like a socket error.
+ * @param code Error code.
+ */
 function socketError(code: string): Error {
   return Object.assign(new Error("socket closed"), { code });
 }
@@ -23,6 +27,10 @@ type Interceptor =
   | { error: Error }
   | { statusCode: number; body: string };
 
+/**
+ * Create a mock agent with interceptors.
+ * @param interceptors Interceptors.
+ */
 function makeAgent(...interceptors: Interceptor[]): MockAgent {
   const mockAgent = new MockAgent();
   const pool = mockAgent.get(`https://${HOST}`);
@@ -37,6 +45,10 @@ function makeAgent(...interceptors: Interceptor[]): MockAgent {
   return mockAgent;
 }
 
+/**
+ * Send a request and read the response.
+ * @param agent Mock agent.
+ */
 async function sendRequest(agent: MockAgent): Promise<any> {
   return sendRequestAndReadResponse(agent, BASE_OPTIONS);
 }

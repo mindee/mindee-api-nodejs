@@ -14,6 +14,9 @@ import type * as pdfLibTypes from "@cantoo/pdf-lib";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
+/**
+ * Load the PDF library if not already loaded.
+ */
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>(
@@ -97,6 +100,13 @@ function drawOrientedPage(
   }
 }
 
+/**
+ * Extract images from a PDF page.
+ * @param pdfPage The PDF page to extract images from.
+ * @param polygons The polygons to extract images from.
+ * @param asImage Whether to return the extracted images as images or as raw data.
+ * @param quality The quality of the extracted images.
+ */
 export async function extractFromPage(
   pdfPage: pdfLibTypes.PDFPage,
   polygons: Polygon[],

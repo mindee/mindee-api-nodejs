@@ -12,6 +12,9 @@ import { createPdfFromInputSource, extractPages } from "@/pdf/pdfOperation.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
+/**
+ * Load the PDF library if not already loaded.
+ */
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");

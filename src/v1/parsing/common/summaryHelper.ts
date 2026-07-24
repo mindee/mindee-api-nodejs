@@ -1,3 +1,7 @@
+/**
+ * Cleans a string by removing all new line characters.
+ * @param outStr Output string.
+ */
 export function cleanOutString(outStr: string): string {
   const lines = / \n/gm;
   return outStr.replace(lines, "\n");
@@ -20,7 +24,7 @@ export function lineSeparator(columnSizes: number[], separator: string) {
 /**
  * Replaces all special characters like \n, \r, \t, with an equivalent that can be displayed on a single line.
  * Also trims line breaks at the end of the string.
- * @param outStr
+ * @param outStr Output string.
  */
 export function cleanSpecialChars(outStr: string) {
   return outStr

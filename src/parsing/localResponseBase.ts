@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import * as fs from "node:fs/promises";
 import { StringDict } from "@/parsing/stringDict.js";
-import { MindeeError } from "../errors/index.js";
+import { MindeeError } from "@/errors/index.js";
 import { Buffer } from "buffer";
 
 /**

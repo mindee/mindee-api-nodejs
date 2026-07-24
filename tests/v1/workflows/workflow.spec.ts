@@ -7,6 +7,11 @@ import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import { Client } from "@/v1/index.js";
 import { PathInput } from "@/index.js";
 
+/**
+ * Creates an interceptor for a given HTTP code and response file.
+ * @param httpCode HTTP status code.
+ * @param jsonFilePath Path to the response file.
+ */
 async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<MockAgent> {
   const mockAgent = new MockAgent();
   const mockPool = mockAgent.get("https://v1-workflow-host");
@@ -17,6 +22,12 @@ async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<M
   return mockAgent;
 }
 
+/**
+ * Execute a workflow and read the response.
+ * @param mockAgent Mock agent.
+ * @param doc Document to send.
+ * @param workflowId Workflow ID.
+ */
 async function executeWorkflow(mockAgent: MockAgent, doc: PathInput, workflowId: string) {
   const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
   return await client.executeWorkflow(doc, workflowId);

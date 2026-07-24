@@ -1,5 +1,6 @@
 import { PositionField } from "@/v1/parsing/standard/position.js";
 import { StringDict } from "@/parsing/stringDict.js";
+// eslint-disable-next-line no-restricted-imports
 import { cleanOutString } from "../summaryHelper.js";
 import { ExtraField } from "./extras.js";
 

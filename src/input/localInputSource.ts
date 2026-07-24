@@ -5,7 +5,7 @@ import { logger } from "@/logger.js";
 import { compressImage } from "@/image/index.js";
 import { compressPdf, countPages, extractPages, hasSourceText } from "@/pdf/index.js";
 import { fileTypeFromBuffer } from "file-type";
-import { PageOptions } from "../input/pageOptions.js";
+import { PageOptions } from "@/input/pageOptions.js";
 import {
   InputSource,
   InputConstructor,

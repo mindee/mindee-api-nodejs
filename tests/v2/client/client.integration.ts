@@ -19,6 +19,10 @@ import * as fs from "node:fs";
 import { RESOURCE_PATH, V2_PRODUCT_PATH } from "../../index.js";
 import { Extraction } from "@/v2/product/index.js";
 
+/**
+ * Check if an error is a MindeeHttpErrorV2.
+ * @param err Error to check.
+ */
 function check422(err: unknown) {
   assert.ok(err instanceof MindeeHttpErrorV2);
   const errObj = err as MindeeHttpErrorV2;
@@ -29,6 +33,10 @@ function check422(err: unknown) {
   assert.ok(Array.isArray(errObj.errors));
 }
 
+/**
+ * Check if an inference has empty active options.
+ * @param inference Inference to check.
+ */
 function checkEmptyActiveOptions(inference: ExtractionInference) {
   assert.notStrictEqual(inference.activeOptions, null);
   assert.equal(inference.activeOptions?.rag, false);

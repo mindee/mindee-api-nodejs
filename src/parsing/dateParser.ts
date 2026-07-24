@@ -1,3 +1,7 @@
+/**
+ * Parse a date string into a Date object.
+ * @param dateString The date string to parse.
+ */
 export function parseDate(dateString: string | null): Date | null {
   if (!dateString) {
     return null;

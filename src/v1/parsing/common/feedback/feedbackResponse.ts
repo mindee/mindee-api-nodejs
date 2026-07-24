@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-restricted-imports
 import { ApiResponse } from "../apiResponse.js";
 import { StringDict } from "@/parsing/stringDict.js";
 

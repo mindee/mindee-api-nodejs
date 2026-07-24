@@ -17,6 +17,12 @@ function dummyEnvvars(): void {
   process.env.MINDEE_V2_API_HOST = "v2-client-host";
 }
 
+/**
+ * Injects interceptors for a given status code and response file.
+ * @param mockPool Mock pool.
+ * @param statusCode HTTP status code.
+ * @param filePath Path to the response file.
+ */
 async function setInterceptor(mockPool: Interceptable, statusCode: number, filePath: string): Promise<void> {
   const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
   mockPool
@@ -24,6 +30,9 @@ async function setInterceptor(mockPool: Interceptable, statusCode: number, fileP
     .reply(statusCode, fileObj);
 }
 
+/**
+ * Injects interceptors for all status codes and response files.
+ */
 async function setAllInterceptors(): Promise<MockAgent> {
   const mockAgent = new MockAgent();
   const mockPool = mockAgent.get("https://v2-client-host");

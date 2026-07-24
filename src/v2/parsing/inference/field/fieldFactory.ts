@@ -7,6 +7,11 @@ import { ListField } from "./listField.js";
 import { ObjectField } from "./objectField.js";
 import { SimpleField } from "./simpleField.js";
 
+/**
+ * Create a field from a server response.
+ * @param serverResponse Server response.
+ * @param indentLevel Indent level.
+ */
 export function createField(serverResponse: StringDict, indentLevel = 0) {
   if (typeof serverResponse !== "object" || serverResponse === null) {
     throw new MindeeDeserializationError(

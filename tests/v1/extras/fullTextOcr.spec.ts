@@ -8,6 +8,9 @@ import { RESOURCE_PATH } from "../../index.js";
 
 const fullTextOcrDir = path.join(RESOURCE_PATH, "v1/extras/full_text_ocr");
 
+/**
+ * Load a Full Text OCR prediction at document level.
+ */
 async function loadDocument() {
   const jsonData = await fs.readFile(path.join(fullTextOcrDir, "complete.json"));
   return new AsyncPredictResponse(

@@ -1,6 +1,6 @@
 
 import { logger } from "@/logger.js";
-import { BaseSettings, MindeeApiConstructorProps } from "../../http/baseSettings.js";
+import { BaseSettings, MindeeApiConstructorProps } from "@/http/baseSettings.js";
 import { MindeeConfigurationError } from "@/errors/index.js";
 
 export const STANDARD_API_OWNER: string = "mindee";

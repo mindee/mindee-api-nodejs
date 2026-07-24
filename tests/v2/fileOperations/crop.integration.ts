@@ -9,7 +9,10 @@ import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js
 import { V2_PRODUCT_PATH, OUTPUT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 
-
+/**
+ * Checks if a findoc response has the expected structure.
+ * @param findocResponse Response from the findoc model.
+ */
 function checkFindocReturn(findocResponse: ExtractionResponse) {
   assert.ok(findocResponse.inference.model.id.length > 0);
   const totalAmount = findocResponse.inference.result.fields.get("total_amount") as SimpleField;

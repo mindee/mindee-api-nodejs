@@ -1,7 +1,7 @@
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { StringDict } from "@/parsing/stringDict.js";
-import { BaseHttpResponse } from "../../http/apiCore.js";
+import { BaseHttpResponse } from "@/http/index.js";
 
 const HTML_ERROR_PATTERNS: ReadonlyArray<[string, StringDict]> = [
   ["Maximum pdf pages", { message: "TooManyPages", details: "Maximum amount of pdf pages reached." }],
@@ -14,6 +14,11 @@ const HTML_ERROR_PATTERNS: ReadonlyArray<[string, StringDict]> = [
 
 const ERROR_CLASSES_BY_CODE = new Map<number, typeof MindeeHttpErrorV1>();
 
+/**
+ * Extract the status code from the given response.
+ * @param response Response.
+ * @returns Status code.
+ */
 function extractStatusCode(response: BaseHttpResponse): number | undefined {
   try {
     if (response.data.api_request["status_code"] === 200 && response.data?.job?.error?.code) {
@@ -29,6 +34,11 @@ function extractStatusCode(response: BaseHttpResponse): number | undefined {
   return undefined;
 }
 
+/**
+ * Extract the error object from an HTML error response body.
+ * @param reconstructed Reconstructed response body.
+ * @returns Error object.
+ */
 function errorObjFromHtml(reconstructed: string): StringDict {
   for (const [needle, obj] of HTML_ERROR_PATTERNS) {
     if (reconstructed.includes(needle)) {
@@ -38,6 +48,11 @@ function errorObjFromHtml(reconstructed: string): StringDict {
   return { message: "Unknown Server Error.", details: reconstructed };
 }
 
+/**
+ * Extract the error object from the given response.
+ * @param response Response.
+ * @returns Error object.
+ */
 function extractErrorObj(response: BaseHttpResponse): StringDict {
   try {
     // Regular instances where the returned error is in JSON format.
@@ -51,6 +66,12 @@ function extractErrorObj(response: BaseHttpResponse): StringDict {
   }
 }
 
+/**
+ * Handle the given error.
+ * @param urlName URL name.
+ * @param response Response.
+ * @param serverError Server error.
+ */
 export function handleError(
   urlName: string,
   response: BaseHttpResponse,

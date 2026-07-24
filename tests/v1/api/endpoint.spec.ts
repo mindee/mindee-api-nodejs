@@ -14,6 +14,11 @@ const mockAgent = new MockAgent();
 setGlobalDispatcher(mockAgent);
 const mockPool = mockAgent.get("https://v1-endpoint-host");
 
+/**
+ * Create an interceptor for a given HTTP code and response file.
+ * @param httpCode HTTP status code.
+ * @param httpResultFile Path to the response file.
+ */
 function setInterceptor(httpCode: number, httpResultFile: string) {
   const filePath = path.resolve(path.join(V1_RESOURCE_PATH, httpResultFile));
   mockPool

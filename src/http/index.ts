@@ -3,5 +3,5 @@ export {
   isValidSyncResponse,
   isValidAsyncResponse,
   cleanRequestData,
-} from "../v1/http/responseValidation.js";
+} from "@/v1/http/responseValidation.js";
 export { BaseSettings } from "./baseSettings.js";

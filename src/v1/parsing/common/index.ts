@@ -5,7 +5,7 @@ export { ExecutionPriority } from "./executionPriority.js";
 export { Inference } from "./inference.js";
 export { FeedbackResponse } from "./feedback/feedbackResponse.js";
 export { OrientationField } from "./orientation.js";
-export type { StringDict } from "../../../parsing/stringDict.js";
+export type { StringDict } from "@/parsing/stringDict.js";
 export { AsyncPredictResponse } from "./asyncPredictResponse.js";
 export { PredictResponse } from "./predictResponse.js";
 export { Prediction } from "./prediction.js";
@@ -14,5 +14,5 @@ export {
   cleanOutString, lineSeparator, floatToString, cleanSpecialChars, cleanAndTruncate
 } from "./summaryHelper.js";
 export * as extras from "./extras/index.js";
-export { parseDate } from "../../../parsing/dateParser.js";
+export { parseDate } from "@/parsing/dateParser.js";
 export { WorkflowResponse } from "./workflowResponse.js";
