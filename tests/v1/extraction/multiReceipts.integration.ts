@@ -1,93 +1,97 @@
-import { before, describe, it } from "node:test";
-import assert from "node:assert/strict";
-import * as path from "path";
+import { LocalInputSource, PathInput } from "@/input/index.js";
+import { extractReceipts } from "@/v1/extraction/index.js";
 import { Client } from "@/v1/index.js";
 import { MultiReceiptsDetectorV1, ReceiptV5 } from "@/v1/product/index.js";
-import { extractReceipts } from "@/v1/extraction/index.js";
-import { V1_PRODUCT_PATH } from "../../index.js";
-import { LocalInputSource, PathInput } from "@/input/index.js";
+import assert from "node:assert/strict";
+import { before, describe, it } from "node:test";
 import { setTimeout } from "node:timers/promises";
+import * as path from "path";
+import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
+const hasOptionals = hasAllOptionalDependencies();
 const apiKey = process.env.MINDEE_API_KEY;
 let client: Client;
 let sourceDoc: LocalInputSource;
-describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired", { timeout: 60000 }, () =>
-{
-  describe("A Multi-Receipt PDF", () => {
-    before(async () => {
-      sourceDoc = new PathInput({
-        inputPath: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
+describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired",
+  { timeout: 60000, skip: !hasOptionals }, () => {
+    describe("A Multi-Receipt PDF", () => {
+      before(async () => {
+        sourceDoc = new PathInput({
+          inputPath: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
+        });
+        await sourceDoc.init();
+        client = new Client({ apiKey });
       });
-      await sourceDoc.init();
-      client = new Client({ apiKey });
+
+      it("should send to the server and cut properly", async () => {
+        const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
+        assert.strictEqual(multiReceiptResult.document?.inference.prediction.receipts.length, 5);
+        const extractedReceipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
+        assert.strictEqual(extractedReceipts.length, 5);
+        assert.strictEqual(multiReceiptResult.document?.inference.pages[0].orientation?.value, 0);
+        assert.strictEqual(multiReceiptResult.document?.inference.pages[1].orientation?.value, 0);
+        const receiptsResults = [];
+        for (const extractedReceipt of extractedReceipts) {
+          const localInput = extractedReceipt.asInputSource();
+          receiptsResults.push(await client.parse(ReceiptV5, localInput));
+          await setTimeout(1000);
+        }
+        const firstPrediction = receiptsResults[0].document.inference.prediction;
+        assert.strictEqual(firstPrediction.lineItems.length, 5);
+        assert.strictEqual(firstPrediction.lineItems[0].totalAmount, 70);
+        assert.strictEqual(firstPrediction.lineItems[1].totalAmount, 12);
+        assert.strictEqual(firstPrediction.lineItems[2].totalAmount, 14);
+        assert.strictEqual(firstPrediction.lineItems[3].totalAmount, 11);
+        assert.ok(Math.abs((firstPrediction.lineItems[4].totalAmount ?? NaN) - 5.6) < 1e-9);
+
+        const secondPrediction = receiptsResults[1].document.inference.prediction;
+        assert.strictEqual(secondPrediction.lineItems.length, 7);
+        assert.strictEqual(secondPrediction.lineItems[0].totalAmount, 6);
+        assert.strictEqual(secondPrediction.lineItems[1].totalAmount, 11);
+        assert.ok((Math.abs(secondPrediction.lineItems[2].totalAmount ?? NaN) - 67.2) < 1e-9);
+        assert.ok((Math.abs(secondPrediction.lineItems[3].totalAmount ?? NaN) - 19.2) < 1e-9);
+        assert.ok((Math.abs(secondPrediction.lineItems[4].totalAmount ?? NaN) - 7) < 1e-9);
+        assert.ok((Math.abs(secondPrediction.lineItems[5].totalAmount ?? NaN) - 5.5) < 1e-9);
+        assert.ok((Math.abs(secondPrediction.lineItems[6].totalAmount ?? NaN) - 36) < 1e-9);
+
+        const thirdPrediction = receiptsResults[2].document.inference.prediction;
+        assert.strictEqual(thirdPrediction.lineItems.length, 1);
+        assert.strictEqual(thirdPrediction.lineItems[0].totalAmount, 275);
+
+        const fourthPrediction = receiptsResults[3].document.inference.prediction;
+        assert.strictEqual(fourthPrediction.lineItems.length, 2);
+        assert.strictEqual(fourthPrediction.lineItems[0].totalAmount, 11.5);
+        assert.strictEqual(fourthPrediction.lineItems[1].totalAmount, 2);
+
+        const fifthPrediction = receiptsResults[4].document.inference.prediction;
+        assert.strictEqual(fifthPrediction.lineItems.length, 1);
+        assert.strictEqual(fifthPrediction.lineItems[0].totalAmount, 16.5);
+
+      });
     });
 
-    it("should send to the server and cut properly", async () => {
-      const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
-      assert.strictEqual(multiReceiptResult.document?.inference.prediction.receipts.length, 5);
-      const extractedReceipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
-      assert.strictEqual(extractedReceipts.length, 5);
-      assert.strictEqual(multiReceiptResult.document?.inference.pages[0].orientation?.value, 0);
-      assert.strictEqual(multiReceiptResult.document?.inference.pages[1].orientation?.value, 0);
-      const receiptsResults = [];
-      for (const extractedReceipt of extractedReceipts) {
-        const localInput = extractedReceipt.asInputSource();
-        receiptsResults.push(await client.parse(ReceiptV5, localInput));
-        await setTimeout(1000);
-      }
-      const firstPrediction = receiptsResults[0].document.inference.prediction;
-      assert.strictEqual(firstPrediction.lineItems.length, 5);
-      assert.strictEqual(firstPrediction.lineItems[0].totalAmount, 70);
-      assert.strictEqual(firstPrediction.lineItems[1].totalAmount, 12);
-      assert.strictEqual(firstPrediction.lineItems[2].totalAmount, 14);
-      assert.strictEqual(firstPrediction.lineItems[3].totalAmount, 11);
-      assert.ok(Math.abs((firstPrediction.lineItems[4].totalAmount ?? NaN)- 5.6) < 1e-9);
+    describe("A Single-Receipt Image", () => {
+      before(async () => {
+        sourceDoc = new PathInput({
+          inputPath: path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg"),
+        });
+        await sourceDoc.init();
+        client = new Client({ apiKey });
+      });
 
-      const secondPrediction = receiptsResults[1].document.inference.prediction;
-      assert.strictEqual(secondPrediction.lineItems.length, 7);
-      assert.strictEqual(secondPrediction.lineItems[0].totalAmount, 6);
-      assert.strictEqual(secondPrediction.lineItems[1].totalAmount, 11);
-      assert.ok((Math.abs(secondPrediction.lineItems[2].totalAmount ?? NaN) - 67.2) < 1e-9);
-      assert.ok((Math.abs(secondPrediction.lineItems[3].totalAmount ?? NaN) - 19.2) < 1e-9);
-      assert.ok((Math.abs(secondPrediction.lineItems[4].totalAmount ?? NaN) - 7) < 1e-9);
-      assert.ok((Math.abs(secondPrediction.lineItems[5].totalAmount ?? NaN) - 5.5) < 1e-9);
-      assert.ok((Math.abs(secondPrediction.lineItems[6].totalAmount ?? NaN) - 36) < 1e-9);
-
-      const thirdPrediction = receiptsResults[2].document.inference.prediction;
-      assert.strictEqual(thirdPrediction.lineItems.length, 1);
-      assert.strictEqual(thirdPrediction.lineItems[0].totalAmount, 275);
-
-      const fourthPrediction = receiptsResults[3].document.inference.prediction;
-      assert.strictEqual(fourthPrediction.lineItems.length, 2);
-      assert.strictEqual(fourthPrediction.lineItems[0].totalAmount, 11.5);
-      assert.strictEqual(fourthPrediction.lineItems[1].totalAmount, 2);
-
-      const fifthPrediction = receiptsResults[4].document.inference.prediction;
-      assert.strictEqual(fifthPrediction.lineItems.length, 1);
-      assert.strictEqual(fifthPrediction.lineItems[0].totalAmount, 16.5);
-
+      it("should send to the server and cut properly", async () => {
+        const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
+        assert.strictEqual(multiReceiptResult.document?.inference.prediction.receipts.length, 1);
+        const receipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
+        assert.strictEqual(receipts.length, 1);
+        const receiptResult = await client.parse(ReceiptV5, receipts[0].asInputSource());
+        assert.strictEqual(receiptResult.document.inference.prediction.lineItems.length, 1);
+        assert.ok(
+          (Math.abs(receiptResult.document.inference.prediction.lineItems[0].totalAmount ?? NaN) - 10.2) < 1e-9
+        );
+        assert.strictEqual(receiptResult.document.inference.prediction.taxes.length, 1);
+        assert.ok(Math.abs((receiptResult.document.inference.prediction.taxes[0].value ?? NaN) - 1.7) < 1e-9);
+      });
     });
   });
-
-  describe("A Single-Receipt Image", () => {
-    before(async () => {
-      sourceDoc = new PathInput({
-        inputPath: path.join(V1_PRODUCT_PATH, "expense_receipts/default_sample.jpg"),
-      });
-      await sourceDoc.init();
-      client = new Client({ apiKey });
-    });
-
-    it("should send to the server and cut properly", async () => {
-      const multiReceiptResult = await client.parse(MultiReceiptsDetectorV1, sourceDoc);
-      assert.strictEqual(multiReceiptResult.document?.inference.prediction.receipts.length, 1);
-      const receipts = await extractReceipts(sourceDoc, multiReceiptResult.document!.inference);
-      assert.strictEqual(receipts.length, 1);
-      const receiptResult = await client.parse(ReceiptV5, receipts[0].asInputSource());
-      assert.strictEqual(receiptResult.document.inference.prediction.lineItems.length, 1);
-      assert.ok((Math.abs(receiptResult.document.inference.prediction.lineItems[0].totalAmount ?? NaN) - 10.2) < 1e-9);
-      assert.strictEqual(receiptResult.document.inference.prediction.taxes.length, 1);
-      assert.ok(Math.abs((receiptResult.document.inference.prediction.taxes[0].value ?? NaN) - 1.7) < 1e-9);
-    });
-  });
-});

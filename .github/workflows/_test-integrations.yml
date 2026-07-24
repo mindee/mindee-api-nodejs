@@ -27,6 +27,7 @@ jobs:
           - "windows-latest"
           - "macos-latest"
         node-version:
+          - "20"
           - "22"
           - "26"
     runs-on: ${{ matrix.os }}
