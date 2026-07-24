@@ -44,6 +44,7 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired",
       findocModelId = process.env["MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID"] ?? "";
 
       client = new Client({ apiKey: apiKey, debug: true });
+      fs.mkdirSync(OUTPUT_DIR, { recursive: true });
     });
 
     after(() => {
