@@ -219,16 +219,16 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
     );
     assert.ok(enqueueResponse.job.id);
 
-    setTimeout(async () => {
-      const jobResponse = await client.getJob(enqueueResponse.job.id);
-      assert.ok(jobResponse.job.resultUrl);
+    await new Promise((resolve) => setTimeout(resolve, 6500));
 
-      const resultId = jobResponse.job.resultUrl?.split("/").pop() || "";
-      const resultResponse = await client.getResult(
-        Extraction, resultId
-      );
-      assert.strictEqual(resultId, resultResponse.inference.id);
-    }, 6500);
+    const jobResponse = await client.getJob(enqueueResponse.job.id);
+    assert.ok(jobResponse.job.resultUrl);
+
+    const resultId = jobResponse.job.resultUrl?.split("/").pop() || "";
+    const resultResponse = await client.getResult(
+      Extraction, resultId
+    );
+    assert.strictEqual(resultId, resultResponse.inference.id);
   });
 
   it("enqueueAndGetResult must succeed: HTTPS URL", async () => {
