@@ -1,6 +1,7 @@
 import { before, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
+import { setTimeout } from "node:timers/promises";
 
 import {
   Client,
@@ -218,17 +219,16 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
       Extraction, source, params
     );
     assert.ok(enqueueResponse.job.id);
+    await setTimeout(6500);
+    const jobResponse = await client.getJob(enqueueResponse.job.id);
+    assert.ok(jobResponse.job.resultUrl);
+    await setTimeout(1000);
 
-    setTimeout(async () => {
-      const jobResponse = await client.getJob(enqueueResponse.job.id);
-      assert.ok(jobResponse.job.resultUrl);
-
-      const resultId = jobResponse.job.resultUrl?.split("/").pop() || "";
-      const resultResponse = await client.getResult(
-        Extraction, resultId
-      );
-      assert.strictEqual(resultId, resultResponse.inference.id);
-    }, 6500);
+    const resultId = jobResponse.job.resultUrl?.split("/").pop() || "";
+    const resultResponse = await client.getResult(
+      Extraction, resultId
+    );
+    assert.strictEqual(resultId, resultResponse.inference.id);
   });
 
   it("enqueueAndGetResult must succeed: HTTPS URL", async () => {
