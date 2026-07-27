@@ -1,4 +1,4 @@
-import { cleanSpecialChars, floatToString } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate, floatToString } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -32,6 +32,7 @@ export class InvoiceV4LineItem {
    */
   polygon: Polygon = new Polygon();
 
+  // eslint-disable-next-line sonarjs/cognitive-complexity
   constructor({ prediction = {} }: StringDict) {
     this.description = prediction["description"];
     this.productCode = prediction["product_code"];
@@ -93,26 +94,14 @@ export class InvoiceV4LineItem {
    */
   #printableValues() {
     return {
-      description: this.description ?
-        this.description.length <= 36 ?
-          cleanSpecialChars(this.description) :
-          cleanSpecialChars(this.description).slice(0, 33) + "..." :
-        "",
-      productCode: this.productCode ?
-        this.productCode.length <= 12 ?
-          cleanSpecialChars(this.productCode) :
-          cleanSpecialChars(this.productCode).slice(0, 9) + "..." :
-        "",
+      description: cleanAndTruncate(this.description, 36),
+      productCode: cleanAndTruncate(this.productCode, 12),
       quantity: this.quantity !== undefined ? floatToString(this.quantity) : "",
       taxAmount: this.taxAmount !== undefined ? floatToString(this.taxAmount) : "",
       taxRate: this.taxRate !== undefined ? floatToString(this.taxRate) : "",
       totalAmount:
         this.totalAmount !== undefined ? floatToString(this.totalAmount) : "",
-      unitMeasure: this.unitMeasure ?
-        this.unitMeasure.length <= 15 ?
-          cleanSpecialChars(this.unitMeasure) :
-          cleanSpecialChars(this.unitMeasure).slice(0, 12) + "..." :
-        "",
+      unitMeasure: cleanAndTruncate(this.unitMeasure, 15),
       unitPrice: this.unitPrice !== undefined ? floatToString(this.unitPrice) : "",
     };
   }

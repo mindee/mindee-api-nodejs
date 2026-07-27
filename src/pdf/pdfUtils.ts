@@ -28,7 +28,11 @@ export interface ExtractedPdfInfo {
   getConcatenatedText: () => string;
 }
 
-
+/**
+ * Concatenate the text from all pages in a PDF document.
+ * @param pages The pages to concatenate.
+ * @returns The concatenated text.
+ */
 function getConcatenatedText(pages: PageTextInfo[]): string {
   return pages.flatMap(
     page => page.content.map(

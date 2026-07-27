@@ -3,6 +3,7 @@ import { InferenceModel } from "./inferenceModel.js";
 import { InferenceFile } from "./inferenceFile.js";
 import { InferenceJob } from "./inferenceJob.js";
 
+/** Shared metadata container for v2 inference payloads. */
 export abstract class BaseInference {
   /**
    * Model info for the inference.
@@ -28,6 +29,7 @@ export abstract class BaseInference {
     this.file = new InferenceFile(serverResponse["file"]);
   }
 
+  /** Returns a printable representation of inference metadata. */
   toString(): string {
     return (
       "Inference\n" +

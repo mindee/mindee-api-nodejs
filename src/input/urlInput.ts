@@ -8,8 +8,11 @@ import { logger } from "@/logger.js";
 import { MindeeInputSourceError } from "@/errors/index.js";
 import { BytesInput } from "./bytesInput.js";
 
+/** Remote input source represented by a validated HTTPS URL. */
 export class UrlInput extends InputSource {
+  /** HTTPS URL of the remote input file. */
   public readonly url: string;
+  /** Dispatcher used for HTTP requests. */
   public readonly dispatcher;
 
   constructor(
@@ -21,6 +24,7 @@ export class UrlInput extends InputSource {
     logger.debug("Initialized URL input source.");
   }
 
+  /** Initializes this source by validating and storing the URL. */
   async init() {
     if (this.initialized) {
       return;
@@ -66,6 +70,7 @@ export class UrlInput extends InputSource {
     return await this.makeRequest(this.url, headers, 0, maxRedirects);
   }
 
+  /** Downloads the URL content and writes it to disk. */
   async saveToFile(options: {
     filepath: string;
     filename?: string;
@@ -83,6 +88,7 @@ export class UrlInput extends InputSource {
     return fullPath;
   }
 
+  /** Downloads the URL content and returns it as a local bytes source. */
   async asLocalInputSource(options: {
     filename?: string;
     username?: string;
@@ -157,7 +163,6 @@ export class UrlInput extends InputSource {
       {
         method: "GET",
         headers: headers,
-        throwOnError: false,
         dispatcher: this.dispatcher,
       }
     );

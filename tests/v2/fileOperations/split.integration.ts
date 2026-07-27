@@ -11,6 +11,10 @@ import { V2_PRODUCT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 const OUTPUT_DIR = path.join(__dirname, "output");
 
+/**
+ * Checks if a findoc response has the expected structure.
+ * @param findocResponse Response from the findoc model.
+ */
 function checkFindocReturn(findocResponse: ExtractionResponse) {
   assert.ok(findocResponse.inference.model.id.length > 0);
   const totalAmount = findocResponse.inference.result.fields.get("total_amount") as SimpleField;

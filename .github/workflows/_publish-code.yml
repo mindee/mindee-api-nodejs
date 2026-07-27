@@ -19,14 +19,14 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 26
           cache: "npm"
 
       - name: Install Node.js dependencies
         run: npm ci
 
       - name: Build
-        run: npm run build-for-dist
+        run: npm run build:dist
 
       - name: Publish
         run: |

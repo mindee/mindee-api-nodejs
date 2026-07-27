@@ -6,10 +6,15 @@ import { writeFile } from "fs/promises";
 import { logger } from "@/logger.js";
 import { writeFileSync } from "node:fs";
 
+/** Represents a PDF artifact produced by an extraction/splitting operation. */
 export class ExtractedPdf {
+  /** Raw bytes of the extracted PDF segment. */
   public readonly buffer: Buffer;
+  /** Filename suggested for export. */
   public readonly filename: string;
+  /** Number of pages in this extracted PDF. */
   public readonly pageCount: number;
+  /** Zero-based indexes of pages included in this extracted PDF. */
   public readonly pageIndexes: number[];
 
   constructor(pdfData: Buffer<ArrayBufferLike>, filename: string, pageIndexes: number[]) {

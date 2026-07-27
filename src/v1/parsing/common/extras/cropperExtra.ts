@@ -1,9 +1,12 @@
 import { PositionField } from "@/v1/parsing/standard/position.js";
 import { StringDict } from "@/parsing/stringDict.js";
+// eslint-disable-next-line no-restricted-imports
 import { cleanOutString } from "../summaryHelper.js";
 import { ExtraField } from "./extras.js";
 
+/** Cropper extra payload returned by compatible APIs. */
 export class CropperExtra extends ExtraField {
+  /** Cropped regions detected on the page. */
   cropping: PositionField[] = [];
   constructor(rawPrediction: StringDict, pageId?: number) {
     super();

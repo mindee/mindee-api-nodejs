@@ -1,6 +1,7 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { DataSchemaActiveOption } from "./dataSchemaActiveOption.js";
 
+/** Active extraction options echoed by the API. */
 export class ExtractionActiveOptions {
   /**
    * Whether the RAG feature was activated.
@@ -38,6 +39,7 @@ export class ExtractionActiveOptions {
     this.dataSchema = new DataSchemaActiveOption(serverResponse["data_schema"]);
   }
 
+  /** Returns a readable representation of active options. */
   toString(): string {
     return "Active Options\n" +
       "==============\n" +

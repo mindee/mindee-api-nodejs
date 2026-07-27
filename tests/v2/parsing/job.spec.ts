@@ -11,6 +11,11 @@ import { V2_RESOURCE_PATH } from "../../index.js";
 
 const jobPath = path.join(V2_RESOURCE_PATH, "job");
 
+/**
+ * Loads a V2 job response from a local file.
+ * @param resourcePath Path to the local file.
+ * @returns The loaded job response.
+ */
 async function loadV2Job(resourcePath: string): Promise<JobResponse> {
   const localResponse = new LocalResponse(resourcePath);
   await localResponse.init();

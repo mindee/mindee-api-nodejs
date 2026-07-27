@@ -1,5 +1,6 @@
 import { StringDict } from "@/parsing/stringDict.js";
 
+/** File metadata attached to a v2 inference. */
 export class InferenceFile {
   /**
    * Name of the file.
@@ -25,6 +26,7 @@ export class InferenceFile {
     this.mimeType = serverResponse["mime_type"];
   }
 
+  /** Returns a printable representation of file metadata. */
   toString () {
     return(
       "File\n" +

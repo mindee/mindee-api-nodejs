@@ -1,5 +1,6 @@
 import { StringDict } from "@/parsing/stringDict.js";
 
+/** Model metadata attached to a v2 inference. */
 export class InferenceModel {
   /**
    * ID of the model.
@@ -10,6 +11,7 @@ export class InferenceModel {
     this.id = serverResponse["id"];
   }
 
+  /** Returns a printable representation of model metadata. */
   toString(): string {
     return "Model\n" +
       "=====\n" +

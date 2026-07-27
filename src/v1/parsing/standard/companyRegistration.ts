@@ -20,6 +20,7 @@ export class CompanyRegistrationField extends Field {
     super({ prediction, valueKey, reconstructed, pageId });
     this.type = prediction["type"];
   }
+  /** Returns a row-formatted representation for table output. */
   toTableLine(): string {
     const printable = this.printableValues();
     return `| ${printable["type"].padEnd(15)} | ${printable["value"].padEnd(20)} `;

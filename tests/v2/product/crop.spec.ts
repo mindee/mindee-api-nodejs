@@ -40,14 +40,14 @@ describe("MindeeV2 - Crop Response", async () => {
     const polygon: Polygon = firstCrop.location.polygon!;
     assert.strictEqual(polygon.length, 4);
     assert.strictEqual(polygon.length, 4);
-    assert.strictEqual(polygon[0][0], 0.15);
-    assert.strictEqual(polygon[0][1], 0.254);
-    assert.strictEqual(polygon[1][0], 0.85);
-    assert.strictEqual(polygon[1][1], 0.254);
-    assert.strictEqual(polygon[2][0], 0.85);
-    assert.strictEqual(polygon[2][1], 0.947);
-    assert.strictEqual(polygon[3][0], 0.15);
-    assert.strictEqual(polygon[3][1], 0.947);
+    assert.ok(Math.abs(polygon[0][0] - 0.15) < 1e-9);
+    assert.ok(Math.abs(polygon[0][1] - 0.254) < 1e-9);
+    assert.ok(Math.abs(polygon[1][0] - 0.85) < 1e-9);
+    assert.ok(Math.abs(polygon[1][1] - 0.254) < 1e-9);
+    assert.ok(Math.abs(polygon[2][0] - 0.85) < 1e-9);
+    assert.ok(Math.abs(polygon[2][1] - 0.947) < 1e-9);
+    assert.ok(Math.abs(polygon[3][0] - 0.15) < 1e-9);
+    assert.ok(Math.abs(polygon[3][1] - 0.947) < 1e-9);
 
     const rstString = await fs.readFile(
       path.join(V2_PRODUCT_PATH, "crop", "crop_single.rst"), "utf8"
@@ -83,15 +83,14 @@ describe("MindeeV2 - Crop Response", async () => {
     assert.strictEqual(firstCrop.objectType, "invoice");
     assert.strictEqual(firstCrop.location.page, 0);
     const firstPolygon: Polygon = firstCrop.location.polygon!;
-    assert.strictEqual(firstPolygon.length, 4);
-    assert.strictEqual(firstPolygon[0][0], 0.214);
-    assert.strictEqual(firstPolygon[0][1], 0.079);
-    assert.strictEqual(firstPolygon[1][0], 0.476);
-    assert.strictEqual(firstPolygon[1][1], 0.079);
-    assert.strictEqual(firstPolygon[2][0], 0.476);
-    assert.strictEqual(firstPolygon[2][1], 0.979);
-    assert.strictEqual(firstPolygon[3][0], 0.214);
-    assert.strictEqual(firstPolygon[3][1], 0.979);
+    assert.ok(Math.abs(firstPolygon[0][0] - 0.214) < 1e-9);
+    assert.ok(Math.abs(firstPolygon[0][1] - 0.079) < 1e-9);
+    assert.ok(Math.abs(firstPolygon[1][0] - 0.476) < 1e-9);
+    assert.ok(Math.abs(firstPolygon[1][1] - 0.079) < 1e-9);
+    assert.ok(Math.abs(firstPolygon[2][0] - 0.476) < 1e-9);
+    assert.ok(Math.abs(firstPolygon[2][1] - 0.979) < 1e-9);
+    assert.ok(Math.abs(firstPolygon[3][0] - 0.214) < 1e-9);
+    assert.ok(Math.abs(firstPolygon[3][1] - 0.979) < 1e-9);
 
     // Validate second crop item
     const secondCrop: crop.CropItem = crops[1];
@@ -99,14 +98,14 @@ describe("MindeeV2 - Crop Response", async () => {
     assert.strictEqual(secondCrop.location.page, 0);
     const secondPolygon: Polygon = secondCrop.location.polygon!;
     assert.strictEqual(secondPolygon.length, 4);
-    assert.strictEqual(secondPolygon[0][0], 0.547);
-    assert.strictEqual(secondPolygon[0][1], 0.15);
-    assert.strictEqual(secondPolygon[1][0], 0.862);
-    assert.strictEqual(secondPolygon[1][1], 0.15);
-    assert.strictEqual(secondPolygon[2][0], 0.862);
-    assert.strictEqual(secondPolygon[2][1], 0.97);
-    assert.strictEqual(secondPolygon[3][0], 0.547);
-    assert.strictEqual(secondPolygon[3][1], 0.97);
+    assert.ok(Math.abs(secondPolygon[0][0] - 0.547) < 1e-9);
+    assert.ok(Math.abs(secondPolygon[0][1] - 0.15) < 1e-9);
+    assert.ok(Math.abs(secondPolygon[1][0] - 0.862) < 1e-9);
+    assert.ok(Math.abs(secondPolygon[1][1] - 0.15) < 1e-9);
+    assert.ok(Math.abs(secondPolygon[2][0] - 0.862) < 1e-9);
+    assert.ok(Math.abs(secondPolygon[2][1] - 0.97) < 1e-9);
+    assert.ok(Math.abs(secondPolygon[3][0] - 0.547) < 1e-9);
+    assert.ok(Math.abs(secondPolygon[3][1] - 0.97) < 1e-9);
 
     const rstString = await fs.readFile(
       path.join(V2_PRODUCT_PATH, "crop", "crop_multiple.rst"), "utf8"

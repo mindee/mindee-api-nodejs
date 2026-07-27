@@ -5,7 +5,7 @@ export interface FieldConstructor {
   prediction: StringDict;
   valueKey?: string;
   reconstructed?: boolean;
-  pageId?: number | undefined;
+  pageId?: number;
 }
 
 /**

@@ -1,6 +1,7 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { BaseField } from "./baseField.js";
 
+/** Scalar inference field. */
 export class SimpleField extends BaseField {
   /**
    * The untyped value of the field.
@@ -48,6 +49,7 @@ export class SimpleField extends BaseField {
     return this.value as boolean;
   }
 
+  /** Returns a readable scalar representation. */
   toString(): string {
     if (this.value === null) {
       return "";

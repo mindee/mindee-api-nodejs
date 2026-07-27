@@ -30,6 +30,7 @@ export class SplitRange {
       : undefined;
   }
 
+  /** Returns a readable summary of the split range. */
   toString(): string {
     const pageRange = this.pageRange.join(",");
     return `* :Page Range: ${pageRange}\n  :Document Type: ${this.documentType}`;

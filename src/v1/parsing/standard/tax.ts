@@ -109,6 +109,7 @@ export class TaxField extends Field {
  * Represent all items.
  */
 export class Taxes extends Array<TaxField> {
+  /** Populates the taxes collection from raw prediction entries. */
   init(prediction: StringDict[] = [], pageId: number | undefined) {
     for (const entry of prediction) {
       this.push(

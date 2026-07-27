@@ -10,6 +10,11 @@ import { V2_PRODUCT_PATH } from "../../index.js";
 const splitPath = path.join(V2_PRODUCT_PATH, "split");
 const financialDocumentPath = path.join(V2_PRODUCT_PATH, "extraction", "financial_document");
 
+/**
+ * Loads a V2 split response from a local file.
+ * @param resourcePath Path to the local file.
+ * @returns The loaded split response.
+ */
 async function loadV2Split(resourcePath: string): Promise<SplitResponse> {
   const localResponse = new LocalResponse(resourcePath);
   return localResponse.deserializeResponse(SplitResponse);
@@ -75,6 +80,6 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () =>
     const splitFiles = await extractMultipleSplits(inputSample, [[0, 1, 2, 3, 4]]);
     assert(splitFiles.length === 1);
     assert(splitFiles[0].pageCount === 5);
-    assert(splitFiles[0].buffer === inputSample.fileObject);
+    assert.ok(splitFiles[0].buffer.equals(inputSample.fileObject));
   });
 });

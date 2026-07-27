@@ -1,6 +1,7 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { logger } from "@/logger.js";
 
+/** Base response contract for v2 product responses. */
 export abstract class BaseResponse {
   /**
    * Raw text representation of the API's response.
@@ -24,4 +25,5 @@ export abstract class BaseResponse {
   }
 }
 
+/** Constructor signature for typed v2 response classes. */
 export type ResponseConstructor<T extends BaseResponse> = new (serverResponse: StringDict) => T;

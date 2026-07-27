@@ -1,5 +1,5 @@
 
-import { cleanSpecialChars } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -36,16 +36,8 @@ export class ResumeV1SocialNetworksUrl {
    */
   #printableValues() {
     return {
-      name: this.name ?
-        this.name.length <= 20 ?
-          cleanSpecialChars(this.name) :
-          cleanSpecialChars(this.name).slice(0, 17) + "..." :
-        "",
-      url: this.url ?
-        this.url.length <= 50 ?
-          cleanSpecialChars(this.url) :
-          cleanSpecialChars(this.url).slice(0, 47) + "..." :
-        "",
+      name: cleanAndTruncate(this.name, 20),
+      url: cleanAndTruncate(this.url, 50),
     };
   }
 

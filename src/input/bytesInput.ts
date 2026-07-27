@@ -7,8 +7,10 @@ interface BytesInputProps {
   filename: string;
 }
 
+/** Local input source backed by a `Uint8Array`. */
 export class BytesInput extends LocalInputSource {
   private inputBytes: Uint8Array;
+  /** Binary payload built from the byte array. */
   fileObject: Buffer = Buffer.alloc(0);
 
   constructor({ inputBytes, filename }: BytesInputProps) {
@@ -19,6 +21,7 @@ export class BytesInput extends LocalInputSource {
     this.inputBytes = inputBytes;
   }
 
+  /** Converts bytes to a buffer and validates MIME type. */
   async init() {
     if (this.initialized) {
       return;

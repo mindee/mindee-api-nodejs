@@ -14,6 +14,9 @@ import type * as pdfLibTypes from "@cantoo/pdf-lib";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
+/**
+ * Load the PDF library if not already loaded.
+ */
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>(
@@ -45,7 +48,7 @@ export async function extractImagesFromPolygon(
     const extractions = await extractFromPage(pdfPage, polygons, true, quality);
     const extractedImages = extractions.map(
       (buffer, elementId) =>
-        new ExtractedImage(buffer, inputSource.filename + `_page-${pageId}-item-${elementId}.jpg`, pageId, elementId)
+        new ExtractedImage(buffer, inputSource.filename + `_page${pageId}-${elementId}.jpg`, pageId, elementId)
     );
     allExtractedImages.push(...extractedImages);
   }
@@ -53,12 +56,56 @@ export async function extractImagesFromPolygon(
 }
 
 /**
- * Extracts elements from a page based off of a list of bounding boxes.
- *
- * @param pdfPage PDF Page to extract from.
- * @param polygons List of coordinates to pull the elements from.
- * @param asImage Whether to return the extracted elements as images.
- * @param quality JPEG quality of extracted images, given as number between 0 and 1.
+ * Helper function to handle the drawing math and orientation.
+ */
+function drawOrientedPage(
+  pdfLib: any,
+  samplePage: pdfLibTypes.PDFPage,
+  cropped: pdfLibTypes.PDFEmbeddedPage,
+  orientation: number,
+  finalWidth: number,
+  finalHeight: number,
+  scaledWidth: number,
+  scaledHeight: number
+) {
+  if (orientation === 0) {
+    samplePage.drawPage(cropped, {
+      width: scaledWidth,
+      height: scaledHeight,
+    });
+  } else if (orientation === 90) {
+    samplePage.drawPage(cropped, {
+      x: 0,
+      y: finalHeight,
+      width: scaledWidth,
+      height: scaledHeight,
+      rotate: pdfLib.degrees(270),
+    });
+  } else if (orientation === 180) {
+    samplePage.drawPage(cropped, {
+      x: finalWidth,
+      y: finalHeight,
+      width: scaledWidth,
+      height: scaledHeight,
+      rotate: pdfLib.degrees(180),
+    });
+  } else if (orientation === 270) {
+    samplePage.drawPage(cropped, {
+      x: finalWidth,
+      y: 0,
+      width: scaledWidth,
+      height: scaledHeight,
+      rotate: pdfLib.degrees(90),
+    });
+  }
+}
+
+/**
+ * Extract images from a PDF page.
+ * @param pdfPage The PDF page to extract images from.
+ * @param polygons The polygons to extract images from.
+ * @param asImage Whether to return the extracted images as images or as raw data.
+ * @param quality The quality of the extracted images.
  */
 export async function extractFromPage(
   pdfPage: pdfLibTypes.PDFPage,
@@ -69,16 +116,18 @@ export async function extractFromPage(
   const pdfLib = await getPdfLib();
   const { width, height } = pdfPage.getSize();
   const extractedElements: Uint8Array[] = [];
-  if (quality && (quality < 0)) {
-    throw new MindeeImageError("Quality must be a number between 0 and 1");
+  if (quality !== undefined) {
+    if (quality < 0) {
+      throw new MindeeImageError("Quality must be a number between 0 and 1");
+    }
+    if (quality > 1) {
+      logger.warn("Quality is greater than 1, this operation will apply a manual upscale on the output." +
+        " Use only if you know what you are doing.");
+    }
   }
-  if (quality && quality > 1) {
-    logger.warn("Quality is greater than 1, this operation will apply a manual upscale on the output." +
-      " Use only if you know what you are doing.");
-  }
+
   const qualityScale = quality ?? 1;
   const orientation = pdfPage.getRotation().angle;
-
   const sourceDoc = pdfPage.doc;
   const pageIndex = sourceDoc.getPages().indexOf(pdfPage);
 
@@ -86,77 +135,46 @@ export async function extractFromPage(
     logger.debug(`Extracting image with polygon: ${origPolygon.toString()}`);
 
     const tempPdf = await pdfLib.PDFDocument.create();
-
     const [copiedPage] = await tempPdf.copyPages(sourceDoc, [pageIndex]);
-
     const polygon = adjustForRotation(origPolygon, orientation);
 
-    const newWidth = width * (getMinMaxX(polygon).max - getMinMaxX(polygon).min);
-    const newHeight = height * (getMinMaxY(polygon).max - getMinMaxY(polygon).min);
+    const minX = getMinMaxX(polygon).min;
+    const maxX = getMinMaxX(polygon).max;
+    const minY = getMinMaxY(polygon).min;
+    const maxY = getMinMaxY(polygon).max;
+
+    const newWidth = width * (maxX - minX);
+    const newHeight = height * (maxY - minY);
 
     const cropped = await tempPdf.embedPage(copiedPage, {
-      left: getMinMaxX(polygon).min * width,
-      right: getMinMaxX(polygon).max * width,
-      top: height - (getMinMaxY(polygon).min * height),
-      bottom: height - (getMinMaxY(polygon).max * height),
+      left: minX * width,
+      right: maxX * width,
+      top: height - (minY * height),
+      bottom: height - (maxY * height),
     });
 
-    let finalWidth: number;
-    let finalHeight: number;
-    if (orientation === 90 || orientation === 270) {
-      finalWidth = newHeight * qualityScale;
-      finalHeight = newWidth * qualityScale;
-    } else {
-      finalWidth = newWidth * qualityScale;
-      finalHeight = newHeight * qualityScale;
-    }
+    const isVertical = orientation === 90 || orientation === 270;
+    const finalWidth = (isVertical ? newHeight : newWidth) * qualityScale;
+    const finalHeight = (isVertical ? newWidth : newHeight) * qualityScale;
 
     const samplePage = tempPdf.addPage([finalWidth, finalHeight]);
     samplePage.drawRectangle({
-      x: 0,
-      y: 0,
-      width: finalWidth,
-      height: finalHeight,
-      color: pdfLib.rgb(1, 1, 1),
+      x: 0, y: 0, width: finalWidth, height: finalHeight, color: pdfLib.rgb(1, 1, 1),
     });
 
-    if (orientation === 0) {
-      samplePage.drawPage(cropped, {
-        width: newWidth * qualityScale,
-        height: newHeight * qualityScale,
-      });
-    } else if (orientation === 90) {
-      samplePage.drawPage(cropped, {
-        x: 0,
-        y: finalHeight,
-        width: newWidth * qualityScale,
-        height: newHeight * qualityScale,
-        rotate: pdfLib.degrees(270),
-      });
-    } else if (orientation === 180) {
-      samplePage.drawPage(cropped, {
-        x: finalWidth,
-        y: finalHeight,
-        width: newWidth * qualityScale,
-        height: newHeight * qualityScale,
-        rotate: pdfLib.degrees(180),
-      });
-    } else if (orientation === 270) {
-      samplePage.drawPage(cropped, {
-        x: finalWidth,
-        y: 0,
-        width: newWidth * qualityScale,
-        height: newHeight * qualityScale,
-        rotate: pdfLib.degrees(90),
-      });
-    }
+    drawOrientedPage(
+      pdfLib,
+      samplePage,
+      cropped,
+      orientation,
+      finalWidth,
+      finalHeight,
+      newWidth * qualityScale,
+      newHeight * qualityScale
+    );
 
     const pdfBuffer = Buffer.from(await tempPdf.save());
-    if (asImage) {
-      extractedElements.push(await rasterizePage(pdfBuffer, 0, 100));
-    } else {
-      extractedElements.push(pdfBuffer);
-    }
+    extractedElements.push(asImage ? await rasterizePage(pdfBuffer, 0, 100) : pdfBuffer);
   }
 
   return extractedElements;

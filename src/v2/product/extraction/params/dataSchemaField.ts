@@ -1,5 +1,32 @@
 import { StringDict } from "@/parsing/index.js";
 
+/** JSON payload for a single data schema field definition. */
+export interface DataSchemaFieldJson {
+  /** Field key used in results. */
+  name: string;
+  /** Human-readable field title. */
+  title: string;
+  /** Whether the field accepts multiple values. */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  is_array: boolean;
+  /** Field type name. */
+  type: string;
+  /** Optional allowed classes for classification fields. */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  classification_values?: Array<string>;
+  /** Optional deduplication behavior for array fields. */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  unique_values?: boolean;
+  /** Optional field description. */
+  description?: string;
+  /** Optional extraction guidelines. */
+  guidelines?: string;
+  /** Optional nested schema for object fields. */
+  // eslint-disable-next-line @typescript-eslint/naming-convention
+  nested_fields?: StringDict;
+}
+
+/** Data schema field definition used by extraction parameters. */
 export class DataSchemaField {
   /**
    * Display name for the field, also impacts inference results.
@@ -51,8 +78,9 @@ export class DataSchemaField {
     this.nestedFields = fields["nested_fields"];
   }
 
-  toJSON() {
-    const out: Record<string, unknown> = {
+  /** Serializes the field definition to API format. */
+  toJSON(): DataSchemaFieldJson {
+    const out: DataSchemaFieldJson = {
       name: this.name,
       title: this.title,
       // eslint-disable-next-line @typescript-eslint/naming-convention,camelcase
@@ -72,6 +100,7 @@ export class DataSchemaField {
     return out;
   }
 
+  /** Returns a JSON string representation of the field definition. */
   toString() {
     return JSON.stringify(this.toJSON());
   }

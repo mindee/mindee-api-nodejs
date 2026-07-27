@@ -1,11 +1,13 @@
 import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import jsdoc from "eslint-plugin-jsdoc";
+import security from "eslint-plugin-security";
+import sonarjs from "eslint-plugin-sonarjs";
 import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 import path from "node:path";
-import { fileURLToPath } from "node:url";
+import {fileURLToPath} from "node:url";
 import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
+import {FlatCompat} from "@eslint/eslintrc";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
@@ -19,10 +21,12 @@ const compat = new FlatCompat({
 
 export default [{
   ignores: [],
-}, ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"), {
+}, ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"),
+  sonarjs.configs.recommended, security.configs.recommended, {
   plugins: {
     "@typescript-eslint": typescriptEslint,
     jsdoc,
+    security,
   },
 
   languageOptions: {
@@ -33,7 +37,6 @@ export default [{
     },
     parser: tsParser,
   },
-
   rules: {
     "max-len": ["error", {
       code: 120,
@@ -44,6 +47,7 @@ export default [{
     "jsdoc/check-param-names": "error",
     "jsdoc/check-types": "error",
     "jsdoc/no-undefined-types": "error",
+    "jsdoc/require-jsdoc": "error",
     "@typescript-eslint/no-unused-vars": "error",
     "@typescript-eslint/no-explicit-any": "off",
     "@typescript-eslint/no-inferrable-types": "off",
@@ -78,5 +82,19 @@ export default [{
     indent: ["error", 2],
     "eol-last": "error",
     "preserve-caught-error": "off",
+    "security/detect-non-literal-fs-filename": "off",
+    "security/detect-object-injection": "off",
+    "no-restricted-imports": ["error", {
+      "patterns": [{
+        "group": ["../*"],
+        "message": "Import can be shortened. Please use the @/ path alias instead of relative parent paths."
+      }]
+    }],
   },
+},
+{
+  files: ["tests/**/*"],
+  rules: {
+    "no-restricted-imports": "off"
+  }
 }];

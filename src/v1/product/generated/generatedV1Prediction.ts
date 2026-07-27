@@ -3,6 +3,7 @@ import { GeneratedListField, GeneratedObjectField } from "@/v1/parsing/generated
 import { StringField } from "@/v1/parsing/standard/index.js";
 
 
+/** Dynamic prediction container for generated v1 products. */
 export class GeneratedV1Prediction implements Prediction {
   /** Map of all fields in the document. */
   fields: Map<string, any>;
@@ -13,7 +14,7 @@ export class GeneratedV1Prediction implements Prediction {
 
   toString(): string {
     let outStr = "";
-    const pattern = /^(\n*[  ]*)( {2}):/;
+    const pattern = /^(\n* *)( {2}):/;
 
     this.fields.forEach((fieldValue, fieldName) => {
       let strValue = "";

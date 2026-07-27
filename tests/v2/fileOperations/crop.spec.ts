@@ -14,6 +14,10 @@ import { V2_PRODUCT_PATH } from "../../index.js";
 const cropPath = path.join(V2_PRODUCT_PATH, "crop");
 let pdfLib: typeof pdfLibTypes | null = null;
 
+/**
+ * Loads the pdf-lib library if it is not already loaded.
+ * @returns The pdf-lib library.
+ */
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
@@ -22,6 +26,11 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
   return pdfLib!;
 }
 
+/**
+ * Loads a V2 crop response from a local file.
+ * @param resourcePath Path to the local file.
+ * @returns The loaded crop response.
+ */
 async function loadV2Crop(resourcePath: string): Promise<CropResponse> {
   const localResponse = new LocalResponse(resourcePath);
   return localResponse.deserializeResponse(CropResponse);

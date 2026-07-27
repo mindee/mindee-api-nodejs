@@ -14,9 +14,13 @@ import { loadOptionalDependency } from "@/dependency/index.js";
  * Generic class for image extraction.
  */
 export class ExtractedImage {
+  /** Raw file bytes for the extracted image artifact. */
   public buffer: Buffer;
+  /** Filename used when exporting the extracted image. */
   public filename: string;
+  /** 1-based source page identifier. */
   public readonly pageId: number;
+  /** Identifier of the extracted element on the page. */
   public readonly elementId: number;
 
   constructor(buffer: Uint8Array, fileName: string, pageId: number, elementId: number) {

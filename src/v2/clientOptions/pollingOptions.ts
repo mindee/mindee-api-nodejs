@@ -1,8 +1,11 @@
 import { MindeeConfigurationError } from "@/errors/index.js";
 import { logger } from "@/logger.js";
 
+/** Optional timer settings used by polling delays. */
 export interface TimerOptions {
+  /** Whether the timer should keep the event loop active. */
   ref?: boolean,
+  /** Optional signal used to abort timer waits. */
   signal?: AbortSignal
 }
 
@@ -89,6 +92,7 @@ export class PollingOptions {
     logger.debug(`Polling options initialized: ${this.toString()}`);
   }
 
+  /** Validates polling options against minimum accepted values. */
   validateSettings() {
     if (this.delaySec < minDelaySec) {
       throw new MindeeConfigurationError(
@@ -107,6 +111,7 @@ export class PollingOptions {
     }
   }
 
+  /** Returns a compact string representation of the polling options. */
   toString(): string {
     return `{ initialDelaySec: ${this.initialDelaySec}, delaySec: ${this.delaySec}, maxRetries: ${this.maxRetries} }`;
   }

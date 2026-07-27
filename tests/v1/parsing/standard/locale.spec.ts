@@ -16,7 +16,7 @@ describe("Test LocaleField field", () => {
     assert.strictEqual(field.language, "en");
     assert.strictEqual(field.country, "uk");
     assert.strictEqual(field.currency, "GBP");
-    assert.strictEqual(field.confidence, 0.1);
+    assert.ok(Math.abs(field.confidence - 0.1) < 1e-9);
   });
 
   it("Should create a LocaleField without the value property", () => {
@@ -31,7 +31,7 @@ describe("Test LocaleField field", () => {
     assert.strictEqual(field.language, "fr");
     assert.strictEqual(field.country, "fr");
     assert.strictEqual(field.currency, "EUR");
-    assert.strictEqual(field.confidence, 0.15);
+    assert.ok(Math.abs(field.confidence - 0.15) < 1e-9);
   });
 
   it("Should create a LocaleField with mainly empty fields", () => {

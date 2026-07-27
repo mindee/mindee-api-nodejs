@@ -1,7 +1,7 @@
 import * as crypto from "crypto";
 import * as fs from "node:fs/promises";
 import { StringDict } from "@/parsing/stringDict.js";
-import { MindeeError } from "../errors/index.js";
+import { MindeeError } from "@/errors/index.js";
 import { Buffer } from "buffer";
 
 /**
@@ -11,6 +11,7 @@ import { Buffer } from "buffer";
 export abstract class LocalResponseBase {
   private file: Buffer;
   private readonly inputHandle: Buffer | string;
+  /** Whether the local response payload has been loaded. */
   protected initialized = false;
 
   /**
@@ -21,6 +22,7 @@ export abstract class LocalResponseBase {
     this.inputHandle = inputFile;
   }
 
+  /** Loads the local payload from a string, buffer, or file path. */
   public async init() {
     /**
      * @param inputFile - The input file, which can be a Buffer, string, or PathLike.

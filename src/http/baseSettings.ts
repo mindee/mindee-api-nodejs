@@ -1,4 +1,5 @@
 import { Dispatcher, getGlobalDispatcher } from "undici";
+// eslint-disable-next-line no-restricted-imports
 import packageJson from "../../package.json" with { type: "json" };
 import * as os from "os";
 import { TIMEOUT_SECS_DEFAULT } from "./apiCore.js";
@@ -9,9 +10,13 @@ export interface MindeeApiConstructorProps {
 }
 
 export abstract class BaseSettings {
+  /** API key used for authenticated requests. */
   apiKey: string;
+  /** API hostname used for requests. */
   hostname: string;
+  /** Request timeout in seconds. */
   timeoutSecs: number;
+  /** HTTP dispatcher used by undici. */
   dispatcher: Dispatcher;
 
   protected constructor(apiKey?: string, dispatcher?: Dispatcher) {
@@ -27,6 +32,7 @@ export abstract class BaseSettings {
       : TIMEOUT_SECS_DEFAULT;
   }
 
+  /** Builds a default user-agent string for outgoing requests. */
   protected getUserAgent(): string {
     let platform = os.type().toLowerCase();
     if (platform.includes("darwin")) {

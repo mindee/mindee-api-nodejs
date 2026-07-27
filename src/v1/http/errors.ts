@@ -1,108 +1,94 @@
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { StringDict } from "@/parsing/stringDict.js";
-import { BaseHttpResponse } from "../../http/apiCore.js";
+import { BaseHttpResponse } from "@/http/index.js";
 
+const HTML_ERROR_PATTERNS: ReadonlyArray<[string, StringDict]> = [
+  ["Maximum pdf pages", { message: "TooManyPages", details: "Maximum amount of pdf pages reached." }],
+  ["Max file size is", { message: "FileTooLarge", details: "Maximum file size reached." }],
+  ["Invalid file type", { message: "InvalidFiletype", details: "Invalid file type." }],
+  ["Gateway timeout", { message: "RequestTimeout", details: "Request timed out." }],
+  ["Bad gateway", { message: "BadRequest", details: "Bad Gateway" }],
+  ["Too Many Requests", { message: "TooManyRequests", details: "Too Many Requests." }],
+];
+
+const ERROR_CLASSES_BY_CODE = new Map<number, typeof MindeeHttpErrorV1>();
+
+/**
+ * Extract the status code from the given response.
+ * @param response Response.
+ * @returns Status code.
+ */
+function extractStatusCode(response: BaseHttpResponse): number | undefined {
+  try {
+    if (response.data.api_request["status_code"] === 200 && response.data?.job?.error?.code) {
+      response.data.api_request.error = response.data.job.error;
+      return 500;
+    }
+    if (response.data) {
+      return response.data.api_request["status_code"];
+    }
+  } catch {
+    return 500;
+  }
+  return undefined;
+}
+
+/**
+ * Extract the error object from an HTML error response body.
+ * @param reconstructed Reconstructed response body.
+ * @returns Error object.
+ */
+function errorObjFromHtml(reconstructed: string): StringDict {
+  for (const [needle, obj] of HTML_ERROR_PATTERNS) {
+    if (reconstructed.includes(needle)) {
+      return { ...obj };
+    }
+  }
+  return { message: "Unknown Server Error.", details: reconstructed };
+}
+
+/**
+ * Extract the error object from the given response.
+ * @param response Response.
+ * @returns Error object.
+ */
+function extractErrorObj(response: BaseHttpResponse): StringDict {
+  try {
+    // Regular instances where the returned error is in JSON format.
+    return response.data.api_request.error;
+  } catch {
+    // Rare instances where errors are returned as HTML instead of JSON.
+    if (!("reconstructedResponse" in response.data)) {
+      response.data.reconstructedResponse = "";
+    }
+    return errorObjFromHtml(response.data.reconstructedResponse);
+  }
+}
+
+/**
+ * Handle the given error.
+ * @param urlName URL name.
+ * @param response Response.
+ * @param serverError Server error.
+ */
 export function handleError(
   urlName: string,
   response: BaseHttpResponse,
   serverError?: string
 ): void {
-  let code;
-  try {
-    if (response.data.api_request["status_code"] === 200 && response.data?.job?.error?.code) {
-      code = 500;
-      response.data.api_request.error = response.data.job.error;
-    } else if (response.data) {
-      code = response.data.api_request["status_code"];
-    }
-  } catch {
-    code = 500;
-  }
-  let errorObj: StringDict;
-  try {
-    //Regular instances where the returned error is in JSON format.
-    errorObj = response.data.api_request.error;
-  } catch {
-    //Rare instances where errors are returned as HTML instead of JSON.
-    if (!("reconstructedResponse" in response.data)) {
-      response.data.reconstructedResponse = "";
-    }
-    if (response.data.reconstructedResponse.includes("Maximum pdf pages")) {
-      errorObj = {
-        message: "TooManyPages",
-        details: "Maximum amount of pdf pages reached.",
-      };
-    } else if (response.data.reconstructedResponse.includes("Max file size is")) {
-      errorObj = {
-        message: "FileTooLarge",
-        details: "Maximum file size reached.",
-      };
-    } else if (response.data.reconstructedResponse.includes("Invalid file type")) {
-      errorObj = {
-        message: "InvalidFiletype",
-        details: "Invalid file type.",
-      };
-    } else if (response.data.reconstructedResponse.includes("Gateway timeout")) {
-      errorObj = {
-        message: "RequestTimeout",
-        details: "Request timed out.",
-      };
-    } else if (response.data.reconstructedResponse.includes("Bad gateway")) {
-      errorObj = {
-        message: "BadRequest",
-        details: "Bad Gateway",
-      };
-    } else if (response.data.reconstructedResponse.includes("Too Many Requests")) {
-      errorObj = {
-        message: "TooManyRequests",
-        details: "Too Many Requests.",
-      };
-    } else {
-      errorObj = {
-        message: "Unknown Server Error.",
-        details: response.data.reconstructedResponse,
-      };
-    }
-  }
-  if (serverError !== undefined &&
-    (!("message" in errorObj) ||
-      !errorObj.message ||
-      errorObj.message.length === 0)
+  const code = extractStatusCode(response);
+  const errorObj = extractErrorObj(response);
+
+  if (
+    serverError !== undefined &&
+    (!("message" in errorObj) || !errorObj.message || errorObj.message.length === 0)
   ) {
     errorObj.message = serverError;
   }
-  let errorToThrow;
-  switch (code) {
-  case 400:
-    errorToThrow = new MindeeHttp400Error(errorObj, urlName, code);
-    break;
-  case 401:
-    errorToThrow = new MindeeHttp401Error(errorObj, urlName, code);
-    break;
-  case 403:
-    errorToThrow = new MindeeHttp403Error(errorObj, urlName, code);
-    break;
-  case 404:
-    errorToThrow = new MindeeHttp404Error(errorObj, urlName, code);
-    break;
-  case 413:
-    errorToThrow = new MindeeHttp413Error(errorObj, urlName, code);
-    break;
-  case 429:
-    errorToThrow = new MindeeHttp429Error(errorObj, urlName, code);
-    break;
-  case 500:
-    errorToThrow = new MindeeHttp500Error(errorObj, urlName, code);
-    break;
-  case 504:
-    errorToThrow = new MindeeHttp504Error(errorObj, urlName, code);
-    break;
-  default:
-    errorToThrow = new MindeeHttpErrorV1(errorObj, urlName, code);
-    break;
-  }
-  errorHandler.throw(errorToThrow);
+
+  const errorClass = (code !== undefined && ERROR_CLASSES_BY_CODE.get(code)) || MindeeHttpErrorV1;
+  errorHandler.throw(new errorClass(errorObj, urlName, code));
 }
 
 /**
@@ -207,3 +193,12 @@ export class MindeeHttp504Error extends MindeeHttpErrorV1 {
     this.name = "MindeeHttp504Error";
   }
 }
+
+ERROR_CLASSES_BY_CODE.set(400, MindeeHttp400Error);
+ERROR_CLASSES_BY_CODE.set(401, MindeeHttp401Error);
+ERROR_CLASSES_BY_CODE.set(403, MindeeHttp403Error);
+ERROR_CLASSES_BY_CODE.set(404, MindeeHttp404Error);
+ERROR_CLASSES_BY_CODE.set(413, MindeeHttp413Error);
+ERROR_CLASSES_BY_CODE.set(429, MindeeHttp429Error);
+ERROR_CLASSES_BY_CODE.set(500, MindeeHttp500Error);
+ERROR_CLASSES_BY_CODE.set(504, MindeeHttp504Error);

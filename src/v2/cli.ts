@@ -23,6 +23,10 @@ const program = new Command();
 // EXECUTE THE COMMANDS
 //
 
+/**
+ * Initialize the client.
+ * @param options Options.
+ */
 function initClient(options: OptionValues): Client {
   return new Client({
     apiKey: options.apiKey,
@@ -30,6 +34,12 @@ function initClient(options: OptionValues): Client {
   });
 }
 
+/**
+ * Enqueue and get inference.
+ * @param product Product.
+ * @param inputPath Input path.
+ * @param options Options.
+ */
 async function enqueueAndGetInference(
   product: typeof BaseProduct,
   inputPath: string,
@@ -58,6 +68,10 @@ async function enqueueAndGetInference(
   printResponse(response.inference);
 }
 
+/**
+ * Print response.
+ * @param document Document.
+ */
 function printResponse(
   document: BaseInference,
 ): void {
@@ -70,6 +84,10 @@ function printResponse(
 // BUILD THE COMMANDS
 //
 
+/**
+ * Add main options.
+ * @param prog Program.
+ */
 function addMainOptions(prog: Command) {
   prog.requiredOption(
     "-m, --model <model_id>",
@@ -78,6 +96,9 @@ function addMainOptions(prog: Command) {
   prog.argument("<input_path>", "full path or URL to the file");
 }
 
+/**
+ * Build the CLI.
+ */
 export function cli() {
   program.name("mindee")
     .description("Command line interface for Mindee V2 products.")

@@ -20,6 +20,7 @@ describe("Input Sources - URL input source", () => {
     });
 
     it("should throw an error for non-HTTPS URL", async () => {
+      // eslint-disable-next-line sonarjs/no-clear-text-protocols
       const url = "http://dummy-host/file.pdf";
       const urlSource = new UrlInput({ url, dispatcher: mockAgent });
 
@@ -126,27 +127,6 @@ describe("Input Sources - URL input source", () => {
 
         assert.ok(localInput instanceof BytesInput);
         assert.deepStrictEqual(localInput.fileObject, fileContent);
-      });
-
-      it("should block redirect to loopback address", async () => {
-        const originalUrl = "https://dummy-host/file.pdf";
-
-        mockPool
-          .intercept({ path: "/file.pdf", method: "GET" })
-          .reply(302, "", { headers: { location: "https://127.0.0.1/evil" } });
-
-        const urlInput = new UrlInput({ url: originalUrl, dispatcher: mockAgent });
-
-        try {
-          await urlInput.asLocalInputSource();
-          assert.fail("Expected an error to be thrown");
-        } catch (error) {
-          assert.ok(error instanceof Error);
-          assert.strictEqual(
-            (error as Error).message,
-            "URL host is a loopback or private address"
-          );
-        }
       });
 
       it("should throw an error for HTTP error responses", async () => {

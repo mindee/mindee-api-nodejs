@@ -38,6 +38,7 @@ export class DateField extends Field {
     }
   }
 
+  /** Compares two dates by calendar day (year/month/day). */
   static compareDates(date1: Date, date2: Date): boolean {
     return date1.getFullYear() === date2.getFullYear() &&
       date1.getMonth() === date2.getMonth() &&

@@ -4,6 +4,7 @@ import { LocalInputSource } from "@/input/index.js";
 import { extractMultipleCrops } from "@/v2/fileOperations/crop.js";
 import { ExtractedImages } from "@/image/extractedImages.js";
 
+/** Crop section of a crop inference result. */
 export class CropResult {
   /**
    * Fields contained in the inference.
@@ -14,6 +15,7 @@ export class CropResult {
     this.crops = serverResponse["crops"].map((cropItem: StringDict) => new CropItem(cropItem));
   }
 
+  /** Returns a readable list of detected crops. */
   toString(): string {
     const crops = this.crops.map(item => item.toString()).join("\n");
     return `Crops\n=====\n${crops}`;

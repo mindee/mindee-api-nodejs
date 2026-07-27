@@ -2,6 +2,7 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { SplitInference } from "./splitInference.js";
 import { BaseResponse } from "@/v2/parsing/index.js";
 
+/** Response wrapper for split product calls. */
 export class SplitResponse extends BaseResponse {
   /**
    * Response for an OCR utility inference.

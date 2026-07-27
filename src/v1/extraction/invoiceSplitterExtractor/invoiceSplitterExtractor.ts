@@ -9,6 +9,9 @@ import { loadOptionalDependency } from "@/dependency/index.js";
 
 let pdfLib: typeof pdfLibTypes | null = null;
 
+/**
+ * Load the pdf-lib dependency.
+ */
 async function getPdfLib(): Promise<typeof pdfLibTypes> {
   if (!pdfLib) {
     const pdfLibImport = await loadOptionalDependency<typeof pdfLibTypes>("@cantoo/pdf-lib", "Text Embedding");
@@ -17,6 +20,12 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
   return pdfLib!;
 }
 
+/**
+ * Split the given PDF document into multiple PDF documents.
+ * @param pdfDoc PDF document.
+ * @param invoicePageGroups Page groups.
+ * @returns Extracted invoice splitter images.
+ */
 async function splitPdf(
   pdfDoc: pdfLibTypes.PDFDocument,
   invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
@@ -45,6 +54,11 @@ async function splitPdf(
   return generatedPdfs;
 }
 
+/**
+ * Load the PDF document from the given input file.
+ * @param inputFile Input file.
+ * @returns PDF document.
+ */
 async function getPdfDoc(inputFile: LocalInputSource): Promise<pdfLibTypes.PDFDocument> {
   const pdfLib = await getPdfLib();
   await inputFile.init();

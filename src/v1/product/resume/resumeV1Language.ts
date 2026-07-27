@@ -1,5 +1,5 @@
 
-import { cleanSpecialChars } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -36,16 +36,8 @@ export class ResumeV1Language {
    */
   #printableValues() {
     return {
-      language: this.language ?
-        this.language.length <= 8 ?
-          cleanSpecialChars(this.language) :
-          cleanSpecialChars(this.language).slice(0, 5) + "..." :
-        "",
-      level: this.level ?
-        this.level.length <= 20 ?
-          cleanSpecialChars(this.level) :
-          cleanSpecialChars(this.level).slice(0, 17) + "..." :
-        "",
+      language: cleanAndTruncate(this.language, 8),
+      level: cleanAndTruncate(this.level, 20),
     };
   }
 

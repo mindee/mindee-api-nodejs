@@ -7,6 +7,13 @@ import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import { Client } from "@/v1/index.js";
 import { PathInput } from "@/index.js";
 
+/**
+ * Execute a workflow and read the response.
+ *
+ * @param httpCode - The HTTP status code to return.
+ * @param jsonFilePath - The path to the JSON file to return.
+ * @returns The mock agent.
+ */
 async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<MockAgent> {
   const mockAgent = new MockAgent();
   const mockPool = mockAgent.get("https://v1-workflow-host");
@@ -17,6 +24,13 @@ async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<M
   return mockAgent;
 }
 
+/**
+ * Execute a workflow and read the response.
+ *
+ * @param mockAgent Mock agent.
+ * @param doc Document to send.
+ * @param workflowId Workflow ID.
+ */
 async function executeWorkflow(mockAgent: MockAgent, doc: PathInput, workflowId: string) {
   const client = new Client({ apiKey: "my-api-key", debug: true, dispatcher: mockAgent });
   return await client.executeWorkflow(doc, workflowId);
@@ -36,9 +50,6 @@ describe("MindeeV1 - Workflow executions", () => {
   });
 
   it("should deserialize response correctly when sending a document to an execution", async () => {
-    const statusCode = 202;
-    process.env.MINDEE_API_HOST = `v1-dummy-host-${statusCode}`;
-
     const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success.json");
     const mockAgent = await setInterceptor(202, jsonFilePath);
     const mockedExecution = await executeWorkflow(
@@ -63,9 +74,6 @@ describe("MindeeV1 - Workflow executions", () => {
 
   it("should deserialize response correctly when sending a document to an execution with priority and alias",
     async () => {
-      const statusCode = 202;
-      process.env.MINDEE_API_HOST = `v1-dummy-host-${statusCode}`;
-
       const jsonFilePath = path.join(V1_RESOURCE_PATH, "workflows", "success_low_priority.json");
       const mockAgent = await setInterceptor(200, jsonFilePath);
       const mockedExecution = await executeWorkflow(

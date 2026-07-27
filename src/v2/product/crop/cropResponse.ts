@@ -2,6 +2,7 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { BaseResponse } from "@/v2/parsing/index.js";
 import { CropInference } from "./cropInference.js";
 
+/** Response wrapper for crop product calls. */
 export class CropResponse extends BaseResponse {
   /**
    * Response for a crop utility inference.

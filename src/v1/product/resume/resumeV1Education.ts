@@ -1,5 +1,5 @@
 
-import { cleanSpecialChars } from "@/v1/parsing/common/index.js";
+import { cleanAndTruncate } from "@/v1/parsing/common/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { Polygon } from "@/geometry/index.js";
 
@@ -51,41 +51,13 @@ export class ResumeV1Education {
    */
   #printableValues() {
     return {
-      degreeDomain: this.degreeDomain ?
-        this.degreeDomain.length <= 15 ?
-          cleanSpecialChars(this.degreeDomain) :
-          cleanSpecialChars(this.degreeDomain).slice(0, 12) + "..." :
-        "",
-      degreeType: this.degreeType ?
-        this.degreeType.length <= 25 ?
-          cleanSpecialChars(this.degreeType) :
-          cleanSpecialChars(this.degreeType).slice(0, 22) + "..." :
-        "",
-      endMonth: this.endMonth ?
-        this.endMonth.length <= 9 ?
-          cleanSpecialChars(this.endMonth) :
-          cleanSpecialChars(this.endMonth).slice(0, 6) + "..." :
-        "",
-      endYear: this.endYear ?
-        this.endYear.length <= 8 ?
-          cleanSpecialChars(this.endYear) :
-          cleanSpecialChars(this.endYear).slice(0, 5) + "..." :
-        "",
-      school: this.school ?
-        this.school.length <= 25 ?
-          cleanSpecialChars(this.school) :
-          cleanSpecialChars(this.school).slice(0, 22) + "..." :
-        "",
-      startMonth: this.startMonth ?
-        this.startMonth.length <= 11 ?
-          cleanSpecialChars(this.startMonth) :
-          cleanSpecialChars(this.startMonth).slice(0, 8) + "..." :
-        "",
-      startYear: this.startYear ?
-        this.startYear.length <= 10 ?
-          cleanSpecialChars(this.startYear) :
-          cleanSpecialChars(this.startYear).slice(0, 7) + "..." :
-        "",
+      degreeDomain: cleanAndTruncate(this.degreeDomain, 15),
+      degreeType: cleanAndTruncate(this.degreeType, 25),
+      endMonth: cleanAndTruncate(this.endMonth, 9),
+      endYear: cleanAndTruncate(this.endYear, 8),
+      school: cleanAndTruncate(this.school, 25),
+      startMonth: cleanAndTruncate(this.startMonth, 11),
+      startYear: cleanAndTruncate(this.startYear, 10),
     };
   }
 

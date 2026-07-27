@@ -93,6 +93,10 @@ export function relativeX(polygon: Array<Point>): number {
   return polygon.length * sum;
 }
 
+/**
+ * Get the minimum Y coordinate in a given list of Points.
+ * @param polygon An array of points or polygon.
+ */
 export function getMinYCoordinate(polygon: Array<Point>): number {
   return polygon.sort((point1, point2) => {
     if (point1[1] < point2[1]) {
@@ -104,6 +108,10 @@ export function getMinYCoordinate(polygon: Array<Point>): number {
   })[0][1];
 }
 
+/**
+ * Get the minimum X coordinate in a given list of Points.
+ * @param polygon An array of points or polygon.
+ */
 export function getMinXCoordinate(polygon: Array<Point>): number {
   return polygon.sort((point1, point2) => {
     if (point1[0] < point2[0]) {
@@ -115,6 +123,11 @@ export function getMinXCoordinate(polygon: Array<Point>): number {
   })[0][0];
 }
 
+/**
+ * Compare two polygons on their minimum Y coordinate.
+ * @param polygon1 An array of points or polygon.
+ * @param polygon2 An array of points or polygon.
+ */
 export function compareOnY(polygon1: Array<Point>, polygon2: Array<Point>): number {
   const sort: number =
     getMinYCoordinate(polygon1) - getMinYCoordinate(polygon2);
@@ -124,6 +137,11 @@ export function compareOnY(polygon1: Array<Point>, polygon2: Array<Point>): numb
   return sort < 0 ? -1 : 1;
 }
 
+/**
+ * Compare two polygons on their minimum X coordinate.
+ * @param polygon1 An array of points or polygon.
+ * @param polygon2 An array of points or polygon.
+ */
 export function compareOnX(polygon1: Array<Point>, polygon2: Array<Point>): number {
   const sort: number =
     getMinXCoordinate(polygon1) - getMinXCoordinate(polygon2);
@@ -133,6 +151,11 @@ export function compareOnX(polygon1: Array<Point>, polygon2: Array<Point>): numb
   return sort < 0 ? -1 : 1;
 }
 
+/**
+ * Adjust a polygon for a given rotation.
+ * @param polygon An array of points or polygon.
+ * @param orientation The rotation angle in degrees.
+ */
 export function adjustForRotation(polygon: Array<Point>, orientation: number): Array<Point> {
   if (orientation === 90) {
     return polygon.map(([x, y]) => [y, 1 - x]);

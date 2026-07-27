@@ -1,14 +1,17 @@
 
 import { logger } from "@/logger.js";
-import { BaseSettings, MindeeApiConstructorProps } from "../../http/baseSettings.js";
+import { BaseSettings, MindeeApiConstructorProps } from "@/http/baseSettings.js";
 import { MindeeConfigurationError } from "@/errors/index.js";
 
+/** Default account owner for built-in v1 APIs. */
 export const STANDARD_API_OWNER: string = "mindee";
 const API_V1_KEY_ENVVAR_NAME: string = "MINDEE_API_KEY";
 const API_V1_HOST_ENVVAR_NAME: string = "MINDEE_API_HOST";
 const DEFAULT_MINDEE_API_HOST: string = "api.mindee.net";
 
+/** Runtime settings container for v1 API calls. */
 export class ApiSettingsV1 extends BaseSettings {
+  /** Default headers sent with each v1 API request. */
   baseHeaders: Record<string, string>;
 
   constructor({
@@ -29,6 +32,7 @@ export class ApiSettingsV1 extends BaseSettings {
     };
   }
 
+  /** Resolves the API key from environment variables. */
   protected apiKeyFromEnv(): string {
     const envVarValue = process.env[API_V1_KEY_ENVVAR_NAME];
     if (envVarValue) {
@@ -40,6 +44,7 @@ export class ApiSettingsV1 extends BaseSettings {
     return "";
   }
 
+  /** Resolves the API hostname from environment variables. */
   protected hostnameFromEnv(): string {
     const envVarValue = process.env[API_V1_HOST_ENVVAR_NAME];
     if (envVarValue) {

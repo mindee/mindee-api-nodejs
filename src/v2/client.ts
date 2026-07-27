@@ -65,6 +65,7 @@ export class Client {
     return await this.mindeeApi.reqGetSearchModel(name, modelType);
   }
 
+  /** Enqueues a product inference job without waiting for completion. */
   async enqueue<P extends typeof BaseProduct>(
     product: P,
     inputSource: InputSource,

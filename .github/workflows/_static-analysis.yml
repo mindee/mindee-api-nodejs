@@ -15,7 +15,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: 24
+          node-version: 26
           cache: "npm"
 
       - name: Install Node.js dependencies
@@ -24,8 +24,11 @@ jobs:
       - name: Test lint
         run: npm run lint
 
-      - name: Install NPM License Checker
-        run: npm install -g license-checker
+      - name: Test lint for dist
+        run: npm run lint:package
 
-      - name: Check licences, no GPL or APGL allowed
-        run: license-checker | grep -P -B1 '(?<=[A\W])GPL' && exit 1 || exit 0
+      - name: Check for secrets
+        run: npm run lint:secrets
+
+      - name: Test licenses
+        run: npm run license:check

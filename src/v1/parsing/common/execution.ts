@@ -3,7 +3,7 @@ import { GeneratedV1Document } from "@/v1/product/generated/generatedV1Document.
 import { ExecutionFile } from "./executionFile.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { ExecutionPriority } from "./executionPriority.js";
-import { parseDate } from "../../../parsing/dateParser.js";
+import { parseDate } from "@/parsing/dateParser.js";
 
 /**
  * Representation of an execution for a workflow.

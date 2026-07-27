@@ -4,6 +4,7 @@ import { ExtractionResponse } from "@/v2/product/index.js";
 /**
  * Document level classification.
  */
+/** Classifier output for document-level classification. */
 export class ClassificationClassifier {
   /**
    * The document type, as identified on given classification values.
@@ -21,6 +22,7 @@ export class ClassificationClassifier {
       : undefined;
   }
 
+  /** Returns a readable classifier summary. */
   toString(): string {
     return `Document Type: ${this.documentType}`;
   }

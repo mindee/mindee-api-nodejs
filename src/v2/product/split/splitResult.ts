@@ -29,6 +29,7 @@ export class SplitResult {
     return await extractMultipleSplits(inputSource, splits);
   }
 
+  /** Returns a readable list of split ranges. */
   toString(): string {
     let splits = "\n";
     if (this.splits.length > 0) {

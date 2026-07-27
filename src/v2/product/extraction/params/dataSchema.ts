@@ -1,5 +1,11 @@
 import { StringDict } from "@/parsing/stringDict.js";
-import { DataSchemaReplace } from "./dataSchemaReplace.js";
+import { DataSchemaReplace, DataSchemaReplaceJson } from "./dataSchemaReplace.js";
+
+/** JSON payload for top-level data schema options. */
+export interface DataSchemaJson {
+  /** Optional full replacement schema. */
+  replace?: DataSchemaReplaceJson;
+}
 
 /**
  * Modify the Data Schema.
@@ -20,9 +26,11 @@ export class DataSchema {
     }
   }
 
-  toJSON() {
+  /** Serializes the data schema parameters to API format. */
+  toJSON(): DataSchemaJson {
     return { replace: this.replace?.toJSON() };
   }
+  /** Returns a JSON string representation of the data schema parameters. */
   toString() {
     return JSON.stringify(this.toJSON());
   }

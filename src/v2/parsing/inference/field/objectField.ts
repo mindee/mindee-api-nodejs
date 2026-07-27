@@ -4,7 +4,9 @@ import { BaseField } from "./baseField.js";
 import type { SimpleField } from "./simpleField.js";
 import type { ListField } from "./listField.js";
 
+/** Object-valued inference field. */
 export class ObjectField extends BaseField {
+  /** Nested fields carried by this object. */
   readonly fields: InferenceFields;
 
   /**
@@ -110,10 +112,12 @@ export class ObjectField extends BaseField {
     this.fields = new InferenceFields(serverResponse["fields"], this._indentLevel + 1);
   }
 
+  /** Returns a readable representation of nested fields. */
   toString(): string {
     return "\n" + (this.fields ? this.fields.toString(1) : "");
   }
 
+  /** Returns a compact representation suitable for list items. */
   toStringFromList(): string{
     return this.fields? this.fields.toString(2).substring(4) : "";
   }

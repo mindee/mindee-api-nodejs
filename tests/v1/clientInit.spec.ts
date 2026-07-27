@@ -8,6 +8,7 @@ describe("Test client initialization", () => {
     delete process.env.MINDEE_API_KEY;
     assert.throws(
       () => {
+        // eslint-disable-next-line sonarjs/constructor-for-side-effects
         new Client({});
       },
       MindeeError

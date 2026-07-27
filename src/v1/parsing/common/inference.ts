@@ -8,6 +8,7 @@ import {
 import { MindeeConfigurationError } from "@/errors/index.js";
 
 /**
+ * Generic base class for parsed v1 inference payloads.
  *
  * @typeParam DocT an extension of a `Prediction`. Is generic by default to
  * allow for easier optional `PageT` generic typing.
@@ -64,6 +65,7 @@ export abstract class Inference<
   /**
    * Default string representation.
    */
+  /** Returns a human-readable representation of the inference payload. */
   toString() {
 
     let pages = "";
