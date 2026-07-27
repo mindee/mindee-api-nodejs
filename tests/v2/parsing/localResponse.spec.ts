@@ -13,8 +13,8 @@ const dummySecretKey: string = "ogNjY44MhvKPGTtVsI8zG82JqWQa68woYQH";
 const filePath: string = path.join(V2_PRODUCT_PATH, "extraction/standard_field_types.json");
 
 /**
- * Asserts that a local response is valid.
- * @param localResponse The local response to validate.
+ * Asserts that a local response has the expected structure.
+ * @param localResponse Response to be asserted.
  */
 async function assertLocalResponse(localResponse: LocalResponse) {
   await localResponse.init();

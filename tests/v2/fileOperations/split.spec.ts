@@ -6,7 +6,6 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import path from "path";
 import { V2_PRODUCT_PATH } from "../../index.js";
-import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 
 const splitPath = path.join(V2_PRODUCT_PATH, "split");
 const financialDocumentPath = path.join(V2_PRODUCT_PATH, "extraction", "financial_document");
@@ -21,9 +20,7 @@ async function loadV2Split(resourcePath: string): Promise<SplitResponse> {
   return localResponse.deserializeResponse(SplitResponse);
 }
 
-const hasOptionals = hasAllOptionalDependencies();
-
-describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", { skip: !hasOptionals }, async () => {
+describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", async () => {
 
   await it("should process single page split correctly", async () => {
     const inputSample = new PathInput({

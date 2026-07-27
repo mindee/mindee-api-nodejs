@@ -18,9 +18,6 @@ import {
 } from "@/input/index.js";
 import { MindeeInputSourceError } from "@/errors/index.js";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../index.js";
-import { hasAllOptionalDependencies } from "../helpers/optionalDeps.js";
-
-const hasOptionals = hasAllOptionalDependencies();
 
 describe("Input Sources - load different types of input", () => {
 
@@ -244,7 +241,7 @@ describe("Input Sources - load different types of input", () => {
     assert.strictEqual(inputSource.filename, filename);
     assert.ok(inputSource.isPdf());
     assert.ok(inputSource.fileObject instanceof Buffer);
-    await it("getPageCount #OptionalDepsRequired", { skip: !hasOptionals }, async () => {
+    await it("getPageCount #OptionalDepsRequired", async () => {
       assert.strictEqual(await inputSource.getPageCount(), 10);
     });
   });

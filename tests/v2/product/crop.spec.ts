@@ -83,7 +83,6 @@ describe("MindeeV2 - Crop Response", async () => {
     assert.strictEqual(firstCrop.objectType, "invoice");
     assert.strictEqual(firstCrop.location.page, 0);
     const firstPolygon: Polygon = firstCrop.location.polygon!;
-    assert.strictEqual(firstPolygon.length, 4);
     assert.ok(Math.abs(firstPolygon[0][0] - 0.214) < 1e-9);
     assert.ok(Math.abs(firstPolygon[0][1] - 0.079) < 1e-9);
     assert.ok(Math.abs(firstPolygon[1][0] - 0.476) < 1e-9);

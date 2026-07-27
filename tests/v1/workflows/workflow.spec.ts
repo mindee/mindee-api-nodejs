@@ -8,9 +8,11 @@ import { Client } from "@/v1/index.js";
 import { PathInput } from "@/index.js";
 
 /**
- * Creates an interceptor for a given HTTP code and response file.
- * @param httpCode HTTP status code.
- * @param jsonFilePath Path to the response file.
+ * Execute a workflow and read the response.
+ *
+ * @param httpCode - The HTTP status code to return.
+ * @param jsonFilePath - The path to the JSON file to return.
+ * @returns The mock agent.
  */
 async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<MockAgent> {
   const mockAgent = new MockAgent();
@@ -24,6 +26,7 @@ async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<M
 
 /**
  * Execute a workflow and read the response.
+ *
  * @param mockAgent Mock agent.
  * @param doc Document to send.
  * @param workflowId Workflow ID.

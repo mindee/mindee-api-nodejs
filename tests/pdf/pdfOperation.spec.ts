@@ -6,11 +6,8 @@ import { describe, it } from "node:test";
 import { PageOptions, PageOptionsOperation } from "@/index.js";
 import { PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";
-import { hasAllOptionalDependencies } from "../helpers/optionalDeps.js";
 
-const hasOptionals = hasAllOptionalDependencies();
-
-describe("Test PDF operation #OptionalDepsRequired", { skip: !hasOptionals }, () => {
+describe("Test PDF operation #OptionalDepsRequired", () => {
   it("should cut a PDF to get 2 pages", async () => {
     const inputSource = new PathInput({
       inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf"),

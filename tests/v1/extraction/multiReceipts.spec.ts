@@ -7,7 +7,6 @@ import { extractReceipts } from "@/v1/extraction/index.js";
 import { PathInput } from "@/index.js";
 import { Document } from "@/v1/index.js";
 import { RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index.js";
-import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 
 const dataPath = {
   complete: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/complete.json"),
@@ -15,9 +14,7 @@ const dataPath = {
   completeMultiPage: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/response_v1/multipage_sample.json"),
   multiPageSample: path.join(V1_PRODUCT_PATH, "multi_receipts_detector/multipage_sample.pdf"),
 };
-const hasOptionals = hasAllOptionalDependencies();
-
-describe("MindeeV1 - Multi-Receipt Extraction #OptionalDepsRequired", { skip: !hasOptionals }, () => {
+describe("MindeeV1 - Multi-Receipt Extraction #OptionalDepsRequired", () => {
   describe("A single-page multi-receipts document", () => {
     it("should be split properly.", async () => {
       const jsonDataNA = await fs.readFile(path.resolve(dataPath.complete));
