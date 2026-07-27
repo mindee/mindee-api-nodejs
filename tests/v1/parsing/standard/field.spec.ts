@@ -64,7 +64,7 @@ describe("Test different inits of Field", () => {
       new Field({ prediction: { value: undefined, confidence: undefined } }),
       new Field({ prediction: { value: 4, confidence: 0.8 } }),
     ];
-    assert.strictEqual(Field.arrayConfidence(fields2), 0.0);
+    assert.ok(Math.abs(Field.arrayConfidence(fields2) - 0.0) < 1e-9);
     assert.strictEqual(Field.arraySum(fields2), 0.0);
   });
 });

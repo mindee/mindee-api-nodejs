@@ -1,18 +1,20 @@
-import { before, describe, it } from "node:test";
-import assert from "node:assert/strict";
-import * as path from "path";
+import { LocalInputSource, PathInput } from "@/input/index.js";
+import { extractReceipts } from "@/v1/extraction/index.js";
 import { Client } from "@/v1/index.js";
 import { MultiReceiptsDetectorV1, ReceiptV5 } from "@/v1/product/index.js";
-import { extractReceipts } from "@/v1/extraction/index.js";
-import { V1_PRODUCT_PATH } from "../../index.js";
-import { LocalInputSource, PathInput } from "@/input/index.js";
+import assert from "node:assert/strict";
+import { before, describe, it } from "node:test";
 import { setTimeout } from "node:timers/promises";
+import * as path from "path";
+import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
+import { V1_PRODUCT_PATH } from "../../index.js";
 
+const hasOptionals = hasAllOptionalDependencies();
 const apiKey = process.env.MINDEE_API_KEY;
 let client: Client;
 let sourceDoc: LocalInputSource;
 describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired",
-  { timeout: 60000 }, () => {
+  { timeout: 60000, skip: !hasOptionals }, () => {
     describe("A Multi-Receipt PDF", () => {
       before(async () => {
         sourceDoc = new PathInput({

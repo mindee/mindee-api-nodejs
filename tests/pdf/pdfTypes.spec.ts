@@ -5,8 +5,11 @@ import * as pdf from "@/pdf/index.js";
 import { PageOptions } from "@/input/index.js";
 import { PageOptionsOperation, PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";
+import { hasAllOptionalDependencies } from "../helpers/optionalDeps.js";
 
-describe("Test pdf lib #OptionalDepsRequired", () => {
+const hasOptionals = hasAllOptionalDependencies();
+
+describe("Test pdf lib #OptionalDepsRequired", { skip: !hasOptionals }, () => {
 
   it("should open a simple XFA form PDF.", async () => {
     const inputDoc = new PathInput(
