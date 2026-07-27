@@ -83,6 +83,6 @@ describe("MindeeV2 - Product - SplitResponse #OptionalDepsRequired", { skip: !ha
     const splitFiles = await extractMultipleSplits(inputSample, [[0, 1, 2, 3, 4]]);
     assert(splitFiles.length === 1);
     assert(splitFiles[0].pageCount === 5);
-    assert(splitFiles[0].buffer === inputSample.fileObject);
+    assert.ok(splitFiles[0].buffer.equals(inputSample.fileObject));
   });
 });
