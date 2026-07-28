@@ -1,7 +1,10 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+import { hasAllOptionalDependencies } from "../helpers/optionalDeps.js";
 
-describe("MindeeV1 - Optional Dependencies #OptionalDepsRemoved", function () {
+const hasOptionals = hasAllOptionalDependencies();
+
+describe("MindeeV1 - Optional Dependencies #OptionalDepsRemoved", { skip: hasOptionals }, function () {
 
   const modules = [
     "sharp",
@@ -16,10 +19,7 @@ describe("MindeeV1 - Optional Dependencies #OptionalDepsRemoved", function () {
         await import(moduleName);
         assert.fail("sharp should not be installed in this environment, but it was found!");
       } catch (error: any) {
-        const binaryMissing = error.message
-          && error.code === "ERR_MODULE_NOT_FOUND"
-          && error.message.includes(`Could not load the "${moduleName}" module`);
-        if (!binaryMissing) {
+        if (error?.code !== "ERR_MODULE_NOT_FOUND") {
           throw error;
         }
       }

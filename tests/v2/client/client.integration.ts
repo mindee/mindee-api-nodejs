@@ -1,6 +1,7 @@
 import { before, beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import path from "node:path";
+import { setTimeout } from "node:timers/promises";
 
 import {
   Client,
@@ -44,6 +45,35 @@ function checkEmptyActiveOptions(inference: ExtractionInference) {
   assert.equal(inference.activeOptions?.polygon, false);
   assert.equal(inference.activeOptions?.confidence, false);
   assert.equal(inference.activeOptions?.textContext, false);
+}
+
+/**
+ * Polls a job until a result URL is available, or fails after a fixed number of attempts.
+ * @param client Client used for polling.
+ * @param jobId Job ID to poll.
+ * @param maxAttempts Maximum poll attempts.
+ * @param delayMs Delay between attempts in milliseconds.
+ * @returns The result URL once available.
+ */
+async function waitForResultUrl(
+  client: Client,
+  jobId: string,
+  maxAttempts = 60,
+  delayMs = 2000,
+): Promise<string> {
+  for (let attempt = 1; attempt <= maxAttempts; attempt++) {
+    const jobResponse = await client.getJob(jobId);
+    if (jobResponse.job.resultUrl) {
+      return jobResponse.job.resultUrl;
+    }
+    if (attempt < maxAttempts) {
+      await setTimeout(delayMs);
+    }
+  }
+  throw new Error(
+    `Job ${jobId} did not return a result URL after ${maxAttempts} attempts` +
+    ` (${Math.floor((maxAttempts * delayMs) / 1000)} seconds).`
+  );
 }
 
 describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
@@ -218,17 +248,13 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
       Extraction, source, params
     );
     assert.ok(enqueueResponse.job.id);
+    const resultUrl = await waitForResultUrl(client, enqueueResponse.job.id);
 
-    setTimeout(async () => {
-      const jobResponse = await client.getJob(enqueueResponse.job.id);
-      assert.ok(jobResponse.job.resultUrl);
-
-      const resultId = jobResponse.job.resultUrl?.split("/").pop() || "";
-      const resultResponse = await client.getResult(
-        Extraction, resultId
-      );
-      assert.strictEqual(resultId, resultResponse.inference.id);
-    }, 6500);
+    const resultId = resultUrl.split("/").pop() || "";
+    const resultResponse = await client.getResult(
+      Extraction, resultId
+    );
+    assert.strictEqual(resultId, resultResponse.inference.id);
   });
 
   it("enqueueAndGetResult must succeed: HTTPS URL", async () => {

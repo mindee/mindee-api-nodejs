@@ -6,49 +6,53 @@ import * as mindee from "@/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { levenshteinRatio } from "../../testingUtilities.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
+import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 
-describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRequired", { timeout: 60000 }, () => {
-  let client: mindee.v1.Client;
+const hasOptionals = hasAllOptionalDependencies();
 
-  beforeEach(() => {
-    client = new mindee.v1.Client();
-  });
+describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRequired",
+  { timeout: 60000, skip: !hasOptionals }, () => {
+    let client: mindee.v1.Client;
 
-  it("should extract invoices in strict mode.", async () => {
-    const sample = new mindee.PathInput({
-      inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
+    beforeEach(() => {
+      client = new mindee.v1.Client();
     });
 
-    const response = await client.enqueueAndParse(
-      mindee.v1.product.InvoiceSplitterV1, sample
-    );
-    const invoiceSplitterInference = response.document?.inference;
-    assert.ok(invoiceSplitterInference instanceof InvoiceSplitterV1);
-    const invoices = await mindee.v1.extraction.extractInvoices(
-      sample,
+    it("should extract invoices in strict mode.", async () => {
+      const sample = new mindee.PathInput({
+        inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
+      });
+
+      const response = await client.enqueueAndParse(
+        mindee.v1.product.InvoiceSplitterV1, sample
+      );
+      const invoiceSplitterInference = response.document?.inference;
+      assert.ok(invoiceSplitterInference instanceof InvoiceSplitterV1);
+      const invoices = await mindee.v1.extraction.extractInvoices(
+        sample,
       invoiceSplitterInference as InvoiceSplitterV1
-    );
-    assert.strictEqual(invoices.length, 2);
-    assert.strictEqual(invoices[0].asInputSource().filename, "invoice_p_0-0.pdf");
-    assert.strictEqual(invoices[1].asInputSource().filename, "invoice_p_1-1.pdf");
+      );
+      assert.strictEqual(invoices.length, 2);
+      assert.strictEqual(invoices[0].asInputSource().filename, "invoice_p_0-0.pdf");
+      assert.strictEqual(invoices[1].asInputSource().filename, "invoice_p_1-1.pdf");
 
-    const invoiceResult = await client.parse(
-      mindee.v1.product.InvoiceV4, invoices[0].asInputSource()
-    );
-    const testStringRstInvoice = await fs.readFile(
-      path.join(V1_PRODUCT_PATH, "invoices/response_v4/summary_full_invoice_p1.rst")
-    );
+      const invoiceResult = await client.parse(
+        mindee.v1.product.InvoiceV4, invoices[0].asInputSource()
+      );
+      const testStringRstInvoice = await fs.readFile(
+        path.join(V1_PRODUCT_PATH, "invoices/response_v4/summary_full_invoice_p1.rst")
+      );
 
-    assert.ok(
-      levenshteinRatio(
-        invoiceResult.document.toString(),
-        testStringRstInvoice.toString()
-      ) >= 0.90
-    );
+      assert.ok(
+        levenshteinRatio(
+          invoiceResult.document.toString(),
+          testStringRstInvoice.toString()
+        ) >= 0.90
+      );
+    });
   });
-});
 
-describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRemoved", function () {
+describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRemoved", { skip: hasOptionals }, function () {
   let client: mindee.v1.Client;
 
   beforeEach(() => {

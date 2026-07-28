@@ -6,13 +6,16 @@ import { LocalResponse } from "@/v2/parsing/index.js";
 import { CropResponse } from "@/v2/product/crop/cropResponse.js";
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import assert from "node:assert/strict";
-import { describe, it } from "node:test";
+import { before, describe, it } from "node:test";
 import path from "path";
 import type * as SharpTypes from "sharp";
 import { V2_PRODUCT_PATH } from "../../index.js";
+import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 
 const cropPath = path.join(V2_PRODUCT_PATH, "crop");
 let pdfLib: typeof pdfLibTypes | null = null;
+const hasOptionals = hasAllOptionalDependencies();
+let sharp: any;
 
 /**
  * Loads the pdf-lib library if it is not already loaded.
@@ -53,11 +56,13 @@ async function getFileDimensions(buffer: Buffer, sharpInstance: any) {
 
 }
 
-describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
-  const sharpLoaded = await loadOptionalDependency<typeof SharpTypes>("sharp", "Image compression");
-  const sharp = (sharpLoaded as any).default || sharpLoaded;
+describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", { skip: !hasOptionals }, () => {
+  before(async () => {
+    const sharpLoaded = await loadOptionalDependency<typeof SharpTypes>("sharp", "Image compression");
+    sharp = (sharpLoaded as any).default || sharpLoaded;
+  });
 
-  await it("should process single page crop correctly", async () => {
+  it("should process single page crop correctly", async () => {
     const inputSample = new PathInput({
       inputPath:
           path.join(cropPath, "default_sample.jpg")
@@ -79,7 +84,7 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
     assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
   });
 
-  await it("should extract and still work with lower quality", async () => {
+  it("should extract and still work with lower quality", async () => {
     const inputSample = new PathInput({
       inputPath:
         path.join(cropPath, "default_sample.jpg")
@@ -101,7 +106,7 @@ describe("MindeeV2 - FileOperation - Crop #OptionalDepsRequired", async () => {
     assert.ok(localExtract.buffer.equals(extractedCrops[0].buffer));
   });
 
-  await it("should process multi page receipt crops correctly", async () => {
+  it("should process multi page receipt crops correctly", async () => {
     const inputSample = new PathInput({
       inputPath:
         path.join(cropPath, "multipage_sample.pdf")
