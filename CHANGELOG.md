@@ -1,5 +1,19 @@
 # Mindee Node.js API Library Changelog
 
+
+## v5.6.0 - 2026-07-21
+### Changes
+* :sparkles: add support for webhook errors
+* :arrow_up: add husky
+* :arrow_up: add eslint rules
+* :arrow_up: add direct license checker
+* :recycle: replace dashes with colons in package.json script commands
+* :wrench: add secretlint
+* :wrench: :coffin: remove support for mocha
+### Fixes
+* :arrow_up: bump dependencies
+
+
 ## v5.5.0 - 2026-07-01
 ### Fixes
 * :memo: minor tweak to SKILL file
