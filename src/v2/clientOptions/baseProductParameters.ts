@@ -4,7 +4,7 @@ import { MindeeConfigurationError } from "@/errors/index.js";
 /**
  * Constructor parameters for BaseParameters and its subclasses.
  */
-export interface BaseParametersConstructor {
+export interface BaseProductParametersConstructor {
   modelId: string;
   alias?: string;
   webhookIds?: string[];
@@ -25,7 +25,7 @@ export interface BaseParametersConstructor {
  *   webhookIds: ["YOUR_WEBHOOK_ID_1", "YOUR_WEBHOOK_ID_2"],
  * };
  */
-export abstract class BaseParameters {
+export abstract class BaseProductParameters {
   /**
    * Model ID to use for the inference. **Required.**
    */
@@ -47,7 +47,7 @@ export abstract class BaseParameters {
    */
   closeFile?: boolean;
 
-  protected constructor(params: BaseParametersConstructor) {
+  protected constructor(params: BaseProductParametersConstructor) {
     if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
       throw new MindeeConfigurationError("Model ID must be provided");
     }

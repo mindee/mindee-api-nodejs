@@ -1,7 +1,7 @@
 import {
-  BaseParameters,
-  BaseParametersConstructor,
-} from "@/v2/clientOptions/baseParameters.js";
+  BaseProductParameters,
+  BaseProductParametersConstructor,
+} from "@/v2/clientOptions/baseProductParameters.js";
 import { logger } from "@/logger.js";
 
 /**
@@ -21,8 +21,8 @@ import { logger } from "@/logger.js";
  *   }
  * };
  */
-export class SplitParameters extends BaseParameters {
-  constructor(params: BaseParametersConstructor & {}) {
+export class SplitParameters extends BaseProductParameters {
+  constructor(params: BaseProductParametersConstructor & {}) {
     super({ ...params });
     logger.debug("Split parameters initialized.");
   }

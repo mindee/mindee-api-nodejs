@@ -1,7 +1,7 @@
 import { FormData } from "undici";
 import { StringDict } from "@/parsing/stringDict.js";
 import { DataSchema } from "./dataSchema.js";
-import { BaseParameters, BaseParametersConstructor } from "@/v2/clientOptions/baseParameters.js";
+import { BaseProductParameters, BaseProductParametersConstructor } from "@/v2/clientOptions/baseProductParameters.js";
 import { logger } from "@/logger.js";
 
 /**
@@ -22,7 +22,7 @@ import { logger } from "@/logger.js";
  *   }
  * };
  */
-export class ExtractionParameters extends BaseParameters {
+export class ExtractionParameters extends BaseProductParameters {
   /**
    * Use Retrieval-Augmented Generation during inference.
    */
@@ -51,7 +51,7 @@ export class ExtractionParameters extends BaseParameters {
    */
   dataSchema?: DataSchema | StringDict | string;
 
-  constructor(params: BaseParametersConstructor & {
+  constructor(params: BaseProductParametersConstructor & {
     rag?: boolean;
     rawText?: boolean;
     polygon?: boolean;

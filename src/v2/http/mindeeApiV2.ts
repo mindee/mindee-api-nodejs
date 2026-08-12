@@ -1,6 +1,6 @@
 import { ApiSettings } from "./apiSettings.js";
 import { Dispatcher } from "undici";
-import { BaseParameters } from "@/v2/index.js";
+import { BaseProductParameters } from "@/v2/index.js";
 import {
   BaseResponse,
   ErrorResponse,
@@ -60,7 +60,7 @@ export class MindeeApiV2 {
   async reqPostProductEnqueue(
     product: typeof BaseProduct,
     inputSource: InputSource,
-    params: BaseParameters
+    params: BaseProductParameters
   ): Promise<JobResponse> {
     const form = params.getFormData();
     if (inputSource instanceof LocalInputSource) {

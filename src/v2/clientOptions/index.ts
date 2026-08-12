@@ -3,4 +3,4 @@ export type {
   PollingOptionsConstructor,
   TimerOptions,
 } from "./pollingOptions.js";
-export { BaseParameters } from "./baseParameters.js";
+export { BaseProductParameters } from "./baseProductParameters.js";

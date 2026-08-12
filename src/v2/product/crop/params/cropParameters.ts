@@ -1,4 +1,4 @@
-import { BaseParameters, BaseParametersConstructor } from "@/v2/clientOptions/baseParameters.js";
+import { BaseProductParameters, BaseProductParametersConstructor } from "@/v2/clientOptions/baseProductParameters.js";
 import { logger } from "@/logger.js";
 
 /**
@@ -18,8 +18,8 @@ import { logger } from "@/logger.js";
  *   }
  * };
  */
-export class CropParameters extends BaseParameters {
-  constructor(params: BaseParametersConstructor & {}) {
+export class CropParameters extends BaseProductParameters {
+  constructor(params: BaseProductParametersConstructor & {}) {
     super({ ...params });
     logger.debug("Crop parameters initialized.");
   }

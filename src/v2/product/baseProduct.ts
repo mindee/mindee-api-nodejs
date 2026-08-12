@@ -1,4 +1,4 @@
-import { BaseParameters } from "@/v2/index.js";
+import { BaseProductParameters } from "@/v2/index.js";
 import { ResponseConstructor } from "@/v2/parsing/index.js";
 
 /**
@@ -7,7 +7,7 @@ import { ResponseConstructor } from "@/v2/parsing/index.js";
  * Child classes are passed to the Client when making requests.
  */
 export abstract class BaseProduct {
-  static get parametersClass(): new (...args: any[]) => BaseParameters {
+  static get parametersClass(): new (...args: any[]) => BaseProductParameters {
     throw new Error("Must define static parameters property");
   }
   static get responseClass(): ResponseConstructor<any> {
