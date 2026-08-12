@@ -8,7 +8,7 @@ import { InvoiceV4 } from "@/v1/product/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 import { PathInput, Base64Input, BufferInput, BytesInput, UrlInput } from "@/index.js";
 
-describe("MindeeV1 - Integration - File Input", { timeout: 60000 }, () => {
+describe("MindeeV1 - Integration - File Input", { timeout: 80000 }, () => {
   let client: mindee.v1.Client;
   let filePath: string;
 

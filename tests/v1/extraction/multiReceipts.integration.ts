@@ -14,7 +14,7 @@ const apiKey = process.env.MINDEE_API_KEY;
 let client: Client;
 let sourceDoc: LocalInputSource;
 describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired",
-  { timeout: 60000, skip: !hasOptionals }, () => {
+  { timeout: 80000, skip: !hasOptionals }, () => {
     describe("A Multi-Receipt PDF", () => {
       before(async () => {
         sourceDoc = new PathInput({

@@ -9,7 +9,7 @@ import { FinancialDocumentV1 } from "@/v1/product/index.js";
 import { RAGExtra } from "@/v1/parsing/common/extras/ragExtra.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
-describe("MindeeV1 - Integration - Workflow calls", { timeout: 60000 }, () => {
+describe("MindeeV1 - Integration - Workflow calls", { timeout: 80000 }, () => {
   let client: mindee.v1.Client;
   let sample: LocalInputSource;
   let workflowId: string;

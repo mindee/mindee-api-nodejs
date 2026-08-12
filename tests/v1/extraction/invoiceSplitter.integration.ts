@@ -11,7 +11,7 @@ import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 const hasOptionals = hasAllOptionalDependencies();
 
 describe("MindeeV1 - Integration - InvoiceSplitterV1 #OptionalDepsRequired",
-  { timeout: 60000, skip: !hasOptionals }, () => {
+  { timeout: 80000, skip: !hasOptionals }, () => {
     let client: mindee.v1.Client;
 
     beforeEach(() => {
