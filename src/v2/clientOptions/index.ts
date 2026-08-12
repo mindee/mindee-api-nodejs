@@ -4,3 +4,4 @@ export type {
   TimerOptions,
 } from "./pollingOptions.js";
 export { BaseProductParameters } from "./baseProductParameters.js";
+export { BaseSearchParameters } from "./baseSearchParameters.js";

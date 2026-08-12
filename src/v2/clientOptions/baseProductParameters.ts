@@ -1,4 +1,3 @@
-import { FormData } from "undici";
 import { MindeeConfigurationError } from "@/errors/index.js";
 
 /**
@@ -58,20 +57,20 @@ export abstract class BaseProductParameters {
   }
 
   /**
-   * Returns the form data to send to the API.
-   * @returns A `FormData` object.
+   * Gets the request parameters for the enqueue request.
+   * @returns A `Record` mapping parameter names to their string values.
    */
-  getFormData(): FormData {
-    const form = new FormData();
+  getRequestParameters(): Record<string, string> {
+    const parameters: Record<string, string> = {};
 
-    form.set("model_id", this.modelId);
+    parameters["model_id"] = this.modelId;
 
     if (this.alias !== undefined && this.alias !== null) {
-      form.set("alias", this.alias);
+      parameters["alias"] = this.alias;
     }
     if (this.webhookIds && this.webhookIds.length > 0) {
-      form.set("webhook_ids", this.webhookIds.join(","));
+      parameters["webhook_ids"] = this.webhookIds.join(",");
     }
-    return form;
+    return parameters;
   }
 }

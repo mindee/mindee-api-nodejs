@@ -1,6 +1,7 @@
 import { ApiSettings } from "./apiSettings.js";
 import { Dispatcher } from "undici";
 import { BaseProductParameters } from "@/v2/index.js";
+import { FormData } from "undici";
 import {
   BaseResponse,
   ErrorResponse,
@@ -62,7 +63,8 @@ export class MindeeApiV2 {
     inputSource: InputSource,
     params: BaseProductParameters
   ): Promise<JobResponse> {
-    const form = params.getFormData();
+    const form = this.#paramsToFormData(params.getRequestParameters());
+
     if (inputSource instanceof LocalInputSource) {
       form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
     } else {
@@ -155,6 +157,14 @@ export class MindeeApiV2 {
     const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options, url);
 
     return this.#processResponse(response, product.responseClass) as InstanceType<P["responseClass"]>;
+  }
+
+  #paramsToFormData(params: Record<string, string>): FormData {
+    const form = new FormData();
+    for (const [key, value] of Object.entries(params)) {
+      form.set(key, value);
+    }
+    return form;
   }
 
   #processResponse<T extends BaseResponse>(
