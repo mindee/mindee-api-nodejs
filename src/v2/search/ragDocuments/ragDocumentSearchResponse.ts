@@ -1,21 +1,20 @@
 import { StringDict } from "@/parsing/index.js";
-import { BaseSearchResponse } from "./baseSearchResponse.js";
-import { RagDocuments } from "@/v2/parsing/search/ragDocuments.js";
+import { BaseSearchResponse } from "@/v2/parsing/search/index.js";
+import { SearchRagDocuments } from "@/v2/parsing/search/searchRagDocuments.js";
 
 /**
  * RAG documents search response.
  */
 export class RagDocumentSearchResponse extends BaseSearchResponse {
-  static readonly slug = "rag-documents";
 
   /**
    * Paginated list of matching RAG documents.
    */
-  public ragDocuments: RagDocuments;
+  public ragDocuments: SearchRagDocuments;
 
   constructor(serverResponse: StringDict) {
     super(serverResponse);
-    this.ragDocuments = new RagDocuments(serverResponse["rag_documents"] ?? []);
+    this.ragDocuments = new SearchRagDocuments(serverResponse["rag_documents"] ?? []);
   }
 
   protected bodyLines(): string[] {

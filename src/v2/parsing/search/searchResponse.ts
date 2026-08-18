@@ -1,5 +1,5 @@
 import { StringDict } from "@/parsing/index.js";
-import { ModelSearchResponse } from "./modelSearchResponse.js";
+import { ModelSearchResponse } from "@/v2/search/models/modelSearchResponse.js";
 
 /**
  * Models search response.

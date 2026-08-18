@@ -3,7 +3,8 @@ import { describe, it } from "node:test";
 import path from "path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { LocalResponse } from "@/v2/index.js";
-import { RagDocumentSearchResponse } from "@/v2/parsing/search/index.js";
+import { RagDocumentSearchResponse } from "@/v2/search/index.js";
+
 
 const filePath = path.join(V2_RESOURCE_PATH, "search/rag_documents.json");
 

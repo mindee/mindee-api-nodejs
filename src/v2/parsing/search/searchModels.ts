@@ -3,11 +3,9 @@ import { StringDict } from "@/parsing/index.js";
 
 export class SearchModels extends Array<SearchModel> {
 
-  constructor(serverResponse: StringDict) {
+  constructor(serverResponse: StringDict[] = []) {
     super();
-    this.push(...(serverResponse ?? []).map(
-      (item: StringDict) => new SearchModel(item)
-    ));
+    this.push(...serverResponse.map((item: StringDict) => new SearchModel(item)));
   }
 
   toString(): string {

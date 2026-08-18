@@ -10,6 +10,8 @@ import { MindeeApiV2 } from "./http/mindeeApiV2.js";
 import { MindeeHttpErrorV2 } from "./http/errors.js";
 import { PollingOptions, PollingOptionsConstructor } from "./clientOptions/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
+import { BaseSearch } from "@/v2/search/baseSearch.js";
+import { ModelSearch } from "@/v2/search/models/modelSearch.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -60,9 +62,31 @@ export class Client {
    * @param name Optional name filter.
    * @param modelType Optional model type filter.
    * @returns a `Promise` containing the search response.
+   * @deprecated Use `search(ModelSearch, {})` instead.
    */
   async searchModels(name?: string, modelType?: string): Promise<SearchResponse> {
-    return await this.mindeeApi.reqGetSearchModel(name, modelType);
+    return await this.search(ModelSearch, { name: name, modelType: modelType });
+  }
+
+  /**
+   * Searches for resources matching the given criteria.
+   * @param search
+   * @param searchParameters Search parameters.
+   * @returns a `Promise` containing the search response.
+   */
+  async search<S extends typeof BaseSearch>(
+    search: S,
+    searchParameters: InstanceType<S["parametersClass"]> | ConstructorParameters<S["parametersClass"]>[0],
+  ): Promise<InstanceType<S["responseClass"]>> {
+    if (!searchParameters) {
+      throw new MindeeError("Search parameters are required.");
+    }
+
+    const paramsInstance = searchParameters instanceof search.parametersClass
+      ? searchParameters
+      : new search.parametersClass(searchParameters);
+
+    return await this.mindeeApi.reqGetSearch(search, paramsInstance);
   }
 
   /** Enqueues a product inference job without waiting for completion. */

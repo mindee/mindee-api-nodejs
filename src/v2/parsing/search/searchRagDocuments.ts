@@ -1,16 +1,14 @@
-import { RagDocument } from "@/v2/parsing/search/ragDocument.js";
+import { SearchRagDocument } from "@/v2/parsing/search/searchRagDocument.js";
 import { StringDict } from "@/parsing/index.js";
 
 /**
  * List of RAG documents.
  */
-export class RagDocuments extends Array<RagDocument> {
+export class SearchRagDocuments extends Array<SearchRagDocument> {
 
-  constructor(serverResponse: StringDict) {
+  constructor(serverResponse: StringDict[] = []) {
     super();
-    this.push(...(serverResponse ?? []).map(
-      (item: StringDict) => new RagDocument(item)
-    ));
+    this.push(...serverResponse.map((item: StringDict) => new SearchRagDocument(item)));
   }
 
   toString(): string {

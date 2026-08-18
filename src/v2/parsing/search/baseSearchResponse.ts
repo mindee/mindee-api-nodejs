@@ -2,11 +2,6 @@ import { StringDict } from "@/parsing/index.js";
 import { BaseResponse } from "@/v2/parsing/baseResponse.js";
 import { PaginationMetadata } from "./paginationMetadata.js";
 
-/** Constructor type for a search response class with a static slug property. */
-export type SearchResponseConstructor<T extends BaseSearchResponse> =
-  (new (serverResponse: any) => T) & { readonly slug: string };
-
-
 /**
  * Base class for search responses.
  */
@@ -21,6 +16,9 @@ export abstract class BaseSearchResponse extends BaseResponse {
     this.pagination = new PaginationMetadata(serverResponse["pagination"]);
   }
 
+  /**
+   * List of strings representing the search response.
+   */
   protected abstract bodyLines(): string[];
 
   toString(): string {

@@ -1,12 +1,11 @@
 import { StringDict } from "@/parsing/index.js";
-import { BaseSearchResponse } from "./baseSearchResponse.js";
-import { SearchModels } from "./searchModels.js";
+import { BaseSearchResponse } from "@/v2/parsing/search/baseSearchResponse.js";
+import { SearchModels } from "@/v2/parsing/search/searchModels.js";
 
 /**
  * Models search response.
  */
 export class ModelSearchResponse extends BaseSearchResponse {
-  static readonly slug = "models";
 
   /**
    * List of models returned by the search.

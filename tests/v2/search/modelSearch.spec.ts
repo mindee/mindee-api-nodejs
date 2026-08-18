@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 
 import { LocalResponse } from "@/v2/index.js";
-import { ModelSearchResponse } from "src/v2/parsing/search/index.js";
+import { ModelSearchResponse } from "@/v2/search/index.js";
 import { V2_RESOURCE_PATH } from "../../index.js";
 
 const filePath = path.join(V2_RESOURCE_PATH, "search/models.json");

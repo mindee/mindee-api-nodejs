@@ -6,15 +6,17 @@ import { BaseProduct } from "@/v2/product/baseProduct.js";
  * Automatically sort any image or scanned document into categories.
  */
 export class Classification extends BaseProduct {
-  /** Parameter class accepted by this product. */
+  /** @inheritDoc */
   static get parametersClass() {
     return ClassificationParameters;
   }
-  /** Response class returned by this product. */
+
+  /** @inheritDoc */
   static get responseClass() {
     return ClassificationResponse;
   }
-  /** API slug for this product. */
+
+  /** @inheritDoc */
   static get slug() {
     return "classification";
   }

@@ -3,7 +3,7 @@ import { StringDict } from "@/parsing/index.js";
 /**
  * Individual RAG document information.
  */
-export class RagDocument {
+export class SearchRagDocument {
   /**
    * Unique identifier of the RAG document.
    */
