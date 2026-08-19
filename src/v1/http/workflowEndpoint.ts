@@ -3,7 +3,6 @@ import { FormData } from "undici";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { ExecutionPriority } from "@/v1/parsing/common/index.js";
 import {
-  cutDocPages,
   sendRequestAndReadResponse,
   BaseHttpResponse,
   RequestOptions,
@@ -12,22 +11,19 @@ import { ApiSettingsV1 } from "./apiSettingsV1.js";
 import { handleError } from "./errors.js";
 import { WorkflowParams } from "./httpParams.js";
 import { isValidSyncResponse } from "./responseValidation.js";
+import { BaseEndpoint } from "@/v1/http/baseEndpoint.js";
 
 /**
  * Endpoint for a workflow.
  */
-export class WorkflowEndpoint {
-  /** Settings relating to the API. */
-  settings: ApiSettingsV1;
-  /** Root of the URL for API calls. */
-  urlRoot: string;
+export class WorkflowEndpoint extends BaseEndpoint {
 
   constructor(
     settings: ApiSettingsV1,
     workflowId: string
   ) {
-    this.settings = settings;
-    this.urlRoot = `/v1/workflows/${workflowId}/executions`;
+    super(settings, `/v1/workflows/${workflowId}/executions`);
+
   }
 
   /**
@@ -40,7 +36,7 @@ export class WorkflowEndpoint {
   async executeWorkflow(params: WorkflowParams): Promise<BaseHttpResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await cutDocPages(params.inputDoc, params.pageOptions);
+      await this.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#workflowReqPost(params);
     if (!isValidSyncResponse(response)) {
