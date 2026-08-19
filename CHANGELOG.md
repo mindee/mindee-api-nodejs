@@ -1,5 +1,9 @@
 # Mindee Node.js API Library Changelog
 
+## v5.6.1 - 2026-08-19
+### Changes
+* :arrow_up: security updates
+
 
 ## v5.6.0 - 2026-07-21
 ### Changes
