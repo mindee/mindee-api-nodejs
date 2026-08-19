@@ -1,6 +1,5 @@
 import { logger } from "@/logger.js";
 import { request, Dispatcher, FormData } from "undici";
-import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 
 export const TIMEOUT_SECS_DEFAULT: number = 120;
 
@@ -17,17 +16,6 @@ export interface RequestOptions {
 export interface BaseHttpResponse {
   messageObj: any;
   data: { [key: string]: any };
-}
-
-/**
- * Cuts a document's pages according to the given options.
- * @param inputDoc input document.
- * @param pageOptions page cutting options.
- */
-export async function cutDocPages(inputDoc: InputSource, pageOptions: PageOptions) {
-  if (inputDoc instanceof LocalInputSource && inputDoc.isPdf()) {
-    await inputDoc.applyPageOptions(pageOptions);
-  }
 }
 
 /**

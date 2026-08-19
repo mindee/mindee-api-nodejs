@@ -3,7 +3,6 @@ import { FormData } from "undici";
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import {
-  cutDocPages,
   sendRequestAndReadResponse,
   BaseHttpResponse,
   RequestOptions,
@@ -12,15 +11,12 @@ import { ApiSettingsV1 } from "./apiSettingsV1.js";
 import { handleError } from "./errors.js";
 import { PredictParams } from "./httpParams.js";
 import { isValidAsyncResponse, isValidSyncResponse } from "./responseValidation.js";
+import { BaseEndpoint } from "@/v1/http/baseEndpoint.js";
 
 /**
  * Endpoint for a product (OTS or Custom).
  */
-export class Endpoint {
-  /** Settings relating to the API. */
-  settings: ApiSettingsV1;
-  /** Root of the URL for API calls. */
-  urlRoot: string;
+export class Endpoint extends BaseEndpoint {
   /** URL of a product. */
   urlName: string;
   /** Account owning the product. */
@@ -34,8 +30,7 @@ export class Endpoint {
     version: string,
     settings: ApiSettingsV1
   ) {
-    this.settings = settings;
-    this.urlRoot = `/v1/products/${owner}/${urlName}/v${version}`;
+    super(settings, `/v1/products/${owner}/${urlName}/v${version}`);
     this.owner = owner;
     this.urlName = urlName;
     this.version = version;
@@ -51,7 +46,7 @@ export class Endpoint {
   async predict(params: PredictParams): Promise<BaseHttpResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await cutDocPages(params.inputDoc, params.pageOptions);
+      await this.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictReqPost(
       params.inputDoc,
@@ -75,7 +70,7 @@ export class Endpoint {
   async predictAsync(params: PredictParams): Promise<BaseHttpResponse> {
     await params.inputDoc.init();
     if (params.pageOptions !== undefined) {
-      await cutDocPages(params.inputDoc, params.pageOptions);
+      await this.cutDocPages(params.inputDoc, params.pageOptions);
     }
     const response = await this.#predictAsyncReqPost(
       params.inputDoc,
