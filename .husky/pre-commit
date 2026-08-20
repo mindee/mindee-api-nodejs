@@ -1,1 +1,2 @@
-npm run lint:full
+npm run lint
+npm run lint:package

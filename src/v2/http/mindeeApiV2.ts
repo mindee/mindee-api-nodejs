@@ -1,6 +1,8 @@
 import { ApiSettings } from "./apiSettings.js";
 import { Dispatcher } from "undici";
-import { BaseParameters } from "@/v2/index.js";
+import { BaseProductParameters } from "@/v2/index.js";
+import { BaseSearchParameters } from "@/v2/clientOptions/baseSearchParameters.js";
+import { FormData } from "undici";
 import {
   BaseResponse,
   ErrorResponse,
@@ -17,7 +19,7 @@ import { MindeeDeserializationError, MindeeError } from "@/errors/index.js";
 import { MindeeHttpErrorV2 } from "./errors.js";
 import { logger } from "@/logger.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
-import { SearchResponse } from "@/v2/parsing/search/index.js";
+import { BaseSearch } from "@/v2/search/baseSearch.js";
 
 /**
  * Mindee V2 API handler.
@@ -30,25 +32,25 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Search for models available to the account.
-   * @param name Optional name filter.
-   * @param modelType Optional model type filter.
+   * Searches for resources matching the given criteria.
+   * @param search
+   * @param parameters Search parameters.
    * @returns a `Promise` containing the search response.
    */
-  async reqGetSearchModel(name?: string, modelType?: string): Promise<SearchResponse> {
-    const queryParams: Record<string, string> = {};
-    if (name) queryParams["name"] = name;
-    if (modelType) queryParams["model_type"] = modelType;
+  async reqGetSearch<S extends typeof BaseSearch>(
+    search: S,
+    parameters: BaseSearchParameters
+  ): Promise<InstanceType<S["responseClass"]>> {
     const options: RequestOptions = {
       method: "GET",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
-      path: "/v2/search/models",
-      queryParams: queryParams,
+      path: `/v2/search/${search.slug}`,
+      queryParams: parameters.getRequestParameters(),
       timeoutSecs: this.settings.timeoutSecs,
     };
     const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
-    return this.#processResponse(response, SearchResponse);
+    return this.#processResponse(response, search.responseClass) as InstanceType<S["responseClass"]>;
   }
 
   /**
@@ -60,9 +62,10 @@ export class MindeeApiV2 {
   async reqPostProductEnqueue(
     product: typeof BaseProduct,
     inputSource: InputSource,
-    params: BaseParameters
+    params: BaseProductParameters
   ): Promise<JobResponse> {
-    const form = params.getFormData();
+    const form = this.#paramsToFormData(params.getRequestParameters());
+
     if (inputSource instanceof LocalInputSource) {
       form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
     } else {
@@ -155,6 +158,14 @@ export class MindeeApiV2 {
     const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options, url);
 
     return this.#processResponse(response, product.responseClass) as InstanceType<P["responseClass"]>;
+  }
+
+  #paramsToFormData(params: Record<string, string>): FormData {
+    const form = new FormData();
+    for (const [key, value] of Object.entries(params)) {
+      form.set(key, value);
+    }
+    return form;
   }
 
   #processResponse<T extends BaseResponse>(

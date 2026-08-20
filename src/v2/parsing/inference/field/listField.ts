@@ -12,6 +12,19 @@ export class ListField extends BaseField {
    */
   public items: Array<ListField | ObjectField | SimpleField>;
 
+  constructor(serverResponse: StringDict, indentLevel = 0) {
+    super(serverResponse, indentLevel);
+
+    if (!Array.isArray(serverResponse["items"])) {
+      throw new MindeeDeserializationError(
+        `Expected "items" to be an array in ${JSON.stringify(serverResponse)}.`
+      );
+    }
+    this.items = serverResponse["items"].map((item) => {
+      return createField(item, indentLevel + 1);
+    });
+  }
+
   /**
    * SimpleField items from the list.
    */
@@ -46,19 +59,6 @@ export class ListField extends BaseField {
       }
     }
     return result;
-  }
-
-  constructor(serverResponse: StringDict, indentLevel = 0) {
-    super(serverResponse, indentLevel);
-
-    if (!Array.isArray(serverResponse["items"])) {
-      throw new MindeeDeserializationError(
-        `Expected "items" to be an array in ${JSON.stringify(serverResponse)}.`
-      );
-    }
-    this.items = serverResponse["items"].map((item) => {
-      return createField(item, indentLevel + 1);
-    });
   }
 
   /** Returns a readable representation of list items. */

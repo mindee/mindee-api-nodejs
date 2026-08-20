@@ -1,7 +1,6 @@
-import { FormData } from "undici";
 import { StringDict } from "@/parsing/stringDict.js";
 import { DataSchema } from "./dataSchema.js";
-import { BaseParameters, BaseParametersConstructor } from "@/v2/clientOptions/baseParameters.js";
+import { BaseProductParameters, BaseProductParametersConstructor } from "@/v2/clientOptions/baseProductParameters.js";
 import { logger } from "@/logger.js";
 
 /**
@@ -22,7 +21,7 @@ import { logger } from "@/logger.js";
  *   }
  * };
  */
-export class ExtractionParameters extends BaseParameters {
+export class ExtractionParameters extends BaseProductParameters {
   /**
    * Use Retrieval-Augmented Generation during inference.
    */
@@ -51,7 +50,7 @@ export class ExtractionParameters extends BaseParameters {
    */
   dataSchema?: DataSchema | StringDict | string;
 
-  constructor(params: BaseParametersConstructor & {
+  constructor(params: BaseProductParametersConstructor & {
     rag?: boolean;
     rawText?: boolean;
     polygon?: boolean;
@@ -76,32 +75,28 @@ export class ExtractionParameters extends BaseParameters {
     logger.debug("Extraction parameters initialized.");
   }
 
-  getFormData(): FormData {
-    const form = new FormData();
-
-    form.set("model_id", this.modelId);
+  getRequestParameters(): Record<string, string> {
+    const parameters = super.getRequestParameters();
 
     if (this.rag !== undefined && this.rag !== null) {
-      form.set("rag", this.rag.toString());
+      parameters["rag"] = this.rag.toString();
     }
     if (this.polygon !== undefined && this.polygon !== null) {
-      form.set("polygon", this.polygon.toString().toLowerCase());
+      parameters["polygon"] = this.polygon.toString().toLowerCase();
     }
     if (this.confidence !== undefined && this.confidence !== null) {
-      form.set("confidence", this.confidence.toString().toLowerCase());
+      parameters["confidence"] = this.confidence.toString().toLowerCase();
     }
     if (this.rawText !== undefined && this.rawText !== null) {
-      form.set("raw_text", this.rawText.toString().toLowerCase());
+      parameters["raw_text"] = this.rawText.toString().toLowerCase();
     }
     if (this.textContext !== undefined && this.textContext !== null) {
-      form.set("text_context", this.textContext);
+      parameters["text_context"] = this.textContext;
     }
     if (this.dataSchema !== undefined && this.dataSchema !== null) {
-      form.set("data_schema", this.dataSchema.toString());
+      parameters["data_schema"] = this.dataSchema.toString();
     }
-    if (this.webhookIds && this.webhookIds.length > 0) {
-      form.set("webhook_ids", this.webhookIds.join(","));
-    }
-    return form;
+
+    return parameters;
   }
 }

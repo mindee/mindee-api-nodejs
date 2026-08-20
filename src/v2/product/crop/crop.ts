@@ -6,15 +6,17 @@ import { BaseProduct } from "@/v2/product/baseProduct.js";
  * Identify the borders of documents on each page, matching each one to a category.
  */
 export class Crop extends BaseProduct {
-  /** Parameter class accepted by this product. */
+  /** @inheritDoc */
   static get parametersClass() {
     return CropParameters;
   }
-  /** Response class returned by this product. */
+
+  /** @inheritDoc */
   static get responseClass() {
     return CropResponse;
   }
-  /** API slug for this product. */
+
+  /** @inheritDoc */
   static get slug() {
     return "crop";
   }

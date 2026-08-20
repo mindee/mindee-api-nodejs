@@ -1,4 +1,6 @@
-npm test
-npm run lint:full
+npm run lint
+npm run lint:package
+npm run lint:secrets
 npm run license:check
 npm run docs
+npm test
