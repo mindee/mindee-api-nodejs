@@ -11,18 +11,7 @@ export interface BaseProductParametersConstructor {
 }
 
 /**
- * Parameters accepted by all v2 products.
- *
- * All fields are optional except `modelId`.
- *
- * @category ClientV2
- * @example
- * const params = {
- *   modelId: "YOUR_MODEL_ID",
- *   rag: true,
- *   alias: "YOUR_ALIAS",
- *   webhookIds: ["YOUR_WEBHOOK_ID_1", "YOUR_WEBHOOK_ID_2"],
- * };
+ * Base parameters for sending a file to a Mindee V2 product.
  */
 export abstract class BaseProductParameters {
   /**

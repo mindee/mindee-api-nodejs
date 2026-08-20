@@ -32,29 +32,7 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Searches for resources matching the given criteria.
-   * @param search
-   * @param parameters Search parameters.
-   * @returns a `Promise` containing the search response.
-   */
-  async reqGetSearch<S extends typeof BaseSearch>(
-    search: S,
-    parameters: BaseSearchParameters
-  ): Promise<InstanceType<S["responseClass"]>> {
-    const options: RequestOptions = {
-      method: "GET",
-      headers: this.settings.baseHeaders,
-      hostname: this.settings.hostname,
-      path: `/v2/search/${search.slug}`,
-      queryParams: parameters.getRequestParameters(),
-      timeoutSecs: this.settings.timeoutSecs,
-    };
-    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
-    return this.#processResponse(response, search.responseClass) as InstanceType<S["responseClass"]>;
-  }
-
-  /**
-   * Sends a document to the inference queue.
+   * Send a file to the asynchronous processing queue for inference processing.
    * @param product Product to enqueue.
    * @param inputSource Local or remote file as an input.
    * @param params {ExtractionParameters} parameters relating to the enqueueing options.
@@ -89,7 +67,7 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Get the specified Job by its ID.
+   * Get the status of an inference that was previously enqueued.
    * Throws an error if the server's response contains an error.
    * @param jobId The Job ID as returned by the enqueue request.
    * @returns a `Promise` containing the job response.
@@ -101,7 +79,7 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Get the specified Job from a polling URL.
+   * Get the status of an inference that was previously enqueued.
    * Throws an error if the server's response contains an error.
    * @param pollingUrl The polling URL as returned by a Job's pollingUrl property.
    * @returns a `Promise` containing the job response.
@@ -120,7 +98,7 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Get the result of a queued document from the API.
+   * Get the result of an inference that was previously enqueued.
    * Throws an error if the server's response contains an error.
    * @param product
    * @param inferenceId The inference ID for the result.
@@ -137,7 +115,7 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Get the result of a queued document from the API.
+   * Get the result of an inference that was previously enqueued.
    * Throws an error if the server's response contains an error.
    * @param product
    * @param url The URL as returned by a Job's resultUrl property.
@@ -158,6 +136,28 @@ export class MindeeApiV2 {
     const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options, url);
 
     return this.#processResponse(response, product.responseClass) as InstanceType<P["responseClass"]>;
+  }
+
+  /**
+   * Searches for resources matching the given criteria.
+   * @param search
+   * @param parameters Search parameters.
+   * @returns a `Promise` containing the search response.
+   */
+  async reqGetSearch<S extends typeof BaseSearch>(
+    search: S,
+    parameters: BaseSearchParameters
+  ): Promise<InstanceType<S["responseClass"]>> {
+    const options: RequestOptions = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/search/${search.slug}`,
+      queryParams: parameters.getRequestParameters(),
+      timeoutSecs: this.settings.timeoutSecs,
+    };
+    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
+    return this.#processResponse(response, search.responseClass) as InstanceType<S["responseClass"]>;
   }
 
   #paramsToFormData(params: Record<string, string>): FormData {

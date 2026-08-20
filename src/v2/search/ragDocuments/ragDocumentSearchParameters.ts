@@ -5,7 +5,7 @@ import { BaseSearchParameters, BaseSearchParametersConstructor } from "@/v2/clie
  * Constructor parameters for RagDocumentSearchParameters.
  */
 export interface RagDocumentSearchParametersConstructor extends BaseSearchParametersConstructor {
-  modelId?: string;
+  modelId: string;
   filename?: string;
 }
 
@@ -16,14 +16,17 @@ export class RagDocumentSearchParameters extends BaseSearchParameters {
   /**
    * Model identifier to search in.
    */
-  modelId?: string;
+  modelId: string;
 
   /**
    * Case-insensitive substring search on filename.
    */
   filename?: string;
 
-  constructor(params: RagDocumentSearchParametersConstructor = {}) {
+  constructor(params: RagDocumentSearchParametersConstructor) {
+    if (!params.modelId) {
+      throw new MindeeConfigurationError("ModelId is required in RagDocumentSearchParameters");
+    }
     super(params);
     this.modelId = params.modelId;
     this.filename = params.filename;
@@ -32,11 +35,9 @@ export class RagDocumentSearchParameters extends BaseSearchParameters {
   /** @inheritdoc */
   getRequestParameters(): Record<string, string> {
     const parameters = super.getRequestParameters();
-    if (this.modelId) {
-      parameters["model_id"] = this.modelId;
-    } else {
-      throw new MindeeConfigurationError("ModelId is required in RagDocumentSearchParameters");
-    }
+
+    parameters["model_id"] = this.modelId;
+
     if (this.filename) {
       parameters["filename"] = this.filename;
     }
