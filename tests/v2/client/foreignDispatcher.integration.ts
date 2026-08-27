@@ -19,8 +19,11 @@ describe(
     before(async () => {
       apiKey = process.env["MINDEE_V2_API_KEY"] ?? "";
       modelId = process.env["MINDEE_V2_SE_TESTS_FINDOC_MODEL_ID"] ?? "";
-      const pdfUrl =
-        process.env["MINDEE_V2_SE_TESTS_BLANK_PDF_URL"] ?? "error-no-url-found";
+      const pdfUrl = process.env["MINDEE_V2_SE_TESTS_BLANK_PDF_URL"];
+      assert.ok(
+        pdfUrl,
+        "MINDEE_V2_SE_TESTS_BLANK_PDF_URL must be set to run this integration test",
+      );
 
       const response = await fetch(pdfUrl);
       assert.ok(response.ok, `Failed to download the test PDF from: ${pdfUrl}`);
