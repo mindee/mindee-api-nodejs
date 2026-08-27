@@ -3,9 +3,10 @@ import { URL } from "url";
 import { basename, extname } from "path";
 import { randomBytes } from "crypto";
 import { writeFile } from "fs/promises";
-import {  request, Dispatcher, getGlobalDispatcher } from "undici";
+import {  request, Dispatcher } from "undici";
 import { logger } from "@/logger.js";
 import { MindeeInputSourceError } from "@/errors/index.js";
+import { resolveDefaultDispatcher } from "@/http/dispatcher.js";
 import { BytesInput } from "./bytesInput.js";
 
 /** Remote input source represented by a validated HTTPS URL. */
@@ -20,7 +21,7 @@ export class UrlInput extends InputSource {
   ) {
     super();
     this.url = url;
-    this.dispatcher = dispatcher ?? getGlobalDispatcher();
+    this.dispatcher = dispatcher ?? resolveDefaultDispatcher();
     logger.debug("Initialized URL input source.");
   }
 

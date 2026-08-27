@@ -70,5 +70,18 @@ describe(
       );
       assert.ok(response.job.id);
     });
+
+    it("fix: UrlInput ignores the foreign dispatcher and downloads succeed", async () => {
+      const source = new mindee.UrlInput({
+        url: "https://github.com/mindee/client-lib-test-data/blob/main/" +
+          "file_types/pdf/blank_1.pdf?raw=true",
+      });
+      assert.notStrictEqual(source.dispatcher, foreignDispatcher);
+      assert.ok(source.dispatcher instanceof undici.Dispatcher);
+      await source.init();
+      const localized = await source.asLocalInputSource();
+      await localized.init();
+      assert.ok(localized.fileObject.length > 0);
+    });
   }
 );

@@ -5,3 +5,4 @@ export {
   cleanRequestData,
 } from "@/v1/http/responseValidation.js";
 export { BaseSettings } from "./baseSettings.js";
+export { resolveDefaultDispatcher } from "./dispatcher.js";

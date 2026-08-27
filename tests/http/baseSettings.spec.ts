@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { afterEach, describe, it } from "node:test";
 import { Agent, Dispatcher, getGlobalDispatcher, setGlobalDispatcher } from "undici";
 import { BaseSettings } from "@/http/baseSettings.js";
+import { UrlInput } from "@/input/index.js";
 
 class TestSettings extends BaseSettings {
   constructor(dispatcher?: Dispatcher) {
@@ -52,5 +53,19 @@ describe("BaseSettings – dispatcher resolution", () => {
     const first = new TestSettings();
     const second = new TestSettings();
     assert.strictEqual(first.dispatcher, second.dispatcher);
+  });
+
+  it("UrlInput ignores a foreign global dispatcher as well", () => {
+    const foreignDispatcher = { dispatch: () => true } as unknown as Agent;
+    setGlobalDispatcher(foreignDispatcher);
+    const input = new UrlInput({ url: "https://example.com/file.pdf" });
+    assert.notStrictEqual(input.dispatcher, foreignDispatcher);
+    assert.ok(input.dispatcher instanceof Dispatcher);
+  });
+
+  it("UrlInput uses an explicitly provided dispatcher as-is", () => {
+    const agent = new Agent();
+    const input = new UrlInput({ url: "https://example.com/file.pdf", dispatcher: agent });
+    assert.strictEqual(input.dispatcher, agent);
   });
 });
