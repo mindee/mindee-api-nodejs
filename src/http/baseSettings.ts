@@ -1,8 +1,9 @@
-import { Dispatcher, getGlobalDispatcher } from "undici";
+import { Dispatcher } from "undici";
 // eslint-disable-next-line no-restricted-imports
 import packageJson from "../../package.json" with { type: "json" };
 import * as os from "os";
 import { TIMEOUT_SECS_DEFAULT } from "./apiCore.js";
+import { resolveDefaultDispatcher } from "./dispatcher.js";
 
 export interface MindeeApiConstructorProps {
   apiKey?: string;
@@ -25,7 +26,7 @@ export abstract class BaseSettings {
     } else {
       this.apiKey = apiKey;
     }
-    this.dispatcher = dispatcher ?? getGlobalDispatcher();
+    this.dispatcher = dispatcher ?? resolveDefaultDispatcher();
     this.hostname = this.hostnameFromEnv();
     this.timeoutSecs = process.env.MINDEE_REQUEST_TIMEOUT
       ? parseInt(process.env.MINDEE_REQUEST_TIMEOUT)
