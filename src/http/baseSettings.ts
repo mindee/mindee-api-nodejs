@@ -1,8 +1,28 @@
-import { Dispatcher, getGlobalDispatcher } from "undici";
+import { Agent, Dispatcher, getGlobalDispatcher } from "undici";
 // eslint-disable-next-line no-restricted-imports
 import packageJson from "../../package.json" with { type: "json" };
 import * as os from "os";
 import { TIMEOUT_SECS_DEFAULT } from "./apiCore.js";
+import { logger } from "@/logger.js";
+
+/** Library-owned fallback dispatcher, shared across clients. */
+let fallbackDispatcher: Dispatcher | undefined;
+
+/**
+ * Returns the global undici dispatcher, provided it was created by the same
+ * undici copy this library imports.
+ */
+function resolveDefaultDispatcher(): Dispatcher {
+  const globalDispatcher = getGlobalDispatcher();
+  if (globalDispatcher instanceof Dispatcher) {
+    return globalDispatcher;
+  }
+  logger.debug(
+    "Global dispatcher belongs to a different undici instance, using a library-owned Agent instead."
+  );
+  fallbackDispatcher ??= new Agent();
+  return fallbackDispatcher;
+}
 
 export interface MindeeApiConstructorProps {
   apiKey?: string;
@@ -25,7 +45,7 @@ export abstract class BaseSettings {
     } else {
       this.apiKey = apiKey;
     }
-    this.dispatcher = dispatcher ?? getGlobalDispatcher();
+    this.dispatcher = dispatcher ?? resolveDefaultDispatcher();
     this.hostname = this.hostnameFromEnv();
     this.timeoutSecs = process.env.MINDEE_REQUEST_TIMEOUT
       ? parseInt(process.env.MINDEE_REQUEST_TIMEOUT)
