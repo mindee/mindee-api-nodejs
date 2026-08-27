@@ -1,5 +1,14 @@
 # Mindee Node.js API Library Changelog
 
+## v5.7.0 - 2026-08-20
+### Changes
+* :sparkles: add support for RAG search API
+* :recycle: rework and mutualize a lot of http classes
+
+### Fixes
+* :bug: fix undici unexpectedly re-using request agents when not specified
+
+
 ## v5.6.1 - 2026-08-19
 ### Changes
 * :arrow_up: security updates
