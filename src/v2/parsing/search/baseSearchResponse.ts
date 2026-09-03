@@ -17,7 +17,8 @@ export abstract class BaseSearchResponse extends BaseResponse {
   }
 
   /**
-   * List of strings representing the search response.
+   * Lines composing the response-specific body (header + items).
+   * @returns An array of body lines.
    */
   protected abstract bodyLines(): string[];
 

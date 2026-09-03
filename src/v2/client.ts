@@ -69,10 +69,10 @@ export class Client {
   }
 
   /**
-   * Searches for resources matching the given criteria.
-   * @param search
+   * Search for resources matching the given criteria.
+   * @param search Search definition class to use.
    * @param searchParameters Search parameters.
-   * @returns a `Promise` containing the search response.
+   * @returns a `Promise` containing the search response with the matching resources.
    */
   async search<S extends typeof BaseSearch>(
     search: S,
