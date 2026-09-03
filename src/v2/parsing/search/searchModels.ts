@@ -1,6 +1,9 @@
 import { SearchModel } from "@/v2/parsing/search/searchModel.js";
 import { StringDict } from "@/parsing/index.js";
 
+/**
+ * List of search models.
+ */
 export class SearchModels extends Array<SearchModel> {
 
   constructor(serverResponse: StringDict[] = []) {
