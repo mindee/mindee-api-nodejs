@@ -18,6 +18,11 @@ describe("MindeeV2 - Integration - Model Search", { timeout: 120000 }, () => {
     const response: ModelSearchResponse = await client.search(ModelSearch, {});
     assert.ok(response);
     assert.ok(response.models.length > 0);
+    for (const model of response.models) {
+      assert.ok(model.id);
+      assert.ok(model.name);
+      assert.ok(model.modelType);
+    }
     assert.ok(response.pagination);
     assert.ok(response.pagination.totalItems >= 1);
     assert.equal(response.pagination.page, 1);

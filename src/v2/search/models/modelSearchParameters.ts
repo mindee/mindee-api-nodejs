@@ -13,12 +13,12 @@ export interface ModelSearchParametersConstructor extends BaseSearchParametersCo
  */
 export class ModelSearchParameters extends BaseSearchParameters {
   /**
-   * Case-insensitive search term for the model name
+   * Filter models by partial name match, case-insensitive.
    */
   name?: string;
 
   /**
-   * Case-insensitive search term for the model type
+   * Filter by an exact model type.
    */
   modelType?: string;
 
