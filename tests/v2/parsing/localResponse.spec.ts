@@ -14,53 +14,70 @@ const filePath: string = path.join(V2_PRODUCT_PATH, "extraction/standard_field_t
 
 /**
  * Asserts that a local response is valid.
- * @param localResponse The local response to validate.
  */
-async function assertLocalResponse(localResponse: LocalResponse) {
+async function assertLocalResponse(localResponse: LocalResponse, fileContent: string) {
   await localResponse.init();
-  assert.notStrictEqual(localResponse.asDict(), null);
-  assert.strictEqual(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature"), false);
+  assert.notStrictEqual(await localResponse.asDict(), null);
+
   assert.strictEqual(localResponse.getHmacSignature(dummySecretKey), signature);
+
+  assert.strictEqual(localResponse.isValidHmacSignature(dummySecretKey, "invalid signature"), false);
+  assert.strictEqual(localResponse.isValidHmacSignature(dummySecretKey, null as any), false);
+  assert.strictEqual(localResponse.isValidHmacSignature(null as any, signature), false);
+  assert.strictEqual(localResponse.isValidHmacSignature(null as any, null as any), false);
+  assert.strictEqual(localResponse.isValidHmacSignature(dummySecretKey, ""), false);
   assert.ok(localResponse.isValidHmacSignature(dummySecretKey, signature));
-  const inferenceResponse = await localResponse.deserializeResponse(ExtractionResponse);
-  assert.ok(inferenceResponse instanceof ExtractionResponse);
-  assert.notStrictEqual(inferenceResponse.inference, null);
+  assert.ok(localResponse.isValidHmacSignature(dummySecretKey, signature.toUpperCase()));
+
+  const response = await localResponse.deserializeResponse(ExtractionResponse);
+  assert.ok(response instanceof ExtractionResponse);
+  assert.notStrictEqual(response.inference, null);
+  assert.strictEqual(response.inference.model.id, "test-model-id");
+  assert.strictEqual(
+    response.inference.result.fields.getSimpleField("field_simple_string").stringValue,
+    "field_simple_string-value"
+  );
+
+  assert.strictEqual(
+    JSON.stringify(response.getRawHttp()), JSON.stringify(JSON.parse(fileContent))
+  );
+
+  assert.strictEqual(
+    localResponse.toString(),
+    fileContent.replace(/[\r\n]/g, "")
+  );
 }
 
 describe("MindeeV2 - Load Local Response", () => {
-  it("should load a string properly.", async () => {
-    const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
-    await assertLocalResponse(new LocalResponse(fileObj));
+  it("should load a response from a JSON string.", async () => {
+    const fileContent = await fs.readFile(filePath, { encoding: "utf-8" });
+    await assertLocalResponse(new LocalResponse(fileContent), fileContent);
   });
 
-  it("should load a file properly.", async () => {
-    await assertLocalResponse(new LocalResponse(filePath));
+  it("should load a response from a buffer", async () => {
+    const fileContent = (await fs.readFile(filePath, { encoding: "utf-8" })).replace(/\r/g, "").replace(/\n/g, "");
+    const fileBuffer = Buffer.from(fileContent, "utf-8");
+    await assertLocalResponse(new LocalResponse(fileBuffer), fileContent);
   });
 
-  it("should load a buffer properly.", async () => {
-    const fileStr = (await fs.readFile(filePath, { encoding: "utf-8" })).replace(/\r/g, "").replace(/\n/g, "");
-    const fileBuffer = Buffer.from(fileStr, "utf-8");
-    await assertLocalResponse(new LocalResponse(fileBuffer));
+  it("should load a response from a JSON file", async () => {
+    await assertLocalResponse(new LocalResponse(filePath), await fs.readFile(filePath, { encoding: "utf-8" }));
   });
 
-  it("should deserialize a prediction.", async () => {
-    const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
-    const localResponse = new LocalResponse(fileObj);
-    const response = await localResponse.deserializeResponse(ExtractionResponse);
-    assert.ok(response instanceof ExtractionResponse);
-
-    assert.strictEqual(JSON.stringify(response.getRawHttp()), JSON.stringify(JSON.parse(fileObj)));
+  it("should raise an exception when given an invalid JSON string", async () => {
+    const localResponse = new LocalResponse("{invalid json");
+    await assert.rejects(async () => {
+      await localResponse.deserializeResponse(ExtractionResponse);
+    });
   });
 
-  it("should load an inference of a catalog model", async () => {
-    const jsonPath = path.join(
-      V2_PRODUCT_PATH,
-      "extraction",
-      "financial_document",
-      "complete.json"
-    );
-    const localResponse = new LocalResponse(jsonPath);
-    const response: ExtractionResponse = await localResponse.deserializeResponse(ExtractionResponse);
-    assert.strictEqual(response.inference.model.id, "12345678-1234-1234-1234-123456789abc");
+  it("should raise an exception when given an empty value", () => {
+    assert.throws(() => new LocalResponse(""));
+    assert.throws(() => new LocalResponse(Buffer.alloc(0)));
+  });
+
+  it("should raise an exception when given a null value", () => {
+    assert.throws(() => new LocalResponse(null as any));
+    assert.throws(() => new LocalResponse(undefined as any));
   });
 });

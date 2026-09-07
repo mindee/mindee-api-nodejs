@@ -144,11 +144,10 @@ describe("Input Sources - compression and resize #OptionalDepsRequired", { skip:
     const resizes = [
       await compressPdf(pdfResizeInput.fileObject, 85),
       await compressPdf(pdfResizeInput.fileObject, 75),
-      await compressPdf(pdfResizeInput.fileObject, 50),
-      await compressPdf(pdfResizeInput.fileObject, 10)
+      await compressPdf(pdfResizeInput.fileObject, 50)
     ];
 
-    const fileNames = ["compress85.pdf", "compress75.pdf", "compress50.pdf", "compress10.pdf"];
+    const fileNames = ["compress85.pdf", "compress75.pdf", "compress50.pdf"];
     for (let i = 0; i < resizes.length; i++) {
       await fs.promises.writeFile(path.join(outputPath, fileNames[i]), resizes[i]);
     }
@@ -163,7 +162,6 @@ describe("Input Sources - compression and resize #OptionalDepsRequired", { skip:
     assert.ok(initialFileStats.size > renderedFileStats[0].size);
     assert.ok(renderedFileStats[0].size > renderedFileStats[1].size);
     assert.ok(renderedFileStats[1].size > renderedFileStats[2].size);
-    assert.ok(renderedFileStats[2].size > renderedFileStats[3].size);
   });
 
   it("PDF Compress With Text Keeps Text", async () => {

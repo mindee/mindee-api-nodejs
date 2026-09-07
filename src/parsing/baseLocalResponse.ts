@@ -8,8 +8,8 @@ import { Buffer } from "buffer";
  * Local response loaded from a file.
  * Note: Has to be initialized through init() before use.
  */
-export abstract class LocalResponseBase {
-  private file: Buffer;
+export abstract class BaseLocalResponse {
+  private fileBytes: Buffer;
   private readonly inputHandle: Buffer | string;
   /** Whether the local response payload has been loaded. */
   protected initialized = false;
@@ -18,7 +18,13 @@ export abstract class LocalResponseBase {
    * Creates an instance of LocalResponse.
    */
   constructor(inputFile: Buffer | string) {
-    this.file = Buffer.alloc(0);
+    if (inputFile === undefined || inputFile === null) {
+      throw new TypeError("input cannot be null or undefined");
+    }
+    if (typeof inputFile === "string" ? !inputFile.trim() : !inputFile.length) {
+      throw new TypeError("input cannot be empty");
+    }
+    this.fileBytes = Buffer.alloc(0);
     this.inputHandle = inputFile;
   }
 
@@ -31,7 +37,7 @@ export abstract class LocalResponseBase {
       return;
     }
     if (Buffer.isBuffer(this.inputHandle)) {
-      this.file = this.inputHandle;
+      this.fileBytes = this.inputHandle;
     } else if (typeof this.inputHandle === "string") {
       let fileContents;
       try {
@@ -40,7 +46,10 @@ export abstract class LocalResponseBase {
       } catch {
         fileContents = this.inputHandle;
       }
-      this.file = Buffer.from(fileContents.replace(/\r/g, "").replace(/\n/g, ""), "utf-8");
+      this.fileBytes = Buffer.from(
+        fileContents.replace(/\r/g, "").replace(/\n/g, ""),
+        "utf-8"
+      );
     } else {
       throw new MindeeError("Incompatible type for input.");
     }
@@ -56,7 +65,7 @@ export abstract class LocalResponseBase {
       await this.init();
     }
     try {
-      const content = this.file.toString("utf-8");
+      const content = this.fileBytes.toString("utf-8");
       return JSON.parse(content);
     } catch {
       throw new MindeeError("File is not a valid dictionary.");
@@ -77,7 +86,7 @@ export abstract class LocalResponseBase {
     const algorithm = "sha256";
     try {
       const hmac = crypto.createHmac(algorithm, secretKey);
-      hmac.update(this.file);
+      hmac.update(this.fileBytes);
       return hmac.digest("hex");
     } catch {
       throw new MindeeError("Could not get HMAC signature from payload.");
@@ -96,6 +105,31 @@ export abstract class LocalResponseBase {
         "The `init()` method must be called before calling `isValidHmacSignature()`."
       );
     }
-    return signature === this.getHmacSignature(secretKey);
+    if (
+      (!signature || !signature?.trim())
+      || (!secretKey || (typeof secretKey === "string" ? !secretKey?.trim() : !secretKey?.length))
+    ) {
+      return false;
+    }
+
+    const expectedSignature = this.getHmacSignature(secretKey);
+    if (!expectedSignature?.trim()) {
+      return false;
+    }
+
+    const expectedBytes = Buffer.from(expectedSignature, "utf-8");
+    const actualBytes = Buffer.from(signature.toLowerCase(), "utf-8");
+
+    if (expectedBytes.length !== actualBytes.length) {
+      return false;
+    }
+    return crypto.timingSafeEqual(expectedBytes, actualBytes);
+  }
+
+  /**
+   * Print the file as a UTF-8 string.
+   */
+  public toString(): string {
+    return this.fileBytes.toString("utf-8");
   }
 }
