@@ -1,4 +1,4 @@
-import { LocalResponseBase } from "@/parsing/localResponseBase.js";
+import { BaseLocalResponse } from "@/parsing/baseLocalResponse.js";
 import { AsyncPredictResponse, Inference, PredictResponse } from "@/v1/index.js";
 import { StringDict } from "@/parsing/index.js";
 import { MindeeError } from "@/errors/index.js";
@@ -7,7 +7,7 @@ import { MindeeError } from "@/errors/index.js";
  * Local response loaded from a file.
  * Note: Has to be initialized through init() before use.
  */
-export class LocalResponse extends LocalResponseBase {
+export class LocalResponse extends BaseLocalResponse {
   /** Loads a local JSON payload into a typed prediction response wrapper. */
   async loadPrediction<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T
