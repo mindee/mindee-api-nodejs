@@ -3,7 +3,7 @@ import { BaseSearchResponse } from "@/v2/parsing/search/index.js";
 import { SearchRagDocuments } from "@/v2/parsing/search/searchRagDocuments.js";
 
 /**
- * RAG documents search response.
+ * RAG Documents search response.
  */
 export class RagDocumentSearchResponse extends BaseSearchResponse {
 

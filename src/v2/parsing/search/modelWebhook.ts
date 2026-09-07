@@ -1,7 +1,7 @@
 import { StringDict } from "@/parsing/index.js";
 
 /**
- * Model webhook info.
+ * Information about a model's webhook.
  */
 export class ModelWebhook {
   /**

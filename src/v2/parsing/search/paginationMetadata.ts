@@ -1,7 +1,7 @@
 import { StringDict } from "@/parsing/index.js";
 
 /**
- * PaginationMetadata data associated with model search.
+ * Pagination metadata associated with searches.
  */
 export class PaginationMetadata {
   /**

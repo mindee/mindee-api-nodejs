@@ -139,8 +139,8 @@ export class MindeeApiV2 {
   }
 
   /**
-   * Searches for resources matching the given criteria.
-   * @param search
+   * Retrieves a list of resources with the given criteria.
+   * @param search Search definition class to use.
    * @param parameters Search parameters.
    * @returns a `Promise` containing the search response.
    */

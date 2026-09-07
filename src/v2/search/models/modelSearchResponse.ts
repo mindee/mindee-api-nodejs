@@ -8,7 +8,7 @@ import { SearchModels } from "@/v2/parsing/search/searchModels.js";
 export class ModelSearchResponse extends BaseSearchResponse {
 
   /**
-   * List of models returned by the search.
+   * Paginated list of matching models.
    */
   public models: SearchModels;
 

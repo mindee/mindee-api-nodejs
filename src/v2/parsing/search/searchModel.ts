@@ -2,7 +2,7 @@ import { StringDict } from "@/parsing/index.js";
 import { ModelWebhook } from "./modelWebhook.js";
 
 /**
- * Models search response.
+ * Individual model information.
  */
 export class SearchModel {
   /**
@@ -21,7 +21,7 @@ export class SearchModel {
   public modelType: string;
 
   /**
-   * Webhooks associated with the model.
+   * List of webhooks associated with the model.
    */
   public webhooks: ModelWebhook[];
 
