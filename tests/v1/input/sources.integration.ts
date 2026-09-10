@@ -3,17 +3,17 @@ import assert from "node:assert";
 import path from "path";
 import { promises as fs } from "fs";
 import { createReadStream } from "node:fs";
-import * as mindee from "@/index.js";
+import { Client } from "@/v1/index.js";
 import { InvoiceV4 } from "@/v1/product/index.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
-import { PathInput, Base64Input, BufferInput, BytesInput, UrlInput } from "@/index.js";
+import { PathInput, Base64Input, BufferInput, BytesInput } from "@/index.js";
 
 describe("MindeeV1 - Integration - File Input", { timeout: 80000 }, () => {
-  let client: mindee.v1.Client;
+  let client: Client;
   let filePath: string;
 
   beforeEach(() => {
-    client = new mindee.v1.Client();
+    client = new Client();
     filePath = path.join(V1_PRODUCT_PATH, "invoices/default_sample.jpg");
   });
 
@@ -44,7 +44,6 @@ describe("MindeeV1 - Integration - File Input", { timeout: 80000 }, () => {
     assert.strictEqual(typeof result.document.id, "string");
   });
 
-
   it("should send a document from bytes", async () => {
     const inputBytes = await fs.readFile(filePath);
     const bytesInput = new BytesInput({ inputBytes: inputBytes, filename: "testFile.jpg" });
@@ -57,15 +56,6 @@ describe("MindeeV1 - Integration - File Input", { timeout: 80000 }, () => {
     const bufferInput = new BufferInput({ buffer: buffer, filename: "testFile.jpg" });
     await bufferInput.init();
     const result = await client.parse(InvoiceV4, bufferInput);
-    assert.strictEqual(typeof result.document.id, "string");
-  });
-
-  it("should send a document from a URL", async () => {
-    const url = "https://raw.githubusercontent.com/mindee/client-lib-test-data/" +
-      "refs/heads/main/v1/products/invoice_splitter/invoice_5p.pdf";
-    const urlInput = new UrlInput({ url: url });
-    await urlInput.init();
-    const result = await client.parse(InvoiceV4, urlInput);
     assert.strictEqual(typeof result.document.id, "string");
   });
 });

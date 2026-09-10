@@ -23,7 +23,6 @@ export class WorkflowEndpoint extends BaseEndpoint {
     workflowId: string
   ) {
     super(settings, `/v1/workflows/${workflowId}/executions`);
-
   }
 
   /**

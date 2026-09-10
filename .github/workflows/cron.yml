@@ -2,12 +2,13 @@ name: Crontab
 
 on:
   schedule:
-  - cron: '23 0 * * *'
+  - cron: '23 3 * * *'
+    timezone: "Europe/Paris"
 
 jobs:
-  test_regressions:
+  test_integrations:
     uses: mindee/mindee-api-nodejs/.github/workflows/_test-integrations.yml@main
     secrets: inherit
-  test_code_samples:
+  test_smoke:
     uses: mindee/mindee-api-nodejs/.github/workflows/_test-smoke.yml@main
     secrets: inherit
