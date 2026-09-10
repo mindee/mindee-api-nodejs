@@ -16,11 +16,14 @@ describe("MindeeV1 - Integration - Workflow calls", { timeout: 80000 }, () => {
 
   beforeEach(async () => {
     client = new mindee.v1.Client();
-    workflowId = process.env["WORKFLOW_ID"] ?? "";
+    if (!process.env["WORKFLOW_ID"]) {
+      throw new Error("WORKFLOW_ID environment variable is not set");
+    }
+    workflowId = process.env["WORKFLOW_ID"];
+
     sample = new mindee.PathInput({
       inputPath: path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")
     });
-    await sample.init();
   });
 
   it("should retrieve a correct response from the API.", async () => {
@@ -31,7 +34,8 @@ describe("MindeeV1 - Integration - Workflow calls", { timeout: 80000 }, () => {
     const response = await client.executeWorkflow(
       sample,
       workflowId,
-      { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low, rag: true });
+      { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low, rag: true }
+    );
     assert.strictEqual(response.execution.priority, ExecutionPriority.low);
     assert.strictEqual(response.execution.file.alias, `node-${currentDateTime}`);
   });

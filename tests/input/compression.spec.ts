@@ -119,12 +119,8 @@ describe("Input Sources - compression and resize #OptionalDepsRequired", { skip:
     const pdfResizeInput = new PathInput(
       { inputPath: path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf") }
     );
-    await pdfResizeInput.init();
-
-    const compressedPdf = await compressPdf(
-      pdfResizeInput.fileObject, 75, true
-    );
-    await fs.promises.writeFile(path.join(outputPath, "resize_indirect.pdf"), compressedPdf);
+    await pdfResizeInput.compress(75);
+    await fs.promises.writeFile(path.join(outputPath, "resize_indirect.pdf"), pdfResizeInput.fileObject);
 
     const initialFileStats = await fs.promises.stat(
       path.join(V1_PRODUCT_PATH, "invoice_splitter/default_sample.pdf")
@@ -166,7 +162,7 @@ describe("Input Sources - compression and resize #OptionalDepsRequired", { skip:
 
   it("PDF Compress With Text Keeps Text", async () => {
     const initialWithText = new PathInput(
-      { inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage.pdf") }
+      { inputPath: path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-3.pdf") }
     );
     await initialWithText.init();
 

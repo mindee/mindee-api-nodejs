@@ -35,7 +35,6 @@ export async function compressPdf(
   forceSourceTextCompression: boolean = false,
   disableSourceText: boolean = true
 ): Promise<Buffer> {
-  handleCompressionWarnings(forceSourceTextCompression, disableSourceText);
   if (await hasSourceText(pdfData)) {
     if (forceSourceTextCompression) {
       if (!disableSourceText) {
@@ -70,24 +69,6 @@ export async function compressPdf(
   }
 
   return createNewPdfFromCompressedPages(compressedPages);
-}
-
-/**
- * Handles compression warnings based on the provided parameters.
- * @param forceSourceTextCompression If true, attempts to re-write detected text.
- * @param disableSourceText If true, doesn't re-apply source text to the output PDF.
- */
-function handleCompressionWarnings(
-  forceSourceTextCompression: boolean, disableSourceText: boolean
-): void {
-  if (forceSourceTextCompression) {
-    if (!disableSourceText) {
-      logger.warn("Re-writing PDF source-text is an EXPERIMENTAL feature.");
-    } else {
-      logger.warn("Source file contains text, but the disable_source_text is set to false. "
-        + "Resulting file will not contain any embedded text.");
-    }
-  }
 }
 
 /**

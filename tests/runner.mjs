@@ -14,7 +14,7 @@ import { dirname, join } from "node:path";
 
 const testsDir = dirname(fileURLToPath(import.meta.url));
 
-const suffix = process.argv[2] === "integration" ? ".integration.ts" : ".spec.ts";
+const suffix = process.argv[2] + ".ts";
 const subdir = process.argv[3];
 const searchDir = subdir ? join(testsDir, subdir) : testsDir;
 
