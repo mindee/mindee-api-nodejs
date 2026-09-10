@@ -15,7 +15,7 @@
 <div class="tsd-comment tsd-typography"><p>Base parameters for sending a file to a Mindee V2 product.</p>
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">BaseProductParameters</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#alias">alias</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#closefile">closeFile</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#modelid">modelId</a><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#webhookids">webhookIds</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-call-signature" href="#getrequestparameters-1">getRequestParameters</a><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
-<section class="tsd-panel tsd-hierarchy" data-refl="2095">
+<section class="tsd-panel tsd-hierarchy" data-refl="2099">
 <h4>Hierarchy (<a href="../hierarchy.html#v2.BaseProductParameters">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">BaseProductParameters</span>
@@ -26,7 +26,7 @@
 <li class="tsd-hierarchy-item"><a href="../classes/product.ocr.OcrParameters.html" class="tsd-signature-type tsd-kind-class">OcrParameters</a></li>
 <li class="tsd-hierarchy-item"><a href="../classes/product.split.SplitParameters.html" class="tsd-signature-type tsd-kind-class">SplitParameters</a></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/clientOptions/baseProductParameters.ts#L16">src/v2/clientOptions/baseProductParameters.ts:16</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/clientOptions/baseProductParameters.ts#L16">src/v2/clientOptions/baseProductParameters.ts:16</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -54,7 +54,7 @@ For example, an internal document ID, reference number, or database key.
 If set, it will be included in the job and result responses.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/clientOptions/baseProductParameters.ts#L26">src/v2/clientOptions/baseProductParameters.ts:26</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/clientOptions/baseProductParameters.ts#L26">src/v2/clientOptions/baseProductParameters.ts:26</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="closefile"><code class="tsd-tag">Optional</code><span>close<wbr/>File</span><a href="#closefile" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">closeFile</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -62,14 +62,14 @@ If set, it will be included in the job and result responses.</p>
 Set to <code>false</code> to keep it open.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/clientOptions/baseProductParameters.ts#L36">src/v2/clientOptions/baseProductParameters.ts:36</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/clientOptions/baseProductParameters.ts#L36">src/v2/clientOptions/baseProductParameters.ts:36</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="modelid"><span>model<wbr/>Id</span><a href="#modelid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">modelId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>Model ID to use for the inference. <strong>Required.</strong></p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/clientOptions/baseProductParameters.ts#L20">src/v2/clientOptions/baseProductParameters.ts:20</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/clientOptions/baseProductParameters.ts#L20">src/v2/clientOptions/baseProductParameters.ts:20</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="webhookids"><code class="tsd-tag">Optional</code><span>webhook<wbr/>Ids</span><a href="#webhookids" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">webhookIds</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">[]</span></div>
@@ -77,7 +77,7 @@ Set to <code>false</code> to keep it open.</p>
 If empty, no webhooks will be used.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/clientOptions/baseProductParameters.ts#L31">src/v2/clientOptions/baseProductParameters.ts:31</a></li></ul></aside></section></section></details>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/clientOptions/baseProductParameters.ts#L31">src/v2/clientOptions/baseProductParameters.ts:31</a></li></ul></aside></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -92,7 +92,7 @@ If empty, no webhooks will be used.</p>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Record</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">,</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">&gt;</span></h4><p>A <code>Record</code> mapping parameter names to their string values.</p>
 <aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/clientOptions/baseProductParameters.ts#L52">src/v2/clientOptions/baseProductParameters.ts:52</a></li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/clientOptions/baseProductParameters.ts#L52">src/v2/clientOptions/baseProductParameters.ts:52</a></li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">

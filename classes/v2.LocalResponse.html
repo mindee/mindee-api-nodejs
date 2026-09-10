@@ -15,14 +15,14 @@
 <div class="tsd-comment tsd-typography"><p>Local response loaded from a file.
 Note: Has to be initialized through init() before use.</p>
 </div></section>
-<section class="tsd-panel tsd-hierarchy" data-refl="2072">
+<section class="tsd-panel tsd-hierarchy" data-refl="2074">
 <h4>Hierarchy</h4>
 <ul class="tsd-hierarchy">
-<li class="tsd-hierarchy-item"><span class="tsd-signature-type">LocalResponseBase</span>
+<li class="tsd-hierarchy-item"><span class="tsd-signature-type">BaseLocalResponse</span>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">LocalResponse</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/parsing/localResponse.ts#L10">src/v2/parsing/localResponse.ts:10</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/parsing/localResponse.ts#L10">src/v2/parsing/localResponse.ts:10</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -43,6 +43,7 @@ Note: Has to be initialized through init() before use.</p>
 <a href="#gethmacsignature" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Hmac<wbr/>Signature</span></a>
 <a href="#init" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>init</span></a>
 <a href="#isvalidhmacsignature" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>is<wbr/>Valid<wbr/>Hmac<wbr/>Signature</span></a>
+<a href="#tostring" class="tsd-index-link tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>to<wbr/>String</span></a>
 </div></section></div></details></section></section>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="constructors-1">Constructors<a href="#constructors-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
@@ -60,9 +61,9 @@ Note: Has to be initialized through init() before use.</p>
 <ul class="tsd-parameter-list">
 <li><span><span class="tsd-kind-parameter">inputFile</span>: <span class="tsd-signature-type">string</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">Buffer</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">ArrayBufferLike</span><span class="tsd-signature-symbol">&gt;</span></span></li></ul></div>
 <h4 class="tsd-returns-title">Returns <a href="../modules/v2.html" class="tsd-signature-type tsd-kind-namespace">v2</a><span class="tsd-signature-symbol">.</span><a href="" class="tsd-signature-type tsd-kind-class">LocalResponse</a></h4><aside class="tsd-sources">
-<p>Inherited from LocalResponseBase.constructor</p>
+<p>Inherited from BaseLocalResponse.constructor</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/parsing/localResponseBase.ts#L20">src/parsing/localResponseBase.ts:20</a></li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/parsing/baseLocalResponse.ts#L20">src/parsing/baseLocalResponse.ts:20</a></li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -71,9 +72,9 @@ Note: Has to be initialized through init() before use.</p>
 <div class="tsd-signature"><span class="tsd-kind-property">initialized</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol"> = false</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether the local response payload has been loaded.</p>
 </div><aside class="tsd-sources">
-<p>Inherited from LocalResponseBase.initialized</p>
+<p>Inherited from BaseLocalResponse.initialized</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/parsing/localResponseBase.ts#L15">src/parsing/localResponseBase.ts:15</a></li></ul></aside></section></section></details>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/parsing/baseLocalResponse.ts#L15">src/parsing/baseLocalResponse.ts:15</a></li></ul></aside></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -87,9 +88,9 @@ Note: Has to be initialized through init() before use.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><a href="../types/v1.parsing.common.StringDict.html" class="tsd-signature-type tsd-kind-type-alias">StringDict</a><span class="tsd-signature-symbol">&gt;</span></h4><p>A JSON-like object.</p>
 <aside class="tsd-sources">
-<p>Inherited from LocalResponseBase.asDict</p>
+<p>Inherited from BaseLocalResponse.asDict</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/parsing/localResponseBase.ts#L54">src/parsing/localResponseBase.ts:54</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/parsing/baseLocalResponse.ts#L63">src/parsing/baseLocalResponse.ts:63</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="deserializeresponse"><span>deserialize<wbr/>Response</span><a href="#deserializeresponse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
@@ -130,7 +131,7 @@ which the payload should be deserialized.</p>
 <h4 class="tsd-anchor-link" id="throws">Throws<a href="#throws" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h4><p>MindeeError If the provided class cannot be instantiated.</p>
 </div></div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v2/parsing/localResponse.ts#L34">src/v2/parsing/localResponse.ts:34</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v2/parsing/localResponse.ts#L34">src/v2/parsing/localResponse.ts:34</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="gethmacsignature"><span>get<wbr/>Hmac<wbr/>Signature</span><a href="#gethmacsignature" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -147,9 +148,9 @@ which the payload should be deserialized.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><p>The HMAC signature of the local response.</p>
 <aside class="tsd-sources">
-<p>Inherited from LocalResponseBase.getHmacSignature</p>
+<p>Inherited from BaseLocalResponse.getHmacSignature</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/parsing/localResponseBase.ts#L71">src/parsing/localResponseBase.ts:71</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/parsing/baseLocalResponse.ts#L80">src/parsing/baseLocalResponse.ts:80</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="init"><span>init</span><a href="#init" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -159,9 +160,9 @@ which the payload should be deserialized.</p>
 <div class="tsd-comment tsd-typography"><p>Loads the local payload from a string, buffer, or file path.</p>
 </div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">Promise</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">&gt;</span></h4><aside class="tsd-sources">
-<p>Inherited from LocalResponseBase.init</p>
+<p>Inherited from BaseLocalResponse.init</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/parsing/localResponseBase.ts#L26">src/parsing/localResponseBase.ts:26</a></li></ul></aside></div></li></ul></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/parsing/baseLocalResponse.ts#L32">src/parsing/baseLocalResponse.ts:32</a></li></ul></aside></div></li></ul></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="isvalidhmacsignature"><span>is<wbr/>Valid<wbr/>Hmac<wbr/>Signature</span><a href="#isvalidhmacsignature" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-is-inherited">
@@ -181,9 +182,21 @@ which the payload should be deserialized.</p>
 </div></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><p>True if the HMAC signature is valid.</p>
 <aside class="tsd-sources">
-<p>Inherited from LocalResponseBase.isValidHmacSignature</p>
+<p>Inherited from BaseLocalResponse.isValidHmacSignature</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/parsing/localResponseBase.ts#L93">src/parsing/localResponseBase.ts:93</a></li></ul></aside></div></li></ul></section></section></details></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/parsing/baseLocalResponse.ts#L102">src/parsing/baseLocalResponse.ts:102</a></li></ul></aside></div></li></ul></section>
+<section class="tsd-panel tsd-member tsd-is-inherited">
+<h3 class="tsd-anchor-link" id="tostring"><span>to<wbr/>String</span><a href="#tostring" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-is-inherited">
+<li class="tsd-is-inherited">
+<div class="tsd-signature tsd-anchor-link" id="tostring-1"><span class="tsd-kind-call-signature">toString</span><span class="tsd-signature-symbol">()</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><a href="#tostring-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>Print the file as a UTF-8 string.</p>
+</div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">string</span></h4><aside class="tsd-sources">
+<p>Inherited from BaseLocalResponse.toString</p>
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/parsing/baseLocalResponse.ts#L132">src/parsing/baseLocalResponse.ts:132</a></li></ul></aside></div></li></ul></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
@@ -204,7 +217,7 @@ which the payload should be deserialized.</p>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
 <div><a href="#initialized" class="tsd-is-protected tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>initialized</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
-<div><a href="#asdict" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>as<wbr/>Dict</span></a><a href="#deserializeresponse"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>deserialize<wbr/>Response</span></a><a href="#gethmacsignature" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Hmac<wbr/>Signature</span></a><a href="#init" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>init</span></a><a href="#isvalidhmacsignature" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>is<wbr/>Valid<wbr/>Hmac<wbr/>Signature</span></a></div></details></div></details></div>
+<div><a href="#asdict" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>as<wbr/>Dict</span></a><a href="#deserializeresponse"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>deserialize<wbr/>Response</span></a><a href="#gethmacsignature" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Hmac<wbr/>Signature</span></a><a href="#init" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>init</span></a><a href="#isvalidhmacsignature" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>is<wbr/>Valid<wbr/>Hmac<wbr/>Signature</span></a><a href="#tostring" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>to<wbr/>String</span></a></div></details></div></details></div>
 <div class="site-menu">
 <nav class="tsd-navigation"><a href="../modules.html">mindee</a>
 <ul class="tsd-small-nested-navigation" id="tsd-nav-container">

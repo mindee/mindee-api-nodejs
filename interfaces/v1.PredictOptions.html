@@ -15,7 +15,7 @@
 <div class="tsd-comment tsd-typography"><p>Options relating to predictions.</p>
 </div></section>
 <div class="tsd-signature"><span class="tsd-signature-keyword">interface</span> <span class="tsd-kind-interface">PredictOptions</span> <span class="tsd-signature-symbol">{</span><br/>    <a class="tsd-kind-property" href="#allwords">allWords</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#cropper">cropper</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#endpoint">endpoint</a><span class="tsd-signature-symbol">?:</span> <a href="../classes/v1.http.Endpoint.html" class="tsd-signature-type tsd-kind-class">Endpoint</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#fulltext">fullText</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#pageoptions">pageOptions</a><span class="tsd-signature-symbol">?:</span> <a href="PageOptions.html" class="tsd-signature-type tsd-kind-interface">PageOptions</a><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#rag">rag</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span><span class="tsd-signature-symbol">;</span><br/>    <a class="tsd-kind-property" href="#workflowid">workflowId</a><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol">;</span><br/><span class="tsd-signature-symbol">}</span></div>
-<section class="tsd-panel tsd-hierarchy" data-refl="1955">
+<section class="tsd-panel tsd-hierarchy" data-refl="1957">
 <h4>Hierarchy (<a href="../hierarchy.html#v1.PredictOptions">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><span class="tsd-signature-type">BaseOptions</span>
@@ -24,7 +24,7 @@
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><a href="v1.OptionalAsyncOptions.html" class="tsd-signature-type tsd-kind-interface">OptionalAsyncOptions</a></li></ul></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L50">src/v1/client.ts:50</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L50">src/v1/client.ts:50</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -50,21 +50,21 @@
 <p>This performs a full OCR operation on the server and will increase response time.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L58">src/v1/client.ts:58</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L58">src/v1/client.ts:58</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="cropper"><code class="tsd-tag">Optional</code><span>cropper</span><a href="#cropper" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">cropper</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
 <div class="tsd-comment tsd-typography"><p>Whether to include cropper results for each page.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L62">src/v1/client.ts:62</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L62">src/v1/client.ts:62</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="endpoint"><code class="tsd-tag">Optional</code><span>endpoint</span><a href="#endpoint" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">endpoint</span><span class="tsd-signature-symbol">?:</span> <a href="../classes/v1.http.Endpoint.html" class="tsd-signature-type tsd-kind-class">Endpoint</a></div>
 <div class="tsd-comment tsd-typography"><p>A custom endpoint.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L52">src/v1/client.ts:52</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L52">src/v1/client.ts:52</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="fulltext"><code class="tsd-tag">Optional</code><span>full<wbr/>Text</span><a href="#fulltext" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">fullText</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -72,7 +72,7 @@
 </div><aside class="tsd-sources">
 <p>Inherited from BaseOptions.fullText</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L35">src/v1/client.ts:35</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L35">src/v1/client.ts:35</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="pageoptions"><code class="tsd-tag">Optional</code><span>page<wbr/>Options</span><a href="#pageoptions" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">pageOptions</span><span class="tsd-signature-symbol">?:</span> <a href="PageOptions.html" class="tsd-signature-type tsd-kind-interface">PageOptions</a></div>
@@ -81,7 +81,7 @@ This is done before sending the file to the server and is useful to avoid page l
 </div><aside class="tsd-sources">
 <p>Inherited from BaseOptions.pageOptions</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L40">src/v1/client.ts:40</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L40">src/v1/client.ts:40</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-is-inherited">
 <h3 class="tsd-anchor-link" id="rag"><code class="tsd-tag">Optional</code><span>rag</span><a href="#rag" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">rag</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -89,14 +89,14 @@ This is done before sending the file to the server and is useful to avoid page l
 </div><aside class="tsd-sources">
 <p>Inherited from BaseOptions.rag</p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L44">src/v1/client.ts:44</a></li></ul></aside></section>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L44">src/v1/client.ts:44</a></li></ul></aside></section>
 <section class="tsd-panel tsd-member">
 <h3 class="tsd-anchor-link" id="workflowid"><code class="tsd-tag">Optional</code><span>workflow<wbr/>Id</span><a href="#workflowid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <div class="tsd-signature"><span class="tsd-kind-property">workflowId</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
 <div class="tsd-comment tsd-typography"><p>The ID of the workflow.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/73f779a1a4528d62cf5fc49165717e3cf0ccedb4/src/v1/client.ts#L66">src/v1/client.ts:66</a></li></ul></aside></section></section></details></div>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/c2e3c3d21261f73cd4fe0c1aa7d26419d5ca6d82/src/v1/client.ts#L66">src/v1/client.ts:66</a></li></ul></aside></section></section></details></div>
 <div class="col-sidebar">
 <div class="page-menu">
 <div class="tsd-navigation settings">
