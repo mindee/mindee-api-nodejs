@@ -1,5 +1,10 @@
 # Mindee Node.js API Library Changelog
 
+## v5.7.1 - 2026-09-10
+### Fixes
+* :bug: constant-time HMAC security fix
+
+
 ## v5.7.0 - 2026-08-20
 ### Changes
 * :sparkles: add support for RAG search API
