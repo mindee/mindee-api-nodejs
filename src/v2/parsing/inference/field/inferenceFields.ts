@@ -17,7 +17,9 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     this._indentLevel = indentLevel;
   }
 
-  /** Returns a field as a `SimpleField`, or throws if the type mismatches. */
+  /**
+   * Returns a field as a `SimpleField`, or throws if the type mismatches.
+   */
   getSimpleField(fieldName: string): SimpleField {
     const field = this.get(fieldName);
     if (field === undefined) {
@@ -29,7 +31,9 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     return field as SimpleField;
   }
 
-  /** Returns a field as an `ObjectField`, or throws if the type mismatches. */
+  /**
+   * Returns a field as an `ObjectField`, or throws if the type mismatches.
+   */
   getObjectField(fieldName: string): ObjectField {
     const field = this.get(fieldName);
     if (field === undefined) {
@@ -41,7 +45,9 @@ export class InferenceFields extends Map<string, SimpleField | ObjectField | Lis
     return field as ObjectField;
   }
 
-  /** Returns a field as a `ListField`, or throws if the type mismatches. */
+  /**
+   * Returns a field as a `ListField`, or throws if the type mismatches.
+   */
   getListField(fieldName: string): ListField {
     const field = this.get(fieldName);
     if (field === undefined) {

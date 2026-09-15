@@ -1,7 +1,9 @@
 import { ApiSettings } from "./apiSettings.js";
 import { Dispatcher } from "undici";
 import { BaseProductParameters } from "@/v2/index.js";
-import { BaseSearchParameters } from "@/v2/clientOptions/baseSearchParameters.js";
+import {
+  BaseSearchParameters, BaseAnnotationParameters, BaseRagDocumentUploadParameters
+} from "@/v2/clientOptions/index.js";
 import { FormData } from "undici";
 import {
   BaseResponse,
@@ -160,6 +162,113 @@ export class MindeeApiV2 {
     return this.#processResponse(response, search.responseClass) as InstanceType<S["responseClass"]>;
   }
 
+  /**
+   * Get a document's info and annotations from the RAG database.
+   * @param product the product definition to use.
+   * @param documentId the document id to get.
+   * @returns a `Promise` containing an annotation response.
+   */
+  async reqGetRagAnnotation<P extends typeof BaseProduct>(
+    product: P,
+    documentId: string
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const options: RequestOptions = {
+      method: "GET",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/products/${product.slug}/rag-documents/${documentId}`,
+      timeoutSecs: this.settings.timeoutSecs,
+    };
+    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
+    return this.#processResponse(
+      response,
+      product.annotationResponseClass
+    ) as InstanceType<P["annotationResponseClass"]>;
+  }
+
+  /**
+   * Add a document to the RAG database.
+   * @param product the product definition to use.
+   * @param parameters the parameters to use.
+   * @param inputSource the file to upload.
+   * @returns a `Promise` containing an annotation response.
+   */
+  async reqPostRagDocument<P extends typeof BaseProduct>(
+    product: P,
+    parameters: BaseRagDocumentUploadParameters,
+    inputSource: LocalInputSource
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const form = new FormData();
+    form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
+
+    const options: RequestOptions = {
+      method: "POST",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/products/${product.slug}/rag-documents`,
+      queryParams: parameters.getRequestParameters(),
+      body: form,
+      timeoutSecs: this.settings.timeoutSecs,
+    };
+
+    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
+    return this.#processResponse(
+      response,
+      product.annotationResponseClass
+    ) as InstanceType<P["annotationResponseClass"]>;
+  }
+
+  /**
+   * Update a document's annotations in the RAG database.
+   * @param product the product definition to use.
+   * @param parameters the parameters to use.
+   * @returns a `Promise` containing an annotation response.
+   */
+  async reqPatchRagAnnotation<P extends typeof BaseProduct>(
+    product: P,
+    parameters: BaseAnnotationParameters
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const options: RequestOptions = {
+      method: "PATCH",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/products/${product.slug}/rag-documents/${parameters.documentId}`,
+      queryParams: parameters.getRequestParameters(),
+      timeoutSecs: this.settings.timeoutSecs,
+    };
+    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
+    return this.#processResponse(
+      response,
+      product.annotationResponseClass
+    ) as InstanceType<P["annotationResponseClass"]>;
+  }
+
+  /**
+   * Deletes a document from the RAG database.
+   * @param product the product definition to use.
+   * @param documentId the document's ID.
+   * @returns true if the document was deleted successfully, false otherwise.
+   */
+  async reqDeleteRagDocument<P extends typeof BaseProduct>(
+    product: P,
+    documentId: string
+  ): Promise<boolean> {
+    const options: RequestOptions = {
+      method: "DELETE",
+      headers: this.settings.baseHeaders,
+      hostname: this.settings.hostname,
+      path: `/v2/products/${product.slug}/rag-documents/${documentId}`,
+      timeoutSecs: this.settings.timeoutSecs,
+    };
+    const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
+    return response.messageObj?.statusCode >= 200 && response.messageObj?.statusCode < 400;
+  }
+
+  /**
+   * Transforms a set of parameters into a FormData object.
+   * @param params the parameters to transform.
+   * @private
+   */
   #paramsToFormData(params: Record<string, string>): FormData {
     const form = new FormData();
     for (const [key, value] of Object.entries(params)) {

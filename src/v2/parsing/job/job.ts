@@ -7,28 +7,28 @@ import { JobWebhook } from "./jobWebhook.js";
  */
 export class Job {
   /**
-   * Job ID.
+   * UUID of the Job.
    */
   public id: string;
 
   /**
-   * Error response if any.
+   * If an error occurred during processing, contains the problem details.
    */
   public error?: ErrorResponse;
   /**
    * Date and time of the Job creation.
    */
-  public createdAt: Date | null;
+  public createdAt: Date;
   /**
    * Date and time of the Job completion. Filled once processing is finished.
    */
   public completedAt: Date | null | undefined;
   /**
-   * ID of the model.
+   * UUID of the model to be used for the inference.
    */
   public modelId: string;
   /**
-   * Name for the file.
+   * Name of the file sent.
    */
   public filename: string;
   /**
@@ -44,11 +44,11 @@ export class Job {
    */
   public pollingUrl: string;
   /**
-   * URL to poll for the job result, redirects to the result if available.
+   * URL to retrieve the inference results. Will be filled once the inference is ready.
    */
   public resultUrl?: string;
   /**
-   * ID of webhooks associated with the job.
+   * List of responses from webhooks called. Empty until processing is finished.
    */
   public webhooks: Array<JobWebhook>;
 
@@ -58,7 +58,7 @@ export class Job {
     if (serverResponse["error"]) {
       this.error = new ErrorResponse(serverResponse["error"]);
     }
-    this.createdAt = parseDate(serverResponse["created_at"]);
+    this.createdAt = parseDate(serverResponse["created_at"])!;
     if (!serverResponse["completed_at"]) {
       this.completedAt = undefined;
     } else {

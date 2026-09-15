@@ -35,7 +35,9 @@ export interface ClientOptions {
  * Mindee Client V2 class that centralizes most basic operations.
  */
 export class Client {
-  /** Mindee V2 API handler. */
+  /**
+   * Mindee V2 API handler.
+   */
   protected mindeeApi: MindeeApiV2;
 
   /**
@@ -58,38 +60,8 @@ export class Client {
   }
 
   /**
-   * Search for models available to the account.
-   * @param name Optional name filter.
-   * @param modelType Optional model type filter.
-   * @returns a `Promise` containing the search response.
-   * @deprecated Use `search(ModelSearch, {})` instead.
+   * Enqueues a product inference job without waiting for completion.
    */
-  async searchModels(name?: string, modelType?: string): Promise<SearchResponse> {
-    return await this.search(ModelSearch, { name: name, modelType: modelType });
-  }
-
-  /**
-   * Search for resources matching the given criteria.
-   * @param search Search definition class to use.
-   * @param searchParameters Search parameters.
-   * @returns a `Promise` containing the search response with the matching resources.
-   */
-  async search<S extends typeof BaseSearch>(
-    search: S,
-    searchParameters: InstanceType<S["parametersClass"]> | ConstructorParameters<S["parametersClass"]>[0],
-  ): Promise<InstanceType<S["responseClass"]>> {
-    if (!searchParameters) {
-      throw new MindeeError("Search parameters are required.");
-    }
-
-    const paramsInstance = searchParameters instanceof search.parametersClass
-      ? searchParameters
-      : new search.parametersClass(searchParameters);
-
-    return await this.mindeeApi.reqGetSearch(search, paramsInstance);
-  }
-
-  /** Enqueues a product inference job without waiting for completion. */
   async enqueue<P extends typeof BaseProduct>(
     product: P,
     inputSource: InputSource,
@@ -251,5 +223,37 @@ export class Client {
       `Polling failed to retrieve a result after ${retryCounter} attempts. ` +
       "You can increase poll attempts by passing the pollingOptions argument to enqueueAndGetResult()"
     );
+  }
+
+  /**
+   * Search for models available to the account.
+   * @param name Optional name filter.
+   * @param modelType Optional model type filter.
+   * @returns a `Promise` containing the search response.
+   * @deprecated Use `search(ModelSearch, {})` instead.
+   */
+  async searchModels(name?: string, modelType?: string): Promise<SearchResponse> {
+    return await this.search(ModelSearch, { name: name, modelType: modelType });
+  }
+
+  /**
+   * Search for resources matching the given criteria.
+   * @param search Search definition class to use.
+   * @param searchParameters Search parameters.
+   * @returns a `Promise` containing the search response with the matching resources.
+   */
+  async search<S extends typeof BaseSearch>(
+    search: S,
+    searchParameters: InstanceType<S["parametersClass"]> | ConstructorParameters<S["parametersClass"]>[0],
+  ): Promise<InstanceType<S["responseClass"]>> {
+    if (!searchParameters) {
+      throw new MindeeError("Search parameters are required.");
+    }
+
+    const paramsInstance = searchParameters instanceof search.parametersClass
+      ? searchParameters
+      : new search.parametersClass(searchParameters);
+
+    return await this.mindeeApi.reqGetSearch(search, paramsInstance);
   }
 }
