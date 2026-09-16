@@ -54,7 +54,7 @@ export function floatToString(value: number|null) {
   if (value === null){
     return "";
   }
-  return value.toLocaleString(undefined, {
+  return value.toLocaleString("en-US", {
     minimumFractionDigits: 2,
     maximumFractionDigits: 5,
     useGrouping: false,
