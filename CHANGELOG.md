@@ -1,5 +1,10 @@
 # Mindee Node.js API Library Changelog
 
+## v5.7.2 - 2026-09-16
+### Fixes
+* :bug: RST output should be locale-agnostic
+
+
 ## v5.7.1 - 2026-09-10
 ### Fixes
 * :bug: constant-time HMAC security fix
