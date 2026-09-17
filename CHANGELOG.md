@@ -1,5 +1,10 @@
 # Mindee Node.js API Library Changelog
 
+## v5.8.0 - 2026-09-17
+### Changes
+* :sparkles: better logging of errors
+
+
 ## v5.7.2 - 2026-09-16
 ### Fixes
 * :bug: RST output should be locale-agnostic
@@ -14,7 +19,6 @@
 ### Changes
 * :sparkles: add support for RAG search API
 * :recycle: rework and mutualize a lot of http classes
-
 ### Fixes
 * :bug: fix undici unexpectedly re-using request agents when not specified
 
