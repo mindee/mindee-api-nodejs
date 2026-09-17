@@ -1,4 +1,4 @@
-<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>OcrResponse | mindee</title><meta name="description" content="Documentation for mindee"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
+<!DOCTYPE html><html class="default" lang="en" data-base="../"><head><meta charset="utf-8"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>FailedInferenceResponse | mindee</title><meta name="description" content="Documentation for mindee"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="../assets/style.css"/><link rel="stylesheet" href="../assets/highlight.css"/><script defer src="../assets/main.js"></script><script async src="../assets/icons.js" id="tsd-icons-script"></script><script async src="../assets/search.js" id="tsd-search-script"></script><script async src="../assets/navigation.js" id="tsd-nav-script"></script><script async src="../assets/hierarchy.js" id="tsd-hierarchy-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => window.app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar">
 <div class="tsd-toolbar-contents container"><a href="../index.html" class="title">mindee</a>
 <div id="tsd-toolbar-links"></div><button id="tsd-search-trigger" class="tsd-widget" aria-label="Search"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-search"></use></svg></button><dialog id="tsd-search" aria-label="Search"><input role="combobox" id="tsd-search-input" aria-controls="tsd-search-results" aria-autocomplete="list" aria-expanded="true" autocapitalize="off" autocomplete="off" placeholder="Search the docs" maxLength="100"/>
 <ul role="listbox" id="tsd-search-results"></ul>
@@ -8,20 +8,20 @@
 <div class="col-content">
 <div class="tsd-page-title">
 <ul class="tsd-breadcrumb" aria-label="Breadcrumb">
-<li><a href="../modules/product.html">product</a></li>
-<li><a href="" aria-current="page">OcrResponse</a></li></ul>
-<h1>Class OcrResponse</h1></div>
+<li><a href="../modules/v2.html">v2</a></li>
+<li><a href="" aria-current="page">FailedInferenceResponse</a></li></ul>
+<h1>Class FailedInferenceResponse</h1></div>
 <section class="tsd-panel tsd-comment">
-<div class="tsd-comment tsd-typography"><p>Response wrapper for OCR product calls.</p>
+<div class="tsd-comment tsd-typography"><p>Webhook payload returned when an inference fails before producing a result.</p>
 </div></section>
-<section class="tsd-panel tsd-hierarchy" data-refl="2184">
-<h4>Hierarchy (<a href="../hierarchy.html#product.OcrResponse">View Summary</a>)</h4>
+<section class="tsd-panel tsd-hierarchy" data-refl="2101">
+<h4>Hierarchy (<a href="../hierarchy.html#v2.FailedInferenceResponse">View Summary</a>)</h4>
 <ul class="tsd-hierarchy">
 <li class="tsd-hierarchy-item"><a href="v2.parsing.BaseResponse.html" class="tsd-signature-type tsd-kind-class">BaseResponse</a>
 <ul class="tsd-hierarchy">
-<li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">OcrResponse</span></li></ul></li></ul></section><aside class="tsd-sources">
+<li class="tsd-hierarchy-item"><span class="tsd-hierarchy-target">FailedInferenceResponse</span></li></ul></li></ul></section><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/product/ocr/ocrResponse.ts#L6">src/v2/product/ocr/ocrResponse.ts:6</a></li></ul></aside>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L8">src/v2/parsing/inference/failedInferenceResponse.ts:8</a></li></ul></aside>
 <section class="tsd-panel-group tsd-index-group">
 <section class="tsd-panel tsd-index-panel">
 <details class="tsd-index-content tsd-accordion" open><summary class="tsd-accordion-summary tsd-index-summary"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
@@ -33,7 +33,12 @@
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="properties">Properties<a href="#properties" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-index-list"><a href="#inference" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>inference</span></a>
+<div class="tsd-index-list"><a href="#createdat" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>created<wbr/>At</span></a>
+<a href="#error" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>error</span></a>
+<a href="#filealias" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>file<wbr/>Alias?</span></a>
+<a href="#filename" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>file<wbr/>Name</span></a>
+<a href="#inferenceid" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>inference<wbr/>Id</span></a>
+<a href="#modelid" class="tsd-index-link"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>model<wbr/>Id</span></a>
 </div></section>
 <section class="tsd-index-section">
 <h3 class="tsd-index-heading tsd-anchor-link" id="methods">Methods<a href="#methods" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
@@ -46,28 +51,61 @@
 <h3 class="tsd-anchor-link" id="constructor"><span>constructor</span><a href="#constructor" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
 <ul class="tsd-signatures">
 <li class="">
-<div class="tsd-signature tsd-anchor-link" id="constructorocrresponse"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">OcrResponse</span><span class="tsd-signature-symbol">(</span><span class="tsd-kind-parameter">serverResponse</span><span class="tsd-signature-symbol">:</span> <a href="../types/v1.parsing.common.StringDict.html" class="tsd-signature-type tsd-kind-type-alias">StringDict</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../modules/product.html" class="tsd-signature-type tsd-kind-namespace">product</a><span class="tsd-signature-symbol">.</span><a href="" class="tsd-signature-type tsd-kind-class">OcrResponse</a><a href="#constructorocrresponse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
+<div class="tsd-signature tsd-anchor-link" id="constructorfailedinferenceresponse"><span class="tsd-signature-keyword">new</span> <span class="tsd-kind-constructor-signature">FailedInferenceResponse</span><span class="tsd-signature-symbol">(</span><br/>    <span class="tsd-kind-parameter">serverResponse</span><span class="tsd-signature-symbol">:</span> <a href="../types/v1.parsing.common.StringDict.html" class="tsd-signature-type tsd-kind-type-alias">StringDict</a><span class="tsd-signature-symbol">,</span><br/><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">:</span> <a href="../modules/v2.html" class="tsd-signature-type tsd-kind-namespace">v2</a><span class="tsd-signature-symbol">.</span><a href="" class="tsd-signature-type tsd-kind-class">FailedInferenceResponse</a><a href="#constructorfailedinferenceresponse" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></div>
 <div class="tsd-description">
 <div class="tsd-parameters">
 <h4 class="tsd-parameters-title">Parameters</h4>
 <ul class="tsd-parameter-list">
-<li><span><span class="tsd-kind-parameter">serverResponse</span>: <a href="../types/v1.parsing.common.StringDict.html" class="tsd-signature-type tsd-kind-type-alias">StringDict</a></span>
-<div class="tsd-comment tsd-typography"><p>JSON response from the server.</p>
-</div></li></ul></div>
-<h4 class="tsd-returns-title">Returns <a href="../modules/product.html" class="tsd-signature-type tsd-kind-namespace">product</a><span class="tsd-signature-symbol">.</span><a href="" class="tsd-signature-type tsd-kind-class">OcrResponse</a></h4><aside class="tsd-sources">
+<li><span><span class="tsd-kind-parameter">serverResponse</span>: <a href="../types/v1.parsing.common.StringDict.html" class="tsd-signature-type tsd-kind-type-alias">StringDict</a></span></li></ul></div>
+<h4 class="tsd-returns-title">Returns <a href="../modules/v2.html" class="tsd-signature-type tsd-kind-namespace">v2</a><span class="tsd-signature-symbol">.</span><a href="" class="tsd-signature-type tsd-kind-class">FailedInferenceResponse</a></h4><aside class="tsd-sources">
 <p>Overrides <a href="v2.parsing.BaseResponse.html">BaseResponse</a>.<a href="v2.parsing.BaseResponse.html#constructor">constructor</a></p>
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/product/ocr/ocrResponse.ts#L15">src/v2/product/ocr/ocrResponse.ts:15</a></li></ul></aside></div></li></ul></section></section></details>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L40">src/v2/parsing/inference/failedInferenceResponse.ts:40</a></li></ul></aside></div></li></ul></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="properties-1">Properties<a href="#properties-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
 <section class="tsd-panel tsd-member">
-<h3 class="tsd-anchor-link" id="inference"><span>inference</span><a href="#inference" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
-<div class="tsd-signature"><span class="tsd-kind-property">inference</span><span class="tsd-signature-symbol">:</span> <a href="product.ocr.OcrInference.html" class="tsd-signature-type tsd-kind-class">OcrInference</a></div>
-<div class="tsd-comment tsd-typography"><p>Response for an OCR utility inference.</p>
+<h3 class="tsd-anchor-link" id="createdat"><span>created<wbr/>At</span><a href="#createdat" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">createdAt</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Date</span> <span class="tsd-signature-symbol">|</span> <span class="tsd-signature-type">null</span></div>
+<div class="tsd-comment tsd-typography"><p>Date and time when the inference was started.</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/product/ocr/ocrResponse.ts#L10">src/v2/product/ocr/ocrResponse.ts:10</a></li></ul></aside></section></section></details>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L37">src/v2/parsing/inference/failedInferenceResponse.ts:37</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="error"><span>error</span><a href="#error" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">error</span><span class="tsd-signature-symbol">:</span> <a href="ErrorResponse.html" class="tsd-signature-type tsd-kind-class">ErrorResponse</a></div>
+<div class="tsd-comment tsd-typography"><p>Problem details for the failure, if available.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L32">src/v2/parsing/inference/failedInferenceResponse.ts:32</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="filealias"><code class="tsd-tag">Optional</code><span>file<wbr/>Alias</span><a href="#filealias" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">fileAlias</span><span class="tsd-signature-symbol">?:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>Alias sent for the file, if any.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L27">src/v2/parsing/inference/failedInferenceResponse.ts:27</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="filename"><span>file<wbr/>Name</span><a href="#filename" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">fileName</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>Name of the input file.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L22">src/v2/parsing/inference/failedInferenceResponse.ts:22</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="inferenceid"><span>inference<wbr/>Id</span><a href="#inferenceid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">inferenceId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>UUID of the failed inference.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L12">src/v2/parsing/inference/failedInferenceResponse.ts:12</a></li></ul></aside></section>
+<section class="tsd-panel tsd-member">
+<h3 class="tsd-anchor-link" id="modelid"><span>model<wbr/>Id</span><a href="#modelid" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h3>
+<div class="tsd-signature"><span class="tsd-kind-property">modelId</span><span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span></div>
+<div class="tsd-comment tsd-typography"><p>UUID of the model used.</p>
+</div><aside class="tsd-sources">
+<ul>
+<li>Defined in <a href="https://github.com/mindee/mindee-api-nodejs/blob/8a091c73b221570dba38ad0c03656750b31903e5/src/v2/parsing/inference/failedInferenceResponse.ts#L17">src/v2/parsing/inference/failedInferenceResponse.ts:17</a></li></ul></aside></section></section></details>
 <details class="tsd-panel-group tsd-member-group tsd-accordion" open><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>
 <h2 class="tsd-anchor-link" id="methods-1">Methods<a href="#methods-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><use href="../assets/icons.svg#icon-anchor"></use></svg></a></h2></summary>
 <section>
@@ -102,7 +140,7 @@
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Constructors"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Constructors</summary>
 <div><a href="#constructor"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Constructor"><use href="../assets/icons.svg#icon-512"></use></svg><span>constructor</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Properties"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Properties</summary>
-<div><a href="#inference"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>inference</span></a></div></details>
+<div><a href="#createdat"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>created<wbr/>At</span></a><a href="#error"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>error</span></a><a href="#filealias"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>file<wbr/>Alias</span></a><a href="#filename"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>file<wbr/>Name</span></a><a href="#inferenceid"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>inference<wbr/>Id</span></a><a href="#modelid"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Property"><use href="../assets/icons.svg#icon-1024"></use></svg><span>model<wbr/>Id</span></a></div></details>
 <details open class="tsd-accordion tsd-page-navigation-section"><summary class="tsd-accordion-summary" data-key="section-Methods"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><use href="../assets/icons.svg#icon-chevronDown"></use></svg>Methods</summary>
 <div><a href="#getrawhttp" class="tsd-is-inherited"><svg class="tsd-kind-icon" viewBox="0 0 24 24" aria-label="Method"><use href="../assets/icons.svg#icon-2048"></use></svg><span>get<wbr/>Raw<wbr/>Http</span></a></div></details></div></details></div>
 <div class="site-menu">
