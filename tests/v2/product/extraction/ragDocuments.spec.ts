@@ -42,7 +42,7 @@ describe("MindeeV2 - Extraction RagDocuments", () => {
 
     assert.strictEqual(parameters.documentId, "invalid-document-id");
     assert.strictEqual(reqParams["status"], "Active");
-    assert.strictEqual(reqParams["annotation"], annotation);
+    assert.strictEqual(reqParams["annotation"], JSON.stringify(annotation));
   });
 
   it("should load a POST response from a JSON string", async () => {

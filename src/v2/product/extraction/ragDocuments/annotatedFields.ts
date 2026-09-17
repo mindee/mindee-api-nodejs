@@ -52,4 +52,12 @@ export class AnnotatedFields extends Map<string, AnnotatedSimpleField | Annotate
     }
     return field as AnnotatedListField;
   }
+
+  /**
+   * Serializes the fields to API format.
+   * Needed because a `Map` is otherwise serialized as an empty object by `JSON.stringify`.
+   */
+  toJSON(): Record<string, AnnotatedSimpleField | AnnotatedObjectField | AnnotatedListField> {
+    return Object.fromEntries(this);
+  }
 }
