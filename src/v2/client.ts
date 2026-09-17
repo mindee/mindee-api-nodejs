@@ -12,6 +12,7 @@ import { PollingOptions, PollingOptionsConstructor } from "./clientOptions/index
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 import { BaseSearch } from "@/v2/search/baseSearch.js";
 import { ModelSearch } from "@/v2/search/models/modelSearch.js";
+import { LocalInputSource } from "@/input/index.js";
 
 /**
  * Options for the V2 Mindee Client.
@@ -153,15 +154,18 @@ export class Client {
     product: P,
     inputSource: InputSource,
     params: InstanceType<P["parametersClass"]> | ConstructorParameters<P["parametersClass"]>[0],
-    pollingOptions?: PollingOptionsConstructor,
+    pollingOptions?: PollingOptions | PollingOptionsConstructor,
   ): Promise<InstanceType<P["responseClass"]>> {
-    const paramsInstance = new product.parametersClass(params);
-
-    const pollingOptionsInstance = new PollingOptions(pollingOptions);
-
+    const paramsInstance = params instanceof product.parametersClass
+      ? params
+      : new product.parametersClass(params);
     const jobResponse: JobResponse = await this.enqueue(
       product, inputSource, paramsInstance
     );
+
+    const pollingOptionsInstance = pollingOptions instanceof PollingOptions
+      ? pollingOptions
+      : new PollingOptions(pollingOptions);
     return await this.pollForResult(
       product, pollingOptionsInstance, jobResponse
     );
@@ -249,11 +253,203 @@ export class Client {
     if (!searchParameters) {
       throw new MindeeError("Search parameters are required.");
     }
-
     const paramsInstance = searchParameters instanceof search.parametersClass
       ? searchParameters
       : new search.parametersClass(searchParameters);
-
     return await this.mindeeApi.reqGetSearch(search, paramsInstance);
+  }
+
+  /**
+   * Not recommended for general use, prefer `getReadyRagDocumentPoll`.
+   * You will need to poll until the document is ready for use.
+   * Get a document's info and annotations from the RAG database.
+   *
+   * @param product the product the RAG database belongs to.
+   * @param documentId the document's ID.
+   */
+  async getRagDocument<P extends typeof BaseProduct>(
+    product: P,
+    documentId: string
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    logger.debug(`Getting RAG document ID: ${documentId}`);
+    return await this.mindeeApi.reqGetRagAnnotation(product, documentId);
+  }
+
+  /**
+   * Get a document's info and annotations from the RAG database.
+   *
+   * @param product the product the RAG database belongs to.
+   * @param documentId the document's ID.
+   * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
+   * @returns a `Promise` containing the RAG document annotation.
+   */
+  async getReadyRagDocumentPoll<P extends typeof BaseProduct>(
+    product: P,
+    documentId: string,
+    pollingOptions?: PollingOptionsConstructor
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const initialResponse = await this.getRagDocument(product, documentId);
+    if (initialResponse.status !== "Processing") {
+      return initialResponse;
+    }
+    const pollingOptionsInstance = pollingOptions instanceof PollingOptions
+      ? pollingOptions
+      : new PollingOptions(pollingOptions);
+    return await this.pollForRagDocument(product, initialResponse, pollingOptionsInstance);
+  }
+
+  /**
+   * Not recommended for general use, prefer `uploadAndGetRagDocumentPoll`.
+   * You will need to poll until the document is ready for use.
+   * Add a document to the RAG database.
+   *
+   * @param product The product the RAG database belongs to.
+   * @param inputSource The file to upload.
+   * @param parameters The parameters to use for the upload.
+   */
+  async uploadRagDocument<P extends typeof BaseProduct>(
+    product: P,
+    inputSource: LocalInputSource,
+    parameters: InstanceType<P["ragDocumentUploadClass"]> | ConstructorParameters<P["ragDocumentUploadClass"]>[0]
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    logger.debug("Adding a document to the RAG database");
+    const paramsInstance = parameters instanceof product.ragDocumentUploadClass
+      ? parameters
+      : new product.ragDocumentUploadClass(parameters);
+    await inputSource.init();
+    return await this.mindeeApi.reqPostRagDocument(product, paramsInstance, inputSource);
+  }
+
+  /**
+   * Add a document to the RAG database and return the initial annotation.
+   *
+   * @param product The product the RAG database belongs to.
+   * @param inputSource The file to upload.
+   * @param parameters The parameters to use for the upload.
+   * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
+   */
+  async uploadAndGetRagDocumentPoll<P extends typeof BaseProduct>(
+    product: P,
+    inputSource: LocalInputSource,
+    parameters: InstanceType<P["ragDocumentUploadClass"]> | ConstructorParameters<P["ragDocumentUploadClass"]>[0],
+    pollingOptions?: PollingOptions | PollingOptionsConstructor
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const initialResponse = await this.uploadRagDocument(product, inputSource, parameters);
+    if (initialResponse.status !== "Processing") {
+      return initialResponse;
+    }
+
+    const pollingOptionsInstance = pollingOptions instanceof PollingOptions
+      ? pollingOptions
+      : new PollingOptions(pollingOptions);
+    return await this.pollForRagDocument(product, initialResponse, pollingOptionsInstance);
+  }
+
+  async updateRagAnnotation<P extends typeof BaseProduct>(
+    product: P,
+    parameters: InstanceType<P["annotationParametersClass"]> | ConstructorParameters<P["annotationParametersClass"]>[0]
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const paramsInstance = parameters instanceof product.annotationParametersClass
+      ? parameters
+      : new product.annotationParametersClass(parameters);
+
+    logger.debug(`Updating RAG document ID: ${paramsInstance.documentId}`);
+
+    return await this.mindeeApi.reqPatchRagAnnotation(product, paramsInstance);
+  }
+
+  /**
+   * Update a document's annotations in the RAG database and poll until ready.
+   *
+   * @param product The product the RAG database belongs to.
+   * @param parameters The parameters to use for the update.
+   * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
+   * @returns a `Promise` containing the RAG document annotation.
+   */
+  async updateAndGetRagAnnotationPoll<P extends typeof BaseProduct>(
+    product: P,
+    parameters: InstanceType<P["annotationParametersClass"]> | ConstructorParameters<P["annotationParametersClass"]>[0],
+    pollingOptions?: PollingOptions | PollingOptionsConstructor
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const initialResponse = await this.mindeeApi.reqPatchRagAnnotation(product, parameters);
+
+    if (initialResponse.status !== "Processing") {
+      return initialResponse;
+    }
+
+    const pollingOptionsInstance = pollingOptions instanceof PollingOptions
+      ? pollingOptions
+      : new PollingOptions(pollingOptions);
+
+    return await this.pollForRagDocument(product, initialResponse, pollingOptionsInstance);
+  }
+
+  /**
+   * Get a document's info and annotations from the RAG database.
+   * @param product the product the RAG database belongs to.
+   * @param documentId the document's ID.
+   */
+  async deleteRagDocument<P extends typeof BaseProduct>(
+    product: P,
+    documentId: string
+  ): Promise<boolean> {
+    return await this.mindeeApi.reqDeleteRagDocument(product, documentId);
+  }
+
+  /**
+   * Poll until the document is finished processing or the max number of attempts is reached.
+   *
+   * @param product The product the RAG database belongs to.
+   * @param initialResponse The initial response containing the document's ID.
+   * @param pollingOptions Options for the polling loop, see {@link PollingOptions}.
+   * @returns A `Promise` containing the RAG document annotation.
+   * @protected
+   */
+  protected async pollForRagDocument<P extends typeof BaseProduct>(
+    product: P,
+    initialResponse: InstanceType<P["annotationResponseClass"]>,
+    pollingOptions: PollingOptions
+  ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    logger.debug(`Polling for RAG document ID: ${initialResponse.id}`);
+    const maxRetries = pollingOptions.maxRetries + 1;
+
+    logger.debug(
+      `Waiting ${pollingOptions.initialDelaySec} seconds before attempting to retrieve the result...`
+    );
+    await setTimeout(
+      pollingOptions.initialDelaySec * 1000,
+      undefined,
+      pollingOptions.initialTimerOptions
+    );
+
+    const documentId = initialResponse.id;
+    let retryCount = 1;
+
+    while (retryCount < maxRetries) {
+      await setTimeout(
+        pollingOptions.delaySec * 1000,
+        undefined,
+        pollingOptions.recurringTimerOptions
+      );
+
+      logger.debug(
+        `Poll attempt ${retryCount} of ${pollingOptions.maxRetries}`
+      );
+
+      const response = await this.getRagDocument(product, documentId);
+
+      retryCount++;
+
+      switch (response.status) {
+      case "Processing":
+        continue;
+      case "Failed":
+        throw new MindeeError("Job failed without an error payload.");
+      default:
+        return response;
+      }
+    }
+
+    throw new MindeeError(`RAG polling not complete after ${retryCount} attempts.`);
   }
 }

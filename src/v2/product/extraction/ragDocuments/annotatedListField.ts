@@ -26,7 +26,7 @@ export class AnnotatedListField extends AnnotatedBaseField {
   }
 
   /**
-   * SimpleField items from the list.
+   * AnnotatedSimpleField items from the list.
    */
   public get simpleItems(): Array<AnnotatedSimpleField> {
     const result: Array<AnnotatedSimpleField> = [];
@@ -44,7 +44,7 @@ export class AnnotatedListField extends AnnotatedBaseField {
   }
 
   /**
-   * SimpleField items from the list.
+   * AnnotatedObjectField items from the list.
    */
   public get objectItems(): Array<AnnotatedObjectField> {
     const result: Array<AnnotatedObjectField> = [];

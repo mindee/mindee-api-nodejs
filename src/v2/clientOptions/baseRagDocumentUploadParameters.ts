@@ -1,3 +1,12 @@
+import { MindeeConfigurationError } from "@/errors/index.js";
+
+/**
+ * Constructor parameters for BaseRagDocumentUploadParameters and its subclasses.
+ */
+export interface BaseRagDocumentUploadParametersConstructor {
+  modelId: string;
+}
+
 /**
  * Base parameters for document upload operations.
  */
@@ -9,13 +18,12 @@ export abstract class BaseRagDocumentUploadParameters {
 
   /**
    * Default constructor.
-   * @param modelId UUID of the model that the uploaded RAG document is linked to.
    */
-  protected constructor(modelId: string) {
-    if (!modelId || modelId.trim().length === 0) {
-      throw new Error("modelId cannot be null or whitespace.");
+  protected constructor(params: BaseRagDocumentUploadParametersConstructor) {
+    if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
+      throw new MindeeConfigurationError("Model ID must be provided");
     }
-    this.modelId = modelId.trim();
+    this.modelId = params.modelId.trim();
   }
 
   /**

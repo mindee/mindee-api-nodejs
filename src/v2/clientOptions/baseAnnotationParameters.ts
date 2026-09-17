@@ -1,3 +1,12 @@
+import { MindeeConfigurationError } from "@/errors/index.js";
+
+/**
+ * Constructor parameters for BaseAnnotationParameters and its subclasses.
+ */
+export interface BaseAnnotationParametersConstructor {
+  documentId: string;
+}
+
 /**
  * Base parameters for document annotations.
  */
@@ -9,15 +18,13 @@ export abstract class BaseAnnotationParameters {
 
   /**
    * Default constructor.
-   * @param documentId The UUID of the document.
    */
-  protected constructor(documentId: string) {
-    if (!documentId || documentId.trim().length === 0) {
-      throw new Error("documentId cannot be null or whitespace.");
+  protected constructor(params: BaseAnnotationParametersConstructor) {
+    if (params.documentId === undefined || params.documentId === null || params.documentId === "") {
+      throw new MindeeConfigurationError("Document ID must be provided");
     }
-
     // Note: DocumentId is included in the request URL path, it is not a parameter.
-    this.documentId = documentId.trim();
+    this.documentId = params.documentId.trim();
   }
 
   /**

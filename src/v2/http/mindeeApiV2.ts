@@ -51,12 +51,11 @@ export class MindeeApiV2 {
     } else {
       form.set("url", (inputSource as UrlInput).url);
     }
-    const path = `/v2/products/${product.slug}/enqueue`;
     const options: RequestOptions = {
       method: "POST",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
-      path: path,
+      path: `/v2/products/${product.slug}/enqueue`,
       body: form,
       timeoutSecs: this.settings.timeoutSecs,
     };
@@ -198,7 +197,7 @@ export class MindeeApiV2 {
     parameters: BaseRagDocumentUploadParameters,
     inputSource: LocalInputSource
   ): Promise<InstanceType<P["annotationResponseClass"]>> {
-    const form = new FormData();
+    const form = this.#paramsToFormData(parameters.getRequestParameters());
     form.set("file", new Blob([inputSource.fileObject]), inputSource.filename);
 
     const options: RequestOptions = {
@@ -206,7 +205,6 @@ export class MindeeApiV2 {
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `/v2/products/${product.slug}/rag-documents`,
-      queryParams: parameters.getRequestParameters(),
       body: form,
       timeoutSecs: this.settings.timeoutSecs,
     };
@@ -228,12 +226,14 @@ export class MindeeApiV2 {
     product: P,
     parameters: BaseAnnotationParameters
   ): Promise<InstanceType<P["annotationResponseClass"]>> {
+    const form = this.#paramsToFormData(parameters.getRequestParameters());
+
     const options: RequestOptions = {
       method: "PATCH",
       headers: this.settings.baseHeaders,
       hostname: this.settings.hostname,
       path: `/v2/products/${product.slug}/rag-documents/${parameters.documentId}`,
-      queryParams: parameters.getRequestParameters(),
+      body: form,
       timeoutSecs: this.settings.timeoutSecs,
     };
     const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);

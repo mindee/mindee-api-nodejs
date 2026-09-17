@@ -4,15 +4,11 @@ import { describe, it } from "node:test";
 import { promises as fs } from "fs";
 import { V2_PRODUCT_PATH } from "../../../index.js";
 import {
-  ExtractionRagAnnotationResponse
-} from "@/v2/product/extraction/ragDocuments/extractionRagAnnotationResponse.js";
-import { RagAnnotation } from "@/v2/product/extraction/ragDocuments/ragAnnotation.js";
+  ExtractionRagAnnotationResponse, RagAnnotation
+} from "@/v2/product/extraction/ragDocuments/index.js";
 import {
-  RagDocumentUploadParameters
-} from "@/v2/product/extraction/ragDocuments/params/ragDocumentUploadParameters.js";
-import {
-  RagDocumentAnnotationParameters
-} from "@/v2/product/extraction/ragDocuments/params/ragDocumentAnnotationParameters.js";
+  RagDocumentUploadParameters, RagDocumentAnnotationParameters
+} from "@/v2/product/extraction/ragDocuments/params/index.js";
 
 
 describe("MindeeV2 - Extraction RagDocuments", () => {
@@ -29,20 +25,19 @@ describe("MindeeV2 - Extraction RagDocuments", () => {
   }
 
   it("should init POST parameters", () => {
-    const parameters = new RagDocumentUploadParameters("invalid-model-id");
+    const parameters = new RagDocumentUploadParameters({ modelId: "invalid-model-id" });
     const reqParams = parameters.getRequestParameters();
 
     assert.strictEqual(reqParams["model_id"], "invalid-model-id");
   });
 
   it("should init PATCH parameters", () => {
-    // Pass an empty dictionary (or appropriate default) to match the StringDict constructor
     const annotation = new RagAnnotation({});
-    const parameters = new RagDocumentAnnotationParameters(
-      "invalid-document-id",
-      "Active",
-      annotation
-    );
+    const parameters = new RagDocumentAnnotationParameters({
+      documentId: "invalid-document-id",
+      status: "Active",
+      annotation: annotation
+    });
     const reqParams = parameters.getRequestParameters();
 
     assert.strictEqual(parameters.documentId, "invalid-document-id");
@@ -90,7 +85,7 @@ describe("MindeeV2 - Extraction RagDocuments", () => {
     assert.strictEqual(localeField.selected, false);
     assert.strictEqual(localeField.guidelines, null);
     assert.ok(localeField.fields);
-    assert.strictEqual(Object.keys(localeField.fields).length, 3);
+    assert.strictEqual(localeField.fields.size, 3);
     assert.strictEqual(localeField.getSimpleField("country").value, "US");
     assert.strictEqual(localeField.getSimpleField("currency").value, "USD");
     assert.strictEqual(localeField.getSimpleField("language").value, null);
@@ -114,7 +109,7 @@ describe("MindeeV2 - Extraction RagDocuments", () => {
 
     const lineItem0 = lineItemsField.objectItems[0];
     assert.ok(lineItem0.fields);
-    assert.strictEqual(Object.keys(lineItem0.fields).length, 8);
+    assert.strictEqual(lineItem0.fields.size, 8);
     assert.strictEqual(lineItem0.getSimpleField("description").value, "Front and rear brake cables");
     assert.strictEqual(lineItem0.getSimpleField("quantity").value, 1);
     assert.strictEqual(lineItem0.getSimpleField("unit_price").value, 100);
@@ -126,7 +121,7 @@ describe("MindeeV2 - Extraction RagDocuments", () => {
 
     const lineItem1 = lineItemsField.objectItems[1];
     assert.ok(lineItem1.fields);
-    assert.strictEqual(Object.keys(lineItem1.fields).length, 8);
+    assert.strictEqual(lineItem1.fields.size, 8);
     assert.strictEqual(lineItem1.getSimpleField("description").value, "New set of pedal arms");
     assert.strictEqual(lineItem1.getSimpleField("quantity").value, 2);
     assert.strictEqual(lineItem1.getSimpleField("unit_price").value, 25);
@@ -138,7 +133,7 @@ describe("MindeeV2 - Extraction RagDocuments", () => {
 
     const lineItem2 = lineItemsField.objectItems[2];
     assert.ok(lineItem2.fields);
-    assert.strictEqual(Object.keys(lineItem2.fields).length, 8);
+    assert.strictEqual(lineItem2.fields.size, 8);
     assert.strictEqual(lineItem2.getSimpleField("description").value, "Labor 3hrs");
     assert.strictEqual(lineItem2.getSimpleField("quantity").value, 3);
     assert.strictEqual(lineItem2.getSimpleField("unit_price").value, 15);

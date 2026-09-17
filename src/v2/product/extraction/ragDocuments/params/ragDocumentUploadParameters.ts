@@ -1,12 +1,11 @@
-import { BaseRagDocumentUploadParameters } from "@/v2/clientOptions/baseRagDocumentUploadParameters.js";
+import { BaseRagDocumentUploadParameters, BaseRagDocumentUploadParametersConstructor
+} from "@/v2/clientOptions/baseRagDocumentUploadParameters.js";
 
+/**
+ * Parameters for uploading a file to an extraction RAG database.
+ */
 export class RagDocumentUploadParameters extends BaseRagDocumentUploadParameters {
-
-  /**
-   * Default constructor.
-   * @param modelId UUID of the model that the uploaded RAG document is linked to.
-   */
-  constructor(modelId: string) {
-    super(modelId);
+  constructor(params: BaseRagDocumentUploadParametersConstructor & {}) {
+    super({ ...params });
   }
 }
