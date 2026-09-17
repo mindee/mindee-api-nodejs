@@ -7,6 +7,7 @@ export {
   JobResponse,
   ErrorResponse,
   LocalResponse,
+  FailedInferenceResponse,
 } from "./parsing/index.js";
 export type { BaseProductParameters, TimerOptions } from "./clientOptions/index.js";
 export { PollingOptions } from "./clientOptions/index.js";

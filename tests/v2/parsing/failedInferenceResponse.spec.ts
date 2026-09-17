@@ -1,13 +1,12 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import path from "path";
-import { ErrorResponse, LocalResponse } from "../../../src/v2/index.js";
-import { FailedInferenceResponse } from "../../../src/v2/parsing/inference/failedInferenceResponse.js";
+import { ErrorResponse, LocalResponse, FailedInferenceResponse } from "@/v2/index.js";
 import { V2_RESOURCE_PATH } from "../../index.js";
 
 describe("MindeeV2 - Failed Inference Response", async () => {
 
-  it("should load", async () => {
+  it("should load from a JSON file", async () => {
 
     const localResponse = new LocalResponse(path.join(V2_RESOURCE_PATH, "errors", "webhook_error_500_failed.json"));
     await localResponse.init();

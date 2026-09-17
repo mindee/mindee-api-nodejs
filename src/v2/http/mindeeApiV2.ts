@@ -176,19 +176,22 @@ export class MindeeApiV2 {
       result.messageObj?.statusCode
       && (result.messageObj?.statusCode > 399 || result.messageObj?.statusCode < 200)
     ) {
+      let errorResponse: ErrorResponse;
+
       if (result.data?.status !== null) {
-        throw new MindeeHttpErrorV2(new ErrorResponse(result.data));
-      }
-      throw new MindeeHttpErrorV2(
-        new ErrorResponse(
+        errorResponse = new ErrorResponse(result.data);
+      } else {
+        errorResponse = new ErrorResponse(
           {
             status: result.messageObj?.statusCode ?? -1,
             title: "Unknown Error",
             detail: result.data?.detail ?? "The server returned an Unknown error.",
             code: `${result.messageObj?.statusCode ?? -1}-000`,
           }
-        )
-      );
+        );
+      }
+      logger.error(errorResponse.toString());
+      throw new MindeeHttpErrorV2(errorResponse);
     }
     try {
       return new responseClass(result.data);

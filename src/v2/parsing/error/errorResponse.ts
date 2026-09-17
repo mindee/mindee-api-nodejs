@@ -30,4 +30,36 @@ export class ErrorResponse extends BaseResponse implements ErrorDetails {
       this.errors = [];
     }
   }
+
+  /**
+   * To make the error prettier to display.
+   */
+  public toString(): string {
+    const result: string[] = [];
+
+    result.push("Error Details");
+    result.push("=============");
+    result.push(`:HTTP Status: ${this.status}`);
+    result.push(`:Title: ${this.title}`);
+    result.push(`:Code: ${this.code}`);
+    result.push(`:Detail: ${this.detail}`);
+
+    if (this.errors && this.errors.length > 0) {
+      result.push("");
+      result.push("Error Items");
+      result.push("-----------");
+
+      this.errors.forEach((error, i) => {
+        result.push(`**Error ${i + 1}:**`);
+        result.push(`  :Pointer: ${error.pointer}`);
+        result.push(`  :Detail: ${error.detail}`);
+
+        if (i < this.errors.length - 1) {
+          result.push("");
+        }
+      });
+    }
+
+    return result.join("\n") + "\n";
+  }
 }
