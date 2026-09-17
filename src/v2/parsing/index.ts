@@ -12,6 +12,7 @@ export {
   BaseInference,
   InferenceFile,
   InferenceModel,
+  FailedInferenceResponse,
 } from "./inference/index.js";
 export { LocalResponse } from "./localResponse.js";
 export { BaseResponse } from "./baseResponse.js";
