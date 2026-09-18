@@ -425,12 +425,6 @@ export class Client {
     let retryCount = 1;
 
     while (retryCount < maxRetries) {
-      await setTimeout(
-        pollingOptions.delaySec * 1000,
-        undefined,
-        pollingOptions.recurringTimerOptions
-      );
-
       logger.debug(
         `Poll attempt ${retryCount} of ${pollingOptions.maxRetries}`
       );
@@ -441,7 +435,13 @@ export class Client {
 
       switch (response.status) {
       case "Processing":
+        await setTimeout(
+          pollingOptions.delaySec * 1000,
+          undefined,
+          pollingOptions.recurringTimerOptions
+        );
         continue;
+      case "Failed":
         throw new MindeeError("RAG document failed without an error payload.");
       default:
         return response;
