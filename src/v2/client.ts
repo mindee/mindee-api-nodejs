@@ -286,7 +286,7 @@ export class Client {
   async getReadyRagDocumentPoll<P extends typeof BaseProduct>(
     product: P,
     documentId: string,
-    pollingOptions?: PollingOptionsConstructor
+    pollingOptions?: PollingOptions | PollingOptionsConstructor
   ): Promise<InstanceType<P["annotationResponseClass"]>> {
     const initialResponse = await this.getRagDocument(product, documentId);
     if (initialResponse.status !== "Processing") {
