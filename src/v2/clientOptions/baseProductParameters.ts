@@ -36,10 +36,11 @@ export abstract class BaseProductParameters {
   closeFile?: boolean;
 
   protected constructor(params: BaseProductParametersConstructor) {
-    if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
+    const modelId = params.modelId?.trim();
+    if (!modelId) {
       throw new MindeeConfigurationError("Model ID must be provided");
     }
-    this.modelId = params.modelId;
+    this.modelId = modelId;
     this.alias = params.alias;
     this.webhookIds = params.webhookIds;
     this.closeFile = params.closeFile;

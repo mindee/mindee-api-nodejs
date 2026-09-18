@@ -20,11 +20,12 @@ export abstract class BaseAnnotationParameters {
    * Default constructor.
    */
   protected constructor(params: BaseAnnotationParametersConstructor) {
-    if (params.documentId === undefined || params.documentId === null || params.documentId === "") {
+    const documentId = params.documentId?.trim();
+    if (!documentId) {
       throw new MindeeConfigurationError("Document ID must be provided");
     }
-    // Note: DocumentId is included in the request URL path, it is not a parameter.
-    this.documentId = params.documentId.trim();
+    // Note: documentId is included in the request URL path, it is not a parameter.
+    this.documentId = documentId;
   }
 
   /**

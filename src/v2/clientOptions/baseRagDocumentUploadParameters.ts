@@ -20,10 +20,11 @@ export abstract class BaseRagDocumentUploadParameters {
    * Default constructor.
    */
   protected constructor(params: BaseRagDocumentUploadParametersConstructor) {
-    if (params.modelId === undefined || params.modelId === null || params.modelId === "") {
+    const modelId = params.modelId?.trim();
+    if (!modelId) {
       throw new MindeeConfigurationError("Model ID must be provided");
     }
-    this.modelId = params.modelId.trim();
+    this.modelId = modelId;
   }
 
   /**
