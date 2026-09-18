@@ -6,17 +6,23 @@ import { BaseProduct } from "@/v2/product/baseProduct.js";
  * Break a multipage source file into separate documents, associating a class for each one.
  */
 export class Split extends BaseProduct {
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get parametersClass() {
     return SplitParameters;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get responseClass() {
     return SplitResponse;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get slug() {
     return "split";
   }

@@ -1,9 +1,17 @@
-/** Execution priority levels available for workflow requests. */
+/**
+ * Execution priority levels available for workflow requests.
+ */
 export enum ExecutionPriority {
-  /** Low-priority background processing. */
+  /**
+   * Low-priority background processing.
+   */
   low = "low",
-  /** Standard processing priority. */
+  /**
+   * Standard processing priority.
+   */
   medium = "medium",
-  /** High-priority processing. */
+  /**
+   * High-priority processing.
+   */
   high = "high"
 }

@@ -12,7 +12,9 @@ import { MindeeError } from "@/errors/index.js";
 export abstract class BaseLocalResponse {
   private fileBytes: Buffer;
   private readonly inputHandle: Buffer | string;
-  /** Whether the local response payload has been loaded. */
+  /**
+   * Whether the local response payload has been loaded.
+   */
   protected initialized = false;
 
   /**
@@ -29,7 +31,9 @@ export abstract class BaseLocalResponse {
     this.inputHandle = inputFile;
   }
 
-  /** Loads the local payload from a string, buffer, or file path. */
+  /**
+   * Loads the local payload from a string, buffer, or file path.
+   */
   public async init() {
     /**
      * @param inputFile - The input file, which can be a Buffer, string, or PathLike.

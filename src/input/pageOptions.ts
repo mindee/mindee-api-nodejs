@@ -10,7 +10,9 @@ export interface PageOptions {
    * [0, -1] represents the first and last pages of the document.
    */
   pageIndexes: number[];
-  /** Operation to apply on the document, given the `pageIndexes` specified. */
+  /**
+   * Operation to apply on the document, given the `pageIndexes` specified.
+   */
   operation: PageOptionsOperation;
   /**
    * Apply the operation only if the document has at least this many pages.
@@ -23,8 +25,12 @@ export interface PageOptions {
  */
 /* eslint-disable @typescript-eslint/naming-convention */
 export enum PageOptionsOperation {
-  /** Only keep pages matching the provided indexes. */
+  /**
+   * Only keep pages matching the provided indexes.
+   */
   KeepOnly = "KEEP_ONLY",
-  /** Remove pages matching the provided indexes. */
+  /**
+   * Remove pages matching the provided indexes.
+   */
   Remove = "REMOVE",
 }

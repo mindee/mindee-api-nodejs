@@ -3,7 +3,9 @@ import { ExtractionResult } from "./extractionResult.js";
 import { ExtractionActiveOptions } from "./extractionActiveOptions.js";
 import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
 
-/** Inference payload for extraction responses. */
+/**
+ * Inference payload for extraction responses.
+ */
 export class ExtractionInference extends BaseInference {
   /**
    * Result of the inference.
@@ -20,7 +22,9 @@ export class ExtractionInference extends BaseInference {
     this.activeOptions = new ExtractionActiveOptions(serverResponse["active_options"]);
   }
 
-  /** Returns a readable representation of the inference. */
+  /**
+   * Returns a readable representation of the inference.
+   */
   toString(): string {
     return (
       super.toString() +

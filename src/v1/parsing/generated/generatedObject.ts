@@ -2,19 +2,31 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { BaseFieldConstructor, PositionField } from "@/v1/parsing/standard/index.js";
 
 
-/** A JSON-like object, with miscellaneous values. */
+/**
+ * A JSON-like object, with miscellaneous values.
+ */
 export class GeneratedObjectField {
 
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId?: number;
-  /** Confidence with which the value was assessed. */
+  /**
+   * Confidence with which the value was assessed.
+   */
   confidence?: number;
-  /** Raw unprocessed value, as it was sent by the server. */
+  /**
+   * Raw unprocessed value, as it was sent by the server.
+   */
   rawValue?: string;
-  /** List of all printable field names. */
+  /**
+   * List of all printable field names.
+   */
   private printableValues: string[];
 
-  /** All potentially present fields. */
+  /**
+   * All potentially present fields.
+   */
   [key: string]: string | number | boolean | object | undefined;
 
   constructor({
@@ -102,12 +114,16 @@ export class GeneratedObjectField {
     return n.toString();
   }
 
-  /** Returns the default string representation. */
+  /**
+   * Returns the default string representation.
+   */
   toString() {
     return this.toStringLevel();
   }
 
-  /** Returns a field value by key from this generated object. */
+  /**
+   * Returns a field value by key from this generated object.
+   */
   get(fieldName: string): string | number | boolean | object | undefined {
     return this[fieldName];
   }

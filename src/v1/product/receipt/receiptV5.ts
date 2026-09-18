@@ -5,13 +5,21 @@ import { ReceiptV5Document } from "./receiptV5Document.js";
  * Receipt API version 5 inference prediction.
  */
 export class ReceiptV5 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "expense_receipts";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "5";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: ReceiptV5Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<ReceiptV5Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

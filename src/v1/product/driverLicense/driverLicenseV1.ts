@@ -5,13 +5,21 @@ import { DriverLicenseV1Document } from "./driverLicenseV1Document.js";
  * Driver License API version 1 inference prediction.
  */
 export class DriverLicenseV1 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "driver_license";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "1";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: DriverLicenseV1Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<DriverLicenseV1Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

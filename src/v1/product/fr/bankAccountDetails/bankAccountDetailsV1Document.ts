@@ -9,11 +9,17 @@ import { StringField } from "@/v1/parsing/standard/index.js";
  * Bank Account Details API version 1.0 document data.
  */
 export class BankAccountDetailsV1Document implements Prediction {
-  /** The name of the account holder as seen on the document. */
+  /**
+   * The name of the account holder as seen on the document.
+   */
   accountHolderName: StringField;
-  /** The International Bank Account Number (IBAN). */
+  /**
+   * The International Bank Account Number (IBAN).
+   */
   iban: StringField;
-  /** The bank's SWIFT Business Identifier Code (BIC). */
+  /**
+   * The bank's SWIFT Business Identifier Code (BIC).
+   */
   swift: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

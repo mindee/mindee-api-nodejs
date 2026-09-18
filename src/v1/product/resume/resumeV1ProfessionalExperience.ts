@@ -7,27 +7,49 @@ import { Polygon } from "@/geometry/index.js";
  * The list of the candidate's professional experiences.
  */
 export class ResumeV1ProfessionalExperience {
-  /** The type of contract for the professional experience. */
+  /**
+   * The type of contract for the professional experience.
+   */
   contractType: string | null;
-  /** The specific department or division within the company. */
+  /**
+   * The specific department or division within the company.
+   */
   department: string | null;
-  /** The description of the professional experience as written in the document. */
+  /**
+   * The description of the professional experience as written in the document.
+   */
   description: string | null;
-  /** The name of the company or organization. */
+  /**
+   * The name of the company or organization.
+   */
   employer: string | null;
-  /** The month when the professional experience ended. */
+  /**
+   * The month when the professional experience ended.
+   */
   endMonth: string | null;
-  /** The year when the professional experience ended. */
+  /**
+   * The year when the professional experience ended.
+   */
   endYear: string | null;
-  /** The position or job title held by the candidate. */
+  /**
+   * The position or job title held by the candidate.
+   */
   role: string | null;
-  /** The month when the professional experience began. */
+  /**
+   * The month when the professional experience began.
+   */
   startMonth: string | null;
-  /** The year when the professional experience began. */
+  /**
+   * The year when the professional experience began.
+   */
   startYear: string | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

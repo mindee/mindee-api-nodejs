@@ -5,13 +5,21 @@ import { InvoiceSplitterV1Document } from "./invoiceSplitterV1Document.js";
  * Invoice Splitter API version 1 inference prediction.
  */
 export class InvoiceSplitterV1 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "invoice_splitter";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "1";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: InvoiceSplitterV1Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<InvoiceSplitterV1Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

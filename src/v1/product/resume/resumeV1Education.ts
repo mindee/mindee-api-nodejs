@@ -7,23 +7,41 @@ import { Polygon } from "@/geometry/index.js";
  * The list of the candidate's educational background.
  */
 export class ResumeV1Education {
-  /** The area of study or specialization. */
+  /**
+   * The area of study or specialization.
+   */
   degreeDomain: string | null;
-  /** The type of degree obtained, such as Bachelor's, Master's, or Doctorate. */
+  /**
+   * The type of degree obtained, such as Bachelor's, Master's, or Doctorate.
+   */
   degreeType: string | null;
-  /** The month when the education program or course was completed. */
+  /**
+   * The month when the education program or course was completed.
+   */
   endMonth: string | null;
-  /** The year when the education program or course was completed. */
+  /**
+   * The year when the education program or course was completed.
+   */
   endYear: string | null;
-  /** The name of the school. */
+  /**
+   * The name of the school.
+   */
   school: string | null;
-  /** The month when the education program or course began. */
+  /**
+   * The month when the education program or course began.
+   */
   startMonth: string | null;
-  /** The year when the education program or course began. */
+  /**
+   * The year when the education program or course began.
+   */
   startYear: string | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

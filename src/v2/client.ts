@@ -25,11 +25,17 @@ import { LocalInputSource } from "@/input/index.js";
  * });
  */
 export interface ClientOptions {
-  /** Your API key for all endpoints. */
+  /**
+   * Your API key for all endpoints.
+   */
   apiKey?: string;
-  /** Log debug messages. */
+  /**
+   * Log debug messages.
+   */
   debug?: boolean;
-  /** Custom Dispatcher instance for the HTTP requests. */
+  /**
+   * Custom Dispatcher instance for the HTTP requests.
+   */
   dispatcher?: Dispatcher;
 }
 

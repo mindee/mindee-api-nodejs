@@ -5,11 +5,17 @@ import { Polygon } from "@/geometry/index.js";
  * List of page groups. Each group represents a single invoice within a multi-invoice document.
  */
 export class InvoiceSplitterV1InvoicePageGroup {
-  /** List of page indexes that belong to the same invoice (group). */
+  /**
+   * List of page indexes that belong to the same invoice (group).
+   */
   pageIndexes: Array<number> | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

@@ -10,13 +10,21 @@ import { StringDict } from "@/parsing/stringDict.js";
  * @typeParam T an extension of an `Prediction`. Mandatory in order to properly create a page-level prediction.
  */
 export class Page<T extends Prediction> {
-  /** The page's index (identifier). */
+  /**
+   * The page's index (identifier).
+   */
   id: number;
-  /** The page's orientation */
+  /**
+   * The page's orientation
+   */
   orientation?: OrientationField;
-  /** A page-level prediction. Can either be specific to pages or identical to the document prediction. */
+  /**
+   * A page-level prediction. Can either be specific to pages or identical to the document prediction.
+   */
   prediction: T;
-  /** Potential `Extras` fields sent back along with the prediction. */
+  /**
+   * Potential `Extras` fields sent back along with the prediction.
+   */
   extras?: Extras;
 
   /**

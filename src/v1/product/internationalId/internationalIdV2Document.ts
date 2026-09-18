@@ -13,39 +13,73 @@ import {
  * International ID API version 2.2 document data.
  */
 export class InternationalIdV2Document implements Prediction {
-  /** The physical address of the document holder. */
+  /**
+   * The physical address of the document holder.
+   */
   address: StringField;
-  /** The date of birth of the document holder. */
+  /**
+   * The date of birth of the document holder.
+   */
   birthDate: DateField;
-  /** The place of birth of the document holder. */
+  /**
+   * The place of birth of the document holder.
+   */
   birthPlace: StringField;
-  /** The country where the document was issued. */
+  /**
+   * The country where the document was issued.
+   */
   countryOfIssue: StringField;
-  /** The unique identifier assigned to the document. */
+  /**
+   * The unique identifier assigned to the document.
+   */
   documentNumber: StringField;
-  /** The type of personal identification document. */
+  /**
+   * The type of personal identification document.
+   */
   documentType: ClassificationField;
-  /** The date when the document becomes invalid. */
+  /**
+   * The date when the document becomes invalid.
+   */
   expiryDate: DateField;
-  /** The list of the document holder's given names. */
+  /**
+   * The list of the document holder's given names.
+   */
   givenNames: StringField[] = [];
-  /** The date when the document was issued. */
+  /**
+   * The date when the document was issued.
+   */
   issueDate: DateField;
-  /** The Machine Readable Zone, first line. */
+  /**
+   * The Machine Readable Zone, first line.
+   */
   mrzLine1: StringField;
-  /** The Machine Readable Zone, second line. */
+  /**
+   * The Machine Readable Zone, second line.
+   */
   mrzLine2: StringField;
-  /** The Machine Readable Zone, third line. */
+  /**
+   * The Machine Readable Zone, third line.
+   */
   mrzLine3: StringField;
-  /** The country of citizenship of the document holder. */
+  /**
+   * The country of citizenship of the document holder.
+   */
   nationality: StringField;
-  /** The unique identifier assigned to the document holder. */
+  /**
+   * The unique identifier assigned to the document holder.
+   */
   personalNumber: StringField;
-  /** The biological sex of the document holder. */
+  /**
+   * The biological sex of the document holder.
+   */
   sex: StringField;
-  /** The state or territory where the document was issued. */
+  /**
+   * The state or territory where the document was issued.
+   */
   stateOfIssue: StringField;
-  /** The list of the document holder's family names. */
+  /**
+   * The list of the document holder's family names.
+   */
   surnames: StringField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {

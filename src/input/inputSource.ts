@@ -27,10 +27,11 @@ export abstract class InputSource {
    * Whether the input source has been initialized.
    * @protected
    */
-  /** Whether the source has already been initialized. */
   protected initialized: boolean = false;
 
-  /** Initializes the input source and populates its file object. */
+  /**
+   * Initializes the input source and populates its file object.
+   */
   async init() {
     throw new MindeeInputSourceError("not Implemented");
   }

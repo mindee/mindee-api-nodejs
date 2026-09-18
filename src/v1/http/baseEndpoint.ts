@@ -2,10 +2,14 @@ import { InputSource, PageOptions, LocalInputSource } from "@/input/index.js";
 import { ApiSettingsV1 } from "@/v1/http/apiSettingsV1.js";
 
 export abstract class BaseEndpoint {
-  /** Settings relating to the API. */
+  /**
+   * Settings relating to the API.
+   */
   settings: ApiSettingsV1;
 
-  /** Root of the URL for API calls. */
+  /**
+   * Root of the URL for API calls.
+   */
   urlRoot: string;
 
   protected constructor(

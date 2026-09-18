@@ -6,17 +6,29 @@ import { Polygon } from "@/geometry/index.js";
  * List of all line items on the receipt.
  */
 export class ReceiptV5LineItem {
-  /** The item description. */
+  /**
+   * The item description.
+   */
   description: string | null;
-  /** The item quantity. */
+  /**
+   * The item quantity.
+   */
   quantity: number | null;
-  /** The item total amount. */
+  /**
+   * The item total amount.
+   */
   totalAmount: number | null;
-  /** The item unit price. */
+  /**
+   * The item unit price.
+   */
   unitPrice: number | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

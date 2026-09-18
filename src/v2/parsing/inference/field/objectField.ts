@@ -4,9 +4,13 @@ import { BaseField } from "./baseField.js";
 import type { SimpleField } from "./simpleField.js";
 import type { ListField } from "./listField.js";
 
-/** Object-valued inference field. */
+/**
+ * Object-valued inference field.
+ */
 export class ObjectField extends BaseField {
-  /** Nested fields carried by this object. */
+  /**
+   * Nested fields carried by this object.
+   */
   readonly fields: InferenceFields;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {

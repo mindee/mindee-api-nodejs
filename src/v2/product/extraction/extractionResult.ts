@@ -3,7 +3,9 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { RawText } from "@/v2/parsing/inference/field/rawText.js";
 import { RagMetadata } from "@/v2/parsing/inference/field/ragMetadata.js";
 
-/** Extraction result payload containing fields and optional extras. */
+/**
+ * Extraction result payload containing fields and optional extras.
+ */
 export class ExtractionResult {
   /**
    * Fields contained in the inference.
@@ -30,7 +32,9 @@ export class ExtractionResult {
     }
   }
 
-  /** Returns a readable representation of extracted fields. */
+  /**
+   * Returns a readable representation of extracted fields.
+   */
   toString(): string {
     return `Fields\n======\n${this.fields}`;
   }

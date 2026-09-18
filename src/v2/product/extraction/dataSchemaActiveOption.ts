@@ -13,7 +13,9 @@ export class DataSchemaActiveOption {
     this.replace = serverResponse["replace"];
   }
 
-  /** Returns a readable representation of active data schema options. */
+  /**
+   * Returns a readable representation of active data schema options.
+   */
   toString() {
     return `Data Schema\n-----------\n:Replace: ${this.replace? "True" : "False"}`;
   }

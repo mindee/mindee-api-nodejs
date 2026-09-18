@@ -1,14 +1,24 @@
 import { mergeBbox } from "@/geometry/boundingBoxUtils.js";
 
-/** A simple bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax */
+/**
+ * A simple bounding box defined by 4 coordinates: xMin, yMin, xMax, yMax
+ */
 export class BBox {
-  /** Minimum X coordinate. */
+  /**
+   * Minimum X coordinate.
+   */
   xMin: number;
-  /** Minimum Y coordinate. */
+  /**
+   * Minimum Y coordinate.
+   */
   yMin: number;
-  /** Maximum X coordinate. */
+  /**
+   * Maximum X coordinate.
+   */
   xMax: number;
-  /** Maximum Y coordinate. */
+  /**
+   * Maximum Y coordinate.
+   */
   yMax: number;
 
   constructor(xMin: number, yMin: number, xMax: number, yMax: number) {
@@ -18,7 +28,9 @@ export class BBox {
     this.yMax = yMax;
   }
 
-  /** Returns a bounding box that contains this box and another one. */
+  /**
+   * Returns a bounding box that contains this box and another one.
+   */
   mergeBbox(bbox: BBox) {
     return mergeBbox(this, bbox);
   }

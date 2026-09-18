@@ -4,15 +4,25 @@ import { BaseField, BaseFieldConstructor } from "./base.js";
  * The locale detected on the document.
  */
 export class LocaleField extends BaseField {
-  /** Locale in ISO format. */
+  /**
+   * Locale in ISO format.
+   */
   value?: string;
-  /** The confidence score of the prediction. */
+  /**
+   * The confidence score of the prediction.
+   */
   confidence: number;
-  /** ISO 639-1 language code */
+  /**
+   * ISO 639-1 language code
+   */
   language?: string;
-  /** ISO 3166-1 alpha-2 (or alpha-3) country code */
+  /**
+   * ISO 3166-1 alpha-2 (or alpha-3) country code
+   */
   country?: string;
-  /** ISO 4217 currency code */
+  /**
+   * ISO 4217 currency code
+   */
   currency?: string;
 
   /**

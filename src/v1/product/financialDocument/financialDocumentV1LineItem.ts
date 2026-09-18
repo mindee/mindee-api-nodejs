@@ -6,25 +6,45 @@ import { Polygon } from "@/geometry/index.js";
  * List of line item present on the document.
  */
 export class FinancialDocumentV1LineItem {
-  /** The item description. */
+  /**
+   * The item description.
+   */
   description: string | null;
-  /** The product code referring to the item. */
+  /**
+   * The product code referring to the item.
+   */
   productCode: string | null;
-  /** The item quantity */
+  /**
+   * The item quantity
+   */
   quantity: number | null;
-  /** The item tax amount. */
+  /**
+   * The item tax amount.
+   */
   taxAmount: number | null;
-  /** The item tax rate in percentage. */
+  /**
+   * The item tax rate in percentage.
+   */
   taxRate: number | null;
-  /** The item total amount. */
+  /**
+   * The item total amount.
+   */
   totalAmount: number | null;
-  /** The item unit of measure. */
+  /**
+   * The item unit of measure.
+   */
   unitMeasure: string | null;
-  /** The item unit price. */
+  /**
+   * The item unit price.
+   */
   unitPrice: number | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

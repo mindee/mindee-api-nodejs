@@ -5,17 +5,29 @@ import { Polygon } from "@/geometry/index.js";
  * Full extraction of BBAN, including: branch code, bank code, account and key.
  */
 export class BankAccountDetailsV2Bban {
-  /** The BBAN bank code outputted as a string. */
+  /**
+   * The BBAN bank code outputted as a string.
+   */
   bbanBankCode: string | null;
-  /** The BBAN branch code outputted as a string. */
+  /**
+   * The BBAN branch code outputted as a string.
+   */
   bbanBranchCode: string | null;
-  /** The BBAN key outputted as a string. */
+  /**
+   * The BBAN key outputted as a string.
+   */
   bbanKey: string | null;
-  /** The BBAN Account number outputted as a string. */
+  /**
+   * The BBAN Account number outputted as a string.
+   */
   bbanNumber: string | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

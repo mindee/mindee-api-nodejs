@@ -1,7 +1,9 @@
 import { OcrWord } from "./ocrWord.js";
 import { StringDict } from "@/parsing/index.js";
 
-/** OCR payload for a single page. */
+/**
+ * OCR payload for a single page.
+ */
 export class OcrPage {
   /**
    * List of words extracted from the document page.
@@ -18,7 +20,9 @@ export class OcrPage {
     this.content = serverResponse["content"] as string;
   }
 
-  /** Returns a readable representation of page OCR content. */
+  /**
+   * Returns a readable representation of page OCR content.
+   */
   toString(): string {
     let ocrWords = "\n";
     if (this.words.length > 0) {

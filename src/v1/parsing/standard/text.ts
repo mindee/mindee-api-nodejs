@@ -12,9 +12,13 @@ export interface FieldConstructor {
  * A field containing a text value.
  */
 export class StringField extends Field {
-  /** The value. */
+  /**
+   * The value.
+   */
   value?: string;
-  /** Value as it appears on the document. */
+  /**
+   * Value as it appears on the document.
+   */
   rawValue?: string;
 
   constructor({

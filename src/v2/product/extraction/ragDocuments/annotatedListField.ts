@@ -63,7 +63,9 @@ export class AnnotatedListField extends AnnotatedBaseField {
     return result;
   }
 
-  /** Returns a readable representation of list items. */
+  /**
+   * Returns a readable representation of list items.
+   */
   toString(): string {
     if (!this.items || this.items.length === 0) {
       return "\n";

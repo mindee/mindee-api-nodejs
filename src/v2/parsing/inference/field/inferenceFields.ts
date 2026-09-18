@@ -5,9 +5,13 @@ import type { SimpleField } from "./simpleField.js";
 import { createField } from "./fieldFactory.js";
 
 
-/** Typed map of extraction fields returned by the API. */
+/**
+ * Typed map of extraction fields returned by the API.
+ */
 export class InferenceFields extends Map<string, SimpleField | ObjectField | ListField> {
-  /** Indentation level used when rendering text output. */
+  /**
+   * Indentation level used when rendering text output.
+   */
   protected _indentLevel: number;
 
   constructor(serverResponse: StringDict, indentLevel = 0) {

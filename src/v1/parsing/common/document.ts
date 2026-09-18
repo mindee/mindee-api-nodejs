@@ -9,17 +9,29 @@ import { RAGExtra } from "./extras/ragExtra.js";
  * @typeParam T an extension of an `Inference`. Mandatory in order to properly create an inference.
  */
 export class Document<T extends Inference> {
-  /** File name as sent back by the server. */
+  /**
+   * File name as sent back by the server.
+   */
   filename: string;
-  /** Result of the base inference. */
+  /**
+   * Result of the base inference.
+   */
   inference: T;
-  /** ID of the document as sent back by the server. */
+  /**
+   * ID of the document as sent back by the server.
+   */
   id: string;
-  /** Potential `Extras` fields sent back along the prediction. */
+  /**
+   * Potential `Extras` fields sent back along the prediction.
+   */
   extras?: Extras;
-  /** Raw-text response for `allWords` parsing. */
+  /**
+   * Raw-text response for `allWords` parsing.
+   */
   ocr?: Ocr;
-  /** Page number as sent back by the API. */
+  /**
+   * Page number as sent back by the API.
+   */
   nPages: number;
 
   /**

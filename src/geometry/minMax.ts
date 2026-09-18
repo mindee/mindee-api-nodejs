@@ -1,7 +1,13 @@
-/** Numeric range boundaries. */
+/**
+ * Numeric range boundaries.
+ */
 export type MinMax = {
-  /** Lower bound. */
+  /**
+   * Lower bound.
+   */
   min: number;
-  /** Upper bound. */
+  /**
+   * Upper bound.
+   */
   max: number;
 };

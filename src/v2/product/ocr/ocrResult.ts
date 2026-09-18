@@ -14,7 +14,9 @@ export class OcrResult {
     this.pages = serverResponse.pages.map((ocr: any) => new OcrPage(ocr));
   }
 
-  /** Returns a readable OCR summary for all pages. */
+  /**
+   * Returns a readable OCR summary for all pages.
+   */
   toString(): string {
     let pages = "\n";
     if (this.pages.length > 0) {

@@ -15,13 +15,21 @@ import { loadOptionalDependency } from "@/dependency/index.js";
  * Generic class for image extraction.
  */
 export class ExtractedImage {
-  /** Raw file bytes for the extracted image artifact. */
+  /**
+   * Raw file bytes for the extracted image artifact.
+   */
   public buffer: Buffer;
-  /** Filename used when exporting the extracted image. */
+  /**
+   * Filename used when exporting the extracted image.
+   */
   public filename: string;
-  /** 1-based source page identifier. */
+  /**
+   * 1-based source page identifier.
+   */
   public readonly pageId: number;
-  /** Identifier of the extracted element on the page. */
+  /**
+   * Identifier of the extracted element on the page.
+   */
   public readonly elementId: number;
 
   constructor(buffer: Uint8Array, fileName: string, pageId: number, elementId: number) {
@@ -80,7 +88,7 @@ export class ExtractedImage {
   }
 
   /**
-   * Attempts to saves the document to a file synchronously.
+   * Attempts to save the document to a file synchronously.
    * Throws an error if the file extension is not supported or if the file could not be saved to disk for some reason.
    *
    * @param outputPath Path to save the file to.

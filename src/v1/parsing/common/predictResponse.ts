@@ -9,7 +9,9 @@ import { StringDict } from "@/parsing/stringDict.js";
  * @category Synchronous
  */
 export class PredictResponse<T extends Inference> extends ApiResponse {
-  /** A document prediction response. */
+  /**
+   * A document prediction response.
+   */
   document: Document<T>;
 
   /**

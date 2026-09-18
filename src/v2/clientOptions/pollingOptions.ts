@@ -1,11 +1,17 @@
 import { MindeeConfigurationError } from "@/errors/index.js";
 import { logger } from "@/logger.js";
 
-/** Optional timer settings used by polling delays. */
+/**
+ * Optional timer settings used by polling delays.
+ */
 export interface TimerOptions {
-  /** Whether the timer should keep the event loop active. */
+  /**
+   * Whether the timer should keep the event loop active.
+   */
   ref?: boolean,
-  /** Optional signal used to abort timer waits. */
+  /**
+   * Optional signal used to abort timer waits.
+   */
   signal?: AbortSignal
 }
 
@@ -52,15 +58,25 @@ const minRetries = 2;
  * ```
  */
 export class PollingOptions {
-  /** Number of seconds to wait *before the first poll*. */
+  /**
+   * Number of seconds to wait *before the first poll*.
+   */
   initialDelaySec: number;
-  /** Interval in seconds between two consecutive polls. */
+  /**
+   * Interval in seconds between two consecutive polls.
+   */
   delaySec: number;
-  /** Maximum number of polling attempts (including the first one). */
+  /**
+   * Maximum number of polling attempts (including the first one).
+   */
   maxRetries: number;
-  /** Options passed to the initial `setTimeout()`. */
+  /**
+   * Options passed to the initial `setTimeout()`.
+   */
   initialTimerOptions?: TimerOptions;
-  /** Options passed to every recurring `setTimeout()`. */
+  /**
+   * Options passed to every recurring `setTimeout()`.
+   */
   recurringTimerOptions?: TimerOptions;
 
   constructor(params?: PollingOptionsConstructor) {
@@ -92,7 +108,9 @@ export class PollingOptions {
     logger.debug(`Polling options initialized: ${this.toString()}`);
   }
 
-  /** Validates polling options against minimum accepted values. */
+  /**
+   * Validates polling options against minimum accepted values.
+   */
   validateSettings() {
     if (this.delaySec < minDelaySec) {
       throw new MindeeConfigurationError(
@@ -111,7 +129,9 @@ export class PollingOptions {
     }
   }
 
-  /** Returns a compact string representation of the polling options. */
+  /**
+   * Returns a compact string representation of the polling options.
+   */
   toString(): string {
     return `{ initialDelaySec: ${this.initialDelaySec}, delaySec: ${this.delaySec}, maxRetries: ${this.maxRetries} }`;
   }

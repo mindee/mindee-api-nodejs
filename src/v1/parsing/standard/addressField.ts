@@ -6,21 +6,37 @@ import { StringField, FieldConstructor } from "./text.js";
  * address string through {@link StringField.value}.
  */
 export class AddressField extends StringField {
-  /** Street number. */
+  /**
+   * Street number.
+   */
   streetNumber?: string;
-  /** Street name. */
+  /**
+   * Street name.
+   */
   streetName?: string;
-  /** PO-box number. */
+  /**
+   * PO-box number.
+   */
   poBox?: string;
-  /** Additional address complement. */
+  /**
+   * Additional address complement.
+   */
   addressComplement?: string;
-  /** City or locality. */
+  /**
+   * City or locality.
+   */
   city?: string;
-  /** Postal / ZIP code. */
+  /**
+   * Postal / ZIP code.
+   */
   postalCode?: string;
-  /** State, province or region. */
+  /**
+   * State, province or region.
+   */
   state?: string;
-  /** Country. */
+  /**
+   * Country.
+   */
   country?: string;
 
   constructor({

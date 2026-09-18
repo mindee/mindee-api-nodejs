@@ -12,13 +12,21 @@ export interface MindeeApiConstructorProps {
 }
 
 export abstract class BaseSettings {
-  /** API key used for authenticated requests. */
+  /**
+   * API key used for authenticated requests.
+   */
   apiKey: string;
-  /** API hostname used for requests. */
+  /**
+   * API hostname used for requests.
+   */
   hostname: string;
-  /** Request timeout in seconds. */
+  /**
+   * Request timeout in seconds.
+   */
   timeoutSecs: number;
-  /** HTTP dispatcher used by undici. */
+  /**
+   * HTTP dispatcher used by undici.
+   */
   dispatcher: Dispatcher;
 
   protected constructor(apiKey?: string, dispatcher?: Dispatcher) {
@@ -34,7 +42,9 @@ export abstract class BaseSettings {
       : TIMEOUT_SECS_DEFAULT;
   }
 
-  /** Builds a default user-agent string for outgoing requests. */
+  /**
+   * Builds a default user-agent string for outgoing requests.
+   */
   protected getUserAgent(): string {
     let platform = os.type().toLowerCase();
     if (platform.includes("darwin")) {

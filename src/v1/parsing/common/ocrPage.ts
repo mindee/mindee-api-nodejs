@@ -7,9 +7,13 @@ import { Word } from "@/v1/parsing/standard/index.js";
 import { StringDict } from "@/parsing/stringDict.js";
 
 export class OcrPage {
-  /** Flat list of all words read */
+  /**
+   * Flat list of all words read
+   */
   allWords: Word[] = [];
-  /** List of words by which line they are on */
+  /**
+   * List of words by which line they are on
+   */
   allLines: Word[][] = [];
 
   constructor(rawPrediction: StringDict) {

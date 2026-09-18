@@ -4,9 +4,13 @@ import { BaseField, BaseFieldConstructor } from "./base.js";
  * Represents a classifier value.
  */
 export class ClassificationField extends BaseField {
-  /** The confidence score of the prediction. */
+  /**
+   * The confidence score of the prediction.
+   */
   confidence: number;
-  /** The classification. */
+  /**
+   * The classification.
+   */
   value?: string;
 
   constructor({

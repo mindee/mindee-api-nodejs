@@ -14,39 +14,73 @@ import { ClassificationField, StringField } from "@/v1/parsing/standard/index.js
  * Resume API version 1.2 document data.
  */
 export class ResumeV1Document implements Prediction {
-  /** The location information of the candidate, including city, state, and country. */
+  /**
+   * The location information of the candidate, including city, state, and country.
+   */
   address: StringField;
-  /** The list of certificates obtained by the candidate. */
+  /**
+   * The list of certificates obtained by the candidate.
+   */
   certificates: ResumeV1Certificate[] = [];
-  /** The ISO 639 code of the language in which the document is written. */
+  /**
+   * The ISO 639 code of the language in which the document is written.
+   */
   documentLanguage: StringField;
-  /** The type of the document sent. */
+  /**
+   * The type of the document sent.
+   */
   documentType: ClassificationField;
-  /** The list of the candidate's educational background. */
+  /**
+   * The list of the candidate's educational background.
+   */
   education: ResumeV1Education[] = [];
-  /** The email address of the candidate. */
+  /**
+   * The email address of the candidate.
+   */
   emailAddress: StringField;
-  /** The candidate's first or given names. */
+  /**
+   * The candidate's first or given names.
+   */
   givenNames: StringField[] = [];
-  /** The list of the candidate's technical abilities and knowledge. */
+  /**
+   * The list of the candidate's technical abilities and knowledge.
+   */
   hardSkills: StringField[] = [];
-  /** The position that the candidate is applying for. */
+  /**
+   * The position that the candidate is applying for.
+   */
   jobApplied: StringField;
-  /** The list of languages that the candidate is proficient in. */
+  /**
+   * The list of languages that the candidate is proficient in.
+   */
   languages: ResumeV1Language[] = [];
-  /** The ISO 3166 code for the country of citizenship of the candidate. */
+  /**
+   * The ISO 3166 code for the country of citizenship of the candidate.
+   */
   nationality: StringField;
-  /** The phone number of the candidate. */
+  /**
+   * The phone number of the candidate.
+   */
   phoneNumber: StringField;
-  /** The candidate's current profession. */
+  /**
+   * The candidate's current profession.
+   */
   profession: StringField;
-  /** The list of the candidate's professional experiences. */
+  /**
+   * The list of the candidate's professional experiences.
+   */
   professionalExperiences: ResumeV1ProfessionalExperience[] = [];
-  /** The list of social network profiles of the candidate. */
+  /**
+   * The list of social network profiles of the candidate.
+   */
   socialNetworksUrls: ResumeV1SocialNetworksUrl[] = [];
-  /** The list of the candidate's interpersonal and communication abilities. */
+  /**
+   * The list of the candidate's interpersonal and communication abilities.
+   */
   softSkills: StringField[] = [];
-  /** The candidate's last names. */
+  /**
+   * The candidate's last names.
+   */
   surnames: StringField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {

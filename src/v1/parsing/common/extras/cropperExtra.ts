@@ -3,9 +3,13 @@ import { PositionField } from "@/v1/parsing/standard/position.js";
 import { cleanOutString } from "@/v1/parsing/common/summaryHelper.js";
 import { ExtraField } from "./extras.js";
 
-/** Cropper extra payload returned by compatible APIs. */
+/**
+ * Cropper extra payload returned by compatible APIs.
+ */
 export class CropperExtra extends ExtraField {
-  /** Cropped regions detected on the page. */
+  /**
+   * Cropped regions detected on the page.
+   */
   cropping: PositionField[] = [];
   constructor(rawPrediction: StringDict, pageId?: number) {
     super();

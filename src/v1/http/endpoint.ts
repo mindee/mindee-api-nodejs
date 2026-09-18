@@ -18,11 +18,17 @@ import { BaseEndpoint } from "@/v1/http/baseEndpoint.js";
  * Endpoint for a product (OTS or Custom).
  */
 export class Endpoint extends BaseEndpoint {
-  /** URL of a product. */
+  /**
+   * URL of a product.
+   */
   urlName: string;
-  /** Account owning the product. */
+  /**
+   * Account owning the product.
+   */
   owner: string;
-  /** Product's version, as a string. */
+  /**
+   * Product's version, as a string.
+   */
   version: string;
 
   constructor(

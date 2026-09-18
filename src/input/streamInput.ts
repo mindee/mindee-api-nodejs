@@ -10,10 +10,14 @@ interface StreamInputProps {
   filename: string;
 }
 
-/** Local input source backed by a readable stream. */
+/**
+ * Local input source backed by a readable stream.
+ */
 export class StreamInput extends LocalInputSource {
   private readonly inputStream: Readable;
-  /** Buffered payload created from the stream. */
+  /**
+   * Buffered payload created from the stream.
+   */
   fileObject: Buffer = Buffer.alloc(0);
 
   constructor({ inputStream, filename }: StreamInputProps) {
@@ -24,7 +28,9 @@ export class StreamInput extends LocalInputSource {
     this.inputStream = inputStream;
   }
 
-  /** Reads the stream to completion and validates MIME type. */
+  /**
+   * Reads the stream to completion and validates MIME type.
+   */
   async init() {
     if (this.initialized) {
       return;
@@ -35,7 +41,9 @@ export class StreamInput extends LocalInputSource {
     this.initialized = true;
   }
 
-  /** Converts a readable stream into a single buffer. */
+  /**
+   * Converts a readable stream into a single buffer.
+   */
   async stream2buffer(stream: Readable, signal?: AbortSignal): Promise<Buffer> {
     return new Promise<Buffer>((resolve, reject) => {
       if (stream.closed || stream.destroyed) {

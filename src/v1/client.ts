@@ -49,7 +49,9 @@ interface BaseOptions {
  * Options relating to predictions.
  */
 export interface PredictOptions extends BaseOptions {
-  /** A custom endpoint. */
+  /**
+   * A custom endpoint.
+   */
   endpoint?: Endpoint;
   /**
    * Whether to include the full text for each page.
@@ -86,11 +88,17 @@ export interface WorkflowOptions extends BaseOptions {
   publicUrl?: string;
 }
 
-/** Timer options forwarded to `setTimeout` in polling loops. */
+/**
+ * Timer options forwarded to `setTimeout` in polling loops.
+ */
 export interface TimerOptions {
-  /** Whether the timer should keep the event loop active. */
+  /**
+   * Whether the timer should keep the event loop active.
+   */
   ref?: boolean,
-  /** Optional signal used to abort timer waits. */
+  /**
+   * Optional signal used to abort timer waits.
+   */
   signal?: AbortSignal
 }
 
@@ -98,15 +106,25 @@ export interface TimerOptions {
  * Asynchronous polling parameters.
  */
 export interface OptionalAsyncOptions extends PredictOptions {
-  /** Delay in seconds before the first polling attempt. */
+  /**
+   * Delay in seconds before the first polling attempt.
+   */
   initialDelaySec?: number;
-  /** Delay in seconds between polling attempts. */
+  /**
+   * Delay in seconds between polling attempts.
+   */
   delaySec?: number;
-  /** Maximum number of polling attempts. */
+  /**
+   * Maximum number of polling attempts.
+   */
   maxRetries?: number;
-  /** Timer options used for the first delay. */
+  /**
+   * Timer options used for the first delay.
+   */
   initialTimerOptions?: TimerOptions;
-  /** Timer options used for recurring polling delays. */
+  /**
+   * Timer options used for recurring polling delays.
+   */
   recurringTimerOptions?: TimerOptions;
 }
 
@@ -119,13 +137,21 @@ export interface AsyncOptions extends PredictOptions {
 }
 
 export interface ClientOptions {
-  /** Your API key for all endpoints. */
+  /**
+   * Your API key for all endpoints.
+   */
   apiKey?: string;
-  /** Raise an `Error` on errors. */
+  /**
+   * Raise an `Error` on errors.
+   */
   throwOnError?: boolean;
-  /** Log debug messages. */
+  /**
+   * Log debug messages.
+   */
   debug?: boolean;
-  /** Custom dispatcher for HTTP requests. */
+  /**
+   * Custom dispatcher for HTTP requests.
+   */
   dispatcher?: Dispatcher;
 }
 
@@ -135,7 +161,9 @@ export interface ClientOptions {
  * @category Client
  */
 export class Client {
-  /** Mindee V1 API settings. */
+  /**
+   * Mindee V1 API settings.
+   */
   protected apiSettings: ApiSettingsV1;
 
   /**

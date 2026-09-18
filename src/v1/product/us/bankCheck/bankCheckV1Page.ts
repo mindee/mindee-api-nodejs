@@ -6,9 +6,13 @@ import { BankCheckV1Document } from "./bankCheckV1Document.js";
  * Bank Check API version 1.1 page data.
  */
 export class BankCheckV1Page extends BankCheckV1Document {
-  /** The position of the check on the document. */
+  /**
+   * The position of the check on the document.
+   */
   checkPosition: PositionField;
-  /** List of signature positions */
+  /**
+   * List of signature positions
+   */
   signaturesPositions: PositionField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {

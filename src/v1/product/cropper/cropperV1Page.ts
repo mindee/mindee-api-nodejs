@@ -7,7 +7,9 @@ import { CropperV1Document } from "./cropperV1Document.js";
  * Cropper API version 1.1 page data.
  */
 export class CropperV1Page extends CropperV1Document {
-  /** List of documents found in the image. */
+  /**
+   * List of documents found in the image.
+   */
   cropping: PositionField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {
