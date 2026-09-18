@@ -1,7 +1,8 @@
 import { Dispatcher } from "undici";
+import * as os from "node:os";
+
 // eslint-disable-next-line no-restricted-imports
 import packageJson from "../../package.json" with { type: "json" };
-import * as os from "os";
 import { TIMEOUT_SECS_DEFAULT } from "./apiCore.js";
 import { resolveDefaultDispatcher } from "./dispatcher.js";
 

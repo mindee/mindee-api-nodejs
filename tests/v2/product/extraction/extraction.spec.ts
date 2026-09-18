@@ -5,7 +5,7 @@ import { ExtractionResponse } from "@/v2/product/index.js";
 import assert from "node:assert/strict";
 import { promises as fs } from "node:fs";
 import { describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 
 import { V2_PRODUCT_PATH } from "../../../index.js";
 import { loadV2Response } from "../utils.js";
@@ -184,7 +184,7 @@ describe("MindeeV2 - Extraction Response", async () => {
       assert.ok(fields.get("field_simple_float") instanceof SimpleField);
       const simpleFieldFloat = fields.getSimpleField("field_simple_float");
       const rawVal = simpleFieldFloat.value;
-      const parsed = typeof rawVal === "string" ? parseFloat(rawVal) : rawVal;
+      const parsed = typeof rawVal === "string" ? Number(rawVal) : rawVal;
       const floatValue: number = typeof parsed === "number" && !Number.isNaN(parsed)
         ? parsed
         : 1e-9;
@@ -197,7 +197,7 @@ describe("MindeeV2 - Extraction Response", async () => {
       assert.ok(fields.get("field_simple_int") instanceof SimpleField);
       const simpleFieldInt = fields.getSimpleField("field_simple_int");
       assert.strictEqual(simpleFieldInt.confidence, FieldConfidence.Medium);
-      assert.strictEqual(simpleFieldInt.value, 12.0);
+      assert.strictEqual(simpleFieldInt.value, 12);
 
       assert.ok(fields.get("field_simple_zero") instanceof SimpleField);
       const simpleFieldZero = fields.getSimpleField("field_simple_zero");

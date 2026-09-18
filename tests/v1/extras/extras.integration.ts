@@ -1,7 +1,7 @@
 import { beforeEach, describe, it } from "node:test";
 import assert from "node:assert/strict";
 import * as mindee from "@/index.js";
-import path from "path";
+import path from "node:path";
 import { V1_PRODUCT_PATH } from "../../index.js";
 
 

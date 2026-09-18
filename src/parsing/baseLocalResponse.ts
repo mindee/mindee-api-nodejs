@@ -1,8 +1,9 @@
-import * as crypto from "crypto";
+import { Buffer } from "node:buffer";
+import * as crypto from "node:crypto";
 import * as fs from "node:fs/promises";
+
 import { StringDict } from "@/parsing/stringDict.js";
 import { MindeeError } from "@/errors/index.js";
-import { Buffer } from "buffer";
 
 /**
  * Local response loaded from a file.
@@ -21,7 +22,7 @@ export abstract class BaseLocalResponse {
     if (inputFile === undefined || inputFile === null) {
       throw new TypeError("input cannot be null or undefined");
     }
-    if (typeof inputFile === "string" ? !inputFile.trim() : !inputFile.length) {
+    if (typeof inputFile === "string" ? !inputFile.trim() : inputFile.length === 0) {
       throw new TypeError("input cannot be empty");
     }
     this.fileBytes = Buffer.alloc(0);
@@ -42,13 +43,13 @@ export abstract class BaseLocalResponse {
       let fileContents;
       try {
         await fs.access(this.inputHandle);
-        fileContents = await fs.readFile(this.inputHandle, { encoding: "utf-8" });
+        fileContents = await fs.readFile(this.inputHandle, { encoding: "utf8" });
       } catch {
         fileContents = this.inputHandle;
       }
       this.fileBytes = Buffer.from(
         fileContents.replace(/\r/g, "").replace(/\n/g, ""),
-        "utf-8"
+        "utf8"
       );
     } else {
       throw new MindeeError("Incompatible type for input.");
@@ -65,7 +66,7 @@ export abstract class BaseLocalResponse {
       await this.init();
     }
     try {
-      const content = this.fileBytes.toString("utf-8");
+      const content = this.fileBytes.toString("utf8");
       return JSON.parse(content);
     } catch {
       throw new MindeeError("File is not a valid dictionary.");
@@ -117,8 +118,8 @@ export abstract class BaseLocalResponse {
       return false;
     }
 
-    const expectedBytes = Buffer.from(expectedSignature, "utf-8");
-    const actualBytes = Buffer.from(signature.toLowerCase(), "utf-8");
+    const expectedBytes = Buffer.from(expectedSignature, "utf8");
+    const actualBytes = Buffer.from(signature.toLowerCase(), "utf8");
 
     if (expectedBytes.length !== actualBytes.length) {
       return false;
@@ -130,6 +131,6 @@ export abstract class BaseLocalResponse {
    * Print the file as a UTF-8 string.
    */
   public toString(): string {
-    return this.fileBytes.toString("utf-8");
+    return this.fileBytes.toString("utf8");
   }
 }

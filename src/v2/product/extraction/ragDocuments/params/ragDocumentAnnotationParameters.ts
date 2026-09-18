@@ -40,7 +40,7 @@ export class RagDocumentAnnotationParameters extends BaseAnnotationParameters {
     } else if (typeof params.annotation === "object" && !Array.isArray(params.annotation)) {
       this.annotation = new RagAnnotation(params.annotation);
     } else {
-      throw new Error("Invalid RAG Annotation format.");
+      throw new TypeError("Invalid RAG Annotation format.");
     }
   }
 

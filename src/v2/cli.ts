@@ -1,5 +1,6 @@
 import { Command, OptionValues } from "commander";
-import * as console from "console";
+import * as console from "node:console";
+
 import { Client, InputSource, PathInput, UrlInput } from "@/index.js";
 import { BaseInference } from "@/v2/parsing/inference/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";

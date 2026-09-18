@@ -1,4 +1,5 @@
 import { Agent, Dispatcher, getGlobalDispatcher } from "undici";
+
 import { logger } from "@/logger.js";
 
 /** Library-owned fallback dispatcher, shared across all components. */

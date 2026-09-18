@@ -1,5 +1,6 @@
 import { setTimeout } from "node:timers/promises";
 import { Dispatcher } from "undici";
+
 import {
   InputSource,
   PageOptions,

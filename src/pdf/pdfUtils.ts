@@ -1,11 +1,12 @@
+import * as fs from "node:fs";
+import tmp from "tmp";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfJsExtractTypes from "pdf.js-extract";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as popplerTypes from "node-poppler";
-import tmp from "tmp";
-import * as fs from "node:fs";
+
 import { MindeePdfError } from "@/errors/index.js";
 import { loadOptionalDependency } from "@/dependency/index.js";
 import { logger } from "@/logger.js";

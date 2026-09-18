@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { LocalInputSource } from "./localInputSource.js";
 import { INPUT_TYPE_BUFFER } from "./inputSource.js";
 import { logger } from "@/logger.js";

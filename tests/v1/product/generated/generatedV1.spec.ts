@@ -1,7 +1,7 @@
-import path from "path";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import * as mindee from "@/index.js";
 import { Page } from "@/v1/index.js";
 import { GeneratedV1 } from "@/v1/product/index.js";

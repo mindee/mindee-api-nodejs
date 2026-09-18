@@ -1,8 +1,7 @@
-import { fileURLToPath } from "url";
-import { dirname } from "path";
-import path from "path";
+import { fileURLToPath } from "node:url";
+import path from "node:path";
 
-const currentDirName = dirname(fileURLToPath(import.meta.url));
+const currentDirName = path.dirname(fileURLToPath(import.meta.url));
 export const RESOURCE_PATH = path.join(currentDirName, "data");
 export const OUTPUT_PATH = path.join(RESOURCE_PATH, "output");
 

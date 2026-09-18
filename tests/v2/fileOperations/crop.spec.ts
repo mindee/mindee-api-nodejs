@@ -7,7 +7,7 @@ import { CropResponse } from "@/v2/product/crop/cropResponse.js";
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
 import assert from "node:assert/strict";
 import { before, describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 import type * as SharpTypes from "sharp";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";

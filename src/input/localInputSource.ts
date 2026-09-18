@@ -1,10 +1,11 @@
-import path from "path";
+import { Buffer } from "node:buffer";
+import path from "node:path";
+import { fileTypeFromBuffer } from "file-type";
 import { MindeeInputSourceError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { logger } from "@/logger.js";
 import { compressImage } from "@/image/index.js";
 import { compressPdf, countPages, extractPages, hasSourceText } from "@/pdf/index.js";
-import { fileTypeFromBuffer } from "file-type";
 import { PageOptions } from "@/input/pageOptions.js";
 import {
   InputSource,

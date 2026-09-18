@@ -1,8 +1,9 @@
-import * as pdf from "@/pdf/index.js";
-import * as path from "path";
-import * as fs from "fs";
+import path from "node:path";
+import fs from "node:fs";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
+
+import * as pdf from "@/pdf/index.js";
 import { PageOptions, PageOptionsOperation } from "@/index.js";
 import { PathInput } from "@/index.js";
 import { RESOURCE_PATH } from "../index.js";
@@ -153,13 +154,13 @@ describe("Test PDF operation #OptionalDepsRequired", { skip: !hasOptionals }, ()
 
     const expectedResult = await fs.promises.readFile(
       path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-3.pdf"),
-      "utf-8"
+      "utf8"
     );
 
     inputSource.fileObject = Buffer.from(newPdf.file);
     const expectedLengths = expectedResult.match(lengthRE);
     const inputDocLengths =
-      inputSource.fileObject.toString("utf-8").match(lengthRE) || [];
+      inputSource.fileObject.toString("utf8").match(lengthRE) || [];
     assert.deepStrictEqual(inputDocLengths, expectedLengths);
   });
 });

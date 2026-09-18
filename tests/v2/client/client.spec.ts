@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { after, before, beforeEach, describe, it } from "node:test";
 import { MockAgent, Interceptable } from "undici";
@@ -24,7 +24,7 @@ function dummyEnvvars(): void {
  * @param filePath Path to the response file.
  */
 async function setInterceptor(mockPool: Interceptable, statusCode: number, filePath: string): Promise<void> {
-  const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
+  const fileObj = await fs.readFile(filePath, { encoding: "utf8" });
   mockPool
     .intercept({ path: /.*/, method: "GET" })
     .reply(statusCode, fileObj);

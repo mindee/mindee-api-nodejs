@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { MindeeInputSourceError } from "@/errors/index.js";
 
 /**

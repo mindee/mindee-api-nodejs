@@ -51,10 +51,10 @@ export class ExtractionParameters extends BaseProductParameters {
     this.textContext = params.textContext;
 
     if (params.dataSchema !== undefined && params.dataSchema !== null) {
-      if (!(params.dataSchema instanceof DataSchema)){
-        this.dataSchema = new DataSchema(params.dataSchema);
-      } else {
+      if (params.dataSchema instanceof DataSchema) {
         this.dataSchema = params.dataSchema;
+      } else {
+        this.dataSchema = new DataSchema(params.dataSchema);
       }
     }
     logger.debug("Extraction parameters initialized.");

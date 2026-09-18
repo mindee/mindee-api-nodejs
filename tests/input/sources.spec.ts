@@ -1,9 +1,9 @@
-import * as fs from "fs";
-import * as path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { Buffer } from "node:buffer";
-import { Readable } from "stream";
+import { Readable } from "node:stream";
 import {
   Base64Input,
   BufferInput,
@@ -162,6 +162,7 @@ describe("Input Sources - load different types of input", () => {
     const readable = fs.createReadStream(path.join(RESOURCE_PATH, "file_types/receipt.jpg"));
 
     readable.destroy();
+    // @ts-expect-error we know the stream is closed
     await new Promise(resolve => readable.on("close", resolve));
 
     const streamInput = new StreamInput({
@@ -172,9 +173,9 @@ describe("Input Sources - load different types of input", () => {
     try {
       await streamInput.init();
       assert.fail("Should have thrown an error");
-    } catch (e: any) {
-      assert.ok(e instanceof MindeeInputSourceError);
-      assert.strictEqual(e.toString(), "MindeeInputSourceError: Stream is already closed");
+    } catch (error: any) {
+      assert.ok(error instanceof MindeeInputSourceError);
+      assert.strictEqual(error.toString(), "MindeeInputSourceError: Stream is already closed");
     }
   });
 

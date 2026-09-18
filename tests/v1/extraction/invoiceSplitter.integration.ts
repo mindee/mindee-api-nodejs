@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { beforeEach, describe, it } from "node:test";
-import { promises as fs } from "fs";
-import path from "path";
+import { promises as fs } from "node:fs";
+import path from "node:path";
 import * as mindee from "@/index.js";
 import { InvoiceSplitterV1 } from "@/v1/product/index.js";
 import { levenshteinRatio } from "../../testingUtilities.js";

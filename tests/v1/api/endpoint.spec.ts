@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 import * as fs from "node:fs";
 import { MockAgent, setGlobalDispatcher } from "undici";
 import { PathInput } from "@/index.js";

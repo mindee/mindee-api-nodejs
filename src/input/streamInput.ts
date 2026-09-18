@@ -1,4 +1,5 @@
-import { Readable } from "stream";
+import { Buffer } from "node:buffer";
+import { Readable } from "node:stream";
 import { LocalInputSource } from "./localInputSource.js";
 import { INPUT_TYPE_STREAM } from "./inputSource.js";
 import { logger } from "@/logger.js";

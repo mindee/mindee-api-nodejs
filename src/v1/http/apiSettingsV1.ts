@@ -1,4 +1,3 @@
-
 import { logger } from "@/logger.js";
 import { BaseSettings, MindeeApiConstructorProps } from "@/http/baseSettings.js";
 import { MindeeConfigurationError } from "@/errors/index.js";

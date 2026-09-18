@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import * as fs from "node:fs/promises";
@@ -50,18 +50,18 @@ async function assertLocalResponse(localResponse: LocalResponse, fileContent: st
 
 describe("MindeeV2 - Load Local Response", () => {
   it("should load a response from a JSON string.", async () => {
-    const fileContent = await fs.readFile(filePath, { encoding: "utf-8" });
+    const fileContent = await fs.readFile(filePath, { encoding: "utf8" });
     await assertLocalResponse(new LocalResponse(fileContent), fileContent);
   });
 
   it("should load a response from a buffer", async () => {
-    const fileContent = (await fs.readFile(filePath, { encoding: "utf-8" })).replace(/\r/g, "").replace(/\n/g, "");
-    const fileBuffer = Buffer.from(fileContent, "utf-8");
+    const fileContent = (await fs.readFile(filePath, { encoding: "utf8" })).replace(/\r/g, "").replace(/\n/g, "");
+    const fileBuffer = Buffer.from(fileContent, "utf8");
     await assertLocalResponse(new LocalResponse(fileBuffer), fileContent);
   });
 
   it("should load a response from a JSON file", async () => {
-    await assertLocalResponse(new LocalResponse(filePath), await fs.readFile(filePath, { encoding: "utf-8" }));
+    await assertLocalResponse(new LocalResponse(filePath), await fs.readFile(filePath, { encoding: "utf8" }));
   });
 
   it("should raise an exception when given an invalid JSON string", async () => {

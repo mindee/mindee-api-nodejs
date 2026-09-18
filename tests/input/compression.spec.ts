@@ -1,6 +1,6 @@
 import { after, before, describe, it } from "node:test";
-import * as fs from "fs";
-import * as path from "path";
+import fs from "node:fs";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { PathInput } from "@/input/index.js";
 import { compressImage } from "@/image/index.js";
@@ -106,13 +106,13 @@ describe("Input Sources - compression and resize #OptionalDepsRequired", { skip:
     const hasNoSourceTextPath = path.join(RESOURCE_PATH, "file_types/pdf/blank_1.pdf");
     const hasNoSourceTextSinceItsImagePath = path.join(RESOURCE_PATH, "file_types/receipt.jpg");
 
-    const hasSourceTextInput = new PathInput({ inputPath: hasSourceTextPath });
-    const hasNoSourceTextInput = new PathInput({ inputPath: hasNoSourceTextPath });
-    const hasNoSourceTextSinceItsImageInput = new PathInput({ inputPath: hasNoSourceTextSinceItsImagePath });
+    const sourceTextInput = new PathInput({ inputPath: hasSourceTextPath });
+    const noSourceTextInput = new PathInput({ inputPath: hasNoSourceTextPath });
+    const noSourceTextSinceItsImageInput = new PathInput({ inputPath: hasNoSourceTextSinceItsImagePath });
 
-    assert.ok(await hasSourceTextInput.hasSourceText());
-    assert.ok(!(await hasNoSourceTextInput.hasSourceText()));
-    assert.ok(!(await hasNoSourceTextSinceItsImageInput.hasSourceText()));
+    assert.ok(await sourceTextInput.hasSourceText());
+    assert.ok(!(await noSourceTextInput.hasSourceText()));
+    assert.ok(!(await noSourceTextSinceItsImageInput.hasSourceText()));
   });
 
   it("PDF Compress From InputSource", async () => {
@@ -169,10 +169,10 @@ describe("Input Sources - compression and resize #OptionalDepsRequired", { skip:
     const compressedWithText = await compressPdf(
       initialWithText.fileObject, 100, true, false
     );
-    const originalText = (await extractTextFromPdf(initialWithText.fileObject)).getConcatenatedText();
-    const compressedText = (await extractTextFromPdf(compressedWithText)).getConcatenatedText();
+    const originalText = await extractTextFromPdf(initialWithText.fileObject);
+    const compressedText = await extractTextFromPdf(compressedWithText);
 
-    assert.strictEqual(compressedText, originalText);
+    assert.strictEqual(compressedText.getConcatenatedText(), originalText.getConcatenatedText());
   });
 
   it("PDF Compress With Text Does Not Compress", async () => {

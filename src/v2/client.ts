@@ -1,5 +1,6 @@
 import { setTimeout } from "node:timers/promises";
 import { Dispatcher } from "undici";
+
 import { InputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
@@ -349,7 +350,7 @@ export class Client {
    * Not recommended for general use, prefer `updateAndGetRagAnnotationPoll`.
    * You will need to poll until the document is ready for use.
    * Update a document's annotations in the RAG database.
-   * 
+   *
    * @param product The product the RAG database belongs to.
    * @param parameters The parameters to use for the update.
    */
