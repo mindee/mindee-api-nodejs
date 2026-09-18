@@ -1,5 +1,11 @@
 # Mindee Node.js API Library Changelog
 
+## v5.9.0 - 2026-09-18
+### Changes
+* :sparkles: add RAG document CRUD
+* :wrench: add package.json exports field for proper ESM resolution
+
+
 ## v5.8.0 - 2026-09-17
 ### Changes
 * :sparkles: better logging of errors
