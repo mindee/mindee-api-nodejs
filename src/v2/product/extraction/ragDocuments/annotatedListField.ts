@@ -5,7 +5,9 @@ import { AnnotatedObjectField } from "./annotatedObjectField.js";
 import { AnnotatedSimpleField } from "./annotatedSimpleField.js";
 import { createAnnotatedField } from "./fieldFactory.js";
 
-/** List-valued inference field. */
+/**
+ * Field having a list of fields.
+ */
 export class AnnotatedListField extends AnnotatedBaseField {
   /**
    * Items contained in the list.

@@ -4,8 +4,13 @@ import { AnnotatedFields } from "./annotatedFields.js";
 import { AnnotatedSimpleField } from "@/v2/product/extraction/ragDocuments/annotatedSimpleField.js";
 import { AnnotatedListField } from "@/v2/product/extraction/ragDocuments/annotatedListField.js";
 
+/**
+ * Field having a set of sub-fields.
+ */
 export class AnnotatedObjectField extends AnnotatedBaseField {
-  /** Nested fields carried by this object. */
+  /**
+   * Nested fields carried by this object.
+   */
   readonly fields: AnnotatedFields;
 
   constructor(serverResponse: StringDict) {
