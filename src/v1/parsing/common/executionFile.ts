@@ -12,7 +12,7 @@ export class ExecutionFile {
   name: string|null;
 
   /**
-   * Optional alias for the fil.
+   * Optional alias for the file.
    */
   alias: string|null;
 
