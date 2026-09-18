@@ -73,7 +73,7 @@ export class InvoiceV4Document implements Prediction {
    */
   locale: LocaleField;
   /**
-   * The date on which the payment is due / was full-filled.
+   * The date on which the payment is due / was fulfilled.
    */
   paymentDate: DateField;
   /**
