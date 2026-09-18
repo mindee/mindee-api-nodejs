@@ -78,7 +78,7 @@ export class FinancialDocumentV1Document implements Prediction {
    */
   locale: LocaleField;
   /**
-   * The date on which the payment is due / fullfilled.
+   * The date on which the payment is due / fulfilled.
    */
   paymentDate: DateField;
   /**
