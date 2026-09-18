@@ -345,6 +345,14 @@ export class Client {
     return await this.pollForRagDocument(product, initialResponse, pollingOptionsInstance);
   }
 
+  /**
+   * Not recommended for general use, prefer `updateAndGetRagAnnotationPoll`.
+   * You will need to poll until the document is ready for use.
+   * Update a document's annotations in the RAG database.
+   * 
+   * @param product The product the RAG database belongs to.
+   * @param parameters The parameters to use for the update.
+   */
   async updateRagAnnotation<P extends typeof BaseProduct>(
     product: P,
     parameters: InstanceType<P["annotationParametersClass"]> | ConstructorParameters<P["annotationParametersClass"]>[0]
@@ -384,7 +392,7 @@ export class Client {
   }
 
   /**
-   * Get a document's info and annotations from the RAG database.
+   * Deletes a document from the RAG database.
    * @param product the product the RAG database belongs to.
    * @param documentId the document's ID.
    */

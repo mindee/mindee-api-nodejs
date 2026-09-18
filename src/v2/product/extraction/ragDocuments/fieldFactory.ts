@@ -27,11 +27,7 @@ export function createAnnotatedField(serverResponse: StringDict) {
   }
 
   if ("value" in serverResponse) {
-    return new AnnotatedSimpleField(
-      serverResponse["value"],
-      serverResponse["selected"],
-      serverResponse["guidelines"]
-    );
+    return new AnnotatedSimpleField(serverResponse);
   }
 
   throw new MindeeDeserializationError(

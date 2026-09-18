@@ -14,7 +14,6 @@ export class AnnotatedObjectField extends AnnotatedBaseField {
     this.fields = new AnnotatedFields(serverResponse["fields"]);
   }
 
-
   /**
    * Retrieves a AnnotatedSimpleField by its name if it exists and is of the correct type.
    *
@@ -47,7 +46,6 @@ export class AnnotatedObjectField extends AnnotatedBaseField {
   public getObjectField(fieldName: string): AnnotatedObjectField {
     return this.fields.getObjectField(fieldName);
   }
-
 
   /**
    * Returns a compact representation suitable for list items.

@@ -10,7 +10,7 @@ export abstract class AnnotatedBaseField {
   /**
    * Guidelines or instructions for processing this field.
    */
-  public guidelines: string;
+  public guidelines: string | null;
 
   /**
    * Default constructor.
@@ -18,7 +18,7 @@ export abstract class AnnotatedBaseField {
    *  When false, use the Data Schema information.
    * @param guidelines Guidelines or instructions for processing this field.
    */
-  protected constructor(selected: boolean, guidelines: string) {
+  protected constructor(selected: boolean, guidelines: string | null = null) {
     this.selected = selected;
     this.guidelines = guidelines;
   }

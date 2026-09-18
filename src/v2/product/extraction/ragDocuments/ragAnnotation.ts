@@ -11,8 +11,6 @@ export class RagAnnotation {
   public fields: AnnotatedFields;
 
   constructor(serverResponse: StringDict) {
-    this.fields = serverResponse["fields"]
-      ? new AnnotatedFields(serverResponse["fields"])
-      : ({} as AnnotatedFields);
+    this.fields = new AnnotatedFields(serverResponse["fields"] ?? {});
   }
 }
