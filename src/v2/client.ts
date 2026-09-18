@@ -442,8 +442,7 @@ export class Client {
       switch (response.status) {
       case "Processing":
         continue;
-      case "Failed":
-        throw new MindeeError("Job failed without an error payload.");
+        throw new MindeeError("RAG document failed without an error payload.");
       default:
         return response;
       }
