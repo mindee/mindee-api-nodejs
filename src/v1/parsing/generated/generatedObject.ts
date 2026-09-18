@@ -77,7 +77,7 @@ export class GeneratedObjectField {
 
   /**
    * ReSTructured-compliant string representation.
-   Takes into account level of indentation & displays elements as list elements.
+   * Takes into account level of indentation & displays elements as list elements.
    * @param level Level of indentation. 0 by default.
    */
   toStringLevel(level: number = 0): string {

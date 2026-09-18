@@ -1,5 +1,6 @@
-import { logger } from "@/logger.js";
 import { request, Dispatcher, FormData } from "undici";
+
+import { logger } from "@/logger.js";
 
 export const TIMEOUT_SECS_DEFAULT: number = 120;
 

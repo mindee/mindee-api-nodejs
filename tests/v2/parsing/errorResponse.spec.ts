@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { promises as fs } from "node:fs";
 import { describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 import { LocalResponse, ErrorResponse } from "@/v2/parsing/index.js";
 
 import { V2_RESOURCE_PATH } from "../../index.js";

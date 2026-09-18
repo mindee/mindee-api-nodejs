@@ -19,7 +19,7 @@
       ]
     },
     "resolveJsonModule": true,
-    "skipLibCheck": true,
+    "skipLibCheck": false,
     "sourceMap": false,
     "strict": true,
     "target": "ES2020",

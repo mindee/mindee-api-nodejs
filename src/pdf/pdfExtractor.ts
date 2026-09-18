@@ -1,9 +1,10 @@
+import path from "node:path";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
+
 import { LocalInputSource, PageOptions, PageOptionsOperation, PathInput } from "@/input/index.js";
 import { logger } from "@/logger.js";
-import path from "path";
 import { loadOptionalDependency } from "@/dependency/index.js";
 import { MindeeInputSourceError, MindeePdfError } from "@/errors/index.js";
 import { ExtractedPdf } from "@/pdf/extractedPdf.js";

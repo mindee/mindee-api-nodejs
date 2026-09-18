@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import * as fs from "node:fs/promises";
-import path from "path";
+import path from "node:path";
 import { AsyncPredictResponse, LocalResponse, PredictResponse } from "@/v1/index.js";
 import { InternationalIdV2, InvoiceV4, MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { V1_RESOURCE_PATH, V1_PRODUCT_PATH } from "../../index.js";
@@ -19,7 +19,7 @@ const internationalIdPath: string = path.join(
 
 describe("MindeeV1 - Load Local Response", () => {
   it("should load a string properly.", async () => {
-    const fileObj = await fs.readFile(filePath, { encoding: "utf-8" });
+    const fileObj = await fs.readFile(filePath, { encoding: "utf8" });
     const localResponse = new LocalResponse(fileObj);
     await localResponse.init();
     assert.ok(localResponse.asDict());
@@ -42,10 +42,10 @@ describe("MindeeV1 - Load Local Response", () => {
   });
 
   it("should load a buffer properly.", async () => {
-    const fileStr = (await fs.readFile(filePath, { encoding: "utf-8" }))
+    const fileStr = (await fs.readFile(filePath, { encoding: "utf8" }))
       .replace(/\r/g, "")
       .replace(/\n/g, "");
-    const fileBuffer = Buffer.from(fileStr, "utf-8");
+    const fileBuffer = Buffer.from(fileStr, "utf8");
     const localResponse = new LocalResponse(fileBuffer);
     await localResponse.init();
     assert.ok(localResponse.asDict());
@@ -57,7 +57,7 @@ describe("MindeeV1 - Load Local Response", () => {
   });
 
   it("should load into a sync prediction.", async () => {
-    const fileObj = await fs.readFile(multiReceiptsDetectorPath, { encoding: "utf-8" });
+    const fileObj = await fs.readFile(multiReceiptsDetectorPath, { encoding: "utf8" });
     const localResponse = new LocalResponse(fileObj);
     const prediction = await localResponse.loadPrediction(MultiReceiptsDetectorV1);
     assert.ok(prediction instanceof PredictResponse);
@@ -67,7 +67,7 @@ describe("MindeeV1 - Load Local Response", () => {
   });
 
   it("should load a failed prediction.", async () => {
-    const fileObj = await fs.readFile(failedPath, { encoding: "utf-8" });
+    const fileObj = await fs.readFile(failedPath, { encoding: "utf8" });
     const localResponse = new LocalResponse(fileObj);
     const prediction = await localResponse.loadPrediction(InvoiceV4);
     assert.ok(prediction instanceof AsyncPredictResponse);
@@ -75,7 +75,7 @@ describe("MindeeV1 - Load Local Response", () => {
   });
 
   it("should load into an async prediction.", async () => {
-    const fileObj = await fs.readFile(internationalIdPath, { encoding: "utf-8" });
+    const fileObj = await fs.readFile(internationalIdPath, { encoding: "utf8" });
     const localResponse = new LocalResponse(fileObj);
     const prediction = await localResponse.loadPrediction(InternationalIdV2);
     assert.ok(prediction instanceof AsyncPredictResponse);

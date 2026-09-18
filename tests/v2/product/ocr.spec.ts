@@ -1,4 +1,4 @@
-import path from "path";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
 import { ocr } from "@/v2/product/index.js";

@@ -1,7 +1,7 @@
 import { beforeEach, describe, it } from "node:test";
 import assert from "node:assert";
-import path from "path";
-import { promises as fs } from "fs";
+import path from "node:path";
+import { promises as fs } from "node:fs";
 import { createReadStream } from "node:fs";
 import { Client } from "@/v1/index.js";
 import { InvoiceV4 } from "@/v1/product/index.js";

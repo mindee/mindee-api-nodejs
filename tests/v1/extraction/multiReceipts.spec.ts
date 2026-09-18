@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { after, before, describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 import * as fs from "node:fs/promises";
 import { MultiReceiptsDetectorV1 } from "@/v1/product/index.js";
 import { extractReceipts } from "@/v1/extraction/index.js";

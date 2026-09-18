@@ -1,12 +1,13 @@
+import fs from "node:fs";
+import path from "node:path";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+
 import {
   PathInput,
   PageOptionsOperation,
   INPUT_TYPE_PATH,
 } from "@/input/index.js";
-import * as fs from "fs";
-import * as path from "path";
-import { describe, it } from "node:test";
-import assert from "node:assert/strict";
 import { RESOURCE_PATH } from "../index.js";
 import { hasAllOptionalDependencies } from "../helpers/optionalDeps.js";
 
@@ -32,12 +33,12 @@ describe("Input Sources - high level multi-page operations #OptionalDepsRequired
 
     const expectedResult = await fs.promises.readFile(
       path.join(RESOURCE_PATH, "file_types/pdf/multipage_cut-3.pdf"),
-      "utf-8"
+      "utf8"
     );
 
     const expectedLengths = expectedResult.match(lengthRE);
     const inputDocLengths =
-      input.fileObject.toString("utf-8").match(lengthRE) || [];
+      input.fileObject.toString("utf8").match(lengthRE) || [];
     assert.deepStrictEqual(inputDocLengths, expectedLengths);
   });
 

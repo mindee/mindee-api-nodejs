@@ -37,10 +37,10 @@ export class Field extends BaseField {
   }
 
   /**
-  @param array1 first Array of Fields
-  @param array2 second Array of Fields
-  @param attr Attribute to compare
-  @returns true if all elements in array1 exist in array2 and vice-versa, false otherwise
+   * @param array1 first Array of Fields
+   * @param array2 second Array of Fields
+   * @param attr Attribute to compare
+   * @returns true if all elements in array1 exist in array2 and vice-versa, false otherwise
    */
   static compareArrays(
     array1: Field[],

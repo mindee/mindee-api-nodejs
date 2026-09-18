@@ -1,7 +1,9 @@
 import { StringDict } from "@/parsing/stringDict.js";
 import { BaseField } from "./baseField.js";
 
-/** Scalar inference field. */
+/**
+ * Scalar inference field.
+ */
 export class SimpleField extends BaseField {
   /**
    * The untyped value of the field.
@@ -15,8 +17,8 @@ export class SimpleField extends BaseField {
 
   constructor(serverResponse: StringDict, indentLevel = 0) {
     super(serverResponse, indentLevel);
-    this.value =
-      serverResponse["value"] !== undefined ? (serverResponse["value"] as any) : null;
+    this.value = serverResponse["value"] === undefined
+      ? null : serverResponse["value"] as any;
   }
 
   /**

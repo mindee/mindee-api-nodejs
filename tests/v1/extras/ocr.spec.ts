@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 import * as fs from "node:fs/promises";
 import { ReceiptV5 } from "@/v1/product/index.js";
 import { Document } from "@/v1/index.js";

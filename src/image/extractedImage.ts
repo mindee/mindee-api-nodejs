@@ -1,11 +1,12 @@
 import { Buffer } from "node:buffer";
-import { MindeeError } from "@/errors/index.js";
 import { writeFileSync } from "node:fs";
-import { writeFile } from "fs/promises";
+import { writeFile } from "node:fs/promises";
 import path from "node:path";
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as popplerTypes from "node-poppler";
+
+import { MindeeError } from "@/errors/index.js";
 import { BufferInput, MIMETYPES } from "@/input/index.js";
 import { logger } from "@/logger.js";
 import { loadOptionalDependency } from "@/dependency/index.js";

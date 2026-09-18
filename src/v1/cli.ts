@@ -1,7 +1,7 @@
 import { PageOptions, PageOptionsOperation, PathInput } from "@/input/index.js";
 import { Document, Inference, StringDict } from "@/v1/parsing/common/index.js";
 import { Command, Option, OptionValues } from "commander";
-import * as console from "console";
+import * as console from "node:console";
 import { Client, PredictOptions } from "./client.js";
 import { Endpoint } from "./http/index.js";
 import { CLI_COMMAND_CONFIG, COMMAND_GENERATED, ProductConfig } from "./product/cliProducts.js";

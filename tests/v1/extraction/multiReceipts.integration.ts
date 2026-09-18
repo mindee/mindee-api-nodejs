@@ -5,7 +5,7 @@ import { MultiReceiptsDetectorV1, ReceiptV5 } from "@/v1/product/index.js";
 import assert from "node:assert/strict";
 import { before, describe, it } from "node:test";
 import { setTimeout } from "node:timers/promises";
-import * as path from "path";
+import path from "node:path";
 import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 import { V1_PRODUCT_PATH } from "../../index.js";
 

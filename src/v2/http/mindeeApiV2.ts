@@ -1,10 +1,10 @@
+import { Dispatcher, FormData } from "undici";
+
 import { ApiSettings } from "./apiSettings.js";
-import { Dispatcher } from "undici";
 import { BaseProductParameters } from "@/v2/index.js";
 import {
   BaseSearchParameters, BaseAnnotationParameters, BaseRagDocumentUploadParameters
 } from "@/v2/clientOptions/index.js";
-import { FormData } from "undici";
 import {
   BaseResponse,
   ErrorResponse,

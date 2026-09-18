@@ -1,3 +1,4 @@
+import { Buffer } from "node:buffer";
 import { INPUT_TYPE_BYTES } from "./inputSource.js";
 import { LocalInputSource } from "./localInputSource.js";
 import { logger } from "@/logger.js";
@@ -7,10 +8,14 @@ interface BytesInputProps {
   filename: string;
 }
 
-/** Local input source backed by a `Uint8Array`. */
+/**
+ * Local input source backed by a `Uint8Array`.
+ */
 export class BytesInput extends LocalInputSource {
   private inputBytes: Uint8Array;
-  /** Binary payload built from the byte array. */
+  /**
+   * Binary payload built from the byte array.
+   */
   fileObject: Buffer = Buffer.alloc(0);
 
   constructor({ inputBytes, filename }: BytesInputProps) {
@@ -21,7 +26,9 @@ export class BytesInput extends LocalInputSource {
     this.inputBytes = inputBytes;
   }
 
-  /** Converts bytes to a buffer and validates MIME type. */
+  /**
+   * Converts bytes to a buffer and validates MIME type.
+   */
   async init() {
     if (this.initialized) {
       return;

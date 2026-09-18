@@ -1,9 +1,10 @@
-import { InputSource } from "./inputSource.js";
-import { URL } from "url";
-import { basename, extname } from "path";
-import { randomBytes } from "crypto";
-import { writeFile } from "fs/promises";
+import path from "node:path";
+import { randomBytes } from "node:crypto";
+import { writeFile } from "node:fs/promises";
 import {  request, Dispatcher } from "undici";
+import { URL } from "node:url";
+
+import { InputSource } from "./inputSource.js";
 import { logger } from "@/logger.js";
 import { MindeeInputSourceError } from "@/errors/index.js";
 import { resolveDefaultDispatcher } from "@/http/dispatcher.js";
@@ -105,7 +106,7 @@ export class UrlInput extends InputSource {
   }
 
   private static extractFilenameFromUrl(uri: string): string {
-    return basename(new URL(uri).pathname || "");
+    return path.basename(new URL(uri).pathname || "");
   }
 
   private static generateFileName(extension = ".tmp"): string {
@@ -115,7 +116,7 @@ export class UrlInput extends InputSource {
   }
 
   private static getFileExtension(filename: string): string | null {
-    const ext = extname(filename);
+    const ext = path.extname(filename);
     return ext ? ext.toLowerCase() : null;
   }
 
@@ -124,7 +125,7 @@ export class UrlInput extends InputSource {
       filename = finalUrl ? UrlInput.extractFilenameFromUrl(finalUrl) : UrlInput.extractFilenameFromUrl(this.url);
     }
 
-    if (!filename || !extname(filename)) {
+    if (!filename || !path.extname(filename)) {
       filename = UrlInput.generateFileName(
         UrlInput.getFileExtension(filename || "") || undefined
       );

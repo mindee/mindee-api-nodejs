@@ -1,5 +1,6 @@
-import { URLSearchParams } from "url";
+import { URLSearchParams } from "node:url";
 import { FormData } from "undici";
+
 import { InputSource, LocalInputSource } from "@/input/index.js";
 import { ExecutionPriority } from "@/v1/parsing/common/index.js";
 import {

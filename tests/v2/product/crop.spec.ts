@@ -1,6 +1,6 @@
-import path from "path";
+import path from "node:path";
 import assert from "node:assert/strict";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import { describe, it } from "node:test";
 import { Polygon } from "@/geometry/index.js";
 import { crop } from "@/v2/product/index.js";

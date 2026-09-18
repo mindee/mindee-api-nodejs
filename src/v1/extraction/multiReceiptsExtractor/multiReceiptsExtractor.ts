@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
+
 import { MindeeError } from "@/errors/index.js";
 import { createPdfFromInputSource } from "@/pdf/pdfOperation.js";
 import { Polygon } from "@/geometry/index.js";

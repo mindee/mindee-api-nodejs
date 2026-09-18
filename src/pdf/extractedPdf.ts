@@ -1,10 +1,11 @@
+import { Buffer } from "node:buffer";
 import path from "node:path";
+import { writeFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
+
 import { BufferInput, MIMETYPES } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
-import { Buffer } from "node:buffer";
-import { writeFile } from "fs/promises";
 import { logger } from "@/logger.js";
-import { writeFileSync } from "node:fs";
 
 /** Represents a PDF artifact produced by an extraction/splitting operation. */
 export class ExtractedPdf {

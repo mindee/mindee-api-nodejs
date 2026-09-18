@@ -4,7 +4,7 @@ import { LocalResponse } from "@/v2/parsing/index.js";
 import { SplitResponse } from "@/v2/product/split/splitResponse.js";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
 

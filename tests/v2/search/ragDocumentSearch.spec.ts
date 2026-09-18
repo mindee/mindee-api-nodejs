@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import path from "path";
+import path from "node:path";
 import { V2_RESOURCE_PATH } from "../../index.js";
 import { LocalResponse } from "@/v2/index.js";
 import { RagDocumentSearchResponse } from "@/v2/search/index.js";

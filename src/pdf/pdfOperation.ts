@@ -1,6 +1,7 @@
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore
 import type * as pdfLibTypes from "@cantoo/pdf-lib";
+
 import { errorHandler } from "@/errors/handler.js";
 import { PageOptions, PageOptionsOperation } from "@/input/pageOptions.js";
 import { MindeeError, MindeeInputSourceError } from "@/errors/index.js";

@@ -1,7 +1,7 @@
-import path from "path";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { afterEach, beforeEach, describe, it } from "node:test";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
 import { MockAgent } from "undici";
 import { RESOURCE_PATH, V1_RESOURCE_PATH } from "../../index.js";
 import { Client } from "@/v1/index.js";
@@ -15,7 +15,7 @@ import { PathInput } from "@/index.js";
 async function setInterceptor(httpCode: number, jsonFilePath: string): Promise<MockAgent> {
   const mockAgent = new MockAgent();
   const mockPool = mockAgent.get("https://v1-workflow-host");
-  const mockResponse = JSON.parse(await fs.readFile(jsonFilePath, "utf-8"));
+  const mockResponse = JSON.parse(await fs.readFile(jsonFilePath, "utf8"));
   mockPool
     .intercept({ path: /v1\/workflows\/.*/, method: "POST" })
     .reply(httpCode, mockResponse);

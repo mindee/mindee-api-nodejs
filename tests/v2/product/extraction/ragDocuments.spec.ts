@@ -1,7 +1,8 @@
-import path from "path";
+import path from "node:path";
 import assert from "node:assert/strict";
 import { describe, it } from "node:test";
-import { promises as fs } from "fs";
+import { promises as fs } from "node:fs";
+
 import { V2_PRODUCT_PATH } from "../../../index.js";
 import {
   ExtractionRagAnnotationResponse, RagAnnotation
@@ -10,19 +11,18 @@ import {
   RagDocumentUploadParameters, RagDocumentAnnotationParameters
 } from "@/v2/product/extraction/ragDocuments/params/index.js";
 
+/**
+ * Init a response from a JSON file.
+ */
+async function getResponse(relativePath: string) {
+  const fileContents = await fs.readFile(
+    path.join(V2_PRODUCT_PATH, relativePath)
+  );
+  const dict = JSON.parse(fileContents.toString());
+  return new ExtractionRagAnnotationResponse(dict);
+}
 
 describe("MindeeV2 - Extraction RagDocuments", () => {
-
-  /**
-   * Init a response from a JSON file.
-   */
-  async function getResponse(relativePath: string) {
-    const fileContents = await fs.readFile(
-      path.join(V2_PRODUCT_PATH, relativePath)
-    );
-    const dict = JSON.parse(fileContents.toString());
-    return new ExtractionRagAnnotationResponse(dict);
-  }
 
   it("should init POST parameters", () => {
     const parameters = new RagDocumentUploadParameters({ modelId: "invalid-model-id" });
