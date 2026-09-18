@@ -4,6 +4,9 @@ import { AnnotatedListField } from "./annotatedListField.js";
 import { StringDict } from "@/parsing/index.js";
 import { createAnnotatedField } from "@/v2/product/extraction/ragDocuments/fieldFactory.js";
 
+/**
+ * A dictionary of field names and their corresponding configured field types.
+ */
 export class AnnotatedFields extends Map<string, AnnotatedSimpleField | AnnotatedObjectField | AnnotatedListField> {
   constructor(serverResponse: StringDict) {
     super(Object.entries(serverResponse).map( ([key, value]) => {
@@ -12,7 +15,7 @@ export class AnnotatedFields extends Map<string, AnnotatedSimpleField | Annotate
   }
 
   /**
-   * Returns a field as a `AnnotatedSimpleField`, or throws if the type mismatches.
+   * Returns a field as an `AnnotatedSimpleField`, or throws if the type mismatches.
    */
   getSimpleField(fieldName: string): AnnotatedSimpleField {
     const field = this.get(fieldName);
@@ -40,7 +43,7 @@ export class AnnotatedFields extends Map<string, AnnotatedSimpleField | Annotate
   }
 
   /**
-   * Returns a field as a `AnnotatedListField`, or throws if the type mismatches.
+   * Returns a field as an `AnnotatedListField`, or throws if the type mismatches.
    */
   getListField(fieldName: string): AnnotatedListField {
     const field = this.get(fieldName);

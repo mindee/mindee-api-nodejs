@@ -6,7 +6,7 @@ import { StringDict } from "@/parsing/index.js";
  */
 export class RagAnnotation {
   /**
-   * Annotated fields.
+   * A dictionary of field names and their corresponding configured field types.
    */
   public fields: AnnotatedFields;
 

@@ -18,13 +18,22 @@
   "homepage": "https://mindee.com/",
   "type": "module",
   "main": "src/index.js",
+  "types": "src/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./src/index.d.ts",
+      "import": "./src/index.js",
+      "default": "./src/index.js"
+    },
+    "./package.json": "./package.json"
+  },
   "bin": {
     "mindeeV1": "bin/mindeeV1.js",
     "mindeeV2": "bin/mindeeV2.js"
   },
   "scripts": {
     "build": "tsc --build && tsc-alias",
-    "build:dist": "tsc --build && tsc-alias && cp LICENSE README.md CHANGELOG.md ./dist",
+    "build:dist": "tsc --build && tsc-alias && cp LICENSE README.md CHANGELOG.md package.json ./dist",
     "clean": "rm -rf ./dist ./docs/_build",
     "test": "node tests/runner.mjs spec",
     "test:light": "node tests/runner.mjs spec",
