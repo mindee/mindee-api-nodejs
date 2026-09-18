@@ -6,3 +6,4 @@ export { ExtractionActiveOptions } from "./extractionActiveOptions.js";
 export { ExtractionResponse } from "./extractionResponse.js";
 export { ExtractionResult } from "./extractionResult.js";
 export { DataSchemaActiveOption } from "./dataSchemaActiveOption.js";
+export * as ragDocuments from "./ragDocuments/index.js";

@@ -17,4 +17,6 @@ export {
 export { LocalResponse } from "./localResponse.js";
 export { BaseResponse } from "./baseResponse.js";
 export type { ResponseConstructor } from "./baseResponse.js";
+export { BaseRagAnnotationResponse } from "./baseRagAnnotationResponse.js";
+export type { AnnotationResponseConstructor } from "./baseRagAnnotationResponse.js";
 export * as field from "./inference/field/index.js";

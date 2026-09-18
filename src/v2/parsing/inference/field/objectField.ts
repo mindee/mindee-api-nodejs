@@ -9,6 +9,12 @@ export class ObjectField extends BaseField {
   /** Nested fields carried by this object. */
   readonly fields: InferenceFields;
 
+  constructor(serverResponse: StringDict, indentLevel = 0) {
+    super(serverResponse, indentLevel);
+
+    this.fields = new InferenceFields(serverResponse["fields"], this._indentLevel + 1);
+  }
+
   /**
    * Retrieves the simple sub-fields in the object.
    *
@@ -58,66 +64,45 @@ export class ObjectField extends BaseField {
    * Retrieves a SimpleField by its name if it exists and is of the correct type.
    *
    * @param {string} fieldName - The name of the field to retrieve.
-   * @return {SimpleField} The SimpleField instance if it exists and is valid, or undefined if not.
-   * @throws {Error} If the field does not exist or is not of type SimpleField.
+   * @return {SimpleField} The field instance if it exists and is valid, or undefined if not.
+   * @throws {Error} If the field does not exist or is of wrong type.
    */
   public getSimpleField(fieldName: string): SimpleField {
-    if (!this.fields.has(fieldName) && !this.simpleFields.has(fieldName)) {
-      throw new Error(`The field '${fieldName}' was not found.`);
-    }
-    if (this.fields.get(fieldName)?.constructor.name !== "SimpleField") {
-      throw new Error(`The field '${fieldName}' is not a SimpleField.`);
-    }
-    return this.simpleFields.get(fieldName) as SimpleField;
+    return this.fields.getSimpleField(fieldName);
   }
 
   /**
    * Retrieves a ListField by its name if it exists and is of the correct type.
    *
    * @param {string} fieldName - The name of the field to retrieve.
-   * @return {ListField} The ListField instance if it exists and is valid, or undefined if not.
-   * @throws {Error} If the field does not exist or is not of type ListField.
+   * @return {ListField} The field instance if it exists and is valid, or undefined if not.
+   * @throws {Error} If the field does not exist or is of wrong type.
    */
   public getListField(fieldName: string): ListField {
-    if (!this.fields.has(fieldName) || !this.listFields.has(fieldName)) {
-      throw new Error(`The field '${fieldName}' was not found.`);
-    }
-    if (this.fields.get(fieldName)?.constructor.name !== "ListField") {
-      throw new Error(`The field '${fieldName}' is not a ListField.`);
-    }
-    return this.listFields.get(fieldName) as ListField;
+    return this.fields.getListField(fieldName);
   }
-
 
   /**
    * Retrieves an ObjectField by its name if it exists and is of the correct type.
    *
    * @param {string} fieldName - The name of the field to retrieve.
-   * @return {ObjectField} The ObjectField instance if it exists and is valid, or undefined if not.
-   * @throws {Error} If the field does not exist or is not of type ObjectField.
+   * @return {ObjectField} The field instance if it exists and is valid, or undefined if not.
+   * @throws {Error} If the field does not exist or is of wrong type.
    */
   public getObjectField(fieldName: string): ObjectField {
-    if (!this.fields.has(fieldName) && !this.objectFields.has(fieldName)) {
-      throw new Error(`The field '${fieldName}' was not found.`);
-    }
-    if (this.fields.get(fieldName)?.constructor.name !== "ObjectField") {
-      throw new Error(`The field '${fieldName}' is not an ObjectField.`);
-    }
-    return this.objectFields.get(fieldName) as ObjectField;
+    return this.fields.getObjectField(fieldName);
   }
 
-  constructor(serverResponse: StringDict, indentLevel = 0) {
-    super(serverResponse, indentLevel);
-
-    this.fields = new InferenceFields(serverResponse["fields"], this._indentLevel + 1);
-  }
-
-  /** Returns a readable representation of nested fields. */
+  /**
+   * Returns a readable representation of nested fields.
+   */
   toString(): string {
     return "\n" + (this.fields ? this.fields.toString(1) : "");
   }
 
-  /** Returns a compact representation suitable for list items. */
+  /**
+   * Returns a compact representation suitable for list items.
+   */
   toStringFromList(): string{
     return this.fields? this.fields.toString(2).substring(4) : "";
   }

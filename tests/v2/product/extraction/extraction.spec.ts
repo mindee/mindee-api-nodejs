@@ -7,8 +7,8 @@ import { promises as fs } from "node:fs";
 import { describe, it } from "node:test";
 import path from "path";
 
-import { V2_PRODUCT_PATH } from "../../index.js";
-import { loadV2Response } from "./utils.js";
+import { V2_PRODUCT_PATH } from "../../../index.js";
+import { loadV2Response } from "../utils.js";
 
 const findocPath = path.join(V2_PRODUCT_PATH, "extraction", "financial_document");
 const extractionPath = path.join(V2_PRODUCT_PATH, "extraction");
