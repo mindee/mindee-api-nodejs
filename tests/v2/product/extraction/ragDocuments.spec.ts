@@ -32,17 +32,27 @@ describe("MindeeV2 - Extraction RagDocuments", () => {
   });
 
   it("should init PATCH parameters", () => {
-    const annotation = new RagAnnotation({});
+    const annotation = new RagAnnotation({
+      fields: {
+        "hello": {
+          "selected": true,
+          "guidelines": null,
+          "value": null
+        }
+      }
+    });
     const parameters = new RagDocumentAnnotationParameters({
       documentId: "invalid-document-id",
       status: "Active",
       annotation: annotation
     });
-    const reqParams = parameters.getRequestParameters();
 
     assert.strictEqual(parameters.documentId, "invalid-document-id");
-    assert.strictEqual(reqParams["status"], "Active");
-    assert.strictEqual(reqParams["annotation"], JSON.stringify(annotation));
+    // server expects JSON string
+    assert.strictEqual(
+      JSON.stringify(parameters.getRequestParameters()),
+      '{"status":"Active","annotation":{"fields":{"hello":{"selected":true,"guidelines":null,"value":null}}}}'
+    );
   });
 
   it("should load a POST response from a JSON string", async () => {

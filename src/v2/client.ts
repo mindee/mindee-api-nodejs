@@ -371,8 +371,7 @@ export class Client {
     parameters: InstanceType<P["annotationParametersClass"]> | ConstructorParameters<P["annotationParametersClass"]>[0],
     pollingOptions?: PollingOptions | PollingOptionsConstructor
   ): Promise<InstanceType<P["annotationResponseClass"]>> {
-    const initialResponse = await this.mindeeApi.reqPatchRagAnnotation(product, parameters);
-
+    const initialResponse = await this.updateRagAnnotation(product, parameters);
     if (initialResponse.status !== "Processing") {
       return initialResponse;
     }

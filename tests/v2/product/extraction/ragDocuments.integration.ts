@@ -50,5 +50,54 @@ describe("MindeeV2 - Extraction RagDocuments", { timeout: 180000 }, () => {
       { documentId: documentId, annotation: postAnnotation }
     );
     assert.ok(patchAnnotationResponse);
+    const patchAnnotation = patchAnnotationResponse.annotation;
+    assert.equal(
+      patchAnnotation!.fields.getSimpleField("supplier_name").guidelines, "I am the walrus!"
+    );
+    assert.equal(
+      patchAnnotation!.fields.getSimpleField("supplier_name").selected, true
+    );
+    assert.equal(
+      patchAnnotation!.fields.getSimpleField("invoice_number").guidelines, "koo koo katchoo!"
+    );
+    assert.equal(
+      patchAnnotation!.fields.getSimpleField("invoice_number").selected, true
+    );
+
+    const getResponse = await client.getReadyRagDocumentPoll(
+      Extraction,
+      documentId
+    );
+    assert.ok(getResponse);
+    const getAnnotation = getResponse.annotation;
+    assert.ok(getAnnotation);
+    assert.equal(getResponse.status, "Draft");
+    assert.equal(
+      getAnnotation.fields.getSimpleField("supplier_name").guidelines, "I am the walrus!"
+    );
+    assert.equal(
+      getAnnotation.fields.getSimpleField("supplier_name").selected, true
+    );
+    assert.equal(
+      getAnnotation.fields.getSimpleField("invoice_number").guidelines, "koo koo katchoo!"
+    );
+    assert.equal(
+      getAnnotation.fields.getSimpleField("invoice_number").selected, true
+    );
+
+    const patchStatusResponse = await client.updateAndGetRagAnnotationPoll(
+      Extraction,
+      { documentId: documentId, status: "Active" },
+      { initialDelaySec: 1.2 }
+    );
+    assert.ok(patchStatusResponse);
+    assert.equal(patchStatusResponse.status, "Active");
+
+    const deleteResponse = await client.deleteRagDocument(Extraction, documentId);
+    assert.ok(deleteResponse);
+
+    await assert.rejects(async () => {
+      await client.getRagDocument(Extraction, documentId);
+    });
   });
 });

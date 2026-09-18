@@ -47,15 +47,15 @@ export class RagDocumentAnnotationParameters extends BaseAnnotationParameters {
   /**
    * Gets the request parameters for the upload request.
    */
-  public getRequestParameters(): Record<string, string> {
-    const parameters: Record<string, string> = {};
+  public getRequestParameters(): Record<string, any> {
+    const parameters: Record<string, any> = {};
 
     if (this.status) {
       parameters["status"] = this.status;
     }
 
     if (this.annotation) {
-      parameters["annotation"] = JSON.stringify(this.annotation);
+      parameters["annotation"] = this.annotation;
     }
 
     return parameters;

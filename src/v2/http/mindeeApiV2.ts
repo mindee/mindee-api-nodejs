@@ -226,14 +226,16 @@ export class MindeeApiV2 {
     product: P,
     parameters: BaseAnnotationParameters
   ): Promise<InstanceType<P["annotationResponseClass"]>> {
-    const form = this.#paramsToFormData(parameters.getRequestParameters());
-
     const options: RequestOptions = {
       method: "PATCH",
-      headers: this.settings.baseHeaders,
+      headers: {
+        ...this.settings.baseHeaders,
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "Content-Type": "application/json",
+      },
       hostname: this.settings.hostname,
       path: `/v2/products/${product.slug}/rag-documents/${parameters.documentId}`,
-      body: form,
+      body: JSON.stringify(parameters.getRequestParameters()),
       timeoutSecs: this.settings.timeoutSecs,
     };
     const response: BaseHttpResponse = await sendRequestAndReadResponse(this.settings.dispatcher, options);
