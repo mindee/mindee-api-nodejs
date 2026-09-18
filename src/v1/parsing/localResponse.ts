@@ -8,7 +8,9 @@ import { MindeeError } from "@/errors/index.js";
  * Note: Has to be initialized through init() before use.
  */
 export class LocalResponse extends BaseLocalResponse {
-  /** Loads a local JSON payload into a typed prediction response wrapper. */
+  /**
+   * Loads a local JSON payload into a typed prediction response wrapper.
+   */
   async loadPrediction<T extends Inference>(
     productClass: new (httpResponse: StringDict) => T
   ) {

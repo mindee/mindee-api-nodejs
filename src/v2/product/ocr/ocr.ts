@@ -6,17 +6,23 @@ import { BaseProduct } from "@/v2/product/baseProduct.js";
  * Extract raw text (OCR) from any image or scanned document.
  */
 export class Ocr extends BaseProduct {
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get parametersClass() {
     return OcrParameters;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get responseClass() {
     return OcrResponse;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get slug() {
     return "ocr";
   }

@@ -11,9 +11,13 @@ export interface GeneratedListFieldConstructor {
  * A list of values or objects, used in generated APIs.
  */
 export class GeneratedListField {
-  /** Id of the page the object was found on. */
+  /**
+   * Id of the page the object was found on.
+   */
   pageId?: number;
-  /** List of word values. */
+  /**
+   * List of word values.
+   */
   values: Array<GeneratedObjectField | StringField>;
 
   constructor({

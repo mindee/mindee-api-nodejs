@@ -6,10 +6,14 @@ import { StringDict } from "@/parsing/stringDict.js";
  */
 export class ExecutionFile {
 
-  /** File name. */
+  /**
+   * File name.
+   */
   name: string|null;
 
-  /** Optional alias for the fil. */
+  /**
+   * Optional alias for the fil.
+   */
   alias: string|null;
 
   constructor(jsonResponse: StringDict) {

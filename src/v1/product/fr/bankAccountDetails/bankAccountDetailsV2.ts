@@ -5,13 +5,21 @@ import { BankAccountDetailsV2Document } from "./bankAccountDetailsV2Document.js"
  * Bank Account Details API version 2 inference prediction.
  */
 export class BankAccountDetailsV2 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "bank_account_details";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "2";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: BankAccountDetailsV2Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<BankAccountDetailsV2Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

@@ -7,9 +7,13 @@ import { StringDict } from "@/parsing/stringDict.js";
  * @category API Response
  */
 export abstract class ApiResponse {
-  /** Initial request sent to the API. */
+  /**
+   * Initial request sent to the API.
+   */
   apiRequest: ApiRequest;
-  /** Raw text representation of the API's response. */
+  /**
+   * Raw text representation of the API's response.
+   */
   private readonly rawHttp: StringDict;
 
   /**

@@ -6,13 +6,21 @@ import { BankCheckV1Page } from "./bankCheckV1Page.js";
  * Bank Check API version 1 inference prediction.
  */
 export class BankCheckV1 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "bank_check";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "1";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: BankCheckV1Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<BankCheckV1Page>[] = [];
 
   constructor(rawPrediction: StringDict) {

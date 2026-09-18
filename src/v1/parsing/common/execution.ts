@@ -10,43 +10,69 @@ import { parseDate } from "@/parsing/dateParser.js";
  * @category Workflow
  */
 export class Execution<T extends Inference> {
-  /** Identifier for the batch to which the execution belongs. */
+  /**
+   * Identifier for the batch to which the execution belongs.
+   */
   batchName: string;
 
-  /** The time at which the execution started. */
+  /**
+   * The time at which the execution started.
+   */
   createdAt: Date | null;
 
-  /** File representation within a workflow execution. */
+  /**
+   * File representation within a workflow execution.
+   */
   file: ExecutionFile;
 
-  /** Identifier for the execution. */
+  /**
+   * Identifier for the execution.
+   */
   id: string;
 
-  /** Deserialized inference object. */
+  /**
+   * Deserialized inference object.
+   */
   inference: T | null;
 
-  /** Priority of the execution. */
+  /**
+   * Priority of the execution.
+   */
   priority: ExecutionPriority | null;
 
-  /** The time at which the file was tagged as reviewed. */
+  /**
+   * The time at which the file was tagged as reviewed.
+   */
   reviewedAt: Date | null;
 
-  /** The time at which the file was uploaded to a workflow. */
+  /**
+   * The time at which the file was uploaded to a workflow.
+   */
   availableAt: Date | null;
 
-  /** Reviewed fields and values. */
+  /**
+   * Reviewed fields and values.
+   */
   reviewedPrediction: GeneratedV1Document | null;
 
-  /** Execution Status. */
+  /**
+   * Execution Status.
+   */
   status: string;
 
-  /** Execution type. */
+  /**
+   * Execution type.
+   */
   type: string | null;
 
-  /** The time at which the file was uploaded to a workflow. */
+  /**
+   * The time at which the file was uploaded to a workflow.
+   */
   uploadedAt: Date | null;
 
-  /** Identifier for the workflow. */
+  /**
+   * Identifier for the workflow.
+   */
   workflowId: string;
 
   constructor(inferenceClass: new (serverResponse: StringDict) => T, jsonResponse: StringDict) {

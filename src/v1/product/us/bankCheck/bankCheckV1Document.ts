@@ -13,17 +13,29 @@ import {
  * Bank Check API version 1.1 document data.
  */
 export class BankCheckV1Document implements Prediction {
-  /** The check payer's account number. */
+  /**
+   * The check payer's account number.
+   */
   accountNumber: StringField;
-  /** The amount of the check. */
+  /**
+   * The amount of the check.
+   */
   amount: AmountField;
-  /** The issuer's check number. */
+  /**
+   * The issuer's check number.
+   */
   checkNumber: StringField;
-  /** The date the check was issued. */
+  /**
+   * The date the check was issued.
+   */
   date: DateField;
-  /** List of the check's payees (recipients). */
+  /**
+   * List of the check's payees (recipients).
+   */
   payees: StringField[] = [];
-  /** The check issuer's routing number. */
+  /**
+   * The check issuer's routing number.
+   */
   routingNumber: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

@@ -10,32 +10,44 @@ import { RagDocumentAnnotationParameters, RagDocumentUploadParameters } from "./
  * Automatically extract structured data from any image or scanned document.
  */
 export class Extraction extends BaseProduct {
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get slug() {
     return "extraction";
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get parametersClass() {
     return ExtractionParameters;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get responseClass() {
     return ExtractionResponse;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get annotationResponseClass() {
     return ExtractionRagAnnotationResponse;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get annotationParametersClass() {
     return RagDocumentAnnotationParameters;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get ragDocumentUploadClass() {
     return RagDocumentUploadParameters;
   }

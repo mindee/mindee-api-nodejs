@@ -6,15 +6,25 @@ import { StringDict } from "@/parsing/stringDict.js";
  * @property {boolean} reconstructed - Is the object reconstructed (not extracted by the API).
  * @property {number} pageId - Page ID for multi-page document.
  */
-/** Constructor payload shared by standard v1 fields. */
+/**
+ * Constructor payload shared by standard v1 fields.
+ */
 export interface BaseFieldConstructor {
-  /** Raw field payload from API response. */
+  /**
+   * Raw field payload from API response.
+   */
   prediction: StringDict;
-  /** Key to read from `prediction` as field value. */
+  /**
+   * Key to read from `prediction` as field value.
+   */
   valueKey?: string;
-  /** Whether the field was reconstructed locally. */
+  /**
+   * Whether the field was reconstructed locally.
+   */
   reconstructed?: boolean;
-  /** Optional page identifier for multi-page documents. */
+  /**
+   * Optional page identifier for multi-page documents.
+   */
   pageId?: number;
 }
 
@@ -22,11 +32,17 @@ export interface BaseFieldConstructor {
  * Base class for most fields.
  */
 export class BaseField {
-  /** The value. */
+  /**
+   * The value.
+   */
   value?: string | number | boolean = undefined;
-  /** `true` when the field was reconstructed or computed using other fields. */
+  /**
+   * `true` when the field was reconstructed or computed using other fields.
+   */
   reconstructed: boolean;
-  /** Page ID for multi-page document. */
+  /**
+   * Page ID for multi-page document.
+   */
   pageId?: number;
 
   /**
@@ -50,7 +66,9 @@ export class BaseField {
     }
   }
 
-  /** Compares two field values for semantic equality. */
+  /**
+   * Compares two field values for semantic equality.
+   */
   compare(other: BaseField) {
     if (this.value === null && other.value === null) return true;
     if (this.value === null || other.value === null) return false;

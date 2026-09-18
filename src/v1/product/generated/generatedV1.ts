@@ -6,13 +6,21 @@ import { GeneratedV1Page } from "./generatedV1Page.js";
  * Generated API V1 inference results.
  */
 export class GeneratedV1 extends Inference {
-  /** The endpoint's name. Note: placeholder for custom APIs. */
+  /**
+   * The endpoint's name. Note: placeholder for custom APIs.
+   */
   endpointName = "custom";
-  /** The endpoint's version. Note: placeholder for custom APIs. */
+  /**
+   * The endpoint's version. Note: placeholder for custom APIs.
+   */
   endpointVersion = "1";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: GeneratedV1Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<GeneratedV1Page>[] = [];
 
   constructor(rawPrediction: StringDict) {

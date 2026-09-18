@@ -7,13 +7,21 @@ import { Polygon } from "@/geometry/index.js";
  * The list of social network profiles of the candidate.
  */
 export class ResumeV1SocialNetworksUrl {
-  /** The name of the social network. */
+  /**
+   * The name of the social network.
+   */
   name: string | null;
-  /** The URL of the social network. */
+  /**
+   * The URL of the social network.
+   */
   url: string | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

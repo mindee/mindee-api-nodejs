@@ -9,9 +9,13 @@ import { StringField } from "@/v1/parsing/standard/index.js";
  * Barcode Reader API version 1.0 document data.
  */
 export class BarcodeReaderV1Document implements Prediction {
-  /** List of decoded 1D barcodes. */
+  /**
+   * List of decoded 1D barcodes.
+   */
   codes1D: StringField[] = [];
-  /** List of decoded 2D barcodes. */
+  /**
+   * List of decoded 2D barcodes.
+   */
   codes2D: StringField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {

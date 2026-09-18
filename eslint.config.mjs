@@ -2,6 +2,7 @@ import typescriptEslint from "@typescript-eslint/eslint-plugin";
 import jsdoc from "eslint-plugin-jsdoc";
 import security from "eslint-plugin-security";
 import sonarjs from "eslint-plugin-sonarjs";
+import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
 import tsParser from "@typescript-eslint/parser";
 import path from "node:path";
@@ -29,20 +30,22 @@ export default [
       "@typescript-eslint": typescriptEslint,
       jsdoc,
       security,
+      unicorn,
     },
 
     languageOptions: {
       globals: {
         ...globals.node,
-        ...globals.mocha,
         Promise: true,
       },
       parser: tsParser,
     },
     rules: {
-      "max-len": ["error", {
-        code: 120,
-      }],
+      "unicorn/import-style": "error",
+      "unicorn/prefer-node-protocol": "error",
+      "unicorn/text-encoding-identifier-case": "error",
+      "unicorn/explicit-length-check": "error",
+      "unicorn/single-line-block-comment-style": "error",
 
       semi: ["error"],
       "jsdoc/require-asterisk-prefix": "error",
@@ -82,7 +85,6 @@ export default [
       "@typescript-eslint/no-unused-expressions": "error",
       "no-eval": "error",
       "no-unexpected-multiline": "error",
-      indent: ["error", 2],
       "eol-last": "error",
       "preserve-caught-error": "off",
       "security/detect-non-literal-fs-filename": "off",
@@ -92,6 +94,11 @@ export default [
           "group": ["../*"],
           "message": "Import can be shortened. Please use the @/ path alias instead of relative parent paths.",
         }],
+      }],
+
+      indent: ["error", 2],
+      "max-len": ["error", {
+        code: 120,
       }],
     },
   },

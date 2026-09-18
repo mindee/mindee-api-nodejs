@@ -9,27 +9,49 @@ import { DateField, StringField } from "@/v1/parsing/standard/index.js";
  * Passport API version 1.1 document data.
  */
 export class PassportV1Document implements Prediction {
-  /** The date of birth of the passport holder. */
+  /**
+   * The date of birth of the passport holder.
+   */
   birthDate: DateField;
-  /** The place of birth of the passport holder. */
+  /**
+   * The place of birth of the passport holder.
+   */
   birthPlace: StringField;
-  /** The country's 3 letter code (ISO 3166-1 alpha-3). */
+  /**
+   * The country's 3 letter code (ISO 3166-1 alpha-3).
+   */
   country: StringField;
-  /** The expiry date of the passport. */
+  /**
+   * The expiry date of the passport.
+   */
   expiryDate: DateField;
-  /** The gender of the passport holder. */
+  /**
+   * The gender of the passport holder.
+   */
   gender: StringField;
-  /** The given name(s) of the passport holder. */
+  /**
+   * The given name(s) of the passport holder.
+   */
   givenNames: StringField[] = [];
-  /** The passport's identification number. */
+  /**
+   * The passport's identification number.
+   */
   idNumber: StringField;
-  /** The date the passport was issued. */
+  /**
+   * The date the passport was issued.
+   */
   issuanceDate: DateField;
-  /** Machine Readable Zone, first line */
+  /**
+   * Machine Readable Zone, first line
+   */
   mrz1: StringField;
-  /** Machine Readable Zone, second line */
+  /**
+   * Machine Readable Zone, second line
+   */
   mrz2: StringField;
-  /** The surname of the passport holder. */
+  /**
+   * The surname of the passport holder.
+   */
   surname: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

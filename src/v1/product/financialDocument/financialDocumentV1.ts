@@ -5,13 +5,21 @@ import { FinancialDocumentV1Document } from "./financialDocumentV1Document.js";
  * Financial Document API version 1 inference prediction.
  */
 export class FinancialDocumentV1 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "financial_document";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "1";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: FinancialDocumentV1Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<FinancialDocumentV1Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

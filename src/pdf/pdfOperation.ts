@@ -22,11 +22,17 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
   return pdfLib!;
 }
 
-/** Result of a PDF split/extract operation. */
+/**
+ * Result of a PDF split/extract operation.
+ */
 export interface SplitPdf {
-  /** PDF content after page extraction. */
+  /**
+   * PDF content after page extraction.
+   */
   file: Buffer;
-  /** Number of pages removed from the source PDF. */
+  /**
+   * Number of pages removed from the source PDF.
+   */
   totalPagesRemoved: number;
 }
 
@@ -119,7 +125,6 @@ export async function countPages(file: Buffer): Promise<number> {
   });
   return currentPdf.getPageCount();
 }
-
 
 /**
  * Creates a PDF from a local file. Converts images to PDFs if needed.

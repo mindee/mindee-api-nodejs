@@ -51,7 +51,9 @@ export class SimpleField extends BaseField {
     return this.value as boolean;
   }
 
-  /** Returns a readable scalar representation. */
+  /**
+   * Returns a readable scalar representation.
+   */
   toString(): string {
     if (this.value === null) {
       return "";

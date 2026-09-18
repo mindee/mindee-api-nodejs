@@ -5,7 +5,9 @@ import { extractSingleCrop } from "@/v2/fileOperations/crop.js";
 import { ExtractedImage } from "@/image/index.js";
 import { ExtractionResponse } from "@/v2/product/index.js";
 
-/** Single crop detection returned by the crop product. */
+/**
+ * Single crop detection returned by the crop product.
+ */
 export class CropItem {
   /**
    * Type or classification of the detected object.
@@ -28,7 +30,9 @@ export class CropItem {
       : undefined;
   }
 
-  /** Returns a readable crop item summary. */
+  /**
+   * Returns a readable crop item summary.
+   */
   toString(): string {
     return `* :Location: ${this.location}\n  :Object Type: ${this.objectType}`;
   }

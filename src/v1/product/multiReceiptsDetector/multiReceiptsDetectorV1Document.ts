@@ -9,7 +9,9 @@ import { PositionField } from "@/v1/parsing/standard/index.js";
  * Multi Receipts Detector API version 1.1 document data.
  */
 export class MultiReceiptsDetectorV1Document implements Prediction {
-  /** Positions of the receipts on the document. */
+  /**
+   * Positions of the receipts on the document.
+   */
   receipts: PositionField[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {

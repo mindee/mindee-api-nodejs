@@ -9,87 +9,169 @@ import { DateField, StringField } from "@/v1/parsing/standard/index.js";
  * Carte Grise API version 1.1 document data.
  */
 export class CarteGriseV1Document implements Prediction {
-  /** The vehicle's license plate number. */
+  /**
+   * The vehicle's license plate number.
+   */
   a: StringField;
-  /** The vehicle's first release date. */
+  /**
+   * The vehicle's first release date.
+   */
   b: DateField;
-  /** The vehicle owner's full name including maiden name. */
+  /**
+   * The vehicle owner's full name including maiden name.
+   */
   c1: StringField;
-  /** The vehicle owner's address. */
+  /**
+   * The vehicle owner's address.
+   */
   c3: StringField;
-  /** Number of owners of the license certificate. */
+  /**
+   * Number of owners of the license certificate.
+   */
   c41: StringField;
-  /** Mentions about the ownership of the vehicle. */
+  /**
+   * Mentions about the ownership of the vehicle.
+   */
   c4A: StringField;
-  /** The vehicle's brand. */
+  /**
+   * The vehicle's brand.
+   */
   d1: StringField;
-  /** The vehicle's commercial name. */
+  /**
+   * The vehicle's commercial name.
+   */
   d3: StringField;
-  /** The Vehicle Identification Number (VIN). */
+  /**
+   * The Vehicle Identification Number (VIN).
+   */
   e: StringField;
-  /** The vehicle's maximum admissible weight. */
+  /**
+   * The vehicle's maximum admissible weight.
+   */
   f1: StringField;
-  /** The vehicle's maximum admissible weight within the license's state. */
+  /**
+   * The vehicle's maximum admissible weight within the license's state.
+   */
   f2: StringField;
-  /** The vehicle's maximum authorized weight with coupling. */
+  /**
+   * The vehicle's maximum authorized weight with coupling.
+   */
   f3: StringField;
-  /** The document's formula number. */
+  /**
+   * The document's formula number.
+   */
   formulaNumber: StringField;
-  /** The vehicle's weight with coupling if tractor different than category M1. */
+  /**
+   * The vehicle's weight with coupling if tractor different than category M1.
+   */
   g: StringField;
-  /** The vehicle's national empty weight. */
+  /**
+   * The vehicle's national empty weight.
+   */
   g1: StringField;
-  /** The car registration date of the given certificate. */
+  /**
+   * The car registration date of the given certificate.
+   */
   i: DateField;
-  /** The vehicle's category. */
+  /**
+   * The vehicle's category.
+   */
   j: StringField;
-  /** The vehicle's national type. */
+  /**
+   * The vehicle's national type.
+   */
   j1: StringField;
-  /** The vehicle's body type (CE). */
+  /**
+   * The vehicle's body type (CE).
+   */
   j2: StringField;
-  /** The vehicle's body type (National designation). */
+  /**
+   * The vehicle's body type (National designation).
+   */
   j3: StringField;
-  /** Machine Readable Zone, first line. */
+  /**
+   * Machine Readable Zone, first line.
+   */
   mrz1: StringField;
-  /** Machine Readable Zone, second line. */
+  /**
+   * Machine Readable Zone, second line.
+   */
   mrz2: StringField;
-  /** The vehicle's owner first name. */
+  /**
+   * The vehicle's owner first name.
+   */
   ownerFirstName: StringField;
-  /** The vehicle's owner surname. */
+  /**
+   * The vehicle's owner surname.
+   */
   ownerSurname: StringField;
-  /** The vehicle engine's displacement (cm3). */
+  /**
+   * The vehicle engine's displacement (cm3).
+   */
   p1: StringField;
-  /** The vehicle's maximum net power (kW). */
+  /**
+   * The vehicle's maximum net power (kW).
+   */
   p2: StringField;
-  /** The vehicle's fuel type or energy source. */
+  /**
+   * The vehicle's fuel type or energy source.
+   */
   p3: StringField;
-  /** The vehicle's administrative power (fiscal horsepower). */
+  /**
+   * The vehicle's administrative power (fiscal horsepower).
+   */
   p6: StringField;
-  /** The vehicle's power to weight ratio. */
+  /**
+   * The vehicle's power to weight ratio.
+   */
   q: StringField;
-  /** The vehicle's number of seats. */
+  /**
+   * The vehicle's number of seats.
+   */
   s1: StringField;
-  /** The vehicle's number of standing rooms (person). */
+  /**
+   * The vehicle's number of standing rooms (person).
+   */
   s2: StringField;
-  /** The vehicle's sound level (dB). */
+  /**
+   * The vehicle's sound level (dB).
+   */
   u1: StringField;
-  /** The vehicle engine's rotation speed (RPM). */
+  /**
+   * The vehicle engine's rotation speed (RPM).
+   */
   u2: StringField;
-  /** The vehicle's CO2 emission (g/km). */
+  /**
+   * The vehicle's CO2 emission (g/km).
+   */
   v7: StringField;
-  /** Next technical control date. */
+  /**
+   * Next technical control date.
+   */
   x1: StringField;
-  /** Amount of the regional proportional tax of the registration (in euros). */
+  /**
+   * Amount of the regional proportional tax of the registration (in euros).
+   */
   y1: StringField;
-  /** Amount of the additional parafiscal tax of the registration (in euros). */
+  /**
+   * Amount of the additional parafiscal tax of the registration (in euros).
+   */
   y2: StringField;
-  /** Amount of the additional CO2 tax of the registration (in euros). */
+  /**
+   * Amount of the additional CO2 tax of the registration (in euros).
+   */
   y3: StringField;
-  /** Amount of the fee for managing the registration (in euros). */
+  /**
+   * Amount of the fee for managing the registration (in euros).
+   */
   y4: StringField;
-  /** Amount of the fee for delivery of the registration certificate in euros. */
+  /**
+   * Amount of the fee for delivery of the registration certificate in euros.
+   */
   y5: StringField;
-  /** Total amount of registration fee to be paid in euros. */
+  /**
+   * Total amount of registration fee to be paid in euros.
+   */
   y6: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

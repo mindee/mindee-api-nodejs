@@ -2,7 +2,9 @@ import { ExtractionInference } from "./extractionInference.js";
 import { StringDict } from "@/parsing/stringDict.js";
 import { BaseResponse } from "@/v2/parsing/index.js";
 
-/** Response wrapper for extraction product calls. */
+/**
+ * Response wrapper for extraction product calls.
+ */
 export class ExtractionResponse extends BaseResponse {
   /**
    * The inference result for an extraction request.

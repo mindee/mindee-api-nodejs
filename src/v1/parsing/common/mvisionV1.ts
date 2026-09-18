@@ -3,7 +3,9 @@ import { StringDict } from "@/parsing/stringDict.js";
 import { OcrPage } from "./ocrPage.js";
 
 export class MvisionV1 {
-  /** List of words found on the page. */
+  /**
+   * List of words found on the page.
+   */
   pages: OcrPage[] = [];
 
   constructor(rawPrediction: StringDict) {

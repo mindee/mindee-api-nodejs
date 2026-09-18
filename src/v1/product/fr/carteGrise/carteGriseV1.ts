@@ -5,13 +5,21 @@ import { CarteGriseV1Document } from "./carteGriseV1Document.js";
  * Carte Grise API version 1 inference prediction.
  */
 export class CarteGriseV1 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "carte_grise";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "1";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: CarteGriseV1Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<CarteGriseV1Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

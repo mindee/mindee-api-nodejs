@@ -9,17 +9,29 @@ import { Document } from "./document.js";
  * @category Asynchronous
  */
 export class Job {
-  /** Timestamp noting the enqueueing of a document. */
+  /**
+   * Timestamp noting the enqueueing of a document.
+   */
   issuedAt: Date;
-  /** Timestamp noting the availability of a prediction for an enqueued document. */
+  /**
+   * Timestamp noting the availability of a prediction for an enqueued document.
+   */
   availableAt?: Date;
-  /** Information about an error that occurred during the job processing. */
+  /**
+   * Information about an error that occurred during the job processing.
+   */
   error?: StringDict;
-  /** ID of the job. */
+  /**
+   * ID of the job.
+   */
   id: string;
-  /** Status of the job. */
+  /**
+   * Status of the job.
+   */
   status?: "waiting" | "processing" | "completed" | "failed";
-  /** The time taken to process the job, in milliseconds. */
+  /**
+   * The time taken to process the job, in milliseconds.
+   */
   milliSecsTaken?: number;
 
   constructor(jsonResponse: StringDict) {
@@ -58,7 +70,9 @@ export function datetimeWithTimezone(date: string): Date {
  * @category Asynchronous
  */
 export class AsyncPredictResponse<T extends Inference> extends ApiResponse {
-  /** Job for a queue. */
+  /**
+   * Job for a queue.
+   */
   job: Job;
   /** Prediction for an asynchronous request. Will not be available so long as the job is not
    * `completed`.

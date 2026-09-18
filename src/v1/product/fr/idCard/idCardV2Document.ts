@@ -9,35 +9,65 @@ import { DateField, StringField } from "@/v1/parsing/standard/index.js";
  * Carte Nationale d'Identité API version 2.0 document data.
  */
 export class IdCardV2Document implements Prediction {
-  /** The alternate name of the card holder. */
+  /**
+   * The alternate name of the card holder.
+   */
   alternateName: StringField;
-  /** The name of the issuing authority. */
+  /**
+   * The name of the issuing authority.
+   */
   authority: StringField;
-  /** The date of birth of the card holder. */
+  /**
+   * The date of birth of the card holder.
+   */
   birthDate: DateField;
-  /** The place of birth of the card holder. */
+  /**
+   * The place of birth of the card holder.
+   */
   birthPlace: StringField;
-  /** The card access number (CAN). */
+  /**
+   * The card access number (CAN).
+   */
   cardAccessNumber: StringField;
-  /** The document number. */
+  /**
+   * The document number.
+   */
   documentNumber: StringField;
-  /** The expiry date of the identification card. */
+  /**
+   * The expiry date of the identification card.
+   */
   expiryDate: DateField;
-  /** The gender of the card holder. */
+  /**
+   * The gender of the card holder.
+   */
   gender: StringField;
-  /** The given name(s) of the card holder. */
+  /**
+   * The given name(s) of the card holder.
+   */
   givenNames: StringField[] = [];
-  /** The date of issue of the identification card. */
+  /**
+   * The date of issue of the identification card.
+   */
   issueDate: DateField;
-  /** The Machine Readable Zone, first line. */
+  /**
+   * The Machine Readable Zone, first line.
+   */
   mrz1: StringField;
-  /** The Machine Readable Zone, second line. */
+  /**
+   * The Machine Readable Zone, second line.
+   */
   mrz2: StringField;
-  /** The Machine Readable Zone, third line. */
+  /**
+   * The Machine Readable Zone, third line.
+   */
   mrz3: StringField;
-  /** The nationality of the card holder. */
+  /**
+   * The nationality of the card holder.
+   */
   nationality: StringField;
-  /** The surname of the card holder. */
+  /**
+   * The surname of the card holder.
+   */
   surname: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

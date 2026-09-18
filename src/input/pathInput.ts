@@ -8,11 +8,17 @@ interface PathInputProps {
   inputPath: string;
 }
 
-/** Local input source that reads a file from disk by path. */
+/**
+ * Local input source that reads a file from disk by path.
+ */
 export class PathInput extends LocalInputSource {
-  /** Path used to read the local file. */
+  /**
+   * Path used to read the local file.
+   */
   readonly inputPath: string;
-  /** File content loaded from disk. */
+  /**
+   * File content loaded from disk.
+   */
   fileObject: Buffer = Buffer.alloc(0);
 
   constructor({ inputPath }: PathInputProps) {
@@ -23,7 +29,9 @@ export class PathInput extends LocalInputSource {
     this.filename = path.basename(this.inputPath);
   }
 
-  /** Reads the file from disk and validates MIME type. */
+  /**
+   * Reads the file from disk and validates MIME type.
+   */
   async init() {
     if (this.initialized) {
       return;

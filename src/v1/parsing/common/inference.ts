@@ -19,19 +19,33 @@ export abstract class Inference<
   DocT extends Prediction = Prediction,
   PageT extends DocT = DocT
 > {
-  /** A boolean denoting whether a given inference result was rotated. */
+  /**
+   * A boolean denoting whether a given inference result was rotated.
+   */
   isRotationApplied?: boolean;
-  /** Name and version of a given product. */
+  /**
+   * Name and version of a given product.
+   */
   product: Product;
-  /** Wrapper for a document's pages prediction. */
+  /**
+   * Wrapper for a document's pages prediction.
+   */
   pages: Page<PageT>[] = [];
-  /** A document's top-level `Prediction`. */
+  /**
+   * A document's top-level `Prediction`.
+   */
   prediction!: DocT;
-  /** Extraneous fields relating to specific tools for some APIs. */
+  /**
+   * Extraneous fields relating to specific tools for some APIs.
+   */
   extras?: Extras;
-  /** Name of a document's endpoint. Has a default value for OTS APIs. */
+  /**
+   * Name of a document's endpoint. Has a default value for OTS APIs.
+   */
   endpointName?: string;
-  /** A document's version. Has a default value for OTS APIs. */
+  /**
+   * A document's version. Has a default value for OTS APIs.
+   */
   endpointVersion?: string;
 
   constructor(rawPrediction: StringDict) {
@@ -65,7 +79,9 @@ export abstract class Inference<
   /**
    * Default string representation.
    */
-  /** Returns a human-readable representation of the inference payload. */
+  /**
+   * Returns a human-readable representation of the inference payload.
+   */
   toString() {
 
     let pages = "";

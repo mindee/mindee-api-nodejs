@@ -28,7 +28,9 @@ export class ModelSearchParameters extends BaseSearchParameters {
     this.modelType = params.modelType;
   }
 
-  /** @inheritdoc */
+  /**
+   * @inheritdoc
+   */
   getRequestParameters(): Record<string, string> {
     const parameters = super.getRequestParameters();
     if (this.name) {

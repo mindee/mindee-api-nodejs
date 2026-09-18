@@ -2,7 +2,9 @@ import { Point } from "./point.js";
 import { getCentroid, getMinMaxX, getMinMaxY, isPointInX, isPointInY } from "./polygonUtils.js";
 import { MinMax } from "./minMax.js";
 
-/** A polygon, composed of several Points. */
+/**
+ * A polygon, composed of several Points.
+ */
 export class Polygon extends Array<Point> {
 
   constructor(...args: Point[]) {

@@ -18,39 +18,73 @@ import {
  * Receipt API version 5.4 document data.
  */
 export class ReceiptV5Document implements Prediction {
-  /** The purchase category of the receipt. */
+  /**
+   * The purchase category of the receipt.
+   */
   category: ClassificationField;
-  /** The date the purchase was made. */
+  /**
+   * The date the purchase was made.
+   */
   date: DateField;
-  /** The type of receipt: EXPENSE RECEIPT or CREDIT CARD RECEIPT. */
+  /**
+   * The type of receipt: EXPENSE RECEIPT or CREDIT CARD RECEIPT.
+   */
   documentType: ClassificationField;
-  /** List of all line items on the receipt. */
+  /**
+   * List of all line items on the receipt.
+   */
   lineItems: ReceiptV5LineItem[] = [];
-  /** The locale of the document. */
+  /**
+   * The locale of the document.
+   */
   locale: LocaleField;
-  /** The receipt number or identifier. */
+  /**
+   * The receipt number or identifier.
+   */
   receiptNumber: StringField;
-  /** The purchase subcategory of the receipt for transport and food. */
+  /**
+   * The purchase subcategory of the receipt for transport and food.
+   */
   subcategory: ClassificationField;
-  /** The address of the supplier or merchant. */
+  /**
+   * The address of the supplier or merchant.
+   */
   supplierAddress: StringField;
-  /** List of company registration numbers associated to the supplier. */
+  /**
+   * List of company registration numbers associated to the supplier.
+   */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
-  /** The name of the supplier or merchant. */
+  /**
+   * The name of the supplier or merchant.
+   */
   supplierName: StringField;
-  /** The phone number of the supplier or merchant. */
+  /**
+   * The phone number of the supplier or merchant.
+   */
   supplierPhoneNumber: StringField;
-  /** The list of taxes present on the receipt. */
+  /**
+   * The list of taxes present on the receipt.
+   */
   taxes: Taxes;
-  /** The time the purchase was made. */
+  /**
+   * The time the purchase was made.
+   */
   time: StringField;
-  /** The total amount of tip and gratuity. */
+  /**
+   * The total amount of tip and gratuity.
+   */
   tip: AmountField;
-  /** The total amount paid: includes taxes, discounts, fees, tips, and gratuity. */
+  /**
+   * The total amount paid: includes taxes, discounts, fees, tips, and gratuity.
+   */
   totalAmount: AmountField;
-  /** The net amount paid: does not include taxes, fees, and discounts. */
+  /**
+   * The net amount paid: does not include taxes, fees, and discounts.
+   */
   totalNet: AmountField;
-  /** The sum of all taxes. */
+  /**
+   * The sum of all taxes.
+   */
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

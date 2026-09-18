@@ -32,7 +32,9 @@ export class RagDocumentSearchParameters extends BaseSearchParameters {
     this.filename = params.filename;
   }
 
-  /** @inheritdoc */
+  /**
+   * @inheritdoc
+   */
   getRequestParameters(): Record<string, string> {
     const parameters = super.getRequestParameters();
 

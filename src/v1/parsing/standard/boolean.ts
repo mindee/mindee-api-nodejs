@@ -12,7 +12,9 @@ export interface FieldConstructor {
  * A field containing a text value.
  */
 export class BooleanField extends Field {
-  /** The value. */
+  /**
+   * The value.
+   */
   value?: boolean;
 
   constructor({

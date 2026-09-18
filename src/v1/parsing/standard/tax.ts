@@ -17,15 +17,25 @@ interface TaxConstructor extends BaseFieldConstructor {
  * Represent a single tax line.
  */
 export class TaxField extends Field {
-  /** The tax amount. */
+  /**
+   * The tax amount.
+   */
   value?: number = undefined;
-  /** The tax rate. */
+  /**
+   * The tax rate.
+   */
   rate?: number = undefined;
-  /**  The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..). */
+  /**
+   * The tax code (HST, GST... for Canadian; City Tax, State tax for US, etc..).
+   */
   code?: string = undefined;
-  /**  The tax base */
+  /**
+   * The tax base
+   */
   base?: number = undefined;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId!: number;
 
   /**
@@ -109,7 +119,9 @@ export class TaxField extends Field {
  * Represent all items.
  */
 export class Taxes extends Array<TaxField> {
-  /** Populates the taxes collection from raw prediction entries. */
+  /**
+   * Populates the taxes collection from raw prediction entries.
+   */
   init(prediction: StringDict[] = [], pageId: number | undefined) {
     for (const entry of prediction) {
       this.push(

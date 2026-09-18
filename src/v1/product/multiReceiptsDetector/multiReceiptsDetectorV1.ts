@@ -5,13 +5,21 @@ import { MultiReceiptsDetectorV1Document } from "./multiReceiptsDetectorV1Docume
  * Multi Receipts Detector API version 1 inference prediction.
  */
 export class MultiReceiptsDetectorV1 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "multi_receipts_detector";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "1";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: MultiReceiptsDetectorV1Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<MultiReceiptsDetectorV1Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

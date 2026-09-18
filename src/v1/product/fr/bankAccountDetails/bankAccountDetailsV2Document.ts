@@ -10,13 +10,21 @@ import { StringField } from "@/v1/parsing/standard/index.js";
  * Bank Account Details API version 2.0 document data.
  */
 export class BankAccountDetailsV2Document implements Prediction {
-  /** Full extraction of the account holders names. */
+  /**
+   * Full extraction of the account holders names.
+   */
   accountHoldersNames: StringField;
-  /** Full extraction of BBAN, including: branch code, bank code, account and key. */
+  /**
+   * Full extraction of BBAN, including: branch code, bank code, account and key.
+   */
   bban: BankAccountDetailsV2Bban;
-  /** Full extraction of the IBAN number. */
+  /**
+   * Full extraction of the IBAN number.
+   */
   iban: StringField;
-  /** Full extraction of the SWIFT code. */
+  /**
+   * Full extraction of the SWIFT code.
+   */
   swiftCode: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

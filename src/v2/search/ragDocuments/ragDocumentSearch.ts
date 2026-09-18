@@ -6,17 +6,23 @@ import { RagDocumentSearchResponse } from "@/v2/search/ragDocuments/ragDocumentS
  * Search for RAG Documents.
  */
 export class RagDocumentSearch extends BaseSearch {
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get parametersClass() {
     return RagDocumentSearchParameters;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get responseClass() {
     return RagDocumentSearchResponse;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get slug() {
     return "rag-documents";
   }

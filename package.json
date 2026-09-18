@@ -44,7 +44,7 @@
     "lint:fix": "tsc --noEmit && eslint --fix --report-unused-disable-directives './src/**/*.ts' './tests/**/*.ts'",
     "lint:package": "npm run build:dist && publint ./dist && attw --pack ./dist --profile esm-only",
     "lint:secrets": "secretlint '**/*'",
-    "license:check": "license-checker-rseidelsohn --onlyAllow \"MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;LGPL-3.0-or-later;Python-2.0;BlueOak-1.0.0;CC-BY-3.0;CC0-1.0;0BSD;LGPL-3.0-only;WTFPL;Artistic-2.0;Unlicense\"",
+    "license:check": "license-checker-rseidelsohn --onlyAllow \"MIT;Apache-2.0;BSD-2-Clause;BSD-3-Clause;ISC;LGPL-3.0-or-later;LGPL-3.0-only;Python-2.0;BlueOak-1.0.0;CC-BY-3.0;CC-BY-4.0;CC0-1.0;0BSD;WTFPL;Artistic-2.0;Unlicense\"",
     "docs": "typedoc --out docs/_build ./src/index.ts",
     "docs:dist": "typedoc --out docs/_build ./src/index.ts && cp -r ./docs/code_samples ./docs/_build/",
     "prepare": "husky"
@@ -84,6 +84,7 @@
     "eslint-plugin-jsdoc": "^62.7.1",
     "eslint-plugin-security": "^4.0.1",
     "eslint-plugin-sonarjs": "^4.2.0",
+    "eslint-plugin-unicorn": "^75.0.0",
     "globals": "^17.4.0",
     "husky": "^9.1.7",
     "license-checker-rseidelsohn": "^4.4.2",

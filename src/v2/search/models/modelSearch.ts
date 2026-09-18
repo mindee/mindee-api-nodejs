@@ -11,17 +11,23 @@ import { ModelSearchResponse } from "@/v2/search/models/modelSearchResponse.js";
  * Results are paginated.
  */
 export class ModelSearch extends BaseSearch {
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get parametersClass() {
     return ModelSearchParameters;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get responseClass() {
     return ModelSearchResponse;
   }
 
-  /** @inheritDoc */
+  /**
+   * @inheritDoc
+   */
   static get slug() {
     return "models";
   }

@@ -1,7 +1,9 @@
 import { ExtraField } from "./extras.js";
 import { StringDict } from "@/parsing/stringDict.js";
 
-/** RAG extra payload returned by compatible APIs. */
+/**
+ * RAG extra payload returned by compatible APIs.
+ */
 export class RAGExtra extends ExtraField {
   /**
    * ID reference of the document matched by the Retrieval-Augmented Generation.

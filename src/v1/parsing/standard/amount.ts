@@ -6,7 +6,9 @@ import { floatToString } from "@/v1/parsing/common/index.js";
  * A field containing an amount value.
  */
 export class AmountField extends Field {
-  /** The value. */
+  /**
+   * The value.
+   */
   value?: number = undefined;
 
   /**

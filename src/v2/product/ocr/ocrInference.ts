@@ -2,7 +2,9 @@ import { StringDict } from "@/parsing/index.js";
 import { BaseInference } from "@/v2/parsing/inference/baseInference.js";
 import { OcrResult } from "@/v2/product/ocr/ocrResult.js";
 
-/** Inference payload for OCR responses. */
+/**
+ * Inference payload for OCR responses.
+ */
 export class OcrInference extends BaseInference {
   /**
    * Result of an OCR inference.
@@ -14,7 +16,9 @@ export class OcrInference extends BaseInference {
     this.result = new OcrResult(serverResponse["result"]);
   }
 
-  /** Returns a readable representation of OCR inference output. */
+  /**
+   * Returns a readable representation of OCR inference output.
+   */
   toString(): string {
     return (
       "Inference\n" +

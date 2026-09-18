@@ -96,11 +96,17 @@ export function handleError(
  * Is used when an error is lacking a handled error code.
  */
 export class MindeeHttpErrorV1 extends MindeeError {
-  /** Description of the error. */
+  /**
+   * Description of the error.
+   */
   message: string = "";
-  /** Additional details on the error. */
+  /**
+   * Additional details on the error.
+   */
   details: string | StringDict = "";
-  /** Standard HTTP error code. */
+  /**
+   * Standard HTTP error code.
+   */
   code?: number;
 
   constructor(httpError: StringDict, urlName: string, code?: number) {

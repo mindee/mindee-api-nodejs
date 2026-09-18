@@ -9,31 +9,57 @@ import { DateField, StringField } from "@/v1/parsing/standard/index.js";
  * Driver License API version 1.0 document data.
  */
 export class DriverLicenseV1Document implements Prediction {
-  /** The category or class of the driver license. */
+  /**
+   * The category or class of the driver license.
+   */
   category: StringField;
-  /** The alpha-3 ISO 3166 code of the country where the driver license was issued. */
+  /**
+   * The alpha-3 ISO 3166 code of the country where the driver license was issued.
+   */
   countryCode: StringField;
-  /** The date of birth of the driver license holder. */
+  /**
+   * The date of birth of the driver license holder.
+   */
   dateOfBirth: DateField;
-  /** The DD number of the driver license. */
+  /**
+   * The DD number of the driver license.
+   */
   ddNumber: StringField;
-  /** The expiry date of the driver license. */
+  /**
+   * The expiry date of the driver license.
+   */
   expiryDate: DateField;
-  /** The first name of the driver license holder. */
+  /**
+   * The first name of the driver license holder.
+   */
   firstName: StringField;
-  /** The unique identifier of the driver license. */
+  /**
+   * The unique identifier of the driver license.
+   */
   id: StringField;
-  /** The date when the driver license was issued. */
+  /**
+   * The date when the driver license was issued.
+   */
   issuedDate: DateField;
-  /** The authority that issued the driver license. */
+  /**
+   * The authority that issued the driver license.
+   */
   issuingAuthority: StringField;
-  /** The last name of the driver license holder. */
+  /**
+   * The last name of the driver license holder.
+   */
   lastName: StringField;
-  /** The Machine Readable Zone (MRZ) of the driver license. */
+  /**
+   * The Machine Readable Zone (MRZ) of the driver license.
+   */
   mrz: StringField;
-  /** The place of birth of the driver license holder. */
+  /**
+   * The place of birth of the driver license holder.
+   */
   placeOfBirth: StringField;
-  /** Second part of the ISO 3166-2 code, consisting of two letters indicating the US State. */
+  /**
+   * Second part of the ISO 3166-2 code, consisting of two letters indicating the US State.
+   */
   state: StringField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

@@ -7,13 +7,21 @@ import { Polygon } from "@/geometry/index.js";
  * The list of languages that the candidate is proficient in.
  */
 export class ResumeV1Language {
-  /** The language's ISO 639 code. */
+  /**
+   * The language's ISO 639 code.
+   */
   language: string | null;
-  /** The candidate's level for the language. */
+  /**
+   * The candidate's level for the language.
+   */
   level: string | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

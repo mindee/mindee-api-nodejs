@@ -7,10 +7,14 @@ interface Base64InputProps {
   filename: string;
 }
 
-/** Local input source backed by a base64-encoded payload. */
+/**
+ * Local input source backed by a base64-encoded payload.
+ */
 export class Base64Input extends LocalInputSource {
   private inputString: string;
-  /** Decoded binary payload built from the base64 input. */
+  /**
+   * Decoded binary payload built from the base64 input.
+   */
   fileObject: Buffer = Buffer.alloc(0);
 
   constructor({ inputString, filename }: Base64InputProps) {
@@ -21,7 +25,9 @@ export class Base64Input extends LocalInputSource {
     this.inputString = inputString;
   }
 
-  /** Decodes and validates the provided base64 content. */
+  /**
+   * Decodes and validates the provided base64 content.
+   */
   async init() {
     if (this.initialized) {
       return;

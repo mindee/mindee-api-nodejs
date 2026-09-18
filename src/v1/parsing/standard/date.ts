@@ -5,11 +5,17 @@ import { BaseFieldConstructor } from "./base.js";
  * A field containing a date value.
  */
 export class DateField extends Field {
-  /** Date string in ISO format. */
+  /**
+   * Date string in ISO format.
+   */
   value?: string;
-  /** Date as a standard JavaScript `Date` object. */
+  /**
+   * Date as a standard JavaScript `Date` object.
+   */
   public dateObject?: Date;
-  /** Whether the field was computed or retrieved directly from the document. */
+  /**
+   * Whether the field was computed or retrieved directly from the document.
+   */
   public isComputed?: boolean;
 
   /**
@@ -38,7 +44,9 @@ export class DateField extends Field {
     }
   }
 
-  /** Compares two dates by calendar day (year/month/day). */
+  /**
+   * Compares two dates by calendar day (year/month/day).
+   */
   static compareDates(date1: Date, date2: Date): boolean {
     return date1.getFullYear() === date2.getFullYear() &&
       date1.getMonth() === date2.getMonth() &&

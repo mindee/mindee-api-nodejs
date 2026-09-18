@@ -5,7 +5,9 @@ import { ObjectField } from "./objectField.js";
 import { SimpleField } from "./simpleField.js";
 import { createField } from "./fieldFactory.js";
 
-/** List-valued inference field. */
+/**
+ * List-valued inference field.
+ */
 export class ListField extends BaseField {
   /**
    * Items contained in the list.
@@ -61,7 +63,9 @@ export class ListField extends BaseField {
     return result;
   }
 
-  /** Returns a readable representation of list items. */
+  /**
+   * Returns a readable representation of list items.
+   */
   toString(): string {
     if (!this.items || this.items.length === 0) {
       return "\n";

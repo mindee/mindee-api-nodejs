@@ -8,7 +8,9 @@ interface BufferInputProps {
   filename: string;
 }
 
-/** Local input source backed by an in-memory `Buffer`. */
+/**
+ * Local input source backed by an in-memory `Buffer`.
+ */
 export class BufferInput extends LocalInputSource {
   constructor({ buffer, filename }: BufferInputProps) {
     super({
@@ -18,7 +20,9 @@ export class BufferInput extends LocalInputSource {
     this.filename = filename;
   }
 
-  /** Validates and initializes the in-memory buffer input. */
+  /**
+   * Validates and initializes the in-memory buffer input.
+   */
   async init(): Promise<void> {
     if (this.initialized) {
       return;

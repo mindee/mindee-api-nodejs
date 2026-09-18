@@ -6,17 +6,29 @@ import { Polygon } from "@/geometry/index.js";
  * The list of certificates obtained by the candidate.
  */
 export class ResumeV1Certificate {
-  /** The grade obtained for the certificate. */
+  /**
+   * The grade obtained for the certificate.
+   */
   grade: string | null;
-  /** The name of certification. */
+  /**
+   * The name of certification.
+   */
   name: string | null;
-  /** The organization or institution that issued the certificate. */
+  /**
+   * The organization or institution that issued the certificate.
+   */
   provider: string | null;
-  /** The year when a certificate was issued or received. */
+  /**
+   * The year when a certificate was issued or received.
+   */
   year: string | null;
-  /** Confidence score */
+  /**
+   * Confidence score
+   */
   confidence: number = 0.0;
-  /** The document page on which the information was found. */
+  /**
+   * The document page on which the information was found.
+   */
   pageId: number;
   /**
    * Contains the relative vertices coordinates (points) of a polygon containing

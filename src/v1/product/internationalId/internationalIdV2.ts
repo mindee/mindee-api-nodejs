@@ -5,13 +5,21 @@ import { InternationalIdV2Document } from "./internationalIdV2Document.js";
  * International ID API version 2 inference prediction.
  */
 export class InternationalIdV2 extends Inference {
-  /** The endpoint's name. */
+  /**
+   * The endpoint's name.
+   */
   endpointName = "international_id";
-  /** The endpoint's version. */
+  /**
+   * The endpoint's version.
+   */
   endpointVersion = "2";
-  /** The document-level prediction. */
+  /**
+   * The document-level prediction.
+   */
   prediction: InternationalIdV2Document;
-  /** The document's pages. */
+  /**
+   * The document's pages.
+   */
   pages: Page<InternationalIdV2Document>[] = [];
 
   constructor(rawPrediction: StringDict) {

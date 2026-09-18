@@ -20,74 +20,138 @@ import {
  * Financial Document API version 1.14 document data.
  */
 export class FinancialDocumentV1Document implements Prediction {
-  /** The customer's address used for billing. */
+  /**
+   * The customer's address used for billing.
+   */
   billingAddress: AddressField;
-  /** The purchase category. */
+  /**
+   * The purchase category.
+   */
   category: ClassificationField;
-  /** The address of the customer. */
+  /**
+   * The address of the customer.
+   */
   customerAddress: AddressField;
-  /** List of company registration numbers associated to the customer. */
+  /**
+   * List of company registration numbers associated to the customer.
+   */
   customerCompanyRegistrations: CompanyRegistrationField[] = [];
-  /** The customer account number or identifier from the supplier. */
+  /**
+   * The customer account number or identifier from the supplier.
+   */
   customerId: StringField;
-  /** The name of the customer. */
+  /**
+   * The name of the customer.
+   */
   customerName: StringField;
-  /** The date the purchase was made. */
+  /**
+   * The date the purchase was made.
+   */
   date: DateField;
-  /** The document number or identifier (invoice number or receipt number). */
+  /**
+   * The document number or identifier (invoice number or receipt number).
+   */
   documentNumber: StringField;
   /**
    * The type of the document: INVOICE or CREDIT NOTE if it is an invoice, CREDIT CARD RECEIPT or EXPENSE RECEIPT if it
    * is a receipt.
    */
   documentType: ClassificationField;
-  /** Document type extended. */
+  /**
+   * Document type extended.
+   */
   documentTypeExtended: ClassificationField;
-  /** The date on which the payment is due. */
+  /**
+   * The date on which the payment is due.
+   */
   dueDate: DateField;
-  /** The invoice number or identifier only if document is an invoice. */
+  /**
+   * The invoice number or identifier only if document is an invoice.
+   */
   invoiceNumber: StringField;
-  /** List of line item present on the document. */
+  /**
+   * List of line item present on the document.
+   */
   lineItems: FinancialDocumentV1LineItem[] = [];
-  /** The locale of the document. */
+  /**
+   * The locale of the document.
+   */
   locale: LocaleField;
-  /** The date on which the payment is due / fullfilled. */
+  /**
+   * The date on which the payment is due / fullfilled.
+   */
   paymentDate: DateField;
-  /** The purchase order number, only if the document is an invoice. */
+  /**
+   * The purchase order number, only if the document is an invoice.
+   */
   poNumber: StringField;
-  /** The receipt number or identifier only if document is a receipt. */
+  /**
+   * The receipt number or identifier only if document is a receipt.
+   */
   receiptNumber: StringField;
-  /** List of Reference numbers, including PO number, only if the document is an invoice. */
+  /**
+   * List of Reference numbers, including PO number, only if the document is an invoice.
+   */
   referenceNumbers: StringField[] = [];
-  /** The customer's address used for shipping. */
+  /**
+   * The customer's address used for shipping.
+   */
   shippingAddress: AddressField;
-  /** The purchase subcategory for transport, food and shooping. */
+  /**
+   * The purchase subcategory for transport, food and shooping.
+   */
   subcategory: ClassificationField;
-  /** The address of the supplier or merchant. */
+  /**
+   * The address of the supplier or merchant.
+   */
   supplierAddress: AddressField;
-  /** List of company registration numbers associated to the supplier. */
+  /**
+   * List of company registration numbers associated to the supplier.
+   */
   supplierCompanyRegistrations: CompanyRegistrationField[] = [];
-  /** The email of the supplier or merchant. */
+  /**
+   * The email of the supplier or merchant.
+   */
   supplierEmail: StringField;
-  /** The name of the supplier or merchant. */
+  /**
+   * The name of the supplier or merchant.
+   */
   supplierName: StringField;
-  /** List of payment details associated to the supplier (only for invoices). */
+  /**
+   * List of payment details associated to the supplier (only for invoices).
+   */
   supplierPaymentDetails: PaymentDetailsField[] = [];
-  /** The phone number of the supplier or merchant. */
+  /**
+   * The phone number of the supplier or merchant.
+   */
   supplierPhoneNumber: StringField;
-  /** The website URL of the supplier or merchant. */
+  /**
+   * The website URL of the supplier or merchant.
+   */
   supplierWebsite: StringField;
-  /** List of all taxes on the document. */
+  /**
+   * List of all taxes on the document.
+   */
   taxes: Taxes;
-  /** The time the purchase was made (only for receipts). */
+  /**
+   * The time the purchase was made (only for receipts).
+   */
   time: StringField;
-  /** The total amount of tip and gratuity */
+  /**
+   * The total amount of tip and gratuity
+   */
   tip: AmountField;
-  /** The total amount paid: includes taxes, tips, fees, and other charges. */
+  /**
+   * The total amount paid: includes taxes, tips, fees, and other charges.
+   */
   totalAmount: AmountField;
-  /** The net amount paid: does not include taxes, fees, and discounts. */
+  /**
+   * The net amount paid: does not include taxes, fees, and discounts.
+   */
   totalNet: AmountField;
-  /** The sum of all taxes present on the document. */
+  /**
+   * The sum of all taxes present on the document.
+   */
   totalTax: AmountField;
 
   constructor(rawPrediction: StringDict, pageId?: number) {

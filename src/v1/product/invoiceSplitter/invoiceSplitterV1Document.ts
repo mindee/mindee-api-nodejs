@@ -10,7 +10,9 @@ import { InvoiceSplitterV1InvoicePageGroup } from "./invoiceSplitterV1InvoicePag
  * Invoice Splitter API version 1.4 document data.
  */
 export class InvoiceSplitterV1Document implements Prediction {
-  /** List of page groups. Each group represents a single invoice within a multi-invoice document. */
+  /**
+   * List of page groups. Each group represents a single invoice within a multi-invoice document.
+   */
   invoicePageGroups: InvoiceSplitterV1InvoicePageGroup[] = [];
 
   constructor(rawPrediction: StringDict, pageId?: number) {

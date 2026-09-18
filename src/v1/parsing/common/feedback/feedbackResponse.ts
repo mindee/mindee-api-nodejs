@@ -7,7 +7,9 @@ import { StringDict } from "@/parsing/stringDict.js";
  * @category Synchronous
  */
 export class FeedbackResponse extends ApiResponse {
-  /** A document feedback response. */
+  /**
+   * A document feedback response.
+   */
   feedback: StringDict;
 
   /**

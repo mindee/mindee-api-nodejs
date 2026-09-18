@@ -15,7 +15,9 @@ export class Field extends BaseField {
    * the field in the document.
    */
   polygon: Polygon = new Polygon();
-  /** The confidence score of the prediction. */
+  /**
+   * The confidence score of the prediction.
+   */
   confidence: number;
 
   /**
