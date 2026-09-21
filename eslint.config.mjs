@@ -1,33 +1,22 @@
-import typescriptEslint from "@typescript-eslint/eslint-plugin";
+import js from "@eslint/js";
+import tseslint from "typescript-eslint";
+import tsParser from "@typescript-eslint/parser";
 import jsdoc from "eslint-plugin-jsdoc";
 import security from "eslint-plugin-security";
 import sonarjs from "eslint-plugin-sonarjs";
 import unicorn from "eslint-plugin-unicorn";
 import globals from "globals";
-import tsParser from "@typescript-eslint/parser";
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-import js from "@eslint/js";
-import { FlatCompat } from "@eslint/eslintrc";
 
 /* eslint-disable @typescript-eslint/naming-convention */
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-  recommendedConfig: js.configs.recommended,
-  allConfig: js.configs.all,
-});
-
-export default [
-  { ignores: [] },
-  ...compat.extends("eslint:recommended", "plugin:@typescript-eslint/recommended"),
+export default tseslint.config(
+  { ignores: ["dist/**", "node_modules/**"] },
+  js.configs.recommended,
+  tseslint.configs.recommended,
   sonarjs.configs.recommended,
   security.configs.recommended,
   {
     plugins: {
-      "@typescript-eslint": typescriptEslint,
       jsdoc,
       security,
       unicorn,
@@ -46,6 +35,12 @@ export default [
       "unicorn/text-encoding-identifier-case": "error",
       "unicorn/explicit-length-check": "error",
       "unicorn/single-line-block-comment-style": "error",
+      "unicorn/prevent-abbreviations": "error",
+      "unicorn/no-keyword-prefix": "error",
+      "unicorn/prefer-export-from": "error",
+      "unicorn/prefer-set-has": "error",
+      "unicorn/no-lonely-if": "error",
+      "unicorn/prefer-array-some": "error",
 
       semi: ["error"],
       "jsdoc/require-asterisk-prefix": "error",
@@ -54,11 +49,25 @@ export default [
       "jsdoc/check-types": "error",
       "jsdoc/no-undefined-types": "error",
       "jsdoc/require-jsdoc": "error",
-      "@typescript-eslint/no-unused-vars": "error",
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-inferrable-types": "off",
+
+      "sonarjs/no-unused-vars": "off",
+      "sonarjs/no-dead-store": "off",
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": ["error", {
+        argsIgnorePattern: "^_",
+      }],
       "@typescript-eslint/ban-ts-comment": "error",
       "@typescript-eslint/naming-convention": "error",
+
+      "no-unused-expressions": "off",
+      "@typescript-eslint/no-unused-expressions": "error",
+
+      "no-shadow": "off",
+      "@typescript-eslint/no-shadow": "error",
+
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/no-inferrable-types": "off",
+
       "@/object-curly-spacing": ["error", "always"],
 
       quotes: ["error", "double", {
@@ -77,12 +86,6 @@ export default [
       eqeqeq: "error",
       "no-else-return": "error",
 
-      "no-unused-vars": ["error", {
-        argsIgnorePattern: "^_",
-      }],
-
-      "no-unused-expressions": "error",
-      "@typescript-eslint/no-unused-expressions": "error",
       "no-eval": "error",
       "no-unexpected-multiline": "error",
       "eol-last": "error",
@@ -107,5 +110,5 @@ export default [
     rules: {
       "no-restricted-imports": "off",
     },
-  }
-];
+  },
+);

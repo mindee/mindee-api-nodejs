@@ -135,7 +135,7 @@ export class GeneratedObjectField {
  * @param strDict input dictionary to check.
  */
 export function isGeneratedObject(strDict: StringDict): boolean {
-  const commonKeys = [
+  const commonKeys = new Set([
     "value",
     "polygon",
     "rectangle",
@@ -144,10 +144,10 @@ export function isGeneratedObject(strDict: StringDict): boolean {
     "quadrangle",
     "values",
     "raw_value",
-  ];
+  ]);
 
   for (const key in strDict) {
-    if (Object.prototype.hasOwnProperty.call(strDict, key) && !commonKeys.includes(key)) {
+    if (Object.prototype.hasOwnProperty.call(strDict, key) && !commonKeys.has(key)) {
       return true;
     }
   }

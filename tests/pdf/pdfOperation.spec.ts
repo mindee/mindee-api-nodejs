@@ -144,9 +144,9 @@ describe("Test PDF operation #OptionalDepsRequired", { skip: !hasOptionals }, ()
       operation: PageOptionsOperation.KeepOnly,
       onMinPages: 0,
     };
-    const newPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
-    assert.strictEqual(newPdf.totalPagesRemoved, 9);
-    assert.strictEqual(await pdf.countPages(newPdf.file), 3);
+    const splitPdf = await pdf.extractPages(inputSource.fileObject, pageOptions);
+    assert.strictEqual(splitPdf.totalPagesRemoved, 9);
+    assert.strictEqual(await pdf.countPages(splitPdf.file), 3);
 
     // This is how the length of the word is set in the
     // raw PDF file.
@@ -157,7 +157,7 @@ describe("Test PDF operation #OptionalDepsRequired", { skip: !hasOptionals }, ()
       "utf8"
     );
 
-    inputSource.fileObject = Buffer.from(newPdf.file);
+    inputSource.fileObject = Buffer.from(splitPdf.file);
     const expectedLengths = expectedResult.match(lengthRE);
     const inputDocLengths =
       inputSource.fileObject.toString("utf8").match(lengthRE) || [];

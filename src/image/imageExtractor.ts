@@ -60,7 +60,7 @@ export async function extractImagesFromPolygon(
  * Helper function to handle the drawing math and orientation.
  */
 function drawOrientedPage(
-  pdfLib: any,
+  currentPdfLib: any,
   samplePage: pdfLibTypes.PDFPage,
   cropped: pdfLibTypes.PDFEmbeddedPage,
   orientation: number,
@@ -80,7 +80,7 @@ function drawOrientedPage(
       y: finalHeight,
       width: scaledWidth,
       height: scaledHeight,
-      rotate: pdfLib.degrees(270),
+      rotate: currentPdfLib.degrees(270),
     });
   } else if (orientation === 180) {
     samplePage.drawPage(cropped, {
@@ -88,7 +88,7 @@ function drawOrientedPage(
       y: finalHeight,
       width: scaledWidth,
       height: scaledHeight,
-      rotate: pdfLib.degrees(180),
+      rotate: currentPdfLib.degrees(180),
     });
   } else if (orientation === 270) {
     samplePage.drawPage(cropped, {
@@ -96,7 +96,7 @@ function drawOrientedPage(
       y: 0,
       width: scaledWidth,
       height: scaledHeight,
-      rotate: pdfLib.degrees(90),
+      rotate: currentPdfLib.degrees(90),
     });
   }
 }
@@ -114,7 +114,7 @@ export async function extractFromPage(
   asImage: boolean = false,
   quality?: number,
 ) {
-  const pdfLib = await getPdfLib();
+  const currentPdfLib = await getPdfLib();
   const { width, height } = pdfPage.getSize();
   const extractedElements: Uint8Array[] = [];
   if (quality !== undefined) {
@@ -135,7 +135,7 @@ export async function extractFromPage(
   for (const origPolygon of polygons) {
     logger.debug(`Extracting image with polygon: ${origPolygon.toString()}`);
 
-    const tempPdf = await pdfLib.PDFDocument.create();
+    const tempPdf = await currentPdfLib.PDFDocument.create();
     const [copiedPage] = await tempPdf.copyPages(sourceDoc, [pageIndex]);
     const polygon = adjustForRotation(origPolygon, orientation);
 
@@ -144,8 +144,8 @@ export async function extractFromPage(
     const minY = getMinMaxY(polygon).min;
     const maxY = getMinMaxY(polygon).max;
 
-    const newWidth = width * (maxX - minX);
-    const newHeight = height * (maxY - minY);
+    const imgWidth = width * (maxX - minX);
+    const imgHeight = height * (maxY - minY);
 
     const cropped = await tempPdf.embedPage(copiedPage, {
       left: minX * width,
@@ -155,23 +155,23 @@ export async function extractFromPage(
     });
 
     const isVertical = orientation === 90 || orientation === 270;
-    const finalWidth = (isVertical ? newHeight : newWidth) * qualityScale;
-    const finalHeight = (isVertical ? newWidth : newHeight) * qualityScale;
+    const finalWidth = (isVertical ? imgHeight : imgWidth) * qualityScale;
+    const finalHeight = (isVertical ? imgWidth : imgHeight) * qualityScale;
 
     const samplePage = tempPdf.addPage([finalWidth, finalHeight]);
     samplePage.drawRectangle({
-      x: 0, y: 0, width: finalWidth, height: finalHeight, color: pdfLib.rgb(1, 1, 1),
+      x: 0, y: 0, width: finalWidth, height: finalHeight, color: currentPdfLib.rgb(1, 1, 1),
     });
 
     drawOrientedPage(
-      pdfLib,
+      currentPdfLib,
       samplePage,
       cropped,
       orientation,
       finalWidth,
       finalHeight,
-      newWidth * qualityScale,
-      newHeight * qualityScale
+      imgWidth * qualityScale,
+      imgHeight * qualityScale
     );
 
     const pdfBuffer = Buffer.from(await tempPdf.save());

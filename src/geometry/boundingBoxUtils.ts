@@ -3,14 +3,6 @@ import { BBox } from "./bbox.js";
 import { Polygon } from "./polygon.js";
 
 /**
- * Given a Polygon, calculate a polygon that encompasses all points.
- */
-export function getBoundingBox(polygon: Polygon): BoundingBox {
-  const bbox = getBbox(polygon);
-  return getBoundingBoxFromBBox(bbox);
-}
-
-/**
  * Given a BBox, generate the associated bounding box.
  */
 export function getBoundingBoxFromBBox(bbox: BBox): BoundingBox {
@@ -60,4 +52,12 @@ export function getBBoxForPolygons(polygons: Polygon[]): BBox {
     Math.max(...allX),
     Math.max(...allY),
   );
+}
+
+/**
+ * Given a Polygon, calculate a polygon that encompasses all points.
+ */
+export function getBoundingBox(polygon: Polygon): BoundingBox {
+  const bbox = getBbox(polygon);
+  return getBoundingBoxFromBBox(bbox);
 }

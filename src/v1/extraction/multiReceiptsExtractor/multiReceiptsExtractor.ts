@@ -58,7 +58,7 @@ export async function extractReceipts(
   inputFile: LocalInputSource,
   inference: MultiReceiptsDetectorV1
 ): Promise<ExtractedMultiReceiptImage[]> {
-  const pdfLib = await getPdfLib();
+  const currentPdfLib = await getPdfLib();
   const images: ExtractedMultiReceiptImage[] = [];
   if (!inference.prediction.receipts) {
     throw new MindeeError("No possible receipts candidates found for MultiReceipts extraction.");
@@ -66,7 +66,7 @@ export async function extractReceipts(
   const pdfDoc = await createPdfFromInputSource(inputFile);
   for (let pageId = 0; pageId < pdfDoc.getPageCount(); pageId++) {
     const page = pdfDoc.getPage(pageId);
-    page.setRotation(pdfLib.degrees(inference.pages[pageId].orientation?.value ?? 0));
+    page.setRotation(currentPdfLib.degrees(inference.pages[pageId].orientation?.value ?? 0));
     const receiptPositions = inference.pages[pageId].prediction.receipts.map(
       (receipt: PositionField) => receipt.boundingBox
     );

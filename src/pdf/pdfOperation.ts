@@ -46,14 +46,13 @@ export async function extractPages(
   file: Buffer,
   pageOptions: PageOptions
 ): Promise<SplitPdf> {
-  const pdfLib = await getPdfLib();
-  const currentPdf = await pdfLib.PDFDocument.load(file, {
+  const currentPdfLib = await getPdfLib();
+  const currentPdf = await currentPdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
   });
 
-  const newPdf = await pdfLib.PDFDocument.create();
-
+  const pdfDocument = await currentPdfLib.PDFDocument.create();
   const pageCount = currentPdf.getPageCount();
 
   if (pageCount < pageOptions.onMinPages) {
@@ -92,23 +91,23 @@ export async function extractPages(
   }
 
   if (pageOptions.operation === PageOptionsOperation.KeepOnly) {
-    const keptPages = await newPdf.copyPages(currentPdf, pageIndexes);
+    const keptPages = await pdfDocument.copyPages(currentPdf, pageIndexes);
     keptPages.forEach((keptPage: pdfLibTypes.PDFPage) => {
-      newPdf.addPage(keptPage);
+      pdfDocument.addPage(keptPage);
     });
   } else if (pageOptions.operation === PageOptionsOperation.Remove) {
     const pagesToKeep = currentPdf
       .getPageIndices()
       .filter((v:number) => !pageIndexes.includes(v));
-    const keptPages = await newPdf.copyPages(currentPdf, pagesToKeep);
+    const keptPages = await pdfDocument.copyPages(currentPdf, pagesToKeep);
     keptPages.forEach((keptPage: pdfLibTypes.PDFPage) => {
-      newPdf.addPage(keptPage);
+      pdfDocument.addPage(keptPage);
     });
   } else {
     throw new Error(`The operation ${pageOptions.operation} is not available.`);
   }
-  const sumRemovedPages = pageCount - newPdf.getPageCount();
-  const fileBuffer = Buffer.from(await newPdf.save());
+  const sumRemovedPages = pageCount - pdfDocument.getPageCount();
+  const fileBuffer = Buffer.from(await pdfDocument.save());
   return { file: fileBuffer, totalPagesRemoved: sumRemovedPages };
 }
 
@@ -118,8 +117,8 @@ export async function extractPages(
  * @returns the number of pages in the file.
  */
 export async function countPages(file: Buffer): Promise<number> {
-  const pdfLib = await getPdfLib();
-  const currentPdf = await pdfLib.PDFDocument.load(file, {
+  const currentPdfLib = await getPdfLib();
+  const currentPdf = await currentPdfLib.PDFDocument.load(file, {
     ignoreEncryption: true,
     password: ""
   });
@@ -131,7 +130,7 @@ export async function countPages(file: Buffer): Promise<number> {
  * @param inputSource The input source to create a PDF from.
  */
 export async function createPdfFromInputSource(inputSource: LocalInputSource) {
-  const pdfLib = await getPdfLib();
+  const currentPdfLib = await getPdfLib();
   let pdfDoc: pdfLibTypes.PDFDocument;
   if (!["image/jpeg", "image/jpg", "image/png", "application/pdf"].includes(inputSource.mimeType)) {
     throw new MindeeInputSourceError(
@@ -140,12 +139,12 @@ export async function createPdfFromInputSource(inputSource: LocalInputSource) {
       '" Currently supported types are .png, .jpg and .pdf'
     );
   } else if (inputSource.isPdf()) {
-    pdfDoc = await pdfLib.PDFDocument.load(inputSource.fileObject, {
+    pdfDoc = await currentPdfLib.PDFDocument.load(inputSource.fileObject, {
       ignoreEncryption: true,
       password: ""
     });
   } else {
-    pdfDoc = await pdfLib.PDFDocument.create();
+    pdfDoc = await currentPdfLib.PDFDocument.create();
     let image: pdfLibTypes.PDFImage;
     if (inputSource.mimeType === "image/png") {
       image = await pdfDoc.embedPng(inputSource.fileObject);
