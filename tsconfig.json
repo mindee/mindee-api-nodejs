@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
     "rootDir": "./",
     "declaration": true,
     "importHelpers": false,
