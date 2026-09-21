@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "baseUrl": "./",
+    "rootDir": "./",
     "declaration": true,
     "importHelpers": false,
     "esModuleInterop": true,
@@ -15,14 +16,19 @@
     "outDir": "dist",
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ]
     },
+    "types": [
+      "node"
+    ],
     "resolveJsonModule": true,
     "skipLibCheck": false,
     "sourceMap": false,
     "strict": true,
-    "target": "ES2020",
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "target": "ES2020"
   },
   "include": ["./src/**/*", "./bin/**/*"],
   "exclude": ["./node_modules/", "./dist/", "./tests/"]

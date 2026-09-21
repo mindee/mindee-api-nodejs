@@ -127,8 +127,8 @@ async function compressPagesWithQuality(
   disableSourceText: boolean,
   extractedText: ExtractedPdfInfo | null
 ): Promise<Buffer[]> {
-  const pdfLib = await getPdfLib();
-  const pdfDoc = await pdfLib.PDFDocument.load(pdfData, {
+  const currentPdfLib = await getPdfLib();
+  const pdfDoc = await currentPdfLib.PDFDocument.load(pdfData, {
     ignoreEncryption: true,
     password: ""
   });
@@ -185,13 +185,13 @@ function isCompressionSuccessful(
  * @returns A Promise resolving to the new PDF as a Buffer.
  */
 async function createNewPdfFromCompressedPages(compressedPages: Buffer[]): Promise<Buffer> {
-  const pdfLib = await getPdfLib();
-  const newPdfDoc = await pdfLib.PDFDocument.create();
+  const currentPdfLib = await getPdfLib();
+  const pdfDocument = await currentPdfLib.PDFDocument.create();
 
   for (const compressedPage of compressedPages) {
-    const image = await newPdfDoc.embedJpg(compressedPage);
-    const newPage = newPdfDoc.addPage([image.width, image.height]);
-    newPage.drawImage(image, {
+    const image = await pdfDocument.embedJpg(compressedPage);
+    const pdfPage = pdfDocument.addPage([image.width, image.height]);
+    pdfPage.drawImage(image, {
       x: 0,
       y: 0,
       width: image.width,
@@ -199,7 +199,7 @@ async function createNewPdfFromCompressedPages(compressedPages: Buffer[]): Promi
     });
   }
 
-  const compressedPdfBytes = await newPdfDoc.save();
+  const compressedPdfBytes = await pdfDocument.save();
   return Buffer.from(compressedPdfBytes);
 }
 
@@ -215,14 +215,14 @@ async function addTextToPdfPage(
   if (textInfo === null) {
     return;
   }
-  const pdfLib = await getPdfLib();
+  const currentPdfLib = await getPdfLib();
   for (const textPages of textInfo.pages) {
     for (const textPage of textPages.content) {
       page.drawText(textPage.str, {
         x: textPage.x,
         y: textPage.y,
         size: textPage.height,
-        color: pdfLib.rgb(0, 0, 0),
+        color: currentPdfLib.rgb(0, 0, 0),
         font: await getFontFromName(textPage.fontName)
       });
     }
@@ -234,15 +234,15 @@ async function addTextToPdfPage(
  * @param fontName The name of the font to get.
  */
 async function getFontFromName(fontName: string): Promise<pdfLibTypes.PDFFont> {
-  const pdfLib = await getPdfLib();
-  const pdfDoc = await pdfLib.PDFDocument.create();
+  const currentPdfLib = await getPdfLib();
+  const pdfDoc = await currentPdfLib.PDFDocument.create();
   let font: pdfLibTypes.PDFFont;
-  const standardFontValues = Object.values(pdfLib.StandardFonts) as string[];
+  const standardFontValues = Object.values(currentPdfLib.StandardFonts) as string[];
 
   if (standardFontValues.includes(fontName)) {
     font = await pdfDoc.embedFont(fontName);
   } else {
-    font = await pdfDoc.embedFont(pdfLib.StandardFonts.Helvetica);
+    font = await pdfDoc.embedFont(currentPdfLib.StandardFonts.Helvetica);
   }
 
   return font;

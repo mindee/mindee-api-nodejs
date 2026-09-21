@@ -30,13 +30,13 @@ async function getPdfLib(): Promise<typeof pdfLibTypes> {
 async function splitPdf(
   pdfDoc: pdfLibTypes.PDFDocument,
   invoicePageGroups: number[][]): Promise<ExtractedInvoiceSplitterImage[]> {
-  const pdfLib = await getPdfLib();
+  const currentPdfLib = await getPdfLib();
   if (invoicePageGroups.length === 0) {
     return [];
   }
   const generatedPdfs: ExtractedInvoiceSplitterImage[] = [];
   for (let i = 0; i < invoicePageGroups.length; i++) {
-    const subdocument = await pdfLib.PDFDocument.create();
+    const subdocument = await currentPdfLib.PDFDocument.create();
     const fullIndexes = [];
     for (let j = invoicePageGroups[i][0]; j <= invoicePageGroups[i][invoicePageGroups[i].length - 1]; j++) {
       fullIndexes.push(j);
@@ -61,7 +61,7 @@ async function splitPdf(
  * @returns PDF document.
  */
 async function getPdfDoc(inputFile: LocalInputSource): Promise<pdfLibTypes.PDFDocument> {
-  const pdfLib = await getPdfLib();
+  const currentPdfLib = await getPdfLib();
   await inputFile.init();
   if (!inputFile.isPdf()) {
     throw new MindeeInputSourceError(
@@ -69,7 +69,7 @@ async function getPdfDoc(inputFile: LocalInputSource): Promise<pdfLibTypes.PDFDo
     );
   }
 
-  const pdfDoc = await pdfLib.PDFDocument.load(inputFile.fileObject, {
+  const pdfDoc = await currentPdfLib.PDFDocument.load(inputFile.fileObject, {
     ignoreEncryption: true,
     password: ""
   });

@@ -43,9 +43,9 @@ async function loadV2Crop(resourcePath: string): Promise<CropResponse> {
  */
 async function getFileDimensions(buffer: Buffer, sharpInstance: any) {
   const isPdf = buffer.subarray(0, 4).toString("ascii") === "%PDF";
-  const pdfLib = await getPdfLib();
+  const currentPdfLib = await getPdfLib();
   if (isPdf) {
-    const pdfDoc = await pdfLib.PDFDocument.load(buffer);
+    const pdfDoc = await currentPdfLib.PDFDocument.load(buffer);
     const page = pdfDoc.getPage(0);
     const { width, height } = page.getSize();
 
