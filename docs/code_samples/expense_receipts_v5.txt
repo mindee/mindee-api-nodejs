@@ -1,5 +1,7 @@
+// If you're on CommonJS:
 const mindee = require("mindee");
-// for TS or modules:
+
+// ESM or TypeScript (Recommended)
 // import * as mindee from "mindee";
 
 // Init a new client

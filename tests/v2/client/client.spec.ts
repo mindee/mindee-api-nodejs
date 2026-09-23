@@ -84,11 +84,11 @@ describe("MindeeV2 - Client", () => {
   describe("enqueue(path)", () => {
     it("extraction rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = new PathInput({ inputPath: filePath });
+      const inputSource = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
         client.enqueue(
-          product.Extraction, inputDoc, { modelId: "dummy-model", textContext: "hello" }
+          product.Extraction, inputSource, { modelId: "dummy-model", textContext: "hello" }
         ),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
@@ -101,11 +101,11 @@ describe("MindeeV2 - Client", () => {
 
     it("crop rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = new PathInput({ inputPath: filePath });
+      const inputSource = new PathInput({ inputPath: filePath });
 
       await assert.rejects(
         client.enqueue(
-          product.Crop, inputDoc, { modelId: "dummy-model" }
+          product.Crop, inputSource, { modelId: "dummy-model" }
         ),
         (error: any) => {
           assert.strictEqual(error instanceof MindeeHttpErrorV2, true);
@@ -120,11 +120,11 @@ describe("MindeeV2 - Client", () => {
   describe("enqueueAndGetResult(path)", () => {
     it("no polling options rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = new PathInput({ inputPath: filePath });
+      const inputSource = new PathInput({ inputPath: filePath });
       await assert.rejects(
         client.enqueueAndGetResult(
           product.Extraction,
-          inputDoc,
+          inputSource,
           { modelId: "dummy-model", rag: false }
         ),
         (error: any) => {
@@ -137,11 +137,11 @@ describe("MindeeV2 - Client", () => {
 
     it("with polling options rejects with MindeeHttpErrorV2 on 400", async () => {
       const filePath = path.join(fileTypesDir, "receipt.jpg");
-      const inputDoc = new PathInput({ inputPath: filePath });
+      const inputSource = new PathInput({ inputPath: filePath });
       await assert.rejects(
         client.enqueueAndGetResult(
           product.Extraction,
-          inputDoc,
+          inputSource,
           { modelId: "dummy-model", rag: false },
           { initialDelaySec: 2, maxRetries: 100 }
         ),

@@ -49,13 +49,13 @@ describe(
         apiKey: apiKey,
         dispatcher: foreignDispatcher,
       });
-      const source = new mindee.BufferInput({
+      const inputSource = new mindee.BufferInput({
         buffer: pdfBuffer,
         filename: "blank.pdf",
       });
       try {
         await client.enqueue(
-          mindee.product.Extraction, source, { modelId: modelId }
+          mindee.product.Extraction, inputSource, { modelId: modelId }
         );
       } catch (err: unknown) {
         assert.ok(
@@ -72,25 +72,25 @@ describe(
 
     it("fix: the default client ignores the foreign dispatcher and succeeds", async () => {
       const client = new mindee.Client({ apiKey: apiKey });
-      const source = new mindee.BufferInput({
+      const inputSource = new mindee.BufferInput({
         buffer: pdfBuffer,
         filename: "blank.pdf",
       });
       const response = await client.enqueue(
-        mindee.product.Extraction, source, { modelId: modelId }
+        mindee.product.Extraction, inputSource, { modelId: modelId }
       );
       assert.ok(response.job.id);
     });
 
     it("fix: UrlInput ignores the foreign dispatcher and downloads succeed", async () => {
-      const source = new mindee.UrlInput({
+      const inputSource = new mindee.UrlInput({
         url: "https://github.com/mindee/client-lib-test-data/blob/main/" +
           "file_types/pdf/blank_1.pdf?raw=true",
       });
-      assert.notStrictEqual(source.dispatcher, foreignDispatcher);
-      assert.ok(source.dispatcher instanceof undici.Dispatcher);
-      await source.init();
-      const localized = await source.asLocalInputSource();
+      assert.notStrictEqual(inputSource.dispatcher, foreignDispatcher);
+      assert.ok(inputSource.dispatcher instanceof undici.Dispatcher);
+      await inputSource.init();
+      const localized = await inputSource.asLocalInputSource();
       await localized.init();
       assert.ok(localized.fileObject.length > 0);
     });
