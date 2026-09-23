@@ -5,9 +5,9 @@ import * as fs from "node:fs";
 import { fileURLToPath } from "node:url";
 
 import { Client, PathInput } from "@/index.js";
+import { ExtractedPdfs } from "@/pdf/index.js";
 import { Split } from "@/v2/product/split/index.js";
 import { Extraction, ExtractionResponse } from "@/v2/product/extraction/index.js";
-import { SplitFiles } from "@/v2/fileOperations/splitFiles.js";
 import { V2_PRODUCT_PATH } from "../../index.js";
 import { SimpleField } from "@/v2/parsing/inference/field/index.js";
 import { hasAllOptionalDependencies } from "../../helpers/optionalDeps.js";
@@ -65,7 +65,7 @@ describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired",
 
       assert.equal(response.inference.file.pageCount, 2);
 
-      const extractedPdfs: SplitFiles = await response.inference.result.extractFromInputSource(splitInput);
+      const extractedPdfs: ExtractedPdfs = await response.inference.result.extractFromInputSource(splitInput);
 
       assert.equal(extractedPdfs.length, 2);
       assert.equal(extractedPdfs[0].filename, "default_sample_page_001-001.pdf");
