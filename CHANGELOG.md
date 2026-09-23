@@ -1,5 +1,11 @@
 # Mindee Node.js API Library Changelog
 
+## v5.10.0 - 2026-09-23
+### Changes
+* :arrow_up: migrate to TypeScript 6.0
+* :arrow_up: bump output to ES2021
+
+
 ## v5.9.0 - 2026-09-18
 ### Changes
 * :sparkles: add RAG document CRUD

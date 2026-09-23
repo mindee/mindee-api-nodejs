@@ -1,6 +1,5 @@
 import js from "@eslint/js";
 import tseslint from "typescript-eslint";
-import tsParser from "@typescript-eslint/parser";
 import jsdoc from "eslint-plugin-jsdoc";
 import security from "eslint-plugin-security";
 import sonarjs from "eslint-plugin-sonarjs";
@@ -27,7 +26,7 @@ export default tseslint.config(
         ...globals.node,
         Promise: true,
       },
-      parser: tsParser,
+      parser: tseslint.parser,
     },
     rules: {
       "unicorn/import-style": "error",
