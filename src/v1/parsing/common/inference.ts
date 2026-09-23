@@ -109,7 +109,7 @@ ${this.prediction.toString().length === 0 ? "" : this.prediction.toString() + "\
    */
   static cleanOutString(outStr: string): string {
     const lines = / \n/gm;
-    return outStr.replace(lines, "\n");
+    return outStr.replaceAll(lines, "\n");
   }
 }
 

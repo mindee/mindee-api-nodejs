@@ -123,7 +123,7 @@ export class UrlInput extends InputSource {
 
   private static generateFileName(extension = ".tmp"): string {
     const randomString = randomBytes(4).toString("hex");
-    const timestamp = new Date().toISOString().replace(/[-:]/g, "").split(".")[0];
+    const timestamp = new Date().toISOString().replaceAll(/[-:]/g, "").split(".")[0];
     return `mindee_temp_${timestamp}_${randomString}${extension}`;
   }
 

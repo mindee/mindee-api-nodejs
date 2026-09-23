@@ -13,8 +13,8 @@ const mindeeClient = new mindee.Client(
   { apiKey: apiKey }
 );
 
-// Set product parameters
-const params = {
+// Set Classification parameters
+const modelParams = {
   modelId: modelId,
 };
 
@@ -25,7 +25,7 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 const response = await mindeeClient.enqueueAndGetResult(
   mindee.product.Classification,
   inputSource,
-  params,
+  modelParams,
 );
 
 // print a string summary

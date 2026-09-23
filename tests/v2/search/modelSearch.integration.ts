@@ -5,7 +5,7 @@ import { beforeEach } from "node:test";
 import { it } from "node:test";
 import { ModelSearch, ModelSearchResponse } from "@/v2/search/index.js";
 
-describe("MindeeV2 - Integration - Model Search", { timeout: 120000 }, () => {
+describe("MindeeV2 - Integration - Model Search", { timeout: 120_000 }, () => {
   let client: Client;
 
   beforeEach(() => {

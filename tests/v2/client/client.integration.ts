@@ -76,7 +76,7 @@ async function waitForResultUrl(
   );
 }
 
-describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
+describe("MindeeV2 – Integration - Client", { timeout: 120_000 }, () => {
   let client: Client;
   let modelId: string;
 

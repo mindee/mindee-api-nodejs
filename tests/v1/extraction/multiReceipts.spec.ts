@@ -103,8 +103,8 @@ describe("MindeeV1 - Multi-Receipt Extraction #OptionalDepsRequired", { skip: !h
         for (const extractedReceipt of extractedReceipts) {
           assert.strictEqual(extractedReceipt.pageId, 0);
           assert.strictEqual(extractedReceipt.receiptId, i);
-          assert.ok(Buffer.byteLength(extractedReceipt.asInputSource().fileObject) < 10485760);
-          assert.ok(Buffer.byteLength(extractedReceipt.asInputSource().fileObject) > 100000);
+          assert.ok(Buffer.byteLength(extractedReceipt.asInputSource().fileObject) < 10_485_760);
+          assert.ok(Buffer.byteLength(extractedReceipt.asInputSource().fileObject) > 100_000);
           i++;
         }
       });
@@ -119,13 +119,13 @@ describe("MindeeV1 - Multi-Receipt Extraction #OptionalDepsRequired", { skip: !h
 
           const pdfStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.pdf`));
           // Arbitrary to assert noticeable discrepancies between OSes
-          assert.ok(pdfStat.size > 500000);
+          assert.ok(pdfStat.size > 500_000);
 
           const jpgStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.jpg`));
-          assert.ok(jpgStat.size > 40000);
+          assert.ok(jpgStat.size > 40_000);
 
           const pngStat = await fs.stat(path.join(RESOURCE_PATH, `output/${outputPrefix}.png`));
-          assert.ok(pngStat.size > 290000);
+          assert.ok(pngStat.size > 290_000);
           i++;
         }
       });

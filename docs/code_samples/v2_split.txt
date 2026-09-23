@@ -13,8 +13,8 @@ const mindeeClient = new mindee.Client(
   { apiKey: apiKey }
 );
 
-// Set product parameters
-const productParams = {
+// Set Split parameters
+const modelParams = {
   modelId: modelId,
 };
 
@@ -25,11 +25,11 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 const response = await mindeeClient.enqueueAndGetResult(
   mindee.product.Split,
   inputSource,
-  productParams,
+  modelParams,
 );
 
 // print a string summary
 console.log(response.inference.toString());
 
 // Access the result splits
-const crops = response.inference.result.splits;
+const splits = response.inference.result.splits;

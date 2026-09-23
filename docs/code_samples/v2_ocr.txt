@@ -13,8 +13,8 @@ const mindeeClient = new mindee.Client(
   { apiKey: apiKey }
 );
 
-// Set product parameters
-const productParams = {
+// Set Raw OCR parameters
+const modelParams = {
   modelId: modelId,
 };
 
@@ -25,11 +25,11 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 const response = await mindeeClient.enqueueAndGetResult(
   mindee.product.Ocr,
   inputSource,
-  productParams,
+  modelParams,
 );
 
 // print a string summary
 console.log(response.inference.toString());
 
 // Access the result OCR pages
-const crops = response.inference.result.pages;
+const pages = response.inference.result.pages;

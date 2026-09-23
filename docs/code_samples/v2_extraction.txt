@@ -13,8 +13,8 @@ const mindeeClient = new mindee.Client(
   { apiKey: apiKey }
 );
 
-// Set product parameters
-const productParams = {
+// Set Extraction parameters
+const modelParams = {
   modelId: modelId,
 
   // Options: set to `true` or `false` to override defaults
@@ -37,7 +37,7 @@ const inputSource = new mindee.PathInput({ inputPath: filePath });
 const response = await mindeeClient.enqueueAndGetResult(
   mindee.product.Extraction,
   inputSource,
-  productParams,
+  modelParams,
 );
 
 // print a string summary

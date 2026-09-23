@@ -52,7 +52,7 @@ export abstract class BaseLocalResponse {
         fileContents = this.inputHandle;
       }
       this.fileBytes = Buffer.from(
-        fileContents.replace(/\r/g, "").replace(/\n/g, ""),
+        fileContents.replaceAll("\r", "").replaceAll("\n", ""),
         "utf8"
       );
     } else {

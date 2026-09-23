@@ -43,8 +43,8 @@ describe("MindeeV1 - Load Local Response", () => {
 
   it("should load a buffer properly.", async () => {
     const fileStr = (await fs.readFile(filePath, { encoding: "utf8" }))
-      .replace(/\r/g, "")
-      .replace(/\n/g, "");
+      .replaceAll("\r", "")
+      .replaceAll("\n", "");
     const fileBuffer = Buffer.from(fileStr, "utf8");
     const localResponse = new LocalResponse(fileBuffer);
     await localResponse.init();
