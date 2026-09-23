@@ -6,7 +6,7 @@ import { Client, PathInput } from "@/index.js";
 import { Extraction } from "@/v2/product/index.js";
 
 
-describe("MindeeV2 - Extraction RagDocuments", { timeout: 180000 }, () => {
+describe("MindeeV2 - Extraction RagDocuments", { timeout: 180_000 }, () => {
   let client: Client;
   let extractionModelId: string;
 

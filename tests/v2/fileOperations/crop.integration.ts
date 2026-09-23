@@ -23,7 +23,7 @@ function checkFindocReturn(findocResponse: ExtractionResponse) {
 }
 
 describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired",
-  { timeout: 120000, skip: !hasOptionals }, () => {
+  { timeout: 120_000, skip: !hasOptionals }, () => {
     let client: Client;
     let cropModelId: string;
     let findocModelId: string;
@@ -84,12 +84,12 @@ describe("MindeeV2 - Integration - FileOperation - Crop #OptionalDepsRequired",
       fs.writeFileSync(file2Path, extractedImages[1].buffer);
 
       const stat1 = fs.statSync(file1Path);
-      assert.ok(stat1.size >= 3100000);
-      assert.ok(stat1.size <= 4000000);
+      assert.ok(stat1.size >= 3_100_000);
+      assert.ok(stat1.size <= 4_000_000);
 
       const stat2 = fs.statSync(file2Path);
-      assert.ok(stat2.size >= 3200000);
-      assert.ok(stat2.size <= 4000000);
+      assert.ok(stat2.size >= 3_200_000);
+      assert.ok(stat2.size <= 4_000_000);
     });
 
     it("filled image – crop and extraction must succeed", async () => {

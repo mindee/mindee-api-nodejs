@@ -5,7 +5,7 @@ import { beforeEach } from "node:test";
 import { it } from "node:test";
 import { RagDocumentSearch, RagDocumentSearchResponse } from "@/v2/search/index.js";
 
-describe("MindeeV2 - Integration - RAG Document Search", { timeout: 120000 }, () => {
+describe("MindeeV2 - Integration - RAG Document Search", { timeout: 120_000 }, () => {
   let client: Client;
   let findocModelId: string;
 

@@ -45,7 +45,7 @@ describe("Input Sources - load different types of input", () => {
     // of the input file.
     const expectedString = inputSource.fileObject
       .toString("base64")
-      .replace(/(.{76})/gm, "$1\n");
+      .replaceAll(/(.{76})/gm, "$1\n");
     assert.deepStrictEqual(expectedString, b64String);
   });
 

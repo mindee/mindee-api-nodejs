@@ -29,6 +29,7 @@ export default tseslint.config(
       parser: tseslint.parser,
     },
     rules: {
+      // Unicorn rules
       "unicorn/import-style": "error",
       "unicorn/prefer-node-protocol": "error",
       "unicorn/text-encoding-identifier-case": "error",
@@ -40,8 +41,10 @@ export default tseslint.config(
       "unicorn/prefer-set-has": "error",
       "unicorn/no-lonely-if": "error",
       "unicorn/prefer-array-some": "error",
+      "unicorn/numeric-separators-style": "error",
+      "unicorn/prefer-string-replace-all": "error",
 
-      semi: ["error"],
+      // jsdoc rules
       "jsdoc/require-asterisk-prefix": "error",
       "jsdoc/check-alignment": "error",
       "jsdoc/check-param-names": "error",
@@ -49,14 +52,14 @@ export default tseslint.config(
       "jsdoc/no-undefined-types": "error",
       "jsdoc/require-jsdoc": "error",
 
+      // typescript-eslint rules
+      // we disable duplicates and always prefer typescript linter
       "sonarjs/no-unused-vars": "off",
       "sonarjs/no-dead-store": "off",
       "no-unused-vars": "off",
       "@typescript-eslint/no-unused-vars": ["error", {
         argsIgnorePattern: "^_",
       }],
-      "@typescript-eslint/ban-ts-comment": "error",
-      "@typescript-eslint/naming-convention": "error",
 
       "no-unused-expressions": "off",
       "@typescript-eslint/no-unused-expressions": "error",
@@ -64,16 +67,18 @@ export default tseslint.config(
       "no-shadow": "off",
       "@typescript-eslint/no-shadow": "error",
 
-      "@typescript-eslint/no-explicit-any": "off",
-      "@typescript-eslint/no-inferrable-types": "off",
+      "@typescript-eslint/ban-ts-comment": "error",
+      "@typescript-eslint/naming-convention": "error",
 
+      "@typescript-eslint/no-explicit-any": "off", // necessary evil for now
+      "@typescript-eslint/no-inferrable-types": "off", // explicitness can help legibility
+
+      // base rules
       "@/object-curly-spacing": ["error", "always"],
-
       quotes: ["error", "double", {
         avoidEscape: true,
         allowTemplateLiterals: false,
       }],
-
       camelcase: "error",
       "comma-dangle": ["error", {
         "arrays": "only-multiline",
@@ -84,19 +89,20 @@ export default tseslint.config(
       }],
       eqeqeq: "error",
       "no-else-return": "error",
-
+      semi: "error",
       "no-eval": "error",
       "no-unexpected-multiline": "error",
       "eol-last": "error",
-      "preserve-caught-error": "off",
-      "security/detect-non-literal-fs-filename": "off",
-      "security/detect-object-injection": "off",
       "no-restricted-imports": ["error", {
         "patterns": [{
           "group": ["../*"],
           "message": "Import can be shortened. Please use the @/ path alias instead of relative parent paths.",
         }],
       }],
+
+      "preserve-caught-error": "off", // incompatible with ES2021
+      "security/detect-non-literal-fs-filename": "off",
+      "security/detect-object-injection": "off",
 
       indent: ["error", 2],
       "max-len": ["error", {

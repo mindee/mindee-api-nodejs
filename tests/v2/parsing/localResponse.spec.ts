@@ -44,7 +44,7 @@ async function assertLocalResponse(localResponse: LocalResponse, fileContent: st
 
   assert.strictEqual(
     localResponse.toString(),
-    fileContent.replace(/[\r\n]/g, "")
+    fileContent.replaceAll(/[\r\n]/g, "")
   );
 }
 
@@ -55,7 +55,7 @@ describe("MindeeV2 - Load Local Response", () => {
   });
 
   it("should load a response from a buffer", async () => {
-    const fileContent = (await fs.readFile(filePath, { encoding: "utf8" })).replace(/\r/g, "").replace(/\n/g, "");
+    const fileContent = (await fs.readFile(filePath, { encoding: "utf8" })).replaceAll("\r", "").replaceAll("\n", "");
     const fileBuffer = Buffer.from(fileContent, "utf8");
     await assertLocalResponse(new LocalResponse(fileBuffer), fileContent);
   });

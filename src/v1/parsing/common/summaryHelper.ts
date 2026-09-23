@@ -4,7 +4,7 @@
  */
 export function cleanOutString(outStr: string): string {
   const lines = / \n/gm;
-  return outStr.replace(lines, "\n");
+  return outStr.replaceAll(lines, "\n");
 }
 
 /**
@@ -28,9 +28,9 @@ export function lineSeparator(columnSizes: number[], separator: string) {
  */
 export function cleanSpecialChars(outStr: string) {
   return outStr
-    .replace(/\n/g, "\\n")
-    .replace(/\r/g, "\\r")
-    .replace(/\t/g, "\\t");
+    .replaceAll("\n", "\\n")
+    .replaceAll("\r", "\\r")
+    .replaceAll("\t", "\\t");
 }
 
 /**

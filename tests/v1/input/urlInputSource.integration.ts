@@ -5,7 +5,7 @@ import { Client } from "@/v1/index.js";
 import { InvoiceV4 } from "@/v1/product/index.js";
 import { beforeEach } from "node:test";
 
-describe("MindeeV1 - Integration - URL Input", { timeout: 80000 }, () => {
+describe("MindeeV1 - Integration - URL Input", { timeout: 80_000 }, () => {
   let client: Client;
 
   beforeEach(() => {

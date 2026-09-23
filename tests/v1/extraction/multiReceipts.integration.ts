@@ -15,7 +15,7 @@ let client: Client;
 let sourceDoc: LocalInputSource;
 
 describe("MindeeV1 - Integration - Multi-Receipt Extraction #OptionalDepsRequired",
-  { timeout: 80000, skip: !hasOptionals }, () => {
+  { timeout: 80_000, skip: !hasOptionals }, () => {
     describe("A Multi-Receipt PDF", () => {
       before(async () => {
         sourceDoc = new PathInput({

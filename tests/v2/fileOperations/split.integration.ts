@@ -27,7 +27,7 @@ function checkFindocReturn(findocResponse: ExtractionResponse) {
 }
 
 describe("MindeeV2 - Integration - Product - Split #OptionalDepsRequired",
-  { timeout: 120000, skip: !hasOptionals }, () => {
+  { timeout: 120_000, skip: !hasOptionals }, () => {
     let client: Client;
     let splitModelId: string;
     let findocModelId: string;

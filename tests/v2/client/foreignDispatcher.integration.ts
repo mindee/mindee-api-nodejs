@@ -6,7 +6,7 @@ import assert from "node:assert/strict";
 
 describe(
   "MindeeV2 – Integration – foreign global dispatcher",
-  { timeout: 120000 },
+  { timeout: 120_000 },
   () => {
     let apiKey: string;
     let modelId: string;
