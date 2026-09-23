@@ -113,7 +113,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
   });
 
   it("enqueueAndGetResult must succeed: Empty, multi-page PDF – PathInput", async () => {
-    const source = new PathInput({ inputPath: emptyPdfPath });
+    const inputSource = new PathInput({ inputPath: emptyPdfPath });
     const params = {
       modelId,
       rag: false,
@@ -124,7 +124,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
       alias: "ts_integration_empty_multiple"
     };
     const response = await client.enqueueAndGetResult(
-      Extraction, source, params
+      Extraction, inputSource, params
     );
     assert.ok(response);
     assert.ok(response.inference instanceof ExtractionInference);
@@ -140,7 +140,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
   });
 
   it("enqueueAndGetResult must succeed: Filled, single-page image – PathInput", async () => {
-    const source = new PathInput({ inputPath: sampleImagePath });
+    const inputSource = new PathInput({ inputPath: sampleImagePath });
     const params = {
       modelId,
       rag: false,
@@ -153,7 +153,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
     };
 
     const response = await client.enqueueAndGetResult(
-      Extraction, source, params
+      Extraction, inputSource, params
     );
     assert.ok(response.inference instanceof ExtractionInference);
     const inference: ExtractionInference = response.inference;
@@ -180,7 +180,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
 
   it("enqueueAndGetResult must succeed: Filled, single-page image – Base64Input", async () => {
     const data = fs.readFileSync(sampleBase64Path, "utf8");
-    const source = new Base64Input({ inputString: data, filename: "receipt.jpg" });
+    const inputSource = new Base64Input({ inputString: data, filename: "receipt.jpg" });
     const params = {
       modelId,
       rag: false,
@@ -192,7 +192,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
     };
 
     const response = await client.enqueueAndGetResult(
-      Extraction, source, params
+      Extraction, inputSource, params
     );
     assert.ok(response.inference instanceof ExtractionInference);
     const inference: ExtractionInference = response.inference;
@@ -210,11 +210,11 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
   });
 
   it("enqueue must raise 422: Invalid model ID", async () => {
-    const source = new PathInput({ inputPath: emptyPdfPath });
+    const inputSource = new PathInput({ inputPath: emptyPdfPath });
     const badParams = { modelId: "00000000-0000-0000-0000-000000000000" };
 
     try {
-      await client.enqueue(Extraction, source, badParams);
+      await client.enqueue(Extraction, inputSource, badParams);
       assert.fail("Expected the call to throw, but it succeeded.");
     } catch (err) {
       check422(err);
@@ -234,7 +234,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
   });
 
   it("enqueue, getJob, and getResult must succeed", async () => {
-    const source = new PathInput({ inputPath: emptyPdfPath });
+    const inputSource = new PathInput({ inputPath: emptyPdfPath });
     const params = {
       modelId,
       rag: false,
@@ -245,7 +245,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
     };
 
     const enqueueResponse = await client.enqueue(
-      Extraction, source, params
+      Extraction, inputSource, params
     );
     assert.ok(enqueueResponse.job.id);
     const resultUrl = await waitForResultUrl(client, enqueueResponse.job.id);
@@ -259,7 +259,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
 
   it("enqueueAndGetResult must succeed: HTTPS URL", async () => {
     const url = process.env.MINDEE_V2_SE_TESTS_BLANK_PDF_URL ?? "error-no-url-found";
-    const source = new UrlInput({ url });
+    const inputSource = new UrlInput({ url });
     const params = new ExtractionParameters({
       modelId,
       rag: false,
@@ -270,14 +270,14 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
       alias: "ts_integration_url_source"
     });
     const response: ExtractionResponse = await client.enqueueAndGetResult(
-      Extraction, source, params
+      Extraction, inputSource, params
     );
     assert.ok(response);
     assert.ok(response.inference instanceof ExtractionInference);
   });
 
   it("should override the data schema successfully", async () => {
-    const source = new PathInput({ inputPath: emptyPdfPath });
+    const inputSource = new PathInput({ inputPath: emptyPdfPath });
     const params = new ExtractionParameters({
       modelId,
       rag: false,
@@ -289,7 +289,7 @@ describe("MindeeV2 – Integration - Client", { timeout: 120000 }, () => {
       alias: "ts_integration_data_schema_replace"
     });
     const response = await client.enqueueAndGetResult(
-      Extraction, source, params
+      Extraction, inputSource, params
     );
     assert.ok(response);
     assert.ok(response.inference instanceof ExtractionInference);

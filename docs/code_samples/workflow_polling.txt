@@ -1,6 +1,8 @@
-const mindee = require("mindee");
-// for TS or modules:
-// import * as mindee from "mindee";
+// ESM or TypeScript (Recommended)
+import * as mindee from "mindee";
+
+// If you're on CommonJS:
+// const mindee = require("mindee");
 
 const workflowId: string = "workflow-id";
 

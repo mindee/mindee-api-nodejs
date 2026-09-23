@@ -1,4 +1,6 @@
+// ESM or TypeScript (Recommended)
 import * as mindee from "mindee";
+
 // If you're on CommonJS:
 // const mindee = require("mindee");
 
