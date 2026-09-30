@@ -1,4 +1,0 @@
-npm run lint:package
-npm run lint:secrets
-npm run docs
-npm test

@@ -1,0 +1,40 @@
+[[repos]]
+repo = "local"
+hooks = [
+  {
+    id = "typecheck",
+    name = "Typecheck",
+    entry = "npx tsc -p tsconfig.test.json",
+    language = "system",
+    pass_filenames = false,
+    types = ["ts"],
+  },
+  {
+    id = "eslint-fix",
+    name = "ESLint Fix",
+    entry = "npx eslint --report-unused-disable-directives --fix",
+    language = "system",
+    types = ["ts"],
+  },
+  {
+    id = "lint-package",
+    name = "Lint Package",
+    entry = "npm run lint:package",
+    language = "system",
+    pass_filenames = false,
+  },
+  {
+    id = "license-check",
+    name = "License Check",
+    entry = "npm run license:check",
+    language = "system",
+    pass_filenames = false,
+  }
+]
+
+[[repos]]
+repo = "https://github.com/betterleaks/betterleaks"
+rev = "v1.9.0"
+hooks = [
+  { id = "betterleaks" }
+]
