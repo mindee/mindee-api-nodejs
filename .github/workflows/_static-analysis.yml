@@ -12,6 +12,11 @@ jobs:
       - name: Check out Git repository
         uses: actions/checkout@v6
 
+      - name: Run Betterleaks
+        uses: dortort/betterleaks-action@v0.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
@@ -21,14 +26,8 @@ jobs:
       - name: Install Node.js dependencies
         run: npm ci
 
-      - name: Test lint
-        run: npm run lint
+      - name: Run static analysis
+        run: npx prek --all-files
 
-      - name: Test lint for dist
-        run: npm run lint:package
-
-      - name: Check for secrets
-        run: npm run lint:secrets
-
-      - name: Test licenses
-        run: npm run license:check
+      - name: Test Building Docs
+        run: npm run docs
