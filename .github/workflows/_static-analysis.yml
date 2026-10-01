@@ -15,10 +15,24 @@ jobs:
           fetch-depth: 0
 
       - name: Run Betterleaks
+        id: betterleaks
+        continue-on-error: true
         uses: dortort/betterleaks-action@v0.1.0
         with:
           version: "v1.9.0"
           github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload Betterleaks report
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: betterleaks-report
+          path: betterleaks-report.sarif
+          if-no-files-found: warn
+
+      - name: Fail if Betterleaks found leaks
+        if: steps.betterleaks.outcome == 'failure'
+        run: exit 1
 
       - name: Set up Node.js
         uses: actions/setup-node@v6
