@@ -5,10 +5,9 @@ import { InputSource } from "@/input/index.js";
 import { MindeeError } from "@/errors/index.js";
 import { errorHandler } from "@/errors/handler.js";
 import { LOG_LEVELS, logger } from "@/logger.js";
-import { ErrorResponse, JobResponse } from "./parsing/index.js";
+import { JobResponse } from "./parsing/index.js";
 import { SearchResponse } from "./parsing/search/index.js";
 import { MindeeApiV2 } from "./http/mindeeApiV2.js";
-import { MindeeHttpErrorV2 } from "./http/errors.js";
 import { PollingOptions, PollingOptionsConstructor } from "./clientOptions/index.js";
 import { BaseProduct } from "@/v2/product/baseProduct.js";
 import { BaseSearch } from "@/v2/search/baseSearch.js";
@@ -78,6 +77,8 @@ export class Client {
     if (inputSource === undefined) {
       throw new MindeeError("An input document is required.");
     }
+    logger.debug(`Enqueuing inference using model: ${product.name}`);
+
     const paramsInstance = params instanceof product.parametersClass
       ? params
       : new product.parametersClass(params);
@@ -142,6 +143,7 @@ export class Client {
    * parsing is complete.
    */
   async getJob(jobId: string): Promise<JobResponse> {
+    logger.debug(`Fetching job: ${jobId}`);
     return await this.mindeeApi.reqGetJobById(jobId);
   }
 
@@ -179,61 +181,107 @@ export class Client {
   }
 
   /**
-   * Send a document to an endpoint and poll the server until the result is sent or
-   * until the maximum number of tries is reached.
+   * Checks if all webhooks associated with a job have finished processing.
+   */
+  private checkWebhooksDone(jobResponse: JobResponse): boolean {
+    if (!jobResponse.job.webhooks) {
+      return true;
+    }
+    const areWebhooksDone = jobResponse.job.webhooks.every(
+      (webhook: any) => webhook.status === "Completed" || webhook.status === "Failed"
+    );
+    if (areWebhooksDone) {
+      logger.debug("All webhooks are completed.");
+      return true;
+    }
+    logger.debug("Not all webhooks are completed.");
+    return false;
+  }
+
+  /**
+   * Polls a job until it is processed or the maximum number of tries is reached.
    * @protected
    */
-  protected async pollForResult<P extends typeof BaseProduct>(
-    product: typeof BaseProduct,
+  protected async pollOnJob(
+    initialResponse: JobResponse,
     pollingOptions: PollingOptions,
-    jobResponse: JobResponse,
-  ): Promise<InstanceType<P["responseClass"]>> {
+    waitForWebhooks: boolean = false
+  ): Promise<JobResponse> {
     logger.debug(
-      `Waiting ${pollingOptions.initialDelaySec} seconds before polling.`
+      `Waiting ${pollingOptions.initialDelaySec} seconds before attempting to retrieve the result...`
     );
     await setTimeout(
       pollingOptions.initialDelaySec * 1000,
       undefined,
       pollingOptions.initialTimerOptions
     );
-    logger.debug(
-      `Start polling for inference using job ID: ${jobResponse.job.id}.`
-    );
-    let retryCounter: number = 1;
-    let pollResults: JobResponse;
-    while (retryCounter < pollingOptions.maxRetries + 1) {
+
+    let tryCounter = 0;
+    while (tryCounter < pollingOptions.maxRetries) {
       logger.debug(
-        `Attempt ${retryCounter} of ${pollingOptions.maxRetries}`
+        `Poll attempt ${tryCounter + 1} of ${pollingOptions.maxRetries}`
       );
-      pollResults = await this.mindeeApi.reqGetJobByUrl(jobResponse.job.pollingUrl);
-      const error: ErrorResponse | undefined = pollResults.job.error;
-      if (error) {
-        throw new MindeeHttpErrorV2(error);
-      }
-      logger.debug(`Job status: ${pollResults.job.status}.`);
-      if (pollResults.job.status === "Failed") {
-        break;
-      }
-      if (pollResults.job.status === "Processed") {
-        if (!pollResults.job.resultUrl) {
-          throw new MindeeError(
-            "The result URL is undefined. This is a server error, try again later or contact support."
-          );
+
+      const jobResponse = await this.getJob(initialResponse.job.id);
+
+      if (jobResponse.job.status === "Processed") {
+        logger.debug(
+          `Job ID ${jobResponse.job.id} completed processing at: ${jobResponse.job.completedAt}`
+        );
+        if (!waitForWebhooks || this.checkWebhooksDone(jobResponse)) {
+          return jobResponse;
         }
-        return this.getResultByUrl(product, pollResults.job.resultUrl);
       }
+
+      if (jobResponse.job.status === "Failed") {
+        let detail = "No error detail available.";
+        if (jobResponse.job.error?.detail) {
+          detail = typeof jobResponse.job.error.detail === "string"
+            ? jobResponse.job.error.detail
+            : JSON.stringify(jobResponse.job.error.detail);
+        }
+
+        throw new MindeeError(
+          `Parsing failed for job ${jobResponse.job.id}: ${detail}`
+        );
+      }
+
+      tryCounter++;
       await setTimeout(
         pollingOptions.delaySec * 1000,
         undefined,
         pollingOptions.recurringTimerOptions
       );
-      retryCounter++;
     }
 
     throw new MindeeError(
-      `Polling failed to retrieve a result after ${retryCounter} attempts. ` +
+      `Polling failed to retrieve a result after ${tryCounter} attempts. ` +
       "You can increase poll attempts by passing the pollingOptions argument to enqueueAndGetResult()"
     );
+  }
+
+  /**
+   * Poll until the inference is finished processing or the max number of attempts is reached.
+   * @protected
+   */
+  protected async pollForResult<P extends typeof BaseProduct>(
+    product: P,
+    pollingOptions: PollingOptions,
+    initialResponse: JobResponse,
+    waitForWebhooks: boolean = false
+  ): Promise<InstanceType<P["responseClass"]>> {
+    const jobResponse = await this.pollOnJob(
+      initialResponse,
+      pollingOptions,
+      waitForWebhooks
+    );
+
+    if (!jobResponse.job.resultUrl) {
+      throw new MindeeError(
+        "The result URL is undefined. This is a server error, try again later or contact support."
+      );
+    }
+    return this.getResultByUrl(product, jobResponse.job.resultUrl);
   }
 
   /**
@@ -407,6 +455,7 @@ export class Client {
     product: P,
     documentId: string
   ): Promise<boolean> {
+    logger.debug(`Deleting RAG document ID: ${documentId}`);
     return await this.mindeeApi.reqDeleteRagDocument(product, documentId);
   }
 
@@ -428,7 +477,7 @@ export class Client {
     const maxRetries = pollingOptions.maxRetries + 1;
 
     logger.debug(
-      `Waiting ${pollingOptions.initialDelaySec} seconds before attempting to retrieve the result...`
+      `Waiting ${pollingOptions.initialDelaySec} seconds before attempting to retrieve the document...`
     );
     await setTimeout(
       pollingOptions.initialDelaySec * 1000,
