@@ -188,7 +188,7 @@ export class Client {
       return true;
     }
     const areWebhooksDone = jobResponse.job.webhooks.every(
-      (webhook: any) => webhook.status === "Completed" || webhook.status === "Failed"
+      (webhook: any) => webhook.status !== "Processing"
     );
     if (areWebhooksDone) {
       logger.debug("All webhooks are completed.");
