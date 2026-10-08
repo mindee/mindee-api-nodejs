@@ -10,16 +10,16 @@ let expectedDataSchemaDict: StringDict;
 let expectedDataSchemaString: string;
 let expectedDataSchemaObject: extraction.params.DataSchema;
 
-describe("MindeeV2 - Extraction Parameter", () => {
-  const modelIdValue = "test-model-id";
+describe("MindeeV2 - Extraction Parameters", () => {
+  const modelId = "test-model-id";
 
   describe("Polling Options", () => {
     it("should provide sensible defaults", () => {
 
       const paramsInstance = new extraction.ExtractionParameters({
-        modelId: modelIdValue,
+        modelId: modelId,
       });
-      assert.strictEqual(paramsInstance.modelId, modelIdValue);
+      assert.strictEqual(paramsInstance.modelId, modelId);
     });
   });
 
@@ -33,30 +33,35 @@ describe("MindeeV2 - Extraction Parameter", () => {
       expectedDataSchemaObject = new extraction.params.DataSchema(expectedDataSchemaDict);
     });
 
-    it("shouldn't replace when unset", () => {
+    it("should leave unset when not provided", () => {
       const params = new extraction.ExtractionParameters({
-        modelId: modelIdValue,
+        modelId: modelId,
       });
       assert.strictEqual(params.dataSchema, undefined);
     });
 
-    it("should equate no matter the type", () => {
-      const paramsDict = new extraction.ExtractionParameters({
-        modelId: modelIdValue,
-        dataSchema: expectedDataSchemaDict,
-      });
+    it("should initialize from a string", () => {
       const paramsString = new extraction.ExtractionParameters({
-        modelId: modelIdValue,
+        modelId: modelId,
         dataSchema: expectedDataSchemaString,
       });
+      assert.strictEqual(paramsString.dataSchema?.toString(), expectedDataSchemaString);
+    });
+
+    it("should initialize from a dictionary", () => {
+      const paramsDict = new extraction.ExtractionParameters({
+        modelId: modelId,
+        dataSchema: expectedDataSchemaDict,
+      });
+      assert.strictEqual(JSON.stringify(paramsDict.dataSchema), expectedDataSchemaString);
+    });
+
+    it("should initialize from an object instance", () => {
       const paramsObject = new extraction.ExtractionParameters({
-        modelId: modelIdValue,
+        modelId: modelId,
         dataSchema: expectedDataSchemaObject,
       });
-
-      assert.strictEqual(JSON.stringify(paramsDict.dataSchema), expectedDataSchemaString);
       assert.strictEqual(paramsObject.dataSchema?.toString(), expectedDataSchemaString);
-      assert.strictEqual(paramsString.dataSchema?.toString(), expectedDataSchemaString);
     });
   });
 });

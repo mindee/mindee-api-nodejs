@@ -29,16 +29,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
     },
   ],
   [
-    "barcode-reader",
-    {
-      displayName: "Barcode Reader",
-      docClass: product.BarcodeReaderV1,
-      allWords: false,
-      async: false,
-      sync: true,
-    },
-  ],
-  [
     "cropper",
     {
       displayName: "Cropper",
@@ -156,16 +146,6 @@ export const CLI_COMMAND_CONFIG = new Map<string, ProductConfig>([
       allWords: false,
       async: true,
       sync: false,
-    },
-  ],
-  [
-    "us-bank-check",
-    {
-      displayName: "US Bank Check",
-      docClass: product.us.BankCheckV1,
-      allWords: false,
-      async: false,
-      sync: true,
     },
   ],
 ]);

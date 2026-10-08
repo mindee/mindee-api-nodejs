@@ -1,6 +1,4 @@
 export * as fr from "./fr/index.js";
-export * as us from "./us/index.js";
-export { BarcodeReaderV1 } from "./barcodeReader/index.js";
 export { CropperV1 } from "./cropper/index.js";
 export { DriverLicenseV1 } from "./driverLicense/index.js";
 export { FinancialDocumentV1 } from "./financialDocument/index.js";
@@ -14,7 +12,6 @@ export { ReceiptV5 } from "./receipt/index.js";
 export { ResumeV1 } from "./resume/index.js";
 
 // not sure if we want to export these -- advanced users can import them directly
-export * as barcodeReader from "./barcodeReader/index.js";
 export * as cropper from "./cropper/index.js";
 export * as driverLicense from "./driverLicense/index.js";
 export * as financialDocument from "./financialDocument/index.js";
