@@ -2,7 +2,6 @@ import { beforeEach, describe, it } from "node:test";
 import assert from "node:assert";
 import path from "node:path";
 import * as mindee from "@/index.js";
-import { ExecutionPriority } from "@/v1/parsing/common/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { OptionalAsyncOptions } from "@/v1/index.js";
 import { FinancialDocumentV1 } from "@/v1/product/index.js";
