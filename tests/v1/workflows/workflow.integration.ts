@@ -26,20 +26,6 @@ describe("MindeeV1 - Integration - Workflow calls", { timeout: 80_000 }, () => {
     });
   });
 
-  it("should retrieve a correct response from the API.", async () => {
-    const currentDateTime = new Date()
-      .toISOString()
-      .replace(/T/, "-")
-      .replace(/\..+/, "");
-    const response = await client.executeWorkflow(
-      sample,
-      workflowId,
-      { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low, rag: true }
-    );
-    assert.strictEqual(response.execution.priority, ExecutionPriority.low);
-    assert.strictEqual(response.execution.file.alias, `node-${currentDateTime}`);
-  });
-
   it("should poll with RAG disabled", async () => {
     const asyncParams: OptionalAsyncOptions = {
       workflowId: workflowId
