@@ -15,4 +15,3 @@ export {
 } from "./summaryHelper.js";
 export * as extras from "./extras/index.js";
 export { parseDate } from "@/parsing/dateParser.js";
-export { WorkflowResponse } from "./workflowResponse.js";

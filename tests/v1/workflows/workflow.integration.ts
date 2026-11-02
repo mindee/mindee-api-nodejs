@@ -2,7 +2,6 @@ import { beforeEach, describe, it } from "node:test";
 import assert from "node:assert";
 import path from "node:path";
 import * as mindee from "@/index.js";
-import { ExecutionPriority } from "@/v1/parsing/common/index.js";
 import { LocalInputSource } from "@/input/index.js";
 import { OptionalAsyncOptions } from "@/v1/index.js";
 import { FinancialDocumentV1 } from "@/v1/product/index.js";
@@ -24,20 +23,6 @@ describe("MindeeV1 - Integration - Workflow calls", { timeout: 80_000 }, () => {
     sample = new mindee.PathInput({
       inputPath: path.join(V1_PRODUCT_PATH, "financial_document/default_sample.jpg")
     });
-  });
-
-  it("should retrieve a correct response from the API.", async () => {
-    const currentDateTime = new Date()
-      .toISOString()
-      .replace(/T/, "-")
-      .replace(/\..+/, "");
-    const response = await client.executeWorkflow(
-      sample,
-      workflowId,
-      { alias: `node-${currentDateTime}`, priority: ExecutionPriority.low, rag: true }
-    );
-    assert.strictEqual(response.execution.priority, ExecutionPriority.low);
-    assert.strictEqual(response.execution.file.alias, `node-${currentDateTime}`);
   });
 
   it("should poll with RAG disabled", async () => {

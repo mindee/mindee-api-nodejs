@@ -20,11 +20,8 @@ import {
   Inference,
   PredictResponse,
   StringDict,
-  WorkflowResponse,
 } from "./parsing/common/index.js";
 import { InferenceFactory } from "./parsing/common/inference.js";
-import { GeneratedV1 } from "./product/index.js";
-import { WorkflowEndpoint } from "./http/index.js";
 
 /**
  * Common options for workflows and predictions.
@@ -274,34 +271,6 @@ export class Client {
     params?.endpoint ?? this.#initializeOTSEndpoint(productClass);
     const docResponse = await endpoint.getQueuedDocument(queueId);
     return new AsyncPredictResponse<T>(productClass, docResponse.data);
-  }
-
-  /**
-   * Send the document to an asynchronous endpoint and return its ID in the queue.
-   * @param inputSource file to send to the API.
-   * @param workflowId ID of the workflow.
-   * @param params parameters relating to prediction options.
-   * @category Workflow
-   * @returns a `Promise` containing the job (queue) corresponding to a document.
-   */
-  async executeWorkflow(
-    inputSource: InputSource,
-    workflowId: string,
-    params: WorkflowOptions = {}
-  ): Promise<WorkflowResponse<GeneratedV1>> {
-    const workflowEndpoint = new WorkflowEndpoint(this.apiSettings, workflowId);
-    if (inputSource === undefined) {
-      throw new Error("The 'executeWorkflow' function requires an input document.");
-    }
-    const rawResponse = await workflowEndpoint.executeWorkflow({
-      inputDoc: inputSource,
-      alias: params.alias,
-      priority: params.priority,
-      pageOptions: params?.pageOptions,
-      fullText: this.getBooleanParam(params.fullText),
-    });
-
-    return new WorkflowResponse<GeneratedV1>(GeneratedV1, rawResponse.data);
   }
 
   /**
