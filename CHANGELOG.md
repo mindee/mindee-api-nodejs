@@ -1,5 +1,14 @@
 # Mindee Node.js API Library Changelog
 
+## v5.11.0 - 2026-11-02
+### Changes
+* :coffin: remove dead v1 products
+* :coffin: remove dead v1 workflow
+* :arrow_up: update dependencies
+* :arrow_up: bump some devDependencies
+* :recycle: rework result polling
+
+
 ## v5.10.0 - 2026-09-23
 ### Changes
 * :arrow_up: migrate to TypeScript 6.0
