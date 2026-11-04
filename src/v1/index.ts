@@ -6,8 +6,7 @@ export { LocalResponse } from "./parsing/localResponse.js";
 export { Client } from "./client.js";
 export type {
   OptionalAsyncOptions,
-  PredictOptions,
-  WorkflowOptions
+  PredictOptions
 } from "./client.js";
 export {
   AsyncPredictResponse,

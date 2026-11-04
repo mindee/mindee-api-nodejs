@@ -15,4 +15,4 @@ export {
   MindeeHttp504Error,
   handleError,
 } from "./errors.js";
-export type { PredictParams, WorkflowParams } from "./httpParams.js";
+export type { PredictParams } from "./httpParams.js";

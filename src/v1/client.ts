@@ -15,7 +15,6 @@ import {
 } from "./http/index.js";
 import {
   AsyncPredictResponse,
-  ExecutionPriority,
   FeedbackResponse,
   Inference,
   PredictResponse,
@@ -64,25 +63,6 @@ export interface PredictOptions extends BaseOptions {
    * The ID of the workflow.
    */
   workflowId?: string;
-}
-
-/**
- * Options relating to workflows.
- * @category Workflow
- */
-export interface WorkflowOptions extends BaseOptions {
-  /**
-   * Alias to give to the document.
-   */
-  alias?: string;
-  /**
-   * Priority to give to the document.
-   */
-  priority?: ExecutionPriority;
-  /**
-   * A unique, encrypted URL for accessing the document validation interface without requiring authentication.
-   */
-  publicUrl?: string;
 }
 
 /**

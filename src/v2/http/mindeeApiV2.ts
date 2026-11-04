@@ -105,11 +105,11 @@ export class MindeeApiV2 {
    * @param inferenceId The inference ID for the result.
    * @returns a `Promise` containing the parsed result.
    */
-  async reqGetProductResultById<P extends typeof BaseProduct>(
+  async reqGetResultById<P extends typeof BaseProduct>(
     product: P,
     inferenceId: string,
   ): Promise<InstanceType<P["responseClass"]>> {
-    return this.reqGetProductResultByUrl(
+    return this.reqGetResultByUrl(
       product,
       `https://${this.settings.hostname}/v2/products/${product.slug}/results/${inferenceId}`
     );
@@ -122,7 +122,7 @@ export class MindeeApiV2 {
    * @param url The URL as returned by a Job's resultUrl property.
    * @returns a `Promise` containing the parsed result.
    */
-  async reqGetProductResultByUrl<P extends typeof BaseProduct>(
+  async reqGetResultByUrl<P extends typeof BaseProduct>(
     product: P,
     url: string,
   ): Promise<InstanceType<P["responseClass"]>> {
