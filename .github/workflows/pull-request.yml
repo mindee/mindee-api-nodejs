@@ -8,17 +8,24 @@ permissions:
   pull-requests: read
 
 jobs:
-  static_analysis:
+  workflow-lint:
+    uses: mindee/client-lib-actions/.github/workflows/workflow-lint.yml@main
+  betterleaks:
+    uses: mindee/client-lib-actions/.github/workflows/betterleaks.yml@main
+    needs: workflow-lint
+    secrets: inherit
+  static-analysis:
     uses: ./.github/workflows/_static-analysis.yml
-  test_units:
+    needs: workflow-lint
+  test-units:
     uses: ./.github/workflows/_test-units.yml
-    needs: static_analysis
+    needs: [ betterleaks, static-analysis ]
     secrets: inherit
-  test_smoke:
+  test-smoke:
     uses: ./.github/workflows/_test-smoke.yml
-    needs: static_analysis
+    needs: [ betterleaks, static-analysis ]
     secrets: inherit
-  test_integrations:
+  test-integrations:
     uses: ./.github/workflows/_test-integrations.yml
-    needs: test_units
+    needs: test-units
     secrets: inherit

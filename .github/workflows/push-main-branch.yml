@@ -7,9 +7,9 @@ on:
 
 jobs:
   static_analysis:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_static-analysis.yml@main
+    uses: ./.github/workflows/_static-analysis.yml
   test_units:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_test-units.yml@main
+    uses: ./.github/workflows/_test-units.yml
     needs: static_analysis
     secrets: inherit
   tag:
