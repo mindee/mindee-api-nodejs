@@ -498,7 +498,7 @@ export class Client {
 
     let tryCounter = 0;
     const documentId = initialResponse.id;
-    const maxRetries = pollingOptions.maxRetries + 1;
+    const maxRetries = pollingOptions.maxRetries;
 
     while (tryCounter < maxRetries) {
       logger.debug(

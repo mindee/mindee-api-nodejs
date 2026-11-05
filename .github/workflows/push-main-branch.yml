@@ -6,15 +6,19 @@ on:
       - main
 
 jobs:
-  static_analysis:
+  betterleaks:
+    uses: mindee/client-lib-actions/.github/workflows/betterleaks.yml@main
+    secrets: inherit
+  static-analysis:
     uses: ./.github/workflows/_static-analysis.yml
-  test_units:
+    secrets: inherit
+  test-units:
     uses: ./.github/workflows/_test-units.yml
-    needs: static_analysis
+    needs: [ betterleaks, static-analysis ]
     secrets: inherit
   tag:
     uses: mindee/client-lib-actions/.github/workflows/tag-version.yml@main
-    needs: test_units
+    needs: test-units
   release:
     uses: mindee/client-lib-actions/.github/workflows/create-release.yml@main
     needs: tag
