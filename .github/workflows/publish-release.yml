@@ -6,12 +6,12 @@ on:
 
 jobs:
   publish_docs:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_publish-docs.yml@main
+    uses: ./.github/workflows/_publish-docs.yml
     secrets: inherit
   publish_guide:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_publish-guide.yml@main
+    uses: ./.github/workflows/_publish-guide.yml
     needs: publish_docs
     secrets: inherit
   publish_code:
-    uses: mindee/mindee-api-nodejs/.github/workflows/_publish-code.yml@main
+    uses: ./.github/workflows/_publish-code.yml
     secrets: inherit

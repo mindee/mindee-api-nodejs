@@ -174,4 +174,25 @@ describe("MindeeV2 - Client", () => {
       assert.strictEqual(job.error, undefined);
     });
   });
+
+  describe("getJobByUrl(url)", () => {
+    it("returns a fully-formed JobResponse", async () => {
+      const resp = await client.getJobByUrl(
+        "https://v2-client-host/v2/jobs/12345678-1234-1234-1234-123456789ABC"
+      );
+      const job = resp.job;
+      assert.strictEqual(job.id, "12345678-1234-1234-1234-123456789ABC");
+      assert.strictEqual(job.modelId, "87654321-4321-4321-4321-CBA987654321");
+      assert.strictEqual(job.filename, "default_sample.jpg");
+      assert.strictEqual(job.alias, "dummy-alias.jpg");
+      assert.strictEqual(job.createdAt?.toISOString(), "2025-07-03T14:27:58.974Z");
+      assert.strictEqual(job.status, "Processing");
+      assert.strictEqual(job.pollingUrl,
+        "https://api-v2.mindee.net/v2/jobs/12345678-1234-1234-1234-123456789ABC"
+      );
+      assert.strictEqual(job.resultUrl, null);
+      assert.strictEqual(job.webhooks.length, 0);
+      assert.strictEqual(job.error, undefined);
+    });
+  });
 });

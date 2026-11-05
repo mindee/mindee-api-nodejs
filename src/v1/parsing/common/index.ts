@@ -1,7 +1,4 @@
 export { Document } from "./document.js";
-export { Execution } from "./execution.js";
-export { ExecutionFile } from "./executionFile.js";
-export { ExecutionPriority } from "./executionPriority.js";
 export { Inference } from "./inference.js";
 export { FeedbackResponse } from "./feedback/feedbackResponse.js";
 export { OrientationField } from "./orientation.js";

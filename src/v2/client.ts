@@ -1,3 +1,4 @@
+import { MindeeHttpErrorV2 } from "@/v2/http/index.js";
 import { setTimeout } from "node:timers/promises";
 import { Dispatcher } from "undici";
 
@@ -67,7 +68,7 @@ export class Client {
   }
 
   /**
-   * Enqueues a product inference job without waiting for completion.
+   * Send a file to the asynchronous processing queue for inference.
    */
   async enqueue<P extends typeof BaseProduct>(
     product: P,
@@ -97,26 +98,21 @@ export class Client {
   }
 
   /**
-   * Retrieves the result of a previously enqueued request.
+   * Get the status of an inference that was previously enqueued.
+   * Can be used for polling.
    *
-   * @param product the product to retrieve.
-   * @param inferenceId id of the queue to poll.
+   * @param pollingUrl The URL to poll to retrieve the job.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
-   * @returns a `Promise` containing the inference.
+   * @returns a `Promise` containing a `Job`, which also contains a `Document` if the
+   * parsing is complete.
    */
-  async getResult<P extends typeof BaseProduct>(
-    product: P,
-    inferenceId: string
-  ): Promise<InstanceType<P["responseClass"]>> {
-    logger.debug(
-      `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
-    );
-    return await this.mindeeApi.reqGetProductResultById(product, inferenceId);
+  async getJobByUrl(pollingUrl: string): Promise<JobResponse> {
+    logger.debug(`Getting Job by URL: ${pollingUrl}`);
+    return await this.mindeeApi.reqGetJobByUrl(pollingUrl);
   }
 
   /**
-   * Retrieves the result of a previously enqueued request.
-   * This method is used when manually polling the server for the result URL.
+   * Get the result of an inference that was previously enqueued.
    *
    * @param product the product to retrieve.
    * @param url URL as given in the `getJob()` response.
@@ -130,12 +126,31 @@ export class Client {
     logger.debug(
       `Attempting to get inference from: ${url} using response type: ${product.name}`
     );
-    return await this.mindeeApi.reqGetProductResultByUrl(product, url);
+    return await this.mindeeApi.reqGetResultByUrl(product, url);
   }
 
   /**
-   * Get the processing status of a previously enqueued request.
-   * Can be used for polling.
+   * Get the result of an inference that was previously enqueued.
+   * Prefer using `getResultByUrl` using the result URL returned in the Job instance.
+   *
+   * @param product the product to retrieve.
+   * @param inferenceId id of the queue to poll.
+   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
+   * @returns a `Promise` containing the inference.
+   */
+  async getResult<P extends typeof BaseProduct>(
+    product: P,
+    inferenceId: string
+  ): Promise<InstanceType<P["responseClass"]>> {
+    logger.debug(
+      `Attempting to get inference with ID: ${inferenceId} using response type: ${product.name}`
+    );
+    return await this.mindeeApi.reqGetResultById(product, inferenceId);
+  }
+
+  /**
+   * Get the status of an inference that was previously enqueued.
+   * Prefer using `getJobByUrl` using the polling URL returned by the enqueue method.
    *
    * @param jobId id of the queue to poll.
    * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
@@ -148,15 +163,12 @@ export class Client {
   }
 
   /**
-   * Enqueue a request and poll the server until the result is sent or
-   * until the maximum number of tries is reached.
+   * Send a file to the inference queue and return the results when complete.
    *
    * @param product the product to retrieve.
    * @param inputSource file or URL to parse.
    * @param params parameters relating to prediction options.
-   *
    * @param pollingOptions options for the polling loop, see {@link PollingOptions}.
-   * @typeParam T an extension of an `Inference`. Can be omitted as it will be inferred from the `productClass`.
    * @returns a `Promise` containing parsing results.
    */
   async enqueueAndGetResult<P extends typeof BaseProduct>(
@@ -175,7 +187,7 @@ export class Client {
     const pollingOptionsInstance = pollingOptions instanceof PollingOptions
       ? pollingOptions
       : new PollingOptions(pollingOptions);
-    return await this.pollForResult(
+    return await this.pollForProductResult(
       product, pollingOptionsInstance, jobResponse
     );
   }
@@ -217,12 +229,15 @@ export class Client {
     );
 
     let tryCounter = 0;
-    while (tryCounter < pollingOptions.maxRetries) {
+    const maxRetries = pollingOptions.maxRetries;
+    const pollingUrl = initialResponse.job.pollingUrl;
+
+    while (tryCounter < maxRetries) {
       logger.debug(
-        `Poll attempt ${tryCounter + 1} of ${pollingOptions.maxRetries}`
+        `Poll attempt ${tryCounter + 1} of ${maxRetries}`
       );
 
-      const jobResponse = await this.getJob(initialResponse.job.id);
+      const jobResponse = await this.getJobByUrl(pollingUrl);
 
       if (jobResponse.job.status === "Processed") {
         logger.debug(
@@ -233,16 +248,13 @@ export class Client {
         }
       }
 
+      // normally the API handler will throw an error, this is a fallback
       if (jobResponse.job.status === "Failed") {
-        let detail = "No error detail available.";
         if (jobResponse.job.error?.detail) {
-          detail = typeof jobResponse.job.error.detail === "string"
-            ? jobResponse.job.error.detail
-            : JSON.stringify(jobResponse.job.error.detail);
+          throw new MindeeHttpErrorV2(jobResponse.job.error);
         }
-
         throw new MindeeError(
-          `Parsing failed for job ${jobResponse.job.id}: ${detail}`
+          `Parsing failed for job ${jobResponse.job.id}: No error detail available.`
         );
       }
 
@@ -264,7 +276,7 @@ export class Client {
    * Poll until the inference is finished processing or the max number of attempts is reached.
    * @protected
    */
-  protected async pollForResult<P extends typeof BaseProduct>(
+  protected async pollForProductResult<P extends typeof BaseProduct>(
     product: P,
     pollingOptions: PollingOptions,
     initialResponse: JobResponse,
@@ -474,7 +486,6 @@ export class Client {
     pollingOptions: PollingOptions
   ): Promise<InstanceType<P["annotationResponseClass"]>> {
     logger.debug(`Polling for RAG document ID: ${initialResponse.id}`);
-    const maxRetries = pollingOptions.maxRetries + 1;
 
     logger.debug(
       `Waiting ${pollingOptions.initialDelaySec} seconds before attempting to retrieve the document...`
@@ -485,17 +496,18 @@ export class Client {
       pollingOptions.initialTimerOptions
     );
 
+    let tryCounter = 0;
     const documentId = initialResponse.id;
-    let retryCount = 1;
+    const maxRetries = pollingOptions.maxRetries;
 
-    while (retryCount < maxRetries) {
+    while (tryCounter < maxRetries) {
       logger.debug(
-        `Poll attempt ${retryCount} of ${pollingOptions.maxRetries}`
+        `Poll attempt ${tryCounter + 1} of ${pollingOptions.maxRetries}`
       );
 
       const response = await this.getRagDocument(product, documentId);
 
-      retryCount++;
+      tryCounter++;
 
       switch (response.status) {
       case "Processing":
@@ -512,6 +524,6 @@ export class Client {
       }
     }
 
-    throw new MindeeError(`RAG polling not complete after ${retryCount} attempts.`);
+    throw new MindeeError(`RAG polling not complete after ${tryCounter} attempts.`);
   }
 }

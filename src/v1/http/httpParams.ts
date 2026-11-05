@@ -1,5 +1,4 @@
 import { InputSource, PageOptions } from "@/input/index.js";
-import { ExecutionPriority } from "@/v1/parsing/common/index.js";
 
 interface HTTPParams {
   /**
@@ -36,22 +35,4 @@ export interface PredictParams extends HTTPParams {
    * Optional workflow ID used for workflow-backed inference.
    */
   workflowId?: string;
-}
-
-/**
- * Parameters sent to workflow execution endpoints.
- */
-export interface WorkflowParams extends HTTPParams {
-  /**
-   * Custom alias assigned to the submitted file.
-   */
-  alias?: string;
-  /**
-   * Processing priority of the workflow execution.
-   */
-  priority?: ExecutionPriority;
-  /**
-   * Whether to request a public validation URL.
-   */
-  publicUrl?: string;
 }
