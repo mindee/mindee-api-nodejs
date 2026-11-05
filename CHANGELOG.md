@@ -1,5 +1,11 @@
 # Mindee Node.js API Library Changelog
 
+## v5.11.1 - 2026-11-05
+### Changes
+* :recycle: cleanup workflow classes
+* :recycle: harmonize client docstrings with other SDKs
+
+
 ## v5.11.0 - 2026-11-02
 ### Changes
 * :coffin: remove dead v1 products
